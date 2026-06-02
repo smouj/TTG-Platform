@@ -8,7 +8,7 @@ import BattleView from '@/components/game/battle-view'
 import { ScannerView } from '@/components/game/scanner-view'
 import StatsPanel from '@/components/game/stats-panel'
 import LanguageSwitcher from '@/components/ui/language-switcher'
-import { BookOpen, Swords, Scan, BarChart3, Disc3, User, LogOut, Package, Layers } from 'lucide-react'
+import { BookOpen, Swords, Scan, BarChart3, User, LogOut, Package, Layers } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
 
@@ -106,19 +106,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           {/* Title Row - Magazine Masthead */}
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Spinning Tazo Disc Icon */}
+            {/* TTG Logo */}
             <div className="relative shrink-0">
-              <div
-                className="mag-spinner w-11 h-11 sm:w-14 sm:h-14 rounded-full border-[3px] border-[#1a1a1a] flex items-center justify-center"
-                style={{
-                  background: 'conic-gradient(from 0deg, #FFCC00, #E3350D, #3B4CCA, #FF6B00, #00A1E9, #78C850, #FFCC00)',
-                  boxShadow: '3px 3px 0px #1a1a1a',
-                }}
-              >
-                <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white border-2 border-[#1a1a1a] flex items-center justify-center">
-                  <Disc3 className="w-3 h-3 sm:w-4 sm:h-4 text-[#1a1a1a]" />
-                </div>
-              </div>
+              <img
+                src="/logo/logo-icon-black.png"
+                alt="Trading Tazos Game"
+                className="w-12 h-12 sm:w-16 sm:h-16 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
+              />
             </div>
 
             {/* Title & Subtitle */}

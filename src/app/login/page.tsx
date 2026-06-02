@@ -39,12 +39,11 @@ export default function LoginPage() {
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-full border-3 border-[#1a1a1a] flex items-center justify-center"
-              style={{ background: "conic-gradient(from 0deg, #FFCC00, #E3350D, #3B4CCA, #FFCC00)", boxShadow: "3px 3px 0px #1a1a1a" }}
-            >
-              <Disc3 className="w-5 h-5 text-[#1a1a1a]" />
-            </div>
+            <img
+              src="/logo/logo-icon-black.png"
+              alt="TTG"
+              className="w-10 h-10 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
+            />
             <h1 className="text-xl sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-tight mag-stroke-sm">
               {t.auth_login}
             </h1>

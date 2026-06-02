@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<img src="./docs/screenshots/logo-social.png" alt="Trading Tazos Game" width="300" />
+
 **Aim. Throw. Flip. Capture. Win.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](https://nextjs.org)

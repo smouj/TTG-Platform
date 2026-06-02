@@ -20,7 +20,7 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 700,
     title: "Trading Tazos Game",
-    icon: path.join(__dirname, "icon.png"),
+    icon: path.join(__dirname, "..", "public", "logo", "logo-icon-black.png"),
     backgroundColor: "#0a0a0a",
     webPreferences: {
       nodeIntegration: false,
