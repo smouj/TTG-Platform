@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Trading Tazos Game",
     images: [
       {
-        url: "https://medaclawarena.com/logo/logo-complete-black.png",
+        url: "https://medaclawarena.com/logo/social-preview.png",
         width: 1200,
         height: 630,
       },
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Trading Tazos Game",
     description: "Battle your tazos in a real-time physics arena",
-    images: ["https://medaclawarena.com/logo/logo-complete-black.png"],
+    images: ["https://medaclawarena.com/logo/social-preview.png"],
   },
 };
 
