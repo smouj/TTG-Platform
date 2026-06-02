@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { GameView } from '@/lib/game/types'
 import AlbumView from '@/components/game/album-view'
-import { BattleView } from '@/components/game/battle-view'
+import BattleView from '@/components/game/battle-view'
 import { ScannerView } from '@/components/game/scanner-view'
 import StatsPanel from '@/components/game/stats-panel'
 import { BookOpen, Swords, Scan, BarChart3, Disc3 } from 'lucide-react'

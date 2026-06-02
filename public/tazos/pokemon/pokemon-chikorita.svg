@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="gpokemonchikorita" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#FFCB05" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FFCB05" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF8C00" stop-opacity="0.85"/>
+    </radialGradient>
+    <radialGradient id="glpokemonchikorita" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="#9CA3AF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#9CA3AF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shpokemonchikorita">
+      <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  
+  
+  <circle cx="200" cy="200" r="180" fill="url(#gpokemonchikorita)" filter="url(#shpokemonchikorita)" stroke="#FFCB05" stroke-width="4"/>
+  <circle cx="200" cy="200" r="168" fill="none" stroke="white" stroke-width="2" opacity="0.5"/>
+  <circle cx="200" cy="200" r="160" fill="none" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <path d="M 50 200 A 150 150 0 0 1 350 200" fill="none" stroke="white" stroke-width="6" opacity="0.2" stroke-linecap="round"/>
+  <circle cx="368" cy="200" r="3" fill="white" opacity="0.4"/><circle cx="319" cy="319" r="3" fill="white" opacity="0.4"/><circle cx="200" cy="368" r="3" fill="white" opacity="0.4"/><circle cx="81" cy="319" r="3" fill="white" opacity="0.4"/><circle cx="32" cy="200" r="3" fill="white" opacity="0.4"/><circle cx="81" cy="81" r="3" fill="white" opacity="0.4"/><circle cx="200" cy="32" r="3" fill="white" opacity="0.4"/><circle cx="319" cy="81" r="3" fill="white" opacity="0.4"/>
+  <text x="200" y="210" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black,Impact,sans-serif" font-size="72" font-weight="900" fill="white" stroke="#1a1a1a" stroke-width="3" paint-order="stroke fill" letter-spacing="2">C</text>
+  <rect x="170" y="325" width="60" height="28" rx="14" fill="white" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="200" y="347" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black,Courier New,monospace" font-size="16" font-weight="900" fill="#1a1a1a">#152</text>
+  
+  <path d="M 100 338 A 100 100 0 0 0 300 338" fill="none" stroke="#E3350D" stroke-width="3" opacity="0.7"/>
+  <text x="200" y="370" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#1a1a1a" opacity="0.8">Razor Leaf</text>
+  <text x="200" y="28" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="white" stroke="#1a1a1a" stroke-width="1" opacity="0.9" letter-spacing="3" paint-order="stroke fill">POKÉMON</text>
+</svg>

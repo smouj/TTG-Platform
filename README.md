@@ -1,220 +1,203 @@
-# 🎮 Tazos Legends Arena
+# Trading Tazos Game
 
-> **Escanea tus tazos antiguos, crea tu álbum digital y hazlos combatir en una arena física.**
+> **Physical tazo battle game. Aim. Throw. Flip. Capture. Win.**
 
-A nostalgic web game inspired by the golden age of collectible tazos (pogs) from the 90s-2000s. Designed with a vibrant **magazine aesthetic** — think Nintendo Power meets Pokémon Official Magazine.
+A web-based tazo (pog) battle game where players physically throw tazos into a circular arena, aiming to flip and capture opponent tazos through skill-based mechanics — not just stat comparisons.
 
-![Tazos Legends Arena - Album View](docs/screenshots/album.png)
-
----
-
-## ✨ Features
-
-### 📖 Digital Album
-Browse your tazo collection in a vibrant magazine-style interface. Filter by franchise, rarity, condition, and ownership status. Each tazo is displayed as a circular disc with franchise-colored gradients and special effects.
-
-![Album View](docs/screenshots/album.png)
-
-### ⚔️ Battle Arena
-Select your team of 3 tazos and fight against AI opponents in a physics-based arena. Watch spinning discs collide, trigger type advantages, evolve Digimon, and charge ki for DBZ transformations!
-
-![Battle Arena](docs/screenshots/battle-arena.png)
-
-### 📷 Tazo Scanner
-Import photos of your real tazos! The scanner detects circular shapes, crops individual tazos, and lets you add metadata to create playable pieces from your physical collection.
-
-![Scanner](docs/screenshots/scanner.png)
-
-### 📊 Stats Dashboard
-Track your collection progress with magazine-style infographics. See breakdowns by franchise, rarity, condition, and discover your top combatants.
-
-![Stats](docs/screenshots/stats.png)
+**Status**: Active Development • **Domain**: medaclawarena.com • **Contact**: support@medaclawarena.com
 
 ---
 
-## 🎨 Design Philosophy
+## Game Identity
 
-The entire UI is inspired by **90s-2000s gaming magazines**:
+Trading Tazos Game is not a card game with stats. It's not auto-battle.
 
-| Element | Style | Inspiration |
-|---------|-------|-------------|
-| **Colors** | Vibrant yellow, red, blue primary colors | Pokémon Magazine |
-| **Typography** | Bold, black-outlined stroke text | Nintendo Power |
-| **Cards** | Thick black borders, offset shadows | Magazine clippings |
-| **Navigation** | Magazine section tabs | Table of contents |
-| **Effects** | Holographic shimmer, metallic shine, legendary glow | Real tazo finishes |
+**It's a game of physical tazo throwing with aim, power, physics, rebounds, risk, and field control.**
 
-### Magazine Aesthetic Details
-- **Stroke text**: Bold yellow/red text with black outlines (`-webkit-text-stroke`)
-- **Thick borders**: 3px solid black on all cards and buttons
-- **Offset shadows**: `4px 4px 0px black` — like printed stickers
-- **Speech bubbles**: Comic-style callouts with character quotes
-- **EXCLUSIVE badges**: Rotated red stickers on legendary tazos
-- **Halftone dots**: Magazine print texture on backgrounds
+### Core Loop
+1. **Select** a tazo from your hand
+2. **Aim** horizontally and vertically with timing-based accuracy
+3. **Charge** power (more power = more impact but less accuracy)
+4. **Throw** into the arena
+5. **Impact** enemy tazos — flip them to capture, push them, or chain rebounds
+6. **Risk/reward**: miss and your tazo stays vulnerable on the field. Throw too hard and it flies out — the rival decides where to place it.
 
 ---
 
-## 🕹️ Game Mechanics
+## Features
 
-### Franchise-Specific Abilities
+### Battle Arena
+- Canvas 2D arena with real-time physics simulation
+- Horizontal aim + vertical aim + power charge minigame
+- Collision detection, edge/side/center impacts
+- Multiple tazo hits per throw (chain rebounds)
+- Deterministic physics via seeded RNG
+- AI opponent with auto-resolve turns
 
-| Franchise | Mechanic | Effect |
-|-----------|----------|--------|
-| **Pokémon** | Type Advantages | Fire > Grass > Water > Fire, Electric > Water, etc. (1.5x damage) |
-| **Digimon** | Digievolution | Link evolution chain tazos → +15 to all stats |
-| **Dragon Ball Z** | Ki Charge & Transform | Charge ki each round, transform at round 3+ with 30+ ki |
-
-### Victory Types
-- **Knockout** — Tazo loses all HP
-- **Ring-out** — Tazo flies out of the arena
-- **Spin-out** — Tazo stops spinning before opponent
-- **Combo** — Most HP remaining after 10 rounds
-
-### Tazo Conditions
-| Condition | Effect |
-|-----------|--------|
-| ✨ Mint | +20% collection value |
-| 👍 Good | Normal stats |
-| 🔄 Used | -10% control |
-| ⚔️ Worn | -20% spin, +15% veteran bonus |
-| 🌈 Holographic | +30% aura |
-| 🛡️ Metallic | +25% weight |
-
-### Stats
-Each tazo has 6 stats: **ATK**, **DEF**, **SPIN**, **WGT**, **AURA**, **CTR**
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: Next.js 16 with App Router
-- **Language**: TypeScript 5
-- **Styling**: Tailwind CSS 4 + Custom Magazine Theme
-- **UI Components**: shadcn/ui (New York style)
-- **Database**: Prisma ORM with SQLite
-- **Image Processing**: Sharp
-- **Battle Engine**: HTML5 Canvas + Custom Physics
-- **Icons**: Lucide React
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ or Bun
-- npm/bun package manager
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/smouj/Trading-Tazos-Game.git
-cd Trading-Tazos-Game
-
-# Install dependencies
-bun install
-
-# Set up the database
-bun run db:push
-
-# Seed the database with sample tazos
-bun run seed
-
-# Start the development server
-bun run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 📸 Screenshots
-
-### Album - Collection Browser
-![Album](docs/screenshots/album.png)
-
-### Tazo Detail Modal
-![Tazo Detail](docs/screenshots/tazo-detail.png)
-
-### Battle - Team Selection
-![Battle Select](docs/screenshots/battle-select.png)
-
-### Battle - Arena Combat
-![Battle Arena](docs/screenshots/battle-arena.png)
-
-### Battle - Results
-![Battle Result](docs/screenshots/battle-result.png)
-
-### Tazo Scanner
-![Scanner](docs/screenshots/scanner.png)
+### Digital Album
+- Browse 62 tazos across 3 franchises (Pokemon, Digimon, Dragon Ball Z)
+- 6 collections: Kanto Classics, Johto Journeys, Adventure Series, Digital Monsters, Saiyan Saga, Cell Games
+- Filter by franchise, rarity, condition, ownership
+- Tazo detail modal with stats, skills, evolutions, battle record
 
 ### Stats Dashboard
-![Stats](docs/screenshots/stats.png)
+- Collection progress tracking
+- Franchise/rarity/condition breakdowns
+- Top combatants leaderboard
+
+### Scanner
+- Upload and crop tazo photos
+- Automatic circular shape detection
 
 ---
 
-## 📁 Project Structure
+## Game Mechanics
+
+### Tazo Roles
+
+| Role | Description |
+|------|-------------|
+| **Attacker** | High attack, good impact, high risk if left on field |
+| **Tank** | High defense/resistance, hard to flip |
+| **Technical** | High precision/control, ideal for edge shots |
+| **Rebounder** | High bounce, can hit multiple tazos |
+| **Heavy** | High weight, pushes hard, less control |
+| **Light** | Easy to throw, vulnerable on field |
+| **Legendary** | High stats across the board but higher risk to lose |
+
+### Throw Mechanics
+
+| Power | Circle | Impact | Risk |
+|-------|--------|--------|------|
+| Low | Large | Weak hit | High accuracy |
+| Medium | Medium | Balanced | Normal |
+| High | Small | Strong hit | Less accuracy |
+| Maximum | Tiny | Devastating | May fly out of arena |
+
+### Field Rules
+- **Miss, stay in**: Tazo stays on field where it landed
+- **Miss, out of bounds**: Rival places it anywhere in the arena
+- **Capture 1+**: Thrower returns to hand
+- **No manual stacking**: Tazos can only stack via physics (rebound, collision)
+- **Physics stacking**: A tazo on top makes the bottom one harder to hit directly
+
+### Battle Modes
+- **Classic**: Capture all enemy tazos
+- **Rounds**: Most captures in X turns
+- **Competitive**: Points for captures, flips, accuracy, field control
+- **Arena**: Leave rival with no usable tazos
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript 5 |
+| Styling | Tailwind CSS 4 + Custom Magazine Theme |
+| UI | shadcn/ui (New York) + Lucide React |
+| Database | Prisma ORM + SQLite |
+| Battle Engine | Custom deterministic engine in `src/lib/battle/` |
+| Rendering | HTML5 Canvas 2D |
+| Runtime | Bun |
+
+---
+
+## Project Structure
 
 ```
 Trading-Tazos-Game/
 ├── prisma/
-│   ├── schema.prisma       # Database schema
-│   └── seed.ts             # Seed data (62 tazos, 3 franchises)
+│   ├── schema.prisma           # DB schema (Franchise, Collection, Tazo, BattleRecord)
+│   └── seed.ts                 # 62 tazos, 3 franchises, 6 collections
 ├── src/
 │   ├── app/
-│   │   ├── api/            # REST API routes
-│   │   │   ├── tazos/      # CRUD + toggle-owned
-│   │   │   ├── battle/     # Battle simulation
-│   │   │   ├── battles/    # Battle history
-│   │   │   ├── franchises/ # Franchise data
-│   │   │   ├── stats/      # Dashboard stats
-│   │   │   └── scanner/    # Upload, detect, crop
-│   │   ├── globals.css     # Magazine theme + animations
+│   │   ├── api/
+│   │   │   ├── tazos/          # CRUD + toggle-owned
+│   │   │   ├── battle/         # Battle simulation endpoint
+│   │   │   ├── franchises/     # Franchise data
+│   │   │   ├── stats/          # Dashboard stats
+│   │   │   └── scanner/        # Upload, detect, crop
+│   │   ├── globals.css         # Magazine theme
 │   │   ├── layout.tsx
-│   │   └── page.tsx        # Main SPA page
+│   │   └── page.tsx            # Main SPA
 │   ├── components/
-│   │   ├── game/           # Game-specific components
+│   │   ├── game/
 │   │   │   ├── album-view.tsx
-│   │   │   ├── battle-view.tsx
-│   │   │   ├── battle-canvas.tsx
-│   │   │   ├── battle-select-card.tsx
+│   │   │   ├── battle-view.tsx          # Main battle UI
+│   │   │   ├── battle/
+│   │   │   │   ├── battle-arena-canvas.tsx   # 2D arena renderer
+│   │   │   │   ├── launch-control.tsx        # Aim + power controls
+│   │   │   │   ├── battle-event-log.tsx      # Turn-by-turn log
+│   │   │   │   └── battle-result-panel.tsx   # Victory/defeat screen
 │   │   │   ├── scanner-view.tsx
 │   │   │   ├── stats-panel.tsx
 │   │   │   ├── tazo-card.tsx
 │   │   │   ├── tazo-detail-modal.tsx
 │   │   │   ├── tazo-editor.tsx
 │   │   │   └── add-tazo-dialog.tsx
-│   │   └── ui/             # shadcn/ui components
+│   │   └── ui/                 # shadcn/ui primitives
 │   ├── lib/
-│   │   ├── game/types.ts   # Game type definitions
-│   │   ├── db.ts           # Prisma client
-│   │   └── utils.ts        # Utility functions
-│   └── hooks/              # Custom React hooks
-└── docs/
-    └── screenshots/        # Real app screenshots
+│   │   ├── battle/
+│   │   │   ├── battle-types.ts     # All type definitions
+│   │   │   ├── battle-rules.ts     # Physics, formulas, RNG
+│   │   │   ├── battle-engine.ts    # State machine + AI
+│   │   │   └── index.ts            # Barrel export
+│   │   ├── game/types.ts
+│   │   ├── db.ts
+│   │   └── utils.ts
+│   └── hooks/
+├── public/tazos/               # 62 generated SVG tazo images
+│   ├── pokemon/ (22)
+│   ├── digimon/ (20)
+│   └── dbz/ (20)
+├── .zscripts/
+│   └── generate-tazos-svg.ts   # Tazo image generator
+└── Caddyfile                   # Caddy reverse proxy config
 ```
 
 ---
 
-## ⚠️ Disclaimer
+## Getting Started
 
-This is a **private, non-commercial fan project**. It does not include any official images, logos, or copyrighted assets.
+```bash
+# Clone
+git clone https://github.com/smouj/Trading-Tazos-Game.git
+cd Trading-Tazos-Game
 
-- Pokémon is a trademark of Nintendo/Game Freak
-- Digimon is a trademark of Bandai
-- Dragon Ball Z is a trademark of Toei Animation
+# Install
+bun install
 
-The game uses **placeholders** — real tazo images should be imported locally from `/private-assets/` (excluded from the repository via `.gitignore`).
+# Set up database
+bun run db:push
+bun run seed
+
+# Generate tazo images
+bun run .zscripts/generate-tazos-svg.ts
+
+# Develop
+bun run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📜 License
+## Domain & Deployment
 
-Private repository. All rights reserved. This project is for personal, non-commercial use only.
+- **Domain**: medaclawarena.com (Caddy reverse proxy)
+- **Contact**: support@medaclawarena.com
+- The MedaClaw Arena project is archived/frozen. This project takes over the domain.
 
 ---
 
-<p align="center">
-  <strong>★ EXCLUSIVE — COLLECTOR'S EDITION ★</strong><br/>
-  <em>Tazos Legends Arena — Vol.1, Issue #001</em>
-</p>
+## Disclaimer
+
+This is a fan-made tribute project. Pokemon, Digimon, and Dragon Ball Z are trademarks of their respective owners. No copyrighted assets are included — all tazo images are original generated SVGs.
+
+---
+
+## License
+
+Private repository. All rights reserved.
