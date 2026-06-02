@@ -1,0 +1,580 @@
+import { db } from '@/lib/db'
+import { NextRequest, NextResponse } from 'next/server'
+
+// --- Type advantage table for Pokémon-style combat ---
+const TYPE_ADVANTAGES: Record<string, string[]> = {
+  fire: ['grass'],
+  water: ['fire'],
+  grass: ['water'],
+  electric: ['water'],
+  psychic: ['ghost'],
+  ghost: [], // ghost doesn't beat normal; normal negated against ghost
+  dragon: ['dragon'],
+  normal: [],
+}
+
+interface BattleTazo {
+  id: string
+  name: string
+  franchise: { name: string; slug: string; mechanic?: string | null }
+  collectionId: string
+  combatType: string | null
+  evolutionFrom: string | null
+  evolutionTo: string | null
+  transformStage: string | null
+  transformOf: string | null
+  attack: number
+  defense: number
+  spin: number
+  weight: number
+  aura: number
+  control: number
+  hp: number
+  currentSpin: number
+  ki: number
+  typeMultiplier: number
+  evoBonus: number
+  transformActive: boolean
+}
+
+interface BattleEvent {
+  round: number
+  type: 'attack' | 'defense' | 'spin_decay' | 'ring_out_check' | 'type_advantage' | 'evolution_boost' | 'transform' | 'ki_charge' | 'knockout' | 'ring_out' | 'spin_out' | 'skill'
+  description: string
+  actor: 'player' | 'opponent'
+}
+
+function createBattleTazo(raw: {
+  id: string
+  name: string
+  franchise: { name: string; slug: string; mechanic?: string | null }
+  collectionId: string
+  combatType: string | null
+  evolutionFrom: string | null
+  evolutionTo: string | null
+  transformStage: string | null
+  transformOf: string | null
+  attack: number
+  defense: number
+  spin: number
+  weight: number
+  aura: number
+  control: number
+}): BattleTazo {
+  return {
+    ...raw,
+    hp: 100 + raw.defense,
+    currentSpin: raw.spin,
+    ki: 0,
+    typeMultiplier: 1.0,
+    evoBonus: 0,
+    transformActive: false,
+  }
+}
+
+function checkTypeAdvantage(
+  attackerType: string | null,
+  defenderType: string | null
+): number {
+  if (!attackerType || !defenderType) return 1.0
+  const advantages = TYPE_ADVANTAGES[attackerType]
+  if (advantages && advantages.includes(defenderType)) return 1.5
+  // Ghost vs normal: negated (half damage)
+  if (attackerType === 'ghost' && defenderType === 'normal') return 0.5
+  if (defenderType === 'ghost' && attackerType === 'normal') return 0.5
+  return 1.0
+}
+
+function checkEvolutionChain(
+  tazos: BattleTazo[]
+): { bonus: number; hasChain: boolean } {
+  // Check if multiple tazos form an evolution line
+  const evoTazos = tazos.filter(
+    (t) => t.evolutionFrom !== null || t.evolutionTo !== null
+  )
+  if (evoTazos.length < 2) return { bonus: 0, hasChain: false }
+
+  // Check for linked evolution lines
+  const ids = new Set(tazos.map((t) => t.id))
+  const linkedPairs = evoTazos.filter(
+    (t) =>
+      (t.evolutionFrom && ids.has(t.evolutionFrom)) ||
+      (t.evolutionTo && ids.has(t.evolutionTo))
+  )
+
+  if (linkedPairs.length >= 2) {
+    return { bonus: 15, hasChain: true }
+  }
+  return { bonus: 0, hasChain: false }
+}
+
+function checkTransform(
+  tazo: BattleTazo,
+  round: number
+): { transformed: boolean; stage: string | null } {
+  if (!tazo.transformStage || tazo.franchise.slug !== 'dragon-ball-z') {
+    return { transformed: false, stage: null }
+  }
+  // DBZ: Can transform after charging enough ki (round 3+)
+  if (round >= 3 && tazo.ki >= 30 && !tazo.transformActive) {
+    return { transformed: true, stage: tazo.transformStage }
+  }
+  return { transformed: false, stage: null }
+}
+
+function simulateRound(
+  playerTazos: BattleTazo[],
+  opponentTazos: BattleTazo[],
+  round: number,
+  events: BattleEvent[]
+): { playerAlive: boolean; opponentAlive: boolean } {
+  // --- Franchise-specific mechanics ---
+
+  // 1. Pokémon type advantages
+  for (const tazo of playerTazos) {
+    if (tazo.franchise.slug === 'pokemon' && tazo.combatType) {
+      for (const opp of opponentTazos) {
+        if (opp.hp <= 0) continue
+        const mult = checkTypeAdvantage(tazo.combatType, opp.combatType)
+        if (mult !== tazo.typeMultiplier) {
+          tazo.typeMultiplier = mult
+          if (mult > 1) {
+            events.push({
+              round,
+              type: 'type_advantage',
+              description: `${tazo.name}'s ${tazo.combatType} type is super effective against ${opp.name}'s ${opp.combatType}!`,
+              actor: 'player',
+            })
+          } else if (mult < 1) {
+            events.push({
+              round,
+              type: 'type_advantage',
+              description: `${tazo.name}'s ${tazo.combatType} type is not very effective against ${opp.name}'s ${opp.combatType}...`,
+              actor: 'player',
+            })
+          }
+        }
+      }
+    }
+  }
+
+  for (const tazo of opponentTazos) {
+    if (tazo.franchise.slug === 'pokemon' && tazo.combatType) {
+      for (const pl of playerTazos) {
+        if (pl.hp <= 0) continue
+        const mult = checkTypeAdvantage(tazo.combatType, pl.combatType)
+        if (mult !== tazo.typeMultiplier) {
+          tazo.typeMultiplier = mult
+          if (mult > 1) {
+            events.push({
+              round,
+              type: 'type_advantage',
+              description: `${tazo.name}'s ${tazo.combatType} type is super effective against ${pl.name}'s ${pl.combatType}!`,
+              actor: 'opponent',
+            })
+          }
+        }
+      }
+    }
+  }
+
+  // 2. Digimon evolution chain bonus
+  const playerEvo = checkEvolutionChain(playerTazos)
+  if (playerEvo.hasChain) {
+    for (const t of playerTazos) {
+      t.evoBonus = playerEvo.bonus
+    }
+    events.push({
+      round,
+      type: 'evolution_boost',
+      description: `Digimon evolution chain detected! Player tazos gain +${playerEvo.bonus} to all stats!`,
+      actor: 'player',
+    })
+  }
+
+  const opponentEvo = checkEvolutionChain(opponentTazos)
+  if (opponentEvo.hasChain) {
+    for (const t of opponentTazos) {
+      t.evoBonus = opponentEvo.bonus
+    }
+    events.push({
+      round,
+      type: 'evolution_boost',
+      description: `Digimon evolution chain detected! Opponent tazos gain +${opponentEvo.bonus} to all stats!`,
+      actor: 'opponent',
+    })
+  }
+
+  // 3. DBZ transformations & ki charge
+  for (const tazo of [...playerTazos, ...opponentTazos]) {
+    if (tazo.franchise.slug === 'dragon-ball-z') {
+      // Charge ki
+      const kiGain = Math.floor(tazo.aura * 0.3) + Math.floor(Math.random() * 10)
+      tazo.ki += kiGain
+      const actor = playerTazos.includes(tazo) ? 'player' : 'opponent'
+      events.push({
+        round,
+        type: 'ki_charge',
+        description: `${tazo.name} charges ${kiGain} ki! (Total: ${tazo.ki})`,
+        actor,
+      })
+
+      // Check for transformation
+      const transformResult = checkTransform(tazo, round)
+      if (transformResult.transformed) {
+        tazo.transformActive = true
+        tazo.attack += 20
+        tazo.defense += 10
+        tazo.aura += 15
+        events.push({
+          round,
+          type: 'transform',
+          description: `${tazo.name} transforms into ${transformResult.stage}! Stats boosted!`,
+          actor,
+        })
+      }
+    }
+  }
+
+  // --- Spin decay ---
+  for (const tazo of [...playerTazos, ...opponentTazos]) {
+    if (tazo.hp <= 0) continue
+    const decay = Math.floor(Math.random() * 8) + 2
+    tazo.currentSpin = Math.max(0, tazo.currentSpin - decay)
+    const actor = playerTazos.includes(tazo) ? 'player' : 'opponent'
+    events.push({
+      round,
+      type: 'spin_decay',
+      description: `${tazo.name}'s spin decays by ${decay}. Spin: ${tazo.currentSpin}`,
+      actor,
+    })
+  }
+
+  // --- Collision phase ---
+  // Player attacks opponent
+  for (const pTazo of playerTazos) {
+    if (pTazo.hp <= 0) continue
+    // Pick a random alive opponent
+    const aliveOpps = opponentTazos.filter((t) => t.hp > 0)
+    if (aliveOpps.length === 0) break
+    const target = aliveOpps[Math.floor(Math.random() * aliveOpps.length)]
+
+    const effectiveAttack =
+      (pTazo.attack + pTazo.evoBonus) * pTazo.typeMultiplier
+    const effectiveDefense = target.defense + target.evoBonus
+    const damage = Math.max(
+      1,
+      Math.floor(
+        (effectiveAttack - effectiveDefense * 0.5) *
+          (0.8 + Math.random() * 0.4)
+      )
+    )
+    target.hp -= damage
+
+    events.push({
+      round,
+      type: 'attack',
+      description: `${pTazo.name} slams into ${target.name} for ${damage} damage! (HP: ${Math.max(0, target.hp)})`,
+      actor: 'player',
+    })
+
+    if (target.hp <= 0) {
+      events.push({
+        round,
+        type: 'knockout',
+        description: `${target.name} is knocked out!`,
+        actor: 'player',
+      })
+    }
+  }
+
+  // Opponent attacks player
+  for (const oTazo of opponentTazos) {
+    if (oTazo.hp <= 0) continue
+    const alivePlrs = playerTazos.filter((t) => t.hp > 0)
+    if (alivePlrs.length === 0) break
+    const target = alivePlrs[Math.floor(Math.random() * alivePlrs.length)]
+
+    const effectiveAttack =
+      (oTazo.attack + oTazo.evoBonus) * oTazo.typeMultiplier
+    const effectiveDefense = target.defense + target.evoBonus
+    const damage = Math.max(
+      1,
+      Math.floor(
+        (effectiveAttack - effectiveDefense * 0.5) *
+          (0.8 + Math.random() * 0.4)
+      )
+    )
+    target.hp -= damage
+
+    events.push({
+      round,
+      type: 'attack',
+      description: `${oTazo.name} slams into ${target.name} for ${damage} damage! (HP: ${Math.max(0, target.hp)})`,
+      actor: 'opponent',
+    })
+
+    if (target.hp <= 0) {
+      events.push({
+        round,
+        type: 'knockout',
+        description: `${target.name} is knocked out!`,
+        actor: 'opponent',
+      })
+    }
+  }
+
+  // --- Ring-out checks ---
+  for (const tazo of [...playerTazos, ...opponentTazos]) {
+    if (tazo.hp <= 0) continue
+    const ringOutChance =
+      tazo.currentSpin < 15
+        ? 0.3
+        : tazo.currentSpin < 30
+          ? 0.15
+          : tazo.weight < 30
+            ? 0.1
+            : 0.03
+    const actor = playerTazos.includes(tazo) ? 'player' : 'opponent'
+
+    events.push({
+      round,
+      type: 'ring_out_check',
+      description: `${tazo.name} ring-out chance: ${Math.floor(ringOutChance * 100)}%`,
+      actor,
+    })
+
+    if (Math.random() < ringOutChance) {
+      tazo.hp = 0
+      events.push({
+        round,
+        type: 'ring_out',
+        description: `${tazo.name} flies out of the ring! Ring-out!`,
+        actor,
+      })
+    }
+  }
+
+  const playerAlive = playerTazos.some((t) => t.hp > 0)
+  const opponentAlive = opponentTazos.some((t) => t.hp > 0)
+
+  return { playerAlive, opponentAlive }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { playerTazoIds, opponentTazoIds } = body as {
+      playerTazoIds: string[]
+      opponentTazoIds: string[]
+    }
+
+    if (
+      !playerTazoIds ||
+      !opponentTazoIds ||
+      !Array.isArray(playerTazoIds) ||
+      !Array.isArray(opponentTazoIds) ||
+      playerTazoIds.length === 0 ||
+      opponentTazoIds.length === 0
+    ) {
+      return NextResponse.json(
+        { error: 'playerTazoIds and opponentTazoIds must be non-empty arrays' },
+        { status: 400 }
+      )
+    }
+
+    // Load tazos with franchise info
+    const allIds = [...playerTazoIds, ...opponentTazoIds]
+    const rawTazos = await db.tazo.findMany({
+      where: { id: { in: allIds } },
+      include: { franchise: true },
+    })
+
+    if (rawTazos.length !== allIds.length) {
+      const foundIds = new Set(rawTazos.map((t) => t.id))
+      const missing = allIds.filter((id) => !foundIds.has(id))
+      return NextResponse.json(
+        { error: `Tazos not found: ${missing.join(', ')}` },
+        { status: 404 }
+      )
+    }
+
+    const rawById = new Map(rawTazos.map((t) => [t.id, t]))
+
+    const playerTazos = playerTazoIds
+      .map((id) => rawById.get(id)!)
+      .map(createBattleTazo)
+    const opponentTazos = opponentTazoIds
+      .map((id) => rawById.get(id)!)
+      .map(createBattleTazo)
+
+    // --- Battle simulation ---
+    const battleLog: BattleEvent[] = []
+    const maxRounds = 10
+    let rounds = 0
+    let winner: 'player' | 'opponent' | 'draw' = 'draw'
+    let victoryType: string | null = null
+
+    for (let round = 1; round <= maxRounds; round++) {
+      rounds = round
+      const result = simulateRound(playerTazos, opponentTazos, round, battleLog)
+
+      if (!result.playerAlive && !result.opponentAlive) {
+        winner = 'draw'
+        victoryType = 'double knockout'
+        break
+      }
+      if (!result.opponentAlive) {
+        winner = 'player'
+        // Determine victory type
+        const lastKo = [...battleLog]
+          .reverse()
+          .find((e) => e.type === 'knockout' && e.actor === 'player')
+        const lastRingOut = [...battleLog]
+          .reverse()
+          .find((e) => e.type === 'ring_out' && e.actor === 'opponent')
+        const lastSpinOut = [...battleLog]
+          .reverse()
+          .find(
+            (e) =>
+              e.type === 'spin_decay' &&
+              e.description.includes('Spin: 0')
+          )
+
+        if (lastRingOut) {
+          victoryType = 'ring-out'
+        } else if (lastSpinOut) {
+          victoryType = 'spin-out'
+        } else {
+          victoryType = 'knockout'
+        }
+        break
+      }
+      if (!result.playerAlive) {
+        winner = 'opponent'
+        const lastRingOut = [...battleLog]
+          .reverse()
+          .find((e) => e.type === 'ring_out' && e.actor === 'player')
+        const lastSpinOut = [...battleLog]
+          .reverse()
+          .find(
+            (e) =>
+              e.type === 'spin_decay' &&
+              e.description.includes('Spin: 0')
+          )
+
+        if (lastRingOut) {
+          victoryType = 'ring-out'
+        } else if (lastSpinOut) {
+          victoryType = 'spin-out'
+        } else {
+          victoryType = 'knockout'
+        }
+        break
+      }
+
+      // Check for spin-out: all tazos on one side have 0 spin
+      const playerAllSpunOut = playerTazos.every((t) => t.currentSpin <= 0 && t.hp > 0)
+      const opponentAllSpunOut = opponentTazos.every((t) => t.currentSpin <= 0 && t.hp > 0)
+
+      if (playerAllSpunOut && opponentAllSpunOut) {
+        winner = 'draw'
+        victoryType = 'spin-out'
+        break
+      }
+      if (opponentAllSpunOut) {
+        winner = 'player'
+        victoryType = 'spin-out'
+        break
+      }
+      if (playerAllSpunOut) {
+        winner = 'opponent'
+        victoryType = 'spin-out'
+        break
+      }
+    }
+
+    // If max rounds reached, determine winner by remaining HP
+    if (rounds === maxRounds && winner === 'draw') {
+      const playerHp = playerTazos.reduce((sum, t) => sum + Math.max(0, t.hp), 0)
+      const opponentHp = opponentTazos.reduce((sum, t) => sum + Math.max(0, t.hp), 0)
+
+      if (playerHp > opponentHp) {
+        winner = 'player'
+        victoryType = 'combo'
+      } else if (opponentHp > playerHp) {
+        winner = 'opponent'
+        victoryType = 'combo'
+      } else {
+        victoryType = 'draw'
+      }
+
+      battleLog.push({
+        round: maxRounds,
+        type: 'skill',
+        description: `Max rounds reached! Player HP: ${playerHp}, Opponent HP: ${opponentHp}. ${winner === 'draw' ? "It's a draw!" : `${winner} wins by combo!`}`,
+        actor: winner === 'player' ? 'player' : winner === 'opponent' ? 'opponent' : 'player',
+      })
+    }
+
+    // Update battle records on tazos
+    for (const t of playerTazos) {
+      if (winner === 'player') {
+        await db.tazo.update({ where: { id: t.id }, data: { battleWins: { increment: 1 } } })
+      } else if (winner === 'opponent') {
+        await db.tazo.update({ where: { id: t.id }, data: { battleLosses: { increment: 1 } } })
+      }
+    }
+    for (const t of opponentTazos) {
+      if (winner === 'opponent') {
+        await db.tazo.update({ where: { id: t.id }, data: { battleWins: { increment: 1 } } })
+      } else if (winner === 'player') {
+        await db.tazo.update({ where: { id: t.id }, data: { battleLosses: { increment: 1 } } })
+      }
+    }
+
+    // Save battle record
+    await db.battleRecord.create({
+      data: {
+        playerTazos: JSON.stringify(playerTazoIds),
+        opponentTazos: JSON.stringify(opponentTazoIds),
+        winner,
+        victoryType,
+        rounds,
+        battleLog: JSON.stringify(battleLog),
+      },
+    })
+
+    // Format tazos for response (strip runtime battle fields)
+    const formatTazo = (t: BattleTazo) => ({
+      id: t.id,
+      name: t.name,
+      franchise: t.franchise,
+      combatType: t.combatType,
+      attack: t.attack,
+      defense: t.defense,
+      spin: t.spin,
+      weight: t.weight,
+      aura: t.aura,
+      control: t.control,
+      hp: Math.max(0, t.hp),
+      currentSpin: t.currentSpin,
+      ki: t.ki,
+    })
+
+    return NextResponse.json({
+      winner,
+      victoryType,
+      rounds,
+      battleLog,
+      playerTazos: playerTazos.map(formatTazo),
+      opponentTazos: opponentTazos.map(formatTazo),
+    })
+  } catch (error) {
+    console.error('Error simulating battle:', error)
+    return NextResponse.json(
+      { error: 'Failed to simulate battle' },
+      { status: 500 }
+    )
+  }
+}

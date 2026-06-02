@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Franchise {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  color       String     @default("#6366f1")
+  icon        String?
+  description String?
+  mechanic    String?
+  collections Collection[]
+  tazos       Tazo[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Collection {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  franchiseId String
+  franchise   Franchise  @relation(fields: [franchiseId], references: [id])
+  year        Int?
+  totalTazos  Int        @default(0)
+  description String?
+  tazos       Tazo[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Tazo {
+  id             String     @id @default(cuid())
+  name           String
+  slug           String     @unique
+  franchiseId    String
+  franchise      Franchise  @relation(fields: [franchiseId], references: [id])
+  collectionId   String
+  collection     Collection @relation(fields: [collectionId], references: [id])
+  printedNumber  String?
+  condition      String     @default("good") // mint, good, used, worn, holo, metallic
+  physicalType   String     @default("cardboard") // cardboard, plastic, metal, holo
+  combatType     String?    // fire, water, grass, electric, psychic, ghost, dragon, normal, etc
+  rarity         String     @default("common") // common, uncommon, rare, ultra, legendary
+  imageUrl       String?
+  skill          String?
+  skillDesc      String?
+  evolutionFrom  String?
+  evolutionTo    String?
+  transformStage String?    // base, ssj, ssj2, ssj3, etc
+  transformOf    String?    // character base id for DBZ transforms
+  
+  // Stats
+  attack         Int        @default(50)
+  defense        Int        @default(50)
+  spin           Int        @default(50)
+  weight         Int        @default(50)
+  aura           Int        @default(50)
+  control        Int        @default(50)
+  
+  // Game state
+  isOwned        Boolean    @default(false)
+  battleWins     Int        @default(0)
+  battleLosses   Int        @default(0)
+  
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model BattleRecord {
+  id              String   @id @default(cuid())
+  playerTazos     String   // JSON array of tazo IDs
+  opponentTazos   String   // JSON array of tazo IDs
+  winner          String   // "player" | "opponent" | "draw"
+  victoryType     String?  // knockout, ring-out, spin-out, combo
+  rounds          Int      @default(0)
+  battleLog       String?  // JSON array of battle events
+  createdAt       DateTime @default(now())
+}
