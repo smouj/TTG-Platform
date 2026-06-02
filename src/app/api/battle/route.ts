@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { getAuthUser } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 // --- Type advantage table for Pokémon-style combat ---
@@ -373,6 +374,9 @@ function simulateRound(
 
 export async function POST(request: NextRequest) {
   try {
+    // Try to get auth user for credit rewards (optional — battles work without auth too)
+    const authUser = await getAuthUser(request).catch(() => null)
+
     const body = await request.json()
     const { playerTazoIds, opponentTazoIds } = body as {
       playerTazoIds: string[]
@@ -555,6 +559,33 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Award credits for authenticated winner
+    if (authUser && winner === 'player') {
+      try {
+        await db.user.update({
+          where: { id: authUser.id },
+          data: { credits: { increment: 30 } },
+        })
+        await db.creditTransaction.create({
+          data: {
+            userId: authUser.id,
+            amount: 30,
+            source: 'battle_win',
+            reference: `battle_${Date.now()}`,
+          },
+        })
+      } catch (_) { /* credits are non-critical */ }
+    }
+
+    // Get updated credits if authed
+    let credits = null
+    if (authUser) {
+      try {
+        const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
+        credits = u?.credits ?? null
+      } catch (_) { }
+    }
+
     // Format tazos for response (strip runtime battle fields)
     const formatTazo = (t: BattleTazo) => ({
       id: t.id,
@@ -583,6 +614,8 @@ export async function POST(request: NextRequest) {
       battleLog,
       playerTazos: playerTazos.map(formatTazo),
       opponentTazos: opponentTazos.map(formatTazo),
+      creditsEarned: (authUser && winner === 'player') ? 30 : 0,
+      credits,
     })
   } catch (error) {
     console.error('Error simulating battle:', error)

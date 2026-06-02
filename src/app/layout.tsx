@@ -15,32 +15,79 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://medaclawarena.com";
+const SITE_NAME = "Trading Tazos Game";
+const SITE_DESC =
+  "Collect, trade & battle with 319 classic tazos from Pokemon, Dragon Ball Z and Digimon. Real-time physics arena with 9 combat stats, multiplayer PvP, and digital album scanning.";
+
 export const metadata: Metadata = {
-  title: "Trading Tazos Game",
-  description: "Escanea tus tazos antiguos, crea tu álbum digital y hazlos combatir en una arena física | Scan your old tazos, build your digital album, and battle them in a physics arena",
-  keywords: ["tazos", "pogs", "collectibles", "trading", "game", "Pokemon", "Digimon", "Dragon Ball Z", "battle"],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Collect, Trade & Battle Your Tazos`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESC,
+  keywords: [
+    "tazos", "pogs", "trading tazos game", "ttg", "medaclawarena",
+    "pokemon tazos", "dragon ball z tazos", "digimon tazos",
+    "collectible game", "physics battle", "digital album", "scanner",
+    "multiplayer battle", "pvp tazos", "trading card game",
+    "90s collectibles", "nostalgia game",
+  ],
+  authors: [{ name: "MedaClaw Arena", url: SITE_URL }],
+  creator: "MedaClaw Arena",
+  publisher: "MedaClaw Arena",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
+  },
   icons: {
-    icon: "/favicon.png",
-    apple: "/logo/logo-icon-black.png",
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/logo/ttg-logo-icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/logo/logo-icon-black.png", sizes: "512x512" },
+    ],
+    other: [{ rel: "mask-icon", url: "/logo/ttg-logo-icon.svg", color: "#FFCC00" }],
   },
   openGraph: {
-    title: "Trading Tazos Game",
-    description: "Battle your tazos in a real-time physics arena",
-    url: "https://medaclawarena.com",
-    siteName: "Trading Tazos Game",
-    images: [
-      {
-        url: "https://medaclawarena.com/logo/social-preview.png",
-        width: 1200,
-        height: 630,
-      },
-    ],
+    type: "website",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — Collect, Trade & Battle Your Tazos`,
+    description: SITE_DESC,
+    url: SITE_URL,
+    locale: "en_US",
+    images: [{
+      url: `${SITE_URL}/logo/social-preview.png`,
+      width: 1200,
+      height: 630,
+      alt: "Trading Tazos Game — 319 tazos from Pokemon, DBZ & Digimon",
+    }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Trading Tazos Game",
-    description: "Battle your tazos in a real-time physics arena",
-    images: ["https://medaclawarena.com/logo/social-preview.png"],
+    site: "@medaclawarena",
+    creator: "@medaclawarena",
+    title: `${SITE_NAME} — Collect, Trade & Battle Your Tazos`,
+    description: "319 classic tazos. 9 combat stats. Real-time physics arena. Battle your friends online.",
+    images: [`${SITE_URL}/logo/social-preview.png`],
+  },
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "en": `${SITE_URL}/en`,
+      "es": `${SITE_URL}/es`,
+      "pt": `${SITE_URL}/pt`,
+      "de": `${SITE_URL}/de`,
+      "fr": `${SITE_URL}/fr`,
+      "it": `${SITE_URL}/it`,
+      "ja": `${SITE_URL}/ja`,
+      "ko": `${SITE_URL}/ko`,
+      "zh": `${SITE_URL}/zh`,
+      "ru": `${SITE_URL}/ru`,
+    },
   },
 };
 
@@ -51,6 +98,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="dark" suppressHydrationWarning>
+      <head>
+        {/* JSON-LD structured data for VideoGame */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "VideoGame",
+              "name": "Trading Tazos Game",
+              "description": SITE_DESC,
+              "url": SITE_URL,
+              "image": `${SITE_URL}/logo/social-preview.png`,
+              "operatingSystem": "Web, Windows, macOS, Linux",
+              "applicationCategory": "Game",
+              "author": {
+                "@type": "Organization",
+                "name": "MedaClaw Arena",
+                "url": SITE_URL,
+                "email": "support@medaclawarena.com",
+              },
+              "genre": ["Collectible", "Battle", "Physics", "Multiplayer", "Nostalgia"],
+              "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2 },
+              "gamePlatform": ["Web Browser", "PC", "Mac", "Linux"],
+              "inLanguage": ["en", "es", "pt", "de", "fr", "it", "ja", "ko", "zh", "ru"],
+            }),
+          }}
+        />
+        <meta name="theme-color" content="#FFCC00" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

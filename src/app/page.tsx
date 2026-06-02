@@ -8,7 +8,7 @@ import BattleView from '@/components/game/battle-view'
 import { ScannerView } from '@/components/game/scanner-view'
 import StatsPanel from '@/components/game/stats-panel'
 import LanguageSwitcher from '@/components/ui/language-switcher'
-import { BookOpen, Swords, Scan, BarChart3, User, LogOut, Package, Layers, Download } from 'lucide-react'
+import { BookOpen, Swords, Scan, BarChart3, User, LogOut, Package, Layers, Download, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
 
@@ -46,6 +46,13 @@ export default function Home() {
                   {t.auth_login}
                 </Link>
                 <span className="text-zinc-600">|</span>
+                <Link
+                  href="/shop"
+                  className="text-[10px] sm:text-xs font-bold text-[#FFCC00] hover:text-white transition-colors tracking-wider uppercase"
+                >
+                  <ShoppingBag className="w-3 h-3 inline mr-0.5" />
+                  Shop
+                </Link>
                 <span className="text-zinc-600">|</span>
                 <Link
                   href="/download"
@@ -90,6 +97,14 @@ export default function Home() {
                       >
                         <Layers className="w-4 h-4" />
                         {t.auth_my_decks}
+                      </Link>
+                      <Link
+                        href="/shop"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#FFCC00] hover:bg-zinc-800 hover:text-[#FFD600] transition-colors"
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                        Shop
                       </Link>
                       <button
                         onClick={() => { logout(); setShowUserMenu(false); }}
@@ -225,9 +240,15 @@ export default function Home() {
             <p className="text-[10px] sm:text-xs font-bold text-white tracking-wide">
               {t.siteTitle} &copy; {new Date().getFullYear()} — {t.siteFooterTribute}
             </p>
-            <p className="text-[9px] sm:text-[10px] text-white/60 italic text-center sm:text-right">
-              {t.siteFooterTrademark}
-            </p>
+            <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-white/60">
+              <a href="https://github.com/smouj/Trading-Tazos-Game/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white underline underline-offset-2">
+                License
+              </a>
+              <span>|</span>
+              <a href="mailto:support@medaclawarena.com" className="hover:text-white underline underline-offset-2">
+                support@medaclawarena.com
+              </a>
+            </div>
           </div>
         </div>
       </footer>

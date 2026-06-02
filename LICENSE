@@ -1,0 +1,59 @@
+# Trading Tazos Game — Source Available License v1.0
+# Copyright (c) 2024-2026 MedaClaw Arena. All rights reserved.
+
+Permission is hereby granted to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to view, study, and modify the
+source code for personal, non-commercial purposes only, subject to the following
+conditions:
+
+## TERMS AND CONDITIONS
+
+### 1. Personal Use
+You may view, download, fork, and modify the source code for personal,
+non-commercial use, including research, education, and personal projects.
+
+### 2. Attribution
+All copies or substantial portions of the Software must retain this license
+notice, the above copyright notice, and attribution to MedaClaw Arena.
+
+### 3. Restrictions
+You may NOT:
+  a. Use the Software for any commercial purpose without a separate written
+     license agreement from MedaClaw Arena
+  b. Distribute modified versions of the Software as a competing product
+  c. Remove or alter any copyright, trademark, or attribution notices
+  d. Use the "Trading Tazos Game", "TTG", or "MedaClaw Arena" names,
+     logos, or branding without permission
+  e. Host publicly accessible clones or forks that compete with the service
+     provided at https://medaclawarena.com
+
+### 4. Contributions
+Contributions submitted to the project (pull requests, patches, issues) become
+the property of MedaClaw Arena. By submitting, you grant MedaClaw Arena a
+perpetual, worldwide, non-exclusive, royalty-free license to use your
+contribution.
+
+### 5. Disclaimer
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+### 6. Open Source Components
+This Software includes third-party open source components governed by their
+respective licenses (MIT, Apache 2.0, BSD, etc.). Those components remain
+under their original licenses. See `package.json` and `bun.lock` for the
+complete list of dependencies and their licenses.
+
+### 7. Commercial Licensing
+For commercial use, enterprise deployment, or white-label licensing inquiries,
+contact: licensing@medaclawarena.com
+
+---
+
+MedaClaw Arena
+https://medaclawarena.com
+support@medaclawarena.com
