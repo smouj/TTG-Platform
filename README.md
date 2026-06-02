@@ -35,9 +35,9 @@ Trading Tazos Game is not a card game with stats. It's not auto-battle.
 - AI opponent with auto-resolve turns
 
 ### Digital Album
-- Browse 62 tazos across 3 franchises (Pokemon, Digimon, Dragon Ball Z)
-- 6 collections: Kanto Classics, Johto Journeys, Adventure Series, Digital Monsters, Saiyan Saga, Cell Games
-- Filter by franchise, rarity, condition, ownership
+- Browse **319 real tazos** across 3 franchises from verified Spanish collections
+- 3 collections: **Pokémon Tazos 1** (Matutano 2000, 51 tazos), **DBZ Matutano 1995** (118 tazos in 7 categories), **Digimon Magic Box 2000** (150 caps)
+- Filter by franchise, collection, category, variant, source status
 - Tazo detail modal with stats, skills, evolutions, battle record
 
 ### Stats Dashboard
@@ -110,7 +110,7 @@ Trading Tazos Game is not a card game with stats. It's not auto-battle.
 Trading-Tazos-Game/
 ├── prisma/
 │   ├── schema.prisma           # DB schema (Franchise, Collection, Tazo, BattleRecord)
-│   └── seed.ts                 # 62 tazos, 3 franchises, 6 collections
+│   └── seed.ts                 # 319 real tazos from verified Spanish collections
 ├── src/
 │   ├── app/
 │   │   ├── api/
@@ -148,12 +148,14 @@ Trading-Tazos-Game/
 │   │   ├── db.ts
 │   │   └── utils.ts
 │   └── hooks/
-├── public/tazos/               # 62 generated SVG tazo images
-│   ├── pokemon/ (22)
-│   ├── digimon/ (20)
-│   └── dbz/ (20)
+├── public/tazos/               # 319 generated SVG tazo images
+│   ├── pokemon/ (51 — Pokémon Tazos 1)
+│   ├── digimon/ (150 — Digimon Magic Box 2000)
+│   └── dbz/ (118 — DBZ Matutano 1995, 7 categories)
 ├── .zscripts/
 │   └── generate-tazos-svg.ts   # Tazo image generator
+├── deploy.sh                   # Build + rsync + restart deploy script
+├── ecosystem.config.cjs        # PM2 process config
 └── Caddyfile                   # Caddy reverse proxy config
 ```
 
@@ -186,9 +188,21 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Domain & Deployment
 
-- **Domain**: medaclawarena.com (Caddy reverse proxy)
+- **Production**: https://medaclawarena.com (VPS `rpgvps`, Caddy → PM2 `ttg` on port 3000)
 - **Contact**: support@medaclawarena.com
-- The MedaClaw Arena project is archived/frozen. This project takes over the domain.
+- **MedaClaw Arena**: Archived/stopped — domain now serves TTG
+
+### Deploy (local → VPS)
+```bash
+./deploy.sh          # Build + rsync + restart + verify
+```
+
+### Manual VPS commands
+```bash
+ssh rpgvps "pm2 status"                          # Check process
+ssh rpgvps "pm2 logs ttg --lines 20 --nostream"  # Recent logs
+ssh rpgvps "pm2 restart ttg"                     # Restart
+```
 
 ---
 

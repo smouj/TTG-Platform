@@ -62,10 +62,14 @@ server.log
 
 # Database
 /db/
+*.db
+*.db-journal
 
 # Screenshots
-*.png
+/public/screenshots/*.png
 screenshot-*
+!public/tazos/**/*.png
+!public/favicon*.png
 
 # Mini services
 /mini-services/
