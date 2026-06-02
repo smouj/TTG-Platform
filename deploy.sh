@@ -31,6 +31,12 @@ echo "📤 [2/6] Syncing standalone..."
 rsync -avz --delete \
   .next/standalone/ "$VPS_HOST:$VPS_DIR/.next/standalone/"
 
+# 3b. Fix distDir mismatch: copy standalone .next → project .next
+echo ""
+echo "📤 [2b/6] Syncing standalone .next → project .next..."
+ssh "$VPS_HOST" "cp -r $VPS_DIR/.next/standalone/Trading-Tazos-Game/.next/* $VPS_DIR/.next/"
+echo "✅ distDir synced"
+
 # 4. Sync static files
 echo ""
 echo "📤 [3/6] Syncing static..."
@@ -43,6 +49,12 @@ echo "📤 [4/6] Syncing prisma..."
 rsync -avz --delete \
   --exclude='*.db' --exclude='*.db-journal' \
   prisma/ "$VPS_HOST:$VPS_DIR/prisma/"
+
+# 5b. Fix DATABASE_URL to absolute path (Prisma engine resolves relative paths from engine binary, not CWD)
+echo ""
+echo "📤 [4b/6] Fixing DATABASE_URL..."
+ssh "$VPS_HOST" "sed -i 's|DATABASE_URL=.*|DATABASE_URL=\"file:$VPS_DIR/prisma/dev.db\"|' $VPS_DIR/.env"
+echo "✅ DATABASE_URL = file:$VPS_DIR/prisma/dev.db"
 
 # 6. Sync public assets (logos, tazos, etc.)
 echo ""
