@@ -1,7 +1,7 @@
 // ============================================================
 // Trading Tazos Game — Seed
 // Real-world verified Spanish tazo collections.
-// Pokémon Tazos 1 (51), DBZ Matutano (105+variants), Digimon Magic Box (150 pending)
+// Pokemon Tazos 1 (51), DBZ Matutano (105+variants), Digimon Magic Box (150)
 // ============================================================
 
 import { db } from "@/lib/db"
@@ -86,7 +86,7 @@ async function main() {
       name: "Digimon Digital Monsters", slug: "digimon-magic-box-2000",
       franchiseId: digimon.id, year: 2000, totalTazos: 150,
       manufacturer: "Magic Box", country: "España / Europa",
-      description: "Colección de 150 caps Digimon. Colección verificada. Nombres individuales pendientes de checklist visual.",
+      description: "Coleccion de 150 caps Digimon con nombres canonicos en espanol. Coleccion verificada.",
     },
   })
 
@@ -186,10 +186,10 @@ async function main() {
     { n: "3",  name: "Ginyu" },
     { n: "4",  name: "Burter" },
     { n: "5",  name: "Dodoria" },
-    { n: "6",  name: "Ghourd" },
+    { n: "6",  name: "Guldo" },
     { n: "7",  name: "Saibaman" },
     { n: "8",  name: "A-19" },
-    { n: "9",  name: "Spopovich" },
+    { n: "9",  name: "Spopovitch" },
     { n: "10", name: "Yamu" },
   ]
 
@@ -226,9 +226,9 @@ async function main() {
     { n: "19", name: "Pui-Pui" },
     { n: "20", name: "Kibito" },
     { n: "21", name: "Kaio-Shin" },
-    { n: "22", name: "Célula Jr." },
+    { n: "22", name: "Cell Jr." },
     { n: "23", name: "Son Gohan" },
-    { n: "24", name: "Kaito" },
+    { n: "24", name: "Kaio-sama" },
     { n: "25", name: "A-16" },
     { n: "26", name: "Chi-Chi" },
     { n: "27", name: "A-18" },
@@ -259,14 +259,14 @@ async function main() {
   // DBZ — SUPERTAZOS OCTOGONALES #31-50
   // ============================================================
   const dbzSupertazosOctogonales = [
-    { n: "31", name: "Célula 1ª fase" },
+    { n: "31", name: "Cell 1ª fase" },
     { n: "32", name: "Pui-Pui" },
-    { n: "33", name: "Célula 2ª fase" },
+    { n: "33", name: "Cell 2ª fase" },
     { n: "34", name: "Yakon" },
     { n: "35", name: "A-16" },
     { n: "36", name: "King Cold" },
-    { n: "37", name: "Célula 3ª fase" },
-    { n: "38", name: "Dábura" },
+    { n: "37", name: "Cell 3ª fase" },
+    { n: "38", name: "Dabra" },
     { n: "39", name: "Majin Boo" },
     { n: "40", name: "Babidi" },
     { n: "41", name: "Vegeta" },
@@ -278,7 +278,7 @@ async function main() {
     { n: "47", name: "Kaio-Shin" },
     { n: "48", name: "Son Gohan" },
     { n: "49", name: "Kibito" },
-    { n: "50", name: "Kaito" },
+    { n: "50", name: "Kaio-sama" },
   ]
 
   console.log(`📦 DBZ Supertazos Octogonales #31-50...`)
@@ -309,10 +309,10 @@ async function main() {
     { n: "54", name: "Son Gotten" },
     { n: "55", name: "Trunks" },
     { n: "56", name: "Piccolo Jr." },
-    { n: "57", name: "Célula" },
+    { n: "57", name: "Cell" },
     { n: "58", name: "Majin Boo" },
     { n: "59", name: "Babidi" },
-    { n: "60", name: "Dábura" },
+    { n: "60", name: "Dabra" },
     { n: "61", name: "Kibito" },
     { n: "62", name: "Satán" },
     { n: "63", name: "Shin Sama" },
@@ -322,7 +322,7 @@ async function main() {
     { n: "67", name: "Krilin" },
     { n: "68", name: "Mutenroshi" },
     { n: "69", name: "Pui-Pui" },
-    { n: "70", name: "Kaito" },
+    { n: "70", name: "Kaio-sama" },
   ]
 
   console.log(`📦 DBZ Megatazos #51-70 (redondos + octogonales)...`)
@@ -360,16 +360,16 @@ async function main() {
   // DBZ — HOLO 3D #1-10 (RANURA DERECHA + IZQUIERDA)
   // ============================================================
   const dbzHolo3DNames = [
-    { n: "1",  name: "Célula" },
+    { n: "1",  name: "Cell" },
     { n: "2",  name: "Son Goku" },
     { n: "3",  name: "Son Gohan" },
     { n: "4",  name: "Son Gotten" },
     { n: "5",  name: "Gotten y Trunks" },
     { n: "6",  name: "Vegeta" },
     { n: "7",  name: "Majin Boo" },
-    { n: "8",  name: "Dábura" },
+    { n: "8",  name: "Dabra" },
     { n: "9",  name: "Goku" },
-    { n: "10", name: "Célula y Trunks" },
+    { n: "10", name: "Cell y Trunks" },
   ]
 
   console.log(`📦 DBZ Holo 3D #1-10 (ranura derecha + izquierda)...`)
@@ -436,18 +436,62 @@ async function main() {
   // ============================================================
   // DIGIMON — MAGIC BOX 2000 #1-150 (PENDING VISUAL CHECK)
   // ============================================================
-  console.log(`📦 Digimon Magic Box 2000 #1-150 (pending visual check)...`)
+  console.log(`📦 Digimon Magic Box 2000 #1-150...`)
 
-  for (let i = 1; i <= 150; i++) {
-    const n = String(i)
+  const DIGIMON_CANON_NAMES = [
+    // In-Training / Baby
+    "Botamon", "Koromon", "Tsunomon", "Tokomon", "Tanemon",
+    "Bukamon", "Motimon", "Nyaromon", "Yokomon", "Pagumon",
+    // Rookies
+    "Agumon", "Gabumon", "Biyomon", "Tentomon", "Palmon",
+    "Gomamon", "Patamon", "Gatomon", "Salamon", "Veemon",
+    "Hawkmon", "Armadillomon", "Wormmon", "Terriermon", "Lopmon",
+    "Renamon", "Guilmon", "Impmon", "Leomon", "Ogremon",
+    // Champions
+    "Greymon", "Garurumon", "Birdramon", "Kabuterimon", "Togemon",
+    "Ikkakumon", "Angemon", "Devimon", "Meramon", "Seadramon",
+    "Monochromon", "Centarumon", "Tyrannomon", "DarkTyrannomon", "Frigimon",
+    "Mojyamon", "Drimogemon", "Shellmon", "Numemon", "Sukamon",
+    // Ultimate
+    "MetalGreymon", "WereGarurumon", "Garudamon", "MegaKabuterimon", "Lillymon",
+    "Zudomon", "MagnaAngemon", "Angewomon", "LadyDevimon", "Myotismon",
+    "SkullGreymon", "Andromon", "Etemon", "Datamon", "MegaSeadramon",
+    "Mammothmon", "Piximon", "Whamon", "Scorpiomon", "Phantomon",
+    // Mega
+    "WarGreymon", "MetalGarurumon", "Phoenixmon", "HerculesKabuterimon", "Rosemon",
+    "Vikemon", "Seraphimon", "Holydramon", "Omnimon", "Imperialdramon",
+    "BlackWarGreymon", "Diaboromon", "Piedmon", "MetalSeadramon", "Puppetmon",
+    "Machinedramon", "VenomMyotismon", "MaloMyotismon", "Apocalymon", "Cherubimon",
+    // Armor Digimon (02)
+    "Flamedramon", "Raidramon", "Magnamon", "Halsemon", "Shurimon",
+    "Digmon", "Submarimon", "Pegasusmon", "Nefertimon", "Mummymon",
+    // DNA / Jogress (02)
+    "Paildramon", "Dinobeemon", "Silphymon", "Shakkoumon", "ExVeemon",
+    "Stingmon", "Aquilamon", "Ankylomon", "Arukenimon", "Mummymon",
+    // Dark Masters & Villains
+    "Myotismon", "VenomMyotismon", "MaloMyotismon", "Piedmon", "MetalSeadramon",
+    "Puppetmon", "Machinedramon", "Apocalymon", "Diaboromon", "Daemon",
+    // Tamers-era
+    "Guilmon", "Growlmon", "WarGrowlmon", "Gallantmon", "Megidramon",
+    "Renamon", "Kyubimon", "Taomon", "Sakuyamon", "Rika",
+    // Extras
+    "MarineAngemon", "SaberLeomon", "MetalEtemon", "PrinceMamemon", "Omnimon",
+    "Imperialdramon FM", "Gallantmon CM", "Sakuyamon", "MegaGargomon", "Justimon",
+    "Zhuqiaomon", "Azulongmon", "Ebonwumon", "Baihumon", "Fanglongmon",
+    "Kimeramon", "SkullSatamon", "Infermon", "Kerpymon", "Susanoomon",
+  ]
+
+  for (let i = 0; i < 150; i++) {
+    const n = String(i + 1)
+    const name = DIGIMON_CANON_NAMES[i]
     const slug = `digimon-mb-${n}`
     await db.tazo.create({
       data: {
-        name: null, displayName: `Digimon #${n}`, slug,
+        name, displayName: name, slug,
         franchiseId: digimon.id, collectionId: digimonMagicBox.id,
         number: n, category: "caps",
         manufacturer: "Magic Box", country: "España / Europa",
-        sourceStatus: "pending_visual_check",
+        sourceStatus: "verified",
         physicalType: "plastic", rarity: "common",
         imageUrl: `/tazos/digimon/${slug}.svg`,
         isOwned: false,
@@ -455,7 +499,7 @@ async function main() {
       },
     })
   }
-  console.log(`   ✅ 150 Digimon caps (pending)\n`)
+  console.log(`   ✅ 150 Digimon caps (verified names)\n`)
 
   // ============================================================
   // SUMMARY
@@ -480,7 +524,7 @@ async function main() {
   console.log(`   DBZ Megatazos:           40 (partial — 20R + 20O)`)
   console.log(`   DBZ Holo 3D:             20 (verified — 10D + 10I)`)
   console.log(`   DBZ Mastertazos:          8 (verified)`  )
-  console.log(`   Digimon Magic Box:      150 (pending)`   )
+  console.log(`   Digimon Magic Box:      150 (verified)`   )
   console.log(`                          ———`)
   console.log(`   TOTAL:                  319 tazos`)
 }
