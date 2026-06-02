@@ -6,6 +6,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, useMemo } from "react"
+import { useI18n } from "@/lib/i18n"
 import {
   createBattleState, startTurn, selectThrower,
   setHorizontalAim, setVerticalAim, setPower, executeThrow,
@@ -33,7 +34,7 @@ const OPPONENT_TAZOS = [
 ]
 
 export default function BattleView() {
-  // ---- State ----
+  const { t } = useI18n()
   const [playerTazos, setPlayerTazos] = useState<Array<typeof OPPONENT_TAZOS[0]>>([])
   const [loading, setLoading] = useState(true)
   const [battleState, setBattleState] = useState<BattleState | null>(null)
@@ -73,7 +74,7 @@ export default function BattleView() {
   // ---- Start battle ----
   const startBattle = useCallback(() => {
     if (playerTazos.length < 5) {
-      setError("You need at least 5 owned tazos to battle. Scan your collection first!")
+      setError(t.battle_need_5_tazos)
       return
     }
     setError(null)
@@ -81,7 +82,7 @@ export default function BattleView() {
       arena: { radius: 250, centerX: 300, centerY: 300 },
     })
     setBattleState(startTurn(state))
-  }, [playerTazos])
+  }, [playerTazos, t.battle_need_5_tazos])
 
   // ---- Phase handlers ----
   const handleSelectThrower = useCallback((tazoId: string) => {
@@ -102,7 +103,6 @@ export default function BattleView() {
   const handlePowerSet = useCallback((value: number) => {
     if (!battleState) return
     const powered = setPower(battleState, value)
-    // Auto-execute throw after power is set
     setTimeout(() => {
       setBattleState(executeThrow(powered))
     }, 300)
@@ -137,7 +137,7 @@ export default function BattleView() {
         <div className="text-center space-y-3">
           <Disc3 className="w-12 h-12 mx-auto animate-spin text-[#FFCC00]" />
           <p className="font-black text-sm text-[#1a1a1a] uppercase tracking-wider">
-            Loading Collection...
+            {t.battle_loading}
           </p>
         </div>
       </div>
@@ -152,10 +152,10 @@ export default function BattleView() {
         <div className="text-center py-6 px-4 bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
           <Swords className="w-10 h-10 mx-auto mb-2 text-[#1a1a1a]" />
           <h2 className="text-3xl font-black uppercase tracking-wider text-[#1a1a1a] mag-stroke-sm">
-            Battle Arena
+            {t.battle_title}
           </h2>
           <p className="text-sm font-bold text-[#1a1a1a]/70 mt-1">
-            Throw your tazos, flip your rival&apos;s, and conquer the arena!
+            {t.battle_tagline}
           </p>
         </div>
 
@@ -163,24 +163,18 @@ export default function BattleView() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
             <Zap className="w-5 h-5 mb-1 text-[#F59E0B]" />
-            <h3 className="font-black text-sm uppercase text-[#1a1a1a]">Aim</h3>
-            <p className="text-xs text-[#1a1a1a]/60 mt-1">
-              Lock horizontal and vertical aim with precision timing.
-            </p>
+            <h3 className="font-black text-sm uppercase text-[#1a1a1a]">{t.info_aim_title}</h3>
+            <p className="text-xs text-[#1a1a1a]/60 mt-1">{t.info_aim_desc}</p>
           </div>
           <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
             <Shield className="w-5 h-5 mb-1 text-[#3B4CCA]" />
-            <h3 className="font-black text-sm uppercase text-[#1a1a1a]">Charge</h3>
-            <p className="text-xs text-[#1a1a1a]/60 mt-1">
-              More power = more impact, but less accuracy. Balance is key.
-            </p>
+            <h3 className="font-black text-sm uppercase text-[#1a1a1a]">{t.info_charge_title}</h3>
+            <p className="text-xs text-[#1a1a1a]/60 mt-1">{t.info_charge_desc}</p>
           </div>
           <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
             <Star className="w-5 h-5 mb-1 text-[#A855F7]" />
-            <h3 className="font-black text-sm uppercase text-[#1a1a1a]">Capture</h3>
-            <p className="text-xs text-[#1a1a1a]/60 mt-1">
-              Flip enemy tazos to capture them. Miss and your tazo stays on the field.
-            </p>
+            <h3 className="font-black text-sm uppercase text-[#1a1a1a]">{t.info_capture_title}</h3>
+            <p className="text-xs text-[#1a1a1a]/60 mt-1">{t.info_capture_desc}</p>
           </div>
         </div>
 
@@ -194,8 +188,8 @@ export default function BattleView() {
         {/* Owned tazos count */}
         <div className="text-center">
           <p className="text-sm font-bold text-[#1a1a1a]/60">
-            {playerTazos.length} owned tazos available
-            {playerTazos.length < 5 && " (need 5+)"}
+            {playerTazos.length} {t.battle_owned_tazos}
+            {playerTazos.length < 5 && ` ${t.battle_need_5_suffix}`}
           </p>
         </div>
 
@@ -207,7 +201,7 @@ export default function BattleView() {
             className="px-8 py-4 font-black text-lg uppercase tracking-wider bg-[#E3350D] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Play className="w-5 h-5 inline mr-2" />
-            Start Battle
+            {t.battle_start}
           </button>
         </div>
       </div>
@@ -220,8 +214,8 @@ export default function BattleView() {
       <div className="max-w-md mx-auto space-y-4">
         <BattleResultPanel
           result={battleState.finalResult}
-          playerName="You"
-          opponentName="Rival"
+          playerName={t.battle_you}
+          opponentName={t.battle_rival}
           onRematch={handleRematch}
         />
         <BattleEventLog turns={battleState.turns} />
@@ -247,17 +241,17 @@ export default function BattleView() {
         <div className="flex items-center gap-2">
           <Swords className="w-5 h-5 text-[#E3350D]" />
           <span className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">
-            Turn {battleState.turnNumber}
+            {t.battle_turn} {battleState.turnNumber}
           </span>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-bold text-[#3B82F6] uppercase">You</span>
+            <span className="text-[10px] font-bold text-[#3B82F6] uppercase">{t.battle_you}</span>
             <span className="font-black text-sm">{battleState.player.captured.length}</span>
           </div>
           <span className="text-[#1a1a1a]/30 font-bold">-</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-bold text-[#E3350D] uppercase">Rival</span>
+            <span className="text-[10px] font-bold text-[#E3350D] uppercase">{t.battle_rival}</span>
             <span className="font-black text-sm">{battleState.opponent.captured.length}</span>
           </div>
         </div>
@@ -276,14 +270,14 @@ export default function BattleView() {
           {/* Phase indicator */}
           <div className="text-center">
             <span className="inline-block px-3 py-1 font-black text-xs uppercase tracking-wider bg-[#1a1a1a] text-[#FFCC00] border-2 border-[#1a1a1a]">
-              {isSelectPhase && "Select a tazo to throw"}
-              {phase === "aim_horizontal" && "Lock horizontal aim"}
-              {phase === "aim_vertical" && "Lock vertical aim"}
-              {phase === "charge_power" && "Charge your power"}
-              {isAnimating && "Resolving..."}
-              {isPenalty && "Rival places your tazo — Click arena"}
-              {isTurnEnd && "Turn complete"}
-              {isOpponentTurn && "Rival is thinking..."}
+              {isSelectPhase && t.battle_phase_select}
+              {phase === "aim_horizontal" && t.battle_phase_horizontal}
+              {phase === "aim_vertical" && t.battle_phase_vertical}
+              {phase === "charge_power" && t.battle_phase_charge}
+              {isAnimating && t.battle_phase_resolving}
+              {isPenalty && t.battle_phase_penalty}
+              {isTurnEnd && t.battle_phase_turn_end}
+              {isOpponentTurn && t.battle_phase_rival}
             </span>
           </div>
         </div>
@@ -294,7 +288,7 @@ export default function BattleView() {
           {isSelectPhase && battleState.currentPlayerId === "player" && (
             <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
               <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a] mb-3">
-                Your Hand ({playerHand.length} tazos)
+                {t.battle_your_hand} ({playerHand.length} {t.tabStats.toLowerCase()})
               </h3>
               <div className="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
                 {playerHand.map((tazo) => (
@@ -319,13 +313,13 @@ export default function BattleView() {
                       <div className="text-sm font-bold text-[#1a1a1a] truncate">{tazo.name}</div>
                       <div className="flex gap-1 mt-0.5">
                         <span className="text-[9px] font-bold px-1 bg-[#E3350D15] text-[#E3350D] rounded">
-                          ATK {tazo.stats.attack}
+                          {t.tazo_attack} {tazo.stats.attack}
                         </span>
                         <span className="text-[9px] font-bold px-1 bg-[#3B4CCA15] text-[#3B4CCA] rounded">
-                          DEF {tazo.stats.defense}
+                          {t.tazo_defense} {tazo.stats.defense}
                         </span>
                         <span className="text-[9px] font-bold px-1 bg-[#F59E0B15] text-[#F59E0B] rounded">
-                          BNC {tazo.stats.bounce}
+                          {t.stats_spin} {tazo.stats.bounce}
                         </span>
                       </div>
                     </div>
@@ -335,7 +329,7 @@ export default function BattleView() {
               </div>
               {playerHand.length === 0 && (
                 <p className="text-xs text-[#1a1a1a]/50 italic text-center py-3">
-                  No tazos in hand. All in the field!
+                  {t.battle_no_tazos_hand}
                 </p>
               )}
             </div>
@@ -357,12 +351,12 @@ export default function BattleView() {
           {isOpponentTurn && (
             <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] text-center">
               <Disc3 className="w-8 h-8 mx-auto mb-2 animate-spin text-[#E3350D]" />
-              <p className="font-bold text-sm text-[#1a1a1a]">Rival is throwing...</p>
+              <p className="font-bold text-sm text-[#1a1a1a]">{t.battle_rival_throwing}</p>
               <button
                 onClick={handleEndTurn}
                 className="mt-3 px-4 py-2 font-black text-xs uppercase tracking-wider bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
               >
-                Resolve Turn
+                {t.battle_resolve_turn}
               </button>
             </div>
           )}
@@ -371,14 +365,14 @@ export default function BattleView() {
           {isTurnEnd && battleState.currentPlayerId === "player" && (
             <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] text-center space-y-3">
               <p className="font-bold text-sm text-[#1a1a1a]">
-                Turn {battleState.turnNumber} complete
+                {t.battle_turn} {battleState.turnNumber} {t.battle_turn_complete}
               </p>
               <button
                 onClick={handleEndTurn}
                 className="w-full py-3 font-black text-sm uppercase tracking-wider bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 <ChevronRight className="w-4 h-4 inline mr-2" />
-                Next Turn
+                {t.battle_next_turn}
               </button>
             </div>
           )}

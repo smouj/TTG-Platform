@@ -148,17 +148,18 @@ export default function BattleArenaCanvas({ state, highlightId, onArenaClick, in
       }
     }
 
-    // Penalty placement indicator
+    // Penalty placement indicator (reads lang from DOM attribute)
     if (state.phase === "opponent_place_penalty" && state.pendingPlacementTazoId) {
+      const lang = document.documentElement.lang || "en"
       ctx.save()
       ctx.fillStyle = "#F59E0B88"
       ctx.fillRect(0, 0, 600, 600)
       ctx.fillStyle = "#F59E0B"
       ctx.font = "bold 16px Arial Black, sans-serif"
       ctx.textAlign = "center"
-      ctx.fillText("PLACE TAZO", arena.centerX, arena.centerY - 20)
+      ctx.fillText(lang === "es" ? "COLOCAR TAZO" : lang === "pt" ? "COLOCAR TAZO" : lang === "de" ? "TAZO PLATZIEREN" : lang === "fr" ? "PLACER TAZO" : lang === "it" ? "PIAZZA TAZO" : lang === "ja" ? "タゾスを配置" : lang === "ko" ? "타조스 배치" : lang === "zh" ? "放置塔佐斯" : lang === "ru" ? "РАЗМЕСТИТЬ" : "PLACE TAZO", arena.centerX, arena.centerY - 20)
       ctx.font = "12px Arial, sans-serif"
-      ctx.fillText("Click inside the arena", arena.centerX, arena.centerY + 10)
+      ctx.fillText(lang === "es" ? "Haz clic dentro de la arena" : lang === "pt" ? "Clique dentro da arena" : lang === "de" ? "Klicke in die Arena" : lang === "fr" ? "Clique dans l'arene" : lang === "it" ? "Clicca dentro l'arena" : lang === "ja" ? "アリーナ内をクリック" : lang === "ko" ? "아레나 내부 클릭" : lang === "zh" ? "点击竞技场内" : lang === "ru" ? "Нажми внутрь арены" : "Click inside the arena", arena.centerX, arena.centerY + 10)
       ctx.restore()
     }
 

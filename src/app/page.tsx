@@ -1,21 +1,17 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useI18n } from '@/lib/i18n'
 import { GameView } from '@/lib/game/types'
 import AlbumView from '@/components/game/album-view'
 import BattleView from '@/components/game/battle-view'
 import { ScannerView } from '@/components/game/scanner-view'
 import StatsPanel from '@/components/game/stats-panel'
+import LanguageSwitcher from '@/components/ui/language-switcher'
 import { BookOpen, Swords, Scan, BarChart3, Disc3 } from 'lucide-react'
 
-const TABS: { id: GameView; label: string; icon: typeof BookOpen }[] = [
-  { id: 'album', label: 'Album', icon: BookOpen },
-  { id: 'battle', label: 'Battle!', icon: Swords },
-  { id: 'scanner', label: 'Scanner', icon: Scan },
-  { id: 'stats', label: 'Stats', icon: BarChart3 },
-]
-
 export default function Home() {
+  const { t } = useI18n()
   const [activeView, setActiveView] = useState<GameView>('album')
   const [statsRefreshKey, setStatsRefreshKey] = useState(0)
 
@@ -23,15 +19,26 @@ export default function Home() {
     setStatsRefreshKey(prev => prev + 1)
   }, [])
 
+  const TABS: { id: GameView; label: string; icon: typeof BookOpen }[] = [
+    { id: 'album', label: t.tabAlbum, icon: BookOpen },
+    { id: 'battle', label: t.tabBattle, icon: Swords },
+    { id: 'scanner', label: t.tabScanner, icon: Scan },
+    { id: 'stats', label: t.tabStats, icon: BarChart3 },
+  ]
+
   return (
     <div className="min-h-screen flex flex-col mag-bg">
       {/* ===== MAGAZINE MASTHEAD ===== */}
       <header className="sticky top-0 z-40 bg-[#FFCC00] border-b-4 border-[#1a1a1a] mag-stripes">
         {/* Top bar with exclusive badge */}
-        <div className="bg-[#1a1a1a] text-white text-center py-1 px-4">
+        <div className="bg-[#1a1a1a] text-white text-center py-1 px-4 flex items-center justify-between">
+          <div className="flex-1" />
           <span className="text-[10px] sm:text-xs font-black tracking-[3px] uppercase text-[#FFCC00]">
-            ★ EXCLUSIVE — COLLECTOR&apos;S EDITION ★
+            ★ {t.siteMastheadBadge} ★
           </span>
+          <div className="flex-1 flex justify-end">
+            <LanguageSwitcher />
+          </div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
@@ -58,17 +65,17 @@ export default function Home() {
                 className="text-2xl sm:text-4xl lg:text-5xl font-black leading-none tracking-tight mag-stroke"
                 style={{ WebkitTextStroke: '3px #1a1a1a' }}
               >
-                TAZOS LEGENDS
+                {t.siteTitle}
               </h1>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span
                   className="text-lg sm:text-2xl lg:text-3xl font-black italic mag-stroke-red leading-none"
                   style={{ WebkitTextStroke: '2px #1a1a1a' }}
                 >
-                  ARENA
+                  {t.siteSubtitle}
                 </span>
                 <span className="hidden sm:inline text-[10px] font-black text-[#1a1a1a] bg-white border-2 border-[#1a1a1a] px-1.5 py-0.5 shadow-[2px_2px_0px_#1a1a1a] uppercase tracking-wider">
-                  Vol.1
+                  {t.siteIssue}
                 </span>
               </div>
             </div>
@@ -76,7 +83,7 @@ export default function Home() {
             {/* Issue info - right side */}
             <div className="hidden md:flex flex-col items-end gap-1 shrink-0">
               <div className="speech-bubble text-[10px]">
-                Gotta flip &apos;em all!
+                {t.siteTagline}
               </div>
               <span className="text-[9px] font-bold text-[#1a1a1a]/60 italic">
                 Issue #001 — 2025 Edition
@@ -151,10 +158,10 @@ export default function Home() {
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-1">
             <p className="text-[10px] sm:text-xs font-bold text-white tracking-wide">
-              Tazos Legends Arena &copy; {new Date().getFullYear()} — A nostalgic tribute to the golden age of tazos
+              {t.siteTitle} &copy; {new Date().getFullYear()} — {t.siteFooterTribute}
             </p>
             <p className="text-[9px] sm:text-[10px] text-white/60 italic text-center sm:text-right">
-              Pokémon, Digimon &amp; Dragon Ball Z are trademarks of their respective owners. This is a fan-made tribute.
+              {t.siteFooterTrademark}
             </p>
           </div>
         </div>

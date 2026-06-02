@@ -5,6 +5,7 @@
 "use client"
 
 import { useRef, useEffect } from "react"
+import { useI18n } from "@/lib/i18n"
 import type { BattleTurn } from "@/lib/battle"
 import { Swords, Target, Zap, Shield, Award } from "lucide-react"
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function BattleEventLog({ turns }: Props) {
+  const { t } = useI18n()
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -25,11 +27,11 @@ export default function BattleEventLog({ turns }: Props) {
         <div className="flex items-center gap-2 mb-2">
           <Swords className="w-4 h-4 text-[#1a1a1a]" />
           <span className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
-            Battle Log
+            {t.battle_log_title}
           </span>
         </div>
         <p className="text-xs text-[#1a1a1a]/50 italic">
-          The battle hasn&apos;t started yet. Select a tazo and throw it into the arena.
+          {t.battle_log_empty}
         </p>
       </div>
     )
@@ -40,10 +42,10 @@ export default function BattleEventLog({ turns }: Props) {
       <div className="flex items-center gap-2 mb-3">
         <Swords className="w-4 h-4 text-[#1a1a1a]" />
         <span className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
-          Battle Log
+          {t.battle_log_title}
         </span>
         <span className="text-[10px] font-bold text-[#1a1a1a]/40 ml-auto">
-          {turns.length} turns
+          {turns.length} {t.battle_turns_suffix}
         </span>
       </div>
       <div className="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
@@ -58,11 +60,11 @@ export default function BattleEventLog({ turns }: Props) {
                 className="font-black text-[10px] uppercase tracking-wider"
                 style={{ color: turn.playerId === "player" ? "#FFCB05" : "#E3350D" }}
               >
-                Turn {turn.turnNumber}
+                {t.battle_turn} {turn.turnNumber}
               </span>
               <span className="text-[#1a1a1a]/40">-</span>
               <span className="font-bold text-[#1a1a1a]">
-                {turn.playerId === "player" ? "You" : "Rival"}
+                {turn.playerId === "player" ? t.battle_you : t.battle_rival}
               </span>
             </div>
 
@@ -120,7 +122,7 @@ export default function BattleEventLog({ turns }: Props) {
               <div className="mt-1.5 flex items-center gap-1.5 text-[10px]">
                 <Award className="w-3 h-3 text-[#22C55E]" />
                 <span className="font-black text-[#22C55E] uppercase">
-                  CAPTURED {turn.capturedTazos.length} TAZO{turn.capturedTazos.length > 1 ? "S" : ""}!
+                  {t.battle_captured} {turn.capturedTazos.length} {t.battle_captured_suffix}
                 </span>
               </div>
             )}

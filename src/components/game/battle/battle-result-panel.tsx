@@ -4,6 +4,7 @@
 // ============================================================
 "use client"
 
+import { useI18n } from "@/lib/i18n"
 import type { BattleFinalResult } from "@/lib/battle"
 import { Swords, Award, Timer, Shield, Zap, RotateCcw } from "lucide-react"
 
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function BattleResultPanel({ result, playerName, opponentName, onRematch }: Props) {
+  const { t } = useI18n()
   const isWin = result.winner === "player"
   const isDraw = result.winner === "draw"
 
@@ -67,17 +69,17 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
         <div className="bg-white/20 border-2 border-[#1a1a1a]/20 rounded p-2">
           <Timer className="w-4 h-4 mx-auto mb-1 text-[#1a1a1a]" />
           <div className="text-2xl font-black text-[#1a1a1a]">{result.totalTurns}</div>
-          <div className="text-[9px] font-bold uppercase text-[#1a1a1a]/60">Turns</div>
+          <div className="text-[9px] font-bold uppercase text-[#1a1a1a]/60">{t.result_turns}</div>
         </div>
         <div className="bg-white/20 border-2 border-[#1a1a1a]/20 rounded p-2">
           <Award className="w-4 h-4 mx-auto mb-1 text-[#22C55E]" />
           <div className="text-2xl font-black text-[#1a1a1a]">{result.playerCaptures}</div>
-          <div className="text-[9px] font-bold uppercase text-[#1a1a1a]/60">Captures</div>
+          <div className="text-[9px] font-bold uppercase text-[#1a1a1a]/60">{t.result_captures}</div>
         </div>
         <div className="bg-white/20 border-2 border-[#1a1a1a]/20 rounded p-2">
           <Shield className="w-4 h-4 mx-auto mb-1 text-[#E3350D]" />
           <div className="text-2xl font-black text-[#1a1a1a]">{result.opponentCaptures}</div>
-          <div className="text-[9px] font-bold uppercase text-[#1a1a1a]/60">Lost</div>
+          <div className="text-[9px] font-bold uppercase text-[#1a1a1a]/60">{t.result_lost}</div>
         </div>
       </div>
 
@@ -87,7 +89,7 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
           <div className="text-xs font-bold text-[#1a1a1a]/60">{playerName}</div>
           <div className="text-2xl font-black text-[#1a1a1a]">{result.playerScore}</div>
         </div>
-        <div className="text-lg font-black text-[#1a1a1a]/40">vs</div>
+        <div className="text-lg font-black text-[#1a1a1a]/40">{t.result_vs}</div>
         <div className="text-left">
           <div className="text-xs font-bold text-[#1a1a1a]/60">{opponentName}</div>
           <div className="text-2xl font-black text-[#1a1a1a]">{result.opponentScore}</div>
@@ -100,7 +102,7 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
         className="px-6 py-3 font-black text-sm uppercase tracking-wider bg-white text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
       >
         <RotateCcw className="w-4 h-4 inline mr-2" />
-        Rematch
+        {t.battle_rematch}
       </button>
     </div>
   )

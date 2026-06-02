@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import I18nClientWrapper from "@/components/i18n-client-wrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Tazos Legends Arena",
-  description: "Escanea tus tazos antiguos, crea tu álbum digital y hazlos combatir en una arena física",
-  keywords: ["tazos", "pogs", "collectibles", "trading", "game", "Pokémon", "Digimon", "Dragon Ball Z"],
+  description: "Escanea tus tazos antiguos, crea tu album digital y hazlos combatir en una arena fisica",
+  keywords: ["tazos", "pogs", "collectibles", "trading", "game", "Pokemon", "Digimon", "Dragon Ball Z"],
 };
 
 export default function RootLayout({
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        {children}
+        <I18nClientWrapper>
+          {children}
+        </I18nClientWrapper>
         <Toaster />
       </body>
     </html>

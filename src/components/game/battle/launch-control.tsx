@@ -5,6 +5,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
+import { useI18n } from "@/lib/i18n"
 import type { BattlePhase } from "@/lib/battle"
 import { Crosshair, Zap, Target } from "lucide-react"
 
@@ -27,6 +28,7 @@ interface Props {
 export default function LaunchControl({
   phase, aimPhase, onHorizontalAim, onVerticalAim, onPowerSet, onThrow,
 }: Props) {
+  const { t } = useI18n()
   const [hSlider, setHSlider] = useState(0.5)
   const [vSlider, setVSlider] = useState(0.5)
   const [powerCircle, setPowerCircle] = useState(0.8)
@@ -121,7 +123,7 @@ export default function LaunchControl({
         <div className="flex items-center gap-2">
           <Target className="w-5 h-5 text-[#E3350D]" />
           <span className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">
-            Aim Horizontal — Press SPACE to lock
+            {t.aim_horizontal_title}
           </span>
         </div>
         <div className="relative h-10 bg-[#1a1a2e] border-2 border-[#1a1a1a] rounded overflow-hidden">
@@ -132,30 +134,26 @@ export default function LaunchControl({
           <div className="absolute inset-0 flex items-center justify-center">
             <div
               className="w-8 h-8 rounded-full border-2 border-white/50 flex items-center justify-center"
-              style={{
-                position: "absolute",
-                left: `${50}%`,
-                background: "transparent",
-              }}
+              style={{ position: "absolute", left: `50%`, background: "transparent" }}
             >
               <Crosshair className="w-4 h-4 text-white/50" />
             </div>
           </div>
         </div>
         <div className="flex justify-between text-[10px] font-bold text-[#1a1a1a]/60">
-          <span>LEFT</span>
-          <span>CENTER</span>
-          <span>RIGHT</span>
+          <span>{t.aim_left}</span>
+          <span>{t.aim_center}</span>
+          <span>{t.aim_right}</span>
         </div>
         <div className="text-center text-xs font-bold text-[#1a1a1a]/50">
-          Accuracy: {Math.round((1 - Math.abs(hSlider - 0.5) * 2) * 100)}%
+          {t.aim_accuracy}: {Math.round((1 - Math.abs(hSlider - 0.5) * 2) * 100)}%
         </div>
         <button
           onClick={handleHorizontalLock}
           className="w-full py-3 font-black text-sm uppercase tracking-wider bg-[#FFCC00] text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
         >
           <Target className="w-4 h-4 inline mr-2" />
-          Lock Horizontal
+          {t.aim_horizontal_lock}
         </button>
       </div>
     )
@@ -168,7 +166,7 @@ export default function LaunchControl({
         <div className="flex items-center gap-2">
           <Target className="w-5 h-5 text-[#3B4CCA]" />
           <span className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">
-            Aim Vertical — Press SPACE to lock
+            {t.aim_vertical_title}
           </span>
         </div>
         <div className="relative w-10 h-40 mx-auto bg-[#1a1a2e] border-2 border-[#1a1a1a] rounded overflow-hidden">
@@ -178,19 +176,19 @@ export default function LaunchControl({
           />
         </div>
         <div className="flex justify-between text-[10px] font-bold text-[#1a1a1a]/60 max-w-[200px] mx-auto">
-          <span>TOP</span>
-          <span>CENTER</span>
-          <span>BOT</span>
+          <span>{t.aim_top}</span>
+          <span>{t.aim_center}</span>
+          <span>{t.aim_bottom}</span>
         </div>
         <div className="text-center text-xs font-bold text-[#1a1a1a]/50">
-          Accuracy: {accuracy}%
+          {t.aim_accuracy}: {accuracy}%
         </div>
         <button
           onClick={handleVerticalLock}
           className="w-full py-3 font-black text-sm uppercase tracking-wider bg-[#3B4CCA] text-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
         >
           <Target className="w-4 h-4 inline mr-2" />
-          Lock Vertical
+          {t.aim_vertical_lock}
         </button>
       </div>
     )
@@ -198,21 +196,19 @@ export default function LaunchControl({
 
   if (phase === "charge_power") {
     const power = Math.round((1 - powerCircle) * 100)
-    const risk = power > 70 ? "HIGH RISK" : power > 50 ? "MEDIUM" : "LOW"
+    const risk = power > 70 ? t.aim_risk_high : power > 50 ? t.aim_risk_medium : t.aim_risk_low
     const riskColor = power > 70 ? "#E3350D" : power > 50 ? "#F59E0B" : "#22C55E"
     return (
       <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] space-y-3">
         <div className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-[#F59E0B]" />
           <span className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">
-            Charge Power — Press SPACE to lock
+            {t.aim_charge_title}
           </span>
         </div>
         <div className="flex items-center justify-center py-4">
           <div className="relative w-48 h-48">
-            {/* Outer ring */}
             <div className="absolute inset-0 rounded-full border-4 border-[#1a1a1a] bg-[#1a1a2e]" />
-            {/* Inner circle (shrinks) */}
             <div
               className="absolute rounded-full transition-all duration-75"
               style={{
@@ -228,7 +224,6 @@ export default function LaunchControl({
                 border: "3px solid #1a1a1a",
               }}
             />
-            {/* Center text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-4xl font-black text-white" style={{ textShadow: "2px 2px 0px #1a1a1a" }}>
                 {power}%
@@ -240,19 +235,18 @@ export default function LaunchControl({
           </div>
         </div>
         <div className="text-center text-xs font-bold text-[#1a1a1a]/60">
-          {powerShrinking ? "Getting smaller... more power!" : "Getting bigger... less power!"}
+          {powerShrinking ? t.aim_shrinking : t.aim_growing}
         </div>
         <button
           onClick={handlePowerLock}
           className="w-full py-3 font-black text-sm uppercase tracking-wider bg-[#E3350D] text-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
         >
           <Zap className="w-4 h-4 inline mr-2" />
-          THROW!
+          {t.aim_charge_throw}
         </button>
       </div>
     )
   }
 
-  // All other phases: nothing to show
   return null
 }
