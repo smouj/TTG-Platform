@@ -161,4 +161,41 @@ export interface Dictionary {
   common_clear: string
   common_yes: string
   common_no: string
+  common_cancel: string
+  common_confirm_delete: string
+
+  // Auth
+  auth_login: string
+  auth_login_subtitle: string
+  auth_register: string
+  auth_register_subtitle: string
+  auth_email: string
+  auth_password: string
+  auth_name: string
+  auth_name_placeholder: string
+  auth_password_min: string
+  auth_no_account: string
+  auth_have_account: string
+  auth_logout: string
+  auth_my_collection: string
+  auth_my_decks: string
+
+  // Collection
+  collection_title: string
+  collection_empty: string
+  collection_empty_cta: string
+  collection_total: string
+
+  // Decks
+  decks_title: string
+  decks_empty: string
+  decks_create: string
+  decks_name: string
+  decks_name_placeholder: string
+  decks_select_tazos: string
+  decks_active: string
+  decks_activate: string
+  decks_delete: string
+  decks_tazo_count: string
+  decks_min_tazos: string
 }

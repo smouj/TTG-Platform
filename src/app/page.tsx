@@ -8,10 +8,14 @@ import BattleView from '@/components/game/battle-view'
 import { ScannerView } from '@/components/game/scanner-view'
 import StatsPanel from '@/components/game/stats-panel'
 import LanguageSwitcher from '@/components/ui/language-switcher'
-import { BookOpen, Swords, Scan, BarChart3, Disc3 } from 'lucide-react'
+import { BookOpen, Swords, Scan, BarChart3, Disc3, User, LogOut, Package, Layers } from 'lucide-react'
+import Link from 'next/link'
+import { useAuth } from '@/lib/auth-context'
 
 export default function Home() {
   const { t } = useI18n()
+  const { user, logout } = useAuth()
+  const [showUserMenu, setShowUserMenu] = useState(false)
   const [activeView, setActiveView] = useState<GameView>('album')
   const [statsRefreshKey, setStatsRefreshKey] = useState(0)
 
@@ -32,7 +36,65 @@ export default function Home() {
       <header className="sticky top-0 z-40 bg-[#FFCC00] border-b-4 border-[#1a1a1a] mag-stripes">
         {/* Top bar with exclusive badge */}
         <div className="bg-[#1a1a1a] text-white text-center py-1 px-4 flex items-center justify-between">
-          <div className="flex-1" />
+          <div className="flex items-center gap-2">
+            {!user ? (
+              <>
+                <Link
+                  href="/login"
+                  className="text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase"
+                >
+                  {t.auth_login}
+                </Link>
+                <span className="text-zinc-600">|</span>
+                <Link
+                  href="/register"
+                  className="text-[10px] sm:text-xs font-bold text-purple-400 hover:text-purple-300 transition-colors tracking-wider uppercase"
+                >
+                  {t.auth_register}
+                </Link>
+              </>
+            ) : (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold text-[#FFCC00] hover:text-white transition-colors tracking-wider uppercase"
+                >
+                  <User className="w-3 h-3" />
+                  {user.name}
+                </button>
+                {showUserMenu && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setShowUserMenu(false)} />
+                    <div className="absolute left-0 top-full mt-1 z-20 w-44 bg-zinc-900 border-2 border-zinc-700 rounded-lg shadow-xl overflow-hidden">
+                      <Link
+                        href="/collection"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                      >
+                        <Package className="w-4 h-4" />
+                        {t.auth_my_collection}
+                      </Link>
+                      <Link
+                        href="/decks"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                      >
+                        <Layers className="w-4 h-4" />
+                        {t.auth_my_decks}
+                      </Link>
+                      <button
+                        onClick={() => { logout(); setShowUserMenu(false); }}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors w-full text-left"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        {t.auth_logout}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
           <span className="text-[10px] sm:text-xs font-black tracking-[3px] uppercase text-[#FFCC00]">
             ★ {t.siteMastheadBadge} ★
           </span>
