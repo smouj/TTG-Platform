@@ -33,6 +33,10 @@ export default function MagazinePageShell({
     { id: "battle", label: t.tabBattle, icon: Swords, href: "/?tab=battle" },
     { id: "scanner", label: t.tabScanner, icon: Scan, href: "/?tab=scanner" },
     { id: "stats", label: t.tabStats, icon: BarChart3, href: "/?tab=stats" },
+    { id: "shop", label: "Shop", icon: ShoppingBag, href: "/shop" },
+    { id: "quests", label: "Quests", icon: Target, href: "/quests" },
+    { id: "leaderboard", label: "Ranks", icon: Trophy, href: "/leaderboard" },
+    { id: "download", label: "Desktop", icon: Download, href: "/download" },
   ]
 
   return (
@@ -49,22 +53,6 @@ export default function MagazinePageShell({
                     {t.auth_login}
                   </Link>
                   <span className="text-zinc-600">|</span>
-                  <Link href="/shop" className="text-[10px] sm:text-xs font-bold text-[#FFCC00] hover:text-white transition-colors tracking-wider uppercase">
-                    <ShoppingBag className="w-3 h-3 inline mr-0.5" /> Shop
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/quests" className="text-[10px] sm:text-xs font-bold text-[#E3350D] hover:text-red-300 transition-colors tracking-wider uppercase">
-                    <Target className="w-3 h-3 inline mr-0.5" /> Quests
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/leaderboard" className="text-[10px] sm:text-xs font-bold text-[#F59E0B] hover:text-amber-300 transition-colors tracking-wider uppercase">
-                    <Trophy className="w-3 h-3 inline mr-0.5" /> Ranks
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/download" className="text-[10px] sm:text-xs font-bold text-green-400 hover:text-green-300 transition-colors tracking-wider uppercase">
-                    <Download className="w-3 h-3 inline mr-0.5" /> Desktop
-                  </Link>
-                  <span className="text-zinc-600">|</span>
                   <Link href="/register" className="text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase">
                     {t.auth_register}
                   </Link>
@@ -73,26 +61,6 @@ export default function MagazinePageShell({
                 <>
                   <Link href="/" className="text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase">
                     <BookOpen className="w-3 h-3 inline mr-0.5" /> Home
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/collection" className="text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase">
-                    <Package className="w-3 h-3 inline mr-0.5" /> Collection
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/decks" className="text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase">
-                    <Layers className="w-3 h-3 inline mr-0.5" /> Decks
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/shop" className="text-[10px] sm:text-xs font-bold text-[#FFCC00] hover:text-white transition-colors tracking-wider uppercase">
-                    <ShoppingBag className="w-3 h-3 inline mr-0.5" /> Shop
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/quests" className="text-[10px] sm:text-xs font-bold text-[#E3350D] hover:text-red-300 transition-colors tracking-wider uppercase">
-                    <Target className="w-3 h-3 inline mr-0.5" /> Quests
-                  </Link>
-                  <span className="text-zinc-600">|</span>
-                  <Link href="/leaderboard" className="text-[10px] sm:text-xs font-bold text-[#F59E0B] hover:text-amber-300 transition-colors tracking-wider uppercase">
-                    <Trophy className="w-3 h-3 inline mr-0.5" /> Ranks
                   </Link>
                 </>
               )}

@@ -389,9 +389,9 @@ export default function BattleView() {
 
   // ─── Local Practice mode ─────────────────────────────
   return (
-    <div className="space-y-4">
+    <div className="h-full flex flex-col">
       {/* Header bar */}
-      <div className="flex items-center justify-between p-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
+      <div className="flex-shrink-0 flex items-center justify-between p-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] mb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setBattleMode("online")}
@@ -418,18 +418,20 @@ export default function BattleView() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* LEFT: Arena */}
-        <div className="lg:col-span-2 space-y-3">
+        <div className="lg:col-span-2 min-h-0 flex flex-col">
+          <div className="flex-1 min-h-0">
           <BattleArenaCanvas
             state={battleState}
             highlightId={battleState.selectedTazoId}
             onArenaClick={handleArenaClick}
             interactive={isPenalty}
           />
+          </div>
 
           {/* Phase indicator */}
-          <div className="text-center">
+          <div className="flex-shrink-0 text-center py-1">
             <span className="inline-block px-3 py-1 font-black text-xs uppercase tracking-wider bg-[#1a1a1a] text-[#FFCC00] border-2 border-[#1a1a1a]">
               {isSelectPhase && t.battle_phase_select}
               {phase === "aim_horizontal" && t.battle_phase_horizontal}
@@ -444,7 +446,7 @@ export default function BattleView() {
         </div>
 
         {/* RIGHT: Controls */}
-        <div className="space-y-3">
+        <div className="min-h-0 overflow-y-auto custom-scrollbar space-y-3">
           {/* Tazo selection */}
           {isSelectPhase && battleState.currentPlayerId === "player" && (
             <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">

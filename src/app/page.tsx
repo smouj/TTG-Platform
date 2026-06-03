@@ -23,11 +23,15 @@ export default function Home() {
     setStatsRefreshKey(prev => prev + 1)
   }, [])
 
-  const TABS: { id: GameView; label: string; icon: typeof BookOpen }[] = [
+  const TABS: { id: GameView | string; label: string; icon: typeof BookOpen; href?: string; external?: boolean }[] = [
     { id: 'album', label: t.tabAlbum, icon: BookOpen },
     { id: 'battle', label: t.tabBattle, icon: Swords },
     { id: 'scanner', label: t.tabScanner, icon: Scan },
     { id: 'stats', label: t.tabStats, icon: BarChart3 },
+    { id: 'shop', label: 'Shop', icon: ShoppingBag, href: '/shop', external: true },
+    { id: 'quests', label: 'Quests', icon: Target, href: '/quests', external: true },
+    { id: 'leaderboard', label: 'Ranks', icon: Trophy, href: '/leaderboard', external: true },
+    { id: 'download', label: 'Desktop', icon: Download, href: '/download', external: true },
   ]
 
   return (
@@ -44,38 +48,6 @@ export default function Home() {
                   className="text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase"
                 >
                   {t.auth_login}
-                </Link>
-                <span className="text-zinc-600">|</span>
-                <Link
-                  href="/shop"
-                  className="text-[10px] sm:text-xs font-bold text-[#FFCC00] hover:text-white transition-colors tracking-wider uppercase"
-                >
-                  <ShoppingBag className="w-3 h-3 inline mr-0.5" />
-                  Shop
-                </Link>
-                <span className="text-zinc-600">|</span>
-                <Link
-                  href="/quests"
-                  className="text-[10px] sm:text-xs font-bold text-[#E3350D] hover:text-red-300 transition-colors tracking-wider uppercase"
-                >
-                  <Target className="w-3 h-3 inline mr-0.5" />
-                  Quests
-                </Link>
-                <span className="text-zinc-600">|</span>
-                <Link
-                  href="/leaderboard"
-                  className="text-[10px] sm:text-xs font-bold text-[#F59E0B] hover:text-amber-300 transition-colors tracking-wider uppercase"
-                >
-                  <Trophy className="w-3 h-3 inline mr-0.5" />
-                  Ranks
-                </Link>
-                <span className="text-zinc-600">|</span>
-                <Link
-                  href="/download"
-                  className="text-[10px] sm:text-xs font-bold text-green-400 hover:text-green-300 transition-colors tracking-wider uppercase"
-                >
-                  <Download className="w-3 h-3 inline mr-0.5" />
-                  Desktop
                 </Link>
                 <span className="text-zinc-600">|</span>
                 <Link
@@ -98,49 +70,9 @@ export default function Home() {
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowUserMenu(false)} />
                     <div className="absolute left-0 top-full mt-1 z-20 w-44 bg-zinc-900 border-2 border-zinc-700 rounded-lg shadow-xl overflow-hidden">
-                      <Link
-                        href="/collection"
-                        onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
-                      >
-                        <Package className="w-4 h-4" />
-                        {t.auth_my_collection}
-                      </Link>
-                      <Link
-                        href="/decks"
-                        onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
-                      >
-                        <Layers className="w-4 h-4" />
-                        {t.auth_my_decks}
-                      </Link>
-                      <Link
-                        href="/shop"
-                        onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#FFCC00] hover:bg-zinc-800 hover:text-[#FFD600] transition-colors"
-                      >
-                        <ShoppingBag className="w-4 h-4" />
-                        Shop
-                      </Link>
-                      <Link
-                        href="/quests"
-                        onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:bg-zinc-800 hover:text-red-300 transition-colors"
-                      >
-                        <Target className="w-4 h-4" />
-                        Quests
-                      </Link>
-                      <Link
-                        href="/leaderboard"
-                        onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-amber-400 hover:bg-zinc-800 hover:text-amber-300 transition-colors"
-                      >
-                        <Trophy className="w-4 h-4" />
-                        Leaderboard
-                      </Link>
                       <button
                         onClick={() => { logout(); setShowUserMenu(false); }}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors w-full text-left"
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#E3350D] hover:bg-red-500/10 transition-colors w-full text-left"
                       >
                         <LogOut className="w-4 h-4" />
                         {t.auth_logout}
@@ -207,14 +139,29 @@ export default function Home() {
         {/* ===== MAGAZINE SECTION TABS ===== */}
         <nav className="max-w-7xl mx-auto px-4 pb-0" role="tablist" aria-label="Game views">
           <div className="flex gap-1 sm:gap-2">
-            {TABS.map(({ id, label, icon: Icon }) => {
+            {TABS.map(({ id, label, icon: Icon, href, external }) => {
               const isActive = activeView === id
+              
+              // External links (shop, quests, leaderboard, download) use Next Link
+              if (external && href) {
+                return (
+                  <Link
+                    key={id}
+                    href={href}
+                    className="flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 font-black text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-150 mag-tab bg-white/80 text-[#1a1a1a]/60 rounded-t-lg border-2 border-b-0 border-[#1a1a1a]/20 hover:bg-white hover:text-[#1a1a1a] hover:border-[#1a1a1a]/40"
+                  >
+                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>{label}</span>
+                  </Link>
+                )
+              }
+              
               return (
                 <button
                   key={id}
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setActiveView(id)}
+                  onClick={() => setActiveView(id as GameView)}
                   className={`
                     flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 font-black text-[11px] sm:text-xs
                     tracking-wider uppercase transition-all duration-150
@@ -240,7 +187,7 @@ export default function Home() {
       </header>
 
       {/* ===== MAIN CONTENT - Magazine Pages ===== */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-6">
+      <main className={`flex-1 max-w-7xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-6 ${activeView === 'battle' || activeView === 'stats' ? 'min-h-0 overflow-hidden flex' : ''}`}>
         {activeView === 'album' && (
           <AlbumView onStatsUpdate={handleStatsUpdate} />
         )}
