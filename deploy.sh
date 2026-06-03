@@ -50,6 +50,12 @@ echo "📤 [3/6] Syncing static..."
 rsync -avz --delete \
   .next/static/ "$VPS_HOST:$VPS_DIR/.next/static/"
 
+# 4b. Sync package.json (contains version metadata for PM2)
+echo ""
+echo "📤 [3b/6] Syncing package.json..."
+rsync -avz package.json "$VPS_HOST:$VPS_DIR/package.json"
+echo "✅ package.json synced"
+
 # 5. Sync prisma
 echo ""
 echo "📤 [4/6] Syncing prisma..."
