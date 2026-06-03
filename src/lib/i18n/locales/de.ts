@@ -1,7 +1,7 @@
 import type { Dictionary } from "../types"
 
 const de: Dictionary = {
-  siteTitle: "TAZOS LEGENDS",
+  siteTitle: "TRADING TAZOS GAME",
   siteSubtitle: "ARENA",
   siteIssue: "Vol.1",
   siteTagline: "Los, dreht sie alle um!",
