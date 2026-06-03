@@ -1,0 +1,84 @@
+{
+  "name": "Trading Tazos Game",
+  "short_name": "TTG",
+  "description": "Collect, trade & battle with 319 classic tazos from Pokemon, DBZ and Digimon. Physics arena, PvP, scanner.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fffbe6",
+  "theme_color": "#FFCC00",
+  "categories": ["games", "entertainment", "collectibles"],
+  "lang": "es",
+  "dir": "ltr",
+  "id": "com.medaclawarena.ttg",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    },
+    {
+      "src": "/favicon-192.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo/social-preview.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Trading Tazos Game — Battle Arena"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Collection",
+      "short_name": "Collection",
+      "url": "/collection"
+    },
+    {
+      "name": "Battle",
+      "short_name": "Battle",
+      "url": "/"
+    },
+    {
+      "name": "Shop",
+      "short_name": "Shop",
+      "url": "/shop"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "windows",
+      "url": "https://medaclawarena.com/download",
+      "id": "com.medaclawarena.ttg.windows"
+    },
+    {
+      "platform": "mac",
+      "url": "https://medaclawarena.com/download",
+      "id": "com.medaclawarena.ttg.mac"
+    },
+    {
+      "platform": "linux",
+      "url": "https://medaclawarena.com/download",
+      "id": "com.medaclawarena.ttg.linux"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 "use client"
 
-import { Download, Monitor, Apple, Terminal, Github, ExternalLink, ArrowLeft } from "lucide-react"
+import { Download, Monitor, Apple, Terminal, Github, ExternalLink, ArrowLeft, Globe, Smartphone, Gamepad2 } from "lucide-react"
 import Link from "next/link"
 import { useI18n } from "@/lib/i18n"
 
@@ -50,123 +50,152 @@ export default function DownloadPage() {
             <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mag-stroke-sm">
               {t.download_title}
             </h1>
-            <p className="text-[10px] sm:text-xs font-bold text-white/70 uppercase tracking-wider mt-0.5">
-              {t.download_subtitle} — {VERSION}
+            <p className="text-[11px] sm:text-xs font-bold text-white/70 tracking-wider uppercase">
+              {t.download_subtitle}
             </p>
           </div>
         </div>
       </header>
 
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8 space-y-8">
-        {/* Intro */}
-        <div className="text-center space-y-2 py-4">
-          <Download className="w-12 h-12 mx-auto text-[#E3350D] drop-shadow-[2px_2px_0px_#1a1a1a]" />
-          <p className="text-sm font-bold text-[#1a1a1a]/60 max-w-lg mx-auto leading-relaxed">
+        {/* ─── THREE WAYS TO PLAY ─── */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Browser */}
+          <div className="mag-card p-5 text-center space-y-3 relative">
+            <div className="w-12 h-12 mx-auto bg-[#22C55E] border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] rounded-full flex items-center justify-center">
+              <Globe className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">Play in Browser</h3>
+              <p className="text-[10px] font-bold text-zinc-500 mt-1">No download needed. Just open <a href="/" className="underline text-[#3B4CCA]">medaclawarena.com</a> and start battling.</p>
+            </div>
+            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">Active</span>
+          </div>
+
+          {/* Desktop App */}
+          <div className="mag-card p-5 text-center space-y-3 relative">
+            <div className="w-12 h-12 mx-auto bg-[#3B4CCA] border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] rounded-full flex items-center justify-center">
+              <Monitor className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">Desktop App</h3>
+              <p className="text-[10px] font-bold text-zinc-500 mt-1">Windows, macOS, Linux. Full-screen, offline play, keyboard controls.</p>
+            </div>
+            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#F59E0B] text-white uppercase rounded">Coming Soon</span>
+          </div>
+
+          {/* PWA */}
+          <div className="mag-card p-5 text-center space-y-3 relative">
+            <div className="w-12 h-12 mx-auto bg-[#A855F7] border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] rounded-full flex items-center justify-center">
+              <Smartphone className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">PWA Install</h3>
+              <p className="text-[10px] font-bold text-zinc-500 mt-1">Install on your phone or desktop. Works offline, gets updates automatically.</p>
+            </div>
+            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">Active</span>
+          </div>
+        </div>
+
+        {/* ─── Intro ─── */}
+        <div className="mag-card p-6">
+          <p className="text-sm font-bold text-[#1a1a1a] leading-relaxed">
             {t.download_intro}
           </p>
         </div>
 
-        {/* OS Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {OS_CARDS.map((os) => {
-            const Icon = os.icon
-            return (
+        {/* ─── DESKTOP DOWNLOADS ─── */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Gamepad2 className="w-5 h-5 text-[#E3350D]" />
+            <h2 className="font-black text-lg uppercase tracking-wider text-[#1a1a1a]">
+              Desktop Downloads
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {OS_CARDS.map((os) => (
               <div
                 key={os.id}
-                className="relative mag-card p-6 text-center transition-all hover:-translate-y-1"
-                style={{ background: "white" }}
+                className="mag-card p-6 text-center space-y-4"
               >
-                {/* Coming Soon badge */}
-                {os.comingSoon && (
-                  <div className="absolute -top-2 -right-2 star-burst px-2 py-0.5 border-2 border-[#1a1a1a] bg-[#FFCC00]">
-                    <span className="text-[9px] font-black text-[#1a1a1a] uppercase tracking-wider">
+                <os.icon className="w-10 h-10 mx-auto" style={{ color: os.color }} />
+                <div>
+                  <h3 className="font-black text-base uppercase tracking-wider text-[#1a1a1a]">
+                    {t[os.labelKey]}
+                  </h3>
+                  {os.comingSoon ? (
+                    <span className="inline-block mt-2 px-3 py-1 text-[10px] font-black bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] uppercase">
                       {t.download_coming_soon}
                     </span>
-                  </div>
-                )}
-
-                <div
-                  className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]"
-                  style={{ background: os.color }}
-                >
-                  <Icon className="w-8 h-8 text-white drop-shadow-[1px_1px_0px_#1a1a1a80]" />
-                </div>
-
-                <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a] mb-1">
-                  {t[os.labelKey]}
-                </h3>
-
-                {os.comingSoon ? (
-                  <p className="text-xs text-[#1a1a1a]/40 font-bold italic">
-                    {t.download_coming_soon}
-                  </p>
-                ) : (
-                  <>
-                    <p className="text-[10px] text-[#1a1a1a]/50 font-medium mb-3">
-                      {t.download_version} {VERSION} · {os.exe}
-                    </p>
+                  ) : (
                     <a
                       href={`${RELEASES_URL}/latest`}
-                      className="inline-flex items-center gap-1.5 mag-btn bg-[#E3350D] text-white text-xs font-black uppercase px-4 py-2 tracking-wider"
+                      className="inline-flex items-center gap-1.5 mt-2 px-4 py-2 text-xs font-black bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] hover:translate-x-0.5 hover:translate-y-0.5 transition-all uppercase"
                     >
                       <Download className="w-3.5 h-3.5" />
-                      {t.download_cta} {t[os.labelKey]}
+                      {t.download_cta} {os.exe}
                     </a>
-                  </>
-                )}
+                  )}
+                </div>
+                <p className="text-[9px] font-bold text-zinc-400 uppercase">
+                  {t.download_version}: {VERSION}
+                </p>
               </div>
-            )
-          })}
-        </div>
+            ))}
+          </div>
+        </section>
 
-        {/* Requirements */}
-        <div className="mag-card p-6" style={{ background: "white" }}>
-          <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a] mb-3 flex items-center gap-2">
-            <Monitor className="w-4 h-4 text-[#E3350D]" />
+        {/* ─── Requirements ─── */}
+        <div className="mag-card p-6 space-y-2">
+          <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
             {t.download_requirements}
           </h3>
-          <p className="text-sm font-medium text-[#1a1a1a]/60 leading-relaxed">
+          <p className="text-[11px] font-bold text-zinc-500 leading-relaxed">
             {t.download_requirements_list}
           </p>
         </div>
 
-        {/* Source Code */}
-        <div className="mag-card p-6 text-center" style={{ background: "white" }}>
-          <Github className="w-8 h-8 mx-auto mb-2 text-[#1a1a1a]" />
-          <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a] mb-1">
-            {t.download_source}
-          </h3>
-          <p className="text-xs text-[#1a1a1a]/50 font-medium mb-3">
-            {t.download_source_desc}
-          </p>
+        {/* ─── Source Code ─── */}
+        <div className="mag-card p-6 space-y-4 text-center">
+          <Github className="w-8 h-8 mx-auto text-[#1a1a1a]" />
+          <div>
+            <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
+              {t.download_source}
+            </h3>
+            <p className="text-[11px] font-bold text-zinc-500 mt-1">
+              {t.download_source_desc}
+            </p>
+          </div>
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mag-btn bg-[#1a1a1a] text-[#FFCC00] text-xs font-black uppercase px-5 py-2.5 tracking-wider"
+            className="inline-flex items-center gap-2 px-5 py-2.5 mag-btn bg-[#1a1a1a] text-[#FFCC00] text-xs"
           >
-            <Github className="w-3.5 h-3.5" />
-            GitHub
+            <Github className="w-4 h-4" />
+            View on GitHub
             <ExternalLink className="w-3 h-3" />
           </a>
         </div>
 
-        {/* Web CTA */}
-        <div className="text-center pb-8">
-          <p className="text-xs text-[#1a1a1a]/50 font-medium">
-            {t.download_also_web}{" "}
-            <Link href="/" className="font-black text-[#E3350D] hover:underline uppercase tracking-wider">
-              medaclawarena.com
-            </Link>
-          </p>
+        {/* ─── Back to Arena ─── */}
+        <div className="text-center pb-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-8 py-4 mag-btn bg-[#FFCC00] text-[#1a1a1a] text-sm font-black uppercase"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Play Now in Browser
+          </Link>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t-4 border-[#1a1a1a] bg-[#FFCC00]/10 py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-[10px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">
-            {t.siteFooterTribute}
+      <footer className="bg-[#1a1a1a] border-t-4 border-[#FFCC00] mt-auto">
+        <div className="max-w-7xl mx-auto px-4 py-3 text-center">
+          <p className="text-[10px] font-bold text-zinc-400">
+            Trading Tazos Game &copy; {new Date().getFullYear()} MedaClaw Arena
           </p>
         </div>
       </footer>
