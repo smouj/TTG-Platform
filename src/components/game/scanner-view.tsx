@@ -610,7 +610,7 @@ export function ScannerView() {
                 </div>
                 <item.icon className="h-5 w-5 text-black" />
                 <p className="text-xs font-black">{item.title}</p>
-                <p className="text-[10px] font-semibold text-black/60">{item.desc}</p>
+                <p className="text-[10px] font-bold text-black/60">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -717,7 +717,7 @@ export function ScannerView() {
                     <span className="font-black">
                       Region {index + 1}
                       <br />
-                      <span className="font-semibold text-black/50">
+                      <span className="font-bold text-black/50">
                         {region.width}×{region.height}
                       </span>
                     </span>
@@ -795,7 +795,7 @@ export function ScannerView() {
                           placeholder="Enter tazo name..."
                           value={tazo.name}
                           onChange={(e) => updateExtractedTazo(tazo.id, 'name', e.target.value)}
-                          className="h-9 w-full rounded-md border-3 border-black bg-white px-3 text-sm font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[1px] focus:translate-y-[1px] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                          className="h-9 w-full rounded-md border-3 border-black bg-white px-3 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[1px] focus:translate-y-[1px] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-yellow-400"
                         />
                       </div>
 
@@ -814,7 +814,7 @@ export function ScannerView() {
                             updateExtractedTazo(tazo.id, 'combatType', '')
                           }}
                         >
-                          <SelectTrigger className="h-9 border-3 border-black bg-white font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                          <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                             <SelectValue placeholder="Select franchise" />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">
@@ -835,7 +835,7 @@ export function ScannerView() {
                           value={tazo.collectionId}
                           onValueChange={(val) => updateExtractedTazo(tazo.id, 'collectionId', val)}
                         >
-                          <SelectTrigger className="h-9 border-3 border-black bg-white font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                          <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                             <SelectValue placeholder="Select collection" />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">
@@ -856,7 +856,7 @@ export function ScannerView() {
                           value={tazo.combatType}
                           onValueChange={(val) => updateExtractedTazo(tazo.id, 'combatType', val)}
                         >
-                          <SelectTrigger className="h-9 border-3 border-black bg-white font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                          <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                             <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">
@@ -877,7 +877,7 @@ export function ScannerView() {
                           value={tazo.rarity}
                           onValueChange={(val) => updateExtractedTazo(tazo.id, 'rarity', val)}
                         >
-                          <SelectTrigger className="h-9 border-3 border-black bg-white font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                          <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">
@@ -898,7 +898,7 @@ export function ScannerView() {
                           value={tazo.condition}
                           onValueChange={(val) => updateExtractedTazo(tazo.id, 'condition', val)}
                         >
-                          <SelectTrigger className="h-9 border-3 border-black bg-white font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                          <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">
@@ -919,7 +919,7 @@ export function ScannerView() {
                           value={tazo.physicalType}
                           onValueChange={(val) => updateExtractedTazo(tazo.id, 'physicalType', val)}
                         >
-                          <SelectTrigger className="h-9 border-3 border-black bg-white font-semibold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                          <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">

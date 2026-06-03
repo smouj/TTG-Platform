@@ -63,7 +63,7 @@ export default function LoginPage() {
             {/* Badge */}
             <div className="text-center space-y-1">
               <span className="inline-block bg-[#E3350D] text-white text-[10px] font-black px-3 py-1 border-2 border-[#1a1a1a] uppercase tracking-widest shadow-[2px_2px_0px_#1a1a1a]">
-                ★ {t.auth_login_subtitle} ★
+                {t.auth_login_subtitle}
               </span>
             </div>
 

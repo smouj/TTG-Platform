@@ -56,6 +56,12 @@ echo "📤 [4b/6] Fixing DATABASE_URL..."
 ssh "$VPS_HOST" "sed -i 's|DATABASE_URL=.*|DATABASE_URL=\"file:$VPS_DIR/prisma/dev.db\"|' $VPS_DIR/.env"
 echo "✅ DATABASE_URL = file:$VPS_DIR/prisma/dev.db"
 
+# 5c. Fix DATABASE_URL in standalone .env too (Next.js standalone reads from here)
+echo ""
+echo "[4c/6] Fixing standalone DATABASE_URL..."
+ssh "" "sed -i 's|DATABASE_URL=.*|DATABASE_URL=\"file:/prisma/dev.db\"|' /.next/standalone/Trading-Tazos-Game/.env"
+echo "Standalone DATABASE_URL fixed"
+
 # 6. Sync public assets (logos, tazos, etc.)
 echo ""
 echo "📤 [5/6] Syncing public assets..."

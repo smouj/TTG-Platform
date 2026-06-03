@@ -1,16 +1,17 @@
 // ============================================================
 // Trading Tazos Game — Quests Page
 // Daily, Weekly, Special quests with progress tracking.
+// Wrapped in MagazinePageShell for consistent masthead + tabs.
 // ============================================================
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
-import Link from "next/link"
+import MagazinePageShell from "@/components/magazine-page-shell"
 import {
   Target, Swords, ShoppingBag, Package, Layers, Crosshair,
-  Trophy, Star, Sparkles, BookOpen, Coins, Gift, ArrowLeft,
+  Star, Sparkles, BookOpen, Coins, Gift,
   Loader2, Check, Clock
 } from "lucide-react"
 
@@ -28,8 +29,10 @@ interface UserQuestData {
 
 const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
   Target, Swords, ShoppingBag, Package, Layers, Crosshair,
-  Trophy, Star, Sparkles, BookOpen, Coins, Gift,
+  Star, Sparkles, BookOpen, Coins, Gift,
 }
+
+function catText(c: string) { return { beginner: "text-green-600", daily: "text-blue-600", weekly: "text-purple-600", special: "text-amber-600" }[c] || "text-zinc-600" }
 
 const CATEGORY_COLORS: Record<string, string> = {
   beginner: "#22C55E",
@@ -37,10 +40,6 @@ const CATEGORY_COLORS: Record<string, string> = {
   weekly: "#A855F7",
   special: "#F59E0B",
 }
-
-function catBg(c: string) { return { beginner: "bg-green-50", daily: "bg-blue-50", weekly: "bg-purple-50", special: "bg-amber-50" }[c] || "bg-zinc-50" }
-function catText(c: string) { return { beginner: "text-green-600", daily: "text-blue-600", weekly: "text-purple-600", special: "text-amber-600" }[c] || "text-zinc-600" }
-function catBorder(c: string) { return { beginner: "border-green-400", daily: "border-blue-400", weekly: "border-purple-400", special: "border-amber-400" }[c] || "border-zinc-400" }
 
 const CATEGORY_NAMES: Record<string, string> = {
   beginner: "Beginner",
@@ -73,11 +72,9 @@ export default function QuestsPage() {
       setUserQuests(data.userQuests || [])
     } catch { /* ignore */ }
     setLoading(false)
-     
   }, [])
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { loadQuests() }, [loadQuests])
+  useEffect(() => { loadQuests() }, [loadQuests]) // eslint-disable-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (!token) return
     fetch("/api/credits", { headers: { Authorization: `Bearer ${token}` } })
@@ -111,178 +108,176 @@ export default function QuestsPage() {
 
   if (!user) {
     return (
-      <div className="max-w-2xl mx-auto py-20 text-center space-y-6">
-        <Target className="w-16 h-16 mx-auto text-zinc-400" />
-        <h1 className="text-2xl font-black uppercase tracking-wider text-[#1a1a1a]">Quests</h1>
-        <p className="text-sm text-zinc-500">{t.auth_login} to track quests</p>
-        <Link href="/login" className="mag-btn inline-block bg-[#FFCC00] text-[#1a1a1a] font-black uppercase px-6 py-3 border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
-          {t.auth_login}
-        </Link>
-      </div>
+      <MagazinePageShell currentTab="quests">
+        <div className="max-w-2xl mx-auto py-20 text-center space-y-6">
+          <Target className="w-16 h-16 mx-auto text-zinc-400" />
+          <h1 className="text-2xl font-black uppercase tracking-wider text-[#1a1a1a]">QUESTS</h1>
+          <p className="text-sm text-zinc-500">{t.auth_login} to track quests</p>
+          <a href="/login" className="mag-btn inline-block bg-[#FFCC00] text-[#1a1a1a] font-black uppercase px-6 py-3 border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+            {t.auth_login}
+          </a>
+        </div>
+      </MagazinePageShell>
     )
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Link href="/" className="mag-btn text-xs font-black uppercase px-3 py-1.5 border-2 border-[#1a1a1a] bg-white shadow-[2px_2px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
-          <ArrowLeft className="w-3 h-3 inline mr-1" /> Back
-        </Link>
-        <h1 className="text-xl font-black uppercase tracking-wider text-[#1a1a1a] flex items-center gap-2">
-          <Target className="w-6 h-6 text-[#E3350D]" /> QUESTS
-        </h1>
-        <div className="flex items-center gap-2 px-4 py-2 bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]">
-          <Coins className="w-5 h-5 text-[#1a1a1a]" />
-          <span className="font-black text-sm text-[#1a1a1a]">{credits}</span>
+    <MagazinePageShell currentTab="quests">
+      <div className="max-w-4xl mx-auto py-6 px-4 space-y-6">
+        {/* Credits display */}
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <h2 className="text-lg font-black uppercase tracking-wider text-[#1a1a1a] flex items-center gap-2">
+            <Target className="w-5 h-5 text-[#E3350D]" /> QUESTS
+          </h2>
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]">
+            <Coins className="w-5 h-5 text-[#1a1a1a]" />
+            <span className="font-black text-sm text-[#1a1a1a]">{credits}</span>
+          </div>
         </div>
-      </div>
 
-      {/* Progress bar */}
-      <div className="mag-card bg-white p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
-            {completed}/{quests.length} QUESTS COMPLETED
-          </span>
-          <span className="font-black text-xs text-[#E3350D]">
-            {Math.round((completed / Math.max(quests.length, 1)) * 100)}%
-          </span>
+        {/* Progress bar */}
+        <div className="mag-card bg-white p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
+              {completed}/{quests.length} QUESTS COMPLETED
+            </span>
+            <span className="font-black text-xs text-[#E3350D]">
+              {Math.round((completed / Math.max(quests.length, 1)) * 100)}%
+            </span>
+          </div>
+          <div className="w-full h-3 bg-zinc-200 border-2 border-[#1a1a1a] overflow-hidden">
+            <div
+              className="h-full bg-[#FFCC00] transition-all duration-300"
+              style={{ width: `${Math.round((completed / Math.max(quests.length, 1)) * 100)}%` }}
+            />
+          </div>
         </div>
-        <div className="w-full h-3 bg-zinc-200 border-2 border-[#1a1a1a] overflow-hidden">
-          <div
-            className="h-full bg-[#FFCC00] transition-all duration-300"
-            style={{ width: `${Math.round((completed / Math.max(quests.length, 1)) * 100)}%` }}
-          />
+
+        {/* Category tabs */}
+        <div className="flex gap-2 flex-wrap">
+          {["all", "beginner", "daily", "weekly", "special"].map(cat => (
+            <button
+              key={cat}
+              onClick={() => setCategory(cat)}
+              className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider border-2 transition-all ${
+                category === cat
+                  ? "bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
+                  : "bg-white text-[#1a1a1a] border-zinc-300 shadow-[2px_2px_0px_#1a1a1a] hover:border-[#FFCC00]"
+              }`}
+            >
+              {CATEGORY_NAMES[cat] || "All"}
+            </button>
+          ))}
         </div>
-      </div>
 
-      {/* Category tabs */}
-      <div className="flex gap-2 flex-wrap">
-        {["all", "beginner", "daily", "weekly", "special"].map(cat => (
-          <button
-            key={cat}
-            onClick={() => setCategory(cat)}
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider border-2 transition-all ${
-              category === cat
-                ? "bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
-                : "bg-white text-[#1a1a1a] border-zinc-300 shadow-[2px_2px_0px_#1a1a1a] hover:border-[#FFCC00]"
-            }`}
-          >
-            {CATEGORY_NAMES[cat] || "All"}
-          </button>
-        ))}
-      </div>
+        {/* Quest cards */}
+        {loading ? (
+          <div className="text-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#FFCC00]" />
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filtered.map(q => {
+              const uq = getUQ(q.id)
+              const IconComp = ICON_MAP[q.icon] || Target
+              const catColor = CATEGORY_COLORS[q.category] || "#FFCC00"
+              const diffBadge = DIFFICULTY_BADGES[q.difficulty] || DIFFICULTY_BADGES.easy
+              const progress = uq?.progress || 0
+              const isComplete = uq?.completed || false
+              const isClaimed = uq?.claimed || false
 
-      {/* Quest cards */}
-      {loading ? (
-        <div className="text-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#FFCC00]" />
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map(q => {
-            const uq = getUQ(q.id)
-            const IconComp = ICON_MAP[q.icon] || Target
-            const catColor = CATEGORY_COLORS[q.category] || "#FFCC00"
-            const diffBadge = DIFFICULTY_BADGES[q.difficulty] || DIFFICULTY_BADGES.easy
-            const progress = uq?.progress || 0
-            const isComplete = uq?.completed || false
-            const isClaimed = uq?.claimed || false
-
-            return (
-              <div
-                key={q.id}
-                className={`mag-card bg-white p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-4 transition-all ${
-                  isClaimed ? "opacity-60" : ""
-                }`}
-              >
-                {/* Icon */}
+              return (
                 <div
-                  className="w-12 h-12 shrink-0 flex items-center justify-center border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
-                  style={{ backgroundColor: catColor + "20" } as React.CSSProperties}
-// @ts-ignore
+                  key={q.id}
+                  className={`mag-card bg-white p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-4 transition-all ${
+                    isClaimed ? "opacity-60" : ""
+                  }`}
                 >
-                  <IconComp className={`w-6 h-6 ${catText(q.category)}`} />
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">
-                      {q.title}
-                    </h3>
-                    <span
-// @ts-ignore
-                      className="px-2 py-0.5 text-[8px] font-black uppercase border"
-                      style={{ borderColor: catColor, color: catColor } as React.CSSProperties}
-                    >
-                      {CATEGORY_NAMES[q.category]}
-                    </span>
-                    <span
-// @ts-ignore
-                      className="px-2 py-0.5 text-[8px] font-black uppercase text-white"
-                      style={{ backgroundColor: diffBadge.color, borderColor: diffBadge.color } as React.CSSProperties}
-                    >
-                      {diffBadge.label}
-                    </span>
+                  {/* Icon */}
+                  <div
+                    className="w-12 h-12 shrink-0 flex items-center justify-center border-3 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
+                    style={{ backgroundColor: catColor + "20" }}
+                  >
+                    <IconComp className={`w-6 h-6 ${catText(q.category)}`} />
                   </div>
-                  <p className="text-xs text-zinc-500 font-medium mt-1">{q.description}</p>
-                  <div className="flex items-center gap-3 mt-2 text-[10px] font-bold">
-                    <span className="flex items-center gap-1 text-[#F59E0B]">
-                      <Coins className="w-3.5 h-3.5" /> +{q.rewardCredits} credits
-                    </span>
-                    {q.rewardTazoId && (
-                      <span className="flex items-center gap-1 text-[#A855F7]">
-                        <Gift className="w-3.5 h-3.5" /> +1 Tazo
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">
+                        {q.title}
+                      </h3>
+                      <span
+                        className="px-2 py-0.5 text-[8px] font-black uppercase border"
+                        style={{ borderColor: catColor, color: catColor }}
+                      >
+                        {CATEGORY_NAMES[q.category]}
+                      </span>
+                      <span
+                        className="px-2 py-0.5 text-[8px] font-black uppercase text-white"
+                        style={{ backgroundColor: diffBadge.color }}
+                      >
+                        {diffBadge.label}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-500 font-bold mt-1">{q.description}</p>
+                    <div className="flex items-center gap-3 mt-2 text-[10px] font-black">
+                      <span className="flex items-center gap-1 text-[#F59E0B]">
+                        <Coins className="w-3.5 h-3.5" /> +{q.rewardCredits} credits
+                      </span>
+                      {q.rewardTazoId && (
+                        <span className="flex items-center gap-1 text-[#A855F7]">
+                          <Gift className="w-3.5 h-3.5" /> +1 Tazo
+                        </span>
+                      )}
+                    </div>
+                    {/* Progress bar */}
+                    {!isClaimed && (
+                      <div className="mt-2 flex items-center gap-2">
+                        <div className="flex-1 h-2 bg-zinc-200 border border-zinc-300 overflow-hidden">
+                          <div
+                            className="h-full transition-all duration-300"
+                            style={{
+                              width: `${Math.min(100, Math.round((progress / q.target) * 100))}%`,
+                              backgroundColor: isComplete ? "#22C55E" : "#FFCC00",
+                            }}
+                          />
+                        </div>
+                        <span className="text-[10px] font-black text-[#1a1a1a]">{progress}/{q.target}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action */}
+                  <div className="shrink-0">
+                    {isClaimed ? (
+                      <span className="flex items-center gap-1 text-[10px] font-black uppercase text-[#22C55E]">
+                        <Check className="w-4 h-4" /> Claimed
+                      </span>
+                    ) : isComplete ? (
+                      <button
+                        onClick={() => handleClaim(q.id)}
+                        disabled={claiming === q.id}
+                        className="mag-btn px-5 py-2 font-black text-xs uppercase bg-[#FFCC00] text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50"
+                      >
+                        {claiming === q.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "CLAIM"}
+                      </button>
+                    ) : (
+                      <span className="flex items-center gap-1 text-[10px] font-black text-zinc-400">
+                        <Clock className="w-3.5 h-3.5" /> In progress
                       </span>
                     )}
                   </div>
-                  {/* Progress bar */}
-                  {!isClaimed && (
-                    <div className="mt-2 flex items-center gap-2">
-                      <div className="flex-1 h-2 bg-zinc-200 border border-zinc-300 overflow-hidden">
-                        <div
-                          className="h-full transition-all duration-300"
-                          style={{
-                            width: `${Math.min(100, Math.round((progress / q.target) * 100))}%`,
-                            backgroundColor: isComplete ? "#22C55E" : "#FFCC00",
-                          }}
-                        />
-                      </div>
-                      <span className="text-[10px] font-black text-[#1a1a1a]">{progress}/{q.target}</span>
-                    </div>
-                  )}
                 </div>
+              )
+            })}
 
-                {/* Action */}
-                <div className="shrink-0">
-                  {isClaimed ? (
-                    <span className="flex items-center gap-1 text-[10px] font-black uppercase text-[#22C55E]">
-                      <Check className="w-4 h-4" /> Claimed
-                    </span>
-                  ) : isComplete ? (
-                    <button
-                      onClick={() => handleClaim(q.id)}
-                      disabled={claiming === q.id}
-                      className="mag-btn px-5 py-2 font-black text-xs uppercase bg-[#FFCC00] text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50"
-                    >
-                      {claiming === q.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "CLAIM"}
-                    </button>
-                  ) : (
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-zinc-400">
-                      <Clock className="w-3.5 h-3.5" /> In progress
-                    </span>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-
-          {filtered.length === 0 && (
-            <p className="text-center text-sm text-zinc-400 py-8">No quests in this category</p>
-          )}
-        </div>
-      )}
-    </div>
+            {filtered.length === 0 && (
+              <p className="text-center text-sm text-zinc-400 py-8">No quests in this category</p>
+            )}
+          </div>
+        )}
+      </div>
+    </MagazinePageShell>
   )
 }

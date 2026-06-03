@@ -106,7 +106,7 @@ export default function Home() {
             )}
           </div>
           <span className="text-[10px] sm:text-xs font-black tracking-[3px] uppercase text-[#FFCC00]">
-            ★ {t.siteMastheadBadge} ★
+            {t.siteMastheadBadge}
           </span>
           <div className="flex-1 flex justify-end">
             <LanguageSwitcher />
@@ -135,7 +135,7 @@ export default function Home() {
               </h1>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span
-                  className="text-lg sm:text-2xl lg:text-3xl font-black italic mag-stroke-red leading-none"
+                  className="text-lg sm:text-2xl lg:text-3xl font-black mag-stroke-red leading-none"
                   style={{ WebkitTextStroke: '2px #1a1a1a' }}
                 >
                   {t.siteSubtitle}
@@ -151,7 +151,7 @@ export default function Home() {
               <div className="speech-bubble text-[10px]">
                 {t.siteTagline}
               </div>
-              <span className="text-[9px] font-bold text-[#1a1a1a]/60 italic">
+              <span className="text-[9px] font-bold text-[#1a1a1a]/60">
                 Issue #001 — 2025 Edition
               </span>
             </div>
@@ -198,7 +198,7 @@ export default function Home() {
                   <span>{label}</span>
                   {isActive && (
                     <span className="hidden sm:inline text-[8px] bg-[#E3350D] text-white rounded-full w-4 h-4 flex items-center justify-center border border-[#1a1a1a]">
-                      ★
+
                     </span>
                   )}
                 </button>
@@ -209,7 +209,7 @@ export default function Home() {
       </header>
 
       {/* ===== MAIN CONTENT - Magazine Pages ===== */}
-      <main className={`flex-1 max-w-7xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-6 ${activeView === 'battle' || activeView === 'stats' ? 'min-h-0 overflow-hidden flex' : ''}`}>
+      <main className={`flex-1 max-w-7xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-6 ${activeView === 'battle' ? 'min-h-0 overflow-hidden flex' : ''}`}>
         {activeView === 'album' && (
           <AlbumView onStatsUpdate={handleStatsUpdate} />
         )}

@@ -139,7 +139,7 @@ export default function DecksPage() {
             </div>
             {error && <p className="text-sm font-bold text-[#E3350D] mt-2">{error}</p>}
             <p className="text-[10px] font-bold text-[#1a1a1a]/50 mt-2 uppercase tracking-wider">
-              ✨ {t.decks_select_tazos} — {t.decks_min_tazos}
+              ${t.decks_select_tazos} -- {t.decks_select_tazos} — {t.decks_min_tazos}
             </p>
           </div>
         )}

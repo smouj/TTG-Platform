@@ -421,7 +421,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
               </div>
               {tazo.skillDesc && (
                 <p
-                  className="text-xs italic font-semibold pl-7"
+                  className="text-xs font-bold pl-7"
                   style={{ color: '#1a1a1aCC' }}
                 >
                   {tazo.skillDesc}

@@ -297,7 +297,7 @@ export function TazoEditor({ tazo, onClose, onSave, onDelete }: TazoEditorProps)
       {/* Header */}
       <div className="flex items-center justify-between border-b px-4 py-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">Edit Tazo</h2>
+          <h2 className="text-lg font-bold">Edit Tazo</h2>
           {hasChanges && (
             <Badge variant="outline" className="text-xs text-amber-500 border-amber-500/30">
               Unsaved changes

@@ -390,7 +390,7 @@ export function AddTazoDialog({ onCreated }: AddTazoDialogProps) {
 
           {/* Stats */}
           <div className="space-y-3">
-            <Label className="text-xs font-semibold">Stats</Label>
+            <Label className="text-xs font-bold">Stats</Label>
             {STAT_CONFIG.map(({ key, label, icon: Icon, color }) => (
               <div key={key} className="space-y-1">
                 <div className="flex items-center justify-between">
@@ -418,7 +418,7 @@ export function AddTazoDialog({ onCreated }: AddTazoDialogProps) {
 
           {/* Skill */}
           <div className="space-y-3">
-            <Label className="text-xs font-semibold">Skill</Label>
+            <Label className="text-xs font-bold">Skill</Label>
             <div className="space-y-1.5">
               <Input
                 value={form.skill}
@@ -446,7 +446,7 @@ export function AddTazoDialog({ onCreated }: AddTazoDialogProps) {
               className="flex w-full items-center justify-between"
               onClick={() => setShowAdvanced(!showAdvanced)}
             >
-              <Label className="text-xs font-semibold">Evolution & Transform</Label>
+              <Label className="text-xs font-bold">Evolution & Transform</Label>
               {showAdvanced ? (
                 <ChevronUp className="h-4 w-4 text-muted-foreground" />
               ) : (

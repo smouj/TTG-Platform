@@ -67,10 +67,10 @@ export default function RegisterPage() {
             {/* Badge */}
             <div className="text-center space-y-1">
               <span className="inline-block bg-[#FFCC00] text-[#1a1a1a] text-[10px] font-black px-3 py-1 border-2 border-[#1a1a1a] uppercase tracking-widest shadow-[2px_2px_0px_#1a1a1a]">
-                ★ {t.auth_register_subtitle} ★
+                {t.auth_register_subtitle}
               </span>
               <p className="text-[10px] font-bold text-[#22C55E] uppercase tracking-wider">
-                ✨ {t.auth_register_subtitle}
+                {t.auth_register_subtitle}
               </p>
             </div>
 
