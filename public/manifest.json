@@ -63,6 +63,14 @@
       "short_name": "Shop",
       "url": "/app/shop"
     }
+      {
+      "name": "Album",
+      "url": "/app/album"
+    },
+    {
+      "name": "Battle",
+      "url": "/app/battle"
+    },
   ],
   "related_applications": [
     {

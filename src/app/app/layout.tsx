@@ -4,11 +4,16 @@ import { usePathname } from "next/navigation"
 import MagazinePageShell from "@/components/magazine-page-shell"
 
 const PATH_TO_TAB: Record<string, string> = {
-  "/app": "album",
+  "/app/album": "album",
+  "/app/battle": "battle",
+  "/app/scanner": "scanner",
+  "/app/stats": "stats",
   "/app/shop": "shop",
   "/app/quests": "quests",
   "/app/collection": "collection",
   "/app/decks": "decks",
+  "/app/leaderboard": "leaderboard",
+  "/app/download": "download",
 }
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -23,5 +28,5 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }
 
-  return <MagazinePageShell currentTab={tab}>{children}</MagazinePageShell>
+  return <MagazinePageShell currentTab={tab as any}>{children}</MagazinePageShell>
 }

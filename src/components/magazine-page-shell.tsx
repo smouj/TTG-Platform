@@ -15,28 +15,28 @@ import {
   ShoppingBag, Download, Target, Trophy, Disc3,
 } from "lucide-react"
 
-type TabId = "album" | "battle" | "scanner" | "stats" | "shop" | "quests" | "leaderboard" | "download"
+type TabId = "album" | "battle" | "scanner" | "stats" | "shop" | "quests" | "collection" | "decks" | "leaderboard" | "download"
 
-const NAV_ITEMS: { id: TabId; labelKey?: string; fallbackLabel: string; icon: typeof BookOpen; href: string; external?: boolean }[] = [
-  { id: "album", labelKey: "tabAlbum", fallbackLabel: "Album", icon: BookOpen, href: "/app" },
-  { id: "battle", labelKey: "tabBattle", fallbackLabel: "Battle!", icon: Swords, href: "/app?tab=battle" },
-  { id: "scanner", labelKey: "tabScanner", fallbackLabel: "Scanner", icon: Scan, href: "/app?tab=scanner" },
-  { id: "stats", labelKey: "tabStats", fallbackLabel: "Stats", icon: BarChart3, href: "/app?tab=stats" },
-  { id: "shop", fallbackLabel: "Shop", icon: ShoppingBag, href: "/shop", external: true },
-  { id: "quests", fallbackLabel: "Quests", icon: Target, href: "/quests", external: true },
-  { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/leaderboard", external: true },
-  { id: "download", fallbackLabel: "Desktop", icon: Download, href: "/download", external: true },
+const NAV_ITEMS: { id: TabId; labelKey?: string; fallbackLabel: string; icon: typeof BookOpen; href: string }[] = [
+  { id: "album", labelKey: "tabAlbum", fallbackLabel: "Album", icon: BookOpen, href: "/app/album" },
+  { id: "battle", labelKey: "tabBattle", fallbackLabel: "Battle!", icon: Swords, href: "/app/battle" },
+  { id: "scanner", labelKey: "tabScanner", fallbackLabel: "Scanner", icon: Scan, href: "/app/scanner" },
+  { id: "stats", labelKey: "tabStats", fallbackLabel: "Stats", icon: BarChart3, href: "/app/stats" },
+  { id: "shop", fallbackLabel: "Shop", icon: ShoppingBag, href: "/app/shop" },
+  { id: "quests", fallbackLabel: "Quests", icon: Target, href: "/app/quests" },
+  { id: "collection", fallbackLabel: "Collection", icon: Disc3, href: "/app/collection" },
+  { id: "decks", fallbackLabel: "Decks", icon: Disc3, href: "/app/decks" },
+  { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/app/leaderboard" },
+  { id: "download", fallbackLabel: "Desktop", icon: Download, href: "/app/download" },
 ]
 
 export default function MagazinePageShell({
   children,
   currentTab,
-  onTabChange,
   showFooter = true,
 }: {
   children: React.ReactNode
   currentTab?: TabId
-  onTabChange?: (tab: TabId) => void
   showFooter?: boolean
 }) {
   const { t } = useI18n()
@@ -153,35 +153,14 @@ export default function MagazinePageShell({
         {/* ===== TAB BAR ===== */}
         <nav className="max-w-7xl mx-auto px-4 pb-0" role="tablist" aria-label="Game views">
           <div className="flex gap-1 sm:gap-2">
-            {NAV_ITEMS.map(({ id, labelKey, fallbackLabel, icon: Icon, href, external }) => {
+            {NAV_ITEMS.map(({ id, labelKey, fallbackLabel, icon: Icon, href }) => {
               const isActive = currentTab === id
               const label = (labelKey ? (t as any)[labelKey] : null) || fallbackLabel
 
-              // For external tabs (or all tabs when no onTabChange handler), use Link
-              if (external || !onTabChange) {
-                return (
-                  <Link
-                    key={id}
-                    href={href}
-                    className={`flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 font-black text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-150 ${
-                      isActive
-                        ? "mag-tab mag-tab-active bg-[#FFCC00] text-[#1a1a1a] rounded-t-lg -mb-[1px]"
-                        : "mag-tab bg-white/80 text-[#1a1a1a]/60 rounded-t-lg border-2 border-b-0 border-[#1a1a1a]/20 hover:bg-white hover:text-[#1a1a1a] hover:border-[#1a1a1a]/40"
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span>{label}</span>
-                  </Link>
-                )
-              }
-
-              // Internal tabs (when onTabChange provided) — use button for client-side nav
               return (
-                <button
+                <Link
                   key={id}
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => onTabChange(id)}
+                  href={href}
                   className={`flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 font-black text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-150 ${
                     isActive
                       ? "mag-tab mag-tab-active bg-[#FFCC00] text-[#1a1a1a] rounded-t-lg -mb-[1px]"
@@ -190,12 +169,7 @@ export default function MagazinePageShell({
                 >
                   <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   <span>{label}</span>
-                  {isActive && (
-                    <span className="hidden sm:inline-flex items-center justify-center text-[8px] bg-[#E3350D] text-white rounded-full w-4 h-4 border border-[#1a1a1a]">
-                      {/* bullet */}
-                    </span>
-                  )}
-                </button>
+                </Link>
               )
             })}
           </div>

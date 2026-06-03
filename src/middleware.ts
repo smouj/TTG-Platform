@@ -14,6 +14,12 @@ const LEGACY_PAGES: Record<string, string> = {
   "/quests": "/app/quests",
   "/collection": "/app/collection",
   "/decks": "/app/decks",
+  "/album": "/app/album",
+  "/battle": "/app/battle",
+  "/scanner": "/app/scanner",
+  "/stats": "/app/stats",
+  "/leaderboard": "/app/leaderboard",
+  "/download": "/app/download",
 }
 
 // Pages that redirect to home if already logged in
@@ -48,7 +54,7 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Protected pages
+    // 🔒 Protected pages
     "/app/shop",
     "/app/shop/:path*",
     "/app/quests",
@@ -66,6 +72,17 @@ export const config = {
     "/collection/:path*",
     "/decks",
     "/decks/:path*",
+    "/album",
+    "/battle",
+    "/battle/:path*",
+    "/scanner",
+    "/scanner/:path*",
+    "/stats",
+    "/stats/:path*",
+    "/leaderboard",
+    "/leaderboard/:path*",
+    "/download",
+    "/download/:path*",
     // Auth pages
     "/login",
     "/register",
