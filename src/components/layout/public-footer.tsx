@@ -16,8 +16,8 @@ const columns = [
     links: [
       ["Sign In", "/login"],
       ["Create Account", "/register"],
-      ["Shop", "/app/shop"],
-      ["Quests", "/app/quests"],
+      ["Shop", "/app?tab=shop"],
+      ["Quests", "/app?tab=quests"],
       ["Download", "/app/download"],
     ],
   },

@@ -18,16 +18,16 @@ import {
 type TabId = "album" | "battle" | "scanner" | "stats" | "shop" | "quests" | "collection" | "decks" | "leaderboard" | "download"
 
 const NAV_ITEMS: { id: TabId; labelKey?: string; fallbackLabel: string; icon: typeof BookOpen; href: string }[] = [
-  { id: "album", labelKey: "tabAlbum", fallbackLabel: "Album", icon: BookOpen, href: "/app/album" },
-  { id: "battle", labelKey: "tabBattle", fallbackLabel: "Battle!", icon: Swords, href: "/app/battle" },
-  { id: "scanner", labelKey: "tabScanner", fallbackLabel: "Scanner", icon: Scan, href: "/app/scanner" },
-  { id: "stats", labelKey: "tabStats", fallbackLabel: "Stats", icon: BarChart3, href: "/app/stats" },
-  { id: "shop", fallbackLabel: "Shop", icon: ShoppingBag, href: "/app/shop" },
-  { id: "quests", fallbackLabel: "Quests", icon: Target, href: "/app/quests" },
-  { id: "collection", fallbackLabel: "Collection", icon: Disc3, href: "/app/collection" },
-  { id: "decks", fallbackLabel: "Decks", icon: Disc3, href: "/app/decks" },
-  { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/app/leaderboard" },
-  { id: "download", fallbackLabel: "Desktop", icon: Download, href: "/app/download" },
+  { id: "album", labelKey: "tabAlbum", fallbackLabel: "Album", icon: BookOpen, href: "/app" },
+  { id: "battle", labelKey: "tabBattle", fallbackLabel: "Battle!", icon: Swords, href: "/app?tab=battle" },
+  { id: "scanner", labelKey: "tabScanner", fallbackLabel: "Scanner", icon: Scan, href: "/app?tab=scanner" },
+  { id: "stats", labelKey: "tabStats", fallbackLabel: "Stats", icon: BarChart3, href: "/app?tab=stats" },
+  { id: "shop", fallbackLabel: "Shop", icon: ShoppingBag, href: "/app?tab=shop" },
+  { id: "quests", fallbackLabel: "Quests", icon: Target, href: "/app?tab=quests" },
+  { id: "collection", fallbackLabel: "Collection", icon: Disc3, href: "/app?tab=collection" },
+  { id: "decks", fallbackLabel: "Decks", icon: Disc3, href: "/app?tab=decks" },
+  { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/leaderboard" },
+  { id: "download", fallbackLabel: "Desktop", icon: Download, href: "/download" },
 ]
 
 export default function MagazinePageShell({
