@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://medaclawarena.com";
 const SITE_NAME = "Trading Tazos Game";
 const SITE_DESC =
-  "Collect, trade & battle with 319 classic tazos from Minimon, Draco Bell and Cybermon. Real-time physics arena with 9 combat stats, multiplayer PvP, and digital album scanning.";
+  "Collect, trade & battle with 319 classic tazos from Minimon, Dracobell and Cybermon. Real-time physics arena with 9 combat stats, multiplayer PvP, and digital album scanning.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
       url: `${SITE_URL}/logo/social-preview.png`,
       width: 1200,
       height: 630,
-      alt: "Trading Tazos Game — 319 tazos from Minimon, Draco Bell & Cybermon",
+      alt: "Trading Tazos Game — 319 tazos from Minimon, Dracobell & Cybermon",
     }],
   },
   twitter: {

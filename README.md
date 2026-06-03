@@ -33,17 +33,21 @@ Trading Tazos Game is a browser-based physical tazo (pog) battle game. You don't
 
 <div align="center">
 
-| Home (Album) | Shop (Auth) | Quests (Auth) |
+| Landing Page | Shop (Auth) | Quests (Auth) |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/home.png" width="320" alt="Magazine-style landing with masthead and franchise tabs"> | <img src="docs/screenshots/shop.png" width="320" alt="3D chip bag shop with tear animation"> | <img src="docs/screenshots/quests.png" width="320" alt="Daily and weekly quests with progress bars"> |
+| <img src="docs/screenshots/home.png" width="320" alt="Magazine-style landing with hero and collections"> | <img src="docs/screenshots/shop.png" width="320" alt="3D chip bag shop with tear animation"> | <img src="docs/screenshots/quests.png" width="320" alt="Daily and weekly quests with progress bars"> |
 
 | Leaderboard | Download | Sign In |
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/leaderboard.png" width="320" alt="Global rankings by credits, tazos, and battles"> | <img src="docs/screenshots/download.png" width="320" alt="Desktop app downloads for Windows, macOS, Linux"> | <img src="docs/screenshots/login.png" width="320" alt="Magazine-themed login and registration"> |
 
-| Collection (Auth) | Decks (Auth) | Battle Arena |
+| App Tabs — Album | App Tabs — Battle | App Tabs — Scanner |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/collection.png" width="320" alt="Personal tazo collection with stats"> | <img src="docs/screenshots/decks.png" width="320" alt="Deck builder with active deck management"> | <img src="docs/screenshots/battle.png" width="320" alt="Canvas 2D physics battle with aim controls"> |
+| <img src="docs/screenshots/collection.png" width="320" alt="Album tab — filterable tazo grid"> | <img src="docs/screenshots/battle.png" width="320" alt="Canvas 2D physics battle with aim controls"> | <img src="docs/screenshots/scanner.png" width="320" alt="Upload → crop → detect physical tazo"> |
+
+| Collection (Auth) | Decks (Auth) | Stats (App Tab) |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/collection.png" width="320" alt="Personal tazo collection with stats"> | <img src="docs/screenshots/decks.png" width="320" alt="Deck builder with active deck management"> | <img src="docs/screenshots/stats.png" width="320" alt="Collection analytics and stats"> |
 
 </div>
 
@@ -193,14 +197,24 @@ Trading-Tazos-Game/
 ├── src/
 │   ├── middleware.ts         # Auth route protection
 │   ├── app/
-│   │   ├── page.tsx          # Home (album + 8-tab masthead)
+│   │   ├── page.tsx          # Landing page (hero, collections, CTAs)
 │   │   ├── layout.tsx        # Root layout (SEO, PWA, JSON-LD, i18n)
+│   │   ├── app/              # 🎮 Game tabs (album, battle, scanner, stats)
 │   │   ├── collection/       # Personal tazo collection
 │   │   ├── decks/            # Deck builder + active deck switcher
 │   │   ├── shop/             # 3D bag shop (buy → open → reveal)
 │   │   ├── quests/           # Quest system (daily, weekly, special)
 │   │   ├── leaderboard/      # Global rankings
 │   │   ├── download/         # Desktop app downloads
+│   │   ├── how-to-play/      # Public SEO page — game guide
+│   │   ├── battle-system/    # Public SEO page — combat mechanics
+│   │   ├── collections/      # Public SEO pages — franchise showcases
+│   │   ├── tazos/            # Public catalog + rarity tiers
+│   │   ├── faq/              # Public FAQ page
+│   │   ├── terms/            # Legal pages
+│   │   ├── privacy/          #
+│   │   ├── cookies/          #
+│   │   ├── disclaimer/       #
 │   │   ├── login/            # Auth pages
 │   │   ├── register/         #
 │   │   └── api/              # 14 REST API route groups
@@ -227,7 +241,7 @@ Trading-Tazos-Game/
 │   ├── logo/                 # 6 logo variants + social banners
 │   ├── manifest.json         # PWA manifest
 │   ├── robots.txt            # SEO + AI crawler rules
-│   └── sitemap.xml           # 7 URLs with hreflang alternates
+│   └── sitemap.xml           # 21 URLs with hreflang alternates
 ├── THEME.md                  # Design system spec (colors, typography, components)
 ├── electron-builder.yml      # Desktop app build config
 ├── build-electron.sh         # Electron build script
@@ -367,7 +381,12 @@ tazos battle --seed 42      # Simulate a physics battle
 
 ## Changelog
 
-### v0.3.0 — 3D Shop + Quests + Desktop App (Jun 2026)
+### v0.3.0 — 3D Shop + Quests + Desktop App + Public SEO (Jun 2026)
+- 13 public SEO pages: landing, how-to-play, battle-system, collections, tazos, FAQ
+- 4 legal pages: terms, privacy, cookies, disclaimer
+- 2-shell architecture: PublicHeader (SEO/legal) + MagazinePageShell (game/auth)
+- 4 game tabs in `/app?tab=...` (album, battle, scanner, stats) with legacy redirects
+- Auth middleware with httpOnly cookies and login redirect
 - 3D chip bag shop with tear animation and rarity-based drops
 - Credit economy: battles +30cr, daily login +25cr, quests +50–200cr
 - 17 quests across 4 categories with progress tracking

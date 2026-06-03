@@ -88,7 +88,7 @@ export const MINIMON_TYPES = ["fire", "water", "grass", "electric", "psychic", "
 export const CYBERMON_TYPES = ["vaccine", "virus", "data"] as const
 export const DRACOBELL_TYPES = ["saiyan", "namekian", "android", "majin", "frieza"] as const
 
-// ---- Draco Bell Categories ----
+// ---- Dracobell Categories ----
 export const DRACOBELL_CATEGORIES = [
   "tazos",
   "supertazos_voladores",

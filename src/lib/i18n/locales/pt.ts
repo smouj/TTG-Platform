@@ -6,7 +6,7 @@ const pt: Dictionary = {
   siteIssue: "Vol.1",
   siteTagline: "Tem que virar todos!",
   siteFooterTribute: "Uma homenagem nostalgica a era dourada dos tazos",
-  siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Draco Bell are original fictional IPs for Trading Tazos Game.",
+  siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Dracobell are original fictional IPs for Trading Tazos Game.",
   siteMastheadBadge: "EXCLUSIVO — EDICAO DE COLECIONADOR",
 
   tabAlbum: "Album",

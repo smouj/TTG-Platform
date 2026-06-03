@@ -123,10 +123,10 @@ function checkTransform(
   tazo: BattleTazo,
   round: number
 ): { transformed: boolean; stage: string | null } {
-  if (!tazo.transformStage || tazo.franchise.slug !== 'dragon-ball-z') {
+  if (!tazo.transformStage || tazo.franchise.slug !== 'dracobell') {
     return { transformed: false, stage: null }
   }
-  // Draco Bell: Can transform after charging enough ki (round 3+)
+  // Dracobell: Can transform after charging enough ki (round 3+)
   if (round >= 3 && tazo.ki >= 30 && !tazo.transformActive) {
     return { transformed: true, stage: tazo.transformStage }
   }
@@ -216,9 +216,9 @@ function simulateRound(
     })
   }
 
-  // 3. Draco Bell transformations & ki charge
+  // 3. Dracobell transformations & ki charge
   for (const tazo of [...playerTazos, ...opponentTazos]) {
-    if (tazo.franchise.slug === 'dragon-ball-z') {
+    if (tazo.franchise.slug === 'dracobell') {
       // Charge ki
       const kiGain = Math.floor((tazo.precision + tazo.control) * 0.15) + Math.floor(Math.random() * 10)
       tazo.ki += kiGain

@@ -6,7 +6,7 @@ const ru: Dictionary = {
   siteIssue: "Vol.1",
   siteTagline: "Переверни их всех!",
   siteFooterTribute: "Ностальгическая дань золотой эпохе тазосов",
-  siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Draco Bell are original fictional IPs for Trading Tazos Game.",
+  siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Dracobell are original fictional IPs for Trading Tazos Game.",
   siteMastheadBadge: "ЭКСКЛЮЗИВ — КОЛЛЕКЦИОННОЕ ИЗДАНИЕ",
 
   tabAlbum: "Альбом",

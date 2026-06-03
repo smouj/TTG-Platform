@@ -1,7 +1,7 @@
 {
   "name": "Trading Tazos Game",
   "short_name": "TTG",
-  "description": "Collect, trade & battle with 319 classic tazos from Minimon, Draco Bell and Digimon. Physics arena, PvP, scanner.",
+  "description": "Collect, trade & battle with 319 classic tazos from Minimon, Dracobell, and Cybermon. Physics arena, PvP, scanner.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -49,14 +49,14 @@
   ],
   "shortcuts": [
     {
-      "name": "Collection",
-      "short_name": "Collection",
-      "url": "/collection"
+      "name": "Play",
+      "short_name": "Play",
+      "url": "/app"
     },
     {
       "name": "Battle",
       "short_name": "Battle",
-      "url": "/"
+      "url": "/app?tab=battle"
     },
     {
       "name": "Shop",

@@ -30,6 +30,7 @@
 
   <!-- App pages (protected) -->
   <url><loc>https://medaclawarena.com/shop</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://medaclawarena.com/quests</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://medaclawarena.com/collection</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://medaclawarena.com/decks</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

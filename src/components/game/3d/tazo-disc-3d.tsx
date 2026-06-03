@@ -34,7 +34,6 @@ export default function TazoDisc3D({
     minimon: { primary: "#FFCB05", secondary: "#FF8C00", rim: "#C0C0C0" },
     cybermon: { primary: "#00A1E9", secondary: "#0057B7", rim: "#A0A0A0" },
     dracobell: { primary: "#FF6B00", secondary: "#CC4400", rim: "#D4AF37" },
-    "dragon-ball-z": { primary: "#FF6B00", secondary: "#CC4400", rim: "#D4AF37" },
   }
 
   const c = franchiseColors[franchise.toLowerCase()] || { primary: color || "#888", secondary: "#555", rim: "#999" }

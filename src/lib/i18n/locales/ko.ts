@@ -6,7 +6,7 @@ const ko: Dictionary = {
   siteIssue: "Vol.1",
   siteTagline: "다 뒤집어라!",
   siteFooterTribute: "타조스 황금기에 대한 향수 어린 오마주",
-  siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Draco Bell are original fictional IPs for Trading Tazos Game.",
+  siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Dracobell are original fictional IPs for Trading Tazos Game.",
   siteMastheadBadge: "독점 — 컬렉터 에디션",
 
   tabAlbum: "앨범",
