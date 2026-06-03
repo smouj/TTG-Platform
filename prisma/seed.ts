@@ -47,8 +47,8 @@ async function main() {
 
   const dracobell = await db.franchise.create({
     data: {
-      name: "Draco Bell", slug: "draco-bell", color: "#FF6B00", icon: "💥",
-      description: "Draco Bell — guerreros de artes marciales estilo Akira Toriyama. Edición Matutano, 1995.",
+      name: "Dracobell", slug: "dracobell", color: "#FF6B00", icon: "💥",
+      description: "Dracobell — guerreros de artes marciales estilo Akira Toriyama. Edición Matutano, 1995.",
       mechanic: "7 categorías: Tazos, Supertazos Voladores, Supertazos Octogonales, Megatazos, Holo 3D, Mastertazos.",
     },
   })
@@ -77,10 +77,10 @@ async function main() {
 
   const dracobellTazos = await db.collection.create({
     data: {
-      name: "Draco Bell Tazos", slug: "draco-bell-matutano-1995",
+      name: "Dracobell Tazos", slug: "dracobell-matutano-1995",
       franchiseId: dracobell.id, year: 1995, totalTazos: 105,
       manufacturer: "Matutano", country: "España",
-      description: "Colección completa de 118 tazos Draco Bell en 7 categorías: Tazos (1-10), Supertazos voladores (11-30), Supertazos octogonales (31-50), Megatazos (51-70), Holo 3D (1-10), y Mastertazos.",
+      description: "Colección completa de 118 tazos Dracobell en 7 categorías: Tazos (1-10), Supertazos voladores (11-30), Supertazos octogonales (31-50), Megatazos (51-70), Holo 3D (1-10), y Mastertazos.",
     },
   })
 
@@ -196,7 +196,7 @@ async function main() {
     { n: "10", name: "Yamuh" },
   ]
 
-  console.log(`📦 Draco Bell Tazos #1-10...`)
+  console.log(`📦 Dracobell Tazos #1-10...`)
   for (const t of dracobellTazosNormales) {
     const slug = `dracobell-t-${t.n}`
     await db.tazo.create({
@@ -240,7 +240,7 @@ async function main() {
     { n: "30", name: "Bulmah" },
   ]
 
-  console.log(`📦 Draco Bell Supertazos Voladores #11-30...`)
+  console.log(`📦 Dracobell Supertazos Voladores #11-30...`)
   for (const t of dracobellSupertazosVoladores) {
     const slug = `dracobell-sv-${t.n}`
     await db.tazo.create({
@@ -284,7 +284,7 @@ async function main() {
     { n: "50", name: "Kaio-samah" },
   ]
 
-  console.log(`📦 Draco Bell Supertazos Octogonales #31-50...`)
+  console.log(`📦 Dracobell Supertazos Octogonales #31-50...`)
   for (const t of dracobellSupertazosOctogonales) {
     const slug = `dracobell-so-${t.n}`
     await db.tazo.create({
@@ -328,7 +328,7 @@ async function main() {
     { n: "70", name: "Kaio-samah" },
   ]
 
-  console.log(`📦 Draco Bell Megatazos #51-70 (redondos + octogonales)...`)
+  console.log(`📦 Dracobell Megatazos #51-70 (redondos + octogonales)...`)
   for (const t of dracobellMegatazosNames) {
     // Redondo
     await db.tazo.create({
@@ -375,7 +375,7 @@ async function main() {
     { n: "10", name: "Cell y Trunksé" },
   ]
 
-  console.log(`📦 Draco Bell Holo 3D #1-10 (ranura derecha + izquierda)...`)
+  console.log(`📦 Dracobell Holo 3D #1-10 (ranura derecha + izquierda)...`)
   for (const t of dracobellHolo3DNames) {
     await db.tazo.create({
       data: {
@@ -418,7 +418,7 @@ async function main() {
     { id: "MASTER-VEGETA",          name: "Vegetah",         variant: null },
   ]
 
-  console.log(`📦 Draco Bell Mastertazos...`)
+  console.log(`📦 Dracobell Mastertazos...`)
   for (const t of dracobellMastertazos) {
     const slug = `dracobell-master-${t.id.toLowerCase().replace(/-/g, "-")}`
     await db.tazo.create({
@@ -522,11 +522,11 @@ async function main() {
   console.log()
   console.log(`   Pokémon Tazos 1:        51 (verified)`  )
   console.log(`   DBZ Tazos Normales:      10 (verified)`  )
-  console.log(`   Draco Bell Supertazos Volador:  20 (verified)`  )
-  console.log(`   Draco Bell Supertazos Octog:    20 (verified)`  )
-  console.log(`   Draco Bell Megatazos:           40 (partial — 20R + 20O)`)
-  console.log(`   Draco Bell Holo 3D:             20 (verified — 10D + 10I)`)
-  console.log(`   Draco Bell Mastertazos:          8 (verified)`  )
+  console.log(`   Dracobell Supertazos Volador:  20 (verified)`  )
+  console.log(`   Dracobell Supertazos Octog:    20 (verified)`  )
+  console.log(`   Dracobell Megatazos:           40 (partial — 20R + 20O)`)
+  console.log(`   Dracobell Holo 3D:             20 (verified — 10D + 10I)`)
+  console.log(`   Dracobell Mastertazos:          8 (verified)`  )
   console.log(`   Cybermon Magic Box:      150 (verified)`   )
   console.log(`                          ———`)
   console.log(`   TOTAL:                  319 tazos`)

@@ -17,7 +17,7 @@
 | `--mag-black` | `#1a1a1a` | Borders, text, shadows |
 | `--mag-cream` | `#fffbe6` | Page background |
 | `--mag-white` | `#fffef0` | Card backgrounds, inputs |
-| `--mag-orange` | `#FF6B00` | Draco Bell franchise, warnings |
+| `--mag-orange` | `#FF6B00` | Dracobell franchise, warnings |
 | `--mag-cyan` | `#00A1E9` | Cybermon franchise |
 | `--mag-green` | `#78C850` | Success, confirmations |
 | `--mag-purple` | `#A855F7` | Premium, rare elements |
@@ -26,7 +26,7 @@
 ```
 Minimon:  linear-gradient(135deg, #FFCB05, #FF8C00)
 Cybermon:  linear-gradient(135deg, #00A1E9, #0057B7)
-Draco Bell: linear-gradient(135deg, #FF6B00, #CC4400)
+Dracobell: linear-gradient(135deg, #FF6B00, #CC4400)
 ```
 
 ### Semantic Colors
