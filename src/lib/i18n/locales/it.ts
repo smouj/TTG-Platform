@@ -189,6 +189,25 @@ const it: Dictionary = {
   shop_title: "Tazo Shop",
   shop_login_cta: "to buy bags",
   shop_buy: "Buy",
+  shop_earn_title: "HOW TO EARN CREDITS [IT]",
+  shop_earn_battles: "Win battles: +30 credits [IT]",
+  shop_earn_daily: "Daily login: +25 credits [IT]",
+  shop_earn_quests: "Complete quests: +50-200 credits [IT]",
+  shop_earn_perfect: "Perfect throws: +10 bonus [IT]",
+  shop_need_credits: "Need {credits} more credits [IT]",
+  shop_opening: "Opening {bag}... [IT]",
+  shop_revealed: "Tazo Revealed! [IT]",
+  shop_buy_another: "Buy Another [IT]",
+  shop_view_collection: "View Collection [IT]",
+  shop_bag_standard: "Bolsa Clásica [IT]",
+  shop_bag_premium: "Bolsa Premium [IT]",
+  shop_bag_mega: "Mega Bolsa [IT]",
+  shop_rare_boost: "{boost}x rare boost [IT]",
+  shop_bonus_chance: "{chance}% bonus tazo [IT]",
+  shop_tearing: "Tearing open... [IT]",
+  shop_revealing: "Revealing tazo... [IT]",
+  shop_dismiss: "Dismiss [IT]",
+
 }
 
 export default it

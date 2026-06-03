@@ -33,11 +33,16 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash)
 }
 
-/** Extract Bearer token from Authorization header */
+/** Extract Bearer token from Authorization header or auth_token cookie */
 export function extractToken(request: Request): string | null {
+  // Try Authorization header first
   const auth = request.headers.get("authorization")
-  if (!auth?.startsWith("Bearer ")) return null
-  return auth.slice(7)
+  if (auth?.startsWith("Bearer ")) return auth.slice(7)
+  // Fallback to auth_token cookie
+  const cookieHeader = request.headers.get("cookie") || ""
+  const match = cookieHeader.match(/(?:^|;\s*)auth_token=([^;]*)/)
+  if (match) return decodeURIComponent(match[1])
+  return null
 }
 
 /** Middleware: get authenticated user or null */

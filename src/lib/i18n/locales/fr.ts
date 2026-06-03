@@ -189,6 +189,25 @@ const fr: Dictionary = {
   shop_title: "Tazo Shop",
   shop_login_cta: "to buy bags",
   shop_buy: "Buy",
+  shop_earn_title: "HOW TO EARN CREDITS [FR]",
+  shop_earn_battles: "Win battles: +30 credits [FR]",
+  shop_earn_daily: "Daily login: +25 credits [FR]",
+  shop_earn_quests: "Complete quests: +50-200 credits [FR]",
+  shop_earn_perfect: "Perfect throws: +10 bonus [FR]",
+  shop_need_credits: "Need {credits} more credits [FR]",
+  shop_opening: "Opening {bag}... [FR]",
+  shop_revealed: "Tazo Revealed! [FR]",
+  shop_buy_another: "Buy Another [FR]",
+  shop_view_collection: "View Collection [FR]",
+  shop_bag_standard: "Bolsa Clásica [FR]",
+  shop_bag_premium: "Bolsa Premium [FR]",
+  shop_bag_mega: "Mega Bolsa [FR]",
+  shop_rare_boost: "{boost}x rare boost [FR]",
+  shop_bonus_chance: "{chance}% bonus tazo [FR]",
+  shop_tearing: "Tearing open... [FR]",
+  shop_revealing: "Revealing tazo... [FR]",
+  shop_dismiss: "Dismiss [FR]",
+
 }
 
 export default fr

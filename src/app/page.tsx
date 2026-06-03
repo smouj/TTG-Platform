@@ -8,7 +8,7 @@ import BattleView from '@/components/game/battle-view'
 import { ScannerView } from '@/components/game/scanner-view'
 import StatsPanel from '@/components/game/stats-panel'
 import LanguageSwitcher from '@/components/ui/language-switcher'
-import { BookOpen, Swords, Scan, BarChart3, User, LogOut, Package, Layers, Download, ShoppingBag } from 'lucide-react'
+import { BookOpen, Swords, Scan, BarChart3, User, LogOut, Package, Layers, Download, ShoppingBag, Target, Trophy } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
 
@@ -52,6 +52,22 @@ export default function Home() {
                 >
                   <ShoppingBag className="w-3 h-3 inline mr-0.5" />
                   Shop
+                </Link>
+                <span className="text-zinc-600">|</span>
+                <Link
+                  href="/quests"
+                  className="text-[10px] sm:text-xs font-bold text-[#E3350D] hover:text-red-300 transition-colors tracking-wider uppercase"
+                >
+                  <Target className="w-3 h-3 inline mr-0.5" />
+                  Quests
+                </Link>
+                <span className="text-zinc-600">|</span>
+                <Link
+                  href="/leaderboard"
+                  className="text-[10px] sm:text-xs font-bold text-[#F59E0B] hover:text-amber-300 transition-colors tracking-wider uppercase"
+                >
+                  <Trophy className="w-3 h-3 inline mr-0.5" />
+                  Ranks
                 </Link>
                 <span className="text-zinc-600">|</span>
                 <Link
@@ -105,6 +121,22 @@ export default function Home() {
                       >
                         <ShoppingBag className="w-4 h-4" />
                         Shop
+                      </Link>
+                      <Link
+                        href="/quests"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:bg-zinc-800 hover:text-red-300 transition-colors"
+                      >
+                        <Target className="w-4 h-4" />
+                        Quests
+                      </Link>
+                      <Link
+                        href="/leaderboard"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-amber-400 hover:bg-zinc-800 hover:text-amber-300 transition-colors"
+                      >
+                        <Trophy className="w-4 h-4" />
+                        Leaderboard
                       </Link>
                       <button
                         onClick={() => { logout(); setShowUserMenu(false); }}

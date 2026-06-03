@@ -192,3 +192,69 @@ model CreditTransaction {
 
   @@index([userId])
 }
+
+// ─── Quest System ───
+
+model Quest {
+  id            String     @id @default(cuid())
+  title         String     // Display title
+  description   String     // What to do
+  icon          String     @default("Target")  // Lucide icon name
+  category      String     @default("daily")   // daily, weekly, special, beginner
+  difficulty    String     @default("easy")    // easy, medium, hard
+  requirement   String     // "place_pixels" | "win_battles" | "open_bags" | "collect_tazos" | "create_deck" | "perfect_throw"
+  target        Int        @default(1)         // How many to complete
+  rewardCredits Int        @default(50)        // Credit reward
+  rewardTazoId  String?    // Optional tazo reward
+  isActive      Boolean    @default(true)
+  orderIndex    Int        @default(0)         // Display order
+  expiresAt     DateTime?  // For time-limited quests
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  userQuests    UserQuest[]
+}
+
+model UserQuest {
+  id          String    @id @default(cuid())
+  userId      String
+  questId     String
+  quest       Quest     @relation(fields: [questId], references: [id])
+  progress    Int       @default(0)
+  completed   Boolean   @default(false)
+  claimed     Boolean   @default(false)  // Reward claimed?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, questId])
+  @@index([userId])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  icon        String   @default("Award")
+  category    String   @default("general")  // general, battle, collection, social
+  requirement String   // "collect_count" | "battle_wins" | "credits_earned" | "perfect_throws" | "deck_count" | "bag_count"
+  target      Int      @default(1)
+  tier        Int      @default(1)  // 1=bronze, 2=silver, 3=gold, 4=platinum
+  orderIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String    @id @default(cuid())
+  userId        String
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  progress      Int       @default(0)
+  unlocked      Boolean   @default(false)
+  unlockedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+}

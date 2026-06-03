@@ -189,6 +189,25 @@ const zh: Dictionary = {
   shop_title: "Tazo Shop",
   shop_login_cta: "to buy bags",
   shop_buy: "Buy",
+  shop_earn_title: "HOW TO EARN CREDITS [ZH]",
+  shop_earn_battles: "Win battles: +30 credits [ZH]",
+  shop_earn_daily: "Daily login: +25 credits [ZH]",
+  shop_earn_quests: "Complete quests: +50-200 credits [ZH]",
+  shop_earn_perfect: "Perfect throws: +10 bonus [ZH]",
+  shop_need_credits: "Need {credits} more credits [ZH]",
+  shop_opening: "Opening {bag}... [ZH]",
+  shop_revealed: "Tazo Revealed! [ZH]",
+  shop_buy_another: "Buy Another [ZH]",
+  shop_view_collection: "View Collection [ZH]",
+  shop_bag_standard: "Bolsa Clásica [ZH]",
+  shop_bag_premium: "Bolsa Premium [ZH]",
+  shop_bag_mega: "Mega Bolsa [ZH]",
+  shop_rare_boost: "{boost}x rare boost [ZH]",
+  shop_bonus_chance: "{chance}% bonus tazo [ZH]",
+  shop_tearing: "Tearing open... [ZH]",
+  shop_revealing: "Revealing tazo... [ZH]",
+  shop_dismiss: "Dismiss [ZH]",
+
 }
 
 export default zh

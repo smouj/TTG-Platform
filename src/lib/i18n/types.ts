@@ -224,5 +224,22 @@ export interface Dictionary {
   shop_title: string
   shop_login_cta: string
   shop_buy: string
-
+shop_earn_title: string
+  shop_earn_battles: string
+  shop_earn_daily: string
+  shop_earn_quests: string
+  shop_earn_perfect: string
+  shop_need_credits: string
+  shop_opening: string
+  shop_revealed: string
+  shop_buy_another: string
+  shop_view_collection: string
+  shop_bag_standard: string
+  shop_bag_premium: string
+  shop_bag_mega: string
+  shop_rare_boost: string
+  shop_bonus_chance: string
+  shop_tearing: string
+  shop_revealing: string
+  shop_dismiss: string
 }

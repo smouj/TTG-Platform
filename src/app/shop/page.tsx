@@ -9,7 +9,7 @@ import { useI18n } from "@/lib/i18n"
 import { useAuth } from "@/lib/auth-context"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { ShoppingBag, Coins, Zap, Star, Gift, ArrowLeft, Loader2, X, Sparkles } from "lucide-react"
+import { ShoppingBag, Coins, Zap, Star, Gift, ArrowLeft, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check } from "lucide-react"
 
 // Dynamic 3D imports (no SSR)
 const Scene3D = dynamic(() => import("@/components/game/3d/scene-3d"), { ssr: false })
@@ -420,7 +420,7 @@ export default function BagShopPage() {
             </p>
             <span
               className="inline-block mt-1 px-2 py-0.5 text-[9px] font-black uppercase rounded"
-              style={{ borderColor: RARITY_COLORS[bonusTazo.rarity] || "#9CA3AF", color: RARITY_COLORS[bonusTazo.rarity], borderWidth: 1, borderStyle: "solid" }}
+              style={{ borderColor: (RARITY_COLORS[bonusTazo.rarity] || "#9CA3AF"), color: (RARITY_COLORS[bonusTazo.rarity] || "#9CA3AF"), borderWidth: 1, borderStyle: "solid" }}
             >
               {RARITY_LABELS[bonusTazo.rarity] || bonusTazo.rarity}
             </span>

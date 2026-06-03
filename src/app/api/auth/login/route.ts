@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       avatarUrl: user.avatarUrl,
     })
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       token,
       user: {
         id: user.id,
@@ -40,6 +40,17 @@ export async function POST(request: NextRequest) {
         displayName: user.displayName,
       },
     })
+
+    // Set auth cookie for middleware
+    response.cookies.set("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    })
+
+    return response
   } catch (error) {
     console.error("Login error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

@@ -578,7 +578,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get updated credits if authed
-    let credits = null
+    let credits: number | null = null
     if (authUser) {
       try {
         const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
