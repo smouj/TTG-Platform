@@ -24,8 +24,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    // If auth came from cookie (no Bearer token), return a fresh token for localStorage sync
-    const freshToken = token || generateToken(user)
+    // If auth came from cookie (no Bearer token), generate a fresh token from clean user data
+    const freshToken = token || generateToken({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      displayName: user.displayName,
+      avatarUrl: user.avatarUrl,
+    })
 
     const response = NextResponse.json({
       token: freshToken,
