@@ -1,0 +1,43 @@
+# Caddyfile.example — Trading Tazos Game
+# Copy to Caddyfile and replace placeholders with your server config
+#
+# This is the reverse proxy config for serving TTG on your domain.
+# It proxies Next.js (default port 3000) and WebSocket connections.
+
+your-domain.com {
+        encode gzip zstd
+        header {
+                X-Frame-Options "DENY"
+                X-Content-Type-Options "nosniff"
+                Referrer-Policy "strict-origin-when-cross-origin"
+                -Server
+        }
+
+        # SPA convenience redirects (game tabs)
+        redir /album    /?tab=album    308
+        redir /battle   /?tab=battle   308
+        redir /scanner  /?tab=scanner  308
+        redir /stats    /?tab=stats    308
+        redir /ranks    /leaderboard   308
+        redir /desktop  /download      308
+
+        # Main app
+        reverse_proxy localhost:3000 {
+                header_up Host {host}
+                header_up X-Forwarded-For {remote_host}
+                header_up X-Forwarded-Proto {scheme}
+                header_up X-Real-IP {remote_host}
+        }
+
+        # WebSocket for multiplayer battles
+        @ws {
+                header Connection *Upgrade*
+                header Upgrade websocket
+        }
+        reverse_proxy @ws localhost:3001
+}
+
+# Plausible Analytics (optional)
+# plausible.your-domain.com {
+#         reverse_proxy localhost:8688
+# }

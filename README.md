@@ -311,9 +311,9 @@ medaclawarena.com
 ### PM2
 
 ```bash
-ssh rpgvps "pm2 status"                        # All processes
-ssh rpgvps "pm2 logs ttg --lines 50"           # App logs
-ssh rpgvps "pm2 restart ttg ttg-ws"            # Restart both
+ssh your-vps "pm2 status"                        # All processes
+ssh your-vps "pm2 logs ttg --lines 50"           # App logs
+ssh your-vps "pm2 restart ttg ttg-ws"            # Restart both
 ```
 
 ---

@@ -82,3 +82,12 @@ screenshot-*
 dist-electron/
 releases/
 dist-electron/
+
+# ─── Infrastructure configs (contains deployment paths, ports, hosts) ───
+Caddyfile
+ecosystem.config.cjs
+deploy.sh
+# .zscripts/ — development/db scripts (keep local)
+.zscripts/
+# worklog — development notes
+worklog.md
