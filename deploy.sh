@@ -37,6 +37,13 @@ echo "📤 [2b/6] Syncing standalone .next → project .next..."
 ssh "$VPS_HOST" "cp -r $VPS_DIR/.next/standalone/Trading-Tazos-Game/.next/* $VPS_DIR/.next/"
 echo "✅ distDir synced"
 
+# 3c. Fix static files: copy .next/static into standalone CWD
+# (standalone output puts chunks at .next/chunks/ but server expects .next/static/chunks/)
+echo ""
+echo "📤 [2c/6] Syncing static assets to standalone CWD..."
+ssh "$VPS_HOST" "mkdir -p $VPS_DIR/.next/standalone/Trading-Tazos-Game/.next/static && cp -r $VPS_DIR/.next/static/* $VPS_DIR/.next/standalone/Trading-Tazos-Game/.next/static/"
+echo "✅ Static assets synced to standalone CWD"
+
 # 4. Sync static files
 echo ""
 echo "📤 [3/6] Syncing static..."
