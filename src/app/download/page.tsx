@@ -1,65 +1,62 @@
 "use client"
 
-import { Download, Monitor, Apple, Terminal, Github, ExternalLink, ArrowLeft, Globe, Smartphone, Gamepad2 } from "lucide-react"
-import Link from "next/link"
+import { Download, Monitor, Apple, Terminal, Github, ExternalLink, Globe, Gamepad2, Smartphone } from "lucide-react"
 import { useI18n } from "@/lib/i18n"
 import MagazinePageShell from "@/components/magazine-page-shell"
 
-const OS_CARDS = [
+const GITHUB_URL = "https://github.com/smouj/Trading-Tazos-Game"
+const RELEASES_URL = `${GITHUB_URL}/releases`
+const RELEASE_TAG = "v0.3.0"
+
+// Linux is built and available now
+// Windows/macOS are built via GitHub Actions (coming in next release)
+const DOWNLOADS = [
   {
     id: "windows",
     icon: Monitor,
     color: "#00A4EF",
-    labelKey: "download_windows" as const,
+    label: "Windows",
+    badge: "Coming Soon",
+    badgeColor: "#F59E0B",
     exe: ".exe",
-    comingSoon: true,
+    url: `${RELEASES_URL}/latest`,
+    available: false,
   },
   {
     id: "mac",
     icon: Apple,
     color: "#1a1a1a",
-    labelKey: "download_mac" as const,
+    label: "macOS",
+    badge: "Coming Soon",
+    badgeColor: "#F59E0B",
     exe: ".dmg",
-    comingSoon: true,
+    url: `${RELEASES_URL}/latest`,
+    available: false,
   },
   {
     id: "linux",
     icon: Terminal,
     color: "#FCC624",
-    labelKey: "download_linux" as const,
+    label: "Linux",
+    badge: "Available",
+    badgeColor: "#22C55E",
     exe: ".AppImage",
-    comingSoon: true,
+    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`,
+    available: true,
+    formats: [
+      { label: ".AppImage", path: `trading-tazos-game-${RELEASE_TAG#v}-linux-x86_64.AppImage` },
+      { label: ".deb (Ubuntu/Debian)", path: `trading-tazos-game-${RELEASE_TAG#v}-linux-amd64.deb` },
+    ],
   },
 ]
-
-const GITHUB_URL = "https://github.com/smouj/Trading-Tazos-Game"
-const RELEASES_URL = `${GITHUB_URL}/releases`
-const VERSION = "v0.3.0"
 
 export default function DownloadPage() {
   const { t } = useI18n()
 
   return (
     <MagazinePageShell currentTab="download">
-    <div className="min-h-screen flex flex-col mag-bg">
-      {/* Magazine masthead */}
-      <header className="bg-[#E3350D] border-b-4 border-[#1a1a1a] mag-stripes">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
-          <Link href="/" className="text-white hover:opacity-70 transition-opacity">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mag-stroke-sm">
-              {t.download_title}
-            </h1>
-            <p className="text-[11px] sm:text-xs font-bold text-white/70 tracking-wider uppercase">
-              {t.download_subtitle}
-            </p>
-          </div>
-        </div>
-      </header>
+      <div className="max-w-4xl mx-auto w-full px-4 py-8 space-y-8">
 
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8 space-y-8">
         {/* ─── THREE WAYS TO PLAY ─── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Browser */}
@@ -69,7 +66,9 @@ export default function DownloadPage() {
             </div>
             <div>
               <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">Play in Browser</h3>
-              <p className="text-[10px] font-bold text-zinc-500 mt-1">No download needed. Just open <a href="/" className="underline text-[#3B4CCA]">medaclawarena.com</a> and start battling.</p>
+              <p className="text-[10px] font-bold text-zinc-500 mt-1">
+                No download needed. Open <a href="/" className="underline text-[#3B4CCA]">medaclawarena.com</a> and start battling.
+              </p>
             </div>
             <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">Active</span>
           </div>
@@ -81,9 +80,11 @@ export default function DownloadPage() {
             </div>
             <div>
               <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">Desktop App</h3>
-              <p className="text-[10px] font-bold text-zinc-500 mt-1">Windows, macOS, Linux. Full-screen, offline play, keyboard controls.</p>
+              <p className="text-[10px] font-bold text-zinc-500 mt-1">
+                Windows, macOS, Linux. Full-screen native experience with keyboard controls.
+              </p>
             </div>
-            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#F59E0B] text-white uppercase rounded">Coming Soon</span>
+            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">New!</span>
           </div>
 
           {/* PWA */}
@@ -93,7 +94,9 @@ export default function DownloadPage() {
             </div>
             <div>
               <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">PWA Install</h3>
-              <p className="text-[10px] font-bold text-zinc-500 mt-1">Install on your phone or desktop. Works offline, gets updates automatically.</p>
+              <p className="text-[10px] font-bold text-zinc-500 mt-1">
+                Install on your phone or desktop. Works offline, gets updates automatically.
+              </p>
             </div>
             <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">Active</span>
           </div>
@@ -102,7 +105,8 @@ export default function DownloadPage() {
         {/* ─── Intro ─── */}
         <div className="mag-card p-6">
           <p className="text-sm font-bold text-[#1a1a1a] leading-relaxed">
-            {t.download_intro}
+            Download Trading Tazos Game for your desktop. The desktop app gives you a full-screen native experience
+            with keyboard shortcuts, system tray integration, and always-on-top play. Choose your platform below.
           </p>
         </div>
 
@@ -111,12 +115,12 @@ export default function DownloadPage() {
           <div className="flex items-center gap-2">
             <Gamepad2 className="w-5 h-5 text-[#E3350D]" />
             <h2 className="font-black text-lg uppercase tracking-wider text-[#1a1a1a]">
-              Desktop Downloads
+              {t.download_title || "Desktop Downloads"}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {OS_CARDS.map((os) => (
+            {DOWNLOADS.map((os) => (
               <div
                 key={os.id}
                 className="mag-card p-6 text-center space-y-4"
@@ -124,24 +128,43 @@ export default function DownloadPage() {
                 <os.icon className="w-10 h-10 mx-auto" style={{ color: os.color }} />
                 <div>
                   <h3 className="font-black text-base uppercase tracking-wider text-[#1a1a1a]">
-                    {t[os.labelKey]}
+                    {os.label}
                   </h3>
-                  {os.comingSoon ? (
-                    <span className="inline-block mt-2 px-3 py-1 text-[10px] font-black bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] uppercase">
-                      {t.download_coming_soon}
-                    </span>
+
+                  {/* Status badge */}
+                  <span
+                    className="inline-block mt-2 px-3 py-1 text-[10px] font-black border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] uppercase"
+                    style={{ backgroundColor: os.badgeColor, color: os.available ? "#fff" : "#1a1a1a" }}
+                  >
+                    {os.badge}
+                  </span>
+
+                  {/* Download buttons */}
+                  {os.available && os.formats ? (
+                    <div className="flex flex-col gap-2 mt-3">
+                      {os.formats.map((fmt) => (
+                        <a
+                          key={fmt.path}
+                          href={`${RELEASES_URL}/download/${RELEASE_TAG}/${fmt.path}`}
+                          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-black bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:bg-[#16a34a] hover:shadow-[1px_1px_0px_#1a1a1a] hover:translate-x-0.5 hover:translate-y-0.5 transition-all uppercase"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          {fmt.label}
+                        </a>
+                      ))}
+                    </div>
                   ) : (
-                    <a
-                      href={`${RELEASES_URL}/latest`}
-                      className="inline-flex items-center gap-1.5 mt-2 px-4 py-2 text-xs font-black bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] hover:translate-x-0.5 hover:translate-y-0.5 transition-all uppercase"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      {t.download_cta} {os.exe}
-                    </a>
+                    <div className="mt-3">
+                      <span className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-black bg-zinc-200 text-zinc-400 border-2 border-[#1a1a1a]/20 uppercase cursor-not-allowed">
+                        <Download className="w-3.5 h-3.5" />
+                        {os.exe}
+                      </span>
+                    </div>
                   )}
                 </div>
+
                 <p className="text-[9px] font-bold text-zinc-400 uppercase">
-                  {t.download_version}: {VERSION}
+                  Version: {RELEASE_TAG}
                 </p>
               </div>
             ))}
@@ -151,57 +174,60 @@ export default function DownloadPage() {
         {/* ─── Requirements ─── */}
         <div className="mag-card p-6 space-y-2">
           <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
-            {t.download_requirements}
+            System Requirements
           </h3>
-          <p className="text-[11px] font-bold text-zinc-500 leading-relaxed">
-            {t.download_requirements_list}
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[11px]">
+            <div>
+              <p className="font-black text-[#00A4EF]">Windows</p>
+              <p className="font-bold text-zinc-500">Windows 10/11 (x64), 4GB RAM, 200MB disk</p>
+            </div>
+            <div>
+              <p className="font-black text-[#1a1a1a]">macOS</p>
+              <p className="font-bold text-zinc-500">macOS 12+ (Intel/Apple Silicon), 4GB RAM, 200MB disk</p>
+            </div>
+            <div>
+              <p className="font-black text-[#FCC624]">Linux</p>
+              <p className="font-bold text-zinc-500">x86_64, glibc 2.28+, 4GB RAM, 200MB disk. AppImage (portable) or .deb</p>
+            </div>
+          </div>
         </div>
 
         {/* ─── Source Code ─── */}
-        <div className="mag-card p-6 space-y-4 text-center">
+        <div className="mag-card p-6 text-center space-y-4">
           <Github className="w-8 h-8 mx-auto text-[#1a1a1a]" />
           <div>
             <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
-              {t.download_source}
+              Open Source — MIT License
             </h3>
             <p className="text-[11px] font-bold text-zinc-500 mt-1">
-              {t.download_source_desc}
+              The entire game, battle engine, and desktop app are open source. Contribute, report bugs, or build your own version.
             </p>
           </div>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 mag-btn bg-[#1a1a1a] text-[#FFCC00] text-xs"
-          >
-            <Github className="w-4 h-4" />
-            View on GitHub
-            <ExternalLink className="w-3 h-3" />
-          </a>
+          <div className="flex items-center justify-center gap-3">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 mag-btn bg-[#1a1a1a] text-[#FFCC00] text-xs"
+            >
+              <Github className="w-4 h-4" />
+              GitHub Repo
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href={RELEASES_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 mag-btn bg-[#3B4CCA] text-white text-xs"
+            >
+              <Download className="w-4 h-4" />
+              All Releases
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
 
-        {/* ─── Back to Arena ─── */}
-        <div className="text-center pb-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-8 py-4 mag-btn bg-[#FFCC00] text-[#1a1a1a] text-sm font-black uppercase"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Play Now in Browser
-          </Link>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-[#1a1a1a] border-t-4 border-[#FFCC00] mt-auto">
-        <div className="max-w-7xl mx-auto px-4 py-3 text-center">
-          <p className="text-[10px] font-bold text-zinc-400">
-            Trading Tazos Game &copy; {new Date().getFullYear()} MedaClaw Arena
-          </p>
-        </div>
-      </footer>
-    </div>
+      </div>
     </MagazinePageShell>
   )
 }

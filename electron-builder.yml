@@ -1,0 +1,72 @@
+# ============================================================
+# Trading Tazos Game — electron-builder config
+# Thin web wrapper — loads https://medaclawarena.com
+# No deps in the app — just Electron + main.js + assets.
+# ============================================================
+appId: com.medaclawarena.trading-tazos-game
+productName: "Trading Tazos Game"
+copyright: "Copyright © 2026 MedaClaw Arena"
+electronVersion: "42.3.2"
+
+directories:
+  output: dist-electron
+  app: electron
+  buildResources: electron/assets
+
+files:
+  - "**/*"
+
+npmRebuild: false
+nodeGypRebuild: false
+
+# ─── macOS ───────────────────────────────────────────────
+mac:
+  category: public.app-category.games
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+    - target: zip
+      arch: [x64, arm64]
+  icon: assets/icon-512.png
+  artifactName: "${name}-${version}-mac-${arch}.${ext}"
+
+dmg:
+  title: "Trading Tazos Game ${version}"
+
+# ─── Windows ──────────────────────────────────────────────
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  icon: assets/icon-256.png
+  artifactName: "${name}-${version}-win-${arch}.${ext}"
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  installerIcon: assets/icon-256.png
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "Trading Tazos Game"
+
+# ─── Linux ────────────────────────────────────────────────
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  category: Game
+  icon: assets/icon-256.png
+  artifactName: "${name}-${version}-linux-${arch}.${ext}"
+  maintainer: "support@medaclawarena.com"
+
+# ─── Publish (GitHub Releases) ────────────────────────────
+publish:
+  - provider: github
+    owner: smouj
+    repo: Trading-Tazos-Game
+    releaseType: draft

@@ -78,4 +78,7 @@ screenshot-*
 !public/favicon*.png
 
 # Mini services
-/mini-services/
+/mini-services/releases/
+dist-electron/
+releases/
+dist-electron/

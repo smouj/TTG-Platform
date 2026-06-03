@@ -20,6 +20,7 @@ let tray = null
 function getAsset(name) {
   // Try multiple paths for packaged vs dev
   const candidates = [
+    path.join(__dirname, "assets", name),
     path.join(__dirname, name),
     path.join(__dirname, "..", "public", "logo", name),
     path.join(__dirname, "..", "..", "public", "logo", name),

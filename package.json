@@ -1,6 +1,6 @@
 {
   "name": "nextjs_tailwind_shadcn_ts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
@@ -13,9 +13,12 @@
     "db:reset": "prisma migrate reset",
     "seed": "bun run prisma/seed.ts",
     "ws-server": "bun run src/server/ws-server.ts",
-    "electron": "electron electron/main.js",
-    "electron:build": "electron-builder --win --mac --linux",
-    "electron:dev": "NODE_ENV=development electron electron/main.js"
+    "electron:dev": "NODE_ENV=development electron electron/main.js",
+    "electron:build": "electron-builder",
+    "electron:build:linux": "electron-builder --linux",
+    "electron:build:win": "electron-builder --win",
+    "electron:build:mac": "electron-builder --mac",
+    "electron:dist": "electron-builder --win --mac --linux -p always"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -100,36 +103,12 @@
     "@types/three": "^0.184.1",
     "@types/ws": "^8.18.1",
     "bun-types": "^1.3.4",
+    "electron": "^42.3.2",
+    "electron-builder": "^26.8.1",
     "eslint": "^9",
     "eslint-config-next": "^16.1.1",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"
-  },
-  "build": {
-    "appId": "com.medaclawarena.trading-tazos-game",
-    "productName": "Trading Tazos Game",
-    "directories": {
-      "output": "dist-electron"
-    },
-    "files": [".next/**/*", "public/**/*", "electron/**/*"],
-    "mac": {
-      "category": "public.app-category.games",
-      "target": ["dmg", "zip"],
-      "icon": "public/logo/logo-icon-black.png"
-    },
-    "win": {
-      "target": ["nsis", "portable"],
-      "icon": "public/logo/logo-icon-black.png"
-    },
-    "linux": {
-      "target": ["AppImage", "deb"],
-      "category": "Game",
-      "icon": "public/logo/logo-icon-black.png"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
   }
 }
