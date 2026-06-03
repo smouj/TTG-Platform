@@ -11,7 +11,7 @@ import { useMultiplayer } from "@/lib/multiplayer"
 import {
   createBattleState, selectThrower,
   setHorizontalAim, setVerticalAim, setPower, executeThrow,
-  endTurn, exportReplay,
+  endTurn, exportReplay, executeAITurn,
 } from "@/lib/battle/battle-engine"
 import type { BattleState, BattlePhase } from "@/lib/battle"
 import BattleArenaCanvas from "./battle/battle-arena-canvas"
@@ -132,17 +132,10 @@ export default function PvPBattlePanel() {
      
   }, [mp.lastTurnData])
 
-  // ─── Auto-end opponent turn ──────
-  const handleEndOpponentTurn = useCallback(() => {
+  // ─── Simulate opponent turn with AI engine ──────
+  const handleSimulateOpponent = useCallback(() => {
     if (!battleState || myTurn) return
-    let s = { ...battleState }
-    // Run opponent's turn with AI
-    s = selectThrower(s, "") 
-    s = setHorizontalAim(s, 35 + Math.random() * 30)
-    s = setVerticalAim(s, 50 + Math.random() * 20)
-    s = setPower(s, 60 + Math.random() * 25)
-    s = executeThrow(s)
-    s = endTurn(s)
+    const s = executeAITurn({ ...battleState })
     setBattleState(s)
     setMyTurn(true)
     setWaitingForOpponent(false)
@@ -321,7 +314,7 @@ export default function PvPBattlePanel() {
     const isSelectPhase = phase === "select_thrower" || phase === "turn_start"
     const isAimPhase = phase === "aim_horizontal" || phase === "aim_vertical" || phase === "charge_power"
     const isAnimating = phase === "throwing" || phase === "physics_simulation" || phase === "impact_resolution" || phase === "capture_resolution"
-    const playerHand = battleState.player.field.filter(t => t.state === "in_hand")
+    const playerHand = battleState.player.hand.filter(t => t.state === "in_hand")
 
     // Battle finished
     if (phase === "battle_finished" && battleState.finalResult) {
@@ -369,10 +362,10 @@ export default function PvPBattlePanel() {
               </span>
               {!myTurn && !waitingForOpponent && (
                 <button
-                  onClick={handleEndOpponentTurn}
+                  onClick={handleSimulateOpponent}
                   className="ml-2 text-[10px] font-black underline text-[#3B4CCA] hover:text-[#3B4CCA]/70"
                 >
-                  Simulate →
+                  Simulate
                 </button>
               )}
             </div>

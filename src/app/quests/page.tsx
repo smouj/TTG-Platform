@@ -76,6 +76,7 @@ export default function QuestsPage() {
      
   }, [])
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { loadQuests() }, [loadQuests])
   useEffect(() => {
     if (!token) return

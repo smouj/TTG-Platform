@@ -5,13 +5,14 @@
 // ============================================================
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import { useI18n } from "@/lib/i18n"
+import type { Dictionary } from "@/lib/i18n/types"
 import { useAuth } from "@/lib/auth-context"
 import {
   createBattleState, startTurn, selectThrower,
   setHorizontalAim, setVerticalAim, setPower, executeThrow,
-  opponentPlaceTazo, endTurn, exportReplay,
+  opponentPlaceTazo, endTurn, exportReplay, executeAITurn,
 } from "@/lib/battle/battle-engine"
 import type { BattleState, BattlePhase } from "@/lib/battle"
 import BattleArenaCanvas from "./battle/battle-arena-canvas"
@@ -180,11 +181,6 @@ export default function BattleView() {
   const handleArenaClick = useCallback((x: number, y: number) => {
     if (!battleState || battleState.phase !== "opponent_place_penalty") return
     setBattleState(opponentPlaceTazo(battleState, x, y))
-  }, [battleState])
-
-  const handleEndTurn = useCallback(() => {
-    if (!battleState) return
-    setBattleState(endTurn(battleState))
   }, [battleState])
 
   const handleRematch = useCallback(() => {
@@ -512,28 +508,17 @@ export default function BattleView() {
             />
           )}
 
-          {/* Opponent turn indicator */}
-          {isOpponentTurn && (
-            <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] text-center">
-              <Disc3 className="w-8 h-8 mx-auto mb-2 animate-spin text-[#E3350D]" />
-              <p className="font-bold text-sm text-[#1a1a1a]">{t.battle_rival_throwing}</p>
-              <button
-                onClick={handleEndTurn}
-                className="mt-3 px-4 py-2 font-black text-xs uppercase tracking-wider bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
-              >
-                {t.battle_resolve_turn}
-              </button>
-            </div>
-          )}
+          {/* Opponent AI turn — auto-resolve after delay */}
+          {isOpponentTurn && <AITurnResolver state={battleState} onResolved={setBattleState} t={t} />}
 
-          {/* Turn end */}
+          {/* Turn end — advance to next turn */}
           {isTurnEnd && battleState.currentPlayerId === "player" && (
             <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] text-center space-y-3">
               <p className="font-bold text-sm text-[#1a1a1a]">
                 {t.battle_turn} {battleState.turnNumber} {t.battle_turn_complete}
               </p>
               <button
-                onClick={handleEndTurn}
+                onClick={() => setBattleState(endTurn({ ...battleState }))}
                 className="w-full py-3 font-black text-sm uppercase tracking-wider bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 <ChevronRight className="w-4 h-4 inline mr-2" />
@@ -547,6 +532,71 @@ export default function BattleView() {
             <BattleEventLog turns={battleState.turns} />
           )}
         </div>
+      </div>
+    </div>
+  )
+}
+
+// ============================================================
+// AITurnResolver — Auto-executes AI opponent turns with delay
+// ============================================================
+ 
+function AITurnResolver({
+  state,
+  onResolved,
+  t,
+}: {
+  state: import("@/lib/battle/battle-engine").BattleState
+  onResolved: (s: import("@/lib/battle/battle-engine").BattleState) => void
+  t: Dictionary
+}) {
+  const keyRef = useRef(0)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const currentKey = ++keyRef.current
+    setProgress(0)
+    let frame = 0
+    const duration = 1500
+    const fps = 30
+    const step = duration / fps
+    
+    const interval = setInterval(() => {
+      frame++
+      const pct = Math.min((frame * step / duration) * 100, 100)
+      if (currentKey === keyRef.current) setProgress(pct)
+      if (pct >= 100) {
+        clearInterval(interval)
+        if (currentKey === keyRef.current) {
+          try { onResolved(executeAITurn({ ...state })) }
+          catch { onResolved(endTurn({ ...state })) }
+        }
+      }
+    }, step)
+
+    return () => clearInterval(interval)
+  }, [state.turnNumber, state.currentPlayerId])
+
+  if (progress >= 100) {
+    return (
+      <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] text-center">
+        <Zap className="w-6 h-6 mx-auto mb-1 text-[#22C55E]" />
+        <p className="text-xs font-bold text-[#1a1a1a]">{t.battle_next_turn}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="p-4 bg-white border-3 border-[#E3350D] shadow-[4px_4px_0px_#1a1a1a] text-center space-y-3">
+      <Disc3 className="w-8 h-8 mx-auto animate-spin text-[#E3350D]" />
+      <p className="font-black text-xs uppercase tracking-wider text-[#E3350D]">
+        {t.battle_rival_throwing}
+      </p>
+      <div className="w-full h-2 bg-zinc-200 border border-[#1a1a1a]">
+        <div
+          className="h-full bg-[#E3350D]"
+          style={{ width: `${progress}%`, transition: "width 50ms linear" }}
+        />
       </div>
     </div>
   )

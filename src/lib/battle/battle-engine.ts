@@ -636,7 +636,7 @@ export function endTurn(state: BattleState): BattleState {
 
 // ---- AI Opponent ----
 
-function executeAITurn(state: BattleState): BattleState {
+export function executeAITurn(state: BattleState): BattleState {
   if (state.currentPlayerId !== "opponent") return state
 
   // Simple AI: pick a random tazo, aim at a random player tazo

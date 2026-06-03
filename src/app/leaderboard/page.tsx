@@ -51,6 +51,7 @@ export default function LeaderboardPage() {
      
   }, [])
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { load(sort) }, [sort, load])
 
   const displayName = (e: LeaderboardEntry) => e.displayName || e.name || "???"
