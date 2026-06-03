@@ -304,10 +304,10 @@ export default function BagShopPage() {
             <Gift className="w-4 h-4 text-[#F59E0B]" /> How to earn credits
           </h3>
           <ul className="space-y-1 text-xs text-zinc-600 font-medium">
-            <li>🏆 Win battles: +30 credits</li>
-            <li>📅 Daily login: +25 credits</li>
-            <li>✅ Complete quests: +50-200 credits</li>
-            <li>🎯 Perfect throws: +10 bonus</li>
+            <li><Trophy className="w-3.5 h-3.5 text-[#F59E0B]" /> Win battles: +30 credits</li>
+            <li><Calendar className="w-3.5 h-3.5 text-[#3B4CCA]" /> Daily login: +25 credits</li>
+            <li><Check className="w-3.5 h-3.5 text-[#22C55E]" /> Complete quests: +50-200 credits</li>
+            <li><Crosshair className="w-3.5 h-3.5 text-[#E3350D]" /> Perfect throws: +10 bonus</li>
           </ul>
         </div>
       </div>

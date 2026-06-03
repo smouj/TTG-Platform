@@ -264,11 +264,11 @@ export default function BattleView() {
           {!user && (
             <div className="mt-3 p-3 bg-purple-50 border-2 border-purple-200 rounded-lg inline-block">
               <LogIn className="w-4 h-4 inline mr-1 text-purple-500" />
-              <Link href="/login" className="text-sm font-semibold text-purple-600 hover:text-purple-800 underline">
+              <Link href="/login" className="text-sm font-bold text-purple-600 hover:text-purple-800 underline">
                 {t.auth_login}
               </Link>
               <span className="text-xs text-purple-400 mx-1">{t.auth_no_account}</span>
-              <Link href="/register" className="text-sm font-semibold text-purple-600 hover:text-purple-800 underline">
+              <Link href="/register" className="text-sm font-bold text-purple-600 hover:text-purple-800 underline">
                 {t.auth_register}
               </Link>
               <p className="text-[10px] text-purple-400 mt-1">
@@ -346,7 +346,7 @@ export default function BattleView() {
         )}
         {!user && captureTazoIds.length > 0 && (
           <div className="text-center p-3 bg-purple-50 border-2 border-purple-200 rounded-lg">
-            <p className="text-sm font-semibold text-purple-700">
+            <p className="text-sm font-bold text-purple-700">
               {captureTazoIds.length} {t.battle_captured_suffix}
             </p>
             <Link href="/login" className="text-xs text-purple-500 hover:text-purple-700 underline">

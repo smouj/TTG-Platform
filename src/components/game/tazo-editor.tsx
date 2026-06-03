@@ -348,7 +348,7 @@ export function TazoEditor({ tazo, onClose, onSave, onDelete }: TazoEditorProps)
                   ? 'bg-blue-500'
                   : form.rarity === 'uncommon'
                   ? 'bg-green-500'
-                  : 'bg-gray-500'
+                  : 'bg-zinc-400'
               }`}
             >
               {rarityConfig?.label[0] || 'C'}

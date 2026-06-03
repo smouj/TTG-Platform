@@ -517,7 +517,7 @@ export function ScannerView() {
                           ? 'border-black bg-yellow-400 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
                           : isDone
                           ? 'border-black bg-green-400 text-black'
-                          : 'border-gray-400 bg-gray-100 text-gray-400'
+                          : 'border-zinc-300 bg-zinc-100 text-zinc-400'
                       }`}
                     >
                       <span
@@ -526,7 +526,7 @@ export function ScannerView() {
                             ? 'bg-black text-yellow-400'
                             : isDone
                             ? 'bg-black text-green-400'
-                            : 'bg-gray-300 text-gray-500'
+                            : 'bg-zinc-200 text-zinc-500'
                         }`}
                       >
                         {isDone ? '✓' : s.num}
@@ -536,7 +536,7 @@ export function ScannerView() {
                     {i < 2 && (
                       <ArrowRight
                         className={`h-3.5 w-3.5 ${
-                          isDone ? 'text-green-500' : 'text-gray-300'
+                          isDone ? 'text-green-500' : 'text-zinc-300'
                         }`}
                       />
                     )}
@@ -706,13 +706,13 @@ export function ScannerView() {
                     className={`flex items-center gap-2 rounded-lg border-3 p-2 text-left text-xs transition-all ${
                       region.included
                         ? 'border-black bg-green-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5'
-                        : 'border-gray-400 bg-gray-100 opacity-60 hover:opacity-80'
+                        : 'border-gray-400 bg-zinc-100 opacity-60 hover:opacity-80'
                     }`}
                   >
                     {region.included ? (
                       <CheckCircle2 className="h-4 w-4 shrink-0 text-green-600" />
                     ) : (
-                      <XCircle className="h-4 w-4 shrink-0 text-gray-400" />
+                      <XCircle className="h-4 w-4 shrink-0 text-zinc-400" />
                     )}
                     <span className="font-black">
                       Region {index + 1}

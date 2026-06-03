@@ -102,7 +102,7 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
       {isNotOwned && (
         <div className="absolute inset-0 z-20 rounded-lg bg-white/40 flex items-center justify-center">
           <Lock
-            className="w-10 h-10 text-gray-500"
+            className="w-10 h-10 text-zinc-400"
             style={{ animation: 'lock-pulse 2s ease-in-out infinite' }}
           />
         </div>

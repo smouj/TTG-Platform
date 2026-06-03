@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, Filter, Grid3X3, LayoutGrid, BookOpen, Star, ArrowUpDown, Package } from 'lucide-react'
+import { Search, Filter, CheckCircle, RefreshCw, Palette, Grid3X3, LayoutGrid, BookOpen, Star, ArrowUpDown, Package } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 
 interface AlbumViewProps {
@@ -233,7 +233,7 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1a1a1a]" />
           <Input
-            placeholder="🔍 SEARCH YOUR COLLECTION..."
+            placeholder="Search SEARCH YOUR COLLECTION..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10 mag-card rounded-none h-10 text-sm font-black text-[#1a1a1a] placeholder:text-[#1a1a1a]/40 placeholder:font-black placeholder:text-sm"
@@ -253,7 +253,7 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
             className={`px-3 py-1.5 rounded-sm text-[11px] font-black uppercase tracking-wide transition-all ${
               selectedFranchise === 'all'
                 ? 'mag-btn bg-[#1a1a1a] text-white'
-                : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a] hover:bg-gray-100'
+                : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a] hover:bg-[#FFCC00]/20'
             }`}
           >
             ALL
@@ -306,7 +306,7 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
             >
               <SelectItem value="all" className="text-[11px] font-black uppercase">All Rarities</SelectItem>
               <SelectItem value="common" className="text-[11px] font-bold">
-                <span className="text-gray-500">★ Common</span>
+                <span className="text-zinc-500">★ Common</span>
               </SelectItem>
               <SelectItem value="uncommon" className="text-[11px] font-bold">
                 <span className="text-green-600">★★ Uncommon</span>
@@ -345,10 +345,10 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
             >
               <SelectItem value="all" className="text-[11px] font-black uppercase">All Conditions</SelectItem>
               <SelectItem value="mint" className="text-[11px] font-bold"><span className="text-emerald-600">✨ Mint</span></SelectItem>
-              <SelectItem value="good" className="text-[11px] font-bold"><span className="text-green-600">👍 Good</span></SelectItem>
-              <SelectItem value="used" className="text-[11px] font-bold"><span className="text-yellow-600">🔄 Used</span></SelectItem>
+              <SelectItem value="good" className="text-[11px] font-bold"><CheckCircle className="w-3.5 h-3.5 inline mr-1 text-[#22C55E]" /> Good</SelectItem>
+              <SelectItem value="used" className="text-[11px] font-bold"><RefreshCw className="w-3.5 h-3.5 inline mr-1 text-[#F59E0B]" /> Used</SelectItem>
               <SelectItem value="worn" className="text-[11px] font-bold"><span className="text-orange-600">⚔️ Worn</span></SelectItem>
-              <SelectItem value="holo" className="text-[11px] font-bold"><span className="text-cyan-600">🌈 Holo</span></SelectItem>
+              <SelectItem value="holo" className="text-[11px] font-bold"><Palette className="w-3.5 h-3.5 inline mr-1 text-[#00A1E9]" /> Holo</SelectItem>
               <SelectItem value="metallic" className="text-[11px] font-bold"><span className="text-slate-600">🛡️ Metallic</span></SelectItem>
             </SelectContent>
           </Select>
