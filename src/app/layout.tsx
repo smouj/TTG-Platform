@@ -45,12 +45,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.png", sizes: "32x32", type: "image/png" },
-      { url: "/logo/ttg-logo-icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
     ],
-    apple: [
-      { url: "/logo/logo-icon-black.png", sizes: "512x512" },
-    ],
-    other: [{ rel: "mask-icon", url: "/logo/ttg-logo-icon.svg", color: "#FFCC00" }],
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     type: "website",
