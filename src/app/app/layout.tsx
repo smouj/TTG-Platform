@@ -12,8 +12,6 @@ const PATH_TO_TAB: Record<string, string> = {
   "/app/quests": "quests",
   "/app/collection": "collection",
   "/app/decks": "decks",
-  "/app/leaderboard": "leaderboard",
-  "/app/download": "download",
 }
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

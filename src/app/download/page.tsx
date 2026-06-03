@@ -2,6 +2,7 @@
 
 import { Download, Monitor, Apple, Terminal, Github, ExternalLink, Globe, Gamepad2, Smartphone } from "lucide-react"
 import { useI18n } from "@/lib/i18n"
+import MagazinePageShell from "@/components/magazine-page-shell"
 
 const GITHUB_URL = "https://github.com/smouj/Trading-Tazos-Game"
 const RELEASES_URL = `${GITHUB_URL}/releases`
@@ -54,7 +55,7 @@ export default function DownloadPage() {
   const { t } = useI18n()
 
   return (
-    
+    <MagazinePageShell currentTab="download">
       <div className="max-w-4xl mx-auto w-full px-4 py-8 space-y-8">
 
         {/* ─── THREE WAYS TO PLAY ─── */}
@@ -228,6 +229,6 @@ export default function DownloadPage() {
         </div>
 
       </div>
-    
+    </MagazinePageShell>
   )
 }

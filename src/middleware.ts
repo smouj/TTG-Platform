@@ -1,52 +1,56 @@
 // ============================================================
 // Trading Tazos Game — Middleware
-// Handles auth redirects and route protection.
 // ============================================================
 
 import { NextRequest, NextResponse } from "next/server"
 
-// Pages that require authentication
-const PROTECTED_PAGES = ["/app/shop", "/app/quests", "/app/collection", "/app/decks"]
+// Dashboard root → album
+const ROOT_REDIRECTS: Record<string, string> = {
+  "/app": "/app/album",
+}
 
-// Legacy standalone pages that redirect to /app/*
+// Legacy pages → new /app/* paths
 const LEGACY_PAGES: Record<string, string> = {
-  "/shop": "/app/shop",
-  "/quests": "/app/quests",
   "/collection": "/app/collection",
   "/decks": "/app/decks",
+  "/quests": "/app/quests",
+  "/shop": "/app/shop",
   "/album": "/app/album",
   "/battle": "/app/battle",
   "/scanner": "/app/scanner",
   "/stats": "/app/stats",
-  "/leaderboard": "/app/leaderboard",
-  "/download": "/app/download",
 }
 
-// Pages that redirect to home if already logged in
+// Auth pages (redirect to dashboard if already logged in)
 const AUTH_PAGES = ["/login", "/register"]
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("auth_token")?.value
   const { pathname } = req.nextUrl
 
+  // Root redirects
+  if (ROOT_REDIRECTS[pathname]) {
+    return NextResponse.redirect(new URL(ROOT_REDIRECTS[pathname], req.url), 307)
+  }
+
   // Legacy page redirects → /app/*
   if (LEGACY_PAGES[pathname]) {
-    const target = new URL(LEGACY_PAGES[pathname], req.url)
-    // Preserve any query params (e.g. redirect)
-    req.nextUrl.searchParams.forEach((v, k) => target.searchParams.set(k, v))
-    return NextResponse.redirect(target, 308)
+    return NextResponse.redirect(new URL(LEGACY_PAGES[pathname], req.url), 308)
+  }
+
+  // /app/* — entire dashboard requires authentication
+  if (pathname.startsWith("/app/")) {
+    if (!token) {
+      const loginUrl = new URL("/login", req.url)
+      loginUrl.searchParams.set("redirect", pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+    return NextResponse.next()
   }
 
   // Redirect authenticated users away from login/register → dashboard
   if (AUTH_PAGES.includes(pathname) && token) {
-    return NextResponse.redirect(new URL("/app", req.url))
-  }
-
-  // Redirect unauthenticated users away from protected pages
-  if (PROTECTED_PAGES.some(p => pathname === p || pathname.startsWith(p + "/")) && !token) {
-    const loginUrl = new URL("/login", req.url)
-    loginUrl.searchParams.set("redirect", pathname)
-    return NextResponse.redirect(loginUrl)
+    return NextResponse.redirect(new URL("/app/album", req.url))
   }
 
   return NextResponse.next()
@@ -54,37 +58,20 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // 🔒 Protected pages
-    "/app/shop",
-    "/app/shop/:path*",
-    "/app/quests",
-    "/app/quests/:path*",
-    "/app/collection",
-    "/app/collection/:path*",
-    "/app/decks",
-    "/app/decks/:path*",
+    // Dashboard root redirect
+    "/app",
+    // Dashboard pages (protected)
+    "/app/:path*",
     // Legacy redirects
-    "/shop",
-    "/shop/:path*",
-    "/quests",
-    "/quests/:path*",
-    "/collection",
-    "/collection/:path*",
-    "/decks",
-    "/decks/:path*",
+    "/collection", "/collection/:path*",
+    "/decks", "/decks/:path*",
+    "/quests", "/quests/:path*",
+    "/shop", "/shop/:path*",
     "/album",
-    "/battle",
-    "/battle/:path*",
-    "/scanner",
-    "/scanner/:path*",
-    "/stats",
-    "/stats/:path*",
-    "/leaderboard",
-    "/leaderboard/:path*",
-    "/download",
-    "/download/:path*",
+    "/battle", "/battle/:path*",
+    "/scanner", "/scanner/:path*",
+    "/stats", "/stats/:path*",
     // Auth pages
-    "/login",
-    "/register",
+    "/login", "/register",
   ],
 }

@@ -26,8 +26,8 @@ const NAV_ITEMS: { id: TabId; labelKey?: string; fallbackLabel: string; icon: ty
   { id: "quests", fallbackLabel: "Quests", icon: Target, href: "/app/quests" },
   { id: "collection", fallbackLabel: "Collection", icon: Disc3, href: "/app/collection" },
   { id: "decks", fallbackLabel: "Decks", icon: Disc3, href: "/app/decks" },
-  { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/app/leaderboard" },
-  { id: "download", fallbackLabel: "Desktop", icon: Download, href: "/app/download" },
+  { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/leaderboard" },
+  { id: "download", fallbackLabel: "Desktop", icon: Download, href: "/download" },
 ]
 
 export default function MagazinePageShell({
