@@ -1,10 +1,14 @@
+// Standalone seed for VPS (no path aliases)
+const { PrismaClient } = require('@prisma/client');
+const db = new PrismaClient();
+
 // ============================================================
 // Trading Tazos Game — Seed
 // Real-world verified Spanish tazo collections.
 // Pokemon Tazos 1 (51), DBZ Matutano (105+variants), Cybermon Magic Box (150)
 // ============================================================
 
-import { db } from "@/lib/db"
+
 
 // ---- Helpers ----
 function randRange(min: number, max: number): number {
@@ -538,5 +542,15 @@ main()
     process.exit(1)
   })
   .finally(async () => {
-    await db.$disconnect()
+    
   })
+
+
+main()
+  .catch((e) => {
+    console.error("Seed failed:", e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await db.$disconnect();
+  });
