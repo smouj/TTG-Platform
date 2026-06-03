@@ -5,38 +5,36 @@
 
 import { NextRequest, NextResponse } from "next/server"
 
-// Legacy pages that redirect to /app?tab=...
+// Pages that require authentication
+const PROTECTED_PAGES = ["/app/shop", "/app/quests", "/app/collection", "/app/decks"]
+
+// Legacy standalone pages that redirect to /app/*
 const LEGACY_PAGES: Record<string, string> = {
-  "/collection": "/app?tab=collection",
-  "/decks": "/app?tab=decks",
-  "/quests": "/app?tab=quests",
-  "/shop": "/app?tab=shop",
-  "/album": "/app?tab=album",
-  "/battle": "/app?tab=battle",
-  "/scanner": "/app?tab=scanner",
-  "/stats": "/app?tab=stats",
+  "/shop": "/app/shop",
+  "/quests": "/app/quests",
+  "/collection": "/app/collection",
+  "/decks": "/app/decks",
+  "/album": "/app/album",
+  "/battle": "/app/battle",
+  "/scanner": "/app/scanner",
+  "/stats": "/app/stats",
+  "/leaderboard": "/app/leaderboard",
+  "/download": "/app/download",
 }
 
-// Auth pages (redirect to /app if already logged in)
+// Pages that redirect to home if already logged in
 const AUTH_PAGES = ["/login", "/register"]
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("auth_token")?.value
   const { pathname } = req.nextUrl
 
-  // Legacy page redirects → /app?tab=...
+  // Legacy page redirects → /app/*
   if (LEGACY_PAGES[pathname]) {
-    return NextResponse.redirect(new URL(LEGACY_PAGES[pathname], req.url), 308)
-  }
-
-  // /app — entire dashboard requires authentication
-  if (pathname === "/app" || pathname.startsWith("/app/")) {
-    if (!token) {
-      const loginUrl = new URL("/login", req.url)
-      loginUrl.searchParams.set("redirect", pathname + req.nextUrl.search)
-      return NextResponse.redirect(loginUrl)
-    }
-    return NextResponse.next()
+    const target = new URL(LEGACY_PAGES[pathname], req.url)
+    // Preserve any query params (e.g. redirect)
+    req.nextUrl.searchParams.forEach((v, k) => target.searchParams.set(k, v))
+    return NextResponse.redirect(target, 308)
   }
 
   // Redirect authenticated users away from login/register → dashboard
@@ -44,23 +42,36 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/app", req.url))
   }
 
+  // Redirect unauthenticated users away from protected pages
+  if (PROTECTED_PAGES.some(p => pathname === p || pathname.startsWith(p + "/")) && !token) {
+    const loginUrl = new URL("/login", req.url)
+    loginUrl.searchParams.set("redirect", pathname)
+    return NextResponse.redirect(loginUrl)
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    // Dashboard (protected)
-    "/app",
-    "/app/:path*",
+    // 🔒 Protected pages
+    "/app/shop",
+    "/app/shop/:path*",
+    "/app/quests",
+    "/app/quests/:path*",
+    "/app/collection",
+    "/app/collection/:path*",
+    "/app/decks",
+    "/app/decks/:path*",
     // Legacy redirects
+    "/shop",
+    "/shop/:path*",
+    "/quests",
+    "/quests/:path*",
     "/collection",
     "/collection/:path*",
     "/decks",
     "/decks/:path*",
-    "/quests",
-    "/quests/:path*",
-    "/shop",
-    "/shop/:path*",
     "/album",
     "/battle",
     "/battle/:path*",
@@ -68,6 +79,10 @@ export const config = {
     "/scanner/:path*",
     "/stats",
     "/stats/:path*",
+    "/leaderboard",
+    "/leaderboard/:path*",
+    "/download",
+    "/download/:path*",
     // Auth pages
     "/login",
     "/register",

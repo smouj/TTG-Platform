@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Landing -->
   <url><loc>https://medaclawarena.com</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+
+  <!-- SEO pages -->
   <url><loc>https://medaclawarena.com/how-to-play</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://medaclawarena.com/battle-system</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://medaclawarena.com/collections</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
@@ -9,13 +12,29 @@
   <url><loc>https://medaclawarena.com/collections/cybermon</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://medaclawarena.com/tazos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://medaclawarena.com/faq</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://medaclawarena.com/leaderboard</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://medaclawarena.com/download</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- App + Standalone -->
+  <url><loc>https://medaclawarena.com/app/leaderboard</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://medaclawarena.com/app/download</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://medaclawarena.com/app</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Auth -->
   <url><loc>https://medaclawarena.com/login</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://medaclawarena.com/register</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Legal -->
   <url><loc>https://medaclawarena.com/terms</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://medaclawarena.com/privacy</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://medaclawarena.com/cookies</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://medaclawarena.com/disclaimer</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+
+  <!-- App pages (protected) -->
+  <url><loc>https://medaclawarena.com/app/shop</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://medaclawarena.com/app/quests</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://medaclawarena.com/app/collection</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://medaclawarena.com/app/decks</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://medaclawarena.com/app/album</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://medaclawarena.com/app/battle</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://medaclawarena.com/app/scanner</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://medaclawarena.com/app/stats</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>
