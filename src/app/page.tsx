@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useI18n } from '@/lib/i18n'
 import { GameView } from '@/lib/game/types'
 import AlbumView from '@/components/game/album-view'
@@ -12,12 +12,34 @@ import { BookOpen, Swords, Scan, BarChart3, User, LogOut, Package, Layers, Downl
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
 
+const GAME_TABS = ['album', 'battle', 'scanner', 'stats'] as const
+
+function getInitialTab(): GameView {
+  if (typeof window === 'undefined') return 'album'
+  const params = new URLSearchParams(window.location.search)
+  const tab = params.get('tab')
+  return (tab && (GAME_TABS as readonly string[]).includes(tab)) ? tab as GameView : 'album'
+}
+
 export default function Home() {
   const { t } = useI18n()
   const { user, logout } = useAuth()
   const [showUserMenu, setShowUserMenu] = useState(false)
-  const [activeView, setActiveView] = useState<GameView>('album')
+  const [activeView, setActiveView] = useState<GameView>(getInitialTab)
   const [statsRefreshKey, setStatsRefreshKey] = useState(0)
+
+  // Sync tab from URL on browser back/forward
+  useEffect(() => {
+    const handlePopState = () => setActiveView(getInitialTab())
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  const handleTabChange = useCallback((view: GameView) => {
+    setActiveView(view)
+    const url = view === 'album' ? '/' : `/?tab=${view}`
+    window.history.pushState(null, '', url)
+  }, [])
 
   const handleStatsUpdate = useCallback(() => {
     setStatsRefreshKey(prev => prev + 1)
@@ -161,7 +183,7 @@ export default function Home() {
                   key={id}
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setActiveView(id as GameView)}
+                  onClick={() => handleTabChange(id as GameView)}
                   className={`
                     flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 font-black text-[11px] sm:text-xs
                     tracking-wider uppercase transition-all duration-150
