@@ -18,10 +18,10 @@ import {
 type TabId = "album" | "battle" | "scanner" | "stats" | "shop" | "quests" | "leaderboard" | "download"
 
 const NAV_ITEMS: { id: TabId; labelKey?: string; fallbackLabel: string; icon: typeof BookOpen; href: string; external?: boolean }[] = [
-  { id: "album", labelKey: "tabAlbum", fallbackLabel: "Album", icon: BookOpen, href: "/" },
-  { id: "battle", labelKey: "tabBattle", fallbackLabel: "Battle!", icon: Swords, href: "/?tab=battle" },
-  { id: "scanner", labelKey: "tabScanner", fallbackLabel: "Scanner", icon: Scan, href: "/?tab=scanner" },
-  { id: "stats", labelKey: "tabStats", fallbackLabel: "Stats", icon: BarChart3, href: "/?tab=stats" },
+  { id: "album", labelKey: "tabAlbum", fallbackLabel: "Album", icon: BookOpen, href: "/app" },
+  { id: "battle", labelKey: "tabBattle", fallbackLabel: "Battle!", icon: Swords, href: "/app?tab=battle" },
+  { id: "scanner", labelKey: "tabScanner", fallbackLabel: "Scanner", icon: Scan, href: "/app?tab=scanner" },
+  { id: "stats", labelKey: "tabStats", fallbackLabel: "Stats", icon: BarChart3, href: "/app?tab=stats" },
   { id: "shop", fallbackLabel: "Shop", icon: ShoppingBag, href: "/shop", external: true },
   { id: "quests", fallbackLabel: "Quests", icon: Target, href: "/quests", external: true },
   { id: "leaderboard", fallbackLabel: "Ranks", icon: Trophy, href: "/leaderboard", external: true },

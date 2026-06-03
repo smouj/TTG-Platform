@@ -33,7 +33,7 @@ export default function Home() {
   const handleTabChange = useCallback((view: string) => {
     if ((GAME_TABS as readonly string[]).includes(view)) {
       setActiveView(view as GameView)
-      const url = view === "album" ? "/" : `/?tab=${view}`
+      const url = view === "album" ? "/app" : `/app?tab=${view}`
       window.history.pushState(null, "", url)
     }
   }, [])
