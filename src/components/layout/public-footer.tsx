@@ -8,7 +8,7 @@ const columns = [
       ["Battle System", "/battle-system"],
       ["Collections", "/collections"],
       ["Tazos", "/tazos"],
-      ["Leaderboard", "/app/leaderboard"],
+      ["Leaderboard", "/leaderboard"],
     ],
   },
   {
@@ -18,7 +18,7 @@ const columns = [
       ["Create Account", "/register"],
       ["Shop", "/app/shop"],
       ["Quests", "/app/quests"],
-      ["Download", "/app/download"],
+      ["Download", "/download"],
     ],
   },
   {
