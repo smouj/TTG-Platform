@@ -18,25 +18,32 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ quests, userQuests: [] })
   }
 
-  // Get user progress
-  const userQuests = await prisma.userQuest.findMany({ where: { userId: user.id } })
+  // Get user progress (best-effort — DB may have timestamp format issues)
+  let userQuests: any[] = []
+  try {
+    userQuests = await prisma.userQuest.findMany({ where: { userId: user.id } })
+  } catch {
+    // Timestamp format corruption in DB — return quests without progress
+    return NextResponse.json({ quests, userQuests: [] })
+  }
 
   // Auto-create userQuest records for any quests user hasn't seen
   const existing = new Set(userQuests.map(uq => uq.questId))
   const newQuests = quests.filter(q => !existing.has(q.id))
   if (newQuests.length > 0) {
+    const now = new Date().toISOString()
+    for (const q of newQuests) {
+      try {
+        await prisma.userQuest.create({
+          data: { userId: user.id, questId: q.id, createdAt: now, updatedAt: now }
+        })
+      } catch { /* skip duplicate */ }
+    }
     try {
-      // Use individual creates — createMany has FK issues with SQLite in some Prisma versions
-      for (const q of newQuests) {
-        try {
-          await prisma.userQuest.create({
-            data: { userId: user.id, questId: q.id }
-          })
-        } catch { /* skip if duplicate or FK error — already exists */ }
-      }
-    } catch { /* best-effort: quest data still returned */ }
-    const updated = await prisma.userQuest.findMany({ where: { userId: user.id } })
-    return NextResponse.json({ quests, userQuests: updated })
+      userQuests = await prisma.userQuest.findMany({ where: { userId: user.id } })
+    } catch {
+      userQuests = []
+    }
   }
 
   return NextResponse.json({ quests, userQuests })

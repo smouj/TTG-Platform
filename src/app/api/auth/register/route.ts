@@ -75,30 +75,34 @@ export async function POST(request: NextRequest) {
 /** Seed welcome tazos and a starter deck for new users */
 async function seedWelcomePack(userId: string) {
   try {
+    const now = new Date().toISOString()
+
     // Pick 10 random tazos (balanced across franchises)
     const [min, drac, cyber] = await Promise.all([
       db.tazo.findMany({ where: { franchise: { slug: "minimon" } }, take: 4, orderBy: { attack: "desc" } }),
-      db.tazo.findMany({ where: { franchise: { slug: "dragon-ball-z" } }, take: 3, orderBy: { attack: "desc" } }),
+      db.tazo.findMany({ where: { franchise: { slug: "dracobell" } }, take: 3, orderBy: { attack: "desc" } }),
       db.tazo.findMany({ where: { franchise: { slug: "cybermon" } }, take: 3, orderBy: { attack: "desc" } }),
     ])
     const welcomeTazos = [...min, ...drac, ...cyber]
 
-    // Add to user's collection
+    // Add to user's collection (explicit timestamps to avoid SQLite ms-timestamp bug)
     for (const tazo of welcomeTazos) {
       await db.userTazo.create({
-        data: { userId, tazoId: tazo.id, quantity: 1 },
+        data: { userId, tazoId: tazo.id, quantity: 1, createdAt: now, updatedAt: now },
       })
     }
 
-    // Create starter deck with first 7
+    // Create starter deck with first 7 (explicit timestamps)
     const deckTazos = welcomeTazos.slice(0, 7)
     await db.deck.create({
       data: {
         userId,
         name: "Starter Squad",
         isActive: true,
+        createdAt: now,
+        updatedAt: now,
         deckTazos: {
-          create: deckTazos.map((t) => ({ tazoId: t.id })),
+          create: deckTazos.map((t) => ({ tazoId: t.id, createdAt: now, updatedAt: now })),
         },
       },
     })
