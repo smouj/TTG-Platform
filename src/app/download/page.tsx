@@ -7,6 +7,7 @@ import MagazinePageShell from "@/components/magazine-page-shell"
 const GITHUB_URL = "https://github.com/smouj/Trading-Tazos-Game"
 const RELEASES_URL = `${GITHUB_URL}/releases`
 const RELEASE_TAG = "v0.3.0"
+const RELEASE_VER = "0.3.0"
 
 // Linux is built and available now
 // Windows/macOS are built via GitHub Actions (coming in next release)
@@ -44,8 +45,8 @@ const DOWNLOADS = [
     url: `${RELEASES_URL}/tag/${RELEASE_TAG}`,
     available: true,
     formats: [
-      { label: ".AppImage", path: `trading-tazos-game-${RELEASE_TAG#v}-linux-x86_64.AppImage` },
-      { label: ".deb (Ubuntu/Debian)", path: `trading-tazos-game-${RELEASE_TAG#v}-linux-amd64.deb` },
+      { label: ".AppImage", path: `trading-tazos-game-${RELEASE_VER}-linux-x86_64.AppImage` },
+      { label: ".deb (Ubuntu/Debian)", path: `trading-tazos-game-${RELEASE_VER}-linux-amd64.deb` },
     ],
   },
 ]
