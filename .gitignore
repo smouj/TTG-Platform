@@ -31,7 +31,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files — NEVER commit real .env. Use .env.example as template.
-.env
 .env.local
 .env.*.local
 .env.production
@@ -95,3 +94,10 @@ worklog.md
 # agent-ctx — AI agent task prompts (internal)
 # agent-ctx — AI agent task prompts (internal)
 agent-ctx/
+
+
+
+# artgen — generated images + local env
+artgen/output/
+artgen/.env
+.env
