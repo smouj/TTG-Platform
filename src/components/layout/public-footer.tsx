@@ -50,7 +50,7 @@ export default function PublicFooter() {
               <h2 className="text-sm font-black uppercase tracking-[0.2em] text-[#FFCC00] mb-3">{column.title}</h2>
               <ul className="space-y-2">
                 {column.links.map(([label, href]) => (
-                  <li key={href}>
+                  <li key={`${label}-${href}`}>
                     <Link href={href} className="text-sm font-bold text-zinc-300 hover:text-white hover:underline underline-offset-4">
                       {label}
                     </Link>
