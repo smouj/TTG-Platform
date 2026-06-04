@@ -45,7 +45,7 @@ export default function RegisterPage() {
           </Link>
           <div className="flex items-center gap-3">
             <img
-              src="/logo/logo-icon-black.png"
+              src="/logo/logo-icon-black.webp"
               alt="TTG"
               className="w-10 h-10 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
             />

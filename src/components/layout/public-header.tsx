@@ -42,7 +42,7 @@ function HeaderContent() {
         <div className="flex items-center gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 min-w-0 shrink-0" onClick={() => setOpen(false)}>
-            <img src="/logo/logo-icon-black.png" alt="Trading Tazos Game" className="w-12 h-12 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]" />
+            <img src="/logo/logo-icon-black.webp" alt="Trading Tazos Game" className="w-12 h-12 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]" />
             <div className="min-w-0 hidden sm:block">
               <p className="text-xl sm:text-2xl font-black leading-none uppercase text-[#1a1a1a] truncate">
                 {safeLabel(tt, "siteTitle", "TRADING TAZOS GAME")}

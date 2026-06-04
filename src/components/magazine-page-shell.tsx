@@ -85,7 +85,7 @@ export default function MagazinePageShell({
             {/* Logo */}
             <Link href="/" className="relative shrink-0">
               <img
-                src="/logo/logo-icon-black.png"
+                src="/logo/logo-icon-black.webp"
                 alt="Trading Tazos Game"
                 className="w-12 h-12 sm:w-16 sm:h-16 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
               />

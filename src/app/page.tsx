@@ -164,7 +164,7 @@ export default function LandingPage() {
 
           <div className="mag-enter-up-2 relative mb-6">
             <Image
-              src="/logo/logo-complete-black.png"
+              src="/logo/logo-complete-black.webp"
               alt="Trading Tazos Game"
               width={560}
               height={168}
