@@ -40,14 +40,14 @@ win:
       arch: [x64]
     - target: portable
       arch: [x64]
-  icon: icon-256.png
+  icon: icon.ico
   artifactName: "${name}-${version}-win-${arch}.${ext}"
 
 nsis:
   oneClick: false
   perMachine: false
   allowToChangeInstallationDirectory: true
-  installerIcon: icon-256.png
+  installerIcon: icon.ico
   createDesktopShortcut: true
   createStartMenuShortcut: true
   shortcutName: "Trading Tazos Game"
