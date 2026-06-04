@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v1
         with:
@@ -28,12 +30,8 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Get version
-        id: version
-        run: echo "value=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
       - name: Build Linux installers
-        run: bun run electron:build:linux -- --publish never -c.extraMetadata.version=${{ steps.version.outputs.value }}
+        run: bun run electron:build:linux -- --publish never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -49,6 +47,8 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v1
         with:
@@ -57,12 +57,8 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Get version
-        id: version
-        run: echo "value=$(node -p "require('./package.json').version")" >> $env:GITHUB_OUTPUT
-
       - name: Build Windows installers
-        run: bun run electron:build:win -- --publish never -c.extraMetadata.version=${{ steps.version.outputs.value }}
+        run: bun run electron:build:win -- --publish never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -77,6 +73,8 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v1
         with:
@@ -85,16 +83,12 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Get version
-        id: version
-        run: echo "value=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
       - name: Build macOS installers
         run: |
-          bun run electron:build:mac -- --publish never -c.extraMetadata.version=${{ steps.version.outputs.value }} || {
+          bun run electron:build:mac -- --publish never || {
             echo "First attempt failed (likely hdiutil race), retrying in 30s..."
             sleep 30
-            bun run electron:build:mac -- --publish never -c.extraMetadata.version=${{ steps.version.outputs.value }}
+            bun run electron:build:mac -- --publish never
           }
 
       - name: Upload artifacts
