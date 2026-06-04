@@ -29,7 +29,7 @@ jobs:
         run: bun install
 
       - name: Build Linux installers
-        run: bun run electron:build:linux
+        run: bun run electron:build:linux -- --publish never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -52,7 +52,7 @@ jobs:
         run: bun install
 
       - name: Build Windows installers
-        run: bun run electron:build:win
+        run: bun run electron:build:win -- --publish never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -75,7 +75,7 @@ jobs:
         run: bun install
 
       - name: Build macOS installers
-        run: bun run electron:build:mac
+        run: bun run electron:build:mac -- --publish never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
