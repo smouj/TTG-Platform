@@ -397,6 +397,8 @@ tazos battle --seed 42      # Simulate a physics battle
 ## Changelog
 
 ### v0.3.0 — 3D Shop + Quests + Desktop App + Public SEO (Jun 2026)
+- **Entry animations**: Staggered fade-up on landing hero, skeleton loaders, loading states
+- **Magazine arena**: Cream/halftone background, yellow ring, white field — matches THEME.md
 - **Dashboard**: 9 tabs under `/app/*` (album, battle, scanner, stats, shop, quests, collection, decks, settings)
 - **Auth**: Dual cookie system (httpOnly + companion), `/api/auth/ping` endpoint, auto session detection
 - **2-shell architecture**: PublicPageShell (landing/SEO) + MagazinePageShell (dashboard, 9 tabs, no scrollbar)
