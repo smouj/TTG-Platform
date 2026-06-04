@@ -35,7 +35,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: linux-installers
-          path: dist-electron/*.{AppImage,deb}
+          path: |
+            dist-electron/*.AppImage
+            dist-electron/*.deb
           retention-days: 30
 
   # ─── Windows (.exe NSIS + portable) ────────────────────
@@ -58,12 +60,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-installers
-          path: dist-electron/*.{exe}
+          path: |
+            dist-electron/*.exe
           retention-days: 30
 
   # ─── macOS (.dmg + .zip) ──────────────────────────────
   build-macos:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -75,13 +78,20 @@ jobs:
         run: bun install
 
       - name: Build macOS installers
-        run: bun run electron:build:mac -- --publish never
+        run: |
+          bun run electron:build:mac -- --publish never || {
+            echo "First attempt failed (likely hdiutil race), retrying in 30s..."
+            sleep 30
+            bun run electron:build:mac -- --publish never
+          }
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: mac-installers
-          path: dist-electron/*.{dmg,zip}
+          path: |
+            dist-electron/*.dmg
+            dist-electron/*.zip
           retention-days: 30
 
   # ─── GitHub Release ────────────────────────────────────
