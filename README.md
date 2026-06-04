@@ -15,7 +15,7 @@
 [![Status](https://img.shields.io/badge/status-Live-brightgreen)](https://medaclawarena.com)
 [![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?logo=pwa)](https://medaclawarena.com/manifest.json)
 [![i18n](https://img.shields.io/badge/i18n-10_languages-8B5CF6)](./src/lib/i18n/locales/)
-[![Version](https://img.shields.io/badge/version-v0.3.0-FFCC00)](#changelog)
+[![Version](https://img.shields.io/badge/version-v0.3.1-FFCC00)](#changelog)
 
 <br/>
 
