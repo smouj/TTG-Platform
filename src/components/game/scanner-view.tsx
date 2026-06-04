@@ -19,9 +19,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import dynamic from 'next/dynamic'
-
-const ScannerMachine3D = dynamic(() => import('./3d/scanner-machine-3d'), { ssr: false })
 import {
   Select,
   SelectContent,
@@ -554,9 +551,6 @@ export function ScannerView() {
       {/* ===== UPLOAD STEP ===== */}
       {step === 'upload' && (
         <div className="space-y-4">
-          {/* 3D Scanner Machine showcase */}
-          <ScannerMachine3D isScanning={false} scanProgress={0} className="min-h-[350px]" />
-
           {/* Upload area with magazine dots texture and yellow tint */}
           <div
             onDragOver={handleDragOver}
@@ -626,9 +620,6 @@ export function ScannerView() {
       {/* ===== DETECT STEP ===== */}
       {step === 'detect' && uploadedImageUrl && (
         <div className="space-y-4">
-          {/* 3D Scanner Machine — scanning */}
-          <ScannerMachine3D isScanning={isScanning} scanProgress={isScanning ? 0.5 : 0} className="min-h-[300px]" />
-
           {/* Detection Overlay - White card with thick black border */}
           <div className="mag-card overflow-hidden p-0">
             {/* Detection header */}

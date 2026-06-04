@@ -15,7 +15,6 @@ import {
   opponentPlaceTazo, endTurn, exportReplay, executeAITurn,
 } from "@/lib/battle/battle-engine"
 import type { BattleState, BattlePhase } from "@/lib/battle"
-import BattleArenaCanvas from "./battle/battle-arena-canvas"
 import BattleStadium3D from "./3d/battle-stadium-3d"
 import LaunchControl from "./battle/launch-control"
 import BattleEventLog from "./battle/battle-event-log"
@@ -424,19 +423,19 @@ export default function BattleView() {
         <div className="lg:col-span-2 min-h-0 flex flex-col">
           <div className="flex-1 min-h-0">
           <BattleStadium3D
-            playerTazos={battleState.player.placed.map((p: any) => ({
-              id: p.id || p.tazoId,
-              name: playerTazos.find(t => t.id === p.tazoId)?.name || "Tazo",
-              franchise: playerTazos.find(t => t.id === p.tazoId)?.franchise || "minimon",
-              attack: playerTazos.find(t => t.id === p.tazoId)?.attack || 50,
-              defense: playerTazos.find(t => t.id === p.tazoId)?.defense || 50,
+            playerTazos={battleState.player.field.map((p) => ({
+              id: p.id,
+              name: p.name,
+              franchise: p.franchise || "minimon",
+              attack: p.stats.attack,
+              defense: p.stats.defense,
             }))}
-            opponentTazos={battleState.opponent.placed.map((p: any) => ({
-              id: p.id || p.tazoId,
-              name: opponentTazos.find(t => t.id === p.tazoId)?.name || "Rival",
-              franchise: opponentTazos.find(t => t.id === p.tazoId)?.franchise || "cybermon",
-              attack: opponentTazos.find(t => t.id === p.tazoId)?.attack || 50,
-              defense: opponentTazos.find(t => t.id === p.tazoId)?.defense || 50,
+            opponentTazos={battleState.opponent.field.map((p) => ({
+              id: p.id,
+              name: p.name,
+              franchise: p.franchise || "cybermon",
+              attack: p.stats.attack,
+              defense: p.stats.defense,
             }))}
             className="flex-1 min-h-0"
           />

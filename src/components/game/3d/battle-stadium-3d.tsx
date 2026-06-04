@@ -5,7 +5,7 @@
 // ============================================================
 "use client"
 
-import { useRef, useMemo, useState, useCallback } from "react"
+import { Suspense, useRef, useMemo, useState, useCallback } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, Text, ContactShadows, PerspectiveCamera, Html } from "@react-three/drei"
 import TazoDisc3D from "./tazo-disc-3d"
@@ -249,7 +249,8 @@ function AttackArc({
       const by = (1 - t) * (1 - t) * from[1] + 2 * (1 - t) * t * mid[1] + t * t * to[1]
       const bz = (1 - t) * (1 - t) * from[2] + 2 * (1 - t) * t * mid[2] + t * t * to[2]
       arcRef.current.position.set(bx, by, bz)
-      arcRef.current.material.opacity = Math.sin(t * Math.PI) * 0.8
+      const material = arcRef.current.material as THREE.MeshStandardMaterial
+      material.opacity = Math.sin(t * Math.PI) * 0.8
     }
     if (!active) progress.current = 0
   })

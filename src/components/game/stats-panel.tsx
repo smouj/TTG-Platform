@@ -3,9 +3,6 @@
 import { useState, useEffect } from 'react'
 import { Tazo, Rarity, TazoCondition, RARITY_CONFIG, CONDITION_CONFIG } from '@/lib/game/types'
 import { Trophy, Swords, Shield, Wind, Weight, Target, Star, TrendingUp, Package, CheckCircle, XCircle, Zap, Activity, Crosshair, Waves } from 'lucide-react'
-import dynamic from 'next/dynamic'
-
-const TrophyRoom3D = dynamic(() => import('./3d/trophy-room-3d'), { ssr: false })
 
 interface StatsData {
   totalTazos: number
@@ -126,16 +123,6 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
   return (
     <div className="space-y-4">
-      {/* ====== 3D TROPHY ROOM ====== */}
-      <TrophyRoom3D
-        totalTazos={stats.ownedTazos}
-        totalTazosMax={stats.totalTazos}
-        decks={0}
-        credits={0}
-        wins={0}
-        losses={0}
-      />
-
       {/* ====== TOP INFOGRAPHIC BOXES ====== */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {/* TOTAL TAZOS - White bg, big black number */}

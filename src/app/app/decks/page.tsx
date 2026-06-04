@@ -5,9 +5,6 @@ import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import { Layers, Plus, Trash2, Star, Swords, Shield, Zap } from "lucide-react"
-import dynamic from "next/dynamic"
-
-const CollectionBinder3D = dynamic(() => import("@/components/game/3d/collection-binder-3d"), { ssr: false })
 
 interface DeckTazo {
   id: string; name: string; displayName: string; imageUrl: string; franchise: string
@@ -118,27 +115,6 @@ export default function DecksPage() {
           {t.decks_create}
         </button>
       </div>
-
-        {/* 3D Active Deck Preview */}
-        {decks.filter(d => d.isActive).map(activeDeck => (
-          <CollectionBinder3D
-            key={activeDeck.id}
-            tazos={activeDeck.tazos.map((t: any) => ({
-              id: t.id,
-              name: t.name,
-              displayName: t.displayName || t.name,
-              number: "",
-              imageUrl: t.imageUrl,
-              rarity: "common",
-              franchise: t.franchise,
-              franchiseSlug: t.franchise,
-              quantity: 1,
-              attack: t.attack || 0,
-              defense: t.defense || 0,
-            }))}
-            className="h-[240px]"
-          />
-        ))}
 
         {/* Create form */}
         {showCreate && (

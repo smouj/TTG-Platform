@@ -234,8 +234,8 @@ Trading-Tazos-Game/
 │   │   ├── register/         #
 │   │   └── api/              # 15 REST API route groups
 │   ├── components/game/
-│   │   ├── battle/           # Arena canvas, launch controls, event log, results
-│   │   ├── 3d/               # 3D tazo discs, chip bags, scenes
+│   │   ├── battle/           # Launch controls, event log, results
+│   │   ├── 3d/               # Battle-only 3D arena and tazo discs
 │   │   ├── album-view.tsx    # Filterable tazo grid (4 tabs)
 │   │   ├── tazo-card.tsx     # Individual tazo display
 │   │   ├── tazo-detail-modal.tsx  # 9-stat detail + evolutive info

@@ -25,7 +25,7 @@ const features = [
   { title: "Battle Arena", icon: "⚔️", desc: "Real-time physics arena. Aim, charge power, and throw your tazos to flip and capture rival tazos." },
   { title: "Collect Album", icon: "📚", desc: "319 verified tazos across 3 collections. Filter by franchise, rarity, category. Track your progress." },
   { title: "Deck Builder", icon: "🃏", desc: "Build your dream team of 5. 8 combat roles. 9 unique stats per tazo. Synergize your strategy." },
-  { title: "Tazo Shop", icon: "🛍️", desc: "Open 3D tazo bags with tear animation. Standard, Premium, and Mega bags with rarity boost." },
+  { title: "Tazo Shop", icon: "🛍️", desc: "Open illustrated tazo bags. Standard, Premium, and Mega bags with rarity boost." },
   { title: "Quests System", icon: "🎯", desc: "17 quests across 4 categories. Daily, weekly, and special challenges. Earn credits and rewards." },
   { title: "Leaderboard", icon: "🏆", desc: "Global rankings. Compete by credits earned, tazos collected, or battles won. Be the champion." },
 ]
@@ -100,7 +100,7 @@ export default function LandingPage() {
             {[
               { step: "1", title: "Collect", desc: "Open tazo bags, scan physical tazos, and build your collection of 319 tazos." },
               { step: "2", title: "Build Deck", desc: "Choose 5 tazos for your battle deck. Balance 8 roles and 9 stats for your strategy." },
-              { step: "3", title: "Enter Arena", desc: "Face off in a 2D physics arena. Aim with precision, charge your power, and release." },
+              { step: "3", title: "Enter Arena", desc: "Face off in a 3D match arena. Aim with precision, charge your power, and release." },
               { step: "4", title: "Flip & Capture", desc: "Impact rival tazos to flip them. Chain rebounds. Capture them all to win." },
             ].map((item) => (
               <div key={item.step} className="border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] bg-[#FFCC00] p-5 text-center">

@@ -1,20 +1,14 @@
 // ============================================================
 // Trading Tazos Game — Bag Shop Page
-// Buy potato chip bags with credits, open them in 3D.
+// Buy potato chip bags with credits and open them.
 // ============================================================
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import { useI18n } from "@/lib/i18n"
 import { useAuth } from "@/lib/auth-context"
-import dynamic from "next/dynamic"
 import Link from "next/link"
 import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart } from "lucide-react"
-
-// Dynamic 3D imports (no SSR)
-const Scene3D = dynamic(() => import("@/components/game/3d/scene-3d"), { ssr: false })
-const ChipBag3D = dynamic(() => import("@/components/game/3d/chip-bag-3d"), { ssr: false })
-const TazoDisc3D = dynamic(() => import("@/components/game/3d/tazo-disc-3d"), { ssr: false })
 
 interface BagConfig {
   type: string
@@ -70,6 +64,45 @@ const RARITY_LABELS: Record<string, string> = {
   rare: "Raro",
   "ultra-rare": "Ultra Raro",
   legendary: "Legendario",
+}
+
+function BagPreview({ bag, open = false, progress = 0 }: { bag: BagConfig; open?: boolean; progress?: number }) {
+  return (
+    <div className="relative h-full min-h-[150px] flex items-center justify-center overflow-hidden bg-[#fffef0] border-3 border-[#1a1a1a]">
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "radial-gradient(#1a1a1a 1px, transparent 1px)",
+          backgroundSize: "10px 10px",
+        }}
+      />
+      <div
+        className="relative w-28 h-36 border-4 border-[#1a1a1a] shadow-[5px_5px_0px_#1a1a1a] flex flex-col items-center justify-between p-3 transition-transform duration-300"
+        style={{
+          background: `linear-gradient(145deg, ${bag.color}, #fffef0 160%)`,
+          transform: open ? `rotate(${(progress - 0.5) * 8}deg) translateY(-4px)` : "rotate(-3deg)",
+          clipPath: "polygon(10% 0, 90% 0, 100% 12%, 94% 100%, 6% 100%, 0 12%)",
+        }}
+      >
+        <div className="w-full h-3 bg-white/45 border-2 border-[#1a1a1a]" />
+        <div className="text-center">
+          <ShoppingBag className="w-10 h-10 mx-auto text-[#1a1a1a]" />
+          <p className="mt-2 text-[13px] font-black text-[#1a1a1a] tracking-wider">TAZOS</p>
+          <p className="text-[8px] font-black text-[#1a1a1a]/60 uppercase">{bag.type}</p>
+        </div>
+        <div className="w-full h-5 bg-white border-2 border-[#1a1a1a] flex items-center justify-center text-[8px] font-black text-[#1a1a1a]">
+          {bag.cost} CR
+        </div>
+        {open && (
+          <div
+            className="absolute left-2 right-2 top-4 h-1 bg-white border border-[#1a1a1a]"
+            style={{ transform: `scaleX(${Math.max(0.05, progress)})`, transformOrigin: "left" }}
+          />
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default function BagShopPage() {
@@ -250,11 +283,9 @@ export default function BagShopPage() {
                     : "border-zinc-200 shadow-[2px_2px_0px_#1a1a1a] bg-white/60 hover:border-[#FFCC00]"
                 }`}
               >
-                {/* Bag 3D preview */}
+                {/* 2D bag preview */}
                 <div className="h-40 mb-3">
-                  <Scene3D cameraPosition={[0, 0, 2.5]} controls={false} autoRotate={false}>
-                    <ChipBag3D color={bag.color} brand="TAZOS" size={0.9} />
-                  </Scene3D>
+                  <BagPreview bag={bag} />
                 </div>
                 <div className="flex items-center gap-2 mb-1">
                   {bag.icon}
@@ -321,23 +352,7 @@ export default function BagShopPage() {
             Opening {selectedBag.name}...
           </h2>
           <div className="h-80 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] rounded-lg overflow-hidden">
-            <Scene3D cameraPosition={[0, 0.3, 2.8]} controls={false} autoRotate={false}>
-              <ChipBag3D
-                color={selectedBag.color}
-                brand="TAZOS"
-                isOpen={true}
-                tearProgress={tearProgress}
-                size={1}
-              />
-              {tearProgress > 0.3 && (
-                <pointLight
-                  position={[0, 0.8, 0.3]}
-                  intensity={tearProgress * 2}
-                  color="#FFCC00"
-                  distance={2}
-                />
-              )}
-            </Scene3D>
+            <BagPreview bag={selectedBag} open progress={tearProgress} />
           </div>
           <p className="text-sm font-black text-zinc-500 animate-pulse">
             {tearProgress < 1 ? "Tearing open..." : "Revealing tazo..."}
@@ -367,17 +382,26 @@ export default function BagShopPage() {
             <Sparkles className="w-5 h-5 text-[#F59E0B]" />
           </div>
 
-          {/* 3D Tazo */}
-          <div className="h-72 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] rounded-lg overflow-hidden">
-            <Scene3D cameraPosition={[0, 0.2, 3]} controls={true} autoRotate={true}>
-              <TazoDisc3D
-                name={revealedTazo.displayName || revealedTazo.name}
-                franchise={revealedTazo.franchise?.slug || "minimon"}
-                color={revealedTazo.franchise?.color}
-                size={1.2}
-                rotationSpeed={0.5}
-              />
-            </Scene3D>
+          {/* 2D Tazo reveal */}
+          <div className="h-72 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] rounded-lg overflow-hidden flex items-center justify-center p-6">
+            <div
+              className="relative w-52 h-52 rounded-full border-4 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] flex items-center justify-center overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${revealedTazo.franchise?.color || "#FFCC00"}, #fffef0)`,
+              }}
+            >
+              {revealedTazo.imageUrl ? (
+                <img
+                  src={revealedTazo.imageUrl}
+                  alt={revealedTazo.displayName || revealedTazo.name || "Tazo"}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-5xl font-black text-white mag-stroke-sm">
+                  {(revealedTazo.displayName || revealedTazo.name || "?").charAt(0)}
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Tazo info card */}

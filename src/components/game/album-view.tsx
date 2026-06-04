@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { Tazo, Franchise, Rarity, TazoCondition } from '@/lib/game/types'
 import TazoCard from './tazo-card'
 import TazoDetailModal from './tazo-detail-modal'
-import TazoGallery3D from './3d/tazo-gallery-3d'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -429,12 +428,12 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
       </div>
 
       {/* ═══════════════════════════════════════════ */}
-      {/* 3D TAZO GALLERY                            */}
+      {/* 2D TAZO ALBUM GRID                         */}
       {/* ═══════════════════════════════════════════ */}
       {loading ? (
         <div
           className="flex items-center justify-center py-20 border-3 border-[#1a1a1a]"
-          style={{ background: '#fffef0', minHeight: 500 }}
+          style={{ background: '#fffef0', minHeight: 360 }}
         >
           <div className="mag-spinner w-12 h-12 rounded-full border-4 border-[#FFCC00] border-t-[#E3350D]" />
         </div>
@@ -476,29 +475,29 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
           </p>
         </div>
       ) : (
-        <TazoGallery3D
-          tazos={tazos.map(t => ({
-            id: t.id,
-            name: t.name,
-            displayName: t.displayName || t.name,
-            number: t.number,
-            imageUrl: t.imageUrl,
-            rarity: t.rarity,
-            franchise: t.franchise,
-            franchiseSlug: t.franchiseSlug || t.franchise,
-            attack: t.attack,
-            defense: t.defense,
-          }))}
-          selectedFranchise={selectedFranchise}
-          style={{ minHeight: 550 }}
-          onTazoClick={(t) => {
-            const found = tazos.find(tt => tt.id === t.id)
-            if (found) {
-              setSelectedTazo(found)
-              setDetailOpen(true)
-            }
+        <div
+          className={`grid gap-3 p-3 ${
+            gridSize === 'compact'
+              ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7'
+              : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+          }`}
+          style={{
+            background: '#fffef0',
+            border: '3px solid #1a1a1a',
+            boxShadow: '4px 4px 0px #1a1a1a',
           }}
-        />
+        >
+          {tazos.map((tazo) => (
+            <TazoCard
+              key={tazo.id}
+              tazo={tazo}
+              onClick={(item) => {
+                setSelectedTazo(item)
+                setDetailOpen(true)
+              }}
+            />
+          ))}
+        </div>
       )}
 
       {/* Detail Modal */}

@@ -5,9 +5,6 @@ import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import { Package, Star, Swords, Shield, Target } from "lucide-react"
-import dynamic from "next/dynamic"
-
-const CollectionBinder3D = dynamic(() => import("@/components/game/3d/collection-binder-3d"), { ssr: false })
 
 interface CollectionItem {
   id: string
@@ -113,26 +110,6 @@ export default function CollectionPage() {
           })}
         </div>
       )}
-      {/* 3D Collection Binder */}
-      {data && data.items.length > 0 && (
-        <CollectionBinder3D
-          tazos={data.items.map((item: CollectionItem) => ({
-            id: item.id,
-            name: item.tazo.name,
-            displayName: item.tazo.displayName,
-            number: item.tazo.number,
-            imageUrl: item.tazo.imageUrl,
-            rarity: item.tazo.rarity,
-            franchise: item.tazo.franchise,
-            franchiseSlug: item.tazo.franchiseSlug,
-            quantity: item.quantity,
-            attack: item.tazo.attack,
-            defense: item.tazo.defense,
-          }))}
-          className="mb-4"
-        />
-      )}
-
         {data && data.items.length > 0 ? (
           <div
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 p-3"
