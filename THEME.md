@@ -236,7 +236,8 @@ import { BookOpen, Swords, Scan, BarChart3, ShoppingBag,
 ```
 
 ### Rules
-- **No emojis** in UI text (use Lucide icons instead)
+- **No emojis** in UI controls, buttons, or labels (use Lucide icons instead)
+- Emojis allowed ONLY in franchise showcase/catalog cards where they act as decorative category indicators
 - Icon size matches context: `w-4 h-4` (inline), `w-5 h-5` (standalone), `w-6 h-6` (feature)
 - Icons inside buttons get `mr-1` or `mr-1.5`
 
@@ -279,7 +280,7 @@ text-[9px]     → text-[10px]
 | `font-semibold` or `font-bold` | `font-black` (900 weight) |
 | `border` (1px default) | `border-2` or `border-3` |
 | Flat backgrounds | `mag-bg` or `mag-stripes` or `mag-dots` |
-| Emojis in UI text | Lucide icons |
+| Emojis in UI controls/buttons/labels | Lucide icons (ok as decorative indicators on catalog cards) |
 | Gradient text | `mag-stroke` variants |
 | `bg-gray-*`, `bg-slate-*`, `bg-neutral-*` | `bg-zinc-*` or magazine colors |
 | `text-gray-*` | `text-zinc-*` or `text-[#1a1a1a]` |
@@ -307,4 +308,4 @@ Before merging any new visual component, verify:
 
 ---
 
-*Last updated: 2026-06-03. This file is the single source of truth for TTG visual design.*
+*Last updated: 2026-06-04. This file is the single source of truth for TTG visual design.*

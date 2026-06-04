@@ -5,8 +5,8 @@
 ## 1. Final Route Architecture (38/38 ✅)
 
 ### 2-Shell System
-- **PublicPageShell** (`public-header.tsx` + `public-footer.tsx`): Visitantes — landing, SEO, legal
-- **MagazinePageShell**: Usuarios logueados — game tabs, standalone pages
+- **PublicPageShell** (`public-header.tsx` + `public-footer.tsx`): Visitantes — landing, SEO, legal, leaderboard, download
+- **MagazinePageShell**: Usuarios logueados — game tabs only (/app/*)
 
 ### Route Map
 
@@ -25,8 +25,8 @@
 | 11 | `/privacy` | 200 | PublicPageShell | Privacy Policy |
 | 12 | `/cookies` | 200 | PublicPageShell | Cookie Policy |
 | 13 | `/disclaimer` | 200 | PublicPageShell | Legal disclaimer |
-| 14 | `/leaderboard` | 200 | MagazinePageShell | Rankings |
-| 15 | `/download` | 200 | MagazinePageShell | Desktop downloads |
+| 14 | `/leaderboard` | 200 | PublicPageShell | Rankings |
+| 15 | `/download` | 200 | PublicPageShell | Desktop downloads |
 | 16 | `/login` | 200 | None (skeleton) | Login + redirect |
 | 17 | `/register` | 200 | None | Register form |
 | 18 | `/app` | 200 | MagazinePageShell | 🎮 Game tabs: album, battle, scanner, stats |
@@ -87,10 +87,10 @@
 ### Layout Components (3 shells)
 | Component | Used By | File |
 |-----------|---------|------|
-| `PublicPageShell` | 13 public pages | `components/layout/public-page-shell.tsx` |
+| `PublicPageShell` | 15 public pages (landing + SEO + legal + leaderboard + download) | `components/layout/public-page-shell.tsx` |
 | `PublicHeader` | Inside PublicPageShell | `components/layout/public-header.tsx` |
 | `PublicFooter` | Inside PublicPageShell | `components/layout/public-footer.tsx` |
-| `MagazinePageShell` | 4 standalone + 4 app tab pages | `components/magazine-page-shell.tsx` |
+| `MagazinePageShell` | 10 app pages (/app/*) | `components/magazine-page-shell.tsx` |
 
 ### Single-Source Components
 - Magazine masthead: `MagazinePageShell` (única fuente — antes duplicada en 7 page.tsx)
@@ -117,17 +117,18 @@
 | `/api/auth/login` | POST | 200 | ❌ | Login |
 | `/api/auth/me` | GET | 200 | 🔒 | Current user |
 
-## 6. Known Issues
+## 6. Known Issues (Updated 2026-06-04)
 
-| # | Issue | Priority | Notes |
-|---|-------|:---:|-------|
-| 1 | `P2003` FK violation on `userQuest.createMany()` | Low | Non-blocking, fixed with raw SQL |
-| 2 | `/api/tazos/1` → 404 (UUID vs number) | Medium | Should search by tazo number |
-| 3 | Logo masthead 518KB → ~50KB possible | Low | Compression pending |
-| 4 | Windows/macOS builds depend on GitHub Actions | Medium | Local cross-build not working |
-| 5 | No canonical URLs per-page | Low | Uses base URL from layout |
-| 6 | No breadcrumbs anywhere | Low | Not needed for current UX |
-| 7 | Empty states not comprehensive | Low | Some pages lack 404/empty handling |
+| # | Issue | Priority | Status | Notes |
+|---|-------|:---:|:---:|-------|
+| 1 | `P2003` FK violation on `userQuest.createMany()` | Low | ✅ Fixed | Raw SQL workaround |
+| 2 | `/api/tazos/1` → 404 (UUID vs number) | Medium | 🔴 Open | Should search by tazo number |
+| 3 | Logo masthead 518KB → ~50KB possible | Low | 🔴 Open | Compression pending |
+| 4 | Windows/macOS builds via GitHub Actions | Medium | 🔴 Open | Local cross-build not working |
+| 5 | No canonical URLs per-page | Low | 🟡 Mitigated | Uses base URL from layout |
+| 6 | CSS chunks 404 on deploy (PREVIOUS) | High | ✅ Fixed | deploy.sh post-restart check + auto-merge |
+| 7 | Dark class on html stale (PREVIOUS) | Low | ✅ Fixed | Palette is magazine light |
+| 8 | Manifest 512 icon pointed to 192px file (PREVIOUS) | Medium | ✅ Fixed | Removed duplicate entry |
 
 ## 7. Verification — Final
 

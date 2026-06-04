@@ -4,7 +4,7 @@
 
 <img src="./docs/screenshots/logo-social.png" alt="Trading Tazos Game" width="280" />
 
-### A Skill-Based Physical Tazo Battle Game
+### A Skill-Based Digital Tazo Battle Game
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org)
@@ -21,7 +21,7 @@
 
 **Aim. Throw. Flip. Capture. Collect.**
 
-Trading Tazos Game is a browser-based physical tazo (pog) battle game. You don't just compare stats — you physically aim, charge power, and throw tazos into a physics-simulated arena. Built with a 90s Nintendo Power magazine aesthetic, 319 tazos across 3 collections (Minimon, Dracobell, Cybermon), 9 combat stats, 8 roles, a deterministic battle engine, WebSocket PvP multiplayer, and a full progression system.
+Trading Tazos Game is a browser-based digital tazo (pog) battle game. You don't just compare stats — you aim, charge power, and throw tazos into a 3D physics-simulated arena. Built with a 90s Nintendo Power magazine aesthetic, 319 tazos across 3 collections (Minimon, Dracobell, Cybermon), 9 combat stats, 8 roles, a deterministic battle engine, WebSocket PvP multiplayer, and a full progression system.
 
 🌐 **[medaclawarena.com](https://medaclawarena.com)** &nbsp;|&nbsp; 📧 **support@medaclawarena.com**
 
@@ -63,7 +63,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 1. **Select** a tazo from your active deck
 2. **Aim** horizontally and vertically with timing-based precision
 3. **Charge** power — more impact, less accuracy
-4. **Throw** into the 2D physics arena
+4. **Throw** into the 3D physics arena
 5. **Impact** enemy tazos — flip to capture, push them out, or chain rebounds
 6. **Risk it**: miss and your tazo stays vulnerable. Throw too hard and it flies out — the rival places it anywhere.
 
@@ -74,14 +74,14 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 ### Battle System
 | Feature | Detail |
 |---------|--------|
-| Battle Engine | 14-phase deterministic state machine with SeededRNG |
+| Battle Engine | Deterministic physics with Three.js 3D rendering |
 | Combat Stats | Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, Precision |
 | Tazo Roles | Attacker, Tank, Technical, Bouncer, Heavy, Light, Balanced, Special (8 roles) |
 | Aim Mechanics | 3-phase minigame: horizontal swing → vertical drop → power charge |
-| Physics | Canvas 2D collision detection, multi-hit chains, self-flip mechanic |
+| Physics | 3D collision detection, momentum transfer, chain rebounds, self-flip mechanic |
 | Game Modes | Classic (capture all) + Rounds (points scoring per round) |
 | Risk System | Overpower = may fly out of bounds. Miss = vulnerable on field |
-| Event Log | Turn-by-turn Spanish battle descriptions with styled impact messages |
+| Event Log | Turn-by-turn styled battle log with impact messages |
 
 ### Collection & Progression
 | Feature | Detail |
@@ -112,7 +112,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 ### Multiplayer
 | Feature | Detail |
 |---------|--------|
-| PvP Battles | Real-time WebSocket matchmaking with JWT auth |
+| PvP Battles | WebSocket matchmaking with JWT auth (behind account/deck requirements) |
 | Room System | Private battle rooms between two players |
 | Match Events | Live turn-by-turn event log synced to both clients |
 
@@ -121,7 +121,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 |---------|--------|
 | Web | Full Next.js 16 app at [medaclawarena.com](https://medaclawarena.com) |
 | PWA | Installable on mobile and desktop with manifest.json |
-| Desktop | Electron app for Windows, macOS, Linux ([v0.3.0](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.3.0)) |
+| Desktop | Electron app for Linux (.AppImage, .deb) — [v0.3.0](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.3.0). Windows/macOS planned |
 | i18n | 10 languages: EN, ES, PT, DE, FR, IT, JA, KO, ZH, RU |
 | SEO | JSON-LD VideoGame schema, sitemap.xml, robots.txt, hreflang alternates |
 | Security | CSP + HSTS + X-Frame-Options + dual cookie auth |
@@ -184,8 +184,8 @@ All 319 tazos verified against original Spanish physical collections. Each tazo 
 | Language | TypeScript 5.x (strict mode) |
 | Styling | Tailwind CSS 4 + custom magazine theme system ([THEME.md](./THEME.md)) |
 | UI Components | shadcn/ui (Radix primitives) + Lucide React icons |
-| 3D Rendering | Three.js + @react-three/fiber + @react-three/drei |
-| Battle Graphics | HTML5 Canvas 2D with deterministic physics |
+| 3D Rendering | Three.js + @react-three/fiber + @react-three/drei (battle-only) |
+| Battle Graphics | Three.js 3D physics arena (2D for album, collection, scanner, stats, shop) |
 | ORM | Prisma 6.x (12 models, automated migrations) |
 | Database | SQLite (zero-config, portable, 360 KB with 319 tazos) |
 | Auth | JWT (jsonwebtoken) + bcryptjs (12 rounds) + httpOnly cookies |
@@ -232,7 +232,7 @@ Trading-Tazos-Game/
 │   │   ├── disclaimer/       #
 │   │   ├── login/            # Auth pages
 │   │   ├── register/         #
-│   │   └── api/              # 15 REST API route groups
+│   │   └── api/              # 17 REST API route groups
 │   ├── components/game/
 │   │   ├── battle/           # Launch controls, event log, results
 │   │   ├── 3d/               # Battle-only 3D arena and tazo discs
@@ -357,23 +357,19 @@ Linux installers are available on the [Releases page](https://github.com/smouj/T
 
 ---
 
-## CLI
+## CLI (Planned)
+
+A terminal interface for searching, inspecting, and simulating battles with tazos:
 
 ```bash
-npm install -g @trading-tazos-game/cli
+tazos search minimon     # Search the tazo database
+tazos info 25            # Full stats breakdown
+tazos stats              # Collection statistics
+tazos top --stat attack  # Leaderboard by any stat
+tazos battle --seed 42   # Simulate a physics battle
 ```
 
-Search, inspect, and battle tazos from your terminal:
-
-```bash
-tazos search bulbasaur     # Search the tazo database
-tazos info charizardé       # Full stats breakdown
-tazos stats                 # Collection statistics
-tazos top --stat attack     # Leaderboard by any stat
-tazos battle --seed 42      # Simulate a physics battle
-```
-
-🔗 [npm package](https://www.npmjs.com/package/@trading-tazos-game/cli) &nbsp;|&nbsp; 📦 [CLI repo](https://github.com/smouj/trading-tazos-game-cli)
+📦 CLI repo: [github.com/smouj/trading-tazos-game-cli](https://github.com/smouj/trading-tazos-game-cli) (development)
 
 ---
 
@@ -440,12 +436,12 @@ tazos battle --seed 42      # Simulate a physics battle
 
 ### v0.1.0 — Initial Launch
 - 319 verified Spanish tazos across 3 collections
-- Canvas 2D battle arena with physics simulation
-- 14-phase deterministic battle engine with SeededRNG
+- 3D battle arena with physics simulation (Three.js / R3F)
+- Deterministic battle engine
 - 90s Nintendo Power magazine aesthetic
 - Filterable album with franchise, collection, category, and rarity filters
 - Photo scanner for physical tazo detection
-- 3D tazo disc rendering (Three.js / R3F)
+- 3D tazo disc rendering
 
 ---
 
@@ -453,6 +449,6 @@ tazos battle --seed 42      # Simulate a physics battle
 
 **Made by [@smouj](https://github.com/smouj)** &nbsp;|&nbsp; **[medaclawarena.com](https://medaclawarena.com)**
 
-*Physical tazos. Real physics. Pure nostalgia.*
+*Digital tazos. Real 3D physics. Pure nostalgia.*
 
 </div>
