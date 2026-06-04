@@ -6,8 +6,8 @@ import PublicPageShell from "@/components/layout/public-page-shell"
 
 const GITHUB_URL = "https://github.com/smouj/Trading-Tazos-Game"
 const RELEASES_URL = `${GITHUB_URL}/releases`
-const RELEASE_TAG = "v0.3.0"
-const RELEASE_VER = "0.3.0"
+const RELEASE_TAG = "v0.3.1"
+const RELEASE_VER = "0.3.1"
 
 // Linux is built and available now
 // Windows/macOS are built via GitHub Actions (coming in next release)
@@ -17,10 +17,10 @@ const DOWNLOADS = [
     icon: Monitor,
     color: "#00A4EF",
     label: "Windows",
-    badge: "Coming Soon",
+    badge: "Building...",
     badgeColor: "#F59E0B",
     exe: ".exe",
-    url: `${RELEASES_URL}/latest`,
+    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`,
     available: false,
   },
   {
@@ -28,10 +28,10 @@ const DOWNLOADS = [
     icon: Apple,
     color: "#1a1a1a",
     label: "macOS",
-    badge: "Coming Soon",
+    badge: "Building...",
     badgeColor: "#F59E0B",
     exe: ".dmg",
-    url: `${RELEASES_URL}/latest`,
+    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`,
     available: false,
   },
   {
