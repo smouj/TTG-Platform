@@ -82,10 +82,10 @@ export default function DownloadPage() {
             <div>
               <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">Desktop App</h3>
               <p className="text-[10px] font-bold text-zinc-500 mt-1">
-                Windows, macOS, Linux. Full-screen native experience with keyboard controls.
+                Linux is available now. Windows and macOS builds are planned for a later release.
               </p>
             </div>
-            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">New!</span>
+            <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">Linux</span>
           </div>
 
           {/* PWA */}
@@ -106,8 +106,8 @@ export default function DownloadPage() {
         {/* ─── Intro ─── */}
         <div className="mag-card p-6">
           <p className="text-sm font-bold text-[#1a1a1a] leading-relaxed">
-            Download Trading Tazos Game for your desktop. The desktop app gives you a full-screen native experience
-            with keyboard shortcuts, system tray integration, and always-on-top play. Choose your platform below.
+            Download Trading Tazos Game for Linux, or play instantly in your browser. Windows and macOS packages are
+            listed for roadmap clarity and will be enabled when release artifacts are available.
           </p>
         </div>
 

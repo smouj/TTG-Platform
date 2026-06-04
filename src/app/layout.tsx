@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://medaclawarena.com";
 const SITE_NAME = "Trading Tazos Game";
 const SITE_DESC =
-  "Collect, trade & battle with 319 classic tazos from Minimon, Dracobell and Cybermon. Real-time physics arena with 9 combat stats, multiplayer PvP, and digital album scanning.";
+  "Collect, trade and battle with 319 classic tazos from Minimon, Dracobell and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "tazos", "pogs", "trading tazos game", "ttg", "medaclawarena",
     "minimon tazos", "dracobell tazos", "cybermon tazos",
     "collectible game", "physics battle", "digital album", "scanner",
-    "multiplayer battle", "pvp tazos", "trading card game",
+    "multiplayer battle", "pvp tazos", "3d battle arena",
     "90s collectibles", "nostalgia game",
   ],
   authors: [{ name: "MedaClaw Arena", url: SITE_URL }],
@@ -68,23 +68,11 @@ export const metadata: Metadata = {
     site: "@medaclawarena",
     creator: "@medaclawarena",
     title: `${SITE_NAME} — Collect, Trade & Battle Your Tazos`,
-    description: "319 classic tazos. 9 combat stats. Real-time physics arena. Battle your friends online.",
+    description: "319 classic tazos, 3 collections, 9 combat stats, 2D collection views, and a skill-based 3D battle arena.",
     images: [`${SITE_URL}/logo/social-preview.png`],
   },
   alternates: {
     canonical: SITE_URL,
-    languages: {
-      "en": `${SITE_URL}/en`,
-      "es": `${SITE_URL}/es`,
-      "pt": `${SITE_URL}/pt`,
-      "de": `${SITE_URL}/de`,
-      "fr": `${SITE_URL}/fr`,
-      "it": `${SITE_URL}/it`,
-      "ja": `${SITE_URL}/ja`,
-      "ko": `${SITE_URL}/ko`,
-      "zh": `${SITE_URL}/zh`,
-      "ru": `${SITE_URL}/ru`,
-    },
   },
 };
 
@@ -94,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         {/* JSON-LD structured data for VideoGame */}
         <script
@@ -107,7 +95,7 @@ export default function RootLayout({
               "description": SITE_DESC,
               "url": SITE_URL,
               "image": `${SITE_URL}/logo/social-preview.png`,
-              "operatingSystem": "Web, Windows, macOS, Linux",
+              "operatingSystem": "Web, Linux",
               "applicationCategory": "Game",
               "author": {
                 "@type": "Organization",
@@ -117,8 +105,8 @@ export default function RootLayout({
               },
               "genre": ["Collectible", "Battle", "Physics", "Multiplayer", "Nostalgia"],
               "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2 },
-              "gamePlatform": ["Web Browser", "PC", "Mac", "Linux"],
-              "inLanguage": ["en", "es", "pt", "de", "fr", "it", "ja", "ko", "zh", "ru"],
+              "gamePlatform": ["Web Browser", "Linux"],
+              "inLanguage": "en",
             }),
           }}
         />

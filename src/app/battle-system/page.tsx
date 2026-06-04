@@ -6,7 +6,7 @@ export default function BattleSystemPage() {
     <PublicPageShell>
       <div className="max-w-4xl mx-auto px-4 py-12 sm:py-16">
         <h1 className="text-3xl sm:text-4xl font-black uppercase text-[#1a1a1a] mb-4">Battle System</h1>
-        <p className="text-lg font-bold text-[#1a1a1a]/60 mb-10">9 combat stats. 8 roles. Real-time 2D physics. Every battle is unique.</p>
+        <p className="text-lg font-bold text-[#1a1a1a]/60 mb-10">9 combat stats. 8 roles. Skill-based 3D battles. Every match is unique.</p>
 
         <div className="space-y-10">
           {/* Combat Stats */}
@@ -59,7 +59,7 @@ export default function BattleSystemPage() {
           <section className="border-4 border-[#1a1a1a] shadow-[8px_8px_0px_#1a1a1a] bg-white p-8">
             <h2 className="text-xl font-black uppercase text-[#1a1a1a] mb-5">Physics Arena</h2>
             <div className="text-sm font-bold text-[#1a1a1a]/60 space-y-3 leading-relaxed">
-              <p>The battle happens in a <strong>2D canvas physics arena</strong>. When you throw a tazo:</p>
+              <p>The battle happens in a <strong>3D match arena</strong>. When you throw a tazo:</p>
               <ul className="list-disc pl-5 space-y-2">
                 <li><strong>Collision detection</strong> calculates exact impact point and angle</li>
                 <li><strong>Momentum transfer</strong> determines how much force is transferred on impact</li>

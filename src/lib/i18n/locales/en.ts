@@ -174,7 +174,7 @@ const en: Dictionary = {
 
   download_title: "Download",
   download_subtitle: "Desktop App",
-  download_intro: "Take Trading Tazos Game to your desktop! Available for Windows, macOS, and Linux.",
+  download_intro: "Play Trading Tazos Game in your browser or download the Linux desktop app. Windows and macOS builds are planned.",
   download_windows: "Windows",
   download_mac: "macOS",
   download_linux: "Linux",

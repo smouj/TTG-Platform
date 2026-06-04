@@ -112,7 +112,7 @@
     "typescript": "^5"
   },
   "license": "Source Available",
-  "description": "Collect, trade & battle with 319 classic tazos. Real-time physics arena, multiplayer PvP, digital album, and desktop app.",
+  "description": "Collect, trade and battle with 319 classic tazos. 2D collection views, a skill-based 3D battle arena, and a Linux desktop app.",
   "author": "MedaClaw Arena <support@medaclawarena.com>",
   "repository": "https://github.com/smouj/Trading-Tazos-Game",
   "homepage": "https://medaclawarena.com"

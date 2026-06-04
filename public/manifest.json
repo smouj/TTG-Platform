@@ -1,7 +1,7 @@
 {
   "name": "Trading Tazos Game",
   "short_name": "TTG",
-  "description": "Collect, trade & battle with 319 classic tazos from Minimon, Dracobell, and Cybermon. Physics arena, PvP, scanner.",
+  "description": "Collect, trade and battle with 319 classic tazos from Minimon, Dracobell, and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "background_color": "#fffbe6",
   "theme_color": "#FFCC00",
   "categories": ["games", "entertainment", "collectibles"],
-  "lang": "es",
+  "lang": "en",
   "dir": "ltr",
   "id": "com.medaclawarena.ttg",
   "icons": [
@@ -44,7 +44,7 @@
       "sizes": "1200x630",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Trading Tazos Game — Battle Arena"
+      "label": "Trading Tazos Game"
     }
   ],
   "shortcuts": [
@@ -56,33 +56,20 @@
     {
       "name": "Battle",
       "short_name": "Battle",
-      "url": "/app?tab=battle"
+      "url": "/app/battle"
+    },
+    {
+      "name": "Album",
+      "short_name": "Album",
+      "url": "/app/album"
     },
     {
       "name": "Shop",
       "short_name": "Shop",
       "url": "/app/shop"
     }
-      {
-      "name": "Album",
-      "url": "/app/album"
-    },
-    {
-      "name": "Battle",
-      "url": "/app/battle"
-    },
   ],
   "related_applications": [
-    {
-      "platform": "windows",
-      "url": "https://medaclawarena.com/download",
-      "id": "com.medaclawarena.ttg.windows"
-    },
-    {
-      "platform": "mac",
-      "url": "https://medaclawarena.com/download",
-      "id": "com.medaclawarena.ttg.mac"
-    },
     {
       "platform": "linux",
       "url": "https://medaclawarena.com/download",

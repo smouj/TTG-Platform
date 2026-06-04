@@ -4,11 +4,11 @@ import Link from "next/link"
 const faqs = [
   {
     q: "What is Trading Tazos Game?",
-    a: "Trading Tazos Game is a browser-based skill game where you collect, trade, and battle with digital tazos in a real-time physics arena. Unlike auto-battle card games, you physically aim, charge power, and throw your tazos. 319 verified tazos from 3 classic Spanish collections, with 9 combat stats each."
+    a: "Trading Tazos Game is a browser-based skill game where you collect, trade, and battle with digital tazos. Album, shop, deck, and scanner views stay clear and readable in 2D; matches use a 3D arena where you aim, charge power, and throw your tazos. 319 verified tazos from 3 classic Spanish collections, with 9 combat stats each."
   },
   {
     q: "Is it free to play?",
-    a: "Yes, completely free. All 319 tazos are earnable through gameplay. Credits are earned by battling, completing quests, and daily logins — no pay-to-win mechanics."
+    a: "Yes, completely free. Credits are earned by battling, completing quests, and daily logins, then used to open tazo bags and grow your collection."
   },
   {
     q: "How do I get started?",
@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: "How does the battle system work?",
-    a: "Each turn you select a tazo, aim horizontally and vertically with timing-based precision, charge power, and throw. The tazo enters a 2D physics arena where it can collide with and flip rival tazos. Flip all rival tazos to win. Strategy matters — overpowering can cause self-flips or out-of-bounds throws."
+    a: "Each turn you select a tazo, aim horizontally and vertically with timing-based precision, charge power, and throw. The tazo enters a 3D battle arena where it can collide with and flip rival tazos. Flip all rival tazos to win. Strategy matters — overpowering can cause self-flips or out-of-bounds throws."
   },
   {
     q: "What are tazo stats and roles?",
@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: "Can I play on mobile?",
-    a: "Yes! Trading Tazos Game is a PWA (Progressive Web App). Visit medaclawarena.com on your phone and install it to your home screen for a full-screen app experience. Desktop users can download the Electron app for Windows, macOS, or Linux."
+    a: "Yes! Trading Tazos Game is a PWA (Progressive Web App). Visit medaclawarena.com on your phone and install it to your home screen for a full-screen app experience. Desktop users can also download the Linux Electron app; Windows and macOS builds are planned."
   },
   {
     q: "What are credits and how do I earn them?",
@@ -40,7 +40,7 @@ const faqs = [
   },
   {
     q: "Can I play against friends?",
-    a: "Yes! The PvP multiplayer system lets you challenge friends via WebSocket matchmaking. Both players need an account and an active battle deck of 5 tazos."
+    a: "PvP uses WebSocket matchmaking and is being kept behind account and deck requirements while the live service is tested. Both players need an account and an active battle deck of 5 tazos."
   },
   {
     q: "Is there a desktop app?",

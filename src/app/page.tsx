@@ -6,11 +6,11 @@ import Image from "next/image"
 export const metadata: Metadata = {
   title: "Collect, Trade & Battle 319 Classic Tazos",
   description:
-    "Trading Tazos Game is a skill-based physical tazo battle game. Aim, throw, flip, and capture in a real-time physics arena. Build your collection of 319 tazos across Minimon, Dracobell, and Cybermon.",
+    "Trading Tazos Game is a skill-based tazo battle game. Aim, throw, flip, and capture in a 3D match arena. Build your collection of 319 tazos across Minimon, Dracobell, and Cybermon.",
   openGraph: {
     title: "Trading Tazos Game — Aim. Throw. Flip. Capture.",
     description:
-      "319 classic tazos. 9 combat stats. Real-time physics arena. Battle your friends online.",
+      "319 classic tazos. 9 combat stats. 2D collection views and a skill-based 3D battle arena.",
     images: [{ url: "/logo/social-preview.png", width: 1200, height: 630 }],
   },
 }
@@ -22,7 +22,7 @@ const collections = [
 ]
 
 const features = [
-  { title: "Battle Arena", icon: "⚔️", desc: "Real-time physics arena. Aim, charge power, and throw your tazos to flip and capture rival tazos." },
+  { title: "Battle Arena", icon: "⚔️", desc: "Skill-based 3D arena. Aim, charge power, and throw your tazos to flip and capture rival tazos." },
   { title: "Collect Album", icon: "📚", desc: "319 verified tazos across 3 collections. Filter by franchise, rarity, category. Track your progress." },
   { title: "Deck Builder", icon: "🃏", desc: "Build your dream team of 5. 8 combat roles. 9 unique stats per tazo. Synergize your strategy." },
   { title: "Tazo Shop", icon: "🛍️", desc: "Open illustrated tazo bags. Standard, Premium, and Mega bags with rarity boost." },
@@ -40,14 +40,14 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
               <p className="inline-block bg-[#E3350D] text-white text-xs font-black uppercase px-3 py-1 border-2 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] mb-5 tracking-[0.15em] mag-enter-up-1">
-                Free to Play — Browser & Desktop
+                Free to Play — Browser & Linux Desktop
               </p>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[1.05] text-[#1a1a1a] mb-5 mag-enter-up-2">
                 Aim. Throw.<br />
                 <span className="text-[#E3350D]">Flip.</span> Capture.
               </h1>
               <p className="text-base sm:text-lg font-bold text-[#1a1a1a]/70 max-w-lg mb-8 mag-enter-up-3">
-                319 classic tazos. 9 combat stats. Real-time physics arena. This is <strong>not</strong> an auto-battle card game — you physically aim, charge power, and throw your tazos.
+                319 classic tazos. 9 combat stats. 2D collection views and a skill-based 3D battle arena. This is <strong>not</strong> an auto-battle card game — you physically aim, charge power, and throw your tazos.
               </p>
               <div className="flex flex-wrap gap-3 mag-enter-up-4">
                 <Link
@@ -173,7 +173,7 @@ export default function LandingPage() {
             Start Your Collection Today
           </h2>
           <p className="text-base font-bold text-white/80 mb-8 max-w-lg mx-auto">
-            Free to play. No pay-to-win. All 319 tazos are earnable through gameplay. Join the arena and start flipping.
+            Free to play. Earn tazos and credits through gameplay, build your deck, and start flipping.
           </p>
           <Link
             href="/register"
