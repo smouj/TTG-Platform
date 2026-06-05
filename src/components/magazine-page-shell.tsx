@@ -118,7 +118,7 @@ export default function MagazinePageShell({
                 {t.siteTagline || "Throw your tazos, flip your rival's, and conquer the arena!"}
               </div>
               <span className="text-[9px] font-bold text-[#1a1a1a]/60">
-                Issue #001 — 2025 Edition
+                Issue #001 — 2026 Edition
               </span>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function MagazinePageShell({
       </header>
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1">
+      <main className="flex-1 p-3 sm:p-4 lg:p-5">
         {children}
       </main>
 

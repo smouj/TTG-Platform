@@ -443,7 +443,7 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
         </div>
       ) : (
         <div
-          className={`grid gap-3 p-3 ${
+          className={`grid gap-3 sm:gap-4 p-3 sm:p-4 ${
             gridSize === 'compact'
               ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7'
               : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
