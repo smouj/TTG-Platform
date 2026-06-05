@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/auth-context"
 import Link from "next/link"
 import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
+import BagOpener3D, { type BagData } from "@/components/game/bag-opener-3d"
 
 interface BagConfig {
   type: string
@@ -399,25 +400,47 @@ export default function BagShopPage() {
     )
   }
 
-  // ── Opening stage ──
+  // ── Opening stage — 3D bag with real textures ──
   if (stage === "opening") {
+    const bagPreview: BagData = {
+      id: bagId || "",
+      bagType: selectedBag.type,
+      preview: null, // API doesn't return preview on buy; derive from selection
+    }
+    // Try to determine franchise from bag type or fallback
+    const franchiseSlug = selectedBag.type === "premium" ? "dracobell" :
+      selectedBag.type === "mega" ? "cybermon" : "minimon"
+    const bagData = { ...bagPreview, preview: { franchise: { slug: franchiseSlug }, rarity: "common" } }
+
     return (
-        <div className="max-w-2xl mx-auto py-12 px-4 text-center space-y-6">
+        <div className="max-w-2xl mx-auto py-6 px-4 text-center space-y-3">
           <h2 className="text-xl font-black uppercase tracking-wider text-[#1a1a1a]">
             Opening {selectedBag.name}...
           </h2>
-          <div className="h-80 bg-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] rounded-lg overflow-hidden">
-            <BagPreview bag={selectedBag} open progress={tearProgress} />
-          </div>
-          <p className="text-sm font-black text-zinc-500 animate-pulse">
-            {tearProgress < 1 ? "Tearing open..." : "Revealing tazo..."}
+          <p className="text-xs font-black text-zinc-400">
+            {tearProgress < 0.3 ? "Rip the bag open to reveal your tazo..." :
+             tearProgress < 0.7 ? "Almost there..." : "Something shiny inside!"}
           </p>
-          <div className="w-full max-w-xs mx-auto bg-zinc-200 h-2 rounded-full overflow-hidden border-2 border-[#1a1a1a]">
-            <div
-              className="h-full bg-[#FFCC00] transition-all duration-100"
-              style={{ width: `${Math.round(tearProgress * 100)}%` }}
+          <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] overflow-hidden">
+            <BagOpener3D
+              bag={bagData}
+              opening={openingAnim}
+              progress={tearProgress}
+              onOpen={() => {
+                setOpeningAnim(true)
+                startTearAnimation()
+              }}
+              onSkip={() => {
+                if (tearIntervalRef.current) clearInterval(tearIntervalRef.current)
+                setTearProgress(1)
+                setTimeout(() => openBag(), 100)
+              }}
             />
           </div>
+          <p className="text-xs font-bold text-zinc-500">
+            {tearProgress < 0.05 ? 'Click "Open Bag!" to start' :
+             tearProgress < 1 ? "Tearing open..." : "Revealing tazo..."}
+          </p>
         </div>
     )
   }
