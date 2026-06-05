@@ -11,6 +11,7 @@ import Link from "next/link"
 import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
 import BagOpener3D, { type BagData } from "@/components/game/bag-opener-3d"
+import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 interface BagConfig {
   type: string
@@ -170,6 +171,8 @@ export default function BagShopPage() {
       setStage("opening")
       setTearProgress(0)
       setOpeningAnim(false)
+      sfxEnsureUnlocked()
+      playSFX('coin', { volume: 0.35 })
       // Don't auto-start — user clicks "Open Bag!" button
     } catch {
       setError("Connection error")
@@ -218,6 +221,7 @@ export default function BagShopPage() {
       const data = await res.json()
       if (res.ok) {
         setTimeout(() => {
+          playSFX('reveal', { volume: 0.5 })
           setRevealedTazo(data.tazo)
           setBonusTazo(data.bonusTazo)
           setStage("reveal")

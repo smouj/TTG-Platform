@@ -7,6 +7,7 @@
 import { useState, useMemo } from "react"
 import type { TazoCard, PlayMode, AIDifficulty } from "@/lib/battle/game-loop"
 import { Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star } from "lucide-react"
+import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 interface Props {
   playerTazos: TazoCard[]
@@ -208,7 +209,11 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
       {/* ════════════ START ════════════ */}
       <div className="text-center">
         <button
-          onClick={() => onStart(mode, difficulty, sel.length === 5 ? playerTazos.filter(t => sel.includes(playerTazos.indexOf(t))) : best)}
+          onClick={() => {
+            sfxEnsureUnlocked()
+            playSFX('equip')
+            onStart(mode, difficulty, sel.length === 5 ? playerTazos.filter(t => sel.includes(playerTazos.indexOf(t))) : best)
+          }}
           disabled={playerTazos.length < 5 || isLoading || (mode !== "practice" && !isAuthenticated)}
           className="px-12 py-4 font-black text-lg uppercase tracking-wider bg-[#E3350D] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all disabled:opacity-25 disabled:cursor-not-allowed w-full sm:w-auto"
         >

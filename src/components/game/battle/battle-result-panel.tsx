@@ -7,6 +7,8 @@
 import { useI18n } from "@/lib/i18n"
 import type { BattleFinalResult } from "@/lib/battle"
 import { Swords, Award, Timer, Shield, Zap, RotateCcw } from "lucide-react"
+import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
+import { useEffect } from "react"
 
 interface Props {
   result: BattleFinalResult
@@ -20,6 +22,14 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
   const { t } = useI18n()
   const isWin = result.winner === "player"
   const isDraw = result.winner === "draw"
+
+  // Play victory/defeat sound on mount
+  useEffect(() => {
+    sfxEnsureUnlocked()
+    if (isWin) playSFX('battle_victory', { volume: 0.4 })
+    else if (isDraw) playSFX('nav', { volume: 0.3 })
+    else playSFX('battle_defeat', { volume: 0.35 })
+  }, [isWin, isDraw])
 
   return (
     <div

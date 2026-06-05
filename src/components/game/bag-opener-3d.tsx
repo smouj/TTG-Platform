@@ -9,6 +9,7 @@ import { useRef, useState, useMemo, useEffect } from "react"
 import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 import { Gift, Loader2, SkipForward } from "lucide-react"
+import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 // ── types ──
 export interface TazoPreview {
@@ -314,7 +315,11 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
           </div>
         ) : !opening ? (
           <button
-            onClick={onOpen}
+            onClick={() => {
+              sfxEnsureUnlocked()
+              playSFX('bag_open')
+              onOpen()
+            }}
             className="flex items-center gap-2 px-6 py-3 font-black text-sm uppercase tracking-wider border-3 transition-all animate-pulse"
             style={{
               backgroundColor: franchiseColor,
@@ -341,7 +346,10 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
               </div>
             </div>
             <button
-              onClick={onSkip}
+              onClick={() => {
+                playSFX('bag_tear')
+                onSkip()
+              }}
               className="flex items-center gap-1 px-3 py-1.5 bg-black/60 border border-white/20 text-white/80 text-[10px] font-black uppercase hover:bg-black/80"
             >
               <SkipForward className="w-3 h-3" />
