@@ -13,9 +13,10 @@ interface Props {
   playerName: string
   opponentName: string
   onRematch: () => void
+  creditsEarned?: number
 }
 
-export default function BattleResultPanel({ result, playerName, opponentName, onRematch }: Props) {
+export default function BattleResultPanel({ result, playerName, opponentName, onRematch, creditsEarned }: Props) {
   const { t } = useI18n()
   const isWin = result.winner === "player"
   const isDraw = result.winner === "draw"
@@ -95,6 +96,14 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
           <div className="text-2xl font-black text-[#1a1a1a]">{result.opponentScore}</div>
         </div>
       </div>
+
+      {/* Credits earned */}
+      {creditsEarned != null && creditsEarned > 0 && (
+        <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#22C55E] border-2 border-[#1a1a1a] text-white">
+          <Zap className="w-4 h-4 fill-white" />
+          <span className="text-xs font-black uppercase">+{creditsEarned} Credits</span>
+        </div>
+      )}
 
       {/* Rematch */}
       <button

@@ -191,6 +191,7 @@ export interface BattleFinalResult {
   playerCaptures: number
   opponentCaptures: number
   summary: string
+  creditsEarned?: number
 }
 
 // ---- Game Mode ----

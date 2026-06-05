@@ -80,10 +80,40 @@ export default function BattleView() {
   const [pCap, setPCap] = useState(0); const [oCap, setOCap] = useState(0)
   const [round, setRound] = useState(1); const [turn, setTurn] = useState(0)
   const [result, setResult] = useState<MatchResult | null>(null)
+  const [creditsEarned, setCreditsEarned] = useState(0)
   const [throwing, setThrowing] = useState<TazoCard | null>(null)
   const [launch, setLaunch] = useState<"aim" | "power">("aim")
   const [aim, setAim] = useState({ x: 0, y: 0, accuracy: 0.8 })
   const busy = useRef(false)
+  const resultSaved = useRef(false)
+
+  // ── Save battle result to server ──
+  const saveBattleResult = useCallback(async (matchResult: MatchResult, playerDeck: TazoCard[], opponentDeck: TazoCard[]) => {
+    if (resultSaved.current) return
+    resultSaved.current = true
+    try {
+      const headers: Record<string,string> = { "Content-Type": "application/json" }
+      if (token) headers["Authorization"] = `Bearer ${token}`
+      const r = await fetch("/api/battle", {
+        method: "POST", headers,
+        body: JSON.stringify({
+          playerTazoIds: playerDeck.map(t => t.id),
+          opponentTazoIds: opponentDeck.map(t => t.id),
+        }),
+      })
+      if (r.ok) {
+        const data = await r.json()
+        setCreditsEarned(data.creditsEarned || 0)
+      }
+    } catch { /* non-critical — battle still shown */ }
+  }, [token])
+
+  // ── Call save on match_end ──
+  useEffect(() => {
+    if (phase === "match_end" && result && cfg) {
+      saveBattleResult(result, deck, cfg.opponentDeck)
+    }
+  }, [phase, result, cfg, deck, saveBattleResult])
 
   useEffect(() => {
     (async () => {
@@ -207,8 +237,8 @@ export default function BattleView() {
     }, 500)
   }, [throwing, cfg, aim, deck, pHP, oHP, pDiscs, oDiscs, pCap, oCap, turn, doOpponentTurn])
 
-  const rematch = () => { if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
-  const back = () => { setPhase("lobby"); setCfg(null); setResult(null); setThrowing(null) }
+  const rematch = () => { resultSaved.current = false; setCreditsEarned(0); if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
+  const back = () => { resultSaved.current = false; setCreditsEarned(0); setPhase("lobby"); setCfg(null); setResult(null); setThrowing(null) }
   const compact = typeof window !== "undefined" && window.innerWidth < 640
 
   if (loading) return (
@@ -226,7 +256,7 @@ export default function BattleView() {
         playerScore: result.playerCaptures, opponentScore: result.opponentCaptures,
         totalTurns: result.totalTurns, playerCaptures: result.playerCaptures,
         opponentCaptures: result.opponentCaptures, summary: result.summary,
-      }} playerName="You" opponentName={`AI (${cfg?.aiDifficulty})`} onRematch={rematch} />
+      }} playerName="You" opponentName={`AI (${cfg?.aiDifficulty})`} onRematch={rematch} creditsEarned={creditsEarned} />
       <div className="text-center">
         <button onClick={back} className="px-6 py-3 font-black text-sm uppercase text-[#1a1a1a] bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
           <RotateCcw className="w-4 h-4 inline mr-2" /> Back to Lobby
