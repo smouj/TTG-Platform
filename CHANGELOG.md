@@ -3,11 +3,13 @@
 ## v0.3.2 — Pure Magazine Theme + Battle Unification (2026-06-05)
 
 ### 🎴 Complete 90s Magazine Visual Coherence
-- **Pure magazine background**: Cream paper (`mag-bg`/`#FFF9E6`) with halftone overlay — zero dark backgrounds
+- **Pure magazine background**: Cream paper (`mag-bg`/`#FFF9E6`) with halftone overlay — zero dark backgrounds anywhere
 - **Game HUD bar**: Bottom status bar with credits + tazo count — yellow `#FFCC00` bg, black border, matching masthead
 - **MagazinePageShell unified**: Light halftone background, yellow masthead with tabs, HUD bar, red footer — same magazine aesthetic across ALL pages
-- **Dark backing eliminated**: Removed `#1a1a2e` gradient, dark particles, glow orbs — magazine is the ONLY theme
+- **Dark backing eliminated**: Removed `#1a1a2e` gradient, `#0a0a0a` blacks, dark particles, glow orbs, `GameShell` component
+- **Battle components fixed**: All `#1a1a2e` / `#0a0a0a` backgrounds → `#1a1a1a` (magazine black) in launch-control, launch-system, battle-event-log
 - **All 35 routes**: Public pages (PublicPageShell) + Game pages (MagazinePageShell) — one visual language
+- **Magazine-only palette**: `#FFCC00` (yellow), `#1a1a1a` (black), `#FFF9E6` (cream), `#E3350D` (red), `#3B4CCA` (blue), `#FF6B00` (orange)
 
 ### ⚔️ Battle System Unified
 - **3D physics results now connect to server API**: Client sends `physicsResult` with actual game data
