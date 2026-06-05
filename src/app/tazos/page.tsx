@@ -1,7 +1,7 @@
 import PublicPageShell from "@/components/layout/public-page-shell"
 import Image from "next/image"
 import Link from "next/link"
-import { Star, ShieldCheck } from "lucide-react"
+import { Star, ShieldCheck, Zap, Flame, Cpu } from "lucide-react"
 
 const FEATURED_TAZOS = [
   { number: 1, name: "Lumipuff", franchise: "minimon", image: "/tazos-artgen/minimon/minimon-001.png", rarity: "Common", role: "Striker", rarityColor: "#9CA3AF" },
@@ -29,9 +29,9 @@ export default function TazosCatalogPage() {
 
         <div className="grid sm:grid-cols-3 gap-4 mb-10">
           {[
-            { name: "Minimon", slug: "minimon", count: 51, color: "#FFCC00", emoji: "⚡" },
-            { name: "Dracobell", slug: "dracobell", count: 118, color: "#FF6B00", emoji: "🔥" },
-            { name: "Cybermon", slug: "cybermon", count: 150, color: "#00B4D8", emoji: "🔮" },
+            { name: "Minimon", slug: "minimon", count: 51, color: "#FFCC00", icon: Zap },
+            { name: "Dracobell", slug: "dracobell", count: 118, color: "#FF6B00", icon: Flame },
+            { name: "Cybermon", slug: "cybermon", count: 150, color: "#00B4D8", icon: Cpu },
           ].map((c) => (
             <Link
               key={c.slug}
@@ -39,7 +39,7 @@ export default function TazosCatalogPage() {
               className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] transition-all p-5"
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-2xl">{c.emoji}</span>
+                <c.icon className="w-6 h-6" style={{ color: c.color }} />
                 <div>
                   <h3 className="text-base font-black uppercase text-[#1a1a1a]">{c.name}</h3>
                   <p className="text-xs font-bold text-[#1a1a1a]/50">{c.count} tazos</p>

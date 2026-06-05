@@ -57,12 +57,15 @@ export default function LeaderboardPage() {
 
   return (
     <PublicPageShell>
-    <div className="max-w-3xl mx-auto py-8 px-4 space-y-6">
+    <div className="max-w-5xl mx-auto py-8 px-4 space-y-6">
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-xl font-black uppercase tracking-wider text-[#1a1a1a] flex items-center justify-center gap-2">
-          <Trophy className="w-6 h-6 text-[#F59E0B]" /> LEADERBOARD
+      <div>
+        <h1 className="text-3xl sm:text-4xl font-black uppercase text-[#1a1a1a] mb-1">
+          Leaderboard
         </h1>
+        <p className="text-sm font-bold text-[#1a1a1a]/40 mb-4">
+          Top players ranked by credits, tazos collected, and battles won.
+        </p>
       </div>
 
       {/* Sort tabs */}

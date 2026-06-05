@@ -63,7 +63,13 @@ export default function DownloadPage() {
 
   return (
     <PublicPageShell>
-      <div className="max-w-4xl mx-auto w-full px-4 py-8 space-y-8">
+      <div className="max-w-5xl mx-auto w-full px-4 py-8 space-y-8">
+
+        {/* ─── Header ─── */}
+        <h1 className="text-3xl sm:text-4xl font-black uppercase text-[#1a1a1a] mb-4">Download</h1>
+        <p className="text-sm font-bold text-[#1a1a1a]/40 -mt-3 mb-2">
+          Play in your browser, install the PWA, or download the native desktop app.
+        </p>
 
         {/* ─── THREE WAYS TO PLAY ─── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
