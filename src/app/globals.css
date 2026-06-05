@@ -894,3 +894,305 @@
     pointer-events: none;
   }
 }
+
+/* ===================================================================
+   TAZO BACKGROUND SYSTEM — CSS Generative Layers
+   Layers: Collection → Element → Rarity → Evolution → Power → Category
+   =================================================================== */
+
+/* ---- 1. COLLECTION BASE ---- */
+
+.ttg-bg-disc {
+  position: relative;
+  overflow: hidden;
+}
+
+.ttg-bg-minimon {
+  --ttg-bg-base: #FFF9E6;
+  --ttg-bg-accent: #FFCB05;
+  --ttg-bg-secondary: #FFE4B5;
+}
+
+/* Cybermon — Digital, neon, circuit, tech */
+.ttg-bg-cybermon {
+  --ttg-bg-base: #0A1628;
+  --ttg-bg-accent: #00A1E9;
+  --ttg-bg-secondary: #0057B7;
+}
+
+/* Dracobell — Action, combat, fire, dragon, explosive */
+.ttg-bg-dracobell {
+  --ttg-bg-base: #1A0A0A;
+  --ttg-bg-accent: #FF6B00;
+  --ttg-bg-secondary: #CC4400;
+}
+
+/* ---- 2. ELEMENT MOTIFS ---- */
+
+/* Fire */
+.ttg-bg-element-fire .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 60% 90%, rgba(255,120,20,0.35), transparent 55%),
+    radial-gradient(circle at 35% 85%, rgba(255,200,50,0.25), transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(255,80,10,0.3), transparent 70%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Water */
+.ttg-bg-element-water .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 40% 90%, rgba(30,144,255,0.25), transparent 50%),
+    radial-gradient(circle at 65% 85%, rgba(0,200,255,0.2), transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,150,255,0.2), transparent 65%);
+  border-radius: 50%;
+  z-index: 1;
+}
+.ttg-bg-element-water .ttg-bg-disc-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 92%, rgba(200,240,255,0.3) 8px, transparent 8px),
+    radial-gradient(circle at 55% 95%, rgba(200,240,255,0.25) 6px, transparent 6px),
+    radial-gradient(circle at 75% 88%, rgba(200,240,255,0.3) 10px, transparent 10px);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* Plant */
+.ttg-bg-element-plant .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 95%, rgba(34,197,94,0.3), transparent 50%),
+    radial-gradient(circle at 20% 90%, rgba(74,222,128,0.25), transparent 40%),
+    radial-gradient(circle at 75% 90%, rgba(132,204,22,0.2), transparent 40%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Electric */
+.ttg-bg-element-electric .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(250,204,21,0.35), transparent 55%),
+    radial-gradient(ellipse at 30% 100%, rgba(147,197,253,0.2), transparent 60%),
+    radial-gradient(ellipse at 70% 100%, rgba(250,204,21,0.2), transparent 60%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Digital */
+.ttg-bg-element-digital .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,161,233,0.15), transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 6px, rgba(0,161,233,0.06) 6px, rgba(0,161,233,0.06) 7px),
+    repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(0,161,233,0.04) 6px, rgba(0,161,233,0.04) 7px);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Fighter */
+.ttg-bg-element-fighter .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(227,53,13,0.12), transparent 55%),
+    conic-gradient(from 330deg,
+      transparent 0deg, rgba(227,53,13,0.08) 15deg, transparent 30deg,
+      transparent 90deg, rgba(255,204,0,0.06) 105deg, transparent 120deg,
+      transparent 210deg, rgba(227,53,13,0.08) 225deg, transparent 240deg,
+      transparent 330deg);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Dragon */
+.ttg-bg-element-dragon .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,107,0,0.2), transparent 45%),
+    radial-gradient(ellipse at 50% 120%, rgba(255,204,0,0.25), transparent 60%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Shadow */
+.ttg-bg-element-shadow .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(139,92,246,0.15), transparent 50%),
+    radial-gradient(ellipse at 50% 105%, rgba(30,30,50,0.6), transparent 50%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Light */
+.ttg-bg-element-light .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,200,0.3), transparent 40%),
+    radial-gradient(ellipse at 50% 110%, rgba(255,255,180,0.35), transparent 50%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Metal */
+.ttg-bg-element-metal .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(148,163,184,0.2), transparent 40%, transparent 60%, rgba(148,163,184,0.15)),
+    linear-gradient(225deg, rgba(203,213,225,0.15), transparent 50%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Normal — subtle starburst */
+.ttg-bg-element-normal .ttg-bg-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 55%, rgba(255,255,255,0.15), transparent 45%),
+    radial-gradient(ellipse at 50% 90%, rgba(200,200,200,0.15), transparent 55%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* ---- 3. RARITY MODIFIERS ---- */
+
+.ttg-bg-rarity-common .ttg-bg-disc { border-width: 3px; box-shadow: none; }
+
+.ttg-bg-rarity-uncommon .ttg-bg-disc {
+  border-width: 3px;
+  box-shadow: 0 0 0 2px var(--ttg-bg-accent);
+}
+
+.ttg-bg-rarity-rare .ttg-bg-disc {
+  border-width: 3px;
+  box-shadow:
+    0 0 8px 2px rgba(255, 204, 0, 0.3),
+    0 0 16px 4px rgba(255, 204, 0, 0.15);
+}
+
+.ttg-bg-rarity-ultra .ttg-bg-disc {
+  border-width: 3px;
+  box-shadow:
+    0 0 12px 4px rgba(168, 85, 247, 0.4),
+    0 0 24px 8px rgba(168, 85, 247, 0.2);
+}
+
+.ttg-bg-rarity-legendary .ttg-bg-disc {
+  border-width: 4px;
+  box-shadow:
+    0 0 0 3px #FFCC00,
+    0 0 16px 6px rgba(255, 204, 0, 0.5),
+    0 0 32px 12px rgba(255, 204, 0, 0.25);
+}
+
+/* ---- 4. EVOLUTION INTENSITY ---- */
+
+.ttg-bg-evo-0 .ttg-bg-disc-inner::after { opacity: 0.05; }
+.ttg-bg-evo-1 .ttg-bg-disc-inner::after { opacity: 0.3; }
+.ttg-bg-evo-2 .ttg-bg-disc-inner::after { opacity: 0.6; }
+.ttg-bg-evo-3 .ttg-bg-disc-inner::after { opacity: 1; }
+
+/* ---- 5. POWER GRADE ACCENT ---- */
+
+.ttg-bg-power-C .ttg-bg-disc {
+  box-shadow: 0 0 6px 1px rgba(255, 204, 0, 0.2);
+}
+
+.ttg-bg-power-B .ttg-bg-disc {
+  box-shadow:
+    0 0 10px 3px rgba(255, 107, 0, 0.25),
+    0 0 0 2px rgba(255, 107, 0, 0.15);
+}
+
+.ttg-bg-power-A .ttg-bg-disc {
+  box-shadow:
+    0 0 14px 5px rgba(227, 53, 13, 0.3),
+    0 0 28px 8px rgba(227, 53, 13, 0.15),
+    0 0 0 3px rgba(227, 53, 13, 0.2);
+}
+
+.ttg-bg-power-S .ttg-bg-disc {
+  box-shadow:
+    0 0 18px 6px rgba(168, 85, 247, 0.4),
+    0 0 36px 12px rgba(168, 85, 247, 0.2),
+    0 0 0 4px rgba(168, 85, 247, 0.3);
+}
+
+.ttg-bg-power-SS .ttg-bg-disc {
+  box-shadow:
+    0 0 24px 8px rgba(255, 204, 0, 0.5),
+    0 0 48px 16px rgba(255, 204, 0, 0.3),
+    0 0 0 5px rgba(255, 204, 0, 0.4),
+    0 0 0 8px rgba(255, 204, 0, 0.15);
+}
+
+/* ---- 6. CATEGORY FRAME ---- */
+
+/* Holo3D — prismatic shimmer overlay */
+.ttg-bg-cat-holo3d .ttg-bg-disc::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg,
+      rgba(255,0,128,0.15), rgba(0,255,255,0.15), rgba(255,255,0,0.15),
+      rgba(128,0,255,0.15), rgba(0,255,128,0.15), rgba(255,0,128,0.15));
+  background-size: 300% 300%;
+  animation: holo-shift 3s linear infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@keyframes holo-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Gold — metallic gradient border */
+.ttg-bg-cat-gold .ttg-bg-disc {
+  border-color: #B8860B !important;
+}
+
+/* Mastertazo — ornate border ring */
+.ttg-bg-cat-mastertazo .ttg-bg-disc {
+  border-width: 4px;
+  border-style: double;
+}
+
+/* Supertazo — angular accent */
+.ttg-bg-cat-supertazo .ttg-bg-disc {
+  border-width: 3px;
+  border-style: solid;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.3),
+    0 0 16px 4px rgba(168, 85, 247, 0.4);
+}

@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight } from 'lucide-react'
+import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
 
 interface TazoDetailModalProps {
   tazo: Tazo | null
@@ -107,6 +108,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
   if (!tazo) return null
 
   const franchiseSlug = tazo.franchise?.slug || 'minimon'
+  const bgConfig = getTazoBackgroundConfig(tazo, FRANCHISE_MAX[franchiseSlug] || 150)
+  const bgClasses = getTazoBackgroundClasses(bgConfig)
   const franchiseColors = FRANCHISE_COLORS[franchiseSlug] || FRANCHISE_COLORS.minimon
   const rarityConfig = RARITY_CONFIG[tazo.rarity as Rarity]
   const conditionConfig = CONDITION_CONFIG[tazo.condition as TazoCondition]
@@ -242,25 +245,23 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
             {/* The Big Disc */}
             <div
               className={`
-                relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px]
-                rounded-full flex items-center justify-center
-                ${circleBorderClass}
+                ttg-bg-disc relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px]
+                rounded-full flex items-center justify-center overflow-hidden
+                ${circleBorderClass} ${bgClasses}
               `}
               style={{
-                border: isHolo ? undefined : isLegendary ? '5px solid #FBBF24' : `5px solid ${franchiseColors.border}`,
+                border: isHolo ? undefined : isLegendary ? '5px solid #FBBF24' : '3px solid #1a1a1a',
                 padding: '6px',
-                boxShadow: isLegendary ? undefined : '6px 6px 0px #1a1a1a',
               }}
             >
               <div
                 className={`
-                  w-full h-full rounded-full flex flex-col items-center justify-center
+                  ttg-bg-disc-inner w-full h-full rounded-full flex flex-col items-center justify-center
                   relative overflow-hidden
                   ${isMetallic ? 'metallic-effect' : ''}
                   ${isWorn ? 'worn-overlay' : ''}
                 `}
                 style={{
-                  background: `linear-gradient(135deg, ${franchiseColors.from}40, ${franchiseColors.to}60, ${franchiseColors.from}30)`,
                   border: '3px solid #1a1a1a',
                 }}
               >

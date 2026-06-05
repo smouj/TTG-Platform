@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Tazo, RARITY_CONFIG, CONDITION_CONFIG, TazoCondition, Rarity, SOURCE_STATUS_CONFIG, SourceStatus } from '@/lib/game/types'
 import { Lock, Star, ShieldCheck, ScanEye, AlertTriangle, RotateCw } from 'lucide-react'
+import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
 
 interface TazoCardProps {
   tazo: Tazo
@@ -70,6 +71,13 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
   const raritySticker = RARITY_STICKER[tazo.rarity as string] || RARITY_STICKER.common
   const backArt = FRANCHISE_BACK[franchiseSlug] || FRANCHISE_BACK.minimon
 
+  // Background system
+  const bgConfig = useMemo(() => {
+    const maxF = FRANCHISE_MAX[franchiseSlug] || 150
+    return getTazoBackgroundConfig(tazo, maxF)
+  }, [tazo, franchiseSlug])
+  const bgClasses = getTazoBackgroundClasses(bgConfig)
+
   const isHolo = tazo.condition === 'holo'
   const isMetallic = tazo.condition === 'metallic'
   const isLegendary = tazo.rarity === 'legendary'
@@ -81,9 +89,6 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
   let circleBorderClass = ''
   if (isHolo) circleBorderClass = 'holo-border'
   else if (isLegendary) circleBorderClass = 'legendary-glow'
-
-  const gradientBg = `linear-gradient(135deg, ${franchiseColors.from}, ${franchiseColors.to})`
-  const innerGradient = `linear-gradient(135deg, ${franchiseColors.from}80, ${franchiseColors.to}CC, ${franchiseColors.from}60)`
 
   return (
     <div
@@ -137,24 +142,22 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
           <div className="tazo-flip-front">
             <div
               className={`
-                relative w-full h-full rounded-full flex items-center justify-center
+                ttg-bg-disc relative w-full h-full rounded-full flex items-center justify-center
                 shrink-0 overflow-hidden
-                ${circleBorderClass}
+                ${circleBorderClass} ${bgClasses}
               `}
               style={{
                 border: isHolo ? undefined : '3px solid #1a1a1a',
-                background: isHolo ? undefined : gradientBg,
                 padding: '3px',
               }}
             >
               <div
                 className={`
-                  w-full h-full rounded-full flex flex-col items-center justify-center
+                  ttg-bg-disc-inner w-full h-full rounded-full flex flex-col items-center justify-center
                   relative overflow-hidden
                   ${isMetallic ? 'metallic-effect' : ''}
                   ${isWorn ? 'worn-overlay' : ''}
                 `}
-                style={{ background: innerGradient }}
               >
                 {tazo.imageUrl ? (
                   <img
@@ -211,16 +214,14 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
           {/* ===== BACK FACE ===== */}
           <div className="tazo-flip-back">
             <div
-              className="relative w-full h-full rounded-full flex items-center justify-center overflow-hidden"
+              className={`ttg-bg-disc relative w-full h-full rounded-full flex items-center justify-center overflow-hidden ${bgClasses}`}
               style={{
                 border: '3px solid #1a1a1a',
-                background: gradientBg,
                 padding: '3px',
               }}
             >
               <div
-                className="w-full h-full rounded-full relative overflow-hidden"
-                style={{ background: innerGradient }}
+                className="ttg-bg-disc-inner w-full h-full rounded-full relative overflow-hidden"
               >
                 <img
                   src={backArt}
