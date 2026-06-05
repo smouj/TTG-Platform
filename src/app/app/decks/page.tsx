@@ -91,22 +91,25 @@ export default function DecksPage() {
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6 space-y-4">
       {/* ═══════════════════════════════════════════ */}
-      {/* GAME BANNER                               */}
+      {/* MAGAZINE BANNER STRIP                      */}
       {/* ═══════════════════════════════════════════ */}
-      <div className="game-banner px-4 py-3 flex flex-wrap items-center gap-3">
+      <div
+        className="mag-card-yellow rounded-none px-4 py-3 flex flex-wrap items-center gap-3"
+        style={{ borderBottom: "4px solid #1a1a1a" }}
+      >
         <div className="flex items-center gap-1.5">
-          <Layers className="w-5 h-5 text-[#FFCC00]" />
-          <span className="text-sm font-bold text-white/80 tracking-wide uppercase">
+          <Layers className="w-5 h-5 text-[#3B4CCA]" />
+          <span className="text-sm font-black text-[#1a1a1a] tracking-tight uppercase">
             {t.decks_title}
           </span>
         </div>
-        <div className="w-px h-5 bg-white/[0.06]" />
-        <span className="text-sm font-bold text-[#FFCC00] tracking-wide">
+        <div className="w-px h-5 bg-[#1a1a1a]/30" />
+        <span className="text-sm font-black text-[#3B4CCA] tracking-tight">
           {decks.length} DECKS
         </span>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="ml-auto game-btn bg-white/5 text-white/70 border border-white/[0.08] hover:bg-white/10 hover:border-white/[0.12] flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider rounded-lg transition-all"
+          className="ml-auto mag-btn bg-[#3B4CCA] text-white flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider"
         >
           <Plus className="w-3.5 h-3.5" />
           {t.decks_create}
@@ -115,28 +118,29 @@ export default function DecksPage() {
 
         {/* Create form */}
         {showCreate && (
-          <div className="game-panel p-4">
+          <div className="mb-6 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] p-4" style={{ background: "white" }}>
             <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 value={deckName}
                 onChange={(e) => setDeckName(e.target.value)}
                 placeholder={t.decks_name_placeholder}
-                className="game-input flex-1 px-4 py-2.5 text-sm font-semibold rounded-lg"
+                className="flex-1 border-3 border-[#1a1a1a] px-4 py-2.5 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 shadow-[2px_2px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA]"
+                style={{ background: "#fffef0" }}
                 onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 autoFocus
               />
               <div className="flex gap-2">
-                <button onClick={handleCreate} className="game-btn px-5 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#FFCC00] text-black hover:bg-[#FFD633] hover:shadow-[0_0_20px_rgba(255,204,0,0.3)] transition-all">
+                <button onClick={handleCreate} className="mag-btn bg-[#3B4CCA] text-white px-5 py-2.5 text-xs font-black uppercase tracking-wider">
                   {t.decks_create}
                 </button>
-                <button onClick={() => setShowCreate(false)} className="game-btn px-3 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg bg-white/5 text-white/50 border border-white/[0.08] hover:bg-white/10 hover:text-white/70 transition-all">
+                <button onClick={() => setShowCreate(false)} className="mag-btn bg-[#1a1a1a] text-[#FFCC00] px-3 py-2.5 text-xs font-black uppercase tracking-wider">
                   {t.common_cancel}
                 </button>
               </div>
             </div>
-            {error && <p className="text-sm font-medium text-red-400 mt-2">{error}</p>}
-            <p className="text-[10px] text-white/20 mt-2 uppercase tracking-wider">
+            {error && <p className="text-sm font-bold text-[#E3350D] mt-2">{error}</p>}
+            <p className="text-[10px] font-bold text-[#1a1a1a]/50 mt-2 uppercase tracking-wider">
               ${t.decks_select_tazos} -- {t.decks_select_tazos} — {t.decks_min_tazos}
             </p>
           </div>
@@ -148,21 +152,22 @@ export default function DecksPage() {
             {decks.map((deck) => (
               <div
                 key={deck.id}
-                className="game-panel p-5 hover:bg-white/[0.04] hover:border-[#FFCC00]/20 transition-all cursor-pointer"
+                className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] p-5 hover:shadow-[6px_6px_0px_#1a1a1a] hover:-translate-y-[1px] transition-all"
+                style={{ background: "white" }}
               >
                 {/* Header */}
                 <div className="flex items-start gap-3 mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-lg font-bold text-white/80 uppercase tracking-wide">{deck.name}</h2>
+                      <h2 className="text-lg font-black text-[#1a1a1a] uppercase tracking-tight">{deck.name}</h2>
                       {deck.isActive && (
-                        <span className="inline-flex items-center gap-1 text-[9px] bg-[#FFCC00] text-black font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                          <Star className="w-2.5 h-2.5 fill-black" />
+                        <span className="inline-flex items-center gap-1 text-[9px] bg-[#FFCC00] text-[#1a1a1a] font-black px-2 py-0.5 border-2 border-[#1a1a1a] uppercase tracking-wider shadow-[2px_2px_0px_#1a1a1a]">
+                          <Star className="w-2.5 h-2.5 fill-[#1a1a1a]" />
                           {t.decks_active}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-white/25 uppercase tracking-wider mt-0.5">
+                    <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider mt-0.5">
                       {deck.tazoCount} {t.decks_tazo_count}
                     </p>
                   </div>
@@ -171,7 +176,7 @@ export default function DecksPage() {
                     {!deck.isActive && (
                       <button
                         onClick={() => handleActivate(deck.id)}
-                        className="game-btn px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider rounded-lg bg-[#FFCC00] text-black hover:bg-[#FFD633] transition-all flex items-center gap-1"
+                        className="mag-btn bg-[#FFCC00] text-[#1a1a1a] px-3 py-1.5 text-[10px] font-black uppercase tracking-wider flex items-center gap-1"
                       >
                         <Star className="w-3 h-3" />
                         {t.decks_activate}
@@ -179,7 +184,8 @@ export default function DecksPage() {
                     )}
                     <button
                       onClick={() => handleDelete(deck.id)}
-                      className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider rounded-lg bg-transparent text-red-400/60 border border-red-400/20 hover:bg-red-400/10 hover:text-red-400 hover:border-red-400/30 transition-all flex items-center gap-1"
+                      className="mag-btn bg-white text-[#E3350D] border-[#E3350D] px-3 py-1.5 text-[10px] font-black uppercase tracking-wider flex items-center gap-1"
+                      style={{ borderWidth: "3px", borderStyle: "solid" }}
                     >
                       <Trash2 className="w-3 h-3" />
                     </button>
@@ -188,33 +194,33 @@ export default function DecksPage() {
 
                 {/* Tazo strip */}
                 {deck.tazos.length > 0 ? (
-                  <div className="flex gap-2 overflow-x-auto pb-1">
+                  <div className="flex gap-2 overflow-x-auto pb-1 custom-scrollbar">
                     {deck.tazos.map((tazo) => {
                       const borderColor = FRANCHISE_BORDER[tazo.franchise] || "#1a1a1a"
                       return (
                         <div
                           key={tazo.id}
-                          className="shrink-0 overflow-hidden rounded-lg game-card"
-                          style={{ width: "80px", borderColor: `${borderColor}30`, border: `1px solid ${borderColor}20` }}
+                          className="shrink-0 border-3 shadow-[2px_2px_0px_#1a1a1a] overflow-hidden"
+                          style={{ borderColor, background: "white", width: "80px" }}
                         >
                           <div className="h-1" style={{ background: borderColor }} />
-                          <div className="p-1.5 flex items-center justify-center" style={{ aspectRatio: "1", background: "rgba(255,255,255,0.02)" }}>
+                          <div className="p-1.5 flex items-center justify-center bg-[#fffef0]" style={{ aspectRatio: "1" }}>
                             {tazo.imageUrl ? (
-                              <img src={tazo.imageUrl} alt={tazo.name || ""} className="w-full h-full object-contain rounded-lg" loading="lazy" />
+                              <img src={tazo.imageUrl} alt={tazo.name || ""} className="w-full h-full object-contain" loading="lazy" />
                             ) : (
-                              <span className="text-xl font-bold text-white/10">?</span>
+                              <span className="text-xl font-black text-[#1a1a1a]/15">?</span>
                             )}
                           </div>
                           <div className="p-1">
-                            <p className="text-[8px] font-semibold text-white/60 truncate leading-tight">
+                            <p className="text-[8px] font-black text-[#1a1a1a] truncate leading-tight">
                               {tazo.name || "?"}
                             </p>
                             <div className="flex gap-0.5 mt-0.5">
-                              <span className="text-[7px] font-semibold text-red-400/80">{tazo.attack}</span>
-                              <span className="text-[7px] text-white/10">/</span>
-                              <span className="text-[7px] font-semibold text-blue-400/80">{tazo.defense}</span>
-                              <span className="text-[7px] text-white/10">/</span>
-                              <span className="text-[7px] font-semibold text-amber-400/80">{tazo.bounce}</span>
+                              <span className="text-[7px] font-bold text-[#E3350D]">{tazo.attack}</span>
+                              <span className="text-[7px] font-bold text-[#1a1a1a]/30">/</span>
+                              <span className="text-[7px] font-bold text-[#3B4CCA]">{tazo.defense}</span>
+                              <span className="text-[7px] font-bold text-[#1a1a1a]/30">/</span>
+                              <span className="text-[7px] font-bold text-[#F59E0B]">{tazo.bounce}</span>
                             </div>
                           </div>
                         </div>
@@ -222,7 +228,7 @@ export default function DecksPage() {
                     })}
                   </div>
                 ) : (
-                  <p className="text-xs text-white/10 italic uppercase tracking-wider py-4 text-center border border-dashed border-white/[0.06] rounded-lg">
+                  <p className="text-xs font-bold text-[#1a1a1a]/30 italic uppercase tracking-wider py-4 text-center border-2 border-dashed border-[#1a1a1a]/20">
                     {t.decks_select_tazos}
                   </p>
                 )}
@@ -231,14 +237,17 @@ export default function DecksPage() {
           </div>
         ) : !showCreate ? (
           /* Empty state */
-          <div className="game-empty rounded-lg text-center py-20">
-            <Layers className="w-20 h-20 text-white/[0.05] mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white/20 mb-2 uppercase tracking-wide">
+          <div
+            className="text-center py-20 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]"
+            style={{ background: "#fffef0" }}
+          >
+            <Layers className="w-20 h-20 text-[#1a1a1a]/15 mx-auto mb-4" />
+            <h2 className="text-2xl font-black text-[#E3350D] mb-2 uppercase tracking-wider mag-stroke-sm">
               {t.decks_empty}
             </h2>
             <button
               onClick={() => setShowCreate(true)}
-              className="game-btn inline-block mt-4 py-3 px-8 text-sm font-semibold uppercase tracking-widest rounded-lg bg-[#FFCC00] text-black hover:bg-[#FFD633] hover:shadow-[0_0_20px_rgba(255,204,0,0.3)] transition-all"
+              className="inline-block mt-4 py-3 px-8 mag-btn bg-[#3B4CCA] text-white text-sm font-black uppercase tracking-widest"
             >
               {t.decks_create}
             </button>

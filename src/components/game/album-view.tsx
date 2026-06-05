@@ -124,40 +124,59 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
       {/* Onboarding — shown for new users with pending steps */}
       {user && <OnboardingBanner key={user.id} />}
       {/* ═══════════════════════════════════════════ */}
-      {/* GAME BANNER — Stats Summary Bar               */}
+      {/* MAGAZINE BANNER STRIP - Stats Summary Bar  */}
       {/* ═══════════════════════════════════════════ */}
-      <div className="game-banner px-4 py-3 flex flex-wrap items-center gap-3">
+      <div
+        className="mag-card-yellow rounded-none px-4 py-3"
+        style={{ borderBottom: '4px solid #1a1a1a' }}
+      >
         <div className="flex flex-wrap items-center gap-3">
-          {/* Stats in game HUD style */}
+          {/* Stats in magazine headline style */}
           <div className="flex items-center gap-1">
-            <BookOpen className="w-5 h-5 text-[#FFCC00]" />
-            <span className="text-sm font-black text-white/80 tracking-tight">
+            <BookOpen className="w-5 h-5 text-[#1a1a1a]" />
+            <span className="text-sm font-black text-[#1a1a1a] tracking-tight">
               {totalCount} TAZOS
             </span>
           </div>
 
-          <div className="w-px h-5 bg-white/[0.08]" />
+          <div
+            className="w-px h-5"
+            style={{ backgroundColor: '#1a1a1a', opacity: 0.3 }}
+          />
 
           <div className="flex items-center gap-1">
-            <span className="text-sm font-black text-[#FFCC00] tracking-tight">
+            <span className="text-sm font-black text-[#E3350D] tracking-tight">
               {ownedCount} OWNED
             </span>
           </div>
 
-          <div className="w-px h-5 bg-white/[0.08]" />
+          <div
+            className="w-px h-5"
+            style={{ backgroundColor: '#1a1a1a', opacity: 0.3 }}
+          />
 
           <div className="flex items-center gap-1">
-            <span className="text-sm font-black text-[#00A1E9] tracking-tight">
+            <span className="text-sm font-black text-[#3B4CCA] tracking-tight">
               {completionPct}% COMPLETE
             </span>
           </div>
 
-          {/* Game-style progress bar */}
+          {/* Magazine subscription card style progress bar */}
           <div className="flex-1 min-w-[80px] max-w-[160px]">
-            <div className="h-4 game-stat-bar-bg overflow-hidden relative">
+            <div
+              className="h-4 rounded-sm overflow-hidden relative"
+              style={{
+                border: '2px solid #1a1a1a',
+                background: '#fffef0',
+              }}
+            >
               <div
-                className="h-full game-stat-bar-fill stat-bar-fill"
-                style={{ width: `${completionPct}%` }}
+                className="h-full stat-bar-fill"
+                style={{
+                  width: `${completionPct}%`,
+                  background: 'repeating-linear-gradient(-45deg, #FFCC00, #FFCC00 4px, #FFB800 4px, #FFB800 8px)',
+                  borderRight: completionPct > 0 && completionPct < 100 ? '2px solid #1a1a1a' : 'none',
+                }}
               />
               {/* Mini text inside bar */}
               <span
@@ -214,28 +233,34 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
       </div>
 
       {/* ═══════════════════════════════════════════ */}
-      {/* FILTER BAR - Game UI                        */}
+      {/* FILTER BAR - Magazine Sidebar Style         */}
       {/* ═══════════════════════════════════════════ */}
       <div className="space-y-3">
-        {/* Search Row - Game style */}
+        {/* Search Row - Magazine style */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-          <input
-            placeholder="Search your collection..."
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1a1a1a]" />
+          <Input
+            placeholder="Search SEARCH YOUR COLLECTION..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="game-input w-full pl-10 h-10 text-sm font-bold rounded"
+            className="pl-10 mag-card rounded-none h-10 text-sm font-black text-[#1a1a1a] placeholder:text-[#1a1a1a]/40 placeholder:font-black placeholder:text-sm"
+            style={{
+              background: 'white',
+              border: '3px solid #1a1a1a',
+              boxShadow: '4px 4px 0px #1a1a1a',
+            }}
           />
         </div>
 
-        {/* Franchise Chips Row - Game style */}
+        {/* Franchise Chips Row - Vibrant magazine style */}
         <div className="flex flex-wrap gap-2">
+          {/* All chip */}
           <button
             onClick={() => setSelectedFranchise('all')}
-            className={`px-3 py-1.5 text-[11px] font-black uppercase tracking-wide transition-all ${
+            className={`px-3 py-1.5 rounded-sm text-[11px] font-black uppercase tracking-wide transition-all ${
               selectedFranchise === 'all'
-                ? 'bg-white/15 text-white'
-                : 'bg-white/[0.03] text-white/40 hover:bg-white/10 hover:text-white/70'
+                ? 'mag-btn bg-[#1a1a1a] text-white'
+                : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a] hover:bg-[#FFCC00]/20'
             }`}
           >
             ALL
@@ -247,11 +272,13 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
               <button
                 key={f.id}
                 onClick={() => setSelectedFranchise(isActive ? 'all' : f.slug)}
-                className="px-3 py-1.5 text-[11px] font-black uppercase tracking-wide transition-all"
+                className="px-3 py-1.5 rounded-sm text-[11px] font-black uppercase tracking-wide transition-all"
                 style={{
-                  backgroundColor: isActive ? colors.activeBg + '20' : 'transparent',
-                  color: isActive ? colors.activeBg : 'rgba(255,255,255,0.4)',
-                  border: `1px solid ${isActive ? colors.activeBg + '40' : 'rgba(255,255,255,0.08)'}`,
+                  backgroundColor: isActive ? colors.activeBg : colors.inactiveBg,
+                  color: isActive ? colors.activeText : colors.inactiveText,
+                  border: isActive ? '3px solid #1a1a1a' : '2px solid #1a1a1a',
+                  boxShadow: isActive ? '3px 3px 0px #1a1a1a' : 'none',
+                  transform: isActive ? 'none' : 'none',
                 }}
               >
                 {f.name}
@@ -260,9 +287,9 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
           })}
         </div>
 
-        {/* Filter Dropdowns Row - Game UI */}
+        {/* Filter Dropdowns Row - Magazine sidebar selectors */}
         <div className="flex flex-wrap gap-2 items-center">
-          <Filter className="w-4 h-4 text-white/20" />
+          <Filter className="w-4 h-4 text-[#1a1a1a]" style={{ strokeWidth: 2.5 }} />
 
           <Select value={selectedRarity} onValueChange={setSelectedRarity}>
             <SelectTrigger
@@ -414,19 +441,46 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
       {/* 2D TAZO ALBUM GRID                         */}
       {/* ═══════════════════════════════════════════ */}
       {loading ? (
-        <div className="flex items-center justify-center py-20 game-grid-bg" style={{ minHeight: 360 }}>
-          <div className="w-12 h-12 rounded-full border-2 border-[#FFCC00]/30 border-t-[#FFCC00] animate-spin" />
+        <div
+          className="flex items-center justify-center py-20 border-3 border-[#1a1a1a]"
+          style={{ background: '#fffef0', minHeight: 360 }}
+        >
+          <div className="mag-spinner w-12 h-12 rounded-full border-4 border-[#FFCC00] border-t-[#E3350D]" />
         </div>
       ) : tazos.length === 0 ? (
-        /* ═══ Empty State - Game style ═══ */
-        <div className="game-empty rounded-none py-16 flex flex-col items-center justify-center text-center" style={{ minHeight: 400 }}>
+        /* ═══ Empty State - Magazine style ═══ */
+        <div
+          className="mag-card rounded-none py-16 flex flex-col items-center justify-center text-center mag-dots"
+          style={{ background: '#fffef0', minHeight: 400 }}
+        >
           <div className="relative mb-4">
-            <Star className="w-20 h-20 text-[#FFCC00]/20" />
+            <Star
+              className="w-20 h-20 text-[#FFCC00]"
+              style={{
+                strokeWidth: 1.5,
+                filter: 'drop-shadow(3px 3px 0px #1a1a1a)',
+              }}
+            />
+            <span
+              className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#1a1a1a]"
+              style={{ transform: 'rotate(-5deg)' }}
+            >
+              !
+            </span>
           </div>
-          <h3 className="text-2xl font-black text-white/60 mb-2 uppercase tracking-wider">
-            NO TAZOS FOUND
+          <h3
+            className="text-2xl font-black text-[#1a1a1a] mb-2 mag-stroke-sm"
+            style={{
+              paintOrder: 'stroke fill',
+              WebkitTextStroke: '1px #1a1a1a',
+              color: '#E3350D',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+            }}
+          >
+            NO TAZOS FOUND!
           </h3>
-          <p className="text-sm font-bold text-white/30 max-w-[300px]">
+          <p className="text-sm font-bold text-[#1a1a1a]/60 max-w-[300px]">
             Try adjusting your filters or search terms to find what you&apos;re looking for.
           </p>
         </div>
@@ -436,7 +490,12 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
             gridSize === 'compact'
               ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7'
               : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
-          } game-grid-bg`}
+          }`}
+          style={{
+            background: '#fffef0',
+            border: '3px solid #1a1a1a',
+            boxShadow: '4px 4px 0px #1a1a1a',
+          }}
         >
           {tazos.map((tazo) => (
             <TazoCard
