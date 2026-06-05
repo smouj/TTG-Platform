@@ -10,8 +10,8 @@ export async function POST(request: NextRequest) {
     if (!email || !password || !name) {
       return NextResponse.json({ error: "Email, password and name are required" }, { status: 400 })
     }
-    if (password.length < 6) {
-      return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 })
+    if (password.length < 10) {
+      return NextResponse.json({ error: "Password must be at least 10 characters" }, { status: 400 })
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
