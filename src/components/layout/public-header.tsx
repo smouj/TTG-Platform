@@ -67,40 +67,40 @@ function HeaderContent() {
           </nav>
 
           {/* Auth buttons — auth-aware: logged-in → Dashboard, logged-out → Sign In */}
-          <div className="flex items-center gap-2 ml-auto lg:ml-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 ml-auto lg:ml-3 shrink-0">
             <LanguageSwitcher />
             {!loading && user ? (
               <>
-                <span className="hidden sm:inline text-[11px] font-black uppercase tracking-wider text-[#1a1a1a]">
+                <span className="hidden lg:inline text-[11px] font-black uppercase tracking-wider text-[#1a1a1a]/70 truncate max-w-[120px]">
                   {user.displayName || user.name}
                 </span>
                 <Link
                   href="/app"
-                  className="mag-btn bg-[#E3350D] text-white px-3 sm:px-4 py-2 text-[11px] font-black uppercase tracking-wider whitespace-nowrap flex items-center gap-1.5"
+                  className="bg-[#E3350D] text-white px-2.5 sm:px-4 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider whitespace-nowrap border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all shrink-0"
                 >
-                  <LayoutDashboard className="w-3.5 h-3.5" />
-                  {safeLabel(tt, "nav_play_now", "Play Now")}
+                  <LayoutDashboard className="w-3 h-3 sm:w-3.5 sm:h-3.5 inline mr-1" />
+                  {safeLabel(tt, "nav_play_now", "Play")}
                 </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="mag-btn bg-white text-[#1a1a1a] px-2.5 py-2 text-[11px] font-black uppercase tracking-wider whitespace-nowrap hidden sm:inline-flex items-center gap-1"
+                  className="bg-white text-[#1a1a1a] px-2 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider whitespace-nowrap border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all hidden sm:inline-flex items-center shrink-0"
                   title="Log out"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
+                  <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </button>
               </>
             ) : (
               <>
                 <Link
                   href="/login"
-                  className="mag-btn bg-white text-[#1a1a1a] px-3 sm:px-4 py-2 text-[11px] font-black uppercase tracking-wider whitespace-nowrap"
+                  className="bg-white text-[#1a1a1a] px-2.5 sm:px-4 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider whitespace-nowrap border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all shrink-0"
                 >
                   {safeLabel(tt, "auth_login", "Sign In")}
                 </Link>
                 <Link
                   href="/register"
-                  className="mag-btn bg-[#E3350D] text-white px-3 sm:px-4 py-2 text-[11px] font-black uppercase tracking-wider whitespace-nowrap hidden sm:inline-flex"
+                  className="bg-[#E3350D] text-white px-2.5 sm:px-4 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider whitespace-nowrap border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all hidden sm:inline-flex shrink-0"
                 >
                   {safeLabel(tt, "auth_register", "Register")}
                 </Link>

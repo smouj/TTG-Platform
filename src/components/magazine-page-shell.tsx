@@ -6,6 +6,7 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import LanguageSwitcher from "@/components/ui/language-switcher"
@@ -39,6 +40,12 @@ export default function MagazinePageShell({
 }) {
   const { t } = useI18n()
   const { user, loading, logout } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    logout()
+    router.push("/")
+  }
 
   return (
     <div className="min-h-screen flex flex-col mag-bg">
@@ -65,7 +72,7 @@ export default function MagazinePageShell({
             <LanguageSwitcher />
             {!loading && user ? (
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-black text-[#E3350D] bg-white/10 hover:bg-[#E3350D]/15 border border-[#E3350D]/30 hover:border-[#E3350D] rounded transition-colors tracking-wider uppercase"
               >
                 <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5" />

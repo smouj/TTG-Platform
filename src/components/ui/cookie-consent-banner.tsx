@@ -2,31 +2,35 @@
 
 // ============================================================
 // Trading Tazos Game — Cookie Consent Banner
-// Shows at the bottom of the page until accepted.
+// Simple, non-blocking bottom banner with working button.
 // ============================================================
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 
 export default function CookieConsentBanner() {
-  const [isVisible, setIsVisible] = useState(() => {
-    // Persist consent in localStorage
-    if (typeof window === "undefined") return true
-    return !localStorage.getItem("ttg-cookie-consent")
-  })
+  const [isVisible, setIsVisible] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    // Only check after mount to avoid SSR mismatch
+    setMounted(true)
+    if (typeof window !== "undefined") {
+      const consent = localStorage.getItem("ttg-cookie-consent")
+      if (!consent) setIsVisible(true)
+    }
+  }, [])
 
   const accept = () => {
-    localStorage.setItem("ttg-cookie-consent", "1")
+    if (typeof window !== "undefined") {
+      localStorage.setItem("ttg-cookie-consent", "1")
+      document.cookie = "cookie_consent=1; max-age=31536000; path=/; SameSite=Lax"
+    }
     setIsVisible(false)
   }
 
-  if (!isVisible) {
-    // Also set the cookie so the server can check
-    if (typeof document !== "undefined") {
-      document.cookie = "cookie_consent=1; max-age=31536000; path=/; SameSite=Lax"
-    }
-    return null
-  }
+  // Don't render anything until mounted (avoids hydration mismatch)
+  if (!mounted || !isVisible) return null
 
   return (
     <div
@@ -35,7 +39,7 @@ export default function CookieConsentBanner() {
     >
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <p className="flex-1 text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/70 leading-relaxed">
-          🍪 This site uses essential cookies for authentication, security, and gameplay. No tracking, no ads, no third-party cookies.
+          This site uses essential cookies for authentication, security, and gameplay. No tracking, no ads, no third-party cookies.
           <br className="hidden sm:block" />
           <span className="text-[#1a1a1a]/40">
             By continuing, you agree to our{" "}
@@ -47,10 +51,11 @@ export default function CookieConsentBanner() {
           </span>
         </p>
         <button
+          type="button"
           onClick={accept}
-          className="mag-btn shrink-0 bg-[#22C55E] text-white px-6 py-2 text-xs font-black uppercase tracking-widest border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all"
+          className="shrink-0 bg-[#22C55E] text-white px-6 py-2.5 text-xs font-black uppercase tracking-widest border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
         >
-          Got It
+          Accept
         </button>
       </div>
     </div>
