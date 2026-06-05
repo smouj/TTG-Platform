@@ -1,6 +1,18 @@
 # Changelog
 
-## v0.3.2 — Pure Magazine Theme + Battle Unification (2026-06-05)
+## v0.3.2 — Security + Magazine + Battle Unification (2026-06-05)
+
+### 🔒 Security Hardening
+- **POST /api/tazos**: Now admin-only — requires valid JWT + admin email authentication
+- **JWT_SECRET**: All 3 hardcoded fallbacks removed (`lib/auth.ts`, `api/admin/route.ts`, `server/ws-server.*`) — app fails fast if env var is missing
+- **/admin**: Blocked via `robots.txt` (`Disallow: /admin`), removed from `sitemap.xml`, added `<meta name="robots" content="noindex,nofollow">`
+- **Admin API**: Consolidated to use shared `getAuthUser()` from `@/lib/auth` instead of standalone JWT verification
+
+### 📊 Leaderboard + Tazos Improvements
+- **Real battle counts**: Added `userId`, `score`, `turns` to `BattleRecord` schema — leaderboard now counts real battles instead of proxy estimates
+- **Win count display**: Battle sort shows "W" wins count next to tazo count
+- **Improved empty state**: "Leaderboard Awaits" with red CTA button — more compelling for new visitors
+- **Featured Tazos preview**: `/tazos` now shows 5 highlighted legendary/ultra/rare tazos in a `mag-card-yellow` banner before the collection cards
 
 ### 🎴 Complete 90s Magazine Visual Coherence
 - **Pure magazine background**: Cream paper (`mag-bg`/`#FFF9E6`) with halftone overlay — zero dark backgrounds anywhere
