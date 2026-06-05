@@ -30,24 +30,34 @@ const heroTazos = [
   {
     src: "/tazos-artgen/minimon/minimon-001.png",
     alt: "Lumipuff — Minimon",
+    franchise: "minimon" as const,
     className: "left-[5%] top-[11%] w-24 sm:w-32 lg:w-40 ttg-float-disc",
   },
   {
     src: "/tazos-artgen/dracobell/dracobell-001.png",
     alt: "Rai Kendo — Dracobell",
+    franchise: "dracobell" as const,
     className: "right-[7%] top-[10%] w-28 sm:w-36 lg:w-48 ttg-float-disc-delayed",
   },
   {
     src: "/tazos-artgen/cybermon/cybermon-002.png",
     alt: "Datadrake — Cybermon",
+    franchise: "cybermon" as const,
     className: "left-[12%] bottom-[17%] w-20 sm:w-28 lg:w-36 ttg-float-disc-slow",
   },
   {
     src: "/tazos-artgen/dracobell/dracobell-002.png",
     alt: "Tenzan Blaze — Dracobell",
+    franchise: "dracobell" as const,
     className: "right-[13%] bottom-[14%] w-20 sm:w-28 lg:w-36 ttg-float-disc",
   },
 ]
+
+const TAZO_DISC_GRADIENTS: Record<string, string> = {
+  minimon: "linear-gradient(135deg, #FFCB05, #FF8C00)",
+  cybermon: "linear-gradient(135deg, #00A1E9, #0057B7)",
+  dracobell: "linear-gradient(135deg, #FF6B00, #CC4400)",
+}
 
 const stats = [
   ["319", "Tazos"],
@@ -145,14 +155,23 @@ export default function LandingPage() {
 
         {heroTazos.map((tazo) => (
           <div key={tazo.src} className={`absolute hidden md:block ${tazo.className}`}>
-            <Image
-              src={tazo.src}
-              alt={tazo.alt}
-              width={220}
-              height={220}
-              priority
-              className="h-auto w-full drop-shadow-[8px_10px_0_rgba(26,26,26,0.35)]"
-            />
+            {/* Circular tazo disc */}
+            <div
+              className="rounded-full border-3 border-[#1a1a1a] overflow-hidden shadow-[4px_4px_0px_#1a1a1a]"
+              style={{
+                background: TAZO_DISC_GRADIENTS[tazo.franchise] || TAZO_DISC_GRADIENTS.minimon,
+                padding: '4px',
+              }}
+            >
+              <Image
+                src={tazo.src}
+                alt={tazo.alt}
+                width={220}
+                height={220}
+                priority
+                className="h-auto w-full rounded-full"
+              />
+            </div>
           </div>
         ))}
 
@@ -280,13 +299,24 @@ export default function LandingPage() {
               >
                 <div className="relative mb-5 flex h-48 items-center justify-center overflow-hidden border-3 border-[#1a1a1a] bg-white">
                   <div className="absolute inset-0 opacity-30" style={{ backgroundColor: collection.color }} />
-                  <Image
-                    src={collection.src}
-                    alt={`${collection.name} tazo preview`}
-                    width={190}
-                    height={190}
-                    className="relative h-36 w-36 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 sm:h-40 sm:w-40"
-                  />
+                  {/* Circular tazo disc */}
+                  <div
+                    className="relative rounded-full border-3 border-[#1a1a1a] overflow-hidden shadow-[3px_3px_0px_#1a1a1a] transition-transform duration-300 group-hover:scale-105"
+                    style={{
+                      background: `linear-gradient(135deg, ${collection.color}, ${collection.color}CC)`,
+                      padding: '3px',
+                      width: '140px',
+                      height: '140px',
+                    }}
+                  >
+                    <Image
+                      src={collection.src}
+                      alt={`${collection.name} tazo preview`}
+                      width={140}
+                      height={140}
+                      className="h-full w-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
+                    />
+                  </div>
                   <div className="absolute right-3 top-3 border-2 border-[#1a1a1a] bg-white px-2 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_#1a1a1a]">
                     {collection.year}
                   </div>
@@ -328,22 +358,30 @@ export default function LandingPage() {
           <div className="relative min-h-[300px] overflow-hidden border-4 border-[#FFCC00] bg-[#fffbe6] p-5 shadow-[8px_8px_0_#FFCC00]">
             <div className="absolute inset-0 ttg-arena-grid" />
             <div className="relative mx-auto h-[260px] max-w-xl">
-              <Image
-                src="/tazos-artgen/minimon/minimon-004.png"
-                alt="Player tazo in battle"
-                width={132}
-                height={132}
-                loading="eager"
-                className="ttg-arena-disc absolute bottom-7 left-4 h-24 w-24 sm:h-32 sm:w-32"
-              />
-              <Image
-                src="/tazos-artgen/cybermon/cybermon-003.png"
-                alt="Rival tazo in battle"
-                width={124}
-                height={124}
-                loading="eager"
-                className="ttg-arena-disc-opponent absolute right-5 top-6 h-24 w-24 sm:h-32 sm:w-32"
-              />
+              {/* Player tazo — circular disc */}
+              <div className="ttg-arena-disc absolute bottom-7 left-4 h-24 w-24 sm:h-32 sm:w-32 rounded-full border-3 border-[#1a1a1a] overflow-hidden shadow-[4px_4px_0px_#1a1a1a]"
+                style={{ background: 'linear-gradient(135deg, #FFCB05, #FF8C00)', padding: '3px' }}>
+                <Image
+                  src="/tazos-artgen/minimon/minimon-004.png"
+                  alt="Player tazo in battle"
+                  width={132}
+                  height={132}
+                  loading="eager"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              </div>
+              {/* Rival tazo — circular disc */}
+              <div className="ttg-arena-disc-opponent absolute right-5 top-6 h-24 w-24 sm:h-32 sm:w-32 rounded-full border-3 border-[#1a1a1a] overflow-hidden shadow-[4px_4px_0px_#1a1a1a]"
+                style={{ background: 'linear-gradient(135deg, #00A1E9, #0057B7)', padding: '3px' }}>
+                <Image
+                  src="/tazos-artgen/cybermon/cybermon-003.png"
+                  alt="Rival tazo in battle"
+                  width={124}
+                  height={124}
+                  loading="eager"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              </div>
               <div className="ttg-shot-line absolute left-[28%] top-[50%] h-2 w-[44%] origin-left -rotate-[18deg] bg-[#E3350D]" />
               <div className="absolute left-[56%] top-[31%] border-3 border-[#1a1a1a] bg-white px-3 py-2 text-[11px] font-black uppercase text-[#1a1a1a] shadow-[3px_3px_0_#1a1a1a]">
                 Impact window
