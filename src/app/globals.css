@@ -1196,3 +1196,46 @@
     0 0 0 3px rgba(255, 255, 255, 0.3),
     0 0 16px 4px rgba(168, 85, 247, 0.4);
 }
+
+/* ═══════════════════════════════════════
+   GAME LAUNCHER ANIMATIONS
+   ═══════════════════════════════════════ */
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 40px rgba(255,204,0,0.3)); }
+  50% { filter: drop-shadow(0 0 70px rgba(255,204,0,0.5)); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 30s linear infinite;
+}
+
+/* Launcher play button hover */
+.launcher-play-btn {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.launcher-play-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 60px rgba(255,204,0,0.4), 0 0 120px rgba(255,204,0,0.15);
+}
+.launcher-play-btn:active {
+  transform: scale(0.97);
+}
