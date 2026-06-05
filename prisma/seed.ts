@@ -1,7 +1,7 @@
 // ============================================================
 // Trading Tazos Game — Seed
-// Real-world verified Spanish tazo collections.
-// Pokemon Tazos 1 (51), DBZ Matutano (105+variants), Cybermon Magic Box (150)
+// Original creature collections: Minimon, Cybermon, Dracobell
+// Names managed in scripts/regenerate-tazo-names.mjs
 // ============================================================
 
 import { db } from "@/lib/db"
@@ -40,15 +40,15 @@ async function main() {
   const minimon = await db.franchise.create({
     data: {
       name: "Minimon", slug: "minimon", color: "#FFCB05", icon: "🐾",
-      description: "Minimon — criaturas coleccionables estilo Ken Sugimori. Edición española, 2000-2001.",
-      mechanic: "Colección numerada #1-51. Criaturas coloridas, trazo suave, diseño expresivo.",
+      description: "Minimon — criaturas coleccionables originales. Colección de 51 tazos con diseños coloridos y adorables.",
+      mechanic: "Colección numerada #1-51. Criaturas tipo mascota con trazo suave, colores vibrantes y diseño expresivo.",
     },
   })
 
   const dracobell = await db.franchise.create({
     data: {
       name: "Dracobell", slug: "dracobell", color: "#FF6B00", icon: "💥",
-      description: "Dracobell — guerreros de artes marciales estilo Akira Toriyama. Edición Matutano, 1995.",
+      description: "Dracobell — guerreros de artes marciales originales. Luchadores con auras elementales y técnicas especiales.",
       mechanic: "7 categorías: Tazos, Supertazos Voladores, Supertazos Octogonales, Megatazos, Holo 3D, Mastertazos.",
     },
   })
@@ -56,8 +56,8 @@ async function main() {
   const cybermon = await db.franchise.create({
     data: {
       name: "Cybermon", slug: "cybermon", color: "#00A1E9", icon: "🦾",
-      description: "Cybermon — monstruos digitales estilo Kenji Watanabe. Magic Box 2000. 150 caps.",
-      mechanic: "Evoluciones marcadas, armaduras biomecánicas, garras metálicas y energía digital.",
+      description: "Cybermon — criaturas digitales originales. Monstruos biomecánicos con energía tecnológica y datos corruptos.",
+      mechanic: "Criaturas digitales con armaduras, circuitos brillantes y habilidades de datos.",
     },
   })
 
@@ -99,57 +99,57 @@ async function main() {
   // MINIMON TAZOS 1 — #1-51 (VERIFIED)
   // ============================================================
   const minimonTazosData = [
-    { n: "1",  name: "Bulbasaure" },
-    { n: "2",  name: "Charmandere" },
-    { n: "3",  name: "Squirtleh" },
-    { n: "4",  name: "Metapodé" },
-    { n: "5",  name: "Weedleh" },
-    { n: "6",  name: "Pidgeottoh" },
-    { n: "7",  name: "Rattatah" },
-    { n: "8",  name: "Spearowé" },
-    { n: "9",  name: "Arboké" },
-    { n: "10", name: "Pikachuh" },
-    { n: "11", name: "Raichuh" },
-    { n: "12", name: "Nidoranñe" },
-    { n: "13", name: "Nidorinah" },
-    { n: "14", name: "Vulpixé" },
-    { n: "15", name: "Jigglypuffé" },
-    { n: "16", name: "Golbaté" },
-    { n: "17", name: "Oddishé" },
-    { n: "18", name: "Parasé" },
-    { n: "19", name: "Venonaté" },
-    { n: "20", name: "Digletté" },
-    { n: "21", name: "Meowthé" },
-    { n: "22", name: "Psyducké" },
-    { n: "23", name: "Mankeyé" },
-    { n: "24", name: "Growlitheh" },
-    { n: "25", name: "Poliwagé" },
-    { n: "26", name: "Kadabrah" },
-    { n: "27", name: "Machampé" },
-    { n: "28", name: "Bellsprouté" },
-    { n: "29", name: "Tentacoole" },
-    { n: "30", name: "Geodudeh" },
-    { n: "31", name: "Ponytah" },
-    { n: "32", name: "Slowpokeh" },
-    { n: "33", name: "Magnemiteh" },
-    { n: "34", name: "Grimere" },
-    { n: "35", name: "Gastlyé" },
-    { n: "36", name: "Drowzeeh" },
-    { n: "37", name: "Krabbyé" },
-    { n: "38", name: "Voltorbé" },
-    { n: "39", name: "Exeggcuteh" },
-    { n: "40", name: "Cuboneh" },
-    { n: "41", name: "Koffingé" },
-    { n: "42", name: "Rhydoné" },
-    { n: "43", name: "Horseah" },
-    { n: "44", name: "Goldeené" },
-    { n: "45", name: "Staryuh" },
-    { n: "46", name: "Magikarpé" },
-    { n: "47", name: "Eeveeh" },
-    { n: "48", name: "Omanyteh" },
-    { n: "49", name: "Kabutoh" },
-    { n: "50", name: "Dragonaire" },
-    { n: "51", name: "Ashé" },
+    { n: "1", name: "Lumipuff" },
+    { n: "2", name: "Bubblit" },
+    { n: "3", name: "Emberkit" },
+    { n: "4", name: "Leafroll" },
+    { n: "5", name: "Voltbud" },
+    { n: "6", name: "Plumfuzz" },
+    { n: "7", name: "Nimbikoo" },
+    { n: "8", name: "Twinklump" },
+    { n: "9", name: "Sproutlet" },
+    { n: "10", name: "Froskit" },
+    { n: "11", name: "Glowbun" },
+    { n: "12", name: "Pebblit" },
+    { n: "13", name: "Dewdrop" },
+    { n: "14", name: "Snugleaf" },
+    { n: "15", name: "Fizzpuff" },
+    { n: "16", name: "Tumblepop" },
+    { n: "17", name: "Mossling" },
+    { n: "18", name: "Starwhiff" },
+    { n: "19", name: "Fluffern" },
+    { n: "20", name: "Bloombit" },
+    { n: "21", name: "Corkit" },
+    { n: "22", name: "Lullabud" },
+    { n: "23", name: "Wispikoo" },
+    { n: "24", name: "Bounceleaf" },
+    { n: "25", name: "Chirplet" },
+    { n: "26", name: "Puffball" },
+    { n: "27", name: "Squeaknip" },
+    { n: "28", name: "Glintail" },
+    { n: "29", name: "Trufflit" },
+    { n: "30", name: "Petaloo" },
+    { n: "31", name: "Marbit" },
+    { n: "32", name: "Flitter" },
+    { n: "33", name: "Snoozle" },
+    { n: "34", name: "Glimpet" },
+    { n: "35", name: "Tinkit" },
+    { n: "36", name: "Waddleplum" },
+    { n: "37", name: "Snapvine" },
+    { n: "38", name: "Furnip" },
+    { n: "39", name: "Skitter" },
+    { n: "40", name: "Bramblet" },
+    { n: "41", name: "Pondleap" },
+    { n: "42", name: "Gustwhirl" },
+    { n: "43", name: "Quillbee" },
+    { n: "44", name: "Mossberg" },
+    { n: "45", name: "Ripplefin" },
+    { n: "46", name: "Stonibble" },
+    { n: "47", name: "Fluffernix" },
+    { n: "48", name: "Cinderpuff" },
+    { n: "49", name: "Glacub" },
+    { n: "50", name: "Berrytuft" },
+    { n: "51", name: "Zapplet" },
   ]
 
   console.log(`📦 Inserting ${minimonTazosData.length} Minimon Tazos 1...`)
@@ -184,16 +184,16 @@ async function main() {
   // DRACO BELL — TAZOS NORMALES #1-10
   // ============================================================
   const dracobellTazosNormales = [
-    { n: "1",  name: "Freezere" },
-    { n: "2",  name: "Recoomeh" },
-    { n: "3",  name: "Ginyuh" },
-    { n: "4",  name: "Burtere" },
-    { n: "5",  name: "Dodoriah" },
-    { n: "6",  name: "Guldoh" },
-    { n: "7",  name: "Saibamané" },
-    { n: "8",  name: "A-19x" },
-    { n: "9",  name: "Spopovitché" },
-    { n: "10", name: "Yamuh" },
+    { n: "1", name: "Rai Kendo" },
+    { n: "2", name: "Tenzan Blaze" },
+    { n: "3", name: "Mizu Shiro" },
+    { n: "4", name: "Kenji Storm" },
+    { n: "5", name: "Hikari Flame" },
+    { n: "6", name: "Takeshi Frost" },
+    { n: "7", name: "Yuki Thunder" },
+    { n: "8", name: "Ren Stone" },
+    { n: "9", name: "Akira Gale" },
+    { n: "10", name: "Haru Ember" },
   ]
 
   console.log(`📦 Dracobell Tazos #1-10...`)
@@ -218,26 +218,26 @@ async function main() {
   // DRACO BELL — SUPERTAZOS VOLADORES #11-30
   // ============================================================
   const dracobellSupertazosVoladores = [
-    { n: "11", name: "Babidih" },
-    { n: "12", name: "Piccolo Jr.é" },
-    { n: "13", name: "Spopovitché" },
-    { n: "14", name: "Son Gokuh" },
-    { n: "15", name: "Gotten y Trunksé" },
-    { n: "16", name: "Yakoné" },
-    { n: "17", name: "Satáné" },
-    { n: "18", name: "Videle" },
-    { n: "19", name: "Pui-Puih" },
-    { n: "20", name: "Kibitoh" },
-    { n: "21", name: "Kaio-Shiné" },
-    { n: "22", name: "Cell Jr.é" },
-    { n: "23", name: "Son Gohané" },
-    { n: "24", name: "Kaio-samah" },
-    { n: "25", name: "A-16x" },
-    { n: "26", name: "Chi-Chih" },
-    { n: "27", name: "A-18x" },
-    { n: "28", name: "Freezere" },
-    { n: "29", name: "Yamuh" },
-    { n: "30", name: "Bulmah" },
+    { n: "11", name: "Sora Tide" },
+    { n: "12", name: "Kaito Steel" },
+    { n: "13", name: "Michi Wind" },
+    { n: "14", name: "Riku Ash" },
+    { n: "15", name: "Nami Wave" },
+    { n: "16", name: "Taro Spark" },
+    { n: "17", name: "Jiro Iron" },
+    { n: "18", name: "Shin Blaze" },
+    { n: "19", name: "Koji Frost" },
+    { n: "20", name: "Yoru Shadow" },
+    { n: "21", name: "Asahi Dawn" },
+    { n: "22", name: "Daiki Quake" },
+    { n: "23", name: "Ryo Lightning" },
+    { n: "24", name: "Goro Titan" },
+    { n: "25", name: "Isamu Fang" },
+    { n: "26", name: "Kenta Shield" },
+    { n: "27", name: "Makoto Fist" },
+    { n: "28", name: "Shota Storm" },
+    { n: "29", name: "Yuto Claw" },
+    { n: "30", name: "Hiroki Fang" },
   ]
 
   console.log(`📦 Dracobell Supertazos Voladores #11-30...`)
@@ -262,26 +262,26 @@ async function main() {
   // DRACO BELL — SUPERTAZOS OCTOGONALES #31-50
   // ============================================================
   const dracobellSupertazosOctogonales = [
-    { n: "31", name: "Cell 1ª faseh" },
-    { n: "32", name: "Pui-Puih" },
-    { n: "33", name: "Cell 2ª faseh" },
-    { n: "34", name: "Yakoné" },
-    { n: "35", name: "A-16x" },
-    { n: "36", name: "King Coldé" },
-    { n: "37", name: "Cell 3ª faseh" },
-    { n: "38", name: "Dabrah" },
-    { n: "39", name: "Majin Booh" },
-    { n: "40", name: "Babidih" },
-    { n: "41", name: "Vegetah" },
-    { n: "42", name: "Videle" },
-    { n: "43", name: "Son Gottené" },
-    { n: "44", name: "Trunksé" },
-    { n: "45", name: "Piccolo Juniore" },
-    { n: "46", name: "Son Gokuh" },
-    { n: "47", name: "Kaio-Shiné" },
-    { n: "48", name: "Son Gohané" },
-    { n: "49", name: "Kibitoh" },
-    { n: "50", name: "Kaio-samah" },
+    { n: "31", name: "Naoki Blade" },
+    { n: "32", name: "Takuya Vortex" },
+    { n: "33", name: "Ryuji Phoenix" },
+    { n: "34", name: "Kazuki Serpent" },
+    { n: "35", name: "Daichi Wolf" },
+    { n: "36", name: "Sho Crane" },
+    { n: "37", name: "Jun Tiger" },
+    { n: "38", name: "Kota Bear" },
+    { n: "39", name: "Tsubasa Hawk" },
+    { n: "40", name: "Raiden Storm" },
+    { n: "41", name: "Hayato Blaze" },
+    { n: "42", name: "Yamato Tide" },
+    { n: "43", name: "Seiji Frost" },
+    { n: "44", name: "Masaru Iron" },
+    { n: "45", name: "Noboru Gale" },
+    { n: "46", name: "Osamu Thunder" },
+    { n: "47", name: "Takumi Ash" },
+    { n: "48", name: "Itsuki Wave" },
+    { n: "49", name: "Hideki Ember" },
+    { n: "50", name: "Fumio Steel" },
   ]
 
   console.log(`📦 Dracobell Supertazos Octogonales #31-50...`)
@@ -306,26 +306,26 @@ async function main() {
   // DRACO BELL — MEGATAZOS #51-70 (REDONDO + OCTOGONAL)
   // ============================================================
   const dracobellMegatazosNames = [
-    { n: "51", name: "Son Gokuh" },
-    { n: "52", name: "Vegetah" },
-    { n: "53", name: "Son Gohané" },
-    { n: "54", name: "Son Gottené" },
-    { n: "55", name: "Trunksé" },
-    { n: "56", name: "Piccolo Jr.é" },
-    { n: "57", name: "Celle" },
-    { n: "58", name: "Majin Booh" },
-    { n: "59", name: "Babidih" },
-    { n: "60", name: "Dabrah" },
-    { n: "61", name: "Kibitoh" },
-    { n: "62", name: "Satáné" },
-    { n: "63", name: "Shin Samah" },
-    { n: "64", name: "Kaio-Shiné" },
-    { n: "65", name: "Videle" },
-    { n: "66", name: "Bulmah" },
-    { n: "67", name: "Kriliné" },
-    { n: "68", name: "Mutenroshih" },
-    { n: "69", name: "Pui-Puih" },
-    { n: "70", name: "Kaio-samah" },
+    { n: "51", name: "Rin Shadow" },
+    { n: "52", name: "Haruki Dawn" },
+    { n: "53", name: "Akio Fang" },
+    { n: "54", name: "Saburo Shield" },
+    { n: "55", name: "Shiro Fist" },
+    { n: "56", name: "Jin Claw" },
+    { n: "57", name: "Kane Blade" },
+    { n: "58", name: "Tetsuya Storm" },
+    { n: "59", name: "Masaki Vortex" },
+    { n: "60", name: "Koichi Phoenix" },
+    { n: "61", name: "Genji Wolf" },
+    { n: "62", name: "Daizen Tiger" },
+    { n: "63", name: "Raiga Bear" },
+    { n: "64", name: "Shingen Hawk" },
+    { n: "65", name: "Nobunaga Crane" },
+    { n: "66", name: "Kageyama Shadow" },
+    { n: "67", name: "Matsuo Steel" },
+    { n: "68", name: "Ishikawa Stone" },
+    { n: "69", name: "Tanaka Iron" },
+    { n: "70", name: "Yamamoto Tide" },
   ]
 
   console.log(`📦 Dracobell Megatazos #51-70 (redondos + octogonales)...`)
@@ -363,16 +363,16 @@ async function main() {
   // DRACO BELL — HOLO 3D #1-10 (RANURA DERECHA + IZQUIERDA)
   // ============================================================
   const dracobellHolo3DNames = [
-    { n: "1",  name: "Celle" },
-    { n: "2",  name: "Son Gokuh" },
-    { n: "3",  name: "Son Gohané" },
-    { n: "4",  name: "Son Gottené" },
-    { n: "5",  name: "Gotten y Trunksé" },
-    { n: "6",  name: "Vegetah" },
-    { n: "7",  name: "Majin Booh" },
-    { n: "8",  name: "Dabrah" },
-    { n: "9",  name: "Gokuh" },
-    { n: "10", name: "Cell y Trunksé" },
+    { n: "1", name: "Watanabe Wave" },
+    { n: "2", name: "Suzuki Flame" },
+    { n: "3", name: "Sato Thunder" },
+    { n: "4", name: "Takahashi Blaze" },
+    { n: "5", name: "Kobayashi Gale" },
+    { n: "6", name: "Nakamura Frost" },
+    { n: "7", name: "Ito Storm" },
+    { n: "8", name: "Sasaki Ash" },
+    { n: "9", name: "Kato Ember" },
+    { n: "10", name: "Yoshida Spark" },
   ]
 
   console.log(`📦 Dracobell Holo 3D #1-10 (ranura derecha + izquierda)...`)
@@ -408,14 +408,14 @@ async function main() {
   // DRACO BELL — MASTERTAZOS
   // ============================================================
   const dracobellMastertazos = [
-    { id: "MASTER-A18",             name: "A-18x",           variant: null },
-    { id: "MASTER-A18-GOLD",        name: "A-18 Doradoh",    variant: "gold" },
-    { id: "MASTER-A18-BLACK",       name: "A-18 B.Negroh",   variant: "black_border" },
-    { id: "MASTER-FREEZER",         name: "Freezere",        variant: null },
-    { id: "MASTER-GOKU",            name: "Gokuh",           variant: null },
-    { id: "MASTER-SHENRON",         name: "Shenroné",        variant: null },
-    { id: "MASTER-SHENRON-BLACK",   name: "Shenron B.Negroh",variant: "black_border" },
-    { id: "MASTER-VEGETA",          name: "Vegetah",         variant: null },
+    { id: "MASTER-A18",             name: "Mecha Sentinel",           variant: null },
+    { id: "MASTER-A18-GOLD",        name: "Mecha Sentinel Gold",    variant: "gold" },
+    { id: "MASTER-A18-BLACK",       name: "Mecha Sentinel Dark",   variant: "black_border" },
+    { id: "MASTER-FREEZER",         name: "Frost Tyrant",        variant: null },
+    { id: "MASTER-GOKU",            name: "Zen Striker",           variant: null },
+    { id: "MASTER-SHENRON",         name: "Dragon Ascendant",        variant: null },
+    { id: "MASTER-SHENRON-BLACK",   name: "Dragon Ascendant Dark",variant: "black_border" },
+    { id: "MASTER-VEGETA",          name: "Prince Rival",         variant: null },
   ]
 
   console.log(`📦 Dracobell Mastertazos...`)
@@ -441,48 +441,32 @@ async function main() {
   // ============================================================
   console.log(`📦 Cybermon Magic Box 2000 #1-150...`)
 
-  const CYBERMON_NAMES = [
-    // In-Training / Baby
-    "Botamon", "Koromon", "Tsunomon", "Tokomon", "Tanemon",
-    "Bukamon", "Motimon", "Nyaromon", "Yokomon", "Pagumon",
-    // Rookies
-    "Agumon", "Gabumon", "Biyomon", "Tentomon", "Palmon",
-    "Gomamon", "Patamon", "Gatomon", "Salamon", "Veemon",
-    "Hawkmon", "Armadillomon", "Wormmon", "Terriermon", "Lopmon",
-    "Renamon", "Guilmon", "Impmon", "Leomon", "Ogremon",
-    // Champions
-    "Greymon", "Garurumon", "Birdramon", "Kabuterimon", "Togemon",
-    "Ikkakumon", "Angemon", "Devimon", "Meramon", "Seadramon",
-    "Monochromon", "Centarumon", "Tyrannomon", "DarkTyrannomon", "Frigimon",
-    "Mojyamon", "Drimogemon", "Shellmon", "Numemon", "Sukamon",
-    // Ultimate
-    "MetalGreymon", "WereGarurumon", "Garudamon", "MegaKabuterimon", "Lillymon",
-    "Zudomon", "MagnaAngemon", "Angewomon", "LadyDevimon", "Myotismon",
-    "SkullGreymon", "Andromon", "Etemon", "Datamon", "MegaSeadramon",
-    "Mammothmon", "Piximon", "Whamon", "Scorpiomon", "Phantomon",
-    // Mega
-    "WarGreymon", "MetalGarurumon", "Phoenixmon", "HerculesKabuterimon", "Rosemon",
-    "Vikemon", "Seraphimon", "Holydramon", "Omnimon", "Imperialdramon",
-    "BlackWarGreymon", "Diaboromon", "Piedmon", "MetalSeadramon", "Puppetmon",
-    "Machinedramon", "VenomMyotismon", "MaloMyotismon", "Apocalymon", "Cherubimon",
-    // Armor Digimon (02)
-    "Flamedramon", "Raidramon", "Magnamon", "Halsemon", "Shurimon",
-    "Digmon", "Submarimon", "Pegasusmon", "Nefertimon", "Mummymon",
-    // DNA / Jogress (02)
-    "Paildramon", "Dinobeemon", "Silphymon", "Shakkoumon", "ExVeemon",
-    "Stingmon", "Aquilamon", "Ankylomon", "Arukenimon", "Mummymon",
-    // Dark Masters & Villains
-    "Myotismon", "VenomMyotismon", "MaloMyotismon", "Piedmon", "MetalSeadramon",
-    "Puppetmon", "Machinedramon", "Apocalymon", "Diaboromon", "Daemon",
-    // Tamers-era
-    "Guilmon", "Growlmon", "WarGrowlmon", "Gallantmon", "Megidramon",
-    "Renamon", "Kyubimon", "Taomon", "Sakuyamon", "Rika",
-    // Extras
-    "MarineAngemon", "SaberLeomon", "MetalEtemon", "PrinceMamemon", "Omnimon",
-    "Imperialdramon FM", "Gallantmon CM", "Sakuyamon", "MegaGargomon", "Justimon",
-    "Zhuqiaomon", "Azulongmon", "Ebonwumon", "Baihumon", "Fanglongmon",
-    "Kimeramon", "SkullSatamon", "Infermon", "Kerpymon", "Susanoomon",
-  ]
+  const CYBERMON_NAMES = [    "Voltcrab-X", "Datadrake", "Bytefang", "Kryptoworm", "Hexashell", "Synthclaw",
+    "Bitdrone", "Glitchfang", "Circuitusk", "Voidraptor", "Nulldrake", "Pixelwyrm",
+    "Datablight", "Necrobyte", "Shardbeast", "Phantocode", "Cryptospine", "Nullfang",
+    "Rasterclaw", "Vexdrake", "Malwarex", "Codeghast", "Bitwraith", "Hexafang",
+    "Synthshard", "Glitchraptor", "Voidcrawl", "Datarex", "Pyxelisk", "Circuitile",
+    "Phagehound", "Neuraptor", "Cipherclaw", "Skemdrake", "Vexbyte", "Noxtusk",
+    "Rastermaw", "Cryptohorn", "Nullwurm", "Shardraptor", "Bitbane", "Glitchvex",
+    "Codeclaw", "Hexadrone", "Phantobeast", "Voidfang", "Dataspine", "Synthraptor",
+    "Malweaver", "Necrodrake", "Pixelshard", "Glitchmaw", "Rasterbeast", "Cryptowing",
+    "Voidtusk", "Neuroclaw", "Hexadrake", "Bithorn", "Cipherbeast", "Shardwing",
+    "Nullraptor", "Datanox", "Vexmaw", "Synthfang", "Pyxclaw", "Glitchspine",
+    "Codebeast", "Noxtail", "Bitraptor", "Hexatusk", "Voidclaw", "Rasterdrake",
+    "Phantorn", "Cryptohtooth", "Datavore", "Nullbeast", "Circuitmaw", "Shardraptor",
+    "Glitchdrone", "Hexafang", "Voidspine", "Synthdraken", "Bytedrake", "Vextalon",
+    "Rastertusk", "Nullwing", "Cryptobeast", "Neurox", "Shardclaw", "Phantobeast",
+    "Datamaw", "Hexadrone", "Glitchvex", "Codewurm", "Voidfang", "Bitbeast",
+    "Synthcore", "Rasterfang", "Cipherdrake", "Nullmaw", "Cryptowing", "Shardhorn",
+    "Glitchcore", "Noxclaw", "Hexavex", "Voiddrake", "Neurobeast", "Bitspine",
+    "Dataraptor", "Circuitfang", "Phantodrake", "Rasterclaw", "Shardvex", "Vextusk",
+    "Glitchwing", "Cryptodrone", "Nullraptor", "Synthmaw", "Codebeast", "Hexaspine",
+    "Bitclaw", "Voidcore", "Rastervex", "Dataraptor-X", "Glitchmancer", "Nullbyte",
+    "Cryptodusker", "Shardwing-X", "Voidmaw-X", "Hexadrakon", "Bitable", "Synthvex",
+    "Codewarden", "Rasterlord", "Glitchking", "Datavisor", "Nullshard", "Cryptovere",
+    "Shardemperor", "Voidreaver", "Hexatitan", "Bitsovereign", "Noxqueen", "Circuitlord",
+    "Phantomagus", "Dataking", "Rasterlord-X", "Synthmaster", "Glitchoverlord", "Voidsovereign",
+]
 
   for (let i = 0; i < 150; i++) {
     const n = String(i + 1)
