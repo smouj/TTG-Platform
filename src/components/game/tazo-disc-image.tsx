@@ -82,7 +82,7 @@ export default function TazoDiscImage({
         position: "relative",
         overflow: "hidden",
         cursor: onClick || onFlip ? "pointer" : undefined,
-        boxSizing: "content-box",
+        boxSizing: "border-box",
       }}
       onClick={(e) => {
         if (onFlip) {

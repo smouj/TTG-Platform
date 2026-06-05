@@ -9,13 +9,7 @@ import StatsPanel from "@/components/game/stats-panel"
 
 function StatsContent() {
   const searchParams = useSearchParams()
-  const [refreshKey, setRefreshKey] = useState(0)
-
-  // Allow forcing refresh via query param (e.g. from album after pack opening)
-  useEffect(() => {
-    const key = searchParams.get("refresh")
-    if (key) setRefreshKey(Number(key))
-  }, [searchParams])
+  const refreshKey = Number(searchParams.get("refresh") || 0)
 
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6">

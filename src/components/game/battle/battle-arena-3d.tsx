@@ -98,9 +98,9 @@ function ADisc({ disc }: { disc: DiscPhysics }) {
   const isCaptured = disc.state === "captured"
 
   // Update target position when disc.position changes
-  useEffectLike(() => {
+  useEffect(() => {
     target.current.set(disc.position[0], 0, disc.position[2])
-  }, [disc.position])
+  }, [disc.position[0], disc.position[2]])
 
   useFrame((_, delta) => {
     if (!g.current) return
@@ -134,14 +134,6 @@ function ADisc({ disc }: { disc: DiscPhysics }) {
       />
     </group>
   )
-}
-
-// Polyfill useEffect-like behavior in R3F
-function useEffectLike(fn: () => void, deps: any[]) {
-  const ref = useRef(deps)
-  const changed = deps.some((d, i) => d !== ref.current[i])
-  ref.current = deps
-  useMemo(() => { if (changed) fn() }, [changed])
 }
 
 // ─── Camera ───

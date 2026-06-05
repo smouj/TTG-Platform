@@ -25,9 +25,10 @@ export default function AdminPage() {
   const [error, setError] = useState("")
 
   const isAdmin = user?.email === "dev.viewer@medaclawarena.com"
+  const effectiveLoading = loading && isAdmin
 
   useEffect(() => {
-    if (!isAdmin) { setLoading(false); return }
+    if (!isAdmin) return
     Promise.all([
       fetch("/api/admin?section=overview", { credentials: "include" }).then(r => r.json()),
       fetch("/api/admin?section=db-stats", { credentials: "include" }).then(r => r.json()),
@@ -73,7 +74,7 @@ export default function AdminPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-        {loading ? (
+        {effectiveLoading ? (
           <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#FFCC00]" /></div>
         ) : (
           <>

@@ -57,11 +57,23 @@ export default function LaunchSystem({ phase, onAimLock, onPowerLock, throwingTa
   }, [phase, pl, pw, onPowerLock])
 
   useEffect(() => {
-    const k = (e: KeyboardEvent) => { if (e.code === "Space" || e.code === "Enter") { e.preventDefault(); phase === "aim" ? lockAim() : lockPower() } }
+    const k = (e: KeyboardEvent) => {
+      if (e.code === "Space" || e.code === "Enter") {
+        e.preventDefault()
+        if (phase === "aim") lockAim()
+        else lockPower()
+      }
+    }
     window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k)
   }, [phase, lockAim, lockPower])
 
-  useEffect(() => { setAl(false); setPl(false) }, [phase])
+  // Reset locked state when phase changes away from aim/power (deferred to avoid cascade renders)
+  useEffect(() => {
+    if (phase !== "aim" && phase !== "power") {
+      const id = requestAnimationFrame(() => { setAl(false); setPl(false) })
+      return () => cancelAnimationFrame(id)
+    }
+  }, [phase])
 
   const tazoTag = (
     <span className="text-[9px] font-black px-2 py-0.5 border-2 border-[#1a1a1a] bg-white"

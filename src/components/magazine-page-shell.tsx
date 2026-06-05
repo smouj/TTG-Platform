@@ -66,14 +66,15 @@ export default function MagazinePageShell({
   const { user, loading, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
-  const [credits, setCredits] = useState<number | undefined>(undefined)
+  const [credits, setCredits] = useState<number>(0)
 
-  // Fetch credits for HUD
   useEffect(() => {
-    if (!user) { setCredits(undefined); return }
+    if (!user) return
     const token = localStorage.getItem("token")
     fetch("/api/credits", { headers: token ? { Authorization: `Bearer ${token}` } : {} })
-      .then(r => r.json()).then(d => { if (d.credits != null) setCredits(d.credits) }).catch(() => {})
+      .then(r => r.json())
+      .then(d => { if (d.credits != null) setCredits(d.credits) })
+      .catch(() => {})
   }, [user])
 
   // Unlock audio context on first interaction

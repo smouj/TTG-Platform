@@ -353,9 +353,9 @@ export default function LauncherView() {
                     color: "#FFCC00", href: user ? "/app/shop" : "/register",
                   },
                   {
-                    icon: Crosshair, label: "Battle Arena",
-                    desc: "3D skill-based combat",
-                    color: "#E3350D", href: "/app?tab=battle",
+                    icon: Crosshair, label: user ? "Battle Arena" : "Play Demo",
+                    desc: user ? "3D skill-based combat" : "No account needed!",
+                    color: "#E3350D", href: user ? "/app/battle" : "/game/practice",
                   },
                   {
                     icon: Disc3, label: "319 Tazos",

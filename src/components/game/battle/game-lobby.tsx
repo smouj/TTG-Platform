@@ -8,6 +8,7 @@ import { useState, useMemo } from "react"
 import type { TazoCard, PlayMode, AIDifficulty } from "@/lib/battle/game-loop"
 import { Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star } from "lucide-react"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
+import TazoDiscImage from "@/components/game/tazo-disc-image"
 
 interface Props {
   playerTazos: TazoCard[]
@@ -182,14 +183,7 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
                   }`}
                 >
                   <div className="w-10 h-10 mx-auto rounded-full overflow-hidden border border-[#1a1a1a]/12 mb-1 bg-zinc-100">
-                    {t.imageUrl ? (
-                      <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white text-[10px] font-black"
-                        style={{ background: `linear-gradient(135deg, ${fColor(t.franchise)}, #1a1a1a)` }}>
-                        {t.name[0]}
-                      </div>
-                    )}
+                    <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" scale={1.12} borderWidth={0} franchiseSlug={t.franchise} lazy className="w-full h-full" />
                   </div>
                   <div className="text-[9px] font-black text-[#1a1a1a] truncate leading-tight">{t.name}</div>
                   <div className="text-[8px] font-bold mt-0.5" style={{ color: fColor(t.franchise) }}>{total}</div>

@@ -11,6 +11,7 @@ import {
   Layers, Plus, Search, X, ChevronLeft, ChevronRight,
   Star, Sword, Shield, Zap, Save, Palette, Filter, CheckCircle,
 } from "lucide-react"
+import TazoDiscImage from "@/components/game/tazo-disc-image"
 
 // ── Types ──────────────────────────────────────────────
 interface TazoOption {
@@ -346,11 +347,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                           className="w-10 h-10 rounded-full flex-shrink-0 border-2 border-[#1a1a1a]/20 flex items-center justify-center overflow-hidden"
                           style={{ background: franchiseBorder + "20" }}
                         >
-                          {tazo.imageUrl ? (
-                            <img src={tazo.imageUrl} alt="" className="w-full h-full object-cover rounded-full" loading="lazy" />
-                          ) : (
-                            <span className="text-xs font-black text-[#1a1a1a]/20">#{tazo.number}</span>
-                          )}
+                          <TazoDiscImage src={tazo.imageUrl} alt={tazo.name} size="100%" scale={1.1} borderWidth={0} franchiseSlug={tazo.franchiseSlug} lazy className="w-full h-full" />
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-[10px] font-black text-[#1a1a1a] truncate leading-tight">
@@ -490,11 +487,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                         className="w-10 h-10 rounded-full flex-shrink-0 border-2 border-[#1a1a1a]/20 flex items-center justify-center overflow-hidden"
                         style={{ background: franchiseBorder + "20" }}
                       >
-                        {tazo.imageUrl ? (
-                          <img src={tazo.imageUrl} alt="" className="w-full h-full object-cover rounded-full" loading="lazy" />
-                        ) : (
-                          <span className="text-xs font-black text-[#1a1a1a]/20">#{tazo.number}</span>
-                        )}
+                        <TazoDiscImage src={tazo.imageUrl} alt={tazo.name} size="100%" scale={1.1} borderWidth={0} franchiseSlug={tazo.franchiseSlug} lazy className="w-full h-full" />
                       </div>
                       <div className="min-w-0">
                         <p className="text-[10px] font-black text-[#1a1a1a] truncate">
@@ -623,7 +616,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                   return (
                     <div key={t.id} className="flex items-center gap-1.5 p-1.5 border-2 border-[#1a1a1a] bg-white">
                       <div className="w-8 h-8 rounded-full border border-[#1a1a1a]/20 overflow-hidden flex-shrink-0" style={{ background: fColor + "20" }}>
-                        {t.imageUrl && <img src={t.imageUrl} alt="" className="w-full h-full object-cover rounded-full" />}
+                        <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" scale={1.05} borderWidth={0} franchiseSlug={t.franchiseSlug} lazy className="w-full h-full" />
                       </div>
                       <div>
                         <p className="text-[9px] font-black text-[#1a1a1a]">{t.displayName || t.name}</p>

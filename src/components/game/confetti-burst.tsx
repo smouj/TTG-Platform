@@ -30,7 +30,8 @@ export default function ConfettiBurst({ active = false }: { active?: boolean }) 
   const frameRef = useRef<number>(0)
   const activeRef = useRef(active)
 
-  activeRef.current = active
+  // Keep ref in sync without triggering re-render
+  useEffect(() => { activeRef.current = active }, [active])
 
   const createParticles = useCallback(() => {
     const w = window.innerWidth

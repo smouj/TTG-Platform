@@ -5,32 +5,29 @@
 // Simple, non-blocking bottom banner with working button.
 // ============================================================
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 
-export default function CookieConsentBanner() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [mounted, setMounted] = useState(false)
+function readConsent(): boolean {
+  if (typeof window === "undefined") return true // SSR: hide banner
+  return !!localStorage.getItem("ttg-cookie-consent")
+}
 
-  useEffect(() => {
-    // Only check after mount to avoid SSR mismatch
-    setMounted(true)
-    if (typeof window !== "undefined") {
-      const consent = localStorage.getItem("ttg-cookie-consent")
-      if (!consent) setIsVisible(true)
-    }
-  }, [])
+export default function CookieConsentBanner() {
+  const [hasConsent, setHasConsent] = useState(() => readConsent())
+  const [dismissed, setDismissed] = useState(false)
 
   const accept = () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("ttg-cookie-consent", "1")
       document.cookie = "cookie_consent=1; max-age=31536000; path=/; SameSite=Lax"
     }
-    setIsVisible(false)
+    setHasConsent(true)
+    setDismissed(true)
   }
 
-  // Don't render anything until mounted (avoids hydration mismatch)
-  if (!mounted || !isVisible) return null
+  // No render during SSR, no render if consent already given or dismissed
+  if (hasConsent || dismissed) return null
 
   return (
     <div
