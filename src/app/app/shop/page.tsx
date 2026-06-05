@@ -11,8 +11,8 @@ import { useAuth } from "@/lib/auth-context"
 import Link from "next/link"
 import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
-import { type BagData } from "@/components/game/bag-opener-3d"
-import { pickBagVariant } from "@/components/game/3d/potato-chip-bag-3d"
+import type { BagData } from "@/components/game/bag-opener-3d"
+import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 // Dynamic imports for 3D components (SSR-safe)

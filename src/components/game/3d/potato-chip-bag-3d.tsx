@@ -9,30 +9,7 @@ import { useRef, useMemo, useEffect } from "react"
 import { useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
-// ── Texture pairing ──
-const BAG_VARIANTS: Record<string, { front: string; back: string }[]> = {
-  minimon: [
-    { front: "/textures/bags/minimon/bag-minimon-front-01.png", back: "/textures/bags/minimon/bag-minimon-back-01.png" },
-    { front: "/textures/bags/minimon/bag-minimon-front-02.png", back: "/textures/bags/minimon/bag-minimon-back-02.png" },
-  ],
-  cybermon: [
-    { front: "/textures/bags/cybermon/bag-cybermon-front-01.png", back: "/textures/bags/cybermon/bag-cybermon-back-01.png" },
-    { front: "/textures/bags/cybermon/bag-cybermon-front-02.png", back: "/textures/bags/cybermon/bag-cybermon-back-02.png" },
-  ],
-  dracobell: [
-    { front: "/textures/bags/dracobell/bag-dracobell-front-01.png", back: "/textures/bags/dracobell/bag-dracobell-back-01.png" },
-    { front: "/textures/bags/dracobell/bag-dracobell-front-02.png", back: "/textures/bags/dracobell/bag-dracobell-back-02.png" },
-  ],
-}
-
-export function pickBagVariant(franchiseSlug: string | undefined): {
-  frontUrl: string; backUrl: string; franchise: string
-} {
-  const slug = franchiseSlug || "minimon"
-  const variants = BAG_VARIANTS[slug] || BAG_VARIANTS.minimon
-  const idx = Math.floor(Math.random() * variants.length)
-  return { ...variants[idx], franchise: slug }
-}
+export { pickBagVariant } from "@/lib/bag-variants"
 
 // ── Crimp seal texture (programmatic) ──
 function makeCrimpTexture(): THREE.Texture {
