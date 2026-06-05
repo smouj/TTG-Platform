@@ -202,6 +202,13 @@ export interface Dictionary {
   auth_name: string
   auth_name_placeholder: string
   auth_password_min: string
+  auth_password_confirm: string
+  auth_password_strength: string
+  auth_password_strength_weak: string
+  auth_password_strength_fair: string
+  auth_password_strength_good: string
+  auth_password_strength_strong: string
+  auth_agree_terms: string
   auth_no_account: string
   auth_have_account: string
   auth_logout: string

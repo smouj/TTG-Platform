@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import I18nClientWrapper from "@/components/i18n-client-wrapper";
 import AuthProviderComponent from "@/components/auth-provider";
+import CookieConsentBanner from "@/components/ui/cookie-consent-banner";
 import ScrollReveal from "@/components/scroll-reveal";
 
 const geistSans = Geist({
@@ -128,6 +129,7 @@ export default function RootLayout({
           </AuthProviderComponent>
         </I18nClientWrapper>
         <Toaster />
+        <CookieConsentBanner />
       </body>
     </html>
   );
