@@ -1,10 +1,10 @@
 // ============================================================
-// Trading Tazos Game — Battle HUD (Magazine Edition)
-// Scoreboard-style overlay with health bars, turn info, stats.
+// Trading Tazos Game — Battle HUD (Magazine Strip)
+// Matches yellow banner strip pattern used across dashboard.
 // ============================================================
 "use client"
 
-import { Heart, Disc3, Swords, Timer } from "lucide-react"
+import { Heart } from "lucide-react"
 
 interface Props {
   playerName: string; opponentName: string
@@ -17,20 +17,22 @@ interface Props {
   compact?: boolean
 }
 
-const PHASE_MSG: Record<string, { label: string; color: string }> = {
-  lobby:    { label: "Pre-Game",           color: "#1a1a1a" },
-  intro:    { label: "Get Ready!",         color: "#FFCC00" },
-  round_start: { label: "Round Start",     color: "#22C55E" },
-  player_aim:  { label: "Your Turn — Aim",   color: "#FFCC00" },
-  player_power:{ label: "Your Turn — Power", color: "#F59E0B" },
-  player_spin: { label: "Your Turn — Spin",  color: "#A855F7" },
-  throwing:  { label: "Throwing...",       color: "#E3350D" },
-  physics:   { label: "Resolving...",      color: "#F59E0B" },
-  resolve:   { label: "Impact!",           color: "#E3350D" },
-  opponent_turn: { label: "Opponent Turn", color: "#3B4CCA" },
-  round_end: { label: "Round Over",        color: "#22C55E" },
-  match_end: { label: "Match Ended",       color: "#1a1a1a" },
+const PHASE_LABELS: Record<string, { text: string; color: string }> = {
+  intro:     { text: "GET READY!",        color: "#FFCC00" },
+  round_start: { text: "ROUND START",     color: "#22C55E" },
+  player_aim:  { text: "AIM",             color: "#FFCC00" },
+  player_power:{ text: "POWER",           color: "#F59E0B" },
+  throwing:  { text: "THROWING...",       color: "#E3350D" },
+  physics:   { text: "RESOLVING...",      color: "#F59E0B" },
+  resolve:   { text: "IMPACT!",           color: "#E3350D" },
+  opponent_turn:{ text: "OPPONENT TURN",  color: "#3B4CCA" },
+  round_end: { text: "ROUND OVER",        color: "#22C55E" },
 }
+
+const hpGrad = (p: number) =>
+  p > 60 ? "linear-gradient(90deg, #22C55E, #4ADE80)" :
+  p > 25 ? "linear-gradient(90deg, #F59E0B, #FFCC00)" :
+  "linear-gradient(90deg, #E3350D, #FF6B00)"
 
 export default function BattleHUD(props: Props) {
   const {
@@ -39,103 +41,67 @@ export default function BattleHUD(props: Props) {
     playerCaptured, opponentCaptured, round, phase, turnPlayer,
     compact,
   } = props
-
   const pp = Math.max(0, (playerHP / playerMaxHP) * 100)
   const op = Math.max(0, (opponentHP / opponentMaxHP) * 100)
-  const ph = PHASE_MSG[phase] || { label: phase, color: "#1a1a1a" }
-
-  const active = playerTazos - playerCaptured
-  const oppActive = opponentTazos - opponentCaptured
-
-  const hpGrad = (pct: number) =>
-    pct > 60 ? "linear-gradient(90deg, #22C55E, #4ADE80)" :
-    pct > 25 ? "linear-gradient(90deg, #F59E0B, #FFCC00)" :
-    "linear-gradient(90deg, #E3350D, #FF6B00)"
+  const phaseInfo = PHASE_LABELS[phase] || { text: phase, color: "#FFCC00" }
+  const pActive = playerTazos - playerCaptured
+  const oActive = opponentTazos - opponentCaptured
 
   return (
-    <div className="p-3 bg-white border-b-3 border-[#1a1a1a] relative overflow-hidden">
-      {/* Halftone strip */}
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(#1a1a1a 0.5px, transparent 0.5px)", backgroundSize: "6px 6px" }} />
+    <div className="mag-card-yellow rounded-none px-3 py-2 flex items-center gap-2 sm:gap-3 relative"
+      style={{ borderBottom: "3px solid #1a1a1a" }}>
 
-      <div className="relative z-10">
-
-        {/* Names row */}
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-1.5">
-            <div
-              className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-white font-black text-[9px] shrink-0"
-              style={{ backgroundColor: "#E3350D", borderColor: "#1a1a1a" }}>
-              {playerName[0]}
-            </div>
-            <span className="font-black text-[11px] uppercase text-[#1a1a1a] truncate max-w-[70px]">
-              {playerName}
-            </span>
-          </div>
-
-          {/* Center phase badge */}
-          <div className="flex flex-col items-center">
-            <span className="font-black text-[8px] uppercase tracking-[0.12em] px-1.5 py-0.5 border-2 border-[#1a1a1a]"
-              style={{ color: ph.color }}>
-              {ph.label}
-            </span>
-            <span className="text-[8px] font-bold text-[#1a1a1a]/25 mt-0.5">
-              R{round}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <span className="font-black text-[11px] uppercase text-[#1a1a1a] truncate max-w-[70px]">
-              {opponentName}
-            </span>
-            <div
-              className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-white font-black text-[9px] shrink-0"
-              style={{ backgroundColor: "#3B4CCA", borderColor: "#1a1a1a" }}>
-              {opponentName[0]}
-            </div>
-          </div>
+      {/* DISC COUNT — Left */}
+      <div className="flex items-center gap-1.5 shrink-0">
+        <span className="text-[10px] font-black text-[#1a1a1a] tabular-nums">{pActive}</span>
+        <div className="flex -space-x-1">
+          {Array.from({ length: Math.min(pActive, 3) }).map((_, i) => (
+            <div key={i} className="w-2.5 h-2.5 rounded-full border border-[#1a1a1a]/30"
+              style={{ background: i === 0 ? "#E3350D" : i === 1 ? "#FFCC00" : "#3B4CCA" }} />
+          ))}
         </div>
+      </div>
 
-        {/* HP bars */}
-        <div className="space-y-1.5 mb-1.5">
-          {/* Player */}
-          <div className="flex items-center gap-1.5">
-            <Heart className="w-3 h-3 text-[#E3350D] shrink-0" />
-            <div className="flex-1 h-2.5 bg-zinc-100 border border-[#1a1a1a]/20 overflow-hidden">
-              <div className="h-full transition-all duration-400 ease-out" style={{ width: `${pp}%`, background: hpGrad(pp) }} />
-            </div>
-            <span className="font-black text-[10px] text-[#1a1a1a] tabular-nums min-w-[28px] text-right">{playerHP}</span>
-          </div>
-          {/* Opponent */}
-          <div className="flex items-center gap-1.5">
-            <Heart className="w-3 h-3 text-[#3B4CCA] shrink-0" />
-            <div className="flex-1 h-2.5 bg-zinc-100 border border-[#1a1a1a]/20 overflow-hidden">
-              <div className="h-full transition-all duration-400 ease-out" style={{ width: `${op}%`, background: hpGrad(op) }} />
-            </div>
-            <span className="font-black text-[10px] text-[#1a1a1a] tabular-nums min-w-[28px] text-right">{opponentHP}</span>
-          </div>
+      {/* HP BAR — Player */}
+      <div className="flex items-center gap-1 flex-1 min-w-0">
+        <Heart className="w-3 h-3 text-[#E3350D] shrink-0" />
+        <div className="flex-1 h-2.5 bg-white/50 border border-[#1a1a1a]/30 overflow-hidden">
+          <div className="h-full transition-all duration-400 ease-out"
+            style={{ width: `${pp}%`, background: hpGrad(pp) }} />
         </div>
+        <span className="text-[9px] font-black text-[#1a1a1a] tabular-nums w-7 text-right">{playerHP}</span>
+      </div>
 
-        {/* Disc counts */}
-        <div className="flex items-center justify-between text-[9px]">
-          <div className="flex items-center gap-1.5">
-            <Disc3 className="w-3 h-3 text-[#FFCC00]" />
-            <span className="font-bold text-[#1a1a1a]">{active}</span>
-            {playerCaptured > 0 && <span className="text-[#E3350D] font-bold">-{playerCaptured}</span>}
-          </div>
+      {/* CENTER — Phase badge + round */}
+      <div className="flex flex-col items-center shrink-0">
+        <span className="text-[8px] font-black uppercase tracking-[0.15em] px-1.5 py-0.5 border-2 border-[#1a1a1a] bg-white leading-none"
+          style={{ color: phaseInfo.color }}>
+          {phaseInfo.text}
+        </span>
+        <span className="text-[7px] font-black text-[#1a1a1a]/25 mt-0.5 leading-none">R{round}</span>
+        {turnPlayer === "player" && (
+          <span className="w-1 h-1 rounded-full bg-[#E3350D] animate-pulse mt-0.5" />
+        )}
+      </div>
 
-          <div className="flex items-center gap-1">
-            {turnPlayer === "player" && (
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
-            )}
-            <Timer className="w-2.5 h-2.5 text-[#1a1a1a]/20" />
-          </div>
+      {/* HP BAR — Opponent */}
+      <div className="flex items-center gap-1 flex-1 min-w-0 flex-row-reverse">
+        <Heart className="w-3 h-3 text-[#3B4CCA] shrink-0" />
+        <div className="flex-1 h-2.5 bg-white/50 border border-[#1a1a1a]/30 overflow-hidden">
+          <div className="h-full transition-all duration-400 ease-out ml-auto"
+            style={{ width: `${op}%`, background: hpGrad(op) }} />
+        </div>
+        <span className="text-[9px] font-black text-[#1a1a1a] tabular-nums w-7">{opponentHP}</span>
+      </div>
 
-          <div className="flex items-center gap-1.5">
-            {opponentCaptured > 0 && <span className="text-[#E3350D] font-bold">-{opponentCaptured}</span>}
-            <span className="font-bold text-[#1a1a1a]">{oppActive}</span>
-            <Disc3 className="w-3 h-3 text-[#3B4CCA]" />
-          </div>
+      {/* DISC COUNT — Right */}
+      <div className="flex items-center gap-1.5 shrink-0 flex-row-reverse">
+        <span className="text-[10px] font-black text-[#1a1a1a] tabular-nums">{oActive}</span>
+        <div className="flex -space-x-1">
+          {Array.from({ length: Math.min(oActive, 3) }).map((_, i) => (
+            <div key={i} className="w-2.5 h-2.5 rounded-full border border-[#1a1a1a]/30"
+              style={{ background: i === 0 ? "#3B4CCA" : i === 1 ? "#FFCC00" : "#00A1E9" }} />
+          ))}
         </div>
       </div>
     </div>
