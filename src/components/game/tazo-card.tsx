@@ -1,8 +1,8 @@
 'use client'
 
-import React from "react"
+import React, { useState } from "react"
 import { Tazo, RARITY_CONFIG, CONDITION_CONFIG, TazoCondition, Rarity, SOURCE_STATUS_CONFIG, SourceStatus } from '@/lib/game/types'
-import { Lock, Star, ShieldCheck, ScanEye, AlertTriangle } from 'lucide-react'
+import { Lock, Star, ShieldCheck, ScanEye, AlertTriangle, RotateCw } from 'lucide-react'
 
 interface TazoCardProps {
   tazo: Tazo
@@ -21,7 +21,7 @@ const FRANCHISE_STRIP_TEXT: Record<string, string> = {
   dracobell: '#FFFFFF',
 }
 
-// Back art for each franchise (shown when no individual tazo image exists)
+// Back art for each franchise
 const FRANCHISE_BACK: Record<string, string> = {
   minimon: '/tazos-artgen/backs/minimon-back.png',
   cybermon: '/tazos-artgen/backs/cybermon-back.png',
@@ -61,12 +61,14 @@ function getRarityStars(rarity: Rarity): string {
 }
 
 export default function TazoCard({ tazo, onClick }: TazoCardProps) {
+  const [flipped, setFlipped] = useState(false)
   const franchiseSlug = tazo.franchise?.slug || 'minimon'
   const franchiseColors = FRANCHISE_COLORS[franchiseSlug] || FRANCHISE_COLORS.minimon
   const franchiseStripText = FRANCHISE_STRIP_TEXT[franchiseSlug] || '#1F2937'
   const rarityConfig = RARITY_CONFIG[tazo.rarity as Rarity]
   const conditionConfig = CONDITION_CONFIG[tazo.condition as TazoCondition]
   const raritySticker = RARITY_STICKER[tazo.rarity as string] || RARITY_STICKER.common
+  const backArt = FRANCHISE_BACK[franchiseSlug] || FRANCHISE_BACK.minimon
 
   const isHolo = tazo.condition === 'holo'
   const isMetallic = tazo.condition === 'metallic'
@@ -76,13 +78,12 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
   const sourceConfig = SOURCE_STATUS_CONFIG[tazo.sourceStatus as SourceStatus]
   const sourceIcon = tazo.sourceStatus === 'verified' ? ShieldCheck : tazo.sourceStatus === 'partial' ? ScanEye : AlertTriangle
 
-  // Build circle border class
   let circleBorderClass = ''
-  if (isHolo) {
-    circleBorderClass = 'holo-border'
-  } else if (isLegendary) {
-    circleBorderClass = 'legendary-glow'
-  }
+  if (isHolo) circleBorderClass = 'holo-border'
+  else if (isLegendary) circleBorderClass = 'legendary-glow'
+
+  const gradientBg = `linear-gradient(135deg, ${franchiseColors.from}, ${franchiseColors.to})`
+  const innerGradient = `linear-gradient(135deg, ${franchiseColors.from}80, ${franchiseColors.to}CC, ${franchiseColors.from}60)`
 
   return (
     <div
@@ -103,7 +104,7 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         }
       }}
     >
-      {/* Exclusive badge for legendary */}
+      {/* Exclusive badge */}
       {isLegendary && !isNotOwned && (
         <div className="exclusive-badge">EXCLUSIVE</div>
       )}
@@ -118,83 +119,149 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         </div>
       )}
 
-      {/* Circular Tazo Disc */}
+      {/* ==================== FLIP CONTAINER ==================== */}
       <div
-        className={`
-          relative w-[100px] h-[100px] sm:w-[112px] sm:h-[112px]
-          rounded-full flex items-center justify-center
-          shrink-0
-          ${circleBorderClass}
-        `}
-        style={{
-          border: isHolo ? undefined : '3px solid #1a1a1a',
-          background: isHolo
-            ? undefined
-            : `linear-gradient(135deg, ${franchiseColors.from}, ${franchiseColors.to})`,
-          padding: '3px',
+        className="tazo-flip-container relative"
+        style={{ width: '112px', height: '112px' }}
+        onClick={(e) => {
+          e.stopPropagation() // Don't trigger card click
+          setFlipped(!flipped)
         }}
+        title="Click to flip"
       >
         <div
-          className={`
-            w-full h-full rounded-full flex flex-col items-center justify-center
-            relative overflow-hidden
-            ${isMetallic ? 'metallic-effect' : ''}
-            ${isWorn ? 'worn-overlay' : ''}
-          `}
-          style={{
-            background: `linear-gradient(135deg, ${franchiseColors.from}80, ${franchiseColors.to}CC, ${franchiseColors.from}60)`,
-          }}
+          className={`tazo-flip-inner ${flipped ? 'flipped' : ''}`}
+          style={{ transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
         >
-          {tazo.imageUrl ? (
-            <img
-              src={tazo.imageUrl}
-              alt={tazo.displayName || tazo.name || "..."}
-              className="w-full h-full object-cover rounded-full"
-            />
-          ) : (
-            /* Back art with series logo */
-            <>
-              <img
-                src={FRANCHISE_BACK[franchiseSlug] || FRANCHISE_BACK.minimon}
-                alt={franchiseSlug + " back"}
-                className="w-full h-full object-cover rounded-full"
-              />
-              {tazo.number && (
-                <span
-                  className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-black px-1.5 rounded-sm leading-tight"
+          {/* ===== FRONT FACE ===== */}
+          <div className="tazo-flip-front">
+            <div
+              className={`
+                relative w-full h-full rounded-full flex items-center justify-center
+                shrink-0 overflow-hidden
+                ${circleBorderClass}
+              `}
+              style={{
+                border: isHolo ? undefined : '3px solid #1a1a1a',
+                background: isHolo ? undefined : gradientBg,
+                padding: '3px',
+              }}
+            >
+              <div
+                className={`
+                  w-full h-full rounded-full flex flex-col items-center justify-center
+                  relative overflow-hidden
+                  ${isMetallic ? 'metallic-effect' : ''}
+                  ${isWorn ? 'worn-overlay' : ''}
+                `}
+                style={{ background: innerGradient }}
+              >
+                {tazo.imageUrl ? (
+                  <img
+                    src={tazo.imageUrl}
+                    alt={tazo.displayName || tazo.name || "..."}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  /* No front image — show tazo number on colored disc */
+                  <>
+                    <span
+                      className="text-[48px] font-black leading-none opacity-20"
+                      style={{ color: franchiseStripText }}
+                    >
+                      ?
+                    </span>
+                    {tazo.number && (
+                      <span
+                        className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight"
+                        style={{
+                          color: '#1a1a1a',
+                          background: 'rgba(255,255,255,0.9)',
+                          border: '1px solid #1a1a1a',
+                        }}
+                      >
+                        #{tazo.number}
+                      </span>
+                    )}
+                  </>
+                )}
+
+                {isNotOwned && (
+                  <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center">
+                    <Lock className="w-6 h-6 text-white/70" style={{ animation: 'lock-pulse 2s ease-in-out infinite' }} />
+                  </div>
+                )}
+              </div>
+
+              {isLegendary && !isNotOwned && (
+                <div
+                  className="absolute -top-1 -left-1 z-10 w-7 h-7 flex items-center justify-center rounded-full"
                   style={{
-                    color: '#1a1a1a',
-                    background: 'rgba(255,255,255,0.9)',
-                    border: '1px solid #1a1a1a',
+                    background: '#FFCC00',
+                    border: '2px solid #1a1a1a',
+                    boxShadow: '1px 1px 0px #1a1a1a',
                   }}
                 >
-                  #{tazo.number}
-                </span>
+                  <Star className="w-4 h-4 text-yellow-900 fill-yellow-900" />
+                </div>
               )}
-            </>
-          )}
-
-          {/* Not owned lock inside circle */}
-          {isNotOwned && (
-            <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center">
-              <Lock className="w-6 h-6 text-white/70" style={{ animation: 'lock-pulse 2s ease-in-out infinite' }} />
             </div>
-          )}
+          </div>
+
+          {/* ===== BACK FACE ===== */}
+          <div className="tazo-flip-back">
+            <div
+              className="relative w-full h-full rounded-full flex items-center justify-center overflow-hidden"
+              style={{
+                border: '3px solid #1a1a1a',
+                background: gradientBg,
+                padding: '3px',
+              }}
+            >
+              <div
+                className="w-full h-full rounded-full relative overflow-hidden"
+                style={{ background: innerGradient }}
+              >
+                <img
+                  src={backArt}
+                  alt={`${franchiseSlug} series back`}
+                  className="w-full h-full object-cover rounded-full"
+                />
+                <div
+                  className="absolute top-0 left-0 right-0 text-center py-1"
+                  style={{
+                    background: 'rgba(26,26,26,0.75)',
+                    borderBottom: '1px solid rgba(255,255,255,0.2)',
+                  }}
+                >
+                  <span
+                    className="text-[7px] font-black uppercase tracking-[0.12em]"
+                    style={{ color: franchiseColors.strip }}
+                  >
+                    {tazo.franchise?.name || franchiseSlug}
+                  </span>
+                </div>
+                {tazo.number && (
+                  <span
+                    className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight"
+                    style={{
+                      color: '#1a1a1a',
+                      background: 'rgba(255,255,255,0.9)',
+                      border: '1px solid #1a1a1a',
+                    }}
+                  >
+                    #{tazo.number}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Legendary star sticker in corner */}
-        {isLegendary && !isNotOwned && (
-          <div
-            className="absolute -top-1 -left-1 z-10 w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full"
-            style={{
-              background: '#FFCC00',
-              border: '2px solid #1a1a1a',
-              boxShadow: '1px 1px 0px #1a1a1a',
-            }}
-          >
-            <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-900 fill-yellow-900" />
-          </div>
-        )}
+        {/* Flip hint */}
+        <div className="absolute -bottom-1 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <RotateCw className="w-3.5 h-3.5 text-[#1a1a1a]/30" />
+        </div>
       </div>
 
       {/* Name section */}
@@ -205,7 +272,6 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         >
           {tazo.displayName || tazo.name || "..."}
         </p>
-        {/* Franchise name on colored strip */}
         <div
           className="mt-0.5 px-2 py-0.5 border-2 border-black inline-block"
           style={{
@@ -219,7 +285,7 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         </div>
       </div>
 
-      {/* Source Status — small badge */}
+      {/* Source Status */}
       {tazo.sourceStatus && tazo.sourceStatus !== 'verified' && (
         <div
           className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider flex items-center gap-0.5"
@@ -235,9 +301,8 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         </div>
       )}
 
-      {/* Rarity & Condition - Magazine sticker style */}
+      {/* Rarity & Condition */}
       <div className="flex gap-1.5 flex-wrap justify-center items-center">
-        {/* Rarity sticker */}
         <div
           className="px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider"
           style={{
@@ -249,7 +314,6 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         >
           {getRarityStars(tazo.rarity as Rarity)} {rarityConfig?.label}
         </div>
-        {/* Condition badge */}
         <div
           className="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-bold"
           style={{
@@ -263,7 +327,7 @@ export default function TazoCard({ tazo, onClick }: TazoCardProps) {
         </div>
       </div>
 
-      {/* Stat Bars - Magazine style */}
+      {/* Stat Bars */}
       <div className="w-full grid grid-cols-2 gap-x-2 gap-y-1 mt-0.5">
         {STAT_CONFIG.map((stat) => (
           <div key={stat.key} className="flex items-center gap-1">

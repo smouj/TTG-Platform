@@ -846,3 +846,51 @@
 .reveal-shimmer {
   animation: reveal-shimmer 1.5s ease-in-out;
 }
+
+/* ========== TAZO FLIP CARD (3D) ========== */
+.tazo-flip-container {
+  perspective: 600px;
+  flex-shrink: 0;
+}
+
+.tazo-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.tazo-flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.tazo-flip-front,
+.tazo-flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.tazo-flip-front {
+  z-index: 2;
+}
+
+.tazo-flip-back {
+  transform: rotateY(180deg);
+}
+
+/* Mobile hint: tap to flip */
+@media (hover: none) and (pointer: coarse) {
+  .tazo-flip-container::after {
+    content: '↻';
+    position: absolute;
+    bottom: -4px;
+    right: 2px;
+    font-size: 11px;
+    color: #1a1a1a;
+    opacity: 0.25;
+    z-index: 5;
+    pointer-events: none;
+  }
+}

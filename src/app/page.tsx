@@ -28,23 +28,23 @@ export const metadata: Metadata = {
 
 const heroTazos = [
   {
-    src: "/tazos/minimon/minimon-t1-25.svg",
-    alt: "Minimon tazo",
+    src: "/tazos-artgen/minimon/minimon-001.png",
+    alt: "Lumipuff — Minimon",
     className: "left-[5%] top-[11%] w-24 sm:w-32 lg:w-40 ttg-float-disc",
   },
   {
-    src: "/tazos/dracobell/dracobell-master-master-goku.svg",
-    alt: "Dracobell tazo",
+    src: "/tazos-artgen/dracobell/dracobell-001.png",
+    alt: "Rai Kendo — Dracobell",
     className: "right-[7%] top-[10%] w-28 sm:w-36 lg:w-48 ttg-float-disc-delayed",
   },
   {
-    src: "/tazos/cybermon/cybermon-mb-88.svg",
-    alt: "Cybermon tazo",
+    src: "/tazos-artgen/cybermon/cybermon-002.png",
+    alt: "Datadrake — Cybermon",
     className: "left-[12%] bottom-[17%] w-20 sm:w-28 lg:w-36 ttg-float-disc-slow",
   },
   {
-    src: "/tazos/dracobell/dracobell-master-master-shenron.svg",
-    alt: "Legendary Dracobell tazo",
+    src: "/tazos-artgen/dracobell/dracobell-002.png",
+    alt: "Tenzan Blaze — Dracobell",
     className: "right-[13%] bottom-[14%] w-20 sm:w-28 lg:w-36 ttg-float-disc",
   },
 ]
@@ -63,7 +63,7 @@ const collections = [
     color: "#FFCC00",
     year: 2000,
     href: "/collections/minimon",
-    src: "/tazos/minimon/minimon-t1-1.svg",
+    src: "/tazos-artgen/minimon/minimon-005.png",
     desc: "Bright starters and balanced stats for your first competitive decks.",
   },
   {
@@ -72,7 +72,7 @@ const collections = [
     color: "#FF6B00",
     year: 1995,
     href: "/collections/dracobell",
-    src: "/tazos/dracobell/dracobell-master-master-vegeta.svg",
+    src: "/tazos-artgen/dracobell/dracobell-003.png",
     desc: "The biggest collection, packed with categories, rare pulls, and heavy hitters.",
   },
   {
@@ -81,7 +81,7 @@ const collections = [
     color: "#00A1E9",
     year: 2000,
     href: "/collections/cybermon",
-    src: "/tazos/cybermon/cybermon-mb-42.svg",
+    src: "/tazos-artgen/cybermon/cybermon-001.png",
     desc: "Digital-era creatures with sharp stat profiles and lots of deck variety.",
   },
 ]
@@ -329,7 +329,7 @@ export default function LandingPage() {
             <div className="absolute inset-0 ttg-arena-grid" />
             <div className="relative mx-auto h-[260px] max-w-xl">
               <Image
-                src="/tazos/minimon/minimon-t1-7.svg"
+                src="/tazos-artgen/minimon/minimon-004.png"
                 alt="Player tazo in battle"
                 width={132}
                 height={132}
@@ -337,7 +337,7 @@ export default function LandingPage() {
                 className="ttg-arena-disc absolute bottom-7 left-4 h-24 w-24 sm:h-32 sm:w-32"
               />
               <Image
-                src="/tazos/cybermon/cybermon-mb-12.svg"
+                src="/tazos-artgen/cybermon/cybermon-003.png"
                 alt="Rival tazo in battle"
                 width={124}
                 height={124}
