@@ -125,6 +125,10 @@ export default function BagShopPage() {
   const [pendingBags, setPendingBags] = useState<number>(0)
 
   const tearIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const bagIdRef = useRef<string | null>(null)
+
+  // Keep ref in sync with state so callbacks always read latest bagId
+  useEffect(() => { bagIdRef.current = bagId }, [bagId])
 
   // Load pending bags count
   useEffect(() => {
@@ -173,6 +177,8 @@ export default function BagShopPage() {
   }, [token, selectedBag])
 
   const startTearAnimation = () => {
+    // Prevent double animation start
+    if (tearIntervalRef.current) clearInterval(tearIntervalRef.current)
     setOpeningAnim(true)
     const duration = 2000
     const interval = 50
@@ -187,18 +193,26 @@ export default function BagShopPage() {
       setTearProgress(eased)
       if (step >= steps) {
         if (tearIntervalRef.current) clearInterval(tearIntervalRef.current)
+        tearIntervalRef.current = null
         openBag()
       }
     }, interval)
   }
 
   const openBag = async () => {
-    if (!token || !bagId) return
+    const currentBagId = bagIdRef.current
+    if (!token || !currentBagId) {
+      console.warn("openBag called without token or bagId", { token: !!token, bagId: currentBagId })
+      setStage("select")
+      setOpeningAnim(false)
+      setError("Something went wrong — please try again")
+      return
+    }
     try {
       const res = await fetch("/api/bags/open", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ bagId }),
+        body: JSON.stringify({ bagId: currentBagId }),
       })
       const data = await res.json()
       if (res.ok) {
@@ -221,14 +235,16 @@ export default function BagShopPage() {
   }
 
   const handleReset = () => {
+    if (tearIntervalRef.current) clearInterval(tearIntervalRef.current)
+    tearIntervalRef.current = null
     setStage("select")
     setBagId(null)
+    bagIdRef.current = null
     setRevealedTazo(null)
     setBonusTazo(null)
     setTearProgress(0)
     setOpeningAnim(false)
     setError(null)
-    if (tearIntervalRef.current) clearInterval(tearIntervalRef.current)
   }
 
   const creditDisplay = (
@@ -427,13 +443,15 @@ export default function BagShopPage() {
               opening={openingAnim}
               progress={tearProgress}
               onOpen={() => {
-                setOpeningAnim(true)
-                startTearAnimation()
+                if (!tearIntervalRef.current) {
+                  startTearAnimation()
+                }
               }}
               onSkip={() => {
                 if (tearIntervalRef.current) clearInterval(tearIntervalRef.current)
+                tearIntervalRef.current = null
                 setTearProgress(1)
-                setTimeout(() => openBag(), 100)
+                setTimeout(() => openBag(), 150)
               }}
             />
           </div>

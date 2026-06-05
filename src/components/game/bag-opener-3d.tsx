@@ -5,9 +5,9 @@
 // ============================================================
 "use client"
 
-import { useRef, useState, useMemo, useEffect, useCallback } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { Text, useTexture, Float, MeshDistortMaterial } from "@react-three/drei"
+import { useRef, useState, useMemo, useEffect } from "react"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { useTexture } from "@react-three/drei"
 import * as THREE from "three"
 import { Gift, Loader2, SkipForward } from "lucide-react"
 
@@ -34,16 +34,16 @@ interface BagOpener3DProps {
 // ── texture registry ──
 const BAG_TEXTURES: Record<string, { front: string[]; back: string[] }> = {
   minimon: {
-    front: ["/textures/bags/minimon/bag-minimon-front-01.webp", "/textures/bags/minimon/bag-minimon-front-02.webp"],
-    back: ["/textures/bags/minimon/bag-minimon-back-01.webp", "/textures/bags/minimon/bag-minimon-back-02.webp"],
+    front: ["/textures/bags/minimon/bag-minimon-front-01.png", "/textures/bags/minimon/bag-minimon-front-02.png"],
+    back: ["/textures/bags/minimon/bag-minimon-back-01.png", "/textures/bags/minimon/bag-minimon-back-02.png"],
   },
   cybermon: {
-    front: ["/textures/bags/cybermon/bag-cybermon-front-01.webp", "/textures/bags/cybermon/bag-cybermon-front-02.webp"],
-    back: ["/textures/bags/cybermon/bag-cybermon-back-01.webp", "/textures/bags/cybermon/bag-cybermon-back-02.webp"],
+    front: ["/textures/bags/cybermon/bag-cybermon-front-01.png", "/textures/bags/cybermon/bag-cybermon-front-02.png"],
+    back: ["/textures/bags/cybermon/bag-cybermon-back-01.png", "/textures/bags/cybermon/bag-cybermon-back-02.png"],
   },
   dracobell: {
-    front: ["/textures/bags/dracobell/bag-dracobell-front-01.webp", "/textures/bags/dracobell/bag-dracobell-front-02.webp"],
-    back: ["/textures/bags/dracobell/bag-dracobell-back-01.webp", "/textures/bags/dracobell/bag-dracobell-back-02.webp"],
+    front: ["/textures/bags/dracobell/bag-dracobell-front-01.png", "/textures/bags/dracobell/bag-dracobell-front-02.png"],
+    back: ["/textures/bags/dracobell/bag-dracobell-back-01.png", "/textures/bags/dracobell/bag-dracobell-back-02.png"],
   },
 }
 
@@ -105,8 +105,6 @@ function Bag3D({ frontUrl, opening, progress, onTextureReady }: {
   progress: number
   onTextureReady: () => void
 }) {
-  const meshRef = useRef<THREE.Mesh>(null!)
-  const tearRef = useRef<THREE.Mesh>(null!)
   const texture = useTexture(frontUrl)
   const [tearTex, setTearTex] = useState<THREE.CanvasTexture | null>(null)
   const groupRef = useRef<THREE.Group>(null!)
@@ -166,6 +164,8 @@ function Bag3D({ frontUrl, opening, progress, onTextureReady }: {
           roughness={0.35}
           metalness={0.05}
           side={THREE.DoubleSide}
+          transparent
+          alphaTest={0.1}
         />
       </mesh>
 
