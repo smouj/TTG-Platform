@@ -136,7 +136,7 @@ export default function CollectionPage() {
           Each bag contains random tazos from different franchises!
         </p>
         <Link
-          href="/shop"
+          href="/app/shop"
           className="inline-block py-4 px-10 mag-btn text-base font-black uppercase tracking-widest"
           style={{ background: "#E3350D", color: "white" }}
         >
@@ -538,7 +538,7 @@ export default function CollectionPage() {
           Battle
         </Link>
         <Link
-          href="/shop"
+          href="/app/shop"
           className="mag-btn px-5 py-2.5 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
           style={{ background: "#FFCC00", color: "#1a1a1a", border: "3px solid #1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}
         >

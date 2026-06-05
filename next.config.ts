@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   output: "standalone",
   typescript: { ignoreBuildErrors: true },
   reactStrictMode: false,
+  turbopack: {
+    root: __dirname,
+  },
 
   // ── Security Headers ──
   async headers() {

@@ -9,8 +9,6 @@ import { useRef, useMemo, useEffect } from "react"
 import { useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
-export { pickBagVariant } from "@/lib/bag-variants"
-
 // ── Crimp seal texture (programmatic) ──
 function makeCrimpTexture(): THREE.Texture {
   const c = document.createElement("canvas")

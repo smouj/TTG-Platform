@@ -8,7 +8,8 @@
 import { useRef, useState, useMemo, useCallback, Suspense } from "react"
 import { Canvas, useThree } from "@react-three/fiber"
 import * as THREE from "three"
-import PotatoChipBag3D, { pickBagVariant, BAG_W, BAG_H, TOP_CRIMP, BOT_CRIMP } from "./3d/potato-chip-bag-3d"
+import PotatoChipBag3D, { BAG_W, BAG_H, TOP_CRIMP, BOT_CRIMP } from "./3d/potato-chip-bag-3d"
+import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX } from "@/lib/audio/sfx-engine"
 
 // ── Particle burst ──
@@ -40,7 +41,10 @@ function Particles({ active, color }: { active: boolean; color: string }) {
       attr.array[i*3+2] += velocities[i].vz
     }
     attr.needsUpdate = true
-    ref.current.material.opacity = Math.max(0, ref.current.material.opacity - 0.008)
+    const material = ref.current.material
+    if (!Array.isArray(material)) {
+      material.opacity = Math.max(0, material.opacity - 0.008)
+    }
   })
   return (
     <points ref={ref}>
@@ -115,7 +119,7 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
         }, 350)
       }
     }
-  }, [onOpen])
+  }, [onOpen, revealed])
 
   const handlePointerUp = useCallback(() => {
     tearing.current = false
@@ -146,7 +150,7 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
           <PotatoChipBag3D
             frontUrl={frontUrl}
             backUrl={backUrl}
-            autoRotate={!tearing.current && !revealed}
+            autoRotate={!revealed}
             rotationSpeed={0.35}
             scale={1.3}
             interactive={bagInteractive}

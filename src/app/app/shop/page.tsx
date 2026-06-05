@@ -17,7 +17,6 @@ import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 // Dynamic imports for 3D components (SSR-safe)
 const BagOpener3D = dynamic(() => import("@/components/game/bag-opener-3d"), { ssr: false })
-const BagShowcase3D = dynamic(() => import("@/components/game/3d/bag-showcase-3d"), { ssr: false })
 
 interface BagConfig {
   type: string
@@ -82,8 +81,40 @@ const RARITY_LABELS: Record<string, string> = {
 function BagPreview({ bag }: { bag: BagConfig }) {
   const variant = useMemo(() => pickBagVariant(bag.franchise), [bag.franchise])
   return (
-    <div className="h-[200px] sm:h-[240px]">
-      <BagShowcase3D frontUrl={variant.frontUrl} backUrl={variant.backUrl} />
+    <div
+      className="relative h-[190px] sm:h-[220px] overflow-hidden border-3 border-[#1a1a1a] bg-[#fffbe6] shadow-[3px_3px_0px_#1a1a1a]"
+      style={{
+        background:
+          "radial-gradient(circle at 25% 20%, rgba(255,255,255,0.9), transparent 22%), repeating-linear-gradient(-8deg, rgba(26,26,26,0.04) 0 6px, transparent 6px 13px), #fffbe6",
+      }}
+    >
+      <div className="absolute left-3 top-3 z-10 border-2 border-[#1a1a1a] bg-[#FFCC00] px-2 py-1 text-[9px] font-black uppercase tracking-widest text-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]">
+        {bag.franchise}
+      </div>
+      <div
+        className="absolute right-3 top-3 z-10 h-7 w-7 border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
+        style={{ backgroundColor: bag.color }}
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 flex items-center justify-center px-8 py-5">
+        <div className="relative h-full w-full max-w-[10rem]">
+          <img
+            src={variant.frontUrl}
+            alt={`${bag.name} front`}
+            className="absolute left-[12%] top-2 h-[88%] w-auto max-w-[70%] -rotate-6 object-contain drop-shadow-[8px_10px_0_rgba(26,26,26,0.22)]"
+            draggable={false}
+          />
+          <img
+            src={variant.backUrl}
+            alt={`${bag.name} back`}
+            className="absolute right-[2%] top-8 h-[72%] w-auto max-w-[58%] rotate-6 object-contain opacity-80 drop-shadow-[5px_7px_0_rgba(26,26,26,0.18)]"
+            draggable={false}
+          />
+        </div>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 border-t-3 border-[#1a1a1a] bg-white/90 px-3 py-1.5 text-center text-[9px] font-black uppercase tracking-[0.18em] text-[#1a1a1a]/55">
+        Front + back preview
+      </div>
     </div>
   )
 }
@@ -265,9 +296,9 @@ export default function BagShopPage() {
           <div className="mag-card-yellow rounded-none px-4 py-3 flex flex-wrap items-center gap-3" style={{ borderBottom: "4px solid #1a1a1a" }}>
             <div className="flex items-center gap-1.5">
               <ShoppingCart className="w-5 h-5 text-[#E3350D]" />
-              <span className="text-sm font-black text-[#1a1a1a] tracking-tight uppercase">
+              <h1 className="text-sm font-black text-[#1a1a1a] tracking-tight uppercase">
                 {t.shop_title || "Tazo Shop"}
-              </span>
+              </h1>
             </div>
             <div className="w-px h-5 bg-[#1a1a1a]/30" />
             {creditDisplay}
@@ -335,6 +366,7 @@ export default function BagShopPage() {
             {BAGS.map(bag => (
               <button
                 key={bag.type}
+                data-bag-card={bag.type}
                 onClick={() => setSelectedBag(bag)}
                 className={`relative p-4 text-left border-3 transition-all ${
                   selectedBag.type === bag.type
@@ -367,16 +399,16 @@ export default function BagShopPage() {
             <button
               onClick={handleBuy}
               disabled={buying || credits < selectedBag.cost}
-              className="mag-btn px-8 py-4 font-black text-lg uppercase tracking-wider bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="mag-btn w-full px-5 py-4 font-black text-sm uppercase tracking-wider bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all disabled:opacity-40 disabled:cursor-not-allowed sm:w-auto sm:px-8 sm:text-lg"
             >
               {buying ? (
-                <span className="flex items-center gap-2">
+                <span className="flex flex-wrap items-center justify-center gap-2">
                   <Loader2 className="w-5 h-5 animate-spin" /> {t.common_loading || "Buying..."}
                 </span>
               ) : (
-                <span className="flex items-center gap-2">
+                <span className="flex flex-wrap items-center justify-center gap-2">
                   <ShoppingBag className="w-5 h-5" />
-                  {t.shop_buy || "Buy"} {selectedBag.name} -- {selectedBag.cost} <Coins className="w-4 h-4 inline" />
+                  {t.shop_buy || "Buy"} {selectedBag.name} / {selectedBag.cost} <Coins className="w-4 h-4 inline" />
                 </span>
               )}
             </button>

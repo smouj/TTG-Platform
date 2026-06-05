@@ -4,7 +4,6 @@
 // Magazine-styled container with "drag to rotate" hint.
 // ============================================================
 "use client"
-"use client"
 
 import { useRef, useState, useCallback } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
