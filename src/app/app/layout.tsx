@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import MagazinePageShell from "@/components/magazine-page-shell"
+import GameShell from "@/components/game-shell"
 
 const PATH_TO_TAB: Record<string, string> = {
   "/app/album": "album",
@@ -16,15 +16,11 @@ const PATH_TO_TAB: Record<string, string> = {
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-
-  // Determine active tab from path
-  let tab = "album" // default
+  let tab = "album"
   for (const [path, t] of Object.entries(PATH_TO_TAB)) {
     if (pathname === path || pathname.startsWith(path + "?")) {
-      tab = t
-      break
+      tab = t; break
     }
   }
-
-  return <MagazinePageShell currentTab={tab as any}>{children}</MagazinePageShell>
+  return <GameShell currentTab={tab as any}>{children}</GameShell>
 }

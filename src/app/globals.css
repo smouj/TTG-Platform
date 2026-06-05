@@ -1198,8 +1198,134 @@
 }
 
 /* ═══════════════════════════════════════
-   GAME LAUNCHER ANIMATIONS
+   GAME UI — Video Game Client Styling
+   Dark theme, subtle borders, game HUD vibes
    ═══════════════════════════════════════ */
+
+/* Game panel — replaces mag-card in dark game context */
+.game-panel {
+  background: rgba(15, 15, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.game-panel-raised {
+  background: rgba(20, 20, 35, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+}
+
+/* Game banner — top-of-page section */
+.game-banner {
+  background: linear-gradient(180deg, rgba(255,204,0,0.1) 0%, rgba(15,15,26,0.9) 100%);
+  border-bottom: 1px solid rgba(255,204,0,0.15);
+}
+
+/* Game card — item card in dark game context */
+.game-card {
+  background: rgba(20, 20, 35, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+}
+.game-card:hover {
+  background: rgba(30, 30, 50, 0.9);
+  border-color: rgba(255, 204, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Game button — primary action */
+.game-btn {
+  background: linear-gradient(180deg, #FFCC00 0%, #E5A800 100%);
+  color: #0a0a14;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  transition: all 0.15s ease;
+}
+.game-btn:hover {
+  background: linear-gradient(180deg, #FFE566 0%, #FFCC00 100%);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+}
+
+/* Game btn secondary */
+.game-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.15s ease;
+}
+.game-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Game stat bar */
+.game-stat-bar-bg {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.game-stat-bar-fill {
+  background: linear-gradient(90deg, #FFCC00, #FFB800);
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+/* Game input */
+.game-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: 600;
+}
+.game-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 204, 0, 0.4);
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.08);
+  outline: none;
+}
+.game-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Game select/dropdown */
+.game-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+}
+
+/* Game empty state */
+.game-empty {
+  background: rgba(15, 15, 26, 0.6);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+/* Game grid background */
+.game-grid-bg {
+  background: rgba(15, 15, 26, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Game section title */
+.game-section-title {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+}
+
+/* Game text muted */
+.game-text-muted {
+  color: rgba(255, 255, 255, 0.35);
+}
 
 @keyframes pulse-glow {
   0%, 100% { filter: drop-shadow(0 0 40px rgba(255,204,0,0.3)); }
