@@ -87,7 +87,7 @@ export default function BattleView() {
   const busy = useRef(false)
   const resultSaved = useRef(false)
 
-  // ── Save battle result to server ──
+  // ── Save battle result to server with actual physics data ──
   const saveBattleResult = useCallback(async (matchResult: MatchResult, playerDeck: TazoCard[], opponentDeck: TazoCard[]) => {
     if (resultSaved.current) return
     resultSaved.current = true
@@ -99,6 +99,16 @@ export default function BattleView() {
         body: JSON.stringify({
           playerTazoIds: playerDeck.map(t => t.id),
           opponentTazoIds: opponentDeck.map(t => t.id),
+          // Send ACTUAL physics results from the 3D battle
+          physicsResult: {
+            winner: matchResult.winner,
+            playerScore: matchResult.playerScore,
+            opponentScore: matchResult.opponentScore,
+            captures: matchResult.captures || 0,
+            ringOuts: matchResult.ringOuts || 0,
+            flips: matchResult.flips || 0,
+            totalTurns: matchResult.totalTurns || 1,
+          },
         }),
       })
       if (r.ok) {

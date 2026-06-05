@@ -2,6 +2,24 @@ import { db } from '@/lib/db'
 import { getAuthUser } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
+// ── Quest progression: increment any quest with battle requirements ──
+async function progressBattleQuests(userId: string) {
+  try {
+    const quests = await db.quest.findMany({ where: { requirement: { in: ['battle_played', 'battle_won', 'battles_played', 'battles_won'] } } })
+    for (const q of quests) {
+      const uq = await db.userQuest.findUnique({ where: { userId_questId: { userId, questId: q.id } } })
+      if (uq && !uq.completed) {
+        const newProgress = uq.progress + 1
+        const completed = newProgress >= q.target
+        await db.userQuest.update({
+          where: { id: uq.id },
+          data: { progress: newProgress, completed, completedAt: completed ? new Date() : null },
+        })
+      }
+    }
+  } catch { /* non-critical */ }
+}
+
 // --- Type advantage table for Minimon-style combat ---
 const TYPE_ADVANTAGES: Record<string, string[]> = {
   fire: ['grass'],
@@ -378,9 +396,10 @@ export async function POST(request: NextRequest) {
     const authUser = await getAuthUser(request).catch(() => null)
 
     const body = await request.json()
-    const { playerTazoIds, opponentTazoIds } = body as {
+    const { playerTazoIds, opponentTazoIds, physicsResult } = body as {
       playerTazoIds: string[]
       opponentTazoIds: string[]
+      physicsResult?: { winner: string; playerScore: number; opponentScore: number; captures: number; ringOuts: number; flips: number; totalTurns: number }
     }
 
     if (
@@ -422,7 +441,46 @@ export async function POST(request: NextRequest) {
       .map((id) => rawById.get(id)!)
       .map(createBattleTazo)
 
-    // --- Battle simulation ---
+    // --- If client sent 3D physics results, skip RPG simulation ---
+    if (physicsResult) {
+      winner = physicsResult.winner as 'player' | 'opponent' | 'draw'
+      // Save battle record with physics data
+      if (authUser) {
+        await db.battleRecord.create({
+          data: {
+            userId: authUser.id,
+            playerTazos: JSON.stringify(playerTazoIds),
+            opponentTazos: JSON.stringify(opponentTazoIds),
+            winner: winner === 'player' ? 'player' : winner === 'opponent' ? 'opponent' : 'draw',
+            score: `${physicsResult.playerScore}-${physicsResult.opponentScore}`,
+            turns: physicsResult.totalTurns,
+            victoryType: winner === 'player' ? 'physics_arena' : winner === 'opponent' ? 'defeat' : 'draw',
+            battleLog: JSON.stringify({ physics: physicsResult }),
+          },
+        })
+        // Award credits for win
+        if (winner === 'player') {
+          await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: 30 } } })
+        }
+        // ── Trigger quest progression ──
+        await progressBattleQuests(authUser.id)
+        const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
+        return NextResponse.json({
+          winner, victoryType: 'physics_arena', rounds: physicsResult.totalTurns,
+          battleLog: [{ physics: physicsResult }],
+          creditsEarned: winner === 'player' ? 30 : 0,
+          credits: u?.credits ?? null,
+        })
+      }
+      // Guest: just record the match, no credits
+      return NextResponse.json({
+        winner, victoryType: 'physics_arena', rounds: physicsResult.totalTurns,
+        battleLog: [{ physics: physicsResult }],
+        creditsEarned: 0, credits: null,
+      })
+    }
+
+    // --- Battle simulation (RPG fallback) ---
     const battleLog: BattleEvent[] = []
     const maxRounds = 10
     let rounds = 0
