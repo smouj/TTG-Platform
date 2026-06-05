@@ -102,3 +102,4 @@ artgen/output/
 artgen/.env
 .env
 public/tazos-generated/
+__pycache__/
