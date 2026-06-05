@@ -278,8 +278,8 @@ export default function BattleView() {
   const isPlayer = phase.startsWith("player_")
 
   return (
-    <div className="w-full h-full flex flex-col space-y-1 animate-in fade-in duration-150">
-      {/* HUD */}
+    <div className="w-full flex flex-col" style={{ minHeight: "calc(100vh - 140px)" }}>
+      {/* HUD — magazine score strip */}
       <BattleHUD
         playerName="You"
         opponentName={`AI (${cfg?.aiDifficulty || "skilled"})`}
@@ -292,8 +292,8 @@ export default function BattleView() {
         compact={compact}
       />
 
-      {/* Arena */}
-      <div className="flex-1 min-h-0">
+      {/* Arena — fills available space */}
+      <div className="flex-1">
         <BattleArena3D
           config={cfg?.arena || DEFAULT_ARENA_3D}
           playerDiscs={pDiscs} opponentDiscs={oDiscs}
@@ -301,7 +301,8 @@ export default function BattleView() {
         />
       </div>
 
-      {/* Controls */}
+      {/* Controls bar */}
+      <div className="mt-1">
       {(phase === "player_aim" || phase === "player_power") ? (
         <LaunchSystem
           phase={launch}
@@ -330,10 +331,11 @@ export default function BattleView() {
           <p className="font-black text-xs text-white uppercase tracking-[0.12em]">Round {round} done — Next round...</p>
         </div>
       ) : (
-        <button onClick={back} className="w-full py-2 text-[10px] font-bold text-[#1a1a1a]/25 hover:text-[#E3350D] uppercase transition-colors">
+        <button onClick={back} className="w-full py-2.5 text-[10px] font-bold text-[#1a1a1a]/30 hover:text-[#E3350D] uppercase transition-colors tracking-[0.15em]">
           Leave Battle
         </button>
       )}
+    </div>
     </div>
   )
 }
