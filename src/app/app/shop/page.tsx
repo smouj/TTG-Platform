@@ -4,13 +4,15 @@
 // ============================================================
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { useI18n } from "@/lib/i18n"
 import { useAuth } from "@/lib/auth-context"
 import Link from "next/link"
 import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
 import BagOpener3D, { type BagData } from "@/components/game/bag-opener-3d"
+import BagShowcase3D from "@/components/game/3d/bag-showcase-3d"
+import { pickBagVariant } from "@/components/game/3d/potato-chip-bag-3d"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 interface BagConfig {
@@ -20,6 +22,7 @@ interface BagConfig {
   bonusChance: number
   rareBoost: number
   color: string
+  franchise: string
   icon: React.ReactNode
 }
 
@@ -30,7 +33,8 @@ const BAGS: BagConfig[] = [
     cost: 50,
     bonusChance: 8,
     rareBoost: 1,
-    color: "#FFCC00",
+    color: "#22C55E",
+    franchise: "minimon",
     icon: <ShoppingBag className="w-5 h-5" />,
   },
   {
@@ -39,7 +43,8 @@ const BAGS: BagConfig[] = [
     cost: 150,
     bonusChance: 15,
     rareBoost: 2,
-    color: "#E3350D",
+    color: "#3B82F6",
+    franchise: "cybermon",
     icon: <Star className="w-5 h-5" />,
   },
   {
@@ -48,7 +53,8 @@ const BAGS: BagConfig[] = [
     cost: 400,
     bonusChance: 25,
     rareBoost: 3,
-    color: "#7C3AED",
+    color: "#F97316",
+    franchise: "dracobell",
     icon: <Zap className="w-5 h-5" />,
   },
 ]
@@ -69,41 +75,11 @@ const RARITY_LABELS: Record<string, string> = {
   legendary: "Legendario",
 }
 
-function BagPreview({ bag, open = false, progress = 0 }: { bag: BagConfig; open?: boolean; progress?: number }) {
+function BagPreview({ bag }: { bag: BagConfig }) {
+  const variant = useMemo(() => pickBagVariant(bag.franchise), [bag.franchise])
   return (
-    <div className="relative h-full min-h-[150px] flex items-center justify-center overflow-hidden bg-[#fffef0] border-3 border-[#1a1a1a]">
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "radial-gradient(#1a1a1a 1px, transparent 1px)",
-          backgroundSize: "10px 10px",
-        }}
-      />
-      <div
-        className="relative w-28 h-36 border-4 border-[#1a1a1a] shadow-[5px_5px_0px_#1a1a1a] flex flex-col items-center justify-between p-3 transition-transform duration-300"
-        style={{
-          background: `linear-gradient(145deg, ${bag.color}, #fffef0 160%)`,
-          transform: open ? `rotate(${(progress - 0.5) * 8}deg) translateY(-4px)` : "rotate(-3deg)",
-          clipPath: "polygon(10% 0, 90% 0, 100% 12%, 94% 100%, 6% 100%, 0 12%)",
-        }}
-      >
-        <div className="w-full h-3 bg-white/45 border-2 border-[#1a1a1a]" />
-        <div className="text-center">
-          <ShoppingBag className="w-10 h-10 mx-auto text-[#1a1a1a]" />
-          <p className="mt-2 text-[13px] font-black text-[#1a1a1a] tracking-wider">TAZOS</p>
-          <p className="text-[8px] font-black text-[#1a1a1a]/60 uppercase">{bag.type}</p>
-        </div>
-        <div className="w-full h-5 bg-white border-2 border-[#1a1a1a] flex items-center justify-center text-[8px] font-black text-[#1a1a1a]">
-          {bag.cost} CR
-        </div>
-        {open && (
-          <div
-            className="absolute left-2 right-2 top-4 h-1 bg-white border border-[#1a1a1a]"
-            style={{ transform: `scaleX(${Math.max(0.05, progress)})`, transformOrigin: "left" }}
-          />
-        )}
-      </div>
+    <div className="h-[200px] sm:h-[240px]">
+      <BagShowcase3D frontUrl={variant.frontUrl} backUrl={variant.backUrl} />
     </div>
   )
 }
@@ -318,7 +294,8 @@ export default function BagShopPage() {
                     if (data.bags?.length > 0) {
                       const firstBag = data.bags[0]
                       setBagId(firstBag.id)
-                      setSelectedBag({ type: firstBag.bagType || "standard", name: "Mystery Bag", cost: 0, bonusChance: 10, rareBoost: 1, color: firstBag.preview?.franchiseColor || "#FFCC00", icon: <Gift className="w-5 h-5" /> })
+                      const franchiseSlug = firstBag.preview?.franchise?.slug || "minimon"
+                      setSelectedBag({ type: firstBag.bagType || "standard", name: "Mystery Bag", cost: 0, bonusChance: 10, rareBoost: 1, color: firstBag.preview?.franchiseColor || "#FFCC00", franchise: franchiseSlug, icon: <Gift className="w-5 h-5" /> })
                       setBuying(false)
                       setStage("opening")
                       setTearProgress(0)
@@ -355,14 +332,14 @@ export default function BagShopPage() {
               <button
                 key={bag.type}
                 onClick={() => setSelectedBag(bag)}
-                className={`relative p-6 text-left border-3 transition-all ${
+                className={`relative p-4 text-left border-3 transition-all ${
                   selectedBag.type === bag.type
                     ? "border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] -translate-x-0.5 -translate-y-0.5 bg-white"
                     : "border-zinc-200 shadow-[2px_2px_0px_#1a1a1a] bg-white/60 hover:border-[#FFCC00]"
                 }`}
               >
-                {/* 2D bag preview */}
-                <div className="h-40 mb-3">
+                {/* 3D bag preview */}
+                <div className="h-[200px] sm:h-[240px] mb-3">
                   <BagPreview bag={bag} />
                 </div>
                 <div className="flex items-center gap-2 mb-1">
