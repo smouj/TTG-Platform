@@ -6,8 +6,7 @@
 "use client"
 
 import { useRef, useState, useMemo, useEffect } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { useTexture } from "@react-three/drei"
+import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 import { Gift, Loader2, SkipForward } from "lucide-react"
 
@@ -105,12 +104,22 @@ function Bag3D({ frontUrl, opening, progress, onTextureReady }: {
   progress: number
   onTextureReady: () => void
 }) {
-  const texture = useTexture(frontUrl)
+  const texture = useLoader(THREE.TextureLoader, frontUrl)
   const [tearTex, setTearTex] = useState<THREE.CanvasTexture | null>(null)
   const groupRef = useRef<THREE.Group>(null!)
+  const meshRef = useRef<THREE.Mesh>(null!)
 
-  // Notify parent when texture loads
-  useEffect(() => { if (texture) onTextureReady() }, [texture, onTextureReady])
+  // Configure texture for proper alpha rendering
+  useEffect(() => {
+    if (texture) {
+      texture.colorSpace = THREE.SRGBColorSpace
+      texture.generateMipmaps = true
+      texture.minFilter = THREE.LinearMipmapLinearFilter
+      texture.magFilter = THREE.LinearFilter
+      texture.needsUpdate = true
+      onTextureReady()
+    }
+  }, [texture, onTextureReady])
 
   // Update tear overlay
   useEffect(() => {
@@ -163,9 +172,10 @@ function Bag3D({ frontUrl, opening, progress, onTextureReady }: {
           map={texture}
           roughness={0.35}
           metalness={0.05}
-          side={THREE.DoubleSide}
+          side={THREE.FrontSide}
           transparent
-          alphaTest={0.1}
+          alphaTest={0.01}
+          depthWrite
         />
       </mesh>
 
@@ -241,10 +251,11 @@ function ParticleBurst({ active, progress }: { active: boolean; progress: number
   )
 }
 
-// ── Scene lighting + bg ──
+// ── Scene setup: lighting + transparent background ──
 function SceneSetup() {
   return (
     <>
+      <color attach="background" args={[0]} /> {/* explicit transparent bg */}
       <ambientLight intensity={1.2} />
       <spotLight position={[3, 2, 4]} intensity={2.5} angle={0.5} penumbra={0.5} color="#fffef0" />
       <spotLight position={[-2, 1, -3]} intensity={1.2} angle={0.4} penumbra={0.6} color="#fffef0" />
@@ -272,8 +283,12 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
       {/* 3D Scene */}
       <Canvas
         camera={{ position: [0, 0, 3.2], fov: 42 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, premultipliedAlpha: false }}
         style={{ background: "radial-gradient(ellipse at center, #2a2015 0%, #0d0a05 100%)" }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x000000, 0)
+          gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        }}
       >
         <SceneSetup />
         <Bag3D

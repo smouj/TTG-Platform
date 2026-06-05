@@ -169,7 +169,8 @@ export default function BagShopPage() {
       setBuying(false)
       setStage("opening")
       setTearProgress(0)
-      startTearAnimation()
+      setOpeningAnim(false)
+      // Don't auto-start — user clicks "Open Bag!" button
     } catch {
       setError("Connection error")
       setBuying(false)
