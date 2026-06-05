@@ -1,157 +1,140 @@
 // ============================================================
-// Trading Tazos Game — Battle HUD
-// Overlay during battle: HP bars, turn info, player names.
+// Trading Tazos Game — Battle HUD (Magazine Edition)
+// Scoreboard-style overlay with health bars, turn info, stats.
 // ============================================================
 "use client"
 
-import { Swords, Heart, Timer, Disc3 } from "lucide-react"
+import { Heart, Disc3, Swords, Timer } from "lucide-react"
 
-interface BattleHUDProps {
-  playerName: string
-  opponentName: string
+interface Props {
+  playerName: string; opponentName: string
   playerHP: number; playerMaxHP: number
   opponentHP: number; opponentMaxHP: number
-  playerTazos: number
-  opponentTazos: number
-  playerCaptured: number
-  opponentCaptured: number
-  round: number
-  phase: string
+  playerTazos: number; opponentTazos: number
+  playerCaptured: number; opponentCaptured: number
+  round: number; phase: string
   turnPlayer: "player" | "opponent"
   compact?: boolean
 }
 
-const PHASE_LABELS: Record<string, string> = {
-  lobby: "Pre-Game",
-  intro: "Intro",
-  round_start: "Round Start",
-  player_aim: "Your Turn — Aim",
-  player_power: "Your Turn — Power",
-  player_spin: "Your Turn — Spin",
-  throwing: "Throwing...",
-  physics: "Resolving...",
-  resolve: "Hit!",
-  opponent_turn: "Opponent's Turn",
-  round_end: "Round Over",
-  match_end: "Match Ended",
+const PHASE_MSG: Record<string, { label: string; color: string }> = {
+  lobby:    { label: "Pre-Game",           color: "#1a1a1a" },
+  intro:    { label: "Get Ready!",         color: "#FFCC00" },
+  round_start: { label: "Round Start",     color: "#22C55E" },
+  player_aim:  { label: "Your Turn — Aim",   color: "#FFCC00" },
+  player_power:{ label: "Your Turn — Power", color: "#F59E0B" },
+  player_spin: { label: "Your Turn — Spin",  color: "#A855F7" },
+  throwing:  { label: "Throwing...",       color: "#E3350D" },
+  physics:   { label: "Resolving...",      color: "#F59E0B" },
+  resolve:   { label: "Impact!",           color: "#E3350D" },
+  opponent_turn: { label: "Opponent Turn", color: "#3B4CCA" },
+  round_end: { label: "Round Over",        color: "#22C55E" },
+  match_end: { label: "Match Ended",       color: "#1a1a1a" },
 }
 
-export default function BattleHUD({
-  playerName, opponentName,
-  playerHP, playerMaxHP, opponentHP, opponentMaxHP,
-  playerTazos, opponentTazos, playerCaptured, opponentCaptured,
-  round, phase, turnPlayer, compact,
-}: BattleHUDProps) {
-  const playerHPPercent = Math.max(0, (playerHP / playerMaxHP) * 100)
-  const opponentHPPercent = Math.max(0, (opponentHP / opponentMaxHP) * 100)
+export default function BattleHUD(props: Props) {
+  const {
+    playerName, opponentName, playerHP, playerMaxHP,
+    opponentHP, opponentMaxHP, playerTazos, opponentTazos,
+    playerCaptured, opponentCaptured, round, phase, turnPlayer,
+    compact,
+  } = props
 
-  const phaseLabel = PHASE_LABELS[phase] || phase
+  const pp = Math.max(0, (playerHP / playerMaxHP) * 100)
+  const op = Math.max(0, (opponentHP / opponentMaxHP) * 100)
+  const ph = PHASE_MSG[phase] || { label: phase, color: "#1a1a1a" }
+
+  const active = playerTazos - playerCaptured
+  const oppActive = opponentTazos - opponentCaptured
+
+  const hpGrad = (pct: number) =>
+    pct > 60 ? "linear-gradient(90deg, #22C55E, #4ADE80)" :
+    pct > 25 ? "linear-gradient(90deg, #F59E0B, #FFCC00)" :
+    "linear-gradient(90deg, #E3350D, #FF6B00)"
 
   return (
-    <div className={`w-full ${compact ? "text-[10px]" : "text-xs"}`}>
-      {/* Top bar: names + round */}
-      <div className="flex items-center justify-between gap-2 mb-2">
-        {/* Player */}
-        <div className="flex items-center gap-1.5">
-          <div className={`${compact ? "w-5 h-5" : "w-6 h-6"} rounded-full bg-[#E3350D] border-2 border-[#1a1a1a] flex items-center justify-center text-white font-black text-[10px]`}>
-            {playerName.charAt(0)}
-          </div>
-          <span className="font-black uppercase text-[#1a1a1a] truncate max-w-[80px]">{playerName}</span>
-        </div>
+    <div className="p-3 bg-white border-b-3 border-[#1a1a1a] relative overflow-hidden">
+      {/* Halftone strip */}
+      <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(#1a1a1a 0.5px, transparent 0.5px)", backgroundSize: "6px 6px" }} />
 
-        {/* Center */}
-        <div className="text-center">
-          <span className="font-black uppercase text-[#1a1a1a]/30 tracking-[0.15em]">
-            {phaseLabel}
-          </span>
-        </div>
+      <div className="relative z-10">
 
-        {/* Opponent */}
-        <div className="flex items-center gap-1.5">
-          <span className="font-black uppercase text-[#1a1a1a] truncate max-w-[80px]">{opponentName}</span>
-          <div className={`${compact ? "w-5 h-5" : "w-6 h-6"} rounded-full bg-[#3B4CCA] border-2 border-[#1a1a1a] flex items-center justify-center text-white font-black text-[10px]`}>
-            {opponentName.charAt(0)}
-          </div>
-        </div>
-      </div>
-
-      {/* HP bars */}
-      <div className="space-y-1.5 mb-2">
-        {/* Player HP */}
-        <div className="flex items-center gap-2">
-          <Heart className={`${compact ? "w-3 h-3" : "w-4 h-4"} text-[#E3350D] shrink-0`} />
-          <div className="flex-1 h-3 bg-zinc-200 border-2 border-[#1a1a1a] rounded overflow-hidden">
+        {/* Names row */}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5">
             <div
-              className="h-full transition-all duration-300 ease-out"
-              style={{
-                width: `${playerHPPercent}%`,
-                background: playerHPPercent > 60
-                  ? "linear-gradient(90deg, #22C55E, #4ADE80)"
-                  : playerHPPercent > 25
-                  ? "linear-gradient(90deg, #F59E0B, #FFCC00)"
-                  : "linear-gradient(90deg, #E3350D, #FF6B00)",
-              }}
-            />
+              className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-white font-black text-[9px] shrink-0"
+              style={{ backgroundColor: "#E3350D", borderColor: "#1a1a1a" }}>
+              {playerName[0]}
+            </div>
+            <span className="font-black text-[11px] uppercase text-[#1a1a1a] truncate max-w-[70px]">
+              {playerName}
+            </span>
           </div>
-          <span className="font-black text-[#1a1a1a] tabular-nums min-w-[32px] text-right">
-            {playerHP}
-          </span>
-        </div>
 
-        {/* Opponent HP */}
-        <div className="flex items-center gap-2">
-          <Heart className={`${compact ? "w-3 h-3" : "w-4 h-4"} text-[#3B4CCA] shrink-0`} />
-          <div className="flex-1 h-3 bg-zinc-200 border-2 border-[#1a1a1a] rounded overflow-hidden">
+          {/* Center phase badge */}
+          <div className="flex flex-col items-center">
+            <span className="font-black text-[8px] uppercase tracking-[0.12em] px-1.5 py-0.5 border-2 border-[#1a1a1a]"
+              style={{ color: ph.color }}>
+              {ph.label}
+            </span>
+            <span className="text-[8px] font-bold text-[#1a1a1a]/25 mt-0.5">
+              R{round}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <span className="font-black text-[11px] uppercase text-[#1a1a1a] truncate max-w-[70px]">
+              {opponentName}
+            </span>
             <div
-              className="h-full transition-all duration-300 ease-out"
-              style={{
-                width: `${opponentHPPercent}%`,
-                background: opponentHPPercent > 60
-                  ? "linear-gradient(90deg, #22C55E, #4ADE80)"
-                  : opponentHPPercent > 25
-                  ? "linear-gradient(90deg, #F59E0B, #FFCC00)"
-                  : "linear-gradient(90deg, #E3350D, #FF6B00)",
-              }}
-            />
+              className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-white font-black text-[9px] shrink-0"
+              style={{ backgroundColor: "#3B4CCA", borderColor: "#1a1a1a" }}>
+              {opponentName[0]}
+            </div>
           </div>
-          <span className="font-black text-[#1a1a1a] tabular-nums min-w-[32px] text-right">
-            {opponentHP}
-          </span>
         </div>
-      </div>
 
-      {/* Battle stats row */}
-      <div className="flex items-center justify-between gap-2 text-[10px]">
-        {/* Player stats */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
+        {/* HP bars */}
+        <div className="space-y-1.5 mb-1.5">
+          {/* Player */}
+          <div className="flex items-center gap-1.5">
+            <Heart className="w-3 h-3 text-[#E3350D] shrink-0" />
+            <div className="flex-1 h-2.5 bg-zinc-100 border border-[#1a1a1a]/20 overflow-hidden">
+              <div className="h-full transition-all duration-400 ease-out" style={{ width: `${pp}%`, background: hpGrad(pp) }} />
+            </div>
+            <span className="font-black text-[10px] text-[#1a1a1a] tabular-nums min-w-[28px] text-right">{playerHP}</span>
+          </div>
+          {/* Opponent */}
+          <div className="flex items-center gap-1.5">
+            <Heart className="w-3 h-3 text-[#3B4CCA] shrink-0" />
+            <div className="flex-1 h-2.5 bg-zinc-100 border border-[#1a1a1a]/20 overflow-hidden">
+              <div className="h-full transition-all duration-400 ease-out" style={{ width: `${op}%`, background: hpGrad(op) }} />
+            </div>
+            <span className="font-black text-[10px] text-[#1a1a1a] tabular-nums min-w-[28px] text-right">{opponentHP}</span>
+          </div>
+        </div>
+
+        {/* Disc counts */}
+        <div className="flex items-center justify-between text-[9px]">
+          <div className="flex items-center gap-1.5">
             <Disc3 className="w-3 h-3 text-[#FFCC00]" />
-            <span className="font-bold text-[#1a1a1a]">{playerTazos - playerCaptured}</span>
+            <span className="font-bold text-[#1a1a1a]">{active}</span>
+            {playerCaptured > 0 && <span className="text-[#E3350D] font-bold">-{playerCaptured}</span>}
           </div>
-          {playerCaptured > 0 && (
-            <span className="text-[#1a1a1a]/40 font-bold">-{playerCaptured}</span>
-          )}
-        </div>
 
-        {/* Turn indicator */}
-        <div className="flex items-center gap-1">
-          <Swords className="w-3 h-3 text-[#1a1a1a]/30" />
-          <span className="font-bold text-[#1a1a1a]/40">
-            Round {round}
-          </span>
-          {turnPlayer === "player" && (
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
-          )}
-        </div>
-
-        {/* Opponent stats */}
-        <div className="flex items-center gap-2">
-          {opponentCaptured > 0 && (
-            <span className="text-[#1a1a1a]/40 font-bold">-{opponentCaptured}</span>
-          )}
           <div className="flex items-center gap-1">
+            {turnPlayer === "player" && (
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
+            )}
+            <Timer className="w-2.5 h-2.5 text-[#1a1a1a]/20" />
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            {opponentCaptured > 0 && <span className="text-[#E3350D] font-bold">-{opponentCaptured}</span>}
+            <span className="font-bold text-[#1a1a1a]">{oppActive}</span>
             <Disc3 className="w-3 h-3 text-[#3B4CCA]" />
-            <span className="font-bold text-[#1a1a1a]">{opponentTazos - opponentCaptured}</span>
           </div>
         </div>
       </div>
