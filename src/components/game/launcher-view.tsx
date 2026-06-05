@@ -148,16 +148,9 @@ export default function LauncherView() {
         <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
 
         {/* ═══════════════════════════════════════════ */}
-        {/* MAGAZINE MASTHEAD                             */}
+        {/* MAGAZINE MASTHEAD                          */}
         {/* ═══════════════════════════════════════════ */}
         <header className="relative z-10 border-b-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
-          {/* Top info strip */}
-          <div className="flex items-center justify-between px-3 sm:px-5 py-1 border-b border-white/10 text-[9px] font-black text-white/50 uppercase tracking-[0.3em]">
-            <span>ISSUE #001</span>
-            <span>FREE</span>
-            <span>2026</span>
-          </div>
-
           {/* Main masthead */}
           <div className="flex items-center justify-between px-3 sm:px-5 py-2.5">
             <div className="flex items-center gap-2.5">
