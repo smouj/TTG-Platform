@@ -153,7 +153,7 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
             backUrl={backUrl}
             autoRotate={!revealed}
             rotationSpeed={0.35}
-            scale={1.3}
+            scale={1.15}
             interactive={bagInteractive}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
