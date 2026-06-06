@@ -82,7 +82,7 @@ function BagPreview({ bag }: { bag: BagConfig }) {
   const variant = useMemo(() => pickBagVariant(bag.franchise), [bag.franchise])
   return (
     <div
-      className="relative h-[130px] sm:h-[160px] overflow-hidden border-2 border-[#1a1a1a] bg-[#fffbe6] shadow-[2px_2px_0px_#1a1a1a]"
+      className="relative w-full h-full overflow-hidden border-2 border-[#1a1a1a] bg-[#fffbe6] shadow-[2px_2px_0px_#1a1a1a]"
       style={{
         background:
           "radial-gradient(circle at 25% 20%, rgba(255,255,255,0.9), transparent 22%), repeating-linear-gradient(-8deg, rgba(26,26,26,0.04) 0 6px, transparent 6px 13px), #fffbe6",
@@ -345,10 +345,37 @@ export default function BagShopPage() {
             {pendingBags > 0 && (
               <>
                 <div className="w-px h-4 bg-[#1a1a1a]/30" />
-                <span className="text-[10px] font-black text-[#E3350D] uppercase">
-                  <Gift className="w-3.5 h-3.5 inline mr-1" />
-                  {pendingBags} free
-                </span>
+                <button
+                  onClick={async () => {
+                    if (!token) return
+                    setError(null)
+                    setBuying(true)
+                    try {
+                      const res = await fetch("/api/bags", { headers: { Authorization: `Bearer ${token}` } })
+                      const data = await res.json()
+                      if (data.bags?.length > 0) {
+                        const firstBag = data.bags[0]
+                        setBagId(firstBag.id)
+                        const franchiseSlug = firstBag.preview?.franchise || "minimon"
+                        setSelectedBag({ type: firstBag.bagType || "standard", name: "Mystery Bag", cost: 0, bonusChance: 10, rareBoost: 1, color: firstBag.preview?.franchiseColor || "#FFCC00", franchise: franchiseSlug, icon: <Gift className="w-5 h-5" /> })
+                        setBuying(false)
+                        setStage("opening")
+                        setTearProgress(0)
+                        setOpeningAnim(false)
+                        sfxEnsureUnlocked()
+                        playSFX('coin', { volume: 0.35 })
+                      }
+                    } catch {
+                      setError("Failed to fetch bags")
+                      setBuying(false)
+                    }
+                  }}
+                  disabled={buying}
+                  className="text-[10px] font-black text-[#E3350D] uppercase hover:underline flex items-center gap-1"
+                >
+                  <Gift className="w-3.5 h-3.5" />
+                  {pendingBags} free bag{pendingBags > 1 ? 's' : ''} — open now
+                </button>
               </>
             )}
           </div>
