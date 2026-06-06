@@ -65,7 +65,7 @@ export default function LeaderboardPage() {
           Leaderboard
         </h1>
         <p className="text-sm font-bold text-[#1a1a1a]/40 mb-4">
-          Top players ranked by credits, tazos collected, and battles won.
+          Top players ranked by credits, tazos collected, and battles played.
         </p>
       </div>
 

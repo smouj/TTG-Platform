@@ -7,7 +7,7 @@ import FullscreenBattle from "@/components/game/battle/fullscreen-battle"
 export default function RankedPage() {
   return (
     <GameShell title="RANKED BATTLE" backHref="/app/battle">
-      <FullscreenBattle mode="ranked" />
+      <FullscreenBattle mode="pvp_ranked" />
     </GameShell>
   )
 }

@@ -1,6 +1,6 @@
 // ============================================================
 // Trading Tazos Game — PvP Battle Panel
-// Online matchmaking + real-time turn-based battle via WebSocket.
+// Online matchmaking + staged turn relay via WebSocket.
 // ============================================================
 "use client"
 
@@ -223,7 +223,7 @@ export default function PvPBattlePanel() {
             PvP Battle
           </h3>
           <p className="text-sm text-zinc-500 font-medium leading-relaxed">
-            Challenge another player in real time.<br />
+            Find another player through the WebSocket lobby.<br />
             You need an <strong>active deck</strong> with at least 5 tazos.
           </p>
           <button

@@ -129,11 +129,11 @@ export default function BattleSystemPage() {
               </div>
               <div className="border-2 border-[#1a1a1a] p-4 bg-[#E3350D] text-white">
                 <h3 className="text-sm font-black uppercase mb-2">Ranked</h3>
-                <p className="text-xs font-bold text-white/70">Compete for leaderboard position. Earn XP and credits. Track your win/loss record.</p>
+                <p className="text-xs font-bold text-white/70">Connect to matchmaking and test your deck against other players. Full turn sync is rolling out in stages.</p>
               </div>
               <div className="border-2 border-[#1a1a1a] p-4 bg-[#3B4CCA] text-white">
                 <h3 className="text-sm font-black uppercase mb-2">Friend Battle</h3>
-                <p className="text-xs font-bold text-white/70">Challenge friends in direct matches. Coming soon with WebSocket matchmaking.</p>
+                <p className="text-xs font-bold text-white/70">Create a room code and connect with a friend through the WebSocket lobby. Practice AI remains the fully playable battle mode.</p>
               </div>
             </div>
           </section>

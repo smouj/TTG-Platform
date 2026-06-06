@@ -58,9 +58,12 @@ export default function TazosCatalogPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/tazos?limit=200")
+        const res = await fetch("/api/tazos?limit=400")
         const data = await res.json()
-        setTazos(data.tazos || [])
+        setTazos((data.tazos || []).map((t: any) => ({
+          ...t,
+          franchise: t.franchiseSlug || t.franchise?.slug || "minimon",
+        })))
       } catch { /* ignore */ }
       setLoading(false)
     })()

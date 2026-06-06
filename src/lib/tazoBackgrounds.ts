@@ -78,7 +78,7 @@ export function inferElement(tazo: Tazo): TazoElement {
 // --------------- Evolution Stage Inference ---------------
 // Inferred from sequential numbering within franchise
 export function inferEvolutionStage(tazo: Tazo, maxInFranchise?: number): EvolutionStage {
-  const number = tazo.number || 1
+  const number = parseInt(String(tazo.number || "1"), 10) || 1
   const max = maxInFranchise || 150
   const ratio = number / max
 

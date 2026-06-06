@@ -174,7 +174,7 @@ export default function MagazinePageShell({
       {/* MAGAZINE FOOTER                          */}
       {/* ═══════════════════════════════════════ */}
       {showFooter && (
-        <footer className="bg-[#E3350D] border-t-4 border-[#1a1a1a]">
+        <footer className="bg-[#1a1a1a] border-t-4 border-[#FFCC00]">
           <div className="max-w-7xl mx-auto px-4 py-3">
             <div className="flex justify-center gap-2 mb-2">
               {["#FFCC00", "#3B4CCA", "#FF6B00", "#78C850", "#00A1E9"].map((color, i) => (
@@ -182,13 +182,13 @@ export default function MagazinePageShell({
               ))}
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-between gap-1">
-              <p className="text-[10px] sm:text-xs font-bold text-white tracking-wide">
+              <p className="text-[10px] sm:text-xs font-bold text-zinc-400 tracking-wide">
                 {t.siteTitle || "TRADING TAZOS GAME"} &copy; {new Date().getFullYear()} — {t.siteFooterTribute || "Fan-made collector experience"}
               </p>
-              <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-white/60">
-                <a href="https://github.com/smouj/Trading-Tazos-Game/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white underline">License</a>
+              <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-zinc-500">
+                <a href="https://github.com/smouj/Trading-Tazos-Game/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-[#FFCC00] underline">License</a>
                 <span>|</span>
-                <a href="mailto:support@medaclawarena.com" className="hover:text-white underline">support@medaclawarena.com</a>
+                <a href="mailto:support@medaclawarena.com" className="hover:text-[#FFCC00] underline">support@medaclawarena.com</a>
               </div>
             </div>
           </div>

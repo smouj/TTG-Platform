@@ -2,10 +2,11 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
 
-const JWT_SECRET = process.env.JWT_SECRET
-if (!JWT_SECRET) {
+const JWT_SECRET_ENV = process.env.JWT_SECRET
+if (!JWT_SECRET_ENV) {
   throw new Error("FATAL: JWT_SECRET environment variable is required. Set it in .env")
 }
+const JWT_SECRET = JWT_SECRET_ENV
 const TOKEN_EXPIRY = "7d"
 
 export interface AuthUser {
@@ -29,7 +30,7 @@ export function generateToken(user: AuthUser): string {
 
 export function verifyToken(token: string): AuthUser | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as AuthUser
+    return jwt.verify(token, JWT_SECRET) as unknown as AuthUser
   } catch {
     return null
   }

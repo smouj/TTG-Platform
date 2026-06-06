@@ -11,7 +11,7 @@ export default function FriendPage() {
 
   return (
     <GameShell title={`FRIEND BATTLE · ${roomId}`} backHref="/app/battle">
-      <FullscreenBattle mode="friend" />
+      <FullscreenBattle mode="pvp_friend" roomId={roomId} />
     </GameShell>
   )
 }

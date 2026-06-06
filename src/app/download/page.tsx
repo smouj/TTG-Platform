@@ -109,7 +109,7 @@ export default function DownloadPage() {
             <div>
               <h3 className="font-black text-sm uppercase tracking-wider text-[#1a1a1a]">PWA Install</h3>
               <p className="text-[10px] font-bold text-zinc-500 mt-1">
-                Install on your phone or desktop. Works offline, gets updates automatically.
+                Install on your phone or desktop from a supported browser.
               </p>
             </div>
             <span className="absolute top-2 right-2 px-2 py-0.5 text-[8px] font-black bg-[#22C55E] text-white uppercase rounded">Active</span>
@@ -211,10 +211,10 @@ export default function DownloadPage() {
           <Github className="w-8 h-8 mx-auto text-[#1a1a1a]" />
           <div>
             <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a]">
-              Open Source — MIT License
+              Source Available License
             </h3>
             <p className="text-[11px] font-bold text-zinc-500 mt-1">
-              The entire game, battle engine, and desktop app are open source. Contribute, report bugs, or build your own version.
+              The source code is public under the project license. You can inspect the game, report bugs, and contribute improvements.
             </p>
           </div>
           <div className="flex items-center justify-center gap-3">

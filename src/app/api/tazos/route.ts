@@ -19,6 +19,9 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search")
     const sortBy = searchParams.get("sortBy") || "number"
     const sortOrder = searchParams.get("sortOrder") || "asc"
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1)
+    const limit = Math.min(Math.max(1, parseInt(searchParams.get("limit") || "100", 10) || 100), 500)
+    const skip = (page - 1) * limit
 
     const where: Record<string, unknown> = {}
 
@@ -46,9 +49,11 @@ export async function GET(request: NextRequest) {
       where,
       include: { franchise: true, collection: true },
       orderBy,
+      skip,
+      take: limit,
     })
 
-    return NextResponse.json({ tazos, total })
+    return NextResponse.json({ tazos, total, page, limit, totalPages: Math.ceil(total / limit) })
   } catch (error) {
     console.error("Error fetching tazos:", error)
     return NextResponse.json({ error: "Failed to fetch tazos" }, { status: 500 })

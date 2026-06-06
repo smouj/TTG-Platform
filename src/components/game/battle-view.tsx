@@ -14,6 +14,7 @@ import type {
   GameState, PlayMode, AIDifficulty,
   TazoCard, DiscPhysics, MatchConfig, MatchResult, ThrowParams,
 } from "@/lib/battle/game-loop"
+import type { BattleFinalResult } from "@/lib/battle"
 import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import BattleHUD from "./battle/battle-hud"
@@ -36,6 +37,12 @@ const DEMO_TAZOS: TazoCard[] = [
   { id: "d6", name: "Rai Kendo", slug: "rai-kendo", franchise: "dracobell", imageUrl: "/tazos-artgen/dracobell/dracobell-001.png", attack: 75, defense: 45, resistance: 42, weight: 52, stability: 48, spin: 55, control: 47, bounce: 42, precision: 48 },
   { id: "d7", name: "Tenzan Blaze", slug: "tenzan-blaze", franchise: "dracobell", imageUrl: "/tazos-artgen/dracobell/dracobell-002.png", attack: 80, defense: 55, resistance: 52, weight: 58, stability: 55, spin: 65, control: 60, bounce: 48, precision: 55 },
 ]
+
+function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFinalResult["victoryType"] {
+  if (victoryType === "all_captured") return "all_captured"
+  if (victoryType === "forfeit") return "surrender"
+  return "points"
+}
 
 function makeDiscs(deck: TazoCard[], owner: "player" | "opponent", z: number): DiscPhysics[] {
   return deck.map((t, i) => ({
@@ -104,9 +111,9 @@ export default function BattleView() {
             winner: matchResult.winner,
             playerScore: matchResult.playerScore,
             opponentScore: matchResult.opponentScore,
-            captures: matchResult.captures || 0,
-            ringOuts: matchResult.ringOuts || 0,
-            flips: matchResult.flips || 0,
+            captures: matchResult.playerCaptures + matchResult.opponentCaptures,
+            ringOuts: 0,
+            flips: 0,
             totalTurns: matchResult.totalTurns || 1,
           },
         }),
@@ -262,7 +269,7 @@ export default function BattleView() {
   if (phase === "match_end" && result) return (
     <div className="max-w-md mx-auto space-y-4">
       <BattleResultPanel result={{
-        winner: result.winner, victoryType: result.victoryType,
+        winner: result.winner, victoryType: toPanelVictoryType(result.victoryType),
         playerScore: result.playerCaptures, opponentScore: result.opponentCaptures,
         totalTurns: result.totalTurns, playerCaptures: result.playerCaptures,
         opponentCaptures: result.opponentCaptures, summary: result.summary,

@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { getAuthUser } from '@/lib/auth'
+import { refreshUserProgress } from '@/lib/progression'
 import { NextRequest, NextResponse } from 'next/server'
 
 // ── Quest progression: increment any quest with battle requirements ──
@@ -440,6 +441,7 @@ export async function POST(request: NextRequest) {
     const opponentTazos = opponentTazoIds
       .map((id) => rawById.get(id)!)
       .map(createBattleTazo)
+    let winner: 'player' | 'opponent' | 'draw' = 'draw'
 
     // --- If client sent 3D physics results, skip RPG simulation ---
     if (physicsResult) {
@@ -461,9 +463,17 @@ export async function POST(request: NextRequest) {
         // Award credits for win
         if (winner === 'player') {
           await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: 30 } } })
+          await db.creditTransaction.create({
+            data: {
+              userId: authUser.id,
+              amount: 30,
+              source: 'battle_win',
+              reference: `battle_${Date.now()}`,
+            },
+          })
         }
         // ── Trigger quest progression ──
-        await progressBattleQuests(authUser.id)
+        await refreshUserProgress(authUser.id)
         const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
         return NextResponse.json({
           winner, victoryType: 'physics_arena', rounds: physicsResult.totalTurns,
@@ -484,7 +494,6 @@ export async function POST(request: NextRequest) {
     const battleLog: BattleEvent[] = []
     const maxRounds = 10
     let rounds = 0
-    let winner: 'player' | 'opponent' | 'draw' = 'draw'
     let victoryType: string | null = null
 
     for (let round = 1; round <= maxRounds; round++) {
@@ -608,6 +617,7 @@ export async function POST(request: NextRequest) {
     // Save battle record
     await db.battleRecord.create({
       data: {
+        userId: authUser?.id,
         playerTazos: JSON.stringify(playerTazoIds),
         opponentTazos: JSON.stringify(opponentTazoIds),
         winner,
@@ -633,6 +643,10 @@ export async function POST(request: NextRequest) {
           },
         })
       } catch (_) { /* credits are non-critical */ }
+    }
+
+    if (authUser) {
+      await refreshUserProgress(authUser.id)
     }
 
     // Get updated credits if authed

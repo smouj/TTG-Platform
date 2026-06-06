@@ -34,17 +34,17 @@ Trading Tazos Game is a browser-based digital tazo (pog) battle game designed en
 
 <div align="center">
 
-| Landing Page | Shop (Auth) | Quests (Auth) |
+| Landing Page | Tazo Catalog | Practice Battle |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/home.png" width="320" alt="Magazine-style landing with hero and collections"> | <img src="docs/screenshots/shop.png" width="320" alt="3D chip bag shop with tear animation"> | <img src="docs/screenshots/quests.png" width="320" alt="Daily and weekly quests with progress bars"> |
+| <img src="docs/screenshots/home.png" width="320" alt="Magazine-style landing with hero and collections"> | <img src="docs/screenshots/tazos.png" width="320" alt="Public catalog with 319 tazos across three collections"> | <img src="docs/screenshots/battle.png" width="320" alt="Practice battle with 3D arena and aim controls"> |
 
 | Leaderboard | Download | Sign In |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/leaderboard.png" width="320" alt="Global rankings by credits, tazos, and battles"> | <img src="docs/screenshots/download.png" width="320" alt="Desktop app downloads for Windows, macOS, Linux"> | <img src="docs/screenshots/login.png" width="320" alt="Magazine-themed login and registration"> |
+| <img src="docs/screenshots/leaderboard.png" width="320" alt="Global rankings by credits, tazos, and battles played"> | <img src="docs/screenshots/download.png" width="320" alt="Desktop app downloads for Windows, macOS, Linux"> | <img src="docs/screenshots/login.png" width="320" alt="Magazine-themed login and registration"> |
 
 | App Tabs — Album | App Tabs — Battle | App Tabs — Scanner |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/collection.png" width="320" alt="Album tab — filterable tazo grid"> | <img src="docs/screenshots/battle.png" width="320" alt="Canvas 2D physics battle with aim controls"> | <img src="docs/screenshots/scanner.png" width="320" alt="Upload → crop → detect physical tazo"> |
+| <img src="docs/screenshots/album.png" width="320" alt="Album tab — filterable tazo grid"> | <img src="docs/screenshots/battle.png" width="320" alt="Battle lobby and arena entry point"> | <img src="docs/screenshots/scanner.png" width="320" alt="Upload → crop → detect physical tazo"> |
 
 | Collection (Auth) | Decks (Auth) | Stats (App Tab) |
 |:---:|:---:|:---:|
@@ -107,15 +107,15 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 |---------|--------|
 | Quests | 17 quests: Beginner, Daily, Weekly, and Special categories |
 | Achievements | 18 achievements: Bronze → Silver → Gold → Platinum |
-| Leaderboards | Global rankings by credits, tazos collected, or battle wins |
+| Leaderboards | Global rankings by credits, tazos collected, or battles played |
 | Progress Tracking | Per-quest progress bars + per-achievement unlock tracking |
 
 ### Multiplayer
 | Feature | Detail |
 |---------|--------|
-| PvP Battles | WebSocket matchmaking with JWT auth (behind account/deck requirements) |
+| PvP Battles | WebSocket matchmaking lobby with JWT auth; full turn sync is rolling out in stages |
 | Room System | Private battle rooms between two players |
-| Match Events | Live turn-by-turn event log synced to both clients |
+| Match Events | Matchmaking and room events are live; full turn sync is rolling out in stages |
 
 ### Platform
 | Feature | Detail |
@@ -132,7 +132,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 |---------|--------|
 | Authentication | JWT + bcryptjs (12 rounds) with httpOnly + companion cookies |
 | Session Detection | `/api/auth/ping` cookie check + localStorage Bearer token sync |
-| Route Protection | Middleware guards `/app/*` → redirects to `/login?redirect=...` |
+| Route Protection | Proxy guards `/app/*` → redirects to `/login?redirect=...` |
 | User Profile | `/app/settings` — profile card, collection stats, logout |
 | Auth-Aware Headers | Landing shows "Play Now" when logged in, dashboard shows Logout |
 | 2-Shell System | PublicPageShell (landing/SEO) + MagazinePageShell (dashboard) |
@@ -206,13 +206,13 @@ Trading-Tazos-Game/
 │   ├── seed.ts              # 319 tazos (seed data)
 │   └── seed-quests.ts       # 17 quests + 18 achievements
 ├── src/
-│   ├── middleware.ts         # Auth route protection + legacy redirects
+│   ├── proxy.ts              # Auth route protection + legacy redirects
 │   ├── app/
 │   │   ├── page.tsx          # Landing page (hero, collections, CTAs)
 │   │   ├── layout.tsx        # Root layout (SEO, PWA, JSON-LD, i18n)
 │   │   ├── app/              # 🎮 Dashboard (auth-protected, MagazinePageShell)
 │   │   │   ├── album/        # Tazo album — filterable grid
-│   │   │   ├── battle/       # Canvas 2D physics battle arena
+│   │   │   ├── battle/       # Battle lobby → fullscreen 3D arena routes
 │   │   │   ├── scanner/      # Physical tazo scanner
 │   │   │   ├── stats/        # Collection stats & analytics
 │   │   │   ├── shop/         # 3D bag shop (buy → open → reveal)
@@ -257,7 +257,7 @@ Trading-Tazos-Game/
 │   ├── logo/                 # 6 logo variants + social banners
 │   ├── manifest.json         # PWA manifest
 │   ├── robots.txt            # SEO + AI crawler rules
-│   └── sitemap.xml           # 21 URLs with hreflang alternates
+│   └── sitemap.xml           # 18 public URLs
 ├── THEME.md                  # Design system spec (colors, typography, components)
 ├── electron-builder.yml      # Desktop app build config
 ├── build-electron.sh         # Electron build script
@@ -407,14 +407,14 @@ tazos battle --seed 42   # Simulate a physics battle
 - Credit economy: battles +30cr, daily login +25cr, quests +50–200cr
 - 17 quests across 4 categories with progress tracking
 - 18 achievements with 4-tier progression (Bronze → Platinum)
-- Global leaderboards: credits, tazos collected, battle wins
-- Auth middleware with httpOnly cookies, login redirect, 8 legacy URL redirects
-- PWA manifest, installable, offline-ready
+- Global leaderboards: credits, tazos collected, battles played
+- Auth proxy with httpOnly cookies, login redirect, 8 legacy URL redirects
+- PWA manifest and installable web app metadata
 - Electron desktop launcher: animated splash, system tray, single-instance
 - Linux installers: .AppImage + .deb
 - SEO: JSON-LD VideoGame schema, sitemap.xml, robots.txt, hreflang
 - Design system spec ([THEME.md](./THEME.md)) with documented tokens
-- WebSocket multiplayer: JWT auth, room system, live event sync
+- WebSocket multiplayer: JWT auth, matchmaking queue, room system, staged turn relay
 - Security: CSP, HSTS, X-Frame-Options, dual cookie auth
 - Page-specific metadata with unique titles per route
 - i18n: 10 languages with 250+ translated keys

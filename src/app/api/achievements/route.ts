@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getAuthUser } from "@/lib/auth"
 import { db as prisma } from "@/lib/db"
+import { refreshUserProgress } from "@/lib/progression"
 
 export async function GET(req: NextRequest) {
   const user = await getAuthUser(req)
@@ -15,18 +16,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ achievements, userAchievements: [] })
   }
 
+  await refreshUserProgress(user.id)
   const userAchievements = await prisma.userAchievement.findMany({ where: { userId: user.id } })
-
-  // Auto-create records for new achievements
-  const existing = new Set(userAchievements.map(ua => ua.achievementId))
-  const newAchs = achievements.filter(a => !existing.has(a.id))
-  if (newAchs.length > 0) {
-    await prisma.userAchievement.createMany({
-      data: newAchs.map(a => ({ userId: user.id, achievementId: a.id }))
-    })
-    const updated = await prisma.userAchievement.findMany({ where: { userId: user.id } })
-    return NextResponse.json({ achievements, userAchievements: updated })
-  }
 
   return NextResponse.json({ achievements, userAchievements })
 }

@@ -48,10 +48,10 @@ export default function BattleLobbyPage() {
       case "practice":
         router.push("/game/practice")
         break
-      case "ranked":
+      case "pvp_ranked":
         router.push("/game/ranked")
         break
-      case "friend":
+      case "pvp_friend":
         // Generate a room code and navigate
         const roomId = Math.random().toString(36).substring(2, 8).toUpperCase()
         router.push(`/game/friend/${roomId}`)

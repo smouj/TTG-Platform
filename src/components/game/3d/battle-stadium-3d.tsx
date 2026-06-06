@@ -184,7 +184,6 @@ function BattleTazo({
       <TazoDisc3D
         name={tazo.name}
         franchise={tazo.franchise}
-        color={tazo.color}
         size={0.6}
         rotationSpeed={0.8}
         autoRotate={true}

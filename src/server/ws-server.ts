@@ -8,11 +8,12 @@ import { WebSocketServer, WebSocket } from "ws"
 import jwt from "jsonwebtoken"
 import { createServer } from "http"
 
-const JWT_SECRET = process.env.JWT_SECRET
-if (!JWT_SECRET) {
+const JWT_SECRET_ENV = process.env.JWT_SECRET
+if (!JWT_SECRET_ENV) {
   console.error("FATAL: JWT_SECRET environment variable is required")
   process.exit(1)
 }
+const JWT_SECRET = JWT_SECRET_ENV
 const PORT = parseInt(process.env.WS_PORT || "3001")
 const HEARTBEAT_MS = 15000
 
@@ -32,6 +33,7 @@ interface Room {
 }
 
 const queue: Player[] = []
+const waitingRooms = new Map<string, Player>()
 const rooms = new Map<string, Room>()
 const connections = new Map<WebSocket, Player>()
 
@@ -41,8 +43,8 @@ function broadcast(ws: WebSocket, msg: object) {
   }
 }
 
-function makeRoom(p1: Player, p2: Player): Room {
-  const id = `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+function makeRoom(p1: Player, p2: Player, roomId?: string): Room {
+  const id = roomId || `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
   const room: Room = { id, players: [p1, p2], createdAt: Date.now(), gameState: "waiting" }
   rooms.set(id, room)
 
@@ -67,6 +69,14 @@ function cleanupPlayer(player: Player) {
   // Remove from queue
   const qIdx = queue.indexOf(player)
   if (qIdx >= 0) queue.splice(qIdx, 1)
+
+  // Remove from waiting direct room
+  for (const [id, waiting] of waitingRooms) {
+    if (waiting === player) {
+      waitingRooms.delete(id)
+      break
+    }
+  }
 
   // Remove from room
   for (const [id, room] of rooms) {
@@ -98,7 +108,7 @@ function tryMatch() {
 
 function verifyToken(token: string): { userId: string; name: string } | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; name: string }
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as { id: string; name: string }
     return { userId: decoded.id, name: decoded.name }
   } catch {
     return null
@@ -173,6 +183,26 @@ wss.on("connection", (ws, req) => {
         const idx = queue.indexOf(player)
         if (idx >= 0) queue.splice(idx, 1)
         broadcast(ws, { type: "queue_left", payload: {} })
+        break
+      }
+
+      case "join_room": {
+        const rawRoomId = String(msg.payload?.roomId || "").trim().toUpperCase()
+        if (!rawRoomId) {
+          broadcast(ws, { type: "room_error", payload: { message: "roomId required" } })
+          break
+        }
+
+        const waiting = waitingRooms.get(rawRoomId)
+        if (!waiting || waiting === player || waiting.ws.readyState !== WebSocket.OPEN) {
+          waitingRooms.set(rawRoomId, player)
+          broadcast(ws, { type: "room_waiting", payload: { roomId: rawRoomId } })
+          log(`🏠 ${player.name} waiting in room ${rawRoomId}`)
+          break
+        }
+
+        waitingRooms.delete(rawRoomId)
+        makeRoom(waiting, player, rawRoomId)
         break
       }
 

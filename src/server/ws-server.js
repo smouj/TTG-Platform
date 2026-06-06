@@ -59,7 +59,6 @@ function verifyToken(token) {
     const header = base64UrlDecode(headerB64)
     if (header.alg !== "HS256") return null
     const data = `${headerB64}.${payloadB64}`
-    const sig = base64UrlDecode(sigB64)  // raw sig or base64? Let's use HMAC compare
     const expected = crypto.createHmac("sha256", JWT_SECRET).update(data).digest("base64url")
     if (sigB64 !== expected) return null
     const payload = base64UrlDecode(payloadB64)
@@ -70,6 +69,7 @@ function verifyToken(token) {
 
 // ─── State ──────────────────────────────────────────────────
 const queue = []
+const waitingRooms = new Map()
 const rooms = new Map()
 const connections = new Map()
 
@@ -77,8 +77,8 @@ function send(ws, msg) {
   if (ws.readyState === 1) ws.send(JSON.stringify(msg))
 }
 
-function makeRoom(p1, p2) {
-  const id = `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+function makeRoom(p1, p2, roomId) {
+  const id = roomId || `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
   const room = { id, players: [p1, p2], createdAt: Date.now(), gameState: "waiting" }
   rooms.set(id, room)
   for (const p of [p1, p2]) {
@@ -92,6 +92,12 @@ function makeRoom(p1, p2) {
 function cleanupPlayer(player) {
   const qIdx = queue.indexOf(player)
   if (qIdx >= 0) queue.splice(qIdx, 1)
+  for (const [id, waiting] of waitingRooms) {
+    if (waiting === player) {
+      waitingRooms.delete(id)
+      break
+    }
+  }
   for (const [id, room] of rooms) {
     const idx = room.players.indexOf(player)
     if (idx >= 0) {
@@ -157,6 +163,22 @@ wss.on("connection", (ws, req) => {
         if (idx >= 0) queue.splice(idx, 1)
         send(ws, { type: "queue_left" })
         break
+      case "join_room": {
+        const roomId = String(msg.payload?.roomId || "").trim().toUpperCase()
+        if (!roomId) {
+          send(ws, { type: "room_error", payload: { message: "roomId required" } })
+          break
+        }
+        const waiting = waitingRooms.get(roomId)
+        if (!waiting || waiting === player || waiting.ws.readyState !== 1) {
+          waitingRooms.set(roomId, player)
+          send(ws, { type: "room_waiting", payload: { roomId } })
+          break
+        }
+        waitingRooms.delete(roomId)
+        makeRoom(waiting, player, roomId)
+        break
+      }
       case "turn_action":
         for (const [, room] of rooms) {
           const idx = room.players.indexOf(player)

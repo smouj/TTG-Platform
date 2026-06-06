@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Battle Arena — Trading Tazos Game",
-  description: "Enter the arena and battle with your tazos. Practice, ranked, and friend battles in full 3D.",
+  description: "Enter the arena with your tazos. Practice battles are fully playable, with ranked and friend PvP lobbies connected through WebSocket matchmaking.",
   robots: { index: false, follow: false },
 }
 

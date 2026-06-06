@@ -5,7 +5,7 @@
 // ============================================================
 "use client"
 
-import { Suspense, useRef, useMemo } from "react"
+import { Suspense, useRef, useMemo, useEffect } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 import type { DiscPhysics, Arena3DConfig } from "@/lib/battle/game-loop"

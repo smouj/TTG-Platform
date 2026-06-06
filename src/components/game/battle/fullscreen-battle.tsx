@@ -12,6 +12,7 @@ import type {
   GameState, PlayMode, AIDifficulty,
   TazoCard, DiscPhysics, MatchConfig, MatchResult, ThrowParams,
 } from "@/lib/battle/game-loop"
+import type { BattleFinalResult } from "@/lib/battle"
 import BattleArena3D from "./battle-arena-3d"
 import BattleHUD from "./battle-hud"
 import LaunchSystem from "./launch-system"
@@ -34,6 +35,12 @@ const DEMO_TAZOS: TazoCard[] = [
   { id: "d6", name: "Rai Kendo", slug: "rai-kendo", franchise: "dracobell", imageUrl: "/tazos-artgen/dracobell/dracobell-001.png", attack: 75, defense: 45, resistance: 42, weight: 52, stability: 48, spin: 55, control: 47, bounce: 42, precision: 48 },
   { id: "d7", name: "Tenzan Blaze", slug: "tenzan-blaze", franchise: "dracobell", imageUrl: "/tazos-artgen/dracobell/dracobell-002.png", attack: 80, defense: 55, resistance: 52, weight: 58, stability: 55, spin: 65, control: 60, bounce: 48, precision: 55 },
 ]
+
+function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFinalResult["victoryType"] {
+  if (victoryType === "all_captured") return "all_captured"
+  if (victoryType === "forfeit") return "surrender"
+  return "points"
+}
 
 function makeDiscs(deck: TazoCard[], owner: "player" | "opponent", z: number): DiscPhysics[] {
   return deck.map((t, i) => ({
@@ -65,9 +72,17 @@ async function fetchTazos(token: string): Promise<TazoCard[]> {
 
 interface FullscreenBattleProps {
   mode: PlayMode
+  roomId?: string
 }
 
-export default function FullscreenBattle({ mode }: FullscreenBattleProps) {
+function getWsUrl(token: string) {
+  const configured = process.env.NEXT_PUBLIC_WS_URL
+  if (configured) return `${configured.replace(/\/$/, "")}?token=${encodeURIComponent(token)}`
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
+  return `${protocol}//${window.location.host}/ws?token=${encodeURIComponent(token)}`
+}
+
+export default function FullscreenBattle({ mode, roomId }: FullscreenBattleProps) {
   const { user, token } = useAuth()
   const router = useRouter()
   const [phase, setPhase] = useState<GameState>("lobby")
@@ -83,9 +98,64 @@ export default function FullscreenBattle({ mode }: FullscreenBattleProps) {
   const [throwing, setThrowing] = useState<TazoCard | null>(null)
   const [launch, setLaunch] = useState<"aim" | "power">("aim")
   const [aim, setAim] = useState({ x: 0, y: 0, accuracy: 0.8 })
+  const [multiplayerStatus, setMultiplayerStatus] = useState("Preparing local match")
+  const [matchedOpponent, setMatchedOpponent] = useState<string | null>(null)
+  const wsRef = useRef<WebSocket | null>(null)
   const busy = useRef(false)
   const resultSaved = useRef(false)
   const compact = typeof window !== "undefined" && window.innerWidth < 640
+
+  useEffect(() => {
+    if (mode === "practice") return
+    if (!token || typeof window === "undefined") {
+      setMultiplayerStatus("Login required for PvP")
+      return
+    }
+
+    const ws = new WebSocket(getWsUrl(token))
+    wsRef.current = ws
+    setMultiplayerStatus("Connecting to PvP server...")
+
+    ws.onopen = () => {
+      if (mode === "pvp_friend") {
+        ws.send(JSON.stringify({ type: "join_room", payload: { roomId } }))
+        setMultiplayerStatus(`Waiting in room ${roomId || "UNKNOWN"}...`)
+      } else {
+        ws.send(JSON.stringify({ type: "join_queue" }))
+        setMultiplayerStatus("Searching for ranked opponent...")
+      }
+    }
+
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data)
+      if (msg.type === "queue_status") {
+        setMultiplayerStatus(`In queue · position ${msg.payload?.position ?? 1}`)
+      }
+      if (msg.type === "room_waiting") {
+        setMultiplayerStatus(`Room ${msg.payload?.roomId || roomId} ready · waiting for friend`)
+      }
+      if (msg.type === "match_found") {
+        setMatchedOpponent(msg.payload?.opponent?.name || "Opponent")
+        setMultiplayerStatus(`Matched vs ${msg.payload?.opponent?.name || "Opponent"}`)
+      }
+      if (msg.type === "opponent_disconnected") {
+        setMultiplayerStatus("Opponent disconnected")
+      }
+      if (msg.type === "room_error") {
+        setMultiplayerStatus(msg.payload?.message || "Room error")
+      }
+    }
+
+    ws.onerror = () => setMultiplayerStatus("PvP server unreachable")
+    ws.onclose = () => {
+      if (wsRef.current === ws) setMultiplayerStatus("PvP connection closed")
+    }
+
+    return () => {
+      wsRef.current = null
+      ws.close()
+    }
+  }, [mode, roomId, token])
 
   // Auto-start: fetch tazos, build deck, begin
   useEffect(() => {
@@ -220,7 +290,7 @@ export default function FullscreenBattle({ mode }: FullscreenBattleProps) {
     <div className="h-full flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-4">
         <BattleResultPanel result={{
-          winner: result.winner, victoryType: result.victoryType,
+          winner: result.winner, victoryType: toPanelVictoryType(result.victoryType),
           playerScore: result.playerCaptures, opponentScore: result.opponentCaptures,
           totalTurns: result.totalTurns, playerCaptures: result.playerCaptures,
           opponentCaptures: result.opponentCaptures, summary: result.summary,
@@ -241,7 +311,7 @@ export default function FullscreenBattle({ mode }: FullscreenBattleProps) {
       {/* HUD */}
       <BattleHUD
         playerName="You"
-        opponentName={`AI (${cfg?.aiDifficulty || "skilled"})`}
+        opponentName={matchedOpponent || `AI (${cfg?.aiDifficulty || "skilled"})`}
         playerHP={pHP} playerMaxHP={100}
         opponentHP={oHP} opponentMaxHP={100}
         playerTazos={deck.length} opponentTazos={cfg?.opponentDeck.length || 5}
@@ -250,6 +320,11 @@ export default function FullscreenBattle({ mode }: FullscreenBattleProps) {
         turnPlayer={isPlayer ? "player" : "opponent"}
         compact={compact}
       />
+      {mode !== "practice" && (
+        <div className="border-y border-[#FFCC00]/20 bg-[#111] px-3 py-1.5 text-center text-[10px] font-black uppercase tracking-[0.12em] text-[#FFCC00]">
+          {multiplayerStatus}
+        </div>
+      )}
 
       {/* Arena */}
       <div className="flex-1 min-h-0">

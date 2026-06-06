@@ -22,7 +22,9 @@ export default function GameShell({
   const router = useRouter()
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: "#1a1a1a" }}>
+    <div className="h-screen w-screen flex flex-col overflow-hidden relative" style={{ background: "#1a1a1a" }}>
+      {/* Magazine accent stripe — ties game canvas to TTG branding */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-[#FFCC00] z-[60]" />
       {/* Minimal top bar */}
       <div className="flex-shrink-0 bg-[#111] border-b border-[#FFCC00]/20 px-3 py-2 flex items-center gap-3 z-50">
         {showBack && (

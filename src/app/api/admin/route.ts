@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
       take: 50,
       select: {
         id: true, email: true, name: true, displayName: true,
-        credits: true, role: true, createdAt: true,
+        credits: true, createdAt: true,
         _count: { select: { userTazos: true, decks: true } },
       },
     })

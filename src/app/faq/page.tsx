@@ -40,7 +40,7 @@ const faqs = [
   },
   {
     q: "Can I play against friends?",
-    a: "Friend battles are coming soon with WebSocket matchmaking. For now, you can battle AI opponents at 3 difficulty levels — Novice, Skilled, and Master — and compete on the global leaderboard."
+    a: "Friend battles now support WebSocket room codes for matchmaking. Practice AI battles are the fully playable mode today; turn-by-turn PvP sync is being rolled out in stages."
   },
   {
     q: "Is there a desktop app?",

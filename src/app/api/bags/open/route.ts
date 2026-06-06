@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getAuthUser } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { refreshUserProgress } from "@/lib/progression"
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,6 +76,8 @@ export async function POST(request: NextRequest) {
         })
       }
     }
+
+    await refreshUserProgress(user.id)
 
     return NextResponse.json({
       tazo: {

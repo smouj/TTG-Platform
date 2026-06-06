@@ -135,6 +135,8 @@ export default function BagShopPage() {
   const [bonusTazo, setBonusTazo] = useState<any>(null)
   const [openingAnim, setOpeningAnim] = useState(false)
   const [pendingBags, setPendingBags] = useState<number>(0)
+  const [dailyClaimable, setDailyClaimable] = useState(false)
+  const [claimingDaily, setClaimingDaily] = useState(false)
 
   const tearIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const bagIdRef = useRef<string | null>(null)
@@ -157,6 +159,14 @@ export default function BagShopPage() {
     fetch("/api/credits", { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
       .then(d => setCredits(d.credits ?? 0))
+      .catch(() => {})
+  }, [token])
+
+  useEffect(() => {
+    if (!token) return
+    fetch("/api/credits/daily", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => setDailyClaimable(!!d.claimable))
       .catch(() => {})
   }, [token])
 
@@ -189,6 +199,31 @@ export default function BagShopPage() {
       setBuying(false)
     }
   }, [token, selectedBag])
+
+  const claimDaily = useCallback(async () => {
+    if (!token || claimingDaily || !dailyClaimable) return
+    setClaimingDaily(true)
+    setError(null)
+    try {
+      const res = await fetch("/api/credits/daily", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || "Daily bonus already claimed")
+        setDailyClaimable(false)
+        return
+      }
+      setCredits(data.credits ?? credits)
+      setDailyClaimable(false)
+      playSFX('coin', { volume: 0.35 })
+    } catch {
+      setError("Failed to claim daily bonus")
+    } finally {
+      setClaimingDaily(false)
+    }
+  }, [token, claimingDaily, dailyClaimable, credits])
 
   const startTearAnimation = () => {
     // Prevent double animation start
@@ -329,7 +364,7 @@ export default function BagShopPage() {
                     if (data.bags?.length > 0) {
                       const firstBag = data.bags[0]
                       setBagId(firstBag.id)
-                      const franchiseSlug = firstBag.preview?.franchise?.slug || "minimon"
+                      const franchiseSlug = firstBag.preview?.franchise || "minimon"
                       setSelectedBag({ type: firstBag.bagType || "standard", name: "Mystery Bag", cost: 0, bonusChance: 10, rareBoost: 1, color: firstBag.preview?.franchiseColor || "#FFCC00", franchise: franchiseSlug, icon: <Gift className="w-5 h-5" /> })
                       setBuying(false)
                       setStage("opening")
@@ -424,6 +459,14 @@ export default function BagShopPage() {
             <h3 className="font-black text-xs uppercase tracking-wider text-[#1a1a1a] mb-2 flex items-center gap-2">
               <Gift className="w-4 h-4 text-[#F59E0B]" /> How to earn credits
             </h3>
+            <button
+              onClick={claimDaily}
+              disabled={!dailyClaimable || claimingDaily}
+              className="mb-3 flex w-full items-center justify-center gap-2 border-3 border-[#1a1a1a] bg-[#3B4CCA] px-4 py-2 text-xs font-black uppercase text-white shadow-[3px_3px_0px_#1a1a1a] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#1a1a1a] disabled:cursor-not-allowed disabled:bg-zinc-300 disabled:text-zinc-500 disabled:shadow-none"
+            >
+              {claimingDaily ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calendar className="h-4 w-4" />}
+              {dailyClaimable ? "Claim daily +25 credits" : "Daily bonus claimed"}
+            </button>
             <ul className="space-y-1 text-xs text-zinc-600 font-bold">
               <li className="flex items-center gap-1"><Trophy className="w-3.5 h-3.5 text-[#F59E0B]" /> Win battles: +30 credits</li>
               <li className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#3B4CCA]" /> Daily login: +25 credits</li>
@@ -443,8 +486,7 @@ export default function BagShopPage() {
       preview: null, // API doesn't return preview on buy; derive from selection
     }
     // Try to determine franchise from bag type or fallback
-    const franchiseSlug = selectedBag.type === "premium" ? "dracobell" :
-      selectedBag.type === "mega" ? "cybermon" : "minimon"
+    const franchiseSlug = selectedBag.franchise || "minimon"
     const bagData = { ...bagPreview, preview: { franchise: { slug: franchiseSlug }, rarity: "common" } }
 
     return (

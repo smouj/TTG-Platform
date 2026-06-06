@@ -18,8 +18,8 @@ interface Props {
 }
 
 const MODES = [
-  { id: "practice" as const, icon: Bot, title: "Practice", desc: "AI opponent, no pressure", color: "#22C55E", badge: "FREE" },
-  { id: "pvp_ranked" as const, icon: Globe, title: "Ranked PvP", desc: "Climb the ladder", color: "#E3350D", badge: "RANKED" },
+  { id: "practice" as const, icon: Bot, title: "Practice", desc: "AI opponent, no pressure", color: "#22C55E", badge: "FREE", free: true },
+  { id: "pvp_ranked" as const, icon: Globe, title: "Ranked PvP", desc: "Find an opponent", color: "#E3350D", badge: "RANKED" },
   { id: "pvp_friend" as const, icon: Swords, title: "Friend Battle", desc: "Room code duel", color: "#3B4CCA", badge: "DIRECT" },
 ]
 

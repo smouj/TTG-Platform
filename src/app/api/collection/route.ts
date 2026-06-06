@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const franchise = searchParams.get("franchise")
     const page = parseInt(searchParams.get("page") || "1")
-    const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 200)
+    const limit = Math.min(Math.max(1, parseInt(searchParams.get("limit") || "50", 10) || 50), 500)
     const offset = (page - 1) * limit
 
     const where: any = { userId: user.id }
@@ -32,15 +32,17 @@ export async function GET(request: NextRequest) {
       db.userTazo.count({ where }),
     ])
 
-    // Also get franchise breakdown
-    const byFranchise = await db.userTazo.groupBy({
-      by: ["tazoId"],
-      where: { userId: user.id },
+    const summaryItems = await db.userTazo.findMany({
+      where,
+      select: {
+        quantity: true,
+        tazo: { select: { franchise: { select: { slug: true } } } },
+      },
     })
 
     // Build franchise summary
     const franchiseSummary = new Map<string, number>()
-    for (const ut of items) {
+    for (const ut of summaryItems) {
       const slug = ut.tazo.franchise.slug
       franchiseSummary.set(slug, (franchiseSummary.get(slug) || 0) + ut.quantity)
     }
@@ -81,6 +83,7 @@ export async function GET(request: NextRequest) {
       total,
       page,
       limit,
+      totalPages: Math.ceil(total / limit),
       franchiseSummary: Object.fromEntries(franchiseSummary),
     })
   } catch (error) {

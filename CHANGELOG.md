@@ -9,8 +9,8 @@
 - **Admin API**: Consolidated to use shared `getAuthUser()` from `@/lib/auth` instead of standalone JWT verification
 
 ### 📊 Leaderboard + Tazos Improvements
-- **Real battle counts**: Added `userId`, `score`, `turns` to `BattleRecord` schema — leaderboard now counts real battles instead of proxy estimates
-- **Win count display**: Battle sort shows "W" wins count next to tazo count
+- **Real battle counts**: Added `userId`, `score`, `turns` to `BattleRecord` schema — leaderboard can now count user-linked battles instead of proxy estimates
+- **Battle sort display**: Battle sort uses recorded battles and shows available win counts where recorded
 - **Improved empty state**: "Leaderboard Awaits" with red CTA button — more compelling for new visitors
 - **Featured Tazos preview**: `/tazos` now shows 5 highlighted legendary/ultra/rare tazos in a `mag-card-yellow` banner before the collection cards
 

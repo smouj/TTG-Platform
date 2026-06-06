@@ -17,6 +17,13 @@ interface TurnAction {
   tazoId: string
 }
 
+function getWsUrl(token: string) {
+  const configured = process.env.NEXT_PUBLIC_WS_URL
+  if (configured) return `${configured.replace(/\/$/, "")}?token=${encodeURIComponent(token)}`
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
+  return `${protocol}//${window.location.host}/ws?token=${encodeURIComponent(token)}`
+}
+
 export function useMultiplayer() {
   const { token, user } = useAuth()
   const [state, setState] = useState<MultiplayerState>("idle")
@@ -36,8 +43,7 @@ export function useMultiplayer() {
     if (wsRef.current?.readyState === WebSocket.OPEN) return
 
     setState("connecting")
-    const wsUrl = `wss://${window.location.host}/ws?token=${encodeURIComponent(token)}`
-    const ws = new WebSocket(wsUrl)
+    const ws = new WebSocket(getWsUrl(token))
     wsRef.current = ws
 
     ws.onopen = () => {
