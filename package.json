@@ -7,6 +7,8 @@
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "verify": "tsc --noEmit && eslint . && next build",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
@@ -114,8 +116,8 @@
     "typescript": "^5"
   },
   "license": "Source Available",
-  "description": "Collect, trade and battle with 319 classic tazos. 2D collection views, a skill-based 3D battle arena, and a Linux desktop app.",
-  "author": "MedaClaw Arena <support@medaclawarena.com>",
+  "description": "Collect, trade and battle with 319 classic tazos. 2D collection views, a skill-based 3D battle arena, and desktop apps for Windows, macOS, and Linux.",
+  "author": "Trading Tazos Game <support@medaclawarena.com>",
   "repository": "https://github.com/smouj/Trading-Tazos-Game",
   "homepage": "https://medaclawarena.com"
 }
