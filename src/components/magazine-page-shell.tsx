@@ -14,8 +14,8 @@ import { useI18n } from "@/lib/i18n"
 import { sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 import LanguageSwitcher from "@/components/ui/language-switcher"
 import {
-  BookOpen, Swords, BarChart3, ShoppingBag,
-  Target, Disc3, Layers, LogOut, Home, Settings, Shield, Coins,
+  BookOpen, Swords, BarChart3, ShoppingBag, Disc3,
+  Target, Layers, LogOut, Home, Settings, Shield, Coins,
 } from "lucide-react"
 
 type TabId = "battle" | "stats" | "shop" | "quests" | "collection" | "decks" | "settings"
