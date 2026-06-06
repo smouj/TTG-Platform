@@ -55,7 +55,7 @@ const FRANCHISE_FALLBACK_TEXT: Record<string, string> = {
 }
 
 export default function TazoDiscImage({
-  src, alt, size = 112, scale = 1.1,
+  src, alt, size = 112, scale = 1.16,
   borderWidth = 3, borderColor = "#1a1a1a", bgColor,
   className = "", isBack = false, number, franchiseSlug,
   overlay, lazy = true, onClick, onFlip,
@@ -104,15 +104,11 @@ export default function TazoDiscImage({
       }}
     >
       {/* Inner circle — clips the image */}
-      <div
-        className="tazo-disc-image-inner absolute inset-0 rounded-full overflow-hidden"
-        style={{ padding: "2px" }}
-      >
+      <div className="tazo-disc-image-inner absolute inset-0 rounded-full overflow-hidden">
         {renderImage ? (
           <div
             className="w-full h-full rounded-full overflow-hidden relative"
             style={{
-              // Use object-cover for full fill, with scale to compensate margins
               transform: `scale(${scale})`,
               transformOrigin: "center center",
               opacity: imgLoaded ? 1 : 0,

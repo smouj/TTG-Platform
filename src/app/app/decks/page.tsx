@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
-import { Layers, Plus, Trash2, Star, Swords, Edit3, Disc3, TrendingUp, Shield } from "lucide-react"
+import { Layers, Plus, Trash2, Star, Swords, Edit3, Disc3, TrendingUp, Shield, Zap } from "lucide-react"
 import DeckBuilder from "@/components/game/deck-builder"
 
 // ── Types ──────────────────────────────────────────────
@@ -232,14 +232,14 @@ export default function DecksPage() {
                         <span className="text-[10px] font-black text-[#1a1a1a]/50 uppercase tracking-wider">
                           {deck.tazoCount}/20 {t.decks_tazo_count}
                         </span>
-                        <span className="text-[10px] font-bold text-[#E3350D]">
-                          ⚔ {avgAtk} avg ATK
+                        <span className="text-[10px] font-bold text-[#E3350D] flex items-center gap-0.5">
+                          <Swords className="w-3 h-3" /> {avgAtk} ATK
                         </span>
-                        <span className="text-[10px] font-bold text-[#3B4CCA]">
-                          🛡 {avgDef} avg DEF
+                        <span className="text-[10px] font-bold text-[#3B4CCA] flex items-center gap-0.5">
+                          <Shield className="w-3 h-3" /> {avgDef} DEF
                         </span>
-                        <span className="text-[10px] font-bold text-[#FFCC00]">
-                          ⚡ {totalP} TP
+                        <span className="text-[10px] font-bold text-[#FFCC00] flex items-center gap-0.5">
+                          <Zap className="w-3 h-3" /> {totalP} TP
                         </span>
                       </div>
                     </div>

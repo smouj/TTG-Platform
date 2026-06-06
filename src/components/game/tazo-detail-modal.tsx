@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight } from 'lucide-react'
+import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target } from 'lucide-react'
 import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
 
 interface TazoDetailModalProps {
@@ -24,23 +24,23 @@ const FRANCHISE_COLORS: Record<string, { from: string; to: string; text: string;
 }
 
 const STAT_CONFIG = [
-  { key: 'attack' as const, label: 'ATK', color: '#E3350D', icon: '⚔️', bgColor: '#E3350D15' },
-  { key: 'defense' as const, label: 'DEF', color: '#3B4CCA', icon: '🛡️', bgColor: '#3B4CCA15' },
-  { key: 'resistance' as const, label: 'RESIST', color: '#6366F1', icon: '◆', bgColor: '#6366F115' },
-  { key: 'weight' as const, label: 'WEIGHT', color: '#FFCC00', icon: '⚖️', bgColor: '#FFCC0015' },
-  { key: 'stability' as const, label: 'STABLE', color: '#14B8A6', icon: '▰', bgColor: '#14B8A615' },
-  { key: 'spin' as const, label: 'SPIN', color: '#78C850', icon: '🌀', bgColor: '#78C85015' },
-  { key: 'control' as const, label: 'CONTROL', color: '#EC4899', icon: '⊙', bgColor: '#EC489915' },
-  { key: 'bounce' as const, label: 'BOUNCE', color: '#F97316', icon: '↯', bgColor: '#F9731615' },
-  { key: 'precision' as const, label: 'PRECISE', color: '#06B6D4', icon: '+', bgColor: '#06B6D415' },
+  { key: 'attack' as const, label: 'ATK', color: '#E3350D', bgColor: '#E3350D15' },
+  { key: 'defense' as const, label: 'DEF', color: '#3B4CCA', bgColor: '#3B4CCA15' },
+  { key: 'resistance' as const, label: 'RESIST', color: '#6366F1', bgColor: '#6366F115' },
+  { key: 'weight' as const, label: 'WEIGHT', color: '#FFCC00', bgColor: '#FFCC0015' },
+  { key: 'stability' as const, label: 'STABLE', color: '#14B8A6', bgColor: '#14B8A615' },
+  { key: 'spin' as const, label: 'SPIN', color: '#78C850', bgColor: '#78C85015' },
+  { key: 'control' as const, label: 'CONTROL', color: '#EC4899', bgColor: '#EC489915' },
+  { key: 'bounce' as const, label: 'BOUNCE', color: '#F97316', bgColor: '#F9731615' },
+  { key: 'precision' as const, label: 'PRECISE', color: '#06B6D4', bgColor: '#06B6D415' },
 ]
 
 const RARITY_STARS: Record<Rarity, string> = {
-  common: '★',
-  uncommon: '★★',
-  rare: '★★★',
-  ultra: '★★★★',
-  legendary: '★★★★★',
+  common: 'S',
+  uncommon: 'SS',
+  rare: 'SSS',
+  ultra: 'SSSS',
+  legendary: 'SSSSS',
 }
 
 const RARITY_HEX: Record<Rarity, string> = {
@@ -174,7 +174,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
             style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
             aria-label="Close"
           >
-            ✕
+            <X className="w-5 h-5" />
           </button>
 
           {/* Collection tag */}
@@ -266,11 +266,13 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                 }}
               >
                 {tazo.imageUrl ? (
-                  <img
-                    src={tazo.imageUrl}
-                    alt={tazo.displayName || tazo.name || "?"}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                  <div className="w-full h-full rounded-full overflow-hidden" style={{ transform: "scale(1.16)", transformOrigin: "center center" }}>
+                    <img
+                      src={tazo.imageUrl}
+                      alt={tazo.displayName || tazo.name || "?"}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
                 ) : (
                   <>
                     <img
@@ -324,7 +326,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                 letterSpacing: '2px',
               }}
             >
-              ⚡ Power Stats ⚡
+              <Zap className="w-3.5 h-3.5 inline text-[#FFCC00]" /> Power Stats <Zap className="w-3.5 h-3.5 inline text-[#FFCC00]" />
             </div>
 
             <div className="p-3 space-y-2">
@@ -339,7 +341,12 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                     border: '1px solid ' + stat.color + '30',
                   }}
                 >
-                  <span className="text-sm w-5 text-center">{stat.icon}</span>
+                  <span
+                    className="w-5 h-5 flex items-center justify-center text-[9px] font-black rounded-sm"
+                    style={{ background: stat.color + '30', color: stat.color, border: '1px solid ' + stat.color + '40' }}
+                  >
+                    {stat.label.slice(0, 2)}
+                  </span>
                   <span
                     className="text-[10px] font-black uppercase tracking-wider w-[52px]"
                     style={{ color: stat.color }}
@@ -377,7 +384,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                 style={{ borderTop: '3px dashed #1a1a1a20' }}
               >
                 <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#1a1a1a' }}>
-                  📊 Total Power
+                  <BarChart3 className="w-3.5 h-3.5 inline mr-1" /> Total Power
                 </span>
                 <span
                   className="text-lg font-black px-2 py-0.5 border-2 border-black"
@@ -404,7 +411,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
               }}
             >
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg">⚡</span>
+                <span className="text-lg inline-flex"><Zap className="w-5 h-5" style={{ color: '#E3350D' }} /></span>
                 <span
                   className="font-black text-base uppercase tracking-wide mag-stroke"
                   style={{
@@ -445,7 +452,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                   border: '2px solid #1a1a1a',
                 }}
               >
-                🔥 DIGIEVOLUTION 🔥
+                <Flame className="w-4 h-4 inline mr-1" /> DIGIEVOLUTION <Flame className="w-4 h-4 inline mr-1" />
               </div>
               <div className="flex items-center justify-center gap-2">
                 {tazo.evolutionFrom && (
@@ -529,7 +536,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                   border: '2px solid #1a1a1a',
                 }}
               >
-                💥 TRANSFORMATION 💥
+                <Sparkles className="w-4 h-4 inline mr-1" /> TRANSFORMATION <Sparkles className="w-4 h-4 inline mr-1" />
               </div>
               <div className="flex items-center justify-center gap-3">
                 {tazo.transformOf && (
@@ -598,7 +605,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                   border: '2px solid #1a1a1a',
                 }}
               >
-                ⚡ TYPE ADVANTAGES ⚡
+                <Zap className="w-3.5 h-3.5 inline mr-1" style={{ color: '#FFCB05' }} /> TYPE ADVANTAGES <Zap className="w-3.5 h-3.5 inline ml-1" style={{ color: '#FFCB05' }} />
               </div>
               <div className="flex flex-wrap gap-1.5 justify-center">
                 {(MINIMON_ADVANTAGES[tazo.combatType] || []).length > 0 ? (

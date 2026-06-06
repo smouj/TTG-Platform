@@ -164,11 +164,13 @@ export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps)
                 `}
               >
                 {tazo.imageUrl ? (
-                  <img
-                    src={tazo.imageUrl}
-                    alt={tazo.displayName || tazo.name || "..."}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                  <div className="w-full h-full rounded-full overflow-hidden" style={{ transform: "scale(1.16)", transformOrigin: "center center" }}>
+                    <img
+                      src={tazo.imageUrl}
+                      alt={tazo.displayName || tazo.name || "..."}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
                 ) : (
                   /* No front image — show tazo number on colored disc */
                   <>

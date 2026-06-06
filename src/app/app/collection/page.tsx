@@ -24,7 +24,7 @@ const FRANCHISE_GRADIENT: Record<string, string> = {
   dracobell: "linear-gradient(135deg, #FF6B00, #CC4400)",
 }
 const FRANCHISE_ICON: Record<string, string> = {
-  minimon: "⚡", cybermon: "🦖", dracobell: "🔥",
+  minimon: "M", cybermon: "C", dracobell: "D",
 }
 const RARITY_STARS: Record<string, string> = {
   common: "★", uncommon: "★★", rare: "★★★", ultra: "★★★★", legendary: "★★★★★",

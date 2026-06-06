@@ -177,7 +177,7 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
               }}
               // Just visual hint — actual tear is drag-based
             >
-              ✂️ DRAG ACROSS BAG TO TEAR!
+              DRAG ACROSS BAG TO TEAR!
             </button>
             <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.25em]">
               hold &amp; drag horizontally
@@ -208,7 +208,7 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
 
         {revealed && (
           <div className="px-6 py-2 bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
-            <span className="font-black text-sm text-[#1a1a1a] uppercase tracking-wider">✨ Tazo Revealed!</span>
+            <span className="font-black text-sm text-[#1a1a1a] uppercase tracking-wider">Tazo Revealed!</span>
           </div>
         )}
       </div>

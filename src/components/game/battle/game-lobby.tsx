@@ -47,7 +47,7 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
   const fColor = (f: string) => f === "minimon" ? "#FFCB05" : f === "cybermon" ? "#00A1E9" : "#FF6B00"
 
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
+    <div className="max-w-5xl mx-auto space-y-4">
 
       {/* ════════════ BANNER STRIP — matches stats/settings/quests ════════════ */}
       <div className="mag-card-yellow rounded-none px-4 py-3 flex flex-wrap items-center gap-3"

@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, Filter, CheckCircle, RefreshCw, Palette, Grid3X3, LayoutGrid, BookOpen, Star, ArrowUpDown, Package, Cuboid, FlipHorizontal } from 'lucide-react'
+import { Search, Filter, CheckCircle, RefreshCw, Palette, Grid3X3, LayoutGrid, BookOpen, Star, ArrowUpDown, Package, Cuboid, FlipHorizontal, X, Sparkles } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 import OnboardingBanner from './onboarding-banner'
 
@@ -327,19 +327,19 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
             >
               <SelectItem value="all" className="text-[11px] font-black uppercase">All Rarities</SelectItem>
               <SelectItem value="common" className="text-[11px] font-bold">
-                <span className="text-zinc-500">★ Common</span>
+                <span className="text-zinc-500"><Star className="w-3 h-3 inline mr-1 fill-current" /> Common</span>
               </SelectItem>
               <SelectItem value="uncommon" className="text-[11px] font-bold">
-                <span className="text-green-600">★★ Uncommon</span>
+                <span className="text-green-600"><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /> Uncommon</span>
               </SelectItem>
               <SelectItem value="rare" className="text-[11px] font-bold">
-                <span className="text-blue-600">★★★ Rare</span>
+                <span className="text-blue-600"><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /> Rare</span>
               </SelectItem>
               <SelectItem value="ultra" className="text-[11px] font-bold">
-                <span className="text-purple-600">★★★★ Ultra</span>
+                <span className="text-purple-600"><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /> Ultra</span>
               </SelectItem>
               <SelectItem value="legendary" className="text-[11px] font-bold">
-                <span className="text-amber-600">★★★★★ Legendary</span>
+                <span className="text-amber-600"><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /><Star className="w-3 h-3 inline mr-1 fill-current" /> Legendary</span>
               </SelectItem>
             </SelectContent>
           </Select>
@@ -365,7 +365,7 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
               }}
             >
               <SelectItem value="all" className="text-[11px] font-black uppercase">All Conditions</SelectItem>
-              <SelectItem value="mint" className="text-[11px] font-bold"><span className="text-emerald-600">✨ Mint</span></SelectItem>
+              <SelectItem value="mint" className="text-[11px] font-bold"><span className="text-emerald-600"><Sparkles className="w-3 h-3 inline mr-1" /> Mint</span></SelectItem>
               <SelectItem value="good" className="text-[11px] font-bold"><CheckCircle className="w-3.5 h-3.5 inline mr-1 text-[#22C55E]" /> Good</SelectItem>
               <SelectItem value="used" className="text-[11px] font-bold"><RefreshCw className="w-3.5 h-3.5 inline mr-1 text-[#F59E0B]" /> Used</SelectItem>
               <SelectItem value="worn" className="text-[11px] font-bold"><span className="text-orange-600">Worn</span></SelectItem>
@@ -395,8 +395,8 @@ export default function AlbumView({ onStatsUpdate }: AlbumViewProps) {
               }}
             >
               <SelectItem value="all" className="text-[11px] font-black uppercase">All Status</SelectItem>
-              <SelectItem value="owned" className="text-[11px] font-bold"><span className="text-green-600">✓ Owned</span></SelectItem>
-              <SelectItem value="missing" className="text-[11px] font-bold"><span className="text-red-600">✗ Missing</span></SelectItem>
+              <SelectItem value="owned" className="text-[11px] font-bold"><span className="text-green-600"><CheckCircle className="w-3 h-3 inline mr-1" /> Owned</span></SelectItem>
+              <SelectItem value="missing" className="text-[11px] font-bold"><span className="text-red-600"><X className="w-3 h-3 inline mr-1" /> Missing</span></SelectItem>
             </SelectContent>
           </Select>
 

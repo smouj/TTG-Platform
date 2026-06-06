@@ -481,7 +481,7 @@ export function ScannerView() {
                   TAZO SCANNER
                 </h2>
                 <p className="text-sm font-bold text-white drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]">
-                  ⚡ SCAN YOUR REAL TAZOS! ⚡
+                  <Zap className="w-4 h-4 inline text-[#FFCC00]" /> SCAN YOUR REAL TAZOS! <Zap className="w-4 h-4 inline text-[#FFCC00]" />
                 </p>
               </div>
             </div>
@@ -529,7 +529,7 @@ export function ScannerView() {
                             : 'bg-zinc-200 text-zinc-500'
                         }`}
                       >
-                        {isDone ? '✓' : s.num}
+                        {isDone ? <CheckCircle2 className="w-4 h-4" /> : s.num}
                       </span>
                       <span className="hidden sm:inline">{s.label}</span>
                     </div>
@@ -581,7 +581,7 @@ export function ScannerView() {
               {/* Decorative magazine callout */}
               <div className="speech-bubble mt-2 px-4 py-2">
                 <p className="text-xs font-black">
-                  📸 Pro tip: Lay tazos flat on a contrasting surface for best results!
+                  <Camera className="w-4 h-4 inline mr-1" /> Pro tip: Lay tazos flat on a contrasting surface for best results!
                 </p>
               </div>
 
@@ -627,7 +627,7 @@ export function ScannerView() {
               <div className="flex items-center gap-2">
                 <Scan className="h-5 w-5 text-green-400" />
                 <span className="text-sm font-black text-white tracking-wide">
-                  🔍 DETECTION VIEW
+                  <Scan className="w-4 h-4 inline mr-1" /> DETECTION VIEW
                 </span>
               </div>
               {imageDimensions && (

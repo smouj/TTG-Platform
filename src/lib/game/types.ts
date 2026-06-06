@@ -88,9 +88,9 @@ export const SOURCE_STATUS_CONFIG: Record<SourceStatus, { label: string; color: 
 export type ObtainedFrom = "bag" | "starter" | "scanner"
 
 export const OBTAINED_FROM_CONFIG: Record<ObtainedFrom, { label: string; icon: string; color: string; bg: string }> = {
-  bag: { label: "Bag", icon: "🎒", color: "#92400E", bg: "#FEF3C7" },
-  starter: { label: "Starter", icon: "🎁", color: "#1E3A5F", bg: "#DBEAFE" },
-  scanner: { label: "Scanned", icon: "📸", color: "#065F46", bg: "#D1FAE5" },
+  bag: { label: "Bag", icon: "B", color: "#92400E", bg: "#FEF3C7" },
+  starter: { label: "Starter", icon: "S", color: "#1E3A5F", bg: "#DBEAFE" },
+  scanner: { label: "Scanned", icon: "SC", color: "#065F46", bg: "#D1FAE5" },
 }
 
 // ---- Legacy combat types (for compatibility) ----
@@ -133,12 +133,12 @@ export const RARITY_CONFIG: Record<Rarity, { label: string; color: string; bgCol
 }
 
 export const CONDITION_CONFIG: Record<TazoCondition, { label: string; color: string; icon: string; effect: string }> = {
-  mint: { label: "Mint", color: "text-emerald-600", icon: "✨", effect: "+20% collection value" },
-  good: { label: "Good", color: "text-green-600", icon: "👍", effect: "Normal stats" },
-  used: { label: "Used", color: "text-yellow-600", icon: "🔄", effect: "-10% control" },
-  worn: { label: "Worn", color: "text-orange-600", icon: "⚔️", effect: "-20% spin, +15% veteran bonus" },
-  holo: { label: "Holographic", color: "text-cyan-600", icon: "🌈", effect: "+30% precision" },
-  metallic: { label: "Metallic", color: "text-slate-600", icon: "🛡️", effect: "+25% weight" },
+  mint: { label: "Mint", color: "text-emerald-600", icon: "M", effect: "+20% collection value" },
+  good: { label: "Good", color: "text-green-600", icon: "OK", effect: "Normal stats" },
+  used: { label: "Used", color: "text-yellow-600", icon: "U", effect: "-10% control" },
+  worn: { label: "Worn", color: "text-orange-600", icon: "W", effect: "-20% spin, +15% veteran bonus" },
+  holo: { label: "Holographic", color: "text-cyan-600", icon: "H", effect: "+30% precision" },
+  metallic: { label: "Metallic", color: "text-slate-600", icon: "MT", effect: "+25% weight" },
 }
 
 export const PHYSICAL_TYPE_CONFIG: Record<PhysicalType, { label: string; color: string }> = {

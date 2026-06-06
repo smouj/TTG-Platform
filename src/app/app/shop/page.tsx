@@ -9,7 +9,7 @@ import dynamic from "next/dynamic"
 import { useI18n } from "@/lib/i18n"
 import { useAuth } from "@/lib/auth-context"
 import Link from "next/link"
-import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart } from "lucide-react"
+import { ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles, Crosshair, Trophy, Calendar, Check, ShoppingCart, Scissors } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
 import type { BagData } from "@/components/game/bag-opener-3d"
 import { pickBagVariant } from "@/lib/bag-variants"
@@ -450,7 +450,7 @@ export default function BagShopPage() {
     return (
         <div className="max-w-2xl mx-auto py-6 px-4 text-center space-y-3">
           <h2 className="text-lg font-black uppercase tracking-wider text-[#1a1a1a]">
-            ✂️ Drag to tear open!
+            <Scissors className="w-4 h-4 inline mr-1" /> Drag to tear open!
           </h2>
           <p className="text-xs font-black text-zinc-400">
             {tearProgress < 0.3 ? "Drag your finger/mouse across the bag to rip it open..." :
