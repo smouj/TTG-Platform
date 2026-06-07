@@ -29,7 +29,7 @@ export function proxy(req: NextRequest) {
   const token = req.cookies.get("auth_token")?.value
   const { pathname } = req.nextUrl
 
-  if (ROOT_REDIRECTS[pathname]) {
+  if (ROOT_REDIRECTS[pathname] && !req.nextUrl.searchParams.has("tab")) {
     return NextResponse.redirect(new URL(ROOT_REDIRECTS[pathname], req.url), 307)
   }
 
