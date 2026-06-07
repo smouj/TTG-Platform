@@ -244,12 +244,12 @@ export default function CollectionPage() {
   const TOTAL_TOTAL = 349 // Same as global DB total
 
   return (
-    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6">
+    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-4">
       {/* ═══════════════════════════════════════════════ */}
       {/* ① COLLECTION HEADER                            */}
       {/* ═══════════════════════════════════════════════ */}
       <div
-        className="px-5 py-4 flex flex-wrap items-center gap-3 relative overflow-hidden"
+        className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
         style={{
           backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
           border: "3px solid #1a1a1a",
