@@ -9,6 +9,50 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const sellerId = searchParams.get('sellerId')
+    const mode = searchParams.get('mode') // '' = active, 'history' = completed
+
+    // ── History mode ──
+    if (mode === 'history') {
+      const authUser = await getAuthUser(request)
+      if (!authUser) return NextResponse.json({ error: 'Login required' }, { status: 401 })
+
+      const listings = await db.tradeListing.findMany({
+        where: {
+          status: { in: ['sold', 'cancelled'] },
+          OR: [{ sellerId: authUser.id }, { buyerId: authUser.id }],
+        },
+        orderBy: { soldAt: 'desc' },
+        take: 50,
+      })
+
+      const enriched = await Promise.all(listings.map(async (l) => {
+        const [seller, buyer, ut] = await Promise.all([
+          db.user.findUnique({ where: { id: l.sellerId }, select: { id: true, name: true, displayName: true } }),
+          l.buyerId ? db.user.findUnique({ where: { id: l.buyerId }, select: { id: true, name: true, displayName: true } }) : null,
+          db.userTazo.findUnique({
+            where: { id: l.userTazoId },
+            include: { tazo: {
+              select: {
+                id: true, name: true, displayName: true, imageUrl: true, rarity: true,
+                franchise: { select: { name: true, slug: true, color: true } },
+              },
+            }},
+          }),
+        ])
+        return {
+          id: l.id, price: l.price, status: l.status,
+          createdAt: l.createdAt, soldAt: l.soldAt,
+          type: l.sellerId === authUser.id ? 'sold' : 'bought',
+          seller: seller || { id: l.sellerId, name: 'Unknown' },
+          buyer: buyer || null,
+          userTazo: ut ? { ...ut, tazo: ut.tazo } : null,
+        }
+      }))
+
+      return NextResponse.json({ listings: enriched })
+    }
+
+    // ── Active mode (default) ──
 
     // Fetch listings
     const listings = await db.tradeListing.findMany({

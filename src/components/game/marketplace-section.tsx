@@ -213,9 +213,86 @@ function SellTazoCard({ ut, onSell, selling }: {
 }
 
 // ── Marketplace Main ───────────────────────────────────
+// ── History sub-component ──────────────────────────────
+function HistoryTab({ token }: { token: string | null }) {
+  const [history, setHistory] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!token) return
+    fetch('/api/trade?mode=history', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => { setHistory(d.listings || []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [token])
+
+  if (loading) return (
+    <div className="text-center py-12">
+      <Loader2 className="w-8 h-8 mx-auto text-[#1a1a1a]/8 animate-spin" />
+    </div>
+  )
+
+  if (history.length === 0) return (
+    <div className="text-center py-12">
+      <Clock className="w-12 h-12 mx-auto text-[#1a1a1a]/8" />
+      <p className="text-sm font-bold text-[#1a1a1a]/20">No transaction history</p>
+      <p className="text-[10px] font-bold text-[#1a1a1a]/10">Buy or sell a tazo to see it here</p>
+    </div>
+  )
+
+  return (
+    <div className="space-y-2">
+      {history.map((h: any) => {
+        const isBought = h.type === 'bought'
+        const bounty = isBought ? h.buyer : h.seller
+        return (
+          <div key={h.id} className="flex items-center gap-3 p-3 bg-white border-2 border-[#1a1a1a]/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
+            {/* Tazo image */}
+            <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#1a1a1a]/10"
+              style={{
+                background: h.userTazo?.tazo?.franchise?.color || '#1a1a1a',
+              }}>
+              {h.userTazo?.tazo?.imageUrl && (
+                <img src={h.userTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain scale-110" />
+              )}
+            </div>
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 border rounded ${
+                  h.status === 'sold' ? 'bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20' :
+                  'bg-zinc-100 text-[#1a1a1a]/30 border-[#1a1a1a]/10'
+                }`}>
+                  {h.status}
+                </span>
+                <span className="text-[10px] font-black text-[#1a1a1a] truncate">
+                  {h.userTazo?.tazo?.displayName || h.userTazo?.tazo?.name || 'Unknown tazo'}
+                </span>
+              </div>
+              <p className="text-[8px] font-bold text-[#1a1a1a]/30 mt-0.5">
+                {isBought ? `Bought from ${bounty?.displayName || bounty?.name || '?'}` :
+                 h.status === 'sold' ? `Sold to ${h.buyer?.displayName || h.buyer?.name || '?'}` :
+                 `Cancelled listing`}
+                {' · '}{new Date(h.soldAt || h.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+            {/* Price */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Coins className="w-3 h-3 text-[#FFCC00]" />
+              <span className={`text-xs font-black ${isBought ? 'text-[#E3350D]' : 'text-[#22C55E]'}`}>
+                {isBought ? '-' : '+'}{h.price}
+              </span>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function MarketplaceSection({ credits: initialCredits }: { credits: number }) {
   const { user, token } = useAuth()
-  const [tab, setTab] = useState<"buy" | "sell">("buy")
+  const [tab, setTab] = useState<"buy" | "sell" | "history">("buy")
   const [listings, setListings] = useState<TradeListing[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -348,6 +425,14 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
           }`}>
           <Tag className="w-3.5 h-3.5 inline mr-1" />Sell
         </button>
+        <button onClick={() => setTab("history")}
+          className={`flex-1 py-2.5 text-xs font-black uppercase border-3 transition-all ${
+            tab === "history"
+              ? "bg-[#1a1a1a] text-[#3B82F6] border-[#1a1a1a]"
+              : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+          }`}>
+          <Clock className="w-3.5 h-3.5 inline mr-1" />History
+        </button>
       </div>
 
       {/* Error */}
@@ -445,6 +530,11 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
             </div>
           )}
         </div>
+      )}
+
+      {/* ════════════════════════ HISTORY TAB ════════════════════════ */}
+      {tab === "history" && (
+        <HistoryTab token={token} />
       )}
     </div>
   )
