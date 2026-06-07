@@ -17,8 +17,7 @@ import { useAuth } from "@/lib/auth-context"
 import {
   Download, Globe, Monitor, Apple, Terminal,
   Zap, Star, Disc3, Swords, Medal, PackageOpen,
-  BookOpen, ShoppingBag, BarChart3, Dices,
-  ChevronLeft, ChevronRight, ExternalLink,
+  ExternalLink,
   Trophy, Coins, Package, ArrowLeft, Loader2,
   Crown, X, ArrowUp, HelpCircle
 } from "lucide-react"
