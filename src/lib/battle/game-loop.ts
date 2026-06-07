@@ -1,53 +1,22 @@
 // ============================================================
-// Trading Tazos Game — Battle Game Loop
-// Professional 3D tazo battle state machine.
-// Manages: LOBBY → INTRO → AIM → POWER → SPIN → LAUNCH → PHYSICS → RESOLVE → ...
+// Trading Tazos Game — Battle Game Loop v3
+// Vertical Slam Throw mechanics (tazo real physics).
+//
+// CORRECT MECHANIC (not air hockey / chapas):
+//   1. Both players stake 1 tazo face-down in the center circle.
+//   2. On your turn, pick a launcher tazo from your deck.
+//   3. The launcher appears in the air ABOVE the circle.
+//   4. Aim reticle → charge vertical force → adjust tilt & spin.
+//   5. Release → tazo falls from above, slams vertically.
+//   6. Impact tries to flip face-down staked tazos face-up.
+//   7. Flip your own = secure (+1pt). Flip rival = capture (+2pts).
+//   8. First to 5 points wins.
 // ============================================================
 
-import type { BattleTurn, BattleFinalResult, TazoBattleStats, ThrowResult, CollisionEvent } from "./battle-types"
+// ────────────────────────────────────────
+// Tazo finish & creature variants (shared)
+// ────────────────────────────────────────
 
-// ─── Back-Art URLs ───
-const BACK_ARTS: Record<string, string> = {
-  minimon: "/tazos-artgen/backs/minimon-back.png",
-  cybermon: "/tazos-artgen/backs/cybermon-back.png",
-  dracobell: "/tazos-artgen/backs/dracobell-back.png",
-}
-
-// ─── New Game States ───
-export type GameState =
-  | "lobby"          // Pre-battle: mode select, deck setup
-  | "intro"           // Camera flyover, player vs opponent reveal
-  | "round_start"     // New round begins
-  | "player_aim"      // Player aims throw direction in 3D
-  | "player_power"    // Player sets throw power (timing)
-  | "player_spin"     // Player selects spin type
-  | "throwing"        // Launch animation in progress
-  | "physics"         // Tazo sliding/bouncing/colliding
-  | "resolve"         // Results of throw: hits, captures, ring-outs
-  | "opponent_turn"   // AI or PvP opponent aims and throws
-  | "round_end"       // Round summary
-  | "match_end"       // Final results
-  | "paused"
-
-// ─── Game Mode ───
-export type PlayMode = "practice" | "pvp_ranked" | "pvp_friend"
-
-// ─── AI Difficulty ───
-export type AIDifficulty = "novice" | "skilled" | "master"
-
-// ─── Spin Type ───
-export type SpinType = "topspin" | "backspin" | "sidespin" | "none"
-
-// ─── Arena Config (3D space) ───
-export interface Arena3DConfig {
-  radius: number        // Arena bowl radius in world units
-  surfaceFriction: number
-  wallBounceFactor: number
-  discToDiscBounce: number
-  ringOutThreshold: number  // distance from center to be "out"
-}
-
-// ─── Tazo Card (for lobby/deck) ───
 export type TazoFinish =
   | "normal"
   | "matte"
@@ -71,6 +40,10 @@ export type TazoCreatureVariant =
   | "first_edition"
   | "misprint"
 
+// ────────────────────────────────────────
+// Tazo Card (deck / lobby / API)
+// ────────────────────────────────────────
+
 export interface TazoCard {
   id: string
   name: string
@@ -78,22 +51,186 @@ export interface TazoCard {
   franchise: "minimon" | "cybermon" | "dracobell"
   imageUrl: string | null
   shinyImageUrl?: string | null
-  attack: number; defense: number; resistance: number
-  weight: number; stability: number; spin: number
-  control: number; bounce: number; precision: number
+  /** Vertical slam impact force */
+  attack: number
+  /** Resistance to being flipped */
+  defense: number
+  /** Staying in circle after impact */
+  resistance: number
+  /** Mass → more slam force, harder to lift */
+  weight: number
+  /** Auto-recovery from wobble */
+  stability: number
+  /** Torque on impact (spin transfer) */
+  spin: number
+  /** Reticle precision & tilt accuracy */
+  control: number
+  /** Rebound after slam (low = sticks, high = bounces away) */
+  bounce: number
+  /** Timing window for perfect slam */
+  precision: number
   role?: string | null
   rarity?: string
   finish?: TazoFinish
   creatureVariant?: TazoCreatureVariant
 }
 
-// ─── Player State ───
+// ────────────────────────────────────────
+// Staked Tazo (face-down, waiting to be flipped)
+// ────────────────────────────────────────
+
+export type StakeState =
+  | "face_down"        // Waiting to be hit
+  | "wobbling"         // Hit but didn't flip — tense moment
+  | "half_flip"        // Almost flipped, might recover
+  | "face_up"          // Successfully flipped!
+  | "out_of_circle"    // Knocked out of ring — doesn't count
+  | "secured"          // Your own tazo flipped = safe
+  | "captured"         // Rival tazo flipped = you captured it
+
+export interface StakedTazo {
+  id: string
+  tazoName: string
+  franchise: string
+  imageUrl: string
+  backImageUrl: string
+  owner: "player" | "opponent"
+  /** Position in world coords (x, y=table_top, z) */
+  position: [number, number, number]
+  state: StakeState
+  wobbleIntensity: number   // 0-1, decays over time
+  /** Whether this tazo has already been scored this round */
+  scored: boolean
+}
+
+// ────────────────────────────────────────
+// Airborne Launcher Tazo
+// ────────────────────────────────────────
+
+export type LauncherState =
+  | "idle"          // Not visible
+  | "aiming"        // Suspended above, reticle active
+  | "charging"      // Rising higher as player charges
+  | "falling"       // In freefall toward circle
+  | "impacting"     // Contact flash frame
+  | "landed"        // On table, resolving
+
+export interface AirborneTazo {
+  id: string
+  tazoName: string
+  franchise: string
+  imageUrl: string
+  backImageUrl: string
+  finish?: string
+  state: LauncherState
+  /** World position (y = height above table) */
+  position: [number, number, number]
+  /** Current tilt [pitch, yaw, roll] in radians */
+  tilt: [number, number, number]
+  /** Spin angular velocity [x, y, z] */
+  angularVelocity: [number, number, number]
+  /** Current charge level 0-1 */
+  charge: number
+  /** Landing target (x, z) */
+  targetX: number
+  targetZ: number
+  owner: "player" | "opponent"
+}
+
+// ────────────────────────────────────────
+// Slam Parameters (player input)
+// ────────────────────────────────────────
+
+export interface SlamParams {
+  tazoId: string
+  /** Where the tazo will land — normalized -1..1 in arena space */
+  impactX: number
+  impactZ: number
+  /** Vertical force 0..1 (height + downward speed) */
+  verticalForce: number
+  /** Timing accuracy 0..1 (1 = perfect release window) */
+  timingAccuracy: number
+  /** Tilt direction */
+  tilt: TiltDirection
+  /** Tilt intensity 0..1 */
+  tiltIntensity: number
+  /** Spin intensity 0..1 */
+  spinIntensity: number
+  /** Aim precision 0..1 */
+  aimPrecision: number
+}
+
+export type TiltDirection = "flat" | "forward" | "backward" | "left" | "right"
+
+// ────────────────────────────────────────
+// Game Phases
+// ────────────────────────────────────────
+
+export type GameState =
+  | "lobby"              // Mode select, deck setup
+  | "intro"              // Camera flyover, opponent reveal
+  | "round_start"        // Round begins
+  | "placing_stakes"     // Both players select tazo to stake
+  | "player_aim"         // Player positions reticle over circle
+  | "player_charge"      // Player holds to charge vertical force
+  | "player_tilt"        // Player adjusts tilt & spin
+  | "slamming"           // Tazo falls — gravity animation
+  | "impact"             // Contact! Physics resolves
+  | "resolve_impact"     // Show result: flip / wobble / miss
+  | "opponent_aim"       // AI aims
+  | "opponent_slam"      // AI slams
+  | "round_end"          // Score update, next round
+  | "match_end"          // Final results
+  | "paused"
+
+// ────────────────────────────────────────
+// Game Mode & Difficulty
+// ────────────────────────────────────────
+
+export type PlayMode = "practice" | "pvp_ranked" | "pvp_friend"
+export type AIDifficulty = "novice" | "skilled" | "master"
+
+// ────────────────────────────────────────
+// Arena Config (vertical slam)
+// ────────────────────────────────────────
+
+export interface Arena3DConfig {
+  /** Arena bowl radius in world units */
+  radius: number
+  /** Gravity acceleration for falling tazos (units/s²) */
+  gravity: number
+  /** How much velocity is lost on impact with table */
+  impactDamping: number
+  /** Ring-out distance from center */
+  ringOutThreshold: number
+  /** Minimum force to trigger any effect */
+  minFlipForce: number
+  /** Max launch height (world units) */
+  maxLaunchHeight: number
+  /** Friction when tazo slides on table after impact */
+  tableFriction: number
+}
+
+export const DEFAULT_ARENA_3D: Arena3DConfig = {
+  radius: 4.2,
+  gravity: 22,
+  impactDamping: 0.35,
+  ringOutThreshold: 4.2,
+  minFlipForce: 0.18,
+  maxLaunchHeight: 7,
+  tableFriction: 0.88,
+}
+
+// ────────────────────────────────────────
+// Player State
+// ────────────────────────────────────────
+
 export interface PlayerGameState {
   id: "player" | "opponent"
   name: string
   deck: TazoCard[]
-  hp: number
-  maxHp: number
+  score: number
+  maxScore: number
   tazosRemaining: number
   captured: number
   currentTazo: TazoCard | null
@@ -101,50 +238,32 @@ export interface PlayerGameState {
   aiDifficulty?: AIDifficulty
 }
 
-// ─── Throw Parameters ───
-export interface ThrowParams {
-  tazoId: string
-  aimX: number; aimY: number    // normalized -1..1 in arena space
-  power: number                  // 0..1
-  powerAccuracy: number          // 0..1 (1 = perfect timing)
-  spinType: SpinType
-  accuracyPenalty: number        // 0..1 (0 = perfect aim)
-  timestamp: number
-}
+// ────────────────────────────────────────
+// Round / Match Results
+// ────────────────────────────────────────
 
-// ─── Physics Disc State ───
-export interface DiscPhysics {
-  id: string
-  tazoName: string
-  franchise: string
-  imageUrl: string | null
-  backImageUrl: string | null
-  finish?: string
-  position: [number, number, number]   // x, y (height), z
-  velocity: [number, number, number]
-  rotation: [number, number, number]   // euler angles
-  angularVelocity: [number, number, number]
-  facing: "front" | "back"
-  state: "sliding" | "spinning" | "stopped" | "flipped" | "out_of_bounds" | "captured"
-  owner: "player" | "opponent"
-}
-
-// ─── Round Result ───
-export interface RoundResult {
-  roundNumber: number
-  throwerId: "player" | "opponent"
-  discsMoved: string[]
-  discsFlipped: string[]
-  discsCaptured: string[]
-  discsRingOut: string[]
-  hpDealt: number
+export interface ImpactResult {
+  flipped: string[]        // Tazo ids flipped face-up
+  wobbled: string[]        // Wobbled but stayed down
+  ringOut: string[]        // Knocked out of circle
+  doubleFlip: boolean      // Both staked tazos flipped
+  badLanding: boolean      // Launcher landed badly
+  impactForce: number      // 0-1 actual force at contact
+  edgeBonus: number        // Multiplier for edge hit
   description: string
 }
 
-// ─── Match Result ───
+export interface RoundResult {
+  roundNumber: number
+  throwerId: "player" | "opponent"
+  impact: ImpactResult
+  playerScore: number
+  opponentScore: number
+}
+
 export interface MatchResult {
   winner: "player" | "opponent" | "draw"
-  victoryType: "all_captured" | "hp_depleted" | "forfeit" | "draw"
+  victoryType: "points" | "all_captured" | "forfeit" | "draw"
   playerScore: number
   opponentScore: number
   rounds: RoundResult[]
@@ -155,59 +274,45 @@ export interface MatchResult {
   summary: string
 }
 
-// ─── Match Config ───
 export interface MatchConfig {
   mode: PlayMode
   aiDifficulty: AIDifficulty
   arena: Arena3DConfig
-  rounds: number        // 0 = single elimination match
+  scoreToWin: number     // Default 5
   playerDeck: TazoCard[]
   opponentDeck: TazoCard[]
 }
 
-// ─── DEFAULT ARENA ───
-export const DEFAULT_ARENA_3D: Arena3DConfig = {
-  radius: 4.2,
-  surfaceFriction: 0.94,
-  wallBounceFactor: 0.5,
-  discToDiscBounce: 0.7,
-  ringOutThreshold: 4.5,
-}
+// ────────────────────────────────────────
+// Match Factory
+// ────────────────────────────────────────
 
-// ─── Game loop factory ───
-export function createMatch(config: MatchConfig): {
-  state: GameState
-  config: MatchConfig
-  player: PlayerGameState
-  opponent: PlayerGameState
-  currentRound: number
-  discStates: DiscPhysics[]
-  roundHistory: RoundResult[]
-  turnNumber: number
-} {
-  const playerDeck = config.playerDeck.slice(0, 5)
-  const opponentDeck = config.opponentDeck.slice(0, 5)
+export function createMatch(config: MatchConfig) {
+  const playerDeck = config.playerDeck
+  const opponentDeck = config.opponentDeck
 
   return {
-    state: "lobby",
+    state: "lobby" as GameState,
     config,
     player: {
-      id: "player",
+      id: "player" as const,
       name: "You",
       deck: playerDeck,
-      hp: 100,
-      maxHp: 100,
+      score: 0,
+      maxScore: config.scoreToWin,
       tazosRemaining: playerDeck.length,
       captured: 0,
       currentTazo: null,
       isAI: false,
     },
     opponent: {
-      id: "opponent",
-      name: config.mode === "practice" ? `AI (${config.aiDifficulty})` : "Opponent",
+      id: "opponent" as const,
+      name: config.mode === "practice"
+        ? `AI (${config.aiDifficulty})`
+        : "Opponent",
       deck: opponentDeck,
-      hp: 100,
-      maxHp: 100,
+      score: 0,
+      maxScore: config.scoreToWin,
       tazosRemaining: opponentDeck.length,
       captured: 0,
       currentTazo: null,
@@ -215,318 +320,397 @@ export function createMatch(config: MatchConfig): {
       aiDifficulty: config.aiDifficulty,
     },
     currentRound: 0,
-    discStates: [],
-    roundHistory: [],
+    stakedTazos: [] as StakedTazo[],
+    airborneTazo: null as AirborneTazo | null,
+    roundHistory: [] as RoundResult[],
     turnNumber: 0,
   }
 }
 
-// ─── Throw physics simulation ───
-export function simulateThrow(
-  tazo: TazoCard,
-  throwParams: ThrowParams,
-  existingDiscs: DiscPhysics[],
-  arena: Arena3DConfig
-): { discs: DiscPhysics[]; result: RoundResult } {
-  const { power, aimX, aimY, spinType, accuracyPenalty } = throwParams
-  
-  // Base velocity from power
-  const baseSpeed = 2 + power * 8 // 2-10 units/sec
-  
-  // Accuracy affects direction
-  const aimError = accuracyPenalty * 0.6
-  const actualAimX = aimX + (Math.random() - 0.5) * aimError
-  const actualAimY = aimY + (Math.random() - 0.5) * aimError
-  
-  // Direction vector (normalized)
-  const dirLen = Math.sqrt(actualAimX * actualAimX + actualAimY * actualAimY)
-  const normX = dirLen > 0 ? actualAimX / dirLen : 0
-  const normZ = dirLen > 0 ? actualAimY / dirLen : 1
-  
-  // Spin affects velocity and bounce
-  let spinVelocity: [number, number, number] = [0, 0, 0]
-  let bounceMod = 1.0
-  if (spinType === "topspin") {
-    spinVelocity = [0, 0, -power * 3]
-    bounceMod = 1.2
-  } else if (spinType === "backspin") {
-    spinVelocity = [0, 0, power * 3]
-    bounceMod = 0.6
-  } else if (spinType === "sidespin") {
-    spinVelocity = [power * 3, 0, 0]
-    bounceMod = 0.9
-  }
+// ────────────────────────────────────────
+// Back-Art URLs
+// ────────────────────────────────────────
 
-  const velocity: [number, number, number] = [
-    normX * baseSpeed,
-    0,
-    normZ * baseSpeed,
-  ]
-
-  const disc: DiscPhysics = {
-    id: tazo.id,
-    tazoName: tazo.name,
-    franchise: tazo.franchise,
-    imageUrl: tazo.imageUrl,
-    backImageUrl: BACK_ARTS[tazo.franchise] || null,
-    position: [normX * (arena.radius * 0.6), 0.08, 0.5 * arena.radius],
-    velocity,
-    rotation: [0, spinVelocity[2] > 0 ? Math.PI / 6 : -Math.PI / 6, 0],
-    angularVelocity: spinVelocity,
-    facing: "front",
-    state: "sliding",
-    owner: "player",
-  }
-
-  // Simulate slide/decay
-  const simSteps = 60
-  const dt = 0.016
-  let currentPos = [...disc.position] as [number, number, number]
-  let currentVel = [...disc.velocity] as [number, number, number]
-  const flippedDiscs: string[] = []
-  const movedDiscs: string[] = []
-
-  for (let step = 0; step < simSteps; step++) {
-    // Apply friction
-    currentVel[0] *= arena.surfaceFriction
-    currentVel[2] *= arena.surfaceFriction
-    
-    // Update position
-    currentPos[0] += currentVel[0] * dt
-    currentPos[2] += currentVel[2] * dt
-    
-    // Check bounce off walls
-    const distFromCenter = Math.sqrt(currentPos[0] * currentPos[0] + currentPos[2] * currentPos[2])
-    if (distFromCenter > arena.radius) {
-      // Bounce inward
-      const nx = -currentPos[0] / distFromCenter
-      const nz = -currentPos[2] / distFromCenter
-      const dot = currentVel[0] * nx + currentVel[2] * nz
-      currentVel[0] = (currentVel[0] - 2 * dot * nx) * arena.wallBounceFactor * bounceMod
-      currentVel[2] = (currentVel[2] - 2 * dot * nz) * arena.wallBounceFactor * bounceMod
-      currentPos[0] += currentVel[0] * dt * 2
-      currentPos[2] += currentVel[2] * dt * 2
-    }
-    
-    // Check collisions with existing discs
-    for (const existing of existingDiscs) {
-      if (existing.state === "captured" || existing.state === "out_of_bounds") continue
-      const dx = currentPos[0] - existing.position[0]
-      const dz = currentPos[2] - existing.position[2]
-      const dist = Math.sqrt(dx * dx + dz * dz)
-      const minDist = 0.5 // disc radius approximately
-      
-      if (dist < minDist && dist > 0.01) {
-        // Collision! Resolve
-        const overlap = minDist - dist
-        const pnx = dx / dist
-        const pnz = dz / dist
-        
-        // Push existing disc
-        const existingVel = existing.velocity
-        const relSpeed = Math.abs(currentVel[0] * pnx + currentVel[2] * pnz) +
-          Math.abs(existingVel[0] * pnx + existingVel[2] * pnz)
-        
-        // Move existing disc
-        existing.position[0] -= pnx * overlap * 0.5
-        existing.position[2] -= pnz * overlap * 0.5
-        currentPos[0] += pnx * overlap * 0.5
-        currentPos[2] += pnz * overlap * 0.5
-        
-        // Transfer momentum
-        const impulse = relSpeed * arena.discToDiscBounce
-        existing.velocity[0] += pnx * impulse * (power * 0.5)
-        existing.velocity[2] += pnz * impulse * (power * 0.5)
-        
-        existing.state = "sliding"
-        movedDiscs.push(existing.id)
-        
-        // Check if existing disc gets pushed out
-        const edistFromCenter = Math.sqrt(
-          existing.position[0] * existing.position[0] +
-          existing.position[2] * existing.position[2]
-        )
-        if (edistFromCenter > arena.ringOutThreshold) {
-          existing.state = "out_of_bounds"
-        }
-        
-        // Strong hit might flip
-        if (power > 0.6 && Math.random() < power * 0.5) {
-          existing.facing = existing.facing === "front" ? "back" : "front"
-          existing.state = "flipped"
-          flippedDiscs.push(existing.id)
-        }
-      }
-    }
-    
-    // Stop if very slow
-    const speed = Math.sqrt(currentVel[0] * currentVel[0] + currentVel[2] * currentVel[2])
-    if (speed < 0.05) {
-      currentVel[0] = 0
-      currentVel[2] = 0
-      break
-    }
-  }
-
-  disc.position = currentPos
-  disc.velocity = currentVel
-  disc.state = Math.sqrt(currentVel[0] * currentVel[0] + currentVel[2] * currentVel[2]) < 0.05 
-    ? "stopped" : "sliding"
-
-  // Check ring-out for thrown disc
-  const finalDist = Math.sqrt(currentPos[0] * currentPos[0] + currentPos[2] * currentPos[2])
-  if (finalDist > arena.ringOutThreshold) {
-    disc.state = "out_of_bounds"
-  }
-
-  // Build captured (flipped + stopped discs)
-  const captured: string[] = []
-  for (const e of existingDiscs) {
-    if (e.state === "flipped" || e.state === "out_of_bounds") {
-      captured.push(e.id)
-      e.state = "captured"
-    }
-  }
-  // Ring-out on thrown disc = no capture
-  if (disc.state !== "out_of_bounds") {
-    existingDiscs.push(disc)
-  }
-
-  const result: RoundResult = {
-    roundNumber: 1,
-    throwerId: "player",
-    discsMoved: movedDiscs,
-    discsFlipped: flippedDiscs,
-    discsCaptured: captured,
-    discsRingOut: disc.state === "out_of_bounds" ? [disc.id] : [],
-    hpDealt: Math.round(power * 30) + captured.length * 10,
-    description: captured.length > 1
-      ? `${captured.length} tazos captured!`
-      : captured.length === 1
-        ? "Tazo captured!"
-        : disc.state === "out_of_bounds"
-          ? "Ring out!"
-          : "Nice aim!",
-  }
-
-  return { discs: existingDiscs, result }
+const BACK_ARTS: Record<string, string> = {
+  minimon: "/tazos-artgen/backs/minimon-back.png",
+  cybermon: "/tazos-artgen/backs/cybermon-back.png",
+  dracobell: "/tazos-artgen/backs/dracobell-back.png",
 }
 
-// ─── AI Decision Engine ───
-export function generateAIMove(
+// ────────────────────────────────────────
+// Vertical Slam Simulation
+// ────────────────────────────────────────
+
+/**
+ * Simulate a vertical slam — tazo falls from above onto face-down staked tazos.
+ * Returns the new staked tazo states and the impact result.
+ */
+export function simulateSlam(
+  launcher: TazoCard,
+  slam: SlamParams,
+  staked: StakedTazo[],
+  arena: Arena3DConfig,
+  thrower: "player" | "opponent"
+): { staked: StakedTazo[]; result: ImpactResult } {
+  const {
+    impactX, impactZ, verticalForce,
+    timingAccuracy, tilt, tiltIntensity,
+    spinIntensity, aimPrecision,
+  } = slam
+
+  // ── 1. AIM: Apply precision error ──
+  const aimError = (1 - aimPrecision) * 0.55
+  const actualX = impactX + (Math.random() - 0.5) * aimError
+  const actualZ = impactZ + (Math.random() - 0.5) * aimError
+
+  // ── 2. FORCE: Timing affects effective force ──
+  const timingMultiplier = 0.4 + timingAccuracy * 0.6  // 0.4-1.0
+  const effectiveForce = verticalForce * timingMultiplier
+
+  // ── 3. Calculate slam power ──
+  //   attack: raw impact stat of launcher
+  //   weight: adds momentum proportional to mass
+  //   effectiveForce: player's charge + timing
+  const launcherMass = 0.7 + launcher.weight / 250
+  const launchHeight = arena.maxLaunchHeight * (0.2 + effectiveForce * 0.8)
+  const impactVelocityY = Math.sqrt(2 * arena.gravity * launchHeight)
+  const slamPower = (impactVelocityY * launcherMass) / 30  // Normalize to ~0-1
+
+  // ── 4. TILT: Affects edge-hit chance ──
+  const isEdgeAttack = tilt !== "flat" && tiltIntensity > 0.25
+  const edgeChance = isEdgeAttack ? 0.35 + tiltIntensity * 0.45 : 0.1
+  const hitsEdge = Math.random() < edgeChance
+
+  // ── 5. SPIN: Adds torque, increases chaos ──
+  const spinTorque = spinIntensity * launcher.spin / 100
+
+  // ── 6. Process each staked tazo ──
+  const flipped: string[] = []
+  const wobbled: string[] = []
+  const ringOut: string[] = []
+  const newStaked = staked.map(st => {
+    if (st.state === "secured" || st.state === "captured") return st
+
+    // Distance from impact point to staked tazo center
+    const dx = actualX - st.position[0]
+    const dz = actualZ - st.position[2]
+    const dist = Math.sqrt(dx * dx + dz * dz)
+
+    // Impact degrades with distance
+    const distFalloff = Math.max(0, 1 - dist / 0.9)  // 0 at >0.9 units
+    if (distFalloff < 0.05) return st  // Too far, no effect
+
+    // ── Flip Score ──
+    const edgeBonus = (hitsEdge && dist < 0.55) ? 1.5 : 0.85
+    const distBonus = 1 - dist * 0.5   // Closer = more flip
+    const spinBonus = 1 + spinTorque * 0.4
+
+    // Attacker stats
+    const attackFactor = launcher.attack / 100  // 0-1
+    const weightFactor = launcher.weight / 100   // 0-1
+
+    // Defender stats — own tazos are easier to flip
+    const ownTazo = st.owner === thrower
+    const defenseFactor = ownTazo ? 0.65 : (1 - 20 / 100)
+    const resistFactor = 1 - 15 / 100
+    const stabilityFactor = 1 - 60 / 100
+
+    const flipScore =
+      (slamPower * 0.35) +
+      (attackFactor * 0.20) +
+      (weightFactor * 0.12) +
+      (edgeBonus * 0.15) +
+      (distBonus * 0.08) +
+      (spinBonus * 0.10) -
+      (defenseFactor * 0.08) -
+      (resistFactor * 0.06) -
+      (stabilityFactor * 0.06)
+
+    // ── Bounce check (knock out of circle) ──
+    const bounceChance = launcher.bounce / 120 + slamPower * 0.15
+    let knockedOut = false
+    if (slamPower > 0.4 && Math.random() < bounceChance) {
+      const stDistFromCenter = Math.sqrt(
+        st.position[0] ** 2 + st.position[2] ** 2
+      )
+      const pushDist = slamPower * 1.2
+      const newDist = stDistFromCenter + pushDist
+      if (newDist > arena.ringOutThreshold) {
+        knockedOut = true
+      }
+    }
+
+    // ── Resolve ──
+    const threshold = 0.32  // Flip threshold
+    const wobbleThreshold = 0.18
+
+    if (knockedOut) {
+      ringOut.push(st.id)
+      return { ...st, state: "out_of_circle" as StakeState, wobbleIntensity: 0 }
+    }
+
+    if (flipScore > threshold) {
+      // FLIPPED!
+      flipped.push(st.id)
+      const newState: StakeState = st.owner === thrower ? "secured" : "captured"
+      return { ...st, state: newState, wobbleIntensity: 0, scored: true }
+    }
+
+    if (flipScore > wobbleThreshold) {
+      // WOBBLED — tense but stays face-down
+      wobbled.push(st.id)
+      return {
+        ...st,
+        state: "wobbling" as StakeState,
+        wobbleIntensity: flipScore * 1.5,
+      }
+    }
+
+    // MISS — barely moved
+    return { ...st, wobbleIntensity: 0 }
+  })
+
+  // ── 7. Bad landing check ──
+  const badLanding =
+    effectiveForce < 0.2 ||
+    (tiltIntensity > 0.75 && Math.random() < 0.3) ||
+    (timingAccuracy < 0.25 && Math.random() < 0.4)
+
+  // ── 8. Build result ──
+  const doubleFlip = flipped.length >= 2
+  const result: ImpactResult = {
+    flipped,
+    wobbled,
+    ringOut,
+    doubleFlip,
+    badLanding,
+    impactForce: slamPower,
+    edgeBonus: hitsEdge ? 1.5 : 1.0,
+    description: doubleFlip
+      ? "DOUBLE FLIP!"
+      : flipped.length === 1
+        ? "FLIP!"
+        : wobbled.length > 0
+          ? "WOBBLE..."
+          : ringOut.length > 0
+            ? "RING OUT"
+            : badLanding
+              ? "BAD LANDING"
+              : "MISS",
+  }
+
+  return { staked: newStaked, result }
+}
+
+// ────────────────────────────────────────
+// AI Decision Engine (vertical slam)
+// ────────────────────────────────────────
+
+export function generateAISlam(
   aiTazo: TazoCard,
-  playerDiscs: DiscPhysics[],
-  aiDiscs: DiscPhysics[],
+  staked: StakedTazo[],
   arena: Arena3DConfig,
   difficulty: AIDifficulty
-): ThrowParams {
-  // Find best target (player's discs)
-  const targets = playerDiscs.filter(d => d.state !== "captured" && d.state !== "out_of_bounds")
-  
-  let aimX = 0
-  let aimY = 0
-  let power = 0.5
-  let accuracy = 0.7
-  let spinType: SpinType = "none"
+): SlamParams {
+  // Find rival's staked tazos (not flipped yet)
+  const targets = staked.filter(
+    s => s.owner === "player" &&
+      s.state !== "secured" &&
+      s.state !== "captured" &&
+      s.state !== "out_of_circle"
+  )
+
+  let impactX = 0, impactZ = 0
+  let verticalForce = 0.5
+  let aimPrecision = 0.7
+  let timingAccuracy = 0.6
+  let tilt: TiltDirection = "flat"
+  let tiltIntensity = 0
+  let spinIntensity = 0
 
   if (targets.length === 0) {
-    // No targets = random throw
-    aimX = (Math.random() - 0.5) * 2
-    aimY = (Math.random() - 0.5) * 2
-    power = 0.4 + Math.random() * 0.4
+    // No targets — aim for center
+    impactX = (Math.random() - 0.5) * 0.4
+    impactZ = (Math.random() - 0.5) * 0.4
+    verticalForce = 0.35 + Math.random() * 0.35
   } else {
-    // Pick a target
-    const target = targets[Math.floor(Math.random() * targets.length)]
-    
-    // Direction toward target
-    const dx = target.position[0]
-    const dz = target.position[2]
-    const dist = Math.sqrt(dx * dx + dz * dz)
-    
+    const target = targets[0]
+    impactX = target.position[0] + (Math.random() - 0.5) * 0.2
+    impactZ = target.position[2] + (Math.random() - 0.5) * 0.2
+
     if (difficulty === "master") {
-      // Perfect aim with slight variation
-      aimX = (dx / arena.radius) + (Math.random() - 0.5) * 0.1
-      aimY = (dz / arena.radius) + (Math.random() - 0.5) * 0.1
-      power = 0.6 + Math.random() * 0.3
-      accuracy = 0.9 + Math.random() * 0.1
-      // Smart spin choice
-      if (dist < 0.5) spinType = "topspin"
-      else if (targets.length > 2) spinType = "sidespin"
-      else spinType = "none"
+      aimPrecision = 0.85 + Math.random() * 0.15
+      timingAccuracy = 0.8 + Math.random() * 0.2
+      verticalForce = 0.55 + Math.random() * 0.35
+      // Smart tilt: edge attack mostly
+      tilt = Math.random() > 0.3 ? "forward" : "flat"
+      tiltIntensity = 0.4 + Math.random() * 0.4
+      spinIntensity = 0.2 + Math.random() * 0.3
     } else if (difficulty === "skilled") {
-      // Decent aim
-      aimX = (dx / arena.radius) + (Math.random() - 0.5) * 0.3
-      aimY = (dz / arena.radius) + (Math.random() - 0.5) * 0.3
-      power = 0.45 + Math.random() * 0.35
-      accuracy = 0.7 + Math.random() * 0.2
-      spinType = Math.random() > 0.5 ? "topspin" : "none"
+      aimPrecision = 0.6 + Math.random() * 0.25
+      timingAccuracy = 0.55 + Math.random() * 0.3
+      verticalForce = 0.45 + Math.random() * 0.35
+      tilt = Math.random() > 0.5 ? "forward" : "flat"
+      tiltIntensity = 0.25 + Math.random() * 0.3
+      spinIntensity = Math.random() * 0.25
     } else {
-      // Novice: somewhat random
-      aimX = (Math.random() - 0.5) * 2
-      aimY = (Math.random() - 0.5) * 2
-      power = 0.3 + Math.random() * 0.5
-      accuracy = 0.4 + Math.random() * 0.3
+      // Novice: mostly random, flat
+      aimPrecision = 0.35 + Math.random() * 0.35
+      timingAccuracy = 0.3 + Math.random() * 0.4
+      verticalForce = 0.25 + Math.random() * 0.5
+      tiltIntensity = Math.random() * 0.3
     }
   }
 
   return {
     tazoId: aiTazo.id,
-    aimX, aimY,
-    power,
-    powerAccuracy: accuracy,
-    spinType,
-    accuracyPenalty: (1 - accuracy) * 0.5,
-    timestamp: Date.now(),
+    impactX, impactZ,
+    verticalForce,
+    timingAccuracy,
+    tilt,
+    tiltIntensity,
+    spinIntensity,
+    aimPrecision,
   }
 }
 
-// ─── Check match end conditions ───
+// ────────────────────────────────────────
+// Score calculation from impact
+// ────────────────────────────────────────
+
+export function scoreImpact(
+  impact: ImpactResult,
+  staked: StakedTazo[],
+  thrower: "player" | "opponent"
+): { playerDelta: number; opponentDelta: number } {
+  let playerDelta = 0
+  let opponentDelta = 0
+
+  for (const id of impact.flipped) {
+    const st = staked.find(s => s.id === id)
+    if (!st) continue
+    const wasMyTazo = st.owner === thrower
+    if (wasMyTazo) {
+      // Flipped own tazo = secure it (+1)
+      if (thrower === "player") playerDelta += 1
+      else opponentDelta += 1
+    } else {
+      // Flipped rival tazo = capture it (+2)
+      if (thrower === "player") playerDelta += 2
+      else opponentDelta += 2
+    }
+  }
+
+  // Double flip bonus
+  if (impact.doubleFlip) {
+    if (thrower === "player") playerDelta += 1
+    else opponentDelta += 1
+  }
+
+  return { playerDelta, opponentDelta }
+}
+
+// ────────────────────────────────────────
+// Match end check
+// ────────────────────────────────────────
+
 export function checkMatchEnd(
-  player: PlayerGameState,
-  opponent: PlayerGameState,
-  playerDiscs: DiscPhysics[],
-  opponentDiscs: DiscPhysics[]
+  playerScore: number,
+  opponentScore: number,
+  scoreToWin: number,
+  playerRemaining: number,
+  opponentRemaining: number
 ): MatchResult | null {
-  const playerActive = playerDiscs.filter(d => d.state !== "captured" && d.state !== "out_of_bounds" && d.owner === "player").length
-  const opponentActive = opponentDiscs.filter(d => d.state !== "captured" && d.state !== "out_of_bounds" && d.owner === "opponent").length
-
-  if (playerActive === 0 && opponentActive === 0) {
-    return {
-      winner: "draw",
-      victoryType: "draw",
-      playerScore: 0, opponentScore: 0,
-      rounds: [], totalTurns: 0,
-      playerCaptures: player.captured, opponentCaptures: opponent.captured,
-      xpEarned: 5,
-      summary: "Draw! Both sides have no tazos left.",
-    }
-  }
-
-  if (playerActive === 0) {
-    return {
-      winner: "opponent",
-      victoryType: "all_captured",
-      playerScore: player.captured, opponentScore: opponent.captured + playerActive,
-      rounds: [], totalTurns: 0,
-      playerCaptures: player.captured, opponentCaptures: opponent.captured,
-      xpEarned: 2,
-      summary: `${opponent.name} wins by capturing all your tazos!`,
-    }
-  }
-
-  if (opponentActive === 0) {
+  if (playerScore >= scoreToWin) {
     return {
       winner: "player",
-      victoryType: "all_captured",
-      playerScore: player.captured + opponentActive,
-      opponentScore: opponent.captured,
-      rounds: [], totalTurns: 0,
-      playerCaptures: player.captured,
-      opponentCaptures: opponent.captured,
-      xpEarned: 10 + opponentActive * 5,
-      summary: `Victory! You captured all of ${opponent.name}'s tazos!`,
+      victoryType: "points",
+      playerScore,
+      opponentScore,
+      rounds: [],
+      totalTurns: 0,
+      playerCaptures: playerScore,
+      opponentCaptures: opponentScore,
+      xpEarned: 15 + playerScore * 3,
+      summary: `Victory! You won ${playerScore}-${opponentScore}!`,
     }
   }
-
+  if (opponentScore >= scoreToWin) {
+    return {
+      winner: "opponent",
+      victoryType: "points",
+      playerScore,
+      opponentScore,
+      rounds: [],
+      totalTurns: 0,
+      playerCaptures: playerScore,
+      opponentCaptures: opponentScore,
+      xpEarned: 2,
+      summary: `${opponentScore}-${playerScore} — better luck next time!`,
+    }
+  }
   return null // Match continues
+}
+
+// ────────────────────────────────────────
+// Utility: create airborne tazo
+// ────────────────────────────────────────
+
+export function createAirborneTazo(
+  tazo: TazoCard,
+  owner: "player" | "opponent",
+  arena: Arena3DConfig
+): AirborneTazo {
+  return {
+    id: tazo.id,
+    tazoName: tazo.name,
+    franchise: tazo.franchise,
+    imageUrl: tazo.imageUrl || "",
+    backImageUrl: BACK_ARTS[tazo.franchise] || "",
+    finish: tazo.finish,
+    state: "aiming",
+    position: [0, arena.maxLaunchHeight * 0.5, -arena.radius * 0.55],
+    tilt: [0, 0, 0],
+    angularVelocity: [0, 0, 0],
+    charge: 0,
+    targetX: 0,
+    targetZ: 0,
+    owner,
+  }
+}
+
+// ────────────────────────────────────────
+// Utility: place staked tazos
+// ────────────────────────────────────────
+
+export function placeStakedTazos(
+  playerTazo: TazoCard,
+  opponentTazo: TazoCard
+): StakedTazo[] {
+  return [
+    {
+      id: playerTazo.id,
+      tazoName: playerTazo.name,
+      franchise: playerTazo.franchise,
+      imageUrl: playerTazo.imageUrl || "",
+      backImageUrl: BACK_ARTS[playerTazo.franchise] || "",
+      owner: "player",
+      position: [-0.35, 0.06, 0] as [number, number, number],
+      state: "face_down",
+      wobbleIntensity: 0,
+      scored: false,
+    },
+    {
+      id: opponentTazo.id,
+      tazoName: opponentTazo.name,
+      franchise: opponentTazo.franchise,
+      imageUrl: opponentTazo.imageUrl || "",
+      backImageUrl: BACK_ARTS[opponentTazo.franchise] || "",
+      owner: "opponent",
+      position: [0.35, 0.06, 0] as [number, number, number],
+      state: "face_down",
+      wobbleIntensity: 0,
+      scored: false,
+    },
+  ]
 }
