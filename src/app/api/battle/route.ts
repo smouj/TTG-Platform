@@ -472,6 +472,23 @@ export async function POST(request: NextRequest) {
             },
           })
         }
+
+        // ── Increment wear on player's tazos used in battle ──
+        const won = winner === 'player'
+        for (const tazoId of playerTazoIds) {
+          try {
+            const ut = await db.userTazo.findUnique({ where: { userId_tazoId: { userId: authUser.id, tazoId } } })
+            if (ut) {
+              const wearGain = won ? 1 + Math.floor(Math.random() * 3) : 2 + Math.floor(Math.random() * 4)
+              const newWear = Math.min(100, ut.wear + wearGain)
+              await db.userTazo.update({
+                where: { id: ut.id },
+                data: { wear: newWear, battleCount: { increment: 1 } },
+              })
+            }
+          } catch { /* wear tracking non-critical */ }
+        }
+
         // ── Trigger quest progression ──
         await refreshUserProgress(authUser.id)
         const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })

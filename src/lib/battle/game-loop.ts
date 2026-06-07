@@ -73,6 +73,8 @@ export interface TazoCard {
   rarity?: string
   finish?: TazoFinish
   creatureVariant?: TazoCreatureVariant
+  /** User-specific wear level 0-100 (affects stats) */
+  wear?: number
 }
 
 // ────────────────────────────────────────
@@ -356,6 +358,24 @@ export function simulateSlam(
     timingAccuracy, tilt, tiltIntensity,
     spinIntensity, aimPrecision,
   } = slam
+
+  // Scale stats by aimPrecision (affected by tazo.precision stat)
+  // Apply wear penalty: damaged tazos have reduced stats
+  const wearTier = launcher.wear && launcher.wear > 0
+    ? launcher.wear <= 15 ? 'light_play' : launcher.wear <= 40 ? 'played' : launcher.wear <= 70 ? 'heavy_play' : 'damaged'
+    : null
+  const wearPenalty = (() => {
+    if (!wearTier) return { attack: 0, defense: 0, stability: 0, precision: 0, control: 0 }
+    const T: Record<string, any> = {
+      light_play: { attack: 0.02, defense: 0.02, stability: 0.01, precision: 0, control: 0.01 },
+      played: { attack: 0.05, defense: 0.05, stability: 0.03, precision: 0.02, control: 0.02 },
+      heavy_play: { attack: 0.12, defense: 0.10, stability: 0.06, precision: 0.05, control: 0.05 },
+      damaged: { attack: 0.20, defense: 0.18, stability: 0.12, precision: 0.10, control: 0.08 },
+    }
+    return T[wearTier] || { attack: 0, defense: 0, stability: 0, precision: 0, control: 0 }
+  })()
+  const effectiveAttack = launcher.attack * (1 - wearPenalty.attack) * aimPrecision
+  const effectiveSpin = launcher.spin * (1 - wearPenalty.precision) * aimPrecision
 
   // ── 1. AIM: Apply precision error ──
   const aimError = (1 - aimPrecision) * 0.55

@@ -135,6 +135,8 @@ model UserTazo {
   isFavorite   Boolean  @default(false)
   obtainedFrom String?  // "bag" | "starter" | "scanner" | null (legacy)
   acquiredAt   DateTime @default(now())
+  wear         Int      @default(0)   // 0-100 wear from battle use
+  battleCount  Int      @default(0)   // battles participated in
 
   @@unique([userId, tazoId])
   @@index([userId])
@@ -268,4 +270,20 @@ model UserAchievement {
 
   @@unique([userId, achievementId])
   @@index([userId])
+}
+
+// ─── Marketplace / Trading System ───
+
+model TradeListing {
+  id            String    @id @default(cuid())
+  sellerId      String
+  userTazoId    String
+  price         Int       // Credits
+  status        String    @default("active") // active, sold, cancelled
+  buyerId       String?
+  createdAt     DateTime  @default(now())
+  soldAt        DateTime?
+
+  @@index([status])
+  @@index([sellerId])
 }
