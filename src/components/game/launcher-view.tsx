@@ -248,6 +248,51 @@ function PreviewSlider() {
 // PAGE CONTENT COMPONENTS
 // ══════════════════════════════════════════════════════════
 
+// ── Tazo Showcase (landing page preview) ──
+
+function TazoShowcase() {
+  const [tazos, setTazos] = useState<any[]>([])
+  useEffect(() => {
+    fetch("/api/tazos?limit=12")
+      .then(r => r.json())
+      .then(d => setTazos(d.tazos || []))
+      .catch(() => {})
+  }, [])
+  if (tazos.length < 6) return null
+  return (
+    <div className="max-w-5xl mx-auto w-full px-4 pb-8 space-y-3">
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-0.5 bg-[#1a1a1a]/10" />
+        <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-[0.2em] whitespace-nowrap">Featured Tazos</span>
+        <div className="flex-1 h-0.5 bg-[#1a1a1a]/10" />
+      </div>
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        {tazos.slice(0, 8).map((t: any) => (
+          <div
+            key={t.id}
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-3 border-[#1a1a1a] flex items-center justify-center overflow-hidden bg-[#fffef0] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          >
+            {t.imageUrl ? (
+              <img
+                src={t.imageUrl}
+                alt={t.displayName || t.name || ""}
+                className="w-full h-full object-cover scale-110"
+                draggable={false}
+                title={`${t.displayName || t.name} — ${t.franchiseName || t.franchise}`}
+              />
+            ) : (
+              <Disc3 className="w-8 h-8 text-[#1a1a1a]/10" />
+            )}
+          </div>
+        ))}
+      </div>
+      <p className="text-center text-[8px] font-black text-[#1a1a1a]/20 uppercase tracking-[0.25em]">
+        {tazos.length > 12 ? `+${tazos.length - 12} more...` : "3 franchises · 349 total"}
+      </p>
+    </div>
+  )
+}
+
 // ── Home Hero ──
 
 function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
@@ -420,36 +465,99 @@ const COLLECTION_DATA = [
 ]
 
 function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  const [showcaseTazos, setShowcaseTazos] = useState<Record<string, any[]>>({})
+
+  useEffect(() => {
+    fetch("/api/tazos?limit=6")
+      .then(r => r.json())
+      .then(d => {
+        const byFranchise: Record<string, any[]> = {}
+        for (const t of (d.tazos || [])) {
+          const f = t.franchise || t.franchiseSlug || "minimon"
+          if (!byFranchise[f]) byFranchise[f] = []
+          if (byFranchise[f].length < 4) byFranchise[f].push(t)
+        }
+        setShowcaseTazos(byFranchise)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5">
       <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider">
         3 Franchises · 349 Tazos · Classic snack toy collections
       </p>
       <div className="grid md:grid-cols-3 gap-4">
-        {COLLECTION_DATA.map(c => (
+        {COLLECTION_DATA.map(c => {
+          const backArtUrl = `/tazos-artgen/backs/${c.slug}-back.png`
+          const franchiseTazos = showcaseTazos[c.slug] || []
+          return (
           <button key={c.slug} onClick={() => onNavigate(`collections-${c.slug}` as PageId)}
-            className="text-left border-2 border-[#1a1a1a] bg-white p-5 hover:bg-[#FFF9E6] transition-colors group"
+            className="text-left border-2 border-[#1a1a1a] bg-white overflow-hidden hover:bg-[#FFF9E6] transition-colors group"
             style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
-            <div className="h-2 mb-3" style={{ background: c.color }} />
-            <h3 className="text-lg font-black text-[#1a1a1a] uppercase">{c.name}</h3>
-            <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{c.count} tazos · {c.year} · {c.origin}</p>
-            <p className="text-[11px] font-bold text-[#1a1a1a]/60 mt-2 leading-relaxed">{c.desc}</p>
-            <div className="flex flex-wrap gap-1 mt-3">
-              {c.categories.map(cat => (
-                <span key={cat} className="text-[8px] font-black text-white px-2 py-0.5 uppercase"
-                  style={{ background: c.color }}>{cat}</span>
-              ))}
+            {/* Franchise color strip */}
+            <div className="h-2" style={{ background: c.color }} />
+            
+            {/* Tazo + Back art showcase */}
+            <div className="p-3 grid grid-cols-2 gap-2 bg-[#fffef0] border-b-2 border-[#1a1a1a]/10">
+              {/* Back art of franchise */}
+              <div className="rounded-full border-2 border-[#1a1a1a]/15 overflow-hidden aspect-square flex items-center justify-center bg-white shadow-[1px_1px_0px_#1a1a1a10]">
+                <img 
+                  src={backArtUrl} 
+                  alt={`${c.name} back art`}
+                  className="w-full h-full object-cover scale-110"
+                  draggable={false}
+                />
+              </div>
+              {/* Sample front tazo — or more backs if no tazos loaded */}
+              <div className="rounded-full border-2 border-[#1a1a1a]/15 overflow-hidden aspect-square flex items-center justify-center bg-white shadow-[1px_1px_0px_#1a1a1a10]">
+                {franchiseTazos.length > 0 ? (
+                  <div className="relative w-full h-full">
+                    {franchiseTazos.slice(0, 3).map((t: any, i: number) => (
+                      t.imageUrl ? (
+                        <img
+                          key={t.id}
+                          src={t.imageUrl}
+                          alt={t.displayName || t.name || ""}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          style={{
+                            transform: `rotate(${i * 15 - 15}deg) translateY(${i * 2}px)`,
+                            zIndex: franchiseTazos.length - i,
+                            opacity: i === 0 ? 1 : 0.55,
+                          }}
+                          draggable={false}
+                        />
+                      ) : null
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-[7px] font-black text-[#1a1a1a]/15 uppercase">FRONT</span>
+                )}
+              </div>
             </div>
-            <ul className="mt-3 space-y-0.5">
-              {c.highlights.map((h, i) => (
-                <li key={i} className="text-[10px] font-bold text-[#1a1a1a]/50 flex items-center gap-1">
-                  <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: c.color }} /> {h}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3 text-[10px] font-black text-[#E3350D] uppercase group-hover:underline">View Collection →</p>
+
+            {/* Info section */}
+            <div className="p-5">
+              <h3 className="text-lg font-black text-[#1a1a1a] uppercase">{c.name}</h3>
+              <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{c.count} tazos · {c.year} · {c.origin}</p>
+              <p className="text-[11px] font-bold text-[#1a1a1a]/60 mt-2 leading-relaxed">{c.desc}</p>
+              <div className="flex flex-wrap gap-1 mt-3">
+                {c.categories.map(cat => (
+                  <span key={cat} className="text-[8px] font-black text-white px-2 py-0.5 uppercase"
+                    style={{ background: c.color }}>{cat}</span>
+                ))}
+              </div>
+              <ul className="mt-3 space-y-0.5">
+                {c.highlights.map((h, i) => (
+                  <li key={i} className="text-[10px] font-bold text-[#1a1a1a]/50 flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: c.color }} /> {h}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-[10px] font-black text-[#E3350D] uppercase group-hover:underline">View Collection →</p>
+            </div>
           </button>
-        ))}
+        )})}
       </div>
     </div>
   )
@@ -929,8 +1037,13 @@ export default function LauncherView() {
             </div>
           )}
 
-          <div className={`${isHome ? "flex-1 flex items-center justify-center" : "pb-8"}`}>
-            {currentPage === "home" && <HomeHero user={user} onPlay={handlePlay} />}
+          <div className={`${isHome ? "space-y-8" : "pb-8"}`}>
+            {currentPage === "home" && (
+              <>
+                <div className="flex-1 flex items-center justify-center"><HomeHero user={user} onPlay={handlePlay} /></div>
+                <TazoShowcase />
+              </>
+            )}
             
             {currentPage === "how-to-play" && (
               <div className="w-full max-w-5xl mx-auto"><HowToPlayContent /></div>
