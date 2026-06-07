@@ -35,6 +35,15 @@ const nextConfig: NextConfig = {
       { source: "/app/album", destination: "/app/collection", permanent: true },
       { source: "/app/album/:path*", destination: "/app/collection", permanent: true },
 
+      // Standalone pages → launcher tabs (single source of truth)
+      { source: "/collections", destination: "/?page=collections", permanent: true },
+      { source: "/tazos", destination: "/?page=tazos", permanent: true },
+      { source: "/faq", destination: "/?page=faq", permanent: true },
+      { source: "/how-to-play", destination: "/?page=how-to-play", permanent: true },
+      { source: "/leaderboard", destination: "/?page=leaderboard", permanent: true },
+      { source: "/download", destination: "/?page=download", permanent: true },
+      { source: "/battle-system", destination: "/?page=how-to-play", permanent: true },
+
       // Legacy RPGClaw routes → redirect home
       { source: "/earth", destination: "/", permanent: true },
       { source: "/status", destination: "/leaderboard", permanent: true },
