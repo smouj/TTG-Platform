@@ -64,7 +64,7 @@ export default function TazosCatalogPage() {
         const data = await res.json()
         setTazos((data.tazos || []).map((t: any) => ({
           ...t,
-          franchise: t.franchiseSlug || t.franchise?.slug || "minimon",
+          franchise: t.franchise || t.franchiseSlug || "minimon",
         })))
       } catch { /* ignore */ }
       setLoading(false)

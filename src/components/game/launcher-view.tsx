@@ -471,7 +471,7 @@ function TazosContent() {
   }, [])
 
   const filtered = tazos.filter(t =>
-    (franchiseFilter === "all" || (typeof t.franchise === 'object' ? t.franchise?.slug : t.franchise) === franchiseFilter) &&
+    (franchiseFilter === "all" || t.franchise === franchiseFilter) &&
     (!search || t.name.toLowerCase().includes(search.toLowerCase()))
   )
 
@@ -503,7 +503,7 @@ function TazosContent() {
                 {t.imageUrl && <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" loading="lazy" />}
               </div>
               <p className="text-[9px] font-black text-[#1a1a1a] uppercase truncate">{t.name}</p>
-              <p className="text-[7px] font-bold text-[#1a1a1a]/40 uppercase">{typeof t.franchise === 'object' ? t.franchise?.name : t.franchise}</p>
+              <p className="text-[7px] font-bold text-[#1a1a1a]/40 uppercase">{t.franchiseName || t.franchise}</p>
             </div>
           ))}
         </div>

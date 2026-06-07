@@ -51,7 +51,7 @@ const ELEMENT_KEYWORDS: Record<TazoElement, string[]> = {
 
 export function inferElement(tazo: Tazo): TazoElement {
   const name = (tazo.displayName || tazo.name || "").toLowerCase()
-  const franchise = tazo.franchise?.slug || ""
+  const franchise = tazo.franchise || tazo.franchiseSlug || ""
 
   // Check keywords (longest match first to avoid partial matches)
   const matches: { element: TazoElement; len: number }[] = []
@@ -133,7 +133,7 @@ export function inferCategory(tazo: Tazo): TazoCategory {
 // --------------- Main Config Builder ---------------
 export function getTazoBackgroundConfig(tazo: Tazo, maxInFranchise?: number): TazoBackgroundConfig {
   const powerScore = calcPowerScore(tazo)
-  const collection = (tazo.franchise?.slug || "minimon") as Collection
+  const collection = (tazo.franchise || tazo.franchiseSlug || "minimon") as Collection
 
   return {
     collection,

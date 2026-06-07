@@ -53,7 +53,20 @@ export async function GET(request: NextRequest) {
       take: limit,
     })
 
-    return NextResponse.json({ tazos, total, page, limit, totalPages: Math.ceil(total / limit) })
+    // Flatten franchise & collection to strings + add flat metadata fields
+    const flatTazos = tazos.map(t => ({
+      ...t,
+      franchise: t.franchise?.slug || null,
+      franchiseName: t.franchise?.name || null,
+      franchiseColor: t.franchise?.color || null,
+      franchiseSlug: t.franchise?.slug || null,
+      collection: t.collection?.slug || null,
+      collectionName: t.collection?.name || null,
+      collectionSlug: t.collection?.slug || null,
+      collectionYear: t.collection?.year || null,
+    }))
+
+    return NextResponse.json({ tazos: flatTazos, total, page, limit, totalPages: Math.ceil(total / limit) })
   } catch (error) {
     console.error("Error fetching tazos:", error)
     return NextResponse.json({ error: "Failed to fetch tazos" }, { status: 500 })
@@ -111,7 +124,20 @@ export async function POST(request: NextRequest) {
       include: { franchise: true, collection: true },
     })
 
-    return NextResponse.json({ tazo }, { status: 201 })
+    // Flatten franchise & collection to strings
+    const flatTazo = {
+      ...tazo,
+      franchise: tazo.franchise?.slug || null,
+      franchiseName: tazo.franchise?.name || null,
+      franchiseColor: tazo.franchise?.color || null,
+      franchiseSlug: tazo.franchise?.slug || null,
+      collection: tazo.collection?.slug || null,
+      collectionName: tazo.collection?.name || null,
+      collectionSlug: tazo.collection?.slug || null,
+      collectionYear: tazo.collection?.year || null,
+    }
+
+    return NextResponse.json({ tazo: flatTazo }, { status: 201 })
   } catch (error) {
     console.error("Error creating tazo:", error)
     return NextResponse.json({ error: "Failed to create tazo" }, { status: 500 })

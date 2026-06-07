@@ -32,7 +32,20 @@ export async function GET(
       return NextResponse.json({ error: 'Tazo not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ tazo })
+    // Flatten franchise & collection to strings
+    const flatTazo = {
+      ...tazo,
+      franchise: tazo.franchise?.slug || null,
+      franchiseName: tazo.franchise?.name || null,
+      franchiseColor: tazo.franchise?.color || null,
+      franchiseSlug: tazo.franchise?.slug || null,
+      collection: tazo.collection?.slug || null,
+      collectionName: tazo.collection?.name || null,
+      collectionSlug: tazo.collection?.slug || null,
+      collectionYear: tazo.collection?.year || null,
+    }
+
+    return NextResponse.json({ tazo: flatTazo })
   } catch (error) {
     console.error('Error fetching tazo:', error)
     return NextResponse.json(
@@ -97,7 +110,20 @@ export async function PUT(
       },
     })
 
-    return NextResponse.json({ tazo })
+    // Flatten franchise & collection to strings
+    const flatTazo = {
+      ...tazo,
+      franchise: tazo.franchise?.slug || null,
+      franchiseName: tazo.franchise?.name || null,
+      franchiseColor: tazo.franchise?.color || null,
+      franchiseSlug: tazo.franchise?.slug || null,
+      collection: tazo.collection?.slug || null,
+      collectionName: tazo.collection?.name || null,
+      collectionSlug: tazo.collection?.slug || null,
+      collectionYear: tazo.collection?.year || null,
+    }
+
+    return NextResponse.json({ tazo: flatTazo })
   } catch (error) {
     console.error('Error updating tazo:', error)
     return NextResponse.json(

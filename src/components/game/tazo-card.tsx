@@ -65,7 +65,7 @@ function getRarityStars(rarity: Rarity): string {
 export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps) {
   const [flipped, setFlipped] = useState(false)
   const showBack = forceFlipped !== undefined ? forceFlipped : flipped
-  const franchiseSlug = tazo.franchise?.slug || 'minimon'
+  const franchiseSlug = tazo.franchise || tazo.franchiseSlug || 'minimon'
   const franchiseColors = FRANCHISE_COLORS[franchiseSlug] || FRANCHISE_COLORS.minimon
   const franchiseStripText = FRANCHISE_STRIP_TEXT[franchiseSlug] || '#1F2937'
   const rarityConfig = RARITY_CONFIG[tazo.rarity as Rarity]
@@ -245,7 +245,7 @@ export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps)
                     className="text-[7px] font-black uppercase tracking-[0.12em]"
                     style={{ color: franchiseColors.strip }}
                   >
-                    {tazo.franchise?.name || franchiseSlug}
+                    {tazo.franchiseName || franchiseSlug}
                   </span>
                 </div>
                 {tazo.number && (
@@ -287,7 +287,7 @@ export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps)
           }}
         >
           <span className="text-[10px] font-black uppercase tracking-wide">
-            {tazo.franchise?.name || 'Unknown'}
+            {tazo.franchiseName || 'Unknown'}
           </span>
         </div>
       </div>

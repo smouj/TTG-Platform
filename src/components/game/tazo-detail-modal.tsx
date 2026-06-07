@@ -107,7 +107,7 @@ function getFlavorQuote(franchise: string, tazoName: string): string {
 export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: TazoDetailModalProps) {
   if (!tazo) return null
 
-  const franchiseSlug = tazo.franchise?.slug || 'minimon'
+  const franchiseSlug = tazo.franchise || tazo.franchiseSlug || 'minimon'
   const bgConfig = getTazoBackgroundConfig(tazo, FRANCHISE_MAX[franchiseSlug] || 150)
   const bgClasses = getTazoBackgroundClasses(bgConfig)
   const franchiseColors = FRANCHISE_COLORS[franchiseSlug] || FRANCHISE_COLORS.minimon
@@ -183,8 +183,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
               className="inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-white border-2 border-black"
               style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
             >
-              {tazo.franchise?.name || 'Unknown'}
-              {tazo.collection?.year ? ` · ${tazo.collection.year}` : ''}
+              {tazo.franchiseName || 'Unknown'}
+              {tazo.collectionYear ? ` · ${tazo.collectionYear}` : ''}
             </span>
           </div>
 

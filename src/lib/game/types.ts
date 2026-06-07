@@ -43,8 +43,14 @@ export interface Tazo {
   obtainedFrom?: ObtainedFrom | null
   battleWins: number
   battleLosses: number
-  franchise?: Franchise
-  collection?: Collection
+  franchise?: string | null
+  franchiseName?: string | null
+  franchiseColor?: string | null
+  franchiseSlug?: string | null
+  collection?: string | null
+  collectionName?: string | null
+  collectionSlug?: string | null
+  collectionYear?: number | null
   createdAt: string
   updatedAt: string
 }

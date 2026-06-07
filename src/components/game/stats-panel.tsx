@@ -360,7 +360,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
               const topTazo = topTazos[key]
               const statValue = topTazo ? topTazo[key as keyof Tazo] : 0
               const rank = index + 1
-              const franchiseColor = topTazo?.franchise?.color || '#9CA3AF'
+              const franchiseColor = topTazo?.franchiseColor || '#9CA3AF'
               return (
                 <div
                   key={key}

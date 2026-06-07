@@ -65,7 +65,7 @@ async function fetchTazos(token: string): Promise<TazoCard[]> {
       id: t.id,
       name: t.name || "?",
       slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
-      franchise: (t.franchiseSlug || t.franchise?.slug || "minimon") as TazoCard["franchise"],
+      franchise: (t.franchise || t.franchiseSlug || "minimon") as TazoCard["franchise"],
       imageUrl: t.imageUrl || null,
       attack: t.attack || 50, defense: t.defense || 50,
       resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,

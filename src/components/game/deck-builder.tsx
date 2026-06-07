@@ -76,8 +76,8 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
         const mapped: TazoOption[] = (d.tazos || []).map((t: any) => ({
           id: t.id, name: t.name, displayName: t.displayName || t.name,
           number: t.number, imageUrl: t.imageUrl, rarity: t.rarity,
-          franchise: t.franchise?.name || t.franchiseSlug || "minimon",
-          franchiseSlug: t.franchiseSlug || t.franchise?.slug || "minimon",
+          franchise: t.franchiseName || t.franchiseSlug || "minimon",
+          franchiseSlug: t.franchiseSlug || t.franchise || "minimon",
           attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
           weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
           control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
