@@ -103,3 +103,4 @@ artgen/.env
 .env
 public/tazos-generated/
 __pycache__/
+.backups/

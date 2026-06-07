@@ -93,7 +93,7 @@ export default function TazosCatalogPage() {
           </div>
           <div className="w-px h-5 bg-[#1a1a1a]/30" />
           <span className="text-sm font-black text-[#E3350D] tracking-tight">
-            {tazos.length || 319} TAZOS
+            {tazos.length || 349} TAZOS
           </span>
           <div className="w-px h-5 bg-[#1a1a1a]/30" />
           <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider">

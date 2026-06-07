@@ -36,7 +36,7 @@ export default function CybermonCollectionPage() {
           A digital companion world about living code, emotional links, shifting forms, corrupted data, and identity.
         </p>
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-5xl font-black text-[#1a1a1a]">150</span>
+          <span className="text-5xl font-black text-[#1a1a1a]">160</span>
           <span className="text-lg font-bold text-[#1a1a1a]/40">tazos</span>
           <span className="text-xs font-bold bg-[#FFCC00] px-2 py-1 border-2 border-[#1a1a1a]">Magic Box 2000</span>
         </div>
@@ -144,7 +144,7 @@ export default function CybermonCollectionPage() {
             href="/tazos?collection=cybermon"
             className="mag-btn inline-block bg-[#E3350D] text-white border-2 border-[#1a1a1a] px-8 py-4 text-sm font-black uppercase tracking-wider shadow-[6px_6px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#1a1a1a] transition-all"
           >
-            Browse All 150 Cybermon Tazos
+            Browse All 160 Cybermon Tazos
           </Link>
         </div>
 

@@ -1,8 +1,8 @@
 import { pageMetadata } from "@/lib/metadata"
 
 export const metadata = pageMetadata({
-  title: "Cybermon Collection — 150 Tazos (Magic Box 2000)",
-  description: "The biggest Cybermon collection: 150 digital-creature tazos with evolution stages, transformation paths, and powerful abilities.",
+  title: "Cybermon Collection — 160 Tazos (Magic Box 2000)",
+  description: "The biggest Cybermon collection: 160 digital-creature tazos with evolution stages, transformation paths, and powerful abilities.",
   path: "/collections/cybermon",
 })
 

@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://medaclawarena.com";
 const SITE_NAME = "Trading Tazos Game";
 const SITE_DESC =
-  "Collect, trade and battle with 319 classic tazos from Minimon, Dracobell and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.";
+  "Collect, trade and battle with 349 classic tazos from Minimon, Dracobell and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
       url: `${SITE_URL}/logo/social-preview.png`,
       width: 1200,
       height: 630,
-      alt: "Trading Tazos Game — 319 tazos from Minimon, Dracobell & Cybermon",
+      alt: "Trading Tazos Game — 349 tazos from Minimon, Dracobell & Cybermon",
     }],
   },
   twitter: {
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     site: "@medaclaw",
     creator: "@medaclaw",
     title: `${SITE_NAME} — Collect, Trade & Battle Your Tazos`,
-    description: "319 classic tazos, 3 collections, 9 combat stats, 2D collection views, and a skill-based 3D battle arena.",
+    description: "349 classic tazos, 3 collections, 9 combat stats, 2D collection views, and a skill-based 3D battle arena.",
     images: [`${SITE_URL}/logo/social-preview.png`],
   },
   alternates: {

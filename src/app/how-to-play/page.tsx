@@ -112,7 +112,7 @@ export default function HowToPlayPage() {
                 <li>Open more <strong>tazo bags</strong> with your earned credits</li>
                 <li>Climb the <strong>global leaderboard</strong></li>
                 <li>Challenge harder <strong>AI opponents</strong> — Novice, Skilled, and Master</li>
-                <li>Collect all <strong>319 tazos</strong> across 3 franchises</li>
+                <li>Collect all <strong>349 tazos</strong> across 3 franchises</li>
               </ul>
             </div>
           </section>

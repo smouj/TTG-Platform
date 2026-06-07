@@ -1,8 +1,8 @@
 import { pageMetadata } from "@/lib/metadata"
 
 export const metadata = pageMetadata({
-  title: "Collections — 319 Tazos from Minimon, Dracobell & Cybermon",
-  description: "Browse the three legendary tazo collections: 51 Minimon, 118 Dracobell, and 150 Cybermon. Complete guide to all verified Spanish tazos.",
+  title: "Collections — 349 Tazos from Minimon, Dracobell & Cybermon",
+  description: "Browse the three legendary tazo collections: 61 Minimon, 128 Dracobell, and 160 Cybermon. Complete guide to all verified Spanish tazos.",
   path: "/collections",
 })
 

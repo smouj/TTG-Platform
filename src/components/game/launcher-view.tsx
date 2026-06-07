@@ -174,7 +174,7 @@ function SectionCard({ step, color, title, children, bgColor }: {
 const PREVIEW_SLIDES = [
   {
     icon: Disc3, label: "Tazo Collection",
-    desc: "Browse all 319 tazos with search, filters & flip view. Track your album progress.",
+    desc: "Browse all 349 tazos with search, filters & flip view. Track your album progress.",
     color: "#00A1E9", bg: "#E8F4FD",
   },
   {
@@ -279,7 +279,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
         </div>
         <PreviewSlider />
         <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
-          <StatBadge number="319" label="Tazos" color="#FFCC00" />
+          <StatBadge number="349" label="Tazos" color="#FFCC00" />
           <StatBadge number="3" label="Worlds" color="#E3350D" />
           <StatBadge number="9" label="Stats" color="#00A1E9" />
           <StatBadge number="5" label="Cards" color="#22C55E" />
@@ -322,9 +322,9 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
         </p>
         <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
           {[
-            { icon: PackageOpen, label: "Open Bags", desc: "319 tazos to collect", color: "#FFCC00" },
+            { icon: PackageOpen, label: "Open Bags", desc: "349 tazos to collect", color: "#FFCC00" },
             { icon: Swords, label: "Practice Mode", desc: "No account needed!", color: "#E3350D" },
-            { icon: Disc3, label: "319 Tazos", desc: "Collect them all!", color: "#00A1E9" },
+            { icon: Disc3, label: "349 Tazos", desc: "Collect them all!", color: "#00A1E9" },
             { icon: Medal, label: "Leaderboard", desc: "See top players", color: "#22C55E" },
           ].map(({ icon: Icon, label, desc, color }) => (
             <div key={label}
@@ -402,20 +402,20 @@ const COLLECTION_DATA = [
   {
     name: "Minimon", slug: "minimon", count: 51, year: 2000, origin: "Matutano", color: "#FFCC00",
     categories: ["Tazos"],
-    desc: "The original collection that started it all. 51 creature companions with balanced combat stats — perfect for learning the battle system.",
+    desc: "The original collection that started it all. 61 creature companions with balanced combat stats — perfect for learning the battle system.",
     highlights: ["Balanced stat distribution", "Classic creature designs", "Original 2000 Spanish series", "Versatile battle strategies"]
   },
   {
     name: "Dracobell", slug: "dracobell", count: 118, year: 1995, origin: "Matutano", color: "#FF6B00",
     categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
-    desc: "The most diverse collection with 118 martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
+    desc: "The most diverse collection with 128 martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
     highlights: ["6 unique categories", "Highest average attack stats", "Rare Holo 3D variants", "Most diverse category system"]
   },
   {
     name: "Cybermon", slug: "cybermon", count: 150, year: 2000, origin: "Magic Box", color: "#00B4D8",
     categories: ["Caps"],
-    desc: "The largest collection with 150 digital companions in cap format. High precision stats and extensive evolution trees.",
-    highlights: ["Largest collection — 150 tazos", "Complex evolution trees", "Highest precision stats", "Original Magic Box 2000 series"]
+    desc: "The largest collection with 160 digital companions in cap format. High precision stats and extensive evolution trees.",
+    highlights: ["Largest collection — 160 tazos", "Complex evolution trees", "Highest precision stats", "Original Magic Box 2000 series"]
   },
 ]
 
@@ -423,7 +423,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5">
       <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider">
-        3 Franchises · 319 Tazos · Classic snack toy collections
+        3 Franchises · 349 Tazos · Classic snack toy collections
       </p>
       <div className="grid md:grid-cols-3 gap-4">
         {COLLECTION_DATA.map(c => (
@@ -644,7 +644,7 @@ function DownloadContent() {
 // ── FAQ ──
 
 const FAQS = [
-  { q: "What is Trading Tazos Game?", a: "A browser-based skill game where you collect and battle with digital tazos. Open bags to discover 319 unique tazos across 3 franchises. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory." },
+  { q: "What is Trading Tazos Game?", a: "A browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 franchises. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory." },
   { q: "Is it free to play?", a: "Yes, completely free. Start with 10 free bags and earn credits by battling, completing quests, and daily logins — no credit card required." },
   { q: "How does the battle system work?", a: "Each turn you aim a crosshair, charge your throw power, and select a spin type (topspin, backspin, sidespin, or none). Your tazo slides across the arena — hit opponent tazos hard enough and they flip, capturing them." },
   { q: "What are the combat stats?", a: "Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision. Building a balanced deck with complementary stats is key." },

@@ -139,7 +139,7 @@ export default function AdminPage() {
                     </div>
                     <div>
                       <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#3B4CCA] transition-colors">Tazo Catalog</h3>
-                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Browse all 319 tazos</p>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Browse all 349 tazos</p>
                     </div>
                     <span className="ml-auto text-[#3B4CCA] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>

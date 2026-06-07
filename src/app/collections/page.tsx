@@ -5,12 +5,12 @@ const collectionData = [
   {
     name: "Minimon",
     slug: "minimon",
-    count: 51,
+    count: 61,
     year: 2000,
     origin: "Matutano",
     color: "#FFCC00",
     categories: ["Tazos"],
-    desc: "The original collection that started it all. 51 creature companions with balanced combat stats — perfect for learning the battle system. These classic characters have versatile stat profiles, making them reliable in any deck.",
+    desc: "The original collection that started it all. 61 creature companions with balanced combat stats — perfect for learning the battle system. These classic characters have versatile stat profiles, making them reliable in any deck.",
     highlights: [
       "Balanced stat distribution — great for learning",
       "Classic creature designs with evolution chains",
@@ -21,12 +21,12 @@ const collectionData = [
   {
     name: "Dracobell",
     slug: "dracobell",
-    count: 118,
+    count: 128,
     year: 1995,
     origin: "Matutano",
     color: "#FF6B00",
     categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
-    desc: "The most diverse collection with 118 martial arts warriors across 6 distinct categories. High attack stats and powerful combat abilities dominate this set. The rarest Holo 3D and Mastertazo variants have the most impressive stats in the game.",
+    desc: "The most diverse collection with 128 martial arts warriors across 6 distinct categories. High attack stats and powerful combat abilities dominate this set. The rarest Holo 3D and Mastertazo variants have the most impressive stats in the game.",
     highlights: [
       "6 unique categories with different shapes",
       "Highest average attack stats of all collections",
@@ -37,14 +37,14 @@ const collectionData = [
   {
     name: "Cybermon",
     slug: "cybermon",
-    count: 150,
+    count: 160,
     year: 2000,
     origin: "Magic Box",
     color: "#00B4D8",
     categories: ["Caps"],
-    desc: "The largest collection with 150 digital companions in cap format. High precision and technical stats make these creatures excel in aim-based combat strategies. With extensive evolution trees, they offer the most progression depth.",
+    desc: "The largest collection with 160 digital companions in cap format. High precision and technical stats make these creatures excel in aim-based combat strategies. With extensive evolution trees, they offer the most progression depth.",
     highlights: [
-      "Largest collection — 150 tazos total",
+      "Largest collection — 160 tazos total",
       "Complex evolution trees with multiple stages",
       "Highest precision and technical stats",
       "Original Magic Box 2000 cap-tazo series"
@@ -57,7 +57,7 @@ export default function CollectionsPage() {
     <PublicPageShell>
       <div className="max-w-5xl mx-auto px-4 py-12 sm:py-16">
         <h1 className="text-3xl sm:text-4xl font-black uppercase text-[#1a1a1a] mb-4">Collections</h1>
-        <p className="text-lg font-bold text-[#1a1a1a]/60 mb-10">319 tazos across 3 legendary collections. Each with 9 unique combat stats.</p>
+        <p className="text-lg font-bold text-[#1a1a1a]/60 mb-10">349 tazos across 3 legendary collections. Each with 9 unique combat stats.</p>
 
         <div className="space-y-8">
           {collectionData.map((c) => (

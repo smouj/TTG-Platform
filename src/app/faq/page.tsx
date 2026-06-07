@@ -5,7 +5,7 @@ const FAQ_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Trading Tazos Game?", "acceptedAnswer": { "@type": "Answer", "text": "Trading Tazos Game is a browser-based skill game where you collect and battle with digital tazos. Open bags to discover 319 unique tazos across 3 franchises — Minimon, Dracobell, and Cybermon. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory." } },
+    { "@type": "Question", "name": "What is Trading Tazos Game?", "acceptedAnswer": { "@type": "Answer", "text": "Trading Tazos Game is a browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 franchises — Minimon, Dracobell, and Cybermon. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory." } },
     { "@type": "Question", "name": "Is it free to play?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free. You start with 10 free bags and earn credits by battling, completing quests, and daily logins — no credit card required." } },
     { "@type": "Question", "name": "How do I get started?", "acceptedAnswer": { "@type": "Answer", "text": "Create a free account, open your 10 welcome bags in the Shop to discover your first tazos, build a deck of 5, and head to the Battle Arena to fight AI opponents." } },
     { "@type": "Question", "name": "How does the battle system work?", "acceptedAnswer": { "@type": "Answer", "text": "Each turn you aim a crosshair on the 3D arena, charge your throw power with timing-based precision, and select a spin type (topspin, backspin, sidespin, or none). Your tazo slides across the arena — hit opponent tazos hard enough and they flip, capturing them. Win by capturing all opponent tazos or depleting their HP." } },
@@ -19,7 +19,7 @@ const FAQ_SCHEMA = {
 const faqs = [
   {
     q: "What is Trading Tazos Game?",
-    a: "Trading Tazos Game is a browser-based skill game where you collect and battle with digital tazos. Open bags to discover 319 unique tazos across 3 franchises — Minimon, Dracobell, and Cybermon. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory."
+    a: "Trading Tazos Game is a browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 franchises — Minimon, Dracobell, and Cybermon. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory."
   },
   {
     q: "Is it free to play?",
@@ -51,7 +51,7 @@ const faqs = [
   },
   {
     q: "What are the 3 franchises?",
-    a: "Minimon (51 tazos, creature adventure theme), Dracobell (118 tazos, martial arts and dragon warriors), and Cybermon (150 tazos, digital companions and neon tech). 319 tazos total."
+    a: "Minimon (61 tazos, creature adventure theme), Dracobell (128 tazos, martial arts and dragon warriors), and Cybermon (160 tazos, digital companions and neon tech). 349 tazos total."
   },
   {
     q: "Can I play against friends?",
