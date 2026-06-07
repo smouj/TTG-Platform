@@ -61,9 +61,10 @@ const WEAR_COLORS: Record<string, { bg: string; text: string }> = {
 }
 
 // ── ListingCard ───────────────────────────────────────
-function ListingCard({ listing, onBuy, buying, isOwn, credits }: {
+function ListingCard({ listing, onBuy, onCancel, buying, isOwn, credits }: {
   listing: TradeListing
   onBuy: () => void
+  onCancel: () => void
   buying: boolean
   isOwn: boolean
   credits: number
@@ -121,7 +122,15 @@ function ListingCard({ listing, onBuy, buying, isOwn, credits }: {
           {listing.price}
         </div>
         {isOwn ? (
-          <span className="text-[8px] font-black text-[#1a1a1a]/25 uppercase">Yours</span>
+          <div className="flex flex-col gap-1 items-end">
+            <span className="text-[8px] font-black text-[#1a1a1a]/25 uppercase">Your listing</span>
+            <button
+              onClick={onCancel}
+              className="px-2 py-1 text-[7px] font-black uppercase border border-[#E3350D]/30 text-[#E3350D]/60 hover:bg-[#E3350D]/10 hover:text-[#E3350D] rounded-full transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
         ) : (
           <button
             onClick={onBuy}
@@ -261,6 +270,24 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
     finally { setBuyingId(null) }
   }, [token, loadListings])
 
+  const handleCancel = useCallback(async (listing: TradeListing) => {
+    if (!token) return
+    setBuyingId(listing.id); setError(null)
+    try {
+      const res = await fetch(`/api/trade/${listing.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const data = await res.json()
+      if (res.ok) {
+        loadListings()
+      } else {
+        setError(data.error || "Cancel failed")
+      }
+    } catch { setError("Connection error") }
+    finally { setBuyingId(null) }
+  }, [token, loadListings])
+
   const handleSell = useCallback(async (userTazoId: string, price: number) => {
     if (!token) return
     setSelling(true); setError(null)
@@ -375,6 +402,7 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
                   key={l.id}
                   listing={l}
                   onBuy={() => handleBuy(l)}
+                  onCancel={() => handleCancel(l)}
                   buying={buyingId === l.id}
                   isOwn={l.seller.id === user.id}
                   credits={credits}

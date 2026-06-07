@@ -15,7 +15,7 @@ import {
 // ── Types ──────────────────────────────────────────────
 interface DeckTazo { id: string; name: string; displayName: string; number: string; imageUrl: string; rarity: string; franchiseSlug: string; attack: number; defense: number; resistance: number }
 interface Deck { id: string; name: string; isActive: boolean; tazos: DeckTazo[] }
-interface CollectionTazo { id: string; tazoId: string; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; number?: string | number; franchiseColor?: string } }
+interface CollectionTazo { id: string; tazoId: string; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; number?: string | number; franchiseColor?: string } }
 interface CollectionData { items: CollectionTazo[]; total: number; totalUnique: number; decks: Deck[]; franchiseSummary: Record<string, number> }
 
 // ── Constants ──────────────────────────────────────────
@@ -566,6 +566,7 @@ export default function CollectionPage() {
                               finish={(item.tazo as any).finish}
                               creatureVariant={(item.tazo as any).creatureVariant}
                               shinyImageUrl={(item.tazo as any).shinyImageUrl}
+                              wear={item.wear || 0}
                               isBack={isFlipped}
                               onFlip={() => toggleFlip(item.id)}
                               overlay={
@@ -601,8 +602,8 @@ export default function CollectionPage() {
                               </p>
                             </div>
 
-                            {/* Rarity bar */}
-                            <div className="flex items-center gap-2">
+                            {/* Rarity bar + wear badge */}
+                            <div className="flex items-center gap-2 flex-wrap">
                               <span
                                 className="text-[8px] font-black uppercase px-1.5 py-0.5 border border-[#1a1a1a]/20"
                                 style={{
@@ -612,6 +613,19 @@ export default function CollectionPage() {
                               >
                                 {RARITY_STARS[item.tazo.rarity] || ""}
                               </span>
+                              {/* Wear badge */}
+                              {((item as any).wear || 0) > 0 && (
+                                <span
+                                  className="text-[7px] font-black uppercase px-1.5 py-0.5 border rounded-full"
+                                  style={{
+                                    background: ((item as any).wear <= 15 ? "#22C55E15" : (item as any).wear <= 40 ? "#FFCC0015" : (item as any).wear <= 70 ? "#FF880015" : "#CC000015"),
+                                    color: (item as any).wear <= 15 ? "#22C55E" : (item as any).wear <= 40 ? "#CCAA00" : (item as any).wear <= 70 ? "#FF8800" : "#CC0000",
+                                    borderColor: ((item as any).wear <= 15 ? "#22C55E" : (item as any).wear <= 40 ? "#CCAA00" : (item as any).wear <= 70 ? "#FF8800" : "#CC0000") + "30",
+                                  }}
+                                >
+                                  {(item as any).wear <= 15 ? "LP" : (item as any).wear <= 40 ? "PL" : (item as any).wear <= 70 ? "HP" : "DM"}
+                                </span>
+                              )}
                               <span className="text-[8px] font-bold text-[#1a1a1a]/30">{power} TP</span>
                             </div>
 

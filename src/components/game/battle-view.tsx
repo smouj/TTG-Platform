@@ -28,7 +28,7 @@ import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
 import BattleResultPanel from "./battle/battle-result-panel"
-import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize } from "lucide-react"
+import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock } from "lucide-react"
 
 const BACK_ARTS: Record<string, string> = {
   minimon: "/tazos-artgen/backs/minimon-back.png",
@@ -603,6 +603,18 @@ export default function BattleView() {
             30% { opacity: 1; transform: scale(1.2) rotate(15deg); }
             100% { opacity: 0; transform: scale(1.8) rotate(45deg); }
           }
+          @keyframes particleFly {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+          }
+          @keyframes slamBounce {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.08); }
+            30% { transform: scale(0.95); }
+            50% { transform: scale(1.03); }
+            70% { transform: scale(0.98); }
+            100% { transform: scale(1); }
+          }
         `}</style>
         {/* ── HUD overlay top (compact) ── */}
         <div className="absolute top-2 left-2 right-2 z-20">
@@ -648,6 +660,35 @@ export default function BattleView() {
               {p.text}
             </div>
           ))}
+
+          {/* Impact particles — burst from center on slam */}
+          {(phase === "impact" || showImpact) && (
+            <div className="absolute top-1/2 left-1/2 pointer-events-none" style={{ marginLeft: -120, marginTop: -120 }}>
+              {[...Array(18)].map((_, i) => {
+                const angle = (i / 18) * Math.PI * 2
+                const dist = 40 + Math.random() * 80
+                const px = Math.cos(angle) * dist
+                const py = Math.sin(angle) * dist
+                const size = 3 + Math.random() * 5
+                const colors = ["#FFCC00", "#FF8800", "#FFAA00", "#FFDD44", "#FFF"]
+                const color = colors[Math.floor(Math.random() * colors.length)]
+                return (
+                  <div key={i} className="absolute rounded-full"
+                    style={{
+                      left: 120, top: 120,
+                      width: size, height: size,
+                      background: color,
+                      boxShadow: `0 0 ${size * 2}px ${color}`,
+                      animation: "particleFly 1.2s ease-out forwards",
+                      animationDelay: `${i * 0.02}s`,
+                      "--px": `${px}px`,
+                      "--py": `${py}px`,
+                    } as React.CSSProperties}
+                  />
+                )
+              })}
+            </div>
+          )}
 
           {/* Phase status — centered pill */}
           <div className="flex justify-center mt-2">
