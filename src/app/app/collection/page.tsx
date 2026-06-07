@@ -363,6 +363,9 @@ export default function CollectionPage() {
                       size={36}
                       scale={1.08}
                       borderWidth={0}
+                      finish={(dt as any).finish}
+                      creatureVariant={(dt as any).creatureVariant}
+                      shinyImageUrl={(dt as any).shinyImageUrl}
                       lazy
                     />
                   </div>
@@ -560,6 +563,9 @@ export default function CollectionPage() {
                               borderColor="#1a1a1a33"
                               franchiseSlug={item.tazo.franchiseSlug}
                               number={item.tazo.number}
+                              finish={(item.tazo as any).finish}
+                              creatureVariant={(item.tazo as any).creatureVariant}
+                              shinyImageUrl={(item.tazo as any).shinyImageUrl}
                               isBack={isFlipped}
                               onFlip={() => toggleFlip(item.id)}
                               overlay={

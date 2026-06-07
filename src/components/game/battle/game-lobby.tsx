@@ -258,6 +258,7 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
                       <TazoDiscImage
                         src={t.imageUrl} alt={t.name} size="100%"
                         scale={1.12} borderWidth={0} franchiseSlug={t.franchise}
+                        finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
                         lazy className="w-full h-full"
                       />
                     </div>
