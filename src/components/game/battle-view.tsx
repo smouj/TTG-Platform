@@ -53,23 +53,46 @@ function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFina
 }
 
 async function fetchTazos(token: string): Promise<TazoCard[]> {
+  // Load user's decks first — if they have an active deck, use it
   try {
-    const r = await fetch("/api/tazos?limit=100", { headers: { Authorization: `Bearer ${token}` } })
-    if (!r.ok) return []
-    const d = await r.json()
-    return (d.tazos || []).map((t: any) => ({
-      id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
-      franchise: (t.franchise || t.franchiseSlug || "minimon") as TazoCard["franchise"],
-      imageUrl: t.imageUrl || null,
-      shinyImageUrl: t.shinyImageUrl || null,
-      finish: t.finish || "normal",
-      creatureVariant: t.creatureVariant || "standard",
-      rarity: t.rarity || "common",
-      attack: t.attack || 50, defense: t.defense || 50,
-      resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,
-      spin: t.spin || 50, control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
-    }))
-  } catch { return [] }
+    const dr = await fetch("/api/decks", { headers: { Authorization: `Bearer ${token}` } })
+    if (dr.ok) {
+      const dd = await dr.json()
+      const decks = dd.decks || []
+      const activeDeck = decks.find((d: any) => d.isActive) || decks[0]
+      if (activeDeck && activeDeck.tazos?.length >= 5) {
+        return activeDeck.tazos.map((t: any) => ({
+          id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
+          franchise: (t.franchiseSlug || "minimon") as TazoCard["franchise"],
+          imageUrl: t.imageUrl || null,
+          shinyImageUrl: t.shinyImageUrl || null,
+          rarity: t.rarity || "common",
+          finish: t.finish || "normal",
+          creatureVariant: t.creatureVariant || "standard",
+          attack: t.attack || 50, defense: t.defense || 50,
+          resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,
+          spin: t.spin || 50, control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+        }))
+      }
+    }
+  } catch { /* deck API failed, fall back to tazos API */ }
+
+  // Fallback: load from public tazo API
+  const r = await fetch("/api/tazos?limit=100", { headers: { Authorization: `Bearer ${token}` } })
+  if (!r.ok) return []
+  const d = await r.json()
+  return (d.tazos || []).map((t: any) => ({
+    id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
+    franchise: (t.franchise || t.franchiseSlug || "minimon") as TazoCard["franchise"],
+    imageUrl: t.imageUrl || null,
+    shinyImageUrl: t.shinyImageUrl || null,
+    rarity: t.rarity || "common",
+    finish: t.finish || "normal",
+    creatureVariant: t.creatureVariant || "standard",
+    attack: t.attack || 50, defense: t.defense || 50,
+    resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,
+    spin: t.spin || 50, control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+  }))
 }
 
 export default function BattleView() {
