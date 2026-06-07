@@ -22,6 +22,7 @@ export function pageMetadata({
   noIndex?: boolean
 }): Metadata {
   const url = path ? `${SITE_URL}${path}` : SITE_URL
+  const defaultOgImage = `${SITE_URL}/logo/social-preview.webp`
   return {
     title,
     description,
@@ -30,7 +31,9 @@ export function pageMetadata({
       title,
       description,
       url,
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+      images: ogImage
+        ? [{ url: ogImage, width: 1200, height: 630 }]
+        : [{ url: defaultOgImage, width: 1200, height: 630 }],
     },
     ...(noIndex ? { robots: { index: false, follow: false } } : {}),
   }

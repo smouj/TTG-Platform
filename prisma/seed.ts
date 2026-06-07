@@ -71,7 +71,7 @@ async function main() {
       name: "Minimon Tazos 1", slug: "minimon-tazos-1",
       franchiseId: minimon.id, year: 2000, totalTazos: 51,
       manufacturer: "Matutano", country: "España",
-      description: "La colección original de 51 tazos Minimon lanzada en España. Numeración del #1 al #51.",
+      description: "The original collection of 61 Minimon tazos launched in Spain. Numbered #1 through #61.",
     },
   })
 
@@ -80,7 +80,7 @@ async function main() {
       name: "Dracobell Tazos", slug: "dracobell-matutano-1995",
       franchiseId: dracobell.id, year: 1995, totalTazos: 105,
       manufacturer: "Matutano", country: "España",
-      description: "Colección completa de 118 tazos Dracobell en 7 categorías: Tazos (1-10), Supertazos voladores (11-30), Supertazos octogonales (31-50), Megatazos (51-70), Holo 3D (1-10), y Mastertazos.",
+      description: "Complete collection of 128 Dracobell tazos across 7 categories: Tazos (1-10), Supertazos voladores (11-30), Supertazos octogonales (31-50), Megatazos (51-70), Holo 3D (1-10), and Mastertazos.",
     },
   })
 
@@ -89,7 +89,7 @@ async function main() {
       name: "Cybermon Digital Monsters", slug: "cybermon-magic-box-2000",
       franchiseId: cybermon.id, year: 2000, totalTazos: 150,
       manufacturer: "Magic Box", country: "España / Europa",
-      description: "Colección de 150 caps Cybermon. Monstruos digitales evolucionables con armaduras y energía tecnológica.",
+      description: "Collection of 160 Cybermon caps. Digital monsters with evolution stages, armor upgrades, and tech-based energy.",
     },
   })
 
@@ -486,7 +486,7 @@ async function main() {
       },
     })
   }
-  console.log(`   ✅ 150 Cybermon caps (verified names)\n`)
+  console.log(`   ✅ 160 Cybermon caps (verified names)\n`)
 
   // ============================================================
   // SUMMARY
@@ -513,7 +513,7 @@ async function main() {
   console.log(`   Dracobell Mastertazos:          8 (verified)`  )
   console.log(`   Cybermon Magic Box:      150 (verified)`   )
   console.log(`                          ———`)
-  console.log(`   TOTAL:                  319 tazos`)
+  console.log(`   TOTAL:                  349 tazos`)
 }
 
 main()

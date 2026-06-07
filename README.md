@@ -22,7 +22,7 @@
 
 **Aim. Throw. Flip. Capture. Collect.**
 
-Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you aim, charge power, and throw tazos into a 3D physics-simulated arena. Features 319 tazos across 3 collections (Minimon, Dracobell, Cybermon), 9 combat stats, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
+Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you aim, charge power, and throw tazos into a 3D physics-simulated arena. Features 349 tazos across 3 collections (Minimon, Dracobell, Cybermon), 9 combat stats, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
 
 🌐 **[medaclawarena.com](https://medaclawarena.com)** &nbsp;|&nbsp; 📧 **support@medaclawarena.com**
 
@@ -36,7 +36,7 @@ Trading Tazos Game is a browser-based digital tazo (pog) battle game designed en
 
 | Landing Page | Tazo Catalog | Practice Battle |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/home.png" width="320" alt="Magazine-style landing with hero and collections"> | <img src="docs/screenshots/tazos.png" width="320" alt="Public catalog with 319 tazos across three collections"> | <img src="docs/screenshots/battle.png" width="320" alt="Practice battle with 3D arena and aim controls"> |
+| <img src="docs/screenshots/home.png" width="320" alt="Magazine-style landing with hero and collections"> | <img src="docs/screenshots/tazos.png" width="320" alt="Public catalog with 349 tazos across three collections"> | <img src="docs/screenshots/battle.png" width="320" alt="Practice battle with 3D arena and aim controls"> |
 
 | Leaderboard | Download | Sign In |
 |:---:|:---:|:---:|
@@ -87,7 +87,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 ### Collection & Progression
 | Feature | Detail |
 |---------|--------|
-| Tazo Database | 319 tazos: 51 Minimon, 118 Dracobell, 150 Cybermon |
+| Tazo Database | 349 tazos: 61 Minimon, 128 Dracobell, 160 Cybermon |
 | Personal Collection | Track owned tazos, mark favorites, view acquisition dates |
 | Decks | Build, name, and activate battle decks (5 tazos each) |
 | Welcome Pack | 10 starter tazos + pre-built deck on registration |
@@ -143,12 +143,12 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 
 | # | Collection | Origin | Tazos |
 |:--:|-----------|--------|:-----:|
-| 1 | **Minimon** — inspired by Pokémon Tazos 1 (Matutano, 2000) | Spain | 51 |
-| 2 | **Dracobell** — inspired by Dragon Ball Z (Matutano, 1995) | Spain | 118 |
-| 3 | **Cybermon** — inspired by Digimon Magic Box (2000) | Spain | 150 |
-| | | **Total** | **319** |
+| 1 | **Minimon** — inspired by Pokémon Tazos 1 (Matutano, 2000) | Spain | 61 |
+| 2 | **Dracobell** — inspired by Dragon Ball Z (Matutano, 1995) | Spain | 128 |
+| 3 | **Cybermon** — inspired by Digimon Magic Box (2000) | Spain | 160 |
+| | | **Total** | **349** |
 
-All 319 tazos verified against original Spanish physical collections. Each tazo has 9 balanced combat stats, a tactical role, and evolutive relationships (pre-evolution, evolution, transformation stage). Names have been minimally tweaked to avoid IP conflicts while staying instantly recognizable.
+All 349 tazos verified against original Spanish physical collections. Each tazo has 9 balanced combat stats, a tactical role, and evolutive relationships (pre-evolution, evolution, transformation stage). Names have been minimally tweaked to avoid IP conflicts while staying instantly recognizable.
 
 ---
 
@@ -188,7 +188,7 @@ All 319 tazos verified against original Spanish physical collections. Each tazo 
 | 3D Rendering | Three.js + @react-three/fiber + @react-three/drei (battle-only) |
 | Battle Graphics | Three.js 3D physics arena (2D for collection, stats, shop) |
 | ORM | Prisma 6.x (12 models, automated migrations) |
-| Database | SQLite (zero-config, portable, 360 KB with 319 tazos) |
+| Database | SQLite (zero-config, portable, ~400 KB with 349 tazos) |
 | Auth | JWT (jsonwebtoken) + bcryptjs (12 rounds) + httpOnly cookies |
 | Multiplayer | WebSocket (ws) with JWT auth and room system |
 | Desktop | Electron with animated splash, system tray, single-instance lock |
@@ -203,7 +203,7 @@ All 319 tazos verified against original Spanish physical collections. Each tazo 
 Trading-Tazos-Game/
 ├── prisma/
 │   ├── schema.prisma        # 12 models + automated migrations
-│   ├── seed.ts              # 319 tazos (seed data)
+│   ├── seed.ts              # 349 tazos (seed data)
 │   └── seed-quests.ts       # 17 quests + 18 achievements
 ├── src/
 │   ├── proxy.ts              # Auth route protection + legacy redirects
@@ -282,7 +282,7 @@ cd Trading-Tazos-Game
 bun install                              # Dependencies
 cp .env.example .env                     # Set your JWT_SECRET
 bunx prisma db push                      # Create database
-bun run seed                             # 319 tazos + 17 quests + 18 achievements
+bun run seed                             # 349 tazos + 17 quests + 18 achievements
 
 bun run dev                              # http://localhost:3000
 ```
@@ -435,7 +435,7 @@ tazos battle --seed 42   # Simulate a physics battle
 - Canonical franchise naming (Minimon, Dracobell, Cybermon)
 
 ### v0.1.0 — Initial Launch
-- 319 verified Spanish tazos across 3 collections
+- 349 verified tazos across 3 collections
 - 3D battle arena with physics simulation (Three.js / R3F)
 - Deterministic battle engine
 - 90s Nintendo Power magazine aesthetic
