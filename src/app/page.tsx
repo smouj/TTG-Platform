@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import LauncherView from "@/components/game/launcher-view"
 
 export const metadata: Metadata = {
@@ -20,5 +21,9 @@ export const metadata: Metadata = {
 }
 
 export default function HomePage() {
-  return <LauncherView />
+  return (
+    <Suspense fallback={<div className="min-h-screen" style={{ background: "#FFF9E6" }} />}>
+      <LauncherView />
+    </Suspense>
+  )
 }

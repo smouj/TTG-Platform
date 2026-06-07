@@ -3,20 +3,47 @@
 // 90s gaming-magazine aesthetic: halftone dots, heavy black
 // borders, comic typography, CMYK accents, retro print feel.
 // This IS the launcher that the desktop app (.exe/.dmg) loads.
+//
+// v2: Integrated content pages — the masthead tabs render
+// How to Play, Collections, Tazos, Leaderboard, Download,
+// and FAQ inside the same magazine shell, replacing the hero.
 // ============================================================
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import {
   Download, Globe, Monitor, Apple, Terminal,
   Zap, Star, Disc3, Swords, Medal, PackageOpen,
   BookOpen, ShoppingBag, BarChart3, Dices,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, ExternalLink,
+  Trophy, Coins, Package, ArrowLeft, Loader2,
+  Crown, X, ArrowUp, HelpCircle
 } from "lucide-react"
 
+// ── Types ──
+
+type PageId = "home" | "how-to-play" | "collections" | "collections-minimon"
+  | "collections-cybermon" | "collections-dracobell" | "tazos" | "leaderboard"
+  | "download" | "faq"
+
+const PAGE_LABELS: Record<PageId, string> = {
+  home: "Home",
+  "how-to-play": "How to Play",
+  collections: "Collections",
+  "collections-minimon": "Minimon",
+  "collections-cybermon": "Cybermon",
+  "collections-dracobell": "Dracobell",
+  tazos: "Tazos",
+  leaderboard: "Rankings",
+  download: "Download",
+  faq: "FAQ",
+}
+
 // ── Magazine Splash Screen ──
+
 function MagazineSplash({ onFinish }: { onFinish: () => void }) {
   const [phase, setPhase] = useState<"cover" | "flip" | "done">("cover")
   const [progress, setProgress] = useState(0)
@@ -38,20 +65,15 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
   return (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
       style={{ background: "#FFF9E6" }}>
-      {/* Halftone dots */}
       <div className="mag-dots absolute inset-0 opacity-30" />
-
-      {/* Logo */}
       <div className={`relative transition-all duration-600 ${
         phase === "cover" ? "scale-100 opacity-100" : "scale-90 opacity-70"
       }`}>
-        {/* Starburst behind logo */}
         <div className="absolute -inset-8 sm:-inset-10 flex items-center justify-center pointer-events-none">
           <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-[6px] border-[#E3350D]/30" />
           <div className="absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full border-[4px] border-[#FFCC00]/40" />
           <div className="absolute w-16 h-16 sm:w-24 sm:h-24 rounded-full border-[3px] border-[#E3350D]/20" />
         </div>
-
         <img
           src="/logo/logo-icon-black.webp"
           alt="Trading Tazos"
@@ -59,14 +81,10 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
           style={{ filter: "drop-shadow(6px 6px 0 rgba(26,26,26,0.3))" }}
         />
       </div>
-
-      {/* Title — comic style */}
       <h1 className="mt-5 text-3xl sm:text-5xl font-black text-[#1a1a1a] uppercase tracking-[0.1em] text-center leading-none"
         style={{ textShadow: "3px 3px 0 rgba(227,53,13,0.3)" }}>
         TRADING<span className="text-[#E3350D]">TAZOS</span><span className="text-[#1a1a1a]">GAME</span>
       </h1>
-
-      {/* Magazine subtitle */}
       <div className={`mt-2 flex items-center gap-2 transition-all duration-500 ${
         phase === "cover" ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
       }`}>
@@ -76,12 +94,9 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
         </span>
         <span className="w-3 h-[2px] bg-[#1a1a1a]" />
       </div>
-
-      {/* Loading — magazine page flip progress */}
       <div className={`mt-8 transition-all duration-500 ${
         phase === "flip" ? "opacity-100" : "opacity-0"
       }`}>
-        {/* Magazine-stripe loading bar */}
         <div className="relative w-56 sm:w-72 h-3 border-2 border-[#1a1a1a] overflow-hidden"
           style={{
             background: "repeating-linear-gradient(-45deg, #FFCC00, #FFCC00 6px, #F0A800 6px, #F0A800 12px)",
@@ -97,7 +112,8 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
   )
 }
 
-// ── Magazine Platform Badge ──
+// ── Shared sub-components ──
+
 function PlatformBadge({ icon: Icon, label }: { icon: typeof Monitor; label: string }) {
   return (
     <div className="flex items-center gap-1.5 px-2 py-1 border-2 border-[#1a1a1a] bg-white"
@@ -108,7 +124,6 @@ function PlatformBadge({ icon: Icon, label }: { icon: typeof Monitor; label: str
   )
 }
 
-// ── Stat Badge ──
 function StatBadge({ number, label, color }: { number: string; label: string; color: string }) {
   return (
     <div className="flex flex-col items-center px-3 py-2 border-2 border-[#1a1a1a] bg-white"
@@ -119,7 +134,43 @@ function StatBadge({ number, label, color }: { number: string; label: string; co
   )
 }
 
-// ── Preview Slider ──
+function PageHeader({ title, onBack }: { title: string; onBack: () => void }) {
+  return (
+    <div className="flex items-center gap-3 mb-6">
+      <button
+        onClick={onBack}
+        className="flex items-center justify-center w-8 h-8 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+        style={{ boxShadow: "2px 2px 0 #1a1a1a" }}
+      >
+        <ArrowLeft className="w-4 h-4 text-[#1a1a1a]" />
+      </button>
+      <h2 className="text-xl sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-[0.05em]">{title}</h2>
+    </div>
+  )
+}
+
+function SectionCard({ step, color, title, children, bgColor }: {
+  step?: number; color: string; title: string; children: React.ReactNode; bgColor?: string
+}) {
+  return (
+    <div className="border-2 border-[#1a1a1a] bg-white p-5"
+      style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
+      <div className="flex items-center gap-3 mb-3">
+        {step && (
+          <span className="inline-flex items-center justify-center w-10 h-10 border-2 border-[#1a1a1a] text-lg font-black text-white flex-shrink-0"
+            style={{ background: bgColor || color }}>{step}</span>
+        )}
+        <h3 className="text-base font-black uppercase text-[#1a1a1a]">{title}</h3>
+      </div>
+      <div className="text-xs font-bold text-[#1a1a1a]/60 space-y-1.5 leading-relaxed">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// ── Preview Slider (home page) ──
+
 const PREVIEW_SLIDES = [
   {
     icon: Disc3, label: "Tazo Collection",
@@ -156,89 +207,497 @@ const PREVIEW_SLIDES = [
 function PreviewSlider() {
   const [active, setActive] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-
   const next = useCallback(() => setActive(p => (p + 1) % PREVIEW_SLIDES.length), [])
   const prev = useCallback(() => setActive(p => (p - 1 + PREVIEW_SLIDES.length) % PREVIEW_SLIDES.length), [])
-
-  useEffect(() => {
-    timerRef.current = setInterval(next, 4000)
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [next])
-
-  const slide = PREVIEW_SLIDES[active]
-  const Icon = slide.icon
-
+  useEffect(() => { timerRef.current = setInterval(next, 4000); return () => { if (timerRef.current) clearInterval(timerRef.current) } }, [next])
+  const slide = PREVIEW_SLIDES[active]; const Icon = slide.icon
   return (
     <div className="w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[380px]">
-      {/* Slide card */}
       <div className="relative border-3 border-[#1a1a1a] overflow-hidden transition-all duration-400"
         style={{ background: slide.bg, boxShadow: "4px 4px 0 #1a1a1a" }}>
-        {/* Color accent bar */}
         <div className="h-1.5" style={{ background: slide.color }} />
-        
         <div className="flex items-start gap-3 p-3 sm:p-4">
-          {/* Icon block */}
           <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border-2 border-[#1a1a1a] bg-white"
             style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
             <Icon className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: slide.color }} />
           </div>
-
-          {/* Text */}
           <div className="min-w-0 flex-1">
-            <h3 className="text-xs sm:text-sm font-black text-[#1a1a1a] uppercase tracking-wider leading-tight">
-              {slide.label}
-            </h3>
-            <p className="mt-0.5 text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/55 leading-relaxed">
-              {slide.desc}
-            </p>
+            <h3 className="text-xs sm:text-sm font-black text-[#1a1a1a] uppercase tracking-wider leading-tight">{slide.label}</h3>
+            <p className="mt-0.5 text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/55 leading-relaxed">{slide.desc}</p>
           </div>
         </div>
       </div>
-
-      {/* Nav controls */}
       <div className="flex items-center justify-between mt-2">
-        <button onClick={prev}
-          className="flex items-center justify-center w-7 h-7 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
-          <ChevronLeft className="w-3.5 h-3.5 text-[#1a1a1a]" />
-        </button>
-
-        {/* Dots */}
+        <button onClick={prev} className="flex items-center justify-center w-7 h-7 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          style={{ boxShadow: "2px 2px 0 #1a1a1a" }}><ChevronLeft className="w-3.5 h-3.5 text-[#1a1a1a]" /></button>
         <div className="flex items-center gap-1.5">
           {PREVIEW_SLIDES.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)}
-              className="transition-all duration-300 rounded-full"
-              style={{
-                width: i === active ? "18px" : "6px",
-                height: "6px",
-                background: i === active ? "#1a1a1a" : "#1a1a1a20",
-                borderRadius: "3px",
-              }} />
+            <button key={i} onClick={() => setActive(i)} className="transition-all duration-300 rounded-full"
+              style={{ width: i === active ? "18px" : "6px", height: "6px", background: i === active ? "#1a1a1a" : "#1a1a1a20", borderRadius: "3px" }} />
           ))}
         </div>
+        <button onClick={next} className="flex items-center justify-center w-7 h-7 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          style={{ boxShadow: "2px 2px 0 #1a1a1a" }}><ChevronRight className="w-3.5 h-3.5 text-[#1a1a1a]" /></button>
+      </div>
+      <p className="mt-1 text-center text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-[0.3em]">{active + 1} / {PREVIEW_SLIDES.length}</p>
+    </div>
+  )
+}
 
-        <button onClick={next}
-          className="flex items-center justify-center w-7 h-7 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
-          <ChevronRight className="w-3.5 h-3.5 text-[#1a1a1a]" />
-        </button>
+// ══════════════════════════════════════════════════════════
+// PAGE CONTENT COMPONENTS
+// ══════════════════════════════════════════════════════════
+
+// ── Home Hero ──
+
+function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
+  const [hoverPlay, setHoverPlay] = useState(false)
+  const [pressPlay, setPressPlay] = useState(false)
+  return (
+    <div className="max-w-5xl mx-auto w-full flex-1 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10 py-8 sm:py-10 lg:py-0">
+      {/* LEFT */}
+      <div className="flex flex-col items-center lg:items-start gap-4 sm:gap-5">
+        <div className="relative">
+          <div className="absolute -inset-6 sm:-inset-8 pointer-events-none">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="absolute w-0.5 sm:w-1 bg-[#E3350D]/20"
+                style={{ height: `${20 + Math.random() * 30}%`, left: "50%", top: "50%",
+                  transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-60%)` }} />
+            ))}
+          </div>
+          <div className="absolute -inset-3 rounded-full border-[3px] border-[#FFCC00] pointer-events-none" />
+          <div className="absolute -inset-[18px] rounded-full border-2 border-[#1a1a1a]/10 pointer-events-none" />
+          <img src="/logo/logo-icon-black.webp" alt="TTG"
+            className="w-18 h-18 sm:w-24 sm:h-24 lg:w-20 lg:h-20"
+            style={{ filter: "drop-shadow(4px 4px 0 rgba(26,26,26,0.3))" }} />
+        </div>
+        <div className="text-center lg:text-left">
+          <h2 className="text-sm sm:text-base lg:text-lg font-black text-[#1a1a1a] uppercase tracking-[0.08em] leading-tight">
+            <span className="text-[#E3350D]">Collect</span> · <span className="text-[#FFCC00]">Trade</span> · <span className="text-[#00A1E9]">Battle</span>
+          </h2>
+          <p className="mt-0.5 text-[10px] font-bold text-[#1a1a1a]/40 uppercase tracking-[0.2em]">The classic tazo arena</p>
+        </div>
+        <PreviewSlider />
+        <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+          <StatBadge number="319" label="Tazos" color="#FFCC00" />
+          <StatBadge number="3" label="Worlds" color="#E3350D" />
+          <StatBadge number="9" label="Stats" color="#00A1E9" />
+          <StatBadge number="5" label="Cards" color="#22C55E" />
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[9px] font-black text-white uppercase"
+            style={{ background: "#E3350D", clipPath: "polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%)" }}>
+            <Zap className="w-2.5 h-2.5 fill-white" /> NEW!
+          </span>
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[9px] font-black text-[#1a1a1a] uppercase border-2 border-[#FFCC00]"
+            style={{ background: "#FFCC00" }}>
+            <Star className="w-2.5 h-2.5 fill-[#1a1a1a]" /> FREE TO PLAY
+          </span>
+        </div>
       </div>
 
-      {/* Slide counter */}
-      <p className="mt-1 text-center text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-[0.3em]">
-        {active + 1} / {PREVIEW_SLIDES.length}
+      {/* RIGHT — Play Button */}
+      <div className="flex flex-col items-center gap-5 sm:gap-6">
+        <button onClick={onPlay}
+          onMouseEnter={() => setHoverPlay(true)} onMouseLeave={() => { setHoverPlay(false); setPressPlay(false) }}
+          onMouseDown={() => setPressPlay(true)} onMouseUp={() => setPressPlay(false)}
+          onTouchStart={() => setPressPlay(true)} onTouchEnd={() => setPressPlay(false)}
+          className="group relative select-none"
+          style={{ transform: pressPlay ? "translate(2px, 2px)" : hoverPlay ? "translate(-2px, -2px)" : "translate(0, 0)", transition: "transform 0.15s ease" }}>
+          <div className="absolute inset-0 translate-x-2 translate-y-2" style={{ background: "#1a1a1a" }} />
+          <div className="relative px-10 sm:px-14 md:px-20 py-3.5 sm:py-4 md:py-5 border-[4px] border-[#1a1a1a] overflow-hidden"
+            style={{
+              background: (hoverPlay || pressPlay) ? "linear-gradient(180deg, #FFE566 0%, #FFCC00 50%, #F5B800 100%)" : "linear-gradient(180deg, #FFCC00 0%, #F0A800 100%)",
+              boxShadow: (hoverPlay || pressPlay) ? "inset 0 -4px 0 rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3)" : "inset 0 -3px 0 rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.25)",
+            }}>
+            <div className={`absolute right-0 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 transition-opacity duration-200 ${hoverPlay ? "opacity-100" : "opacity-0"}`}>
+              {[...Array(4)].map((_, i) => (<div key={i} className="w-3 h-0.5 bg-[#1a1a1a]/40" style={{ marginRight: `${-(i * 4)}px`, width: `${12 + i * 6}px` }} />))}
+            </div>
+            <span className="relative text-lg sm:text-xl md:text-2xl font-black text-[#1a1a1a] uppercase tracking-[0.15em] whitespace-nowrap">Play Now</span>
+            <div className="mag-halftone absolute inset-0 opacity-20 pointer-events-none" />
+          </div>
+        </button>
+        <p className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider text-center">
+          {user ? "Ready for battle?" : "Create a free account to start playing!"}
+        </p>
+        <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
+          {[
+            { icon: PackageOpen, label: "Open Bags", desc: "319 tazos to collect", color: "#FFCC00" },
+            { icon: Swords, label: "Practice Mode", desc: "No account needed!", color: "#E3350D" },
+            { icon: Disc3, label: "319 Tazos", desc: "Collect them all!", color: "#00A1E9" },
+            { icon: Medal, label: "Leaderboard", desc: "See top players", color: "#22C55E" },
+          ].map(({ icon: Icon, label, desc, color }) => (
+            <div key={label}
+              className="group flex items-start gap-2 p-2.5 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] transition-colors cursor-pointer"
+              style={{ boxShadow: "3px 3px 0 #1a1a1a" }}
+              onMouseEnter={e => (e.currentTarget.style.transform = "translate(-1px, -1px)")}
+              onMouseLeave={e => (e.currentTarget.style.transform = "translate(0, 0)")}
+            >
+              <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center border-2 border-[#1a1a1a]" style={{ backgroundColor: `${color}30` }}>
+                <Icon className="w-3.5 h-3.5 text-[#1a1a1a]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] font-black text-[#1a1a1a] uppercase tracking-wider leading-none">{label}</p>
+                <p className="text-[8px] font-bold text-[#1a1a1a]/50 uppercase mt-0.5">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── How to Play ──
+
+function HowToPlayContent() {
+  return (
+    <div className="w-full max-w-3xl mx-auto space-y-6">
+      <SectionCard step={1} color="#FFCC00" bgColor="#FFCC00" title="Create Your Account">
+        <p>Sign up for free — you&apos;ll receive <strong>10 free bags</strong> with surprise tazos inside. Open them in the Shop to start your collection. No credit card required — the game is completely free to play.</p>
+      </SectionCard>
+      <SectionCard step={2} color="#FF6B00" bgColor="#FF6B00" title="Open Bags & Collect Tazos">
+        <p>Each bag contains a random tazo from the collection:</p>
+        <ul className="list-disc pl-5 space-y-0.5">
+          <li><strong>Standard Bags</strong> — Common and uncommon tazos</li>
+          <li><strong>Premium Bags</strong> — Better odds for rare tazos</li>
+          <li><strong>Mega Bags</strong> — Highest chance for ultra rare and legendary</li>
+        </ul>
+        <p>Buy more bags with credits earned by winning battles and completing quests.</p>
+      </SectionCard>
+      <SectionCard step={3} color="#3B4CCA" bgColor="#3B4CCA" title="Build Your Battle Deck">
+        <p>Choose <strong>5 tazos</strong> to form your battle deck. Each tazo has <strong>9 combat stats</strong>:</p>
+        <ul className="list-disc pl-5 space-y-0.5">
+          <li><strong>Attack</strong> — Impact power on opponent tazos</li>
+          <li><strong>Defense</strong> — Resistance to being flipped</li>
+          <li><strong>Resistance</strong> — Stays in place under pressure</li>
+          <li><strong>Weight</strong> — Mass for pushing power</li>
+          <li><strong>Stability</strong> — Prevents ring-outs and knockbacks</li>
+          <li><strong>Spin</strong> — Maintains momentum after landing</li>
+          <li><strong>Control</strong> — Reduces throw deviation</li>
+          <li><strong>Bounce</strong> — Improves wall rebounds</li>
+          <li><strong>Precision</strong> — Better aim accuracy</li>
+        </ul>
+        <p>Balance high-attack tazos with defensive ones for the best results.</p>
+      </SectionCard>
+      <SectionCard step={4} color="#E3350D" bgColor="#E3350D" title="Enter the Battle Arena">
+        <p>Each turn has 3 phases:</p>
+        <ul className="list-disc pl-5 space-y-0.5">
+          <li><strong>Aim</strong> — Position the crosshair where you want your tazo to land</li>
+          <li><strong>Power</strong> — Charge your throw strength with timing-based precision</li>
+          <li><strong>Spin</strong> — Choose topspin, backspin, sidespin, or none</li>
+        </ul>
+        <p>Your tazo slides across the 3D arena. Hit hard enough and you&apos;ll <strong>flip</strong> opponent tazos — capturing them for points.</p>
+      </SectionCard>
+      <SectionCard step={5} color="#22C55E" bgColor="#22C55E" title="Complete Quests & Climb Ranks">
+        <p>Earn credits and reputation by completing <strong>17 quests</strong> across 4 categories (Beginner, Daily, Weekly, Special). Unlock <strong>18 achievements</strong> with Bronze → Platinum tiers. Rise through the leaderboard and become the ultimate collector.</p>
+      </SectionCard>
+    </div>
+  )
+}
+
+// ── Collections ──
+
+const COLLECTION_DATA = [
+  {
+    name: "Minimon", slug: "minimon", count: 51, year: 2000, origin: "Matutano", color: "#FFCC00",
+    categories: ["Tazos"],
+    desc: "The original collection that started it all. 51 creature companions with balanced combat stats — perfect for learning the battle system.",
+    highlights: ["Balanced stat distribution", "Classic creature designs", "Original 2000 Spanish series", "Versatile battle strategies"]
+  },
+  {
+    name: "Dracobell", slug: "dracobell", count: 118, year: 1995, origin: "Matutano", color: "#FF6B00",
+    categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
+    desc: "The most diverse collection with 118 martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
+    highlights: ["6 unique categories", "Highest average attack stats", "Rare Holo 3D variants", "Most diverse category system"]
+  },
+  {
+    name: "Cybermon", slug: "cybermon", count: 150, year: 2000, origin: "Magic Box", color: "#00B4D8",
+    categories: ["Caps"],
+    desc: "The largest collection with 150 digital companions in cap format. High precision stats and extensive evolution trees.",
+    highlights: ["Largest collection — 150 tazos", "Complex evolution trees", "Highest precision stats", "Original Magic Box 2000 series"]
+  },
+]
+
+function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  return (
+    <div className="w-full max-w-4xl mx-auto space-y-5">
+      <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider">
+        3 Franchises · 319 Tazos · Classic snack toy collections
+      </p>
+      <div className="grid md:grid-cols-3 gap-4">
+        {COLLECTION_DATA.map(c => (
+          <button key={c.slug} onClick={() => onNavigate(`collections-${c.slug}` as PageId)}
+            className="text-left border-2 border-[#1a1a1a] bg-white p-5 hover:bg-[#FFF9E6] transition-colors group"
+            style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
+            <div className="h-2 mb-3" style={{ background: c.color }} />
+            <h3 className="text-lg font-black text-[#1a1a1a] uppercase">{c.name}</h3>
+            <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{c.count} tazos · {c.year} · {c.origin}</p>
+            <p className="text-[11px] font-bold text-[#1a1a1a]/60 mt-2 leading-relaxed">{c.desc}</p>
+            <div className="flex flex-wrap gap-1 mt-3">
+              {c.categories.map(cat => (
+                <span key={cat} className="text-[8px] font-black text-white px-2 py-0.5 uppercase"
+                  style={{ background: c.color }}>{cat}</span>
+              ))}
+            </div>
+            <ul className="mt-3 space-y-0.5">
+              {c.highlights.map((h, i) => (
+                <li key={i} className="text-[10px] font-bold text-[#1a1a1a]/50 flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: c.color }} /> {h}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-[10px] font-black text-[#E3350D] uppercase group-hover:underline">View Collection →</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ── Tazo Catalog ──
+
+function TazosContent() {
+  const [tazos, setTazos] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
+  const [franchiseFilter, setFranchiseFilter] = useState("all")
+
+  useEffect(() => {
+    fetch("/api/tazos?limit=60").then(r => r.json()).then(d => {
+      setTazos(d.tazos || [])
+      setLoading(false)
+    }).catch(() => setLoading(false))
+  }, [])
+
+  const filtered = tazos.filter(t =>
+    (franchiseFilter === "all" || t.franchise === franchiseFilter) &&
+    (!search || t.name.toLowerCase().includes(search.toLowerCase()))
+  )
+
+  return (
+    <div className="w-full max-w-5xl mx-auto space-y-4">
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-2">
+        <input value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Search tazos..."
+          className="px-3 py-1.5 text-xs font-bold border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 outline-none flex-1 max-w-[200px]" />
+        {["all", "minimon", "dracobell", "cybermon"].map(f => (
+          <button key={f} onClick={() => setFranchiseFilter(f)}
+            className={`px-3 py-1 text-[10px] font-black uppercase border-2 transition-all ${
+              franchiseFilter === f
+                ? "bg-[#1a1a1a] text-white border-[#1a1a1a]"
+                : "bg-white text-[#1a1a1a] border-[#1a1a1a]/15 hover:border-[#FFCC00]"
+            }`}>{f === "all" ? "All" : f}</button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-[#1a1a1a]/40" /></div>
+      ) : (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+          {filtered.map((t: any) => (
+            <div key={t.id} className="border-2 border-[#1a1a1a] bg-white p-2 text-center hover:bg-[#FFF9E6] transition-colors"
+              style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
+              <div className="aspect-square bg-[#1a1a1a]/5 rounded-full overflow-hidden mb-1.5 mx-auto max-w-[72px]">
+                {t.imageUrl && <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" loading="lazy" />}
+              </div>
+              <p className="text-[9px] font-black text-[#1a1a1a] uppercase truncate">{t.name}</p>
+              <p className="text-[7px] font-bold text-[#1a1a1a]/40 uppercase">{t.franchise}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Leaderboard ──
+
+const SORTS = [
+  { key: "credits", label: "CREDITS", icon: Coins },
+  { key: "tazos", label: "TAZOS", icon: Package },
+  { key: "battles", label: "BATTLES", icon: Swords },
+]
+
+function LeaderboardContent() {
+  const [entries, setEntries] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [sort, setSort] = useState("credits")
+
+  useEffect(() => {
+    setLoading(true)
+    fetch(`/api/leaderboard?sort=${sort}&limit=20`)
+      .then(r => r.json())
+      .then(d => { setEntries(d.leaderboard || []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [sort])
+
+  const displayName = (e: any) => e.displayName || e.name || "???"
+
+  return (
+    <div className="w-full max-w-3xl mx-auto space-y-4">
+      <div className="flex gap-2">
+        {SORTS.map(s => (
+          <button key={s.key} onClick={() => setSort(s.key)}
+            className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase border-2 transition-all ${
+              sort === s.key
+                ? "bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-[2px_2px_0px_#FFCC00]"
+                : "bg-white text-[#1a1a1a] border-[#1a1a1a]/15"
+            }`}><s.icon className="w-3.5 h-3.5" /> {s.label}</button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-[#1a1a1a]/40" /></div>
+      ) : (
+        <div className="space-y-1.5">
+          {entries.map((e: any, i: number) => {
+            const RankIcon = i === 0 ? Crown : i === 1 ? Medal : i === 2 ? Star : undefined
+            const rankColor = i === 0 ? "#F59E0B" : i === 1 ? "#9CA3AF" : i === 2 ? "#D97706" : undefined
+            return (
+              <div key={e.id || i} className="flex items-center gap-3 px-4 py-2.5 border-2 border-[#1a1a1a] bg-white"
+                style={{ boxShadow: rankColor ? `3px 3px 0 ${rankColor}30` : undefined }}>
+                <span className="w-7 text-center text-sm font-black text-[#1a1a1a]/40">{i < 3 ? (RankIcon ? <RankIcon className="w-4 h-4 inline" style={{ color: rankColor }} /> : `#${i + 1}`) : `#${i + 1}`}</span>
+                <div className="w-8 h-8 rounded-full bg-[#1a1a1a]/10 overflow-hidden flex-shrink-0">
+                  {e.avatarUrl && <img src={e.avatarUrl} alt="" className="w-full h-full object-cover" />}
+                </div>
+                <span className="flex-1 text-xs font-black text-[#1a1a1a] truncate">{displayName(e)}</span>
+                <span className="text-[11px] font-black text-[#FFCC00]">
+                  {sort === "credits" ? `${(e.credits || 0).toLocaleString()} cr` :
+                   sort === "tazos" ? `${e.tazoCount || e._count?.userTazos || 0} tazos` :
+                   `${e.winCount || 0} wins`}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Download ──
+
+const GITHUB_URL = "https://github.com/smouj/Trading-Tazos-Game"
+const RELEASE_TAG = "v0.3.1"
+const RELEASE_VER = "0.3.1"
+const RELEASES_URL = `${GITHUB_URL}/releases`
+
+const DOWNLOADS = [
+  { id: "windows", icon: Monitor, color: "#00A4EF", label: "Windows", badge: "Available", badgeColor: "#22C55E",
+    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`, formats: [{ label: ".exe Installer", path: `trading-tazos-game-${RELEASE_VER}-win-x64.exe` }] },
+  { id: "mac", icon: Apple, color: "#1a1a1a", label: "macOS", badge: "Available", badgeColor: "#22C55E",
+    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`, formats: [
+      { label: ".dmg (Apple Silicon)", path: `trading-tazos-game-${RELEASE_VER}-mac-arm64.dmg` },
+      { label: ".dmg (Intel)", path: `trading-tazos-game-${RELEASE_VER}-mac-x64.dmg` },
+      { label: ".zip (Apple Silicon)", path: `trading-tazos-game-${RELEASE_VER}-mac-arm64.zip` },
+      { label: ".zip (Intel)", path: `trading-tazos-game-${RELEASE_VER}-mac-x64.zip` },
+    ] },
+  { id: "linux", icon: Terminal, color: "#FCC624", label: "Linux", badge: "Available", badgeColor: "#22C55E",
+    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`, formats: [
+      { label: ".AppImage (Portable)", path: `trading-tazos-game-${RELEASE_VER}-linux-x86_64.AppImage` },
+      { label: ".deb (Ubuntu/Debian)", path: `trading-tazos-game-${RELEASE_VER}-linux-amd64.deb` },
+    ] },
+]
+
+function DownloadContent() {
+  return (
+    <div className="w-full max-w-4xl mx-auto space-y-5">
+      <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider">
+        Desktop installers for Windows, macOS & Linux · Also available as PWA
+      </p>
+      <div className="grid md:grid-cols-3 gap-4">
+        {DOWNLOADS.map(d => {
+          const Icon = d.icon
+          return (
+            <div key={d.id} className="border-2 border-[#1a1a1a] bg-white p-5"
+              style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Icon className="w-5 h-5" style={{ color: d.color }} />
+                <h3 className="text-sm font-black text-[#1a1a1a] uppercase">{d.label}</h3>
+                <span className="text-[8px] font-black text-white px-1.5 py-0.5 uppercase" style={{ background: d.badgeColor }}>{d.badge}</span>
+              </div>
+              <div className="space-y-1.5 mb-3">
+                {d.formats.map(f => (
+                  <a key={f.label} href={`${d.url}`} target="_blank" rel="noopener"
+                    className="block text-[10px] font-bold text-[#1a1a1a]/60 hover:text-[#E3350D] transition-colors">
+                    {f.label} <ExternalLink className="w-2.5 h-2.5 inline opacity-40" />
+                  </a>
+                ))}
+              </div>
+              <a href={d.url} target="_blank" rel="noopener"
+                className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase border-2 border-[#1a1a1a] hover:bg-[#FFE566] transition-colors">
+                <Download className="w-3 h-3" /> Download
+              </a>
+            </div>
+          )
+        })}
+      </div>
+      <p className="text-center text-[10px] font-bold text-[#1a1a1a]/30">
+        Visit <a href={RELEASES_URL} className="underline hover:text-[#E3350D]">GitHub Releases</a> for all versions
       </p>
     </div>
   )
 }
 
-// ── Main Magazine Launcher ──
+// ── FAQ ──
+
+const FAQS = [
+  { q: "What is Trading Tazos Game?", a: "A browser-based skill game where you collect and battle with digital tazos. Open bags to discover 319 unique tazos across 3 franchises. Build decks of 5, then enter the 3D arena where aim, power, and spin determine victory." },
+  { q: "Is it free to play?", a: "Yes, completely free. Start with 10 free bags and earn credits by battling, completing quests, and daily logins — no credit card required." },
+  { q: "How does the battle system work?", a: "Each turn you aim a crosshair, charge your throw power, and select a spin type (topspin, backspin, sidespin, or none). Your tazo slides across the arena — hit opponent tazos hard enough and they flip, capturing them." },
+  { q: "What are the combat stats?", a: "Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision. Building a balanced deck with complementary stats is key." },
+  { q: "Can I play on mobile?", a: "Yes! Visit medaclawarena.com on your phone, install as PWA, and play full-screen. Desktop versions also available." },
+  { q: "How do credits work?", a: "Credits buy tazo bags in the Shop. Earn them by winning battles, completing quests, and daily login bonuses." },
+  { q: "What quests are there?", a: "17 quests across 4 categories (Beginner, Daily, Weekly, Special) and 18 achievements with Bronze → Platinum tiers." },
+  { q: "How do I get started?", a: "Create a free account, open your welcome bags, build a deck of 5, and enter the Battle Arena." },
+]
+
+function FAQContent() {
+  return (
+    <div className="w-full max-w-3xl mx-auto space-y-3">
+      {FAQS.map((faq, i) => (
+        <details key={i} className="border-2 border-[#1a1a1a] bg-white group"
+          style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <summary className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#FFF9E6] transition-colors">
+            <HelpCircle className="w-4 h-4 text-[#FFCC00] flex-shrink-0" />
+            <span className="text-xs font-black text-[#1a1a1a] uppercase">{faq.q}</span>
+          </summary>
+          <p className="px-4 pb-3 text-[11px] font-bold text-[#1a1a1a]/60 leading-relaxed">{faq.a}</p>
+        </details>
+      ))}
+    </div>
+  )
+}
+
+// ══════════════════════════════════════════════════════════
+// MAIN LAUNCHER COMPONENT
+// ══════════════════════════════════════════════════════════
+
 export default function LauncherView() {
   const { user } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [showSplash, setShowSplash] = useState(false)
-  const [hoverPlay, setHoverPlay] = useState(false)
-  const [pressPlay, setPressPlay] = useState(false)
-  const [showNews, setShowNews] = useState(false)
+  const [currentPage, setCurrentPage] = useState<PageId>("home")
+
+  // Sync page from URL query param on mount
+  useEffect(() => {
+    const page = searchParams.get("page")
+    if (page && PAGE_LABELS[page as PageId]) {
+      setCurrentPage(page as PageId)
+    }
+  }, [searchParams])
+
+  const navigate = useCallback((page: PageId) => {
+    setCurrentPage(page)
+    if (page === "home") {
+      router.replace("/", { scroll: false })
+    } else {
+      router.replace(`/?page=${page}`, { scroll: false })
+    }
+  }, [router])
 
   const handlePlay = useCallback(() => setShowSplash(true), [])
   const handleSplashDone = useCallback(() => {
@@ -246,309 +705,140 @@ export default function LauncherView() {
     window.location.href = user ? "/app/collection" : "/login"
   }, [user])
 
+  const isHome = currentPage === "home"
+
   return (
     <>
       {showSplash && <MagazineSplash onFinish={handleSplashDone} />}
 
-      {/* ── MAGAZINE PAGE ── */}
-      <div className="min-h-screen flex flex-col relative"
-        style={{ background: "#FFF9E6" }}>
-
-        {/* Halftone overlay */}
+      <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
         <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
 
-        {/* ═══════════════════════════════════════════ */}
-        {/* MAGAZINE MASTHEAD                          */}
-        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ MASTHEAD ═══ */}
         <header className="relative z-10 border-b-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
-          {/* Main masthead */}
           <div className="flex items-center justify-between px-3 sm:px-5 py-2.5">
             <div className="flex items-center gap-2.5">
-              <img src="/favicon-192.png" alt="TTG" className="w-7 h-7 sm:w-8 sm:h-8" />
+              <button onClick={() => navigate("home")} className="cursor-pointer">
+                <img src="/favicon-192.png" alt="TTG" className="w-7 h-7 sm:w-8 sm:h-8" />
+              </button>
               <div>
                 <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-[0.08em] leading-none">
                   TRADING<span className="text-[#FFCC00]">TAZOS</span><span className="text-white/80">GAME</span>
                 </h2>
-                <p className="text-[8px] font-bold text-[#FFCC00]/70 uppercase tracking-[0.3em] leading-none mt-0.5">
-                  Official Game (Beta)
-                </p>
+                <p className="text-[8px] font-bold text-[#FFCC00]/70 uppercase tracking-[0.3em] leading-none mt-0.5">Official Game (Beta)</p>
               </div>
             </div>
 
-            {/* Nav links — magazine section tabs */}
+            {/* Desktop nav */}
             <nav className="hidden sm:flex items-center gap-1">
-              {[
-                ["/how-to-play", "How to Play"],
-                ["/collections", "Collections"],
-                ["/leaderboard", "Rankings"],
-                ["/faq", "FAQ"],
-              ].map(([href, label]) => (
-                <Link key={href} href={href}
-                  className="px-2.5 py-1 text-[10px] font-black text-white/50 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">
+              {([
+                ["home", "Home"],
+                ["how-to-play", "How to Play"],
+                ["collections", "Collections"],
+                ["tazos", "Tazos"],
+                ["leaderboard", "Rankings"],
+                ["download", "Download"],
+                ["faq", "FAQ"],
+              ] as [PageId, string][]).map(([id, label]) => (
+                <button key={id} onClick={() => navigate(id)}
+                  className={`px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
+                    currentPage === id ? "text-[#FFCC00]" : "text-white/50 hover:text-[#FFCC00]"
+                  }`}>
                   {label}
-                </Link>
+                </button>
               ))}
             </nav>
 
-            {/* Auth */}
             <div className="flex items-center gap-2">
               {user ? (
                 <>
-                  <Link href="/app/collection"
+                  <a href="/app/collection"
                     className="px-3 py-1 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase tracking-wider border-2 border-white/20 hover:bg-[#FFE566] transition-colors">
                     Dashboard
-                  </Link>
+                  </a>
                   <button onClick={() => { localStorage.removeItem("ttg-token"); document.cookie = "auth_token=; Max-Age=0; path=/"; document.cookie = "ttg_session=; Max-Age=0; path=/"; window.location.href = "/"; }}
-                    className="px-3 py-1 text-[10px] font-black text-white/40 uppercase tracking-wider border-2 border-white/10 hover:border-[#E3350D] hover:text-[#E3350D] transition-colors">
-                    Log Out
-                  </button>
+                    className="px-3 py-1 text-[10px] font-black text-white/40 uppercase tracking-wider border-2 border-white/10 hover:border-[#E3350D] hover:text-[#E3350D] transition-colors">Log Out</button>
                 </>
               ) : (
-                <Link href="/login"
-                  className="px-3 py-1 text-[10px] font-black text-white uppercase tracking-wider border-2 border-white/30 hover:border-[#FFCC00] hover:text-[#FFCC00] transition-colors">
-                  Sign In
-                </Link>
+                <a href="/login"
+                  className="px-3 py-1 text-[10px] font-black text-white uppercase tracking-wider border-2 border-white/30 hover:border-[#FFCC00] hover:text-[#FFCC00] transition-colors">Sign In</a>
               )}
             </div>
           </div>
 
           {/* Mobile nav */}
-          <nav className="sm:hidden flex items-center justify-center gap-0 px-2 pb-2">
-            {[
-              ["/how-to-play", "How to Play"],
-              ["/collections", "Collections"],
-              ["/leaderboard", "Rankings"],
-            ].map(([href, label]) => (
-              <Link key={href} href={href}
-                className="px-2 py-0.5 text-[9px] font-black text-white/40 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">
-                {label}
-              </Link>
+          <nav className="sm:hidden flex items-center justify-center gap-0 px-2 pb-2 overflow-x-auto">
+            {(["home", "how-to-play", "collections", "tazos", "leaderboard", "faq"] as PageId[]).map(id => (
+              <button key={id} onClick={() => navigate(id)}
+                className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
+                  currentPage === id ? "text-[#FFCC00]" : "text-white/40 hover:text-[#FFCC00]"
+                }`}>{PAGE_LABELS[id]}</button>
             ))}
           </nav>
         </header>
 
-        {/* ═══════════════════════════════════════════ */}
-        {/* HERO — Magazine Cover Layout                 */}
-        {/* ═══════════════════════════════════════════ */}
+        {/* ═══ CONTENT AREA ═══ */}
         <main className="relative z-10 flex-1 flex flex-col px-3 sm:px-5">
-          {/* Diagonal stripe accent — top */}
           <div className="absolute top-0 left-0 right-0 h-2 mag-stripes opacity-20 pointer-events-none" />
 
-          <div className="max-w-5xl mx-auto w-full flex-1 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10 py-8 sm:py-10 lg:py-0">
-
-            {/* ═══ LEFT COLUMN — Logo + Stats + Badges ═══ */}
-            <div className="flex flex-col items-center lg:items-start gap-4 sm:gap-5">
-
-              {/* Logo with magazine frame */}
-              <div className="relative">
-                {/* Comic burst behind logo */}
-                <div className="absolute -inset-6 sm:-inset-8 pointer-events-none">
-                  {[...Array(8)].map((_, i) => (
-                    <div key={i} className="absolute w-0.5 sm:w-1 bg-[#E3350D]/20"
-                      style={{
-                        height: `${20 + Math.random() * 30}%`,
-                        left: "50%", top: "50%",
-                        transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-60%)`,
-                      }} />
-                  ))}
-                </div>
-
-                {/* Yellow ring */}
-                <div className="absolute -inset-3 rounded-full border-[3px] border-[#FFCC00] pointer-events-none" />
-                <div className="absolute -inset-[18px] rounded-full border-2 border-[#1a1a1a]/10 pointer-events-none" />
-
-                <img
-                  src="/logo/logo-icon-black.webp"
-                  alt="TTG"
-                  className="w-18 h-18 sm:w-24 sm:h-24 lg:w-20 lg:h-20"
-                  style={{ filter: "drop-shadow(4px 4px 0 rgba(26,26,26,0.3))" }}
-                />
-              </div>
-
-              {/* Compact tagline */}
-              <div className="text-center lg:text-left">
-                <h2 className="text-sm sm:text-base lg:text-lg font-black text-[#1a1a1a] uppercase tracking-[0.08em] leading-tight">
-                  <span className="text-[#E3350D]">Collect</span> · <span className="text-[#FFCC00]">Trade</span> · <span className="text-[#00A1E9]">Battle</span>
-                </h2>
-                <p className="mt-0.5 text-[10px] font-bold text-[#1a1a1a]/40 uppercase tracking-[0.2em]">
-                  The classic tazo arena
-                </p>
-              </div>
-
-              {/* ── Preview Slider ── */}
-              <PreviewSlider />
-
-              {/* Stats grid */}
-              <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
-                <StatBadge number="319" label="Tazos" color="#FFCC00" />
-                <StatBadge number="3" label="Worlds" color="#E3350D" />
-                <StatBadge number="9" label="Stats" color="#00A1E9" />
-                <StatBadge number="5" label="Cards" color="#22C55E" />
-              </div>
-
-              {/* Starburst badges */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[9px] font-black text-white uppercase"
-                  style={{ background: "#E3350D", clipPath: "polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%)" }}>
-                  <Zap className="w-2.5 h-2.5 fill-white" /> NEW!
-                </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[9px] font-black text-[#1a1a1a] uppercase border-2 border-[#FFCC00]"
-                  style={{ background: "#FFCC00" }}>
-                  <Star className="w-2.5 h-2.5 fill-[#1a1a1a]" /> FREE TO PLAY
-                </span>
-              </div>
+          {!isHome && (
+            <div className="max-w-5xl mx-auto w-full pt-6">
+              <PageHeader title={PAGE_LABELS[currentPage]} onBack={() => navigate("home")} />
             </div>
+          )}
 
-            {/* ═══ RIGHT COLUMN — PLAY Button + Featured cards ═══ */}
-            <div className="flex flex-col items-center gap-5 sm:gap-6">
-
-              {/* ═══ MASSIVE PLAY BUTTON ═══ */}
-              <button
-                onClick={handlePlay}
-                onMouseEnter={() => setHoverPlay(true)}
-                onMouseLeave={() => { setHoverPlay(false); setPressPlay(false); }}
-                onMouseDown={() => setPressPlay(true)}
-                onMouseUp={() => setPressPlay(false)}
-                onTouchStart={() => setPressPlay(true)}
-                onTouchEnd={() => setPressPlay(false)}
-                className="group relative select-none"
-                style={{
-                  transform: pressPlay ? "translate(2px, 2px)" : hoverPlay ? "translate(-2px, -2px)" : "translate(0, 0)",
-                  transition: "transform 0.15s ease",
-                }}
-              >
-                {/* Shadow layer */}
-                <div className="absolute inset-0 translate-x-2 translate-y-2"
-                  style={{ background: "#1a1a1a" }} />
-
-                {/* Main button */}
-                <div className="relative px-10 sm:px-14 md:px-20 py-3.5 sm:py-4 md:py-5 border-[4px] border-[#1a1a1a] overflow-hidden"
-                  style={{
-                    background: (hoverPlay || pressPlay)
-                      ? "linear-gradient(180deg, #FFE566 0%, #FFCC00 50%, #F5B800 100%)"
-                      : "linear-gradient(180deg, #FFCC00 0%, #F0A800 100%)",
-                    boxShadow: (hoverPlay || pressPlay)
-                      ? "inset 0 -4px 0 rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3)"
-                      : "inset 0 -3px 0 rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.25)",
-                  }}
-                >
-                  {/* Comic action lines on hover */}
-                  <div className={`absolute right-0 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 transition-opacity duration-200 ${
-                    hoverPlay ? "opacity-100" : "opacity-0"
-                  }`}>
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="w-3 h-0.5 bg-[#1a1a1a]/40"
-                        style={{ marginRight: `${-(i * 4)}px`, width: `${12 + i * 6}px` }} />
-                    ))}
-                  </div>
-
-                  <span className="relative text-lg sm:text-xl md:text-2xl font-black text-[#1a1a1a] uppercase tracking-[0.15em] whitespace-nowrap">
-                    Play Now
-                  </span>
-
-                  {/* Overlay halftone */}
-                  <div className="mag-halftone absolute inset-0 opacity-20 pointer-events-none" />
-                </div>
-
-
-              </button>
-
-              {/* Status */}
-              <p className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider text-center">
-                {user
-                  ? "Ready for battle?"
-                  : "Create a free account to start playing!"}
-              </p>
-
-              {/* Feature cards — magazine "articles" */}
-              <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
-                {[
-                  {
-                    icon: PackageOpen, label: "Open Bags",
-                    desc: "319 tazos to collect",
-                    color: "#FFCC00", href: "/tazos",
-                  },
-                  {
-                    icon: Swords, label: "Practice Mode",
-                    desc: "No account needed!",
-                    color: "#E3350D", href: "/game/practice",
-                  },
-                  {
-                    icon: Disc3, label: "319 Tazos",
-                    desc: "Collect them all!",
-                    color: "#00A1E9", href: "/tazos",
-                  },
-                  {
-                    icon: Medal, label: "Leaderboard",
-                    desc: "See top players",
-                    color: "#22C55E", href: "/leaderboard",
-                  },
-                ].map(({ icon: Icon, label, desc, color, href }) => (
-                  <Link key={label} href={href}
-                    className="group flex items-start gap-2 p-2.5 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] transition-colors"
-                    style={{
-                      boxShadow: "3px 3px 0 #1a1a1a",
-                      transform: "translate(0, 0)",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = "translate(-1px, -1px)")}
-                    onMouseLeave={e => (e.currentTarget.style.transform = "translate(0, 0)")}
-                  >
-                    <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center border-2 border-[#1a1a1a]"
-                      style={{ backgroundColor: `${color}30` }}>
-                      <Icon className="w-3.5 h-3.5 text-[#1a1a1a]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-black text-[#1a1a1a] uppercase tracking-wider leading-none">{label}</p>
-                      <p className="text-[8px] font-bold text-[#1a1a1a]/50 uppercase mt-0.5">{desc}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+          <div className={`${isHome ? "flex-1 flex items-center justify-center" : "pb-8"}`}>
+            {currentPage === "home" && <HomeHero user={user} onPlay={handlePlay} />}
+            
+            {currentPage === "how-to-play" && (
+              <div className="w-full max-w-5xl mx-auto"><HowToPlayContent /></div>
+            )}
+            
+            {currentPage === "collections" && (
+              <div className="w-full max-w-5xl mx-auto"><CollectionsContent onNavigate={navigate} /></div>
+            )}
+            
+            {currentPage === "tazos" && (
+              <div className="w-full max-w-5xl mx-auto"><TazosContent /></div>
+            )}
+            
+            {currentPage === "leaderboard" && (
+              <div className="w-full max-w-5xl mx-auto"><LeaderboardContent /></div>
+            )}
+            
+            {currentPage === "download" && (
+              <div className="w-full max-w-5xl mx-auto"><DownloadContent /></div>
+            )}
+            
+            {currentPage === "faq" && (
+              <div className="w-full max-w-5xl mx-auto"><FAQContent /></div>
+            )}
           </div>
         </main>
 
-        {/* ═══════════════════════════════════════════ */}
-        {/* FOOTER — Platforms + Bottom Info             */}
-        {/* ═══════════════════════════════════════════ */}
-        <footer className="relative z-10 border-t-[5px] border-[#1a1a1a]"
-          style={{ background: "#1a1a1a" }}>
-
-          {/* Platform bar */}
+        {/* ═══ FOOTER ═══ */}
+        <footer className="relative z-10 border-t-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
           <div className="flex items-center justify-center gap-1.5 sm:gap-3 px-3 py-2.5 border-b border-white/10">
             <PlatformBadge icon={Globe} label="Browser" />
             <PlatformBadge icon={Monitor} label="Windows" />
             <PlatformBadge icon={Apple} label="macOS" />
             <PlatformBadge icon={Terminal} label="Linux" />
-            <Link href="/download"
+            <button onClick={() => navigate("download")}
               className="flex items-center gap-1 px-2.5 py-1.5 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase tracking-wider border-2 border-white/20 hover:bg-[#FFE566] transition-colors">
               <Download className="w-3 h-3" /> Download
-            </Link>
+            </button>
           </div>
-
-          {/* Bottom links */}
           <div className="flex flex-col sm:flex-row items-center justify-between px-3 sm:px-5 py-2 gap-2">
             <div className="flex items-center gap-3 sm:gap-5">
-              <Link href="/tazos" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">
-                Tazo Catalog
-              </Link>
-              <Link href="/battle-system" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">
-                Battle System
-              </Link>
-              <Link href="/faq" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">
-                FAQ
-              </Link>
-              <Link href="/privacy" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">
-                Privacy
-              </Link>
+              <button onClick={() => navigate("tazos")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Tazos</button>
+              <a href="/battle-system" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Battle</a>
+              <button onClick={() => navigate("faq")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">FAQ</button>
+              <a href="/privacy" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Privacy</a>
             </div>
-            <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em]">
-              © 2026 Trading Tazos Game · v0.3.1
-            </span>
+            <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em]">© 2026 Trading Tazos Game · v0.3.1</span>
           </div>
         </footer>
 
-        {/* Diagonal stripe accent — bottom edge */}
         <div className="absolute bottom-0 left-0 right-0 h-2 mag-stripes opacity-20 pointer-events-none" />
       </div>
     </>
