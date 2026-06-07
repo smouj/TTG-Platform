@@ -13,6 +13,7 @@ import {
 import type {
   GameState, PlayMode, AIDifficulty,
   TazoCard, DiscPhysics, MatchConfig, MatchResult, ThrowParams,
+  PlayerGameState,
 } from "@/lib/battle/game-loop"
 import type { BattleFinalResult } from "@/lib/battle"
 import GameLobby from "./battle/game-lobby"
@@ -41,6 +42,17 @@ function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFina
   if (victoryType === "all_captured") return "all_captured"
   if (victoryType === "forfeit") return "surrender"
   return "points"
+}
+
+/** Deep copy DiscPhysics[] so simulateThrow doesn't mutate React state directly */
+function cloneDiscs(discs: DiscPhysics[]): DiscPhysics[] {
+  return discs.map(d => ({
+    ...d,
+    position: [...d.position] as [number,number,number],
+    velocity: [...d.velocity] as [number,number,number],
+    rotation: [...d.rotation] as [number,number,number],
+    angularVelocity: [...d.angularVelocity] as [number,number,number],
+  }))
 }
 
 function makeDiscs(deck: TazoCard[], owner: "player" | "opponent", z: number): DiscPhysics[] {
@@ -92,6 +104,10 @@ export default function BattleView() {
   const busy = useRef(false)
   const resultSaved = useRef(false)
 
+  // Refs for latest state values used in async callbacks
+  const stateRef = useRef({ pHP: 100, oHP: 100, pDiscs: [] as DiscPhysics[], oDiscs: [] as DiscPhysics[], pCap: 0, oCap: 0, turn: 0, deck: [] as TazoCard[], cfg: null as MatchConfig | null })
+  useEffect(() => { stateRef.current = { pHP, oHP, pDiscs, oDiscs, pCap, oCap, turn, deck, cfg } }, [pHP, oHP, pDiscs, oDiscs, pCap, oCap, turn, deck, cfg])
+
   const saveBattleResult = useCallback(async (matchResult: MatchResult, playerDeck: TazoCard[], opponentDeck: TazoCard[]) => {
     if (resultSaved.current) return
     resultSaved.current = true
@@ -130,16 +146,25 @@ export default function BattleView() {
     })()
   }, [user, token])
 
-  const doOpponentTurn = useCallback((
-    cfg: MatchConfig, _pDiscs: DiscPhysics[], _oDiscs: DiscPhysics[],
-    pCap: number, oCap: number, pHP: number, oHP: number, turnN: number
-  ) => {
-    const t = cfg.opponentDeck[Math.floor(Math.random() * cfg.opponentDeck.length)]
-    const m = generateAIMove(t, _pDiscs, _oDiscs, cfg.arena, cfg.aiDifficulty)
+  const buildPlayerProfile = useCallback((hp: number, captured: number, d: TazoCard[]): PlayerGameState => ({
+    id: "player", name: "You", deck: d, hp, maxHp: 100,
+    tazosRemaining: d.length - captured, captured, currentTazo: null, isAI: false,
+  }), [])
+
+  const buildOpponentProfile = useCallback((hp: number, captured: number, oppDeck: TazoCard[]): PlayerGameState => ({
+    id: "opponent", name: "AI", deck: oppDeck, hp, maxHp: 100,
+    tazosRemaining: oppDeck.length - captured, captured, currentTazo: null, isAI: true,
+  }), [])
+
+  const doOpponentTurn = useCallback(() => {
+    const s = stateRef.current
+    if (!s.cfg) return
+    const t = s.cfg.opponentDeck[Math.floor(Math.random() * s.cfg.opponentDeck.length)]
+    const m = generateAIMove(t, s.pDiscs, s.oDiscs, s.cfg.arena, s.cfg.aiDifficulty)
     const disc: DiscPhysics = {
       id: t.id, tazoName: t.name, franchise: t.franchise,
       imageUrl: t.imageUrl, backImageUrl: BACK_ARTS[t.franchise] || null,
-      position: [(Math.random()-0.5)*1.5, 0.06, -cfg.arena.radius*0.4] as [number,number,number],
+      position: [(Math.random()-0.5)*1.5, 0.06, -s.cfg.arena.radius*0.4] as [number,number,number],
       velocity: [m.aimX*5, 0, -m.aimY*5] as [number,number,number],
       rotation: [0,0,0] as [number,number,number],
       angularVelocity: [0,0,0] as [number,number,number],
@@ -148,15 +173,15 @@ export default function BattleView() {
     // Simulate physics trajectory
     let px = disc.position[0], pz = disc.position[2]
     let vx = disc.velocity[0], vz = disc.velocity[2]
-    for (let s = 0; s < 45; s++) {
-      vx *= cfg.arena.surfaceFriction; vz *= cfg.arena.surfaceFriction
+    for (let step = 0; step < 45; step++) {
+      vx *= s.cfg.arena.surfaceFriction; vz *= s.cfg.arena.surfaceFriction
       px += vx*0.016; pz += vz*0.016
-      if (Math.sqrt(px*px+pz*pz) > cfg.arena.ringOutThreshold) { px *= 0.88; pz *= 0.88 }
+      if (Math.sqrt(px*px+pz*pz) > s.cfg.arena.ringOutThreshold) { px *= 0.88; pz *= 0.88 }
     }
     disc.position = [px, 0.06, pz]; disc.velocity = [vx*0.3, 0, vz*0.3]; disc.state = "stopped"
 
     let hits = 0; let flips = 0
-    const newP = _pDiscs.map(d => {
+    const newP = cloneDiscs(s.pDiscs).map(d => {
       if (d.state === "captured") return d
       const dx = px - d.position[0], dz = pz - d.position[2]
       const dist = Math.sqrt(dx*dx+dz*dz)
@@ -167,29 +192,30 @@ export default function BattleView() {
         d.velocity = [nx*m.power*3, 0, nz*m.power*3]
         d.state = "sliding"
         if (m.power > 0.4 && Math.random() < m.power*0.35) { d.facing = d.facing==="front"?"back":"front"; flips++ }
-        if (Math.sqrt(d.position[0]**2+d.position[2]**2) > cfg.arena.ringOutThreshold) d.state = "captured"
+        if (Math.sqrt(d.position[0]**2 + d.position[2]**2) > s.cfg!.arena.ringOutThreshold) d.state = "captured"
       }
       return d
     })
 
-    const nCap = pCap + newP.filter(d => d.state === "captured").length
+    const nPCap = s.pCap + newP.filter(d => d.state === "captured").length
     const dmg = Math.round(m.power * 18) + flips * 8 + hits * 4
-    const newHP = Math.max(0, pHP - dmg)
-    setPDiscs([...newP]); setODiscs([..._oDiscs, disc])
-    setPHP(newHP); setPCap(nCap); setTurn(prev => prev + 1)
+    const newPHP = Math.max(0, s.pHP - dmg)
+    const newODiscs = cloneDiscs([...s.oDiscs, disc])
+    setPDiscs([...newP]); setODiscs(newODiscs)
+    setPHP(newPHP); setPCap(nPCap); setTurn(prev => prev + 1)
 
     const end = checkMatchEnd(
-      { id: "player", name: "You", deck, hp: newHP, maxHp: 100, tazosRemaining: deck.length - nCap, captured: nCap, currentTazo: null, isAI: false },
-      { id: "opponent", name: "AI", deck: cfg.opponentDeck, hp: oHP, maxHp: 100, tazosRemaining: cfg.opponentDeck.length - oCap, captured: oCap, currentTazo: null, isAI: true },
-      newP, [..._oDiscs, disc]
+      buildPlayerProfile(newPHP, nPCap, s.deck),
+      buildOpponentProfile(s.oHP, s.oCap, s.cfg.opponentDeck),
+      newP, newODiscs
     )
-    if (end) { setResult({ ...end, totalTurns: turnN + 1 }); setPhase("match_end"); return }
+    if (end) { setResult({ ...end, totalTurns: s.turn + 1 }); setPhase("match_end"); return }
     setPhase("round_end")
     setTimeout(() => {
       setRound(prev => prev + 1)
-      setThrowing(deck[(turnN + 1) % deck.length]); setLaunch("aim"); setPhase("player_aim")
+      setThrowing(s.deck[(s.turn + 1) % s.deck.length]); setLaunch("aim"); setPhase("player_aim")
     }, 2000)
-  }, [deck])
+  }, [buildPlayerProfile, buildOpponentProfile])
 
   const start = useCallback((mode: PlayMode, diff: AIDifficulty, d: TazoCard[]) => {
     setDeck(d)
@@ -208,58 +234,70 @@ export default function BattleView() {
   }, [])
 
   const powerLock = useCallback((power: number, accuracy: number) => {
-    if (!throwing || !cfg || busy.current) return
+    const s = stateRef.current
+    if (!s.cfg || busy.current) return
     busy.current = true
-    const p: ThrowParams = {
-      tazoId: throwing.id, aimX: aim.x, aimY: aim.y,
-      power, powerAccuracy: accuracy, spinType: "none",
-      accuracyPenalty: (1-aim.accuracy)*0.35 + (1-accuracy)*0.25, timestamp: Date.now(),
-    }
+    // Find which tazo is being thrown this turn
+    const turnIdx = s.turn % s.deck.length
+    const throwTazo = s.deck[turnIdx]
+    if (!throwTazo) { busy.current = false; return }
     setPhase("throwing")
-    // Add launch velocity to the throwing disc
+
+    // Update disc with launch velocity for visual
     setPDiscs(prev => prev.map(d => {
-      if (d.id !== throwing.id) return d
-      // Launch velocity: -aim.y = forward (toward opponent at -z)
+      if (d.id !== throwTazo.id) return d
       const speed = 4 + power * 8
       return {
         ...d,
-        velocity: [aim.x * speed * 0.7, 0, -aim.y * speed],
-        position: [d.position[0], 0.06, 4], // launch from player side
+        velocity: [aim.x * speed * 0.7, 0, -aim.y * speed] as [number,number,number],
+        position: [d.position[0], 0.06, 4] as [number,number,number],
         state: "sliding" as const,
         facing: "front" as const,
       }
     }))
 
+    // Delay for animation, then run physics
     setTimeout(() => {
-      if (!cfg) return
+      const st = stateRef.current
+      if (!st.cfg) { busy.current = false; return }
       setPhase("physics")
-      const r = simulateThrow(throwing, p, oDiscs, cfg.arena)
+
+      // Clone discs before passing to simulateThrow (it mutates!)
+      const clonedO = cloneDiscs(st.oDiscs)
+      const tTazo = st.deck[turnIdx]
+      const p: ThrowParams = {
+        tazoId: tTazo.id, aimX: aim.x, aimY: aim.y,
+        power, powerAccuracy: accuracy, spinType: "none",
+        accuracyPenalty: (1-aim.accuracy)*0.35 + (1-accuracy)*0.25, timestamp: Date.now(),
+      }
+      const r = simulateThrow(tTazo, p, clonedO, st.cfg.arena)
       setODiscs([...r.discs])
       const dmg = r.result.hpDealt
-      setOHP(prev => Math.max(0, prev - dmg))
-      setOCap(prev => prev + r.result.discsCaptured.length)
-      // Bounce effect on hits
-      const totalHits = (r.result as any).flipsTriggered || r.result.discsCaptured.length
+      const capturedCount = r.result.discsCaptured.length
+      const newOHP = Math.max(0, st.oHP - dmg)
+      setOHP(newOHP); setOCap(prev => prev + capturedCount)
+      const totalHits = r.result.discsFlipped.length + capturedCount
       setHitsLanded(totalHits)
 
       setTimeout(() => {
+        const s2 = stateRef.current
         setPhase("resolve")
         const end = checkMatchEnd(
-          { id: "player", name: "You", deck, hp: pHP, maxHp: 100, tazosRemaining: deck.length - pCap, captured: pCap, currentTazo: null, isAI: false },
-          { id: "opponent", name: "AI", deck: cfg.opponentDeck, hp: Math.max(0, oHP - dmg), maxHp: 100, tazosRemaining: cfg.opponentDeck.length - oCap, captured: oCap, currentTazo: null, isAI: true },
-          pDiscs, r.discs
+          buildPlayerProfile(s2.pHP, s2.pCap, s2.deck),
+          buildOpponentProfile(newOHP, s2.oCap + capturedCount, s2.cfg?.opponentDeck || []),
+          s2.pDiscs, r.discs
         )
-        if (end) { setResult({ ...end, totalTurns: turn + 1 }); setPhase("match_end"); return }
+        if (end) { setResult({ ...end, totalTurns: s2.turn + 1 }); setPhase("match_end"); return }
         setTimeout(() => {
           setPhase("opponent_turn")
           setTimeout(() => {
-            doOpponentTurn(cfg, pDiscs, r.discs, pCap, oCap, pHP, oHP - dmg, turn + 1)
+            doOpponentTurn()
             busy.current = false
           }, 1500)
         }, 800)
       }, 400)
     }, 300)
-  }, [throwing, cfg, aim, deck, pHP, oHP, pDiscs, oDiscs, pCap, oCap, turn, doOpponentTurn])
+  }, [aim, buildPlayerProfile, buildOpponentProfile, doOpponentTurn])
 
   const rematch = () => { resultSaved.current = false; setCreditsEarned(0); if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
   const back = () => { resultSaved.current = false; setCreditsEarned(0); setPhase("lobby"); setCfg(null); setResult(null); setThrowing(null) }
