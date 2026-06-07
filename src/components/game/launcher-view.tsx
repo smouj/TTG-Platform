@@ -692,24 +692,35 @@ function DownloadContent() {
       <div className="grid md:grid-cols-3 gap-4">
         {DOWNLOADS.map(d => {
           const Icon = d.icon
+          const downloadUrl = d.formats[0]?.path
+            ? `${RELEASES_URL}/download/${RELEASE_TAG}/${d.formats[0].path}`
+            : d.url
           return (
-            <div key={d.id} className="border-2 border-[#1a1a1a] bg-white p-5"
+            <div key={d.id} className="flex flex-col border-2 border-[#1a1a1a] bg-white p-5"
               style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
+              {/* Header */}
               <div className="flex items-center gap-2 mb-3">
-                <Icon className="w-5 h-5" style={{ color: d.color }} />
+                <Icon className="w-5 h-5 flex-shrink-0" style={{ color: d.color }} />
                 <h3 className="text-sm font-black text-[#1a1a1a] uppercase">{d.label}</h3>
-                <span className="text-[8px] font-black text-white px-1.5 py-0.5 uppercase" style={{ background: d.badgeColor }}>{d.badge}</span>
+                <span className="ml-auto text-[8px] font-black text-white px-1.5 py-0.5 uppercase" style={{ background: d.badgeColor }}>{d.badge}</span>
               </div>
-              <div className="space-y-1.5 mb-3">
-                {d.formats.map(f => (
-                  <a key={f.label} href={`${d.url}`} target="_blank" rel="noopener"
-                    className="block text-[10px] font-bold text-[#1a1a1a]/60 hover:text-[#E3350D] transition-colors">
-                    {f.label} <ExternalLink className="w-2.5 h-2.5 inline opacity-40" />
-                  </a>
-                ))}
+
+              {/* Formats list — flex-1 pushes button down */}
+              <div className="flex-1 space-y-0.5 mb-4">
+                {d.formats.map(f => {
+                  const assetUrl = `${RELEASES_URL}/download/${RELEASE_TAG}/${encodeURIComponent(f.path)}`
+                  return (
+                    <a key={f.label} href={assetUrl} target="_blank" rel="noopener"
+                      className="block text-[10px] font-bold text-[#1a1a1a]/55 hover:text-[#E3350D] transition-colors leading-relaxed">
+                      {f.label} <ExternalLink className="w-2.5 h-2.5 inline opacity-30" />
+                    </a>
+                  )
+                })}
               </div>
-              <a href={d.url} target="_blank" rel="noopener"
-                className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase border-2 border-[#1a1a1a] hover:bg-[#FFE566] transition-colors">
+
+              {/* Download button — pinned to bottom-right */}
+              <a href={downloadUrl} target="_blank" rel="noopener"
+                className="self-end inline-flex items-center gap-1.5 px-4 py-2 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase border-2 border-[#1a1a1a] hover:bg-[#FFE566] hover:shadow-[2px_2px_0px_#1a1a1a] hover:-translate-x-0.5 hover:-translate-y-0.5 active:shadow-none active:translate-x-0 active:translate-y-0 transition-all">
                 <Download className="w-3 h-3" /> Download
               </a>
             </div>
