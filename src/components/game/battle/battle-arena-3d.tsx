@@ -308,7 +308,7 @@ function AirborneTazoMesh({
     const dt = Math.min(delta, 0.05)
 
     if (p.falling) {
-      // Gravity fall
+      // Gravity fall — visible dramatic descent
       p.vel.y -= 22 * dt
       p.pos.add(p.vel.clone().multiplyScalar(dt))
 
@@ -318,6 +318,7 @@ function AirborneTazoMesh({
         p.falling = false
         p.vel.set(0, 0, 0)
         p.impactTime = 1.0
+        // Flash the impact light on hit
       }
     } else if (p.impactTime > 0) {
       p.impactTime = Math.max(0, p.impactTime - dt * 4)
@@ -332,9 +333,12 @@ function AirborneTazoMesh({
       airborne.tilt[2]
     )
 
-    // Impact flash
-    if (p.impactTime > 0) {
-      const s = 1 + p.impactTime * 0.4
+    // Scale up during falling for dramatic effect
+    if (p.falling) {
+      const hFactor = 1 + (p.pos.y / 7) * 0.25 // Larger when higher, normal at table
+      groupRef.current.scale.setScalar(hFactor)
+    } else if (p.impactTime > 0) {
+      const s = 1 + p.impactTime * 0.45
       groupRef.current.scale.setScalar(s)
     } else {
       groupRef.current.scale.setScalar(1)
@@ -364,6 +368,19 @@ function AirborneTazoMesh({
 
   return (
     <group ref={groupRef} position={airborne.position}>
+      {/* Motion trail during falling — vertical streak */}
+      {airborne.state === "falling" && (
+        <mesh position={[0, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.08, physRef.current.pos.y * 1.5]} />
+          <meshBasicMaterial
+            color={isPlayer ? "#29ADFF" : "#FF004D"}
+            transparent
+            opacity={0.15}
+            side={THREE.DoubleSide}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
       {/* Charge glow ring — horizontal on table */}
       {airborne.state === "charging" && (
         <mesh position={[0, 0.03, 0]}>

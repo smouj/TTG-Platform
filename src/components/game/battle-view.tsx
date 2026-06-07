@@ -28,7 +28,7 @@ import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
 import BattleResultPanel from "./battle/battle-result-panel"
-import { Disc3, RotateCcw, Crosshair, ArrowDown } from "lucide-react"
+import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize } from "lucide-react"
 
 const BACK_ARTS: Record<string, string> = {
   minimon: "/tazos-artgen/backs/minimon-back.png",
@@ -141,6 +141,8 @@ export default function BattleView() {
 
   const busy = useRef(false)
   const resultSaved = useRef(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   // State ref for async callbacks
   const stateRef = useRef({
@@ -512,6 +514,23 @@ export default function BattleView() {
   const rematch = () => { resultSaved.current = false; setCreditsEarned(0); if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
   const back = () => { resultSaved.current = false; setCreditsEarned(0); setPhase("lobby"); setCfg(null); setResult(null); setThrowing(null); setStaked([]); setAirborne(null); setPScore(0); setOScore(0); setRound(1); setTurn(0) }
 
+  // Fullscreen toggle
+  const toggleFullscreen = useCallback(() => {
+    const el = containerRef.current
+    if (!el) return
+    if (!document.fullscreenElement) {
+      el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {})
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {})
+    }
+  }, [])
+
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement)
+    document.addEventListener("fullscreenchange", handler)
+    return () => document.removeEventListener("fullscreenchange", handler)
+  }, [])
+
   if (loading) return (
     <div className="flex items-center justify-center py-28">
       <Disc3 className="w-12 h-12 animate-spin text-[#FFCC00]" />
@@ -555,7 +574,13 @@ export default function BattleView() {
   const showReticle = isAiming || phase === "placing_stakes"
 
   return (
-    <div className="w-full" style={{ height: "calc(100vh - 56px)" }}>
+    <div ref={containerRef} className="w-full relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 56px)" }}>
+      {/* Fullscreen toggle — top-right corner */}
+      <button onClick={toggleFullscreen}
+        className="absolute top-2 right-2 z-30 p-2 bg-black/40 hover:bg-black/60 rounded-full border border-white/10 text-white/50 hover:text-white/80 transition-all"
+        title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
+        {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+      </button>
       <BattleArena3D
         config={cfg?.arena || DEFAULT_ARENA_3D}
         stakedTazos={staked}

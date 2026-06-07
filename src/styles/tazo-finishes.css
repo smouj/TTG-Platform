@@ -236,3 +236,74 @@
 .tazo-variant-golden .tazo-character {
   filter: sepia(0.8) saturate(1.5) brightness(1.1) hue-rotate(-10deg);
 }
+
+/* ═══════════════════════════════════════════════════════
+   Tazo Wear / Condition System (degradación por uso)
+   Cada battle suma wear. Más usado → más daño visible.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Base condition layer ─── */
+.tazo-condition-layer {
+  position: absolute; inset: 0; border-radius: 50%;
+  pointer-events: none; z-index: 6;
+  background: transparent;
+  transition: opacity 0.6s;
+}
+
+/* ─── Mint (0%) → invisible ─── */
+.tazo-wear-mint .tazo-condition-layer { opacity: 0; }
+
+/* ─── Lightly Played (1-15%) → faint edge scuffs ─── */
+.tazo-wear-light_play .tazo-condition-layer {
+  opacity: 0.18;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 84%, rgba(80,70,50,0.22) 88%, rgba(60,50,40,0.28) 91%, transparent 94%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 4px, rgba(200,185,160,0.08) 4px, rgba(200,185,160,0.08) 4.5px, transparent 4.5px, transparent 7px);
+}
+
+/* ─── Played (16-40%) → visible scratches, edge fraying ─── */
+.tazo-wear-played .tazo-condition-layer {
+  opacity: 0.35;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 80%, rgba(70,60,45,0.3) 86%, rgba(50,40,30,0.35) 90%, transparent 95%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 2px, rgba(200,185,160,0.12) 2px, rgba(200,185,160,0.12) 2.8px, transparent 2.8px, transparent 6px),
+    repeating-linear-gradient(-17deg, transparent 0px, transparent 3px, rgba(180,165,140,0.10) 3px, rgba(180,165,140,0.10) 3.4px, transparent 3.4px, transparent 7px),
+    linear-gradient(75deg, transparent 0%, transparent 48%, rgba(150,130,110,0.12) 48%, rgba(150,130,110,0.12) 48.6%, transparent 48.6%, transparent 52%, rgba(150,130,110,0.08) 52%, rgba(150,130,110,0.08) 52.4%, transparent 52.4%);
+}
+
+/* ─── Heavily Played (41-70%) → obvious scratches, edge chips ─── */
+.tazo-wear-heavy_play .tazo-condition-layer {
+  opacity: 0.55;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 77%, rgba(60,50,35,0.4) 85%, rgba(40,30,20,0.5) 89%, transparent 93%),
+    radial-gradient(circle at 20% 30%, transparent 94%, rgba(60,50,35,0.25) 95%, transparent 97%),
+    radial-gradient(circle at 75% 70%, transparent 93%, rgba(50,40,30,0.22) 94%, transparent 96%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 1.5px, rgba(190,170,145,0.18) 1.5px, rgba(190,170,145,0.18) 2.4px, transparent 2.4px, transparent 4px),
+    repeating-linear-gradient(-17deg, transparent 0px, transparent 2px, rgba(175,155,130,0.14) 2px, rgba(175,155,130,0.14) 2.7px, transparent 2.7px, transparent 5px),
+    linear-gradient(45deg, transparent 0%, transparent 30%, rgba(120,100,80,0.18) 30%, rgba(120,100,80,0.18) 30.8%, transparent 30.8%);
+}
+
+/* ─── Damaged (71-100%) → heavy damage, peeling, cracks ─── */
+.tazo-wear-damaged .tazo-condition-layer {
+  opacity: 0.75;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 73%, rgba(50,40,30,0.55) 82%, rgba(30,20,15,0.65) 88%, transparent 92%),
+    radial-gradient(circle at 15% 25%, transparent 90%, rgba(50,40,30,0.35) 91%, transparent 94%),
+    radial-gradient(circle at 70% 65%, transparent 88%, rgba(45,35,25,0.40) 89%, transparent 93%),
+    radial-gradient(circle at 40% 80%, transparent 91%, rgba(55,45,30,0.30) 92%, transparent 95%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 1px, rgba(180,160,135,0.22) 1px, rgba(180,160,135,0.22) 2.2px, transparent 2.2px, transparent 3px),
+    repeating-linear-gradient(-17deg, transparent 0px, transparent 1.5px, rgba(170,150,125,0.18) 1.5px, rgba(170,150,125,0.18) 2.3px, transparent 2.3px, transparent 4px),
+    linear-gradient(45deg, transparent 0%, transparent 35%, rgba(90,70,50,0.25) 35%, rgba(90,70,50,0.25) 36%, transparent 36%);
+}
+
+/* ─── Desaturation for worn tazos ─── */
+.tazo-wear-heavy_play .tazo-character,
+.tazo-wear-damaged .tazo-character { filter: saturate(0.75) contrast(0.92); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tazo-condition-layer { background: transparent !important; opacity: 0 !important; }
+  .tazo-wear-damaged::after {
+    content: ''; position: absolute; inset: 4px; border-radius: 50%;
+    border: 2px dashed rgba(255,0,0,0.25);
+  }
+}

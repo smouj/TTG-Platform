@@ -49,6 +49,8 @@ export interface TazoDiscImageProps {
   creatureVariant?: TazoCreatureVariant
   /** Alternative shiny image URL (used when variant === "shiny" and available) */
   shinyImageUrl?: string | null
+  /** Wear level 0-100: applies damage pattern overlay and stat penalties */
+  wear?: number
 }
 
 // Radial gradients matching composite-tazo.js disc backgrounds
@@ -70,7 +72,7 @@ export default function TazoDiscImage({
   className = "", isBack = false, number, franchiseSlug,
   overlay, lazy = true, onClick, onFlip,
   finish = "normal", creatureVariant = "standard",
-  shinyImageUrl,
+  shinyImageUrl, wear = 0,
 }: TazoDiscImageProps) {
   const [imgError, setImgError] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
@@ -89,10 +91,16 @@ export default function TazoDiscImage({
 
   const finishClass = `tazo-finish-${effectiveFinish}`
   const variantClass = effectiveVariant !== "standard" ? `tazo-variant-${effectiveVariant}` : ""
+  // Wear tier class
+  const wearTierClass = wear <= 0 ? "tazo-wear-mint"
+    : wear <= 15 ? "tazo-wear-light_play"
+    : wear <= 40 ? "tazo-wear-played"
+    : wear <= 70 ? "tazo-wear-heavy_play"
+    : "tazo-wear-damaged"
 
   return (
     <div
-      className={`tazo-disc-image shrink-0 ${finishClass} ${variantClass} ${className}`}
+      className={`tazo-disc-image shrink-0 ${finishClass} ${variantClass} ${wearTierClass} ${className}`}
       style={{
         width: sizePx,
         height: sizePx,
@@ -182,6 +190,7 @@ export default function TazoDiscImage({
           <div className="tazo-gloss-layer" />
           {/* Subtle print texture (all tazos) */}
           <div className="tazo-print-grain" />
+          <div className="tazo-condition-layer" />
         </>
       )}
 
