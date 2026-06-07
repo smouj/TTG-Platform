@@ -260,7 +260,6 @@ model UserAchievement {
   achievement   Achievement @relation(fields: [achievementId], references: [id])
   progress      Int       @default(0)
   unlocked      Boolean   @default(false)
-  unlockedAt    DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

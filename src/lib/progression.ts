@@ -54,12 +54,10 @@ export async function refreshUserProgress(userId: string) {
         achievementId: achievement.id,
         progress,
         unlocked,
-        unlockedAt: unlocked ? new Date() : null,
       },
       update: {
         progress,
         unlocked,
-        unlockedAt: unlocked ? new Date() : undefined,
       },
     })
   }
