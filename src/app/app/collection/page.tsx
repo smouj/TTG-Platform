@@ -61,6 +61,23 @@ export default function CollectionPage() {
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<"all" | "deck" | "duplicates" | "recent" | "favorites">("all")
   const [searchTerm, setSearchTerm] = useState("")
+  const [flippedTazos, setFlippedTazos] = useState<Set<string>>(new Set())
+
+  // Back art for each franchise
+  const FRANCHISE_BACK: Record<string, string> = {
+    minimon: "/tazos-artgen/backs/minimon-back.png",
+    cybermon: "/tazos-artgen/backs/cybermon-back.png",
+    dracobell: "/tazos-artgen/backs/dracobell-back.png",
+  }
+
+  const toggleFlip = (tazoId: string) => {
+    setFlippedTazos(prev => {
+      const next = new Set(prev)
+      if (next.has(tazoId)) next.delete(tazoId)
+      else next.add(tazoId)
+      return next
+    })
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -424,14 +441,16 @@ export default function CollectionPage() {
               {/* TazoDiscImage */}
               <div className="p-3 flex items-center justify-center bg-[#fffef0]" style={{ aspectRatio: "1" }}>
                 <TazoDiscImage
-                  src={item.tazo.imageUrl}
-                  alt={item.tazo.name || ""}
+                  src={flippedTazos.has(item.tazoId) ? FRANCHISE_BACK[item.tazo.franchiseSlug] || FRANCHISE_BACK.minimon : item.tazo.imageUrl}
+                  alt={flippedTazos.has(item.tazoId) ? `Back of ${item.tazo.name || "tazo"}` : item.tazo.name || ""}
                   size="100%"
                   scale={1.12}
                   borderWidth={2}
                   borderColor="#1a1a1a33"
                   franchiseSlug={item.tazo.franchiseSlug}
                   number={item.tazo.number}
+                  isBack={flippedTazos.has(item.tazoId)}
+                  onFlip={() => toggleFlip(item.tazoId)}
                   overlay={
                     item.quantity > 1 ? (
                       <div className="absolute top-1 right-1 bg-[#FFCC00] text-[#1a1a1a] text-[9px] font-black px-1.5 py-0.5 border border-[#1a1a1a] shadow-[1px_1px_0px_#1a1a1a] rounded-sm pointer-events-auto">
@@ -441,6 +460,11 @@ export default function CollectionPage() {
                   }
                   lazy
                 />
+              </div>
+
+              {/* Flip hint */}
+              <div className="text-center text-[7px] font-black text-[#1a1a1a]/25 uppercase tracking-wider pb-1.5">
+                {flippedTazos.has(item.tazoId) ? "BACK • CLICK FOR FRONT" : "CLICK TO FLIP"}
               </div>
 
               {/* Info panel */}

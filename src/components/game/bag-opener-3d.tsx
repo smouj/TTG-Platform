@@ -84,9 +84,10 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
   const tearPaths = useRef<{x:number; y:number}[]>([])
   const tearDone = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const tearLineGeo = useMemo(() => new THREE.BufferGeometry(), [])
 
   const franchiseColor = useMemo(() => {
-    const colors: Record<string, string> = { minimon: "#22C55E", cybermon: "#3B82F6", dracobell: "#F97316" }
+    const colors: Record<string, string> = { minimon: "#FFCC00", cybermon: "#3B82F6", dracobell: "#F97316" }
     return colors[franchise] || "#FFCC00"
   }, [franchise])
 
@@ -134,17 +135,17 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
 
   return (
     <div ref={containerRef} className="relative w-full h-[420px] sm:h-[500px] select-none touch-none"
-      style={{ background: "radial-gradient(ellipse at center, #1a1810 0%, #0a0805 100%)" }}>
+      style={{ background: "#0a0805" }}>
       <Canvas
         camera={{ position: [0, 0.05, 1.75], fov: 42 }}
-        gl={{ antialias: true, alpha: false, premultipliedAlpha: false }}
-        onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
+        gl={{ antialias: true, alpha: false }}
+        style={{ background: "#0a0805" }}
+        onCreated={({ gl }) => { gl.setClearColor(0x0a0805, 1); gl.setPixelRatio(Math.min(window.devicePixelRatio, 2)) }}
       >
-        <color attach="background" args={[0x000000]} />
-        <ambientLight intensity={0.6} />
-        <spotLight position={[3, 2, 4]} intensity={2.5} angle={0.4} penumbra={0.5} color="#fffef5" />
-        <spotLight position={[-2, 1.5, -3]} intensity={1.2} angle={0.35} penumbra={0.6} color="#fffef5" />
-        <pointLight position={[0, -1.5, 3]} intensity={0.5} color="#FFCC00" />
+        <ambientLight intensity={0.7} />
+        <spotLight position={[3, 2, 4]} intensity={2.8} angle={0.4} penumbra={0.5} color="#fffef5" />
+        <spotLight position={[-2, 1.5, -3]} intensity={1.4} angle={0.35} penumbra={0.6} color="#fffef5" />
+        <pointLight position={[0, -1.5, 3]} intensity={0.6} color="#FFCC00" />
 
         <Suspense fallback={null}>
           <PotatoChipBag3D
@@ -152,7 +153,7 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
             backUrl={backUrl}
             autoRotate={!revealed}
             rotationSpeed={0.35}
-            scale={1.3}
+            scale={1.15}
             interactive={bagInteractive}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}

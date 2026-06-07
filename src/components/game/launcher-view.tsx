@@ -10,9 +10,10 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import {
-  Play, Download, Globe, Monitor, Apple, Terminal,
-  Zap, Star, Crosshair, Disc3, Swords, Sparkles, X,
-  ChevronRight, Medal, PackageOpen, Flame,
+  Download, Globe, Monitor, Apple, Terminal,
+  Zap, Star, Disc3, Swords, Medal, PackageOpen,
+  BookOpen, ShoppingBag, BarChart3, Dices,
+  ChevronLeft, ChevronRight,
 } from "lucide-react"
 
 // ── Magazine Splash Screen ──
@@ -62,9 +63,7 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
       {/* Title — comic style */}
       <h1 className="mt-5 text-3xl sm:text-5xl font-black text-[#1a1a1a] uppercase tracking-[0.1em] text-center leading-none"
         style={{ textShadow: "3px 3px 0 rgba(227,53,13,0.3)" }}>
-        TRADING<br className="sm:hidden" />{" "}
-        <span className="text-[#E3350D]">TAZOS</span>{" "}
-        <span className="text-[#1a1a1a]">GAME</span>
+        TRADING<span className="text-[#E3350D]">TAZOS</span><span className="text-[#1a1a1a]">GAME</span>
       </h1>
 
       {/* Magazine subtitle */}
@@ -73,7 +72,7 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
       }`}>
         <span className="w-3 h-[2px] bg-[#1a1a1a]" />
         <span className="text-[10px] sm:text-xs font-black text-[#1a1a1a]/50 uppercase tracking-[0.4em]">
-          Official Game TTG
+          Official Game (Beta)
         </span>
         <span className="w-3 h-[2px] bg-[#1a1a1a]" />
       </div>
@@ -82,20 +81,16 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
       <div className={`mt-8 transition-all duration-500 ${
         phase === "flip" ? "opacity-100" : "opacity-0"
       }`}>
-        {/* Halftone loading bar */}
+        {/* Magazine-stripe loading bar */}
         <div className="relative w-56 sm:w-72 h-3 border-2 border-[#1a1a1a] overflow-hidden"
-          style={{ background: "#FFCC00" }}>
-          <div className="mag-dots absolute inset-0 opacity-30" />
+          style={{
+            background: "repeating-linear-gradient(-45deg, #FFCC00, #FFCC00 6px, #F0A800 6px, #F0A800 12px)",
+          }}>
           <div className="absolute inset-0 bg-[#1a1a1a] transition-all duration-75"
             style={{ left: `${Math.min(progress, 100)}%` }} />
-          {/* Print-register marks */}
-          <div className="absolute -top-1 -left-1 w-2 h-2 bg-[#E3350D] rounded-full" />
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#00A1E9] rounded-full" />
-          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-[#00A1E9] rounded-full" />
-          <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#E3350D] rounded-full" />
         </div>
         <p className="mt-2 text-[9px] font-black text-[#1a1a1a]/40 text-center uppercase tracking-[0.3em]">
-          Loading issue #{phase === "cover" ? "001" : Math.floor(progress / 10) + 1}...
+          Loading magazine #{phase === "cover" ? "001" : Math.floor(progress / 10) + 1}...
         </p>
       </div>
     </div>
@@ -124,11 +119,125 @@ function StatBadge({ number, label, color }: { number: string; label: string; co
   )
 }
 
+// ── Preview Slider ──
+const PREVIEW_SLIDES = [
+  {
+    icon: Disc3, label: "Tazo Collection",
+    desc: "Browse all 319 tazos with search, filters & flip view. Track your album progress.",
+    color: "#00A1E9", bg: "#E8F4FD",
+  },
+  {
+    icon: Swords, label: "3D Battle Arena",
+    desc: "Aim, throw & flip in skill-based combat. Practice vs CPU or challenge friends.",
+    color: "#E3350D", bg: "#FDE8E8",
+  },
+  {
+    icon: ShoppingBag, label: "Open Tazo Bags",
+    desc: "Claim daily bonuses & tear open classic bags. Rare holos & mastertazos await.",
+    color: "#FFCC00", bg: "#FFF9E6",
+  },
+  {
+    icon: BarChart3, label: "Leaderboards",
+    desc: "Compete globally. Rise through the ranks with battle wins & collection score.",
+    color: "#22C55E", bg: "#E8FDE8",
+  },
+  {
+    icon: BookOpen, label: "Deck Builder",
+    desc: "Build custom 20-tazo decks. Pick 5 starters & fine-tune your battle strategy.",
+    color: "#A855F7", bg: "#F3E8FD",
+  },
+  {
+    icon: Dices, label: "Quests & Progress",
+    desc: "Complete daily quests, unlock achievements & level up your collector rank.",
+    color: "#F59E0B", bg: "#FEF9E8",
+  },
+]
+
+function PreviewSlider() {
+  const [active, setActive] = useState(0)
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  const next = useCallback(() => setActive(p => (p + 1) % PREVIEW_SLIDES.length), [])
+  const prev = useCallback(() => setActive(p => (p - 1 + PREVIEW_SLIDES.length) % PREVIEW_SLIDES.length), [])
+
+  useEffect(() => {
+    timerRef.current = setInterval(next, 4000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [next])
+
+  const slide = PREVIEW_SLIDES[active]
+  const Icon = slide.icon
+
+  return (
+    <div className="w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[380px]">
+      {/* Slide card */}
+      <div className="relative border-3 border-[#1a1a1a] overflow-hidden transition-all duration-400"
+        style={{ background: slide.bg, boxShadow: "4px 4px 0 #1a1a1a" }}>
+        {/* Color accent bar */}
+        <div className="h-1.5" style={{ background: slide.color }} />
+        
+        <div className="flex items-start gap-3 p-3 sm:p-4">
+          {/* Icon block */}
+          <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border-2 border-[#1a1a1a] bg-white"
+            style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
+            <Icon className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: slide.color }} />
+          </div>
+
+          {/* Text */}
+          <div className="min-w-0 flex-1">
+            <h3 className="text-xs sm:text-sm font-black text-[#1a1a1a] uppercase tracking-wider leading-tight">
+              {slide.label}
+            </h3>
+            <p className="mt-0.5 text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/55 leading-relaxed">
+              {slide.desc}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Nav controls */}
+      <div className="flex items-center justify-between mt-2">
+        <button onClick={prev}
+          className="flex items-center justify-center w-7 h-7 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
+          <ChevronLeft className="w-3.5 h-3.5 text-[#1a1a1a]" />
+        </button>
+
+        {/* Dots */}
+        <div className="flex items-center gap-1.5">
+          {PREVIEW_SLIDES.map((_, i) => (
+            <button key={i} onClick={() => setActive(i)}
+              className="transition-all duration-300 rounded-full"
+              style={{
+                width: i === active ? "18px" : "6px",
+                height: "6px",
+                background: i === active ? "#1a1a1a" : "#1a1a1a20",
+                borderRadius: "3px",
+              }} />
+          ))}
+        </div>
+
+        <button onClick={next}
+          className="flex items-center justify-center w-7 h-7 border-2 border-[#1a1a1a] bg-white hover:bg-[#FFF9E6] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
+          <ChevronRight className="w-3.5 h-3.5 text-[#1a1a1a]" />
+        </button>
+      </div>
+
+      {/* Slide counter */}
+      <p className="mt-1 text-center text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-[0.3em]">
+        {active + 1} / {PREVIEW_SLIDES.length}
+      </p>
+    </div>
+  )
+}
+
 // ── Main Magazine Launcher ──
 export default function LauncherView() {
   const { user } = useAuth()
   const [showSplash, setShowSplash] = useState(false)
   const [hoverPlay, setHoverPlay] = useState(false)
+  const [pressPlay, setPressPlay] = useState(false)
   const [showNews, setShowNews] = useState(false)
 
   const handlePlay = useCallback(() => setShowSplash(true), [])
@@ -161,7 +270,7 @@ export default function LauncherView() {
                   TRADING<span className="text-[#FFCC00]">TAZOS</span><span className="text-white/80">GAME</span>
                 </h2>
                 <p className="text-[8px] font-bold text-[#FFCC00]/70 uppercase tracking-[0.3em] leading-none mt-0.5">
-                  Official Game TTG
+                  Official Game (Beta)
                 </p>
               </div>
             </div>
@@ -251,23 +360,23 @@ export default function LauncherView() {
                 <img
                   src="/logo/logo-icon-black.webp"
                   alt="TTG"
-                  className="w-24 h-24 sm:w-32 sm:h-32"
-                  style={{ filter: "drop-shadow(6px 6px 0 rgba(26,26,26,0.3))" }}
+                  className="w-18 h-18 sm:w-24 sm:h-24 lg:w-20 lg:h-20"
+                  style={{ filter: "drop-shadow(4px 4px 0 rgba(26,26,26,0.3))" }}
                 />
               </div>
 
-              {/* Title */}
+              {/* Compact tagline */}
               <div className="text-center lg:text-left">
-                <h1 className="text-[2rem] sm:text-5xl lg:text-6xl font-black text-[#1a1a1a] uppercase leading-[0.9] tracking-tight"
-                  style={{ textShadow: "4px 4px 0 rgba(227,53,13,0.25)" }}>
-                  TRADING<br className="sm:hidden" />{" "}
-                  <span className="text-[#E3350D]">TAZOS</span>{" "}
-                  <span className="text-[#1a1a1a]">GAME</span>
-                </h1>
-                <p className="mt-1 text-xs sm:text-sm font-black text-[#1a1a1a]/50 uppercase tracking-[0.3em]">
-                  Collect · Build · Battle
+                <h2 className="text-sm sm:text-base lg:text-lg font-black text-[#1a1a1a] uppercase tracking-[0.08em] leading-tight">
+                  <span className="text-[#E3350D]">Collect</span> · <span className="text-[#FFCC00]">Trade</span> · <span className="text-[#00A1E9]">Battle</span>
+                </h2>
+                <p className="mt-0.5 text-[10px] font-bold text-[#1a1a1a]/40 uppercase tracking-[0.2em]">
+                  The classic tazo arena
                 </p>
               </div>
+
+              {/* ── Preview Slider ── */}
+              <PreviewSlider />
 
               {/* Stats grid */}
               <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
@@ -287,7 +396,6 @@ export default function LauncherView() {
                   style={{ background: "#FFCC00" }}>
                   <Star className="w-2.5 h-2.5 fill-[#1a1a1a]" /> FREE TO PLAY
                 </span>
-                <span className="text-[9px] font-black text-[#1a1a1a]/30 uppercase tracking-wider">v0.3.1</span>
               </div>
             </div>
 
@@ -298,10 +406,14 @@ export default function LauncherView() {
               <button
                 onClick={handlePlay}
                 onMouseEnter={() => setHoverPlay(true)}
-                onMouseLeave={() => setHoverPlay(false)}
-                className="group relative"
+                onMouseLeave={() => { setHoverPlay(false); setPressPlay(false); }}
+                onMouseDown={() => setPressPlay(true)}
+                onMouseUp={() => setPressPlay(false)}
+                onTouchStart={() => setPressPlay(true)}
+                onTouchEnd={() => setPressPlay(false)}
+                className="group relative select-none"
                 style={{
-                  transform: hoverPlay ? "translate(-2px, -2px)" : "translate(0, 0)",
+                  transform: pressPlay ? "translate(2px, 2px)" : hoverPlay ? "translate(-2px, -2px)" : "translate(0, 0)",
                   transition: "transform 0.15s ease",
                 }}
               >
@@ -312,10 +424,10 @@ export default function LauncherView() {
                 {/* Main button */}
                 <div className="relative px-10 sm:px-14 md:px-20 py-3.5 sm:py-4 md:py-5 border-[4px] border-[#1a1a1a] overflow-hidden"
                   style={{
-                    background: hoverPlay
+                    background: (hoverPlay || pressPlay)
                       ? "linear-gradient(180deg, #FFE566 0%, #FFCC00 50%, #F5B800 100%)"
                       : "linear-gradient(180deg, #FFCC00 0%, #F0A800 100%)",
-                    boxShadow: hoverPlay
+                    boxShadow: (hoverPlay || pressPlay)
                       ? "inset 0 -4px 0 rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3)"
                       : "inset 0 -3px 0 rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.25)",
                   }}
@@ -330,8 +442,7 @@ export default function LauncherView() {
                     ))}
                   </div>
 
-                  <span className="relative flex items-center gap-2.5 text-lg sm:text-xl md:text-2xl font-black text-[#1a1a1a] uppercase tracking-[0.15em]">
-                    <Play className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 fill-[#1a1a1a]" />
+                  <span className="relative text-lg sm:text-xl md:text-2xl font-black text-[#1a1a1a] uppercase tracking-[0.15em] whitespace-nowrap">
                     Play Now
                   </span>
 
@@ -339,15 +450,13 @@ export default function LauncherView() {
                   <div className="mag-halftone absolute inset-0 opacity-20 pointer-events-none" />
                 </div>
 
-                {/* Corner accents */}
-                <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#E3350D] border-2 border-[#1a1a1a]" />
-                <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#00A1E9] border-2 border-[#1a1a1a]" />
+
               </button>
 
               {/* Status */}
               <p className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider text-center">
                 {user
-                  ? `Welcome back, ${user.displayName || user.name}! Ready for battle?`
+                  ? "Ready for battle?"
                   : "Create a free account to start playing!"}
               </p>
 
@@ -356,13 +465,13 @@ export default function LauncherView() {
                 {[
                   {
                     icon: PackageOpen, label: "Open Bags",
-                    desc: "10 FREE welcome bags",
-                    color: "#FFCC00", href: user ? "/app/shop" : "/register",
+                    desc: "319 tazos to collect",
+                    color: "#FFCC00", href: "/tazos",
                   },
                   {
-                    icon: Crosshair, label: "Battle Arena",
-                    desc: "3D skill-based combat",
-                    color: "#E3350D", href: user ? "/app/battle" : "/register",
+                    icon: Swords, label: "Practice Mode",
+                    desc: "No account needed!",
+                    color: "#E3350D", href: "/game/practice",
                   },
                   {
                     icon: Disc3, label: "319 Tazos",
@@ -370,8 +479,8 @@ export default function LauncherView() {
                     color: "#00A1E9", href: "/tazos",
                   },
                   {
-                    icon: Medal, label: "Ranked Play",
-                    desc: "Climb the leaderboard",
+                    icon: Medal, label: "Leaderboard",
+                    desc: "See top players",
                     color: "#22C55E", href: "/leaderboard",
                   },
                 ].map(({ icon: Icon, label, desc, color, href }) => (

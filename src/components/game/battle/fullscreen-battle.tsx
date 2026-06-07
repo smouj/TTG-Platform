@@ -296,7 +296,7 @@ export default function FullscreenBattle({ mode, roomId }: FullscreenBattleProps
           opponentCaptures: result.opponentCaptures, summary: result.summary,
         }} playerName="You" opponentName={`AI (${cfg?.aiDifficulty || "skilled"})`} onRematch={rematch} creditsEarned={0} />
         <div className="text-center">
-          <button onClick={() => router.push("/app/battle")} className="px-6 py-3 font-black text-sm uppercase text-[#1a1a1a] bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+          <button onClick={() => router.push("/app/battle")} className="px-6 py-3 font-black text-sm uppercase text-[#1a1a1a] bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all">
             <ArrowLeft className="w-4 h-4 inline mr-2" /> Back to Lobby
           </button>
         </div>

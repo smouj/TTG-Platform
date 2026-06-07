@@ -118,7 +118,7 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
       {/* Rematch */}
       <button
         onClick={onRematch}
-        className="px-6 py-3 font-black text-sm uppercase tracking-wider bg-white text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+        className="px-6 py-3 font-black text-sm uppercase tracking-wider bg-white text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
       >
         <RotateCcw className="w-4 h-4 inline mr-2" />
         {t.battle_rematch}

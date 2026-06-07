@@ -82,10 +82,10 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
               disabled={locked}
               className={`relative p-4 text-left border-3 transition-all ${
                 active
-                  ? "bg-white border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]"
+                  ? "bg-white border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] active:shadow-none active:translate-x-[3px] active:translate-y-[3px]"
                   : locked
                   ? "bg-zinc-100 border-zinc-200 opacity-45 cursor-not-allowed"
-                  : "bg-white border-[#1a1a1a]/15 hover:border-[#1a1a1a]/60 hover:bg-white hover:shadow-[2px_2px_0px_#1a1a1a]"
+                  : "bg-white border-[#1a1a1a]/15 hover:border-[#1a1a1a]/60 hover:bg-white hover:shadow-[2px_2px_0px_#1a1a1a] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
               }`}
             >
               <div className="absolute -top-2 -right-2">
@@ -120,8 +120,8 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
                   onClick={() => setDifficulty(d)}
                   className={`p-3 border-2 text-center transition-all ${
                     difficulty === d
-                      ? "border-[#FFCC00] bg-[#FFCB0512] shadow-[2px_2px_0px_#FFCC00]"
-                      : "border-[#1a1a1a]/10 hover:border-[#1a1a1a]/40"
+                      ? "border-[#FFCC00] bg-[#FFCB0512] shadow-[2px_2px_0px_#FFCC00] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+                      : "border-[#1a1a1a]/10 hover:border-[#1a1a1a]/40 active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
                   }`}
                 >
                   <div className="font-black text-sm uppercase text-[#1a1a1a] capitalize">{d}</div>
@@ -178,8 +178,8 @@ export default function GameLobby({ playerTazos, onStart, isLoading, isAuthentic
                   onClick={() => toggle(i)}
                   className={`p-1.5 border-2 text-center transition-all ${
                     selected
-                      ? "border-[#FFCC00] bg-[#FFCB0508] shadow-[2px_2px_0px_#FFCC00]"
-                      : "border-[#1a1a1a]/8 opacity-65 hover:opacity-90"
+                      ? "border-[#FFCC00] bg-[#FFCB0508] shadow-[2px_2px_0px_#FFCC00] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+                      : "border-[#1a1a1a]/8 opacity-65 hover:opacity-90 active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
                   }`}
                 >
                   <div className="w-10 h-10 mx-auto rounded-full overflow-hidden border border-[#1a1a1a]/12 mb-1 bg-zinc-100">

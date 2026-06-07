@@ -210,8 +210,8 @@
   transition: all 0.1s ease;
 }
 .mag-btn:active {
-  box-shadow: 1px 1px 0px var(--mag-black);
-  transform: translate(2px, 2px);
+  box-shadow: none;
+  transform: translate(3px, 3px);
 }
 .mag-btn:hover {
   box-shadow: 2px 2px 0px var(--mag-black);

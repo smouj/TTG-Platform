@@ -17,6 +17,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 OUT_DIR = Path("public/tazos-generated")
 BG_DIR = Path("scripts/tazo-backgrounds")
+CREATURE_DIR = Path("scripts/tazo-creatures")
 SIZE = 1024
 CENTER = SIZE // 2
 RADIUS = 440  # Leave breathing room
@@ -233,6 +234,10 @@ def generate_tazo(tazo, bgs, fonts):
         img = Image.alpha_composite(img, edge_overlay)
         draw = ImageDraw.Draw(img)
 
+    # ── Creature/Character availability ──
+    creature_path = CREATURE_DIR / fs / f"{slug}.png"
+    has_creature = creature_path.exists()
+
     # ── Rings (from outside in) ──
     R = RADIUS
     # Outer border
@@ -310,6 +315,39 @@ def generate_tazo(tazo, bgs, fonts):
     img = Image.alpha_composite(img, shine_overlay)
     draw = ImageDraw.Draw(img)
 
+    # ── Creature/Character compositing ──
+    # Draw after the translucent inner badge/shine so creature art stays vivid.
+    if has_creature:
+        creature = Image.open(creature_path).convert("RGBA")
+        alpha_bbox = creature.getchannel("A").getbbox()
+        if alpha_bbox:
+            creature = creature.crop(alpha_bbox)
+
+        creature_area = int(RADIUS * 0.88)
+        cw, ch = creature.size
+        scale_factor = min(creature_area / cw, creature_area / ch)
+        new_w = int(cw * scale_factor)
+        new_h = int(ch * scale_factor)
+        creature = creature.resize((new_w, new_h), Image.LANCZOS)
+
+        cx = CENTER - new_w // 2
+        cy = CENTER - new_h // 2 - 25
+        temp = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+        temp.paste(creature, (cx, cy), creature)
+        img = Image.alpha_composite(img, temp)
+
+        # Clip creature to disc boundary so all tazos have the same size
+        disc_mask = Image.new("L", (SIZE, SIZE), 0)
+        mask_draw = ImageDraw.Draw(disc_mask)
+        mask_draw.ellipse(
+            [CENTER - RADIUS, CENTER - RADIUS, CENTER + RADIUS, CENTER + RADIUS],
+            fill=255
+        )
+        clipped = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+        clipped.paste(img, (0, 0), disc_mask)
+        img = clipped
+        draw = ImageDraw.Draw(img)
+
     # ── Text: Collection name (top) ──
     coll_bbox = draw.textbbox((0, 0), collection, font=fonts["small"])
     cw = coll_bbox[2] - coll_bbox[0]
@@ -317,32 +355,34 @@ def generate_tazo(tazo, bgs, fonts):
               font=fonts["small"], stroke_width=2, stroke_fill=dark)
 
     # ── Character Letter(s) — with dark background pill for readability ──
-    letters = ''.join([w[0] for w in name.split() if w])[:2]
-    if not letters:
-        letters = name[:2] if len(name) >= 2 else name[0]
+    # Only show letter placeholder when no creature art exists
+    if not has_creature:
+        letters = ''.join([w[0] for w in name.split() if w])[:2]
+        if not letters:
+            letters = name[:2] if len(name) >= 2 else name[0]
 
-    lbbox = draw.textbbox((0, 0), letters, font=fonts["large"])
-    lw, lh = lbbox[2] - lbbox[0], lbbox[3] - lbbox[1]
+        lbbox = draw.textbbox((0, 0), letters, font=fonts["large"])
+        lw, lh = lbbox[2] - lbbox[0], lbbox[3] - lbbox[1]
 
-    # Semi-transparent pill behind the letter for contrast over textures
-    if bg:
-        pad_x, pad_y = 30, 20
-        draw.rounded_rectangle([
-            CENTER - lw//2 - pad_x, CENTER - lh//2 - 20 - pad_y,
-            CENTER + lw//2 + pad_x, CENTER + lh//2 - 20 + pad_y,
-        ], radius=20, fill=(0, 0, 0, 90))
+        # Semi-transparent pill behind the letter for contrast over textures
+        if bg:
+            pad_x, pad_y = 30, 20
+            draw.rounded_rectangle([
+                CENTER - lw//2 - pad_x, CENTER - lh//2 - 20 - pad_y,
+                CENTER + lw//2 + pad_x, CENTER + lh//2 - 20 + pad_y,
+            ], radius=20, fill=(0, 0, 0, 90))
 
-    # Glow
-    if rz["glow"]:
-        for o in range(6, 0, -2):
-            draw.text((CENTER - lw//2 - o, CENTER - lh//2 - 20 - o), letters,
-                      fill=rz["glow"] + (40,), font=fonts["large"])
-            draw.text((CENTER - lw//2 + o, CENTER - lh//2 - 20 + o), letters,
-                      fill=rz["glow"] + (40,), font=fonts["large"])
+        # Glow
+        if rz["glow"]:
+            for o in range(6, 0, -2):
+                draw.text((CENTER - lw//2 - o, CENTER - lh//2 - 20 - o), letters,
+                          fill=rz["glow"] + (40,), font=fonts["large"])
+                draw.text((CENTER - lw//2 + o, CENTER - lh//2 - 20 + o), letters,
+                          fill=rz["glow"] + (40,), font=fonts["large"])
 
-    draw.text((CENTER - lw//2, CENTER - lh//2 - 20), letters,
-              fill=fx["text_light"], font=fonts["large"],
-              stroke_width=5, stroke_fill=dark)
+        draw.text((CENTER - lw//2, CENTER - lh//2 - 20), letters,
+                  fill=fx["text_light"], font=fonts["large"],
+                  stroke_width=5, stroke_fill=dark)
 
     # ── Type badge (Minimon) ──
     if combat_type and fs == "minimon" and combat_type in fx["type_colors"]:

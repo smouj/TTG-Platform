@@ -42,9 +42,9 @@ Trading Tazos Game is a browser-based digital tazo (pog) battle game designed en
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/leaderboard.png" width="320" alt="Global rankings by credits, tazos, and battles played"> | <img src="docs/screenshots/download.png" width="320" alt="Desktop app downloads for Windows, macOS, Linux"> | <img src="docs/screenshots/login.png" width="320" alt="Magazine-themed login and registration"> |
 
-| App Tabs — Album | App Tabs — Battle | App Tabs — Scanner |
+| App Tabs — Collection | App Tabs — Battle | App Tabs — Shop |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/album.png" width="320" alt="Album tab — filterable tazo grid"> | <img src="docs/screenshots/battle.png" width="320" alt="Battle lobby and arena entry point"> | <img src="docs/screenshots/scanner.png" width="320" alt="Upload → crop → detect physical tazo"> |
+| <img src="docs/screenshots/collection.png" width="320" alt="Collection tab — personal tazo manager"> | <img src="docs/screenshots/battle.png" width="320" alt="Battle lobby and arena entry point"> | <img src="docs/screenshots/shop.png" width="320" alt="Open tazo bags and daily bonuses"> |
 
 | Collection (Auth) | Decks (Auth) | Stats (App Tab) |
 |:---:|:---:|:---:|
@@ -186,7 +186,7 @@ All 319 tazos verified against original Spanish physical collections. Each tazo 
 | Styling | Tailwind CSS 4 + custom magazine theme system ([THEME.md](./THEME.md)) |
 | UI Components | shadcn/ui (Radix primitives) + Lucide React icons |
 | 3D Rendering | Three.js + @react-three/fiber + @react-three/drei (battle-only) |
-| Battle Graphics | Three.js 3D physics arena (2D for album, collection, scanner, stats, shop) |
+| Battle Graphics | Three.js 3D physics arena (2D for collection, stats, shop) |
 | ORM | Prisma 6.x (12 models, automated migrations) |
 | Database | SQLite (zero-config, portable, 360 KB with 319 tazos) |
 | Auth | JWT (jsonwebtoken) + bcryptjs (12 rounds) + httpOnly cookies |
@@ -210,10 +210,9 @@ Trading-Tazos-Game/
 │   ├── app/
 │   │   ├── page.tsx          # Landing page (hero, collections, CTAs)
 │   │   ├── layout.tsx        # Root layout (SEO, PWA, JSON-LD, i18n)
-│   │   ├── app/              # 🎮 Dashboard (auth-protected, MagazinePageShell)
-│   │   │   ├── album/        # Tazo album — filterable grid
+│   │   ├── app/              # 🎮 Dashboard (auth-protected, MagazinePageShell, 7 tabs)
+│   │   │   ├── collection/   # Personal tazo collection & manager
 │   │   │   ├── battle/       # Battle lobby → fullscreen 3D arena routes
-│   │   │   ├── scanner/      # Physical tazo scanner
 │   │   │   ├── stats/        # Collection stats & analytics
 │   │   │   ├── shop/         # 3D bag shop (buy → open → reveal)
 │   │   │   ├── quests/       # Quest system (daily, weekly, special)
@@ -237,7 +236,7 @@ Trading-Tazos-Game/
 │   ├── components/game/
 │   │   ├── battle/           # Launch controls, event log, results
 │   │   ├── 3d/               # Battle-only 3D arena and tazo discs
-│   │   ├── album-view.tsx    # Filterable tazo grid (4 tabs)
+│   │   ├── album-view.tsx    # Tazo grid with flip/view modes (legacy, merged into collection)
 │   │   ├── tazo-card.tsx     # Individual tazo display
 │   │   ├── tazo-detail-modal.tsx  # 9-stat detail + evolutive info
 │   │   ├── stats-panel.tsx   # Collection analytics
@@ -396,9 +395,9 @@ tazos battle --seed 42   # Simulate a physics battle
 ### v0.3.0 — 3D Shop + Quests + Desktop App + Public SEO (Jun 2026)
 - **Entry animations**: Staggered fade-up on landing hero, skeleton loaders, loading states
 - **Magazine arena**: Cream/halftone background, yellow ring, white field — matches THEME.md
-- **Dashboard**: 9 tabs under `/app/*` (album, battle, scanner, stats, shop, quests, collection, decks, settings)
+- **Dashboard**: 7 tabs under `/app/*` (collection, battle, shop, decks, stats, quests, settings)
 - **Auth**: Dual cookie system (httpOnly + companion), `/api/auth/ping` endpoint, auto session detection
-- **2-shell architecture**: PublicPageShell (landing/SEO) + MagazinePageShell (dashboard, 9 tabs, no scrollbar)
+- **3-shell architecture**: PublicPageShell (landing/SEO, 16 pages) + MagazinePageShell (dashboard, 7 tabs) + GameShell (fullscreen battle) + LauncherView (autonomous home)
 - **Auth-aware headers**: Landing shows "Play Now" when logged in, dashboard shows Logout + Back to Home
 - **Settings page**: `/app/settings` with profile card, stats, and logout
 - 13 public SEO pages: landing, how-to-play, battle-system, collections, tazos, FAQ
@@ -440,8 +439,7 @@ tazos battle --seed 42   # Simulate a physics battle
 - 3D battle arena with physics simulation (Three.js / R3F)
 - Deterministic battle engine
 - 90s Nintendo Power magazine aesthetic
-- Filterable album with franchise, collection, category, and rarity filters
-- Photo scanner for physical tazo detection
+- Personal collection with franchise, rarity, and stats filters
 - 3D tazo disc rendering
 
 ---

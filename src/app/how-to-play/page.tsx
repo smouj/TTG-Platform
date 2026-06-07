@@ -119,7 +119,7 @@ export default function HowToPlayPage() {
         </div>
 
         <div className="mt-12 text-center">
-          <Link href="/register" className="inline-block bg-[#E3350D] text-white border-3 border-[#1a1a1a] px-10 py-4 text-sm font-black uppercase tracking-wider shadow-[6px_6px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#1a1a1a] transition-all">
+          <Link href="/register" className="inline-block bg-[#E3350D] text-white border-3 border-[#1a1a1a] px-10 py-4 text-sm font-black uppercase tracking-wider shadow-[6px_6px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#1a1a1a] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
             Ready? Start Playing Now
           </Link>
         </div>

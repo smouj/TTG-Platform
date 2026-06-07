@@ -42,10 +42,11 @@ export interface TazoDiscImageProps {
   onFlip?: () => void
 }
 
+// Radial gradients matching composite-tazo.js disc backgrounds
 const FRANCHISE_FALLBACK_BG: Record<string, string> = {
-  minimon: "#FFCB05",
-  cybermon: "#00A1E9",
-  dracobell: "#FF6B00",
+  minimon: "radial-gradient(circle at 50% 50%, #FFF5E1 0%, #FFE6C8 70%, rgba(255,203,5,0.3) 100%)",
+  cybermon: "radial-gradient(circle at 50% 50%, #E1F5FF 0%, #C8E6FF 70%, rgba(0,161,233,0.3) 100%)",
+  dracobell: "radial-gradient(circle at 50% 50%, #FFF5E1 0%, #FFE6C8 70%, rgba(227,53,13,0.3) 100%)",
 }
 
 const FRANCHISE_FALLBACK_TEXT: Record<string, string> = {
@@ -69,6 +70,13 @@ export default function TazoDiscImage({
   const innerBg = bgColor || (isBack ? "#111" : fallbackBg)
 
   const renderImage = src && !imgError
+  const isGeneratedDisc = !!src?.includes("/tazos-generated/")
+  // All tazo images use the same scale for visual consistency.
+  // Generated tazos (1024×1024, disc at ~445px radius) need ~1.15×
+  // to fill the container circle; non-generated images also need
+  // similar scale compensation for transparent margins.
+  const effectiveScale = scale
+  const showExternalNumber = !isGeneratedDisc && number
 
   return (
     <div
@@ -109,7 +117,7 @@ export default function TazoDiscImage({
           <div
             className="w-full h-full rounded-full overflow-hidden relative"
             style={{
-              transform: `scale(${scale})`,
+              transform: `scale(${effectiveScale})`,
               transformOrigin: "center center",
               opacity: imgLoaded ? 1 : 0,
               transition: "opacity 0.2s ease-in",
@@ -154,7 +162,7 @@ export default function TazoDiscImage({
       </div>
 
       {/* Number badge — only when image loaded successfully */}
-      {renderImage && imgLoaded && number && (
+      {renderImage && imgLoaded && showExternalNumber && (
         <span
           className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight z-10"
           style={{

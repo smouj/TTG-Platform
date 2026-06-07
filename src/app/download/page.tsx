@@ -160,7 +160,7 @@ export default function DownloadPage() {
                         <a
                           key={fmt.path}
                           href={`${RELEASES_URL}/download/${RELEASE_TAG}/${fmt.path}`}
-                          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-black bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:bg-[#16a34a] hover:shadow-[1px_1px_0px_#1a1a1a] hover:translate-x-0.5 hover:translate-y-0.5 transition-all uppercase"
+                          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-black bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:bg-[#16a34a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all uppercase"
                         >
                           <Download className="w-3.5 h-3.5" />
                           {fmt.label}

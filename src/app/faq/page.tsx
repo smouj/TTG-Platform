@@ -72,7 +72,7 @@ export default function FAQPage() {
         <div className="mt-12 text-center p-8 border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] bg-[#FFCC00]">
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mb-2">Still have questions?</h2>
           <p className="text-sm font-bold text-[#1a1a1a]/60 mb-4">Reach out and we&apos;ll get back to you.</p>
-          <a href="mailto:support@medaclawarena.com" className="inline-block bg-[#1a1a1a] text-white border-3 border-[#1a1a1a] px-6 py-3 text-xs font-black uppercase tracking-wider shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] transition-all">
+          <a href="mailto:support@medaclawarena.com" className="inline-block bg-[#1a1a1a] text-white border-3 border-[#1a1a1a] px-6 py-3 text-xs font-black uppercase tracking-wider shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
             support@medaclawarena.com
           </a>
         </div>

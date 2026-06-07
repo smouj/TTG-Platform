@@ -59,14 +59,18 @@ export default function LeaderboardPage() {
   return (
     <PublicPageShell>
     <div className="max-w-5xl mx-auto px-4 py-12 sm:py-16 space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl sm:text-4xl font-black uppercase text-[#1a1a1a] mb-1">
-          Leaderboard
-        </h1>
-        <p className="text-sm font-bold text-[#1a1a1a]/40 mb-4">
-          Top players ranked by credits, tazos collected, and battles played.
-        </p>
+      {/* Magazine Banner Strip */}
+      <div className="mag-card-yellow rounded-none px-4 py-3 flex flex-wrap items-center gap-3" style={{ borderBottom: "4px solid #1a1a1a" }}>
+        <div className="flex items-center gap-1.5">
+          <Trophy className="w-5 h-5 text-[#1a1a1a]" />
+          <span className="text-sm font-black text-[#1a1a1a] tracking-tight uppercase">
+            Leaderboard
+          </span>
+        </div>
+        <div className="w-px h-5 bg-[#1a1a1a]/30" />
+        <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider">
+          Top Players
+        </span>
       </div>
 
       {/* Sort tabs */}
@@ -77,8 +81,8 @@ export default function LeaderboardPage() {
             onClick={() => setSort(s.key)}
             className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-wider border-2 transition-all ${
               sort === s.key
-                ? "bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-[2px_2px_0px_#FFCC00]"
-                : "bg-white text-[#1a1a1a] border-zinc-300 shadow-[2px_2px_0px_#1a1a1a] hover:border-[#FFCC00]"
+                ? "bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-[2px_2px_0px_#FFCC00] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+                : "bg-white text-[#1a1a1a] border-[#1a1a1a]/15 shadow-[2px_2px_0px_#1a1a1a] hover:border-[#FFCC00] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
             }`}
           >
             <s.icon className="w-3.5 h-3.5" /> {s.label}
