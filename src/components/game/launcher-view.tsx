@@ -22,6 +22,7 @@ import {
   Trophy, Coins, Package, ArrowLeft, Loader2,
   Crown, X, ArrowUp, HelpCircle
 } from "lucide-react"
+import TazoDetailModal from '@/components/game/tazo-detail-modal'
 
 // ── Types ──
 
@@ -570,6 +571,8 @@ function TazosContent() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
   const [franchiseFilter, setFranchiseFilter] = useState("all")
+  const [selectedTazo, setSelectedTazo] = useState<any>(null)
+  const [detailOpen, setDetailOpen] = useState(false)
 
   useEffect(() => {
     fetch("/api/tazos?limit=60").then(r => r.json()).then(d => {
@@ -580,10 +583,22 @@ function TazosContent() {
 
   const filtered = tazos.filter(t =>
     (franchiseFilter === "all" || t.franchise === franchiseFilter) &&
-    (!search || t.name.toLowerCase().includes(search.toLowerCase()))
+    (!search || (t.displayName || t.name || "").toLowerCase().includes(search.toLowerCase()))
   )
 
+  const handleTazoClick = (t: any) => {
+    setSelectedTazo(t)
+    setDetailOpen(true)
+  }
+
+  const fColors: Record<string, { bg: string; badge: string }> = {
+    minimon: { bg: "#FFCB0510", badge: "#FFCB05" },
+    dracobell: { bg: "#FF6B0010", badge: "#FF6B00" },
+    cybermon: { bg: "#00A1E910", badge: "#00A1E9" },
+  }
+
   return (
+    <>
     <div className="w-full max-w-5xl mx-auto space-y-4">
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-2">
@@ -598,25 +613,63 @@ function TazosContent() {
                 : "bg-white text-[#1a1a1a] border-[#1a1a1a]/15 hover:border-[#FFCC00]"
             }`}>{f === "all" ? "All" : f}</button>
         ))}
+        <span className="ml-auto text-[9px] font-black text-[#1a1a1a]/25 uppercase">
+          {filtered.length} tazos
+        </span>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-[#1a1a1a]/40" /></div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
-          {filtered.map((t: any) => (
-            <div key={t.id} className="border-2 border-[#1a1a1a] bg-white p-2 text-center hover:bg-[#FFF9E6] transition-colors"
-              style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
-              <div className="aspect-square bg-[#1a1a1a]/5 rounded-full overflow-hidden mb-1.5 mx-auto max-w-[72px]">
-                {t.imageUrl && <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" loading="lazy" />}
+          {filtered.map((t: any) => {
+            const f = t.franchise || "minimon"
+            const fc = fColors[f] || fColors.minimon
+            const rarityColor = {
+              common: "#9CA3AF", uncommon: "#22C55E", rare: "#3B82F6",
+              "ultra-rare": "#A855F7", legendary: "#F59E0B",
+              ultra: "#A855F7",
+            }[t.rarity] || "#9CA3AF"
+            return (
+            <button key={t.id} onClick={() => handleTazoClick(t)}
+              className="text-left border-2 border-[#1a1a1a]/15 bg-white p-2 hover:bg-[#FFF9E6] hover:border-[#FFCC00] hover:shadow-[3px_3px_0px_#1a1a1a] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group">
+              {/* Disc */}
+              <div className="aspect-square rounded-full overflow-hidden mb-1.5 mx-auto max-w-[80px] border-2 border-[#1a1a1a]/10 relative"
+                style={{ background: fc.bg }}>
+                {t.imageUrl ? (
+                  <img src={t.imageUrl} alt={t.displayName || t.name}
+                    className="w-full h-full object-cover scale-110" loading="lazy" />
+                ) : (
+                  <Disc3 className="w-6 h-6 absolute inset-0 m-auto text-[#1a1a1a]/10" />
+                )}
+                {/* Rarity dot */}
+                <div className="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full border border-white"
+                  style={{ background: rarityColor }} />
               </div>
-              <p className="text-[9px] font-black text-[#1a1a1a] uppercase truncate">{t.name}</p>
-              <p className="text-[7px] font-bold text-[#1a1a1a]/40 uppercase">{t.franchiseName || t.franchise}</p>
-            </div>
-          ))}
+              <p className="text-[9px] font-black text-[#1a1a1a] uppercase truncate">
+                {t.displayName || t.name}
+              </p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <span className="text-[7px] font-bold text-[#1a1a1a]/30 uppercase">{t.franchiseName || t.franchise}</span>
+                <span className="ml-auto text-[7px] font-black px-1 py-px rounded" style={{ background: `${rarityColor}15`, color: rarityColor }}>
+                  {(t.rarity || "common").replace("ultra-rare", "ultra").toUpperCase()}
+                </span>
+              </div>
+            </button>
+          )})}
         </div>
       )}
     </div>
+
+    {/* Detail Modal */}
+    {selectedTazo && (
+      <TazoDetailModal
+        tazo={selectedTazo as any}
+        open={detailOpen}
+        onClose={() => { setDetailOpen(false); setSelectedTazo(null) }}
+      />
+    )}
+    </>
   )
 }
 
