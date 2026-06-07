@@ -54,6 +54,8 @@ export async function GET(request: NextRequest) {
         isFavorite: ut.isFavorite,
         obtainedFrom: ut.obtainedFrom,
         acquiredAt: ut.acquiredAt,
+        wear: ut.wear,
+        battleCount: ut.battleCount,
         tazo: {
           id: ut.tazo.id,
           name: ut.tazo.name,

@@ -12,7 +12,7 @@ import Link from "next/link"
 import {
   ShoppingBag, Coins, Zap, Star, Gift, Loader2, X, Sparkles,
   Crosshair, Trophy, Calendar, ShoppingCart, Scissors, ChevronRight,
-  Flame, Shield, Swords,
+  Flame, Shield, Swords, Store, Tag,
 } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
 import type { BagData } from "@/components/game/bag-opener-3d"
@@ -21,7 +21,7 @@ import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 
 const BagOpener3D = dynamic(() => import("@/components/game/bag-opener-3d"), { ssr: false })
 
-// ── Bag Config ─────────────────────────────────────────
+import MarketplaceSection from "@/components/game/marketplace-section"
 interface BagConfig {
   type: string
   name: string
@@ -220,6 +220,9 @@ export default function BagShopPage() {
   const [dailyClaimable, setDailyClaimable] = useState(false)
   const [claimingDaily, setClaimingDaily] = useState(false)
 
+  // Shop tabs: bags | marketplace
+  const [shopTab, setShopTab] = useState<"bags" | "marketplace">("bags")
+
   const bagIdRef = useRef<string | null>(null)
   useEffect(() => { bagIdRef.current = bagId }, [bagId])
 
@@ -383,6 +386,31 @@ export default function BagShopPage() {
           )}
         </div>
 
+        {/* ── Shop Tabs ── */}
+        <div className="flex gap-0">
+          <button onClick={() => setShopTab("bags")}
+            className={`flex-1 py-2.5 text-xs font-black uppercase border-3 transition-all ${
+              shopTab === "bags"
+                ? "bg-[#1a1a1a] text-[#FFCC00] border-[#1a1a1a]"
+                : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+            }`}>
+            <ShoppingBag className="w-3.5 h-3.5 inline mr-1" />Bags
+          </button>
+          <button onClick={() => setShopTab("marketplace")}
+            className={`flex-1 py-2.5 text-xs font-black uppercase border-3 transition-all ${
+              shopTab === "marketplace"
+                ? "bg-[#1a1a1a] text-[#3B82F6] border-[#1a1a1a]"
+                : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+            }`}>
+            <Store className="w-3.5 h-3.5 inline mr-1" />Marketplace
+          </button>
+        </div>
+
+        {/* ── Marketplace Tab ── */}
+        {shopTab === "marketplace" ? (
+          <MarketplaceSection credits={credits} />
+        ) : (
+        <>
         {/* ── Error ── */}
         {error && (
           <div className="p-2 bg-red-50 border-2 border-red-300 text-center flex items-center justify-center gap-2">
@@ -428,6 +456,8 @@ export default function BagShopPage() {
             </div>
           </div>
         </div>
+        </>
+        )}
       </div>
     )
   }
