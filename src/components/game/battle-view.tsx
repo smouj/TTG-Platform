@@ -573,22 +573,33 @@ export default function BattleView() {
             </div>
           </div>
 
-          {/* Phase status */}
+          {/* Phase status — prominent center indicator */}
           <div className="text-center mt-1">
-            {isAiming && (
-              <span className="text-[9px] font-black text-[#FFCC00] bg-black/50 px-3 py-0.5 rounded-full border border-[#FFCC00]/30">
-                YOUR TURN — {throwing?.name || "?"}
-              </span>
+            {phase === "player_aim" && (
+              <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FFCC00]/40">
+                <span className="text-[11px] font-black text-[#FFCC00] tracking-wider">🎯 AIM YOUR SHOT</span>
+                <span className="text-[8px] font-black text-white/40 ml-2">{throwing?.name || "?"}</span>
+              </div>
+            )}
+            {phase === "player_charge" && (
+              <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FF8800]/40 animate-pulse">
+                <span className="text-[11px] font-black text-[#FF8800] tracking-wider">⚡ CHARGING — {Math.round(charge * 100)}%</span>
+              </div>
+            )}
+            {phase === "player_tilt" && (
+              <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FF004D]/40">
+                <span className="text-[11px] font-black text-[#FF004D] tracking-wider">↗ TILT &amp; RELEASE</span>
+              </div>
             )}
             {phase === "slamming" && (
-              <span className="text-[9px] font-black text-white/60 bg-black/50 px-3 py-0.5 rounded-full animate-pulse">
-                <ArrowDown className="w-3 h-3 inline mr-1" />SLAM!
-              </span>
+              <div className="inline-block px-6 py-1.5 bg-[#FFCC00]/20 rounded-full border-2 border-[#FFCC00]/60 animate-pulse">
+                <span className="text-[14px] font-black text-[#FFCC00] tracking-widest">💥 SLAM!</span>
+              </div>
             )}
             {(phase === "impact" || showImpact) && (
-              <span className="text-[9px] font-black text-[#FFCC00] bg-black/50 px-3 py-0.5 rounded-full border border-[#FFCC00]/50">
-                {impactMsg || "Impact!"}
-              </span>
+              <div className="inline-block px-5 py-1.5 bg-[#FFCC00]/10 rounded-full border-2 border-[#FFCC00]/50">
+                <span className="text-[12px] font-black text-[#FFCC00] tracking-wider">{impactMsg || "IMPACT!"}</span>
+              </div>
             )}
             {phase === "opponent_aim" && (
               <span className="text-[9px] font-black text-[#FF004D] bg-black/50 px-3 py-0.5 rounded-full">AI aims...</span>
