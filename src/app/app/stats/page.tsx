@@ -20,7 +20,7 @@ function StatsContent() {
 
 export default function StatsPage() {
   return (
-    <Suspense fallback={<div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6 animate-pulse"><div className="h-64 bg-zinc-800/50 rounded-xl border-2 border-zinc-700" /></div>}>
+    <Suspense fallback={<div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6 animate-pulse"><div className="h-64 bg-[#fffef0] border-3 border-[#1a1a1a]" /></div>}>
       <StatsContent />
     </Suspense>
   )

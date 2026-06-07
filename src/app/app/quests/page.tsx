@@ -121,7 +121,7 @@ export default function QuestsPage() {
 
   return (
     
-      <div className="max-w-7xl mx-auto py-6 px-4 space-y-6">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6">
         {/* ═══════════════════════════════════════════ */}
         {/* MAGAZINE BANNER STRIP                      */}
         {/* ═══════════════════════════════════════════ */}
