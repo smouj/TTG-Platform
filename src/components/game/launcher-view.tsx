@@ -180,13 +180,32 @@ function SectionCard({ step, color, title, children, bgColor }: {
 
 function TazoShowcase() {
   const [tazos, setTazos] = useState<any[]>([])
+  const [validTazos, setValidTazos] = useState<any[]>([])
+  const [loadedCount, setLoadedCount] = useState(0)
+
   useEffect(() => {
-    fetch("/api/tazos?limit=12")
+    fetch("/api/tazos?limit=24")
       .then(r => r.json())
       .then(d => setTazos(d.tazos || []))
       .catch(() => {})
   }, [])
-  if (tazos.length < 6) return null
+
+  // Filter to show only tazos whose images load successfully (no placeholder/letter discs)
+  const handleImageError = (id: string) => {
+    setValidTazos(prev => prev.filter(t => t.id !== id))
+  }
+  const handleImageLoad = (t: any) => {
+    setValidTazos(prev => {
+      if (prev.some(x => x.id === t.id)) return prev
+      return [...prev, t]
+    })
+    setLoadedCount(c => c + 1)
+  }
+
+  const display = validTazos.slice(0, 8)
+  const totalLoaded = tazos.length > 0 ? loadedCount >= tazos.length : false
+  if (!totalLoaded && tazos.length < 6) return null
+
   return (
     <div className="max-w-5xl mx-auto w-full px-4 pb-8 space-y-3">
       <div className="flex items-center gap-3">
@@ -194,8 +213,8 @@ function TazoShowcase() {
         <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-[0.2em] whitespace-nowrap">Featured Tazos</span>
         <div className="flex-1 h-0.5 bg-[#1a1a1a]/10" />
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-        {tazos.slice(0, 8).map((t: any) => (
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 min-h-[96px]">
+        {display.length > 0 ? display.map((t: any) => (
           <div
             key={t.id}
             className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-3 border-[#1a1a1a] flex items-center justify-center overflow-hidden bg-[#fffef0] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
@@ -207,15 +226,19 @@ function TazoShowcase() {
                 className="w-full h-full object-cover scale-110"
                 draggable={false}
                 title={`${t.displayName || t.name} — ${t.franchiseName || t.franchise}`}
+                onError={() => handleImageError(t.id)}
+                onLoad={() => handleImageLoad(t)}
               />
-            ) : (
-              <Disc3 className="w-8 h-8 text-[#1a1a1a]/10" />
-            )}
+            ) : null}
           </div>
-        ))}
+        )) : (
+          <div className="flex items-center justify-center w-full py-4">
+            <Loader2 className="w-5 h-5 animate-spin text-[#1a1a1a]/20" />
+          </div>
+        )}
       </div>
       <p className="text-center text-[8px] font-black text-[#1a1a1a]/20 uppercase tracking-[0.25em]">
-        {tazos.length > 12 ? `+${tazos.length - 12} more...` : "3 franchises · 349 total"}
+        {display.length > 0 ? `${display.length} featured · 349 total` : "Loading tazo previews..."}
       </p>
     </div>
   )
