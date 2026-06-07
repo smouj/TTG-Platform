@@ -4,6 +4,8 @@
 // ============================================================
 "use client"
 
+import { useEffect, useState } from "react"
+import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import {
@@ -13,7 +15,29 @@ import {
 
 export default function SettingsPage() {
   const { t } = useI18n()
-  const { user, logout } = useAuth()
+  const { user, logout, token } = useAuth()
+  const [credits, setCredits] = useState<number | null>(null)
+  const [memberSince, setMemberSince] = useState<string>("2026")
+
+  // Fetch actual credits
+  useEffect(() => {
+    if (!token) return
+    fetch("/api/credits", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => setCredits(d.credits ?? 0))
+      .catch(() => setCredits(0))
+  }, [token])
+
+  // Derive join date from user metadata
+  useEffect(() => {
+    if (!user) return
+    const createdAt = (user as any).createdAt || (user as any).created_at
+    if (createdAt) {
+      try {
+        setMemberSince(new Date(createdAt).toLocaleDateString("en-US", { month: "long", year: "numeric" }))
+      } catch { /* keep default */ }
+    }
+  }, [user])
 
   if (!user) {
     return (
@@ -22,12 +46,12 @@ export default function SettingsPage() {
         <p className="text-sm font-black uppercase tracking-wider text-[#1a1a1a]/40">
           {t.auth_login || "Sign In"} to view settings
         </p>
-        <a
+        <Link
           href={`/login?redirect=${encodeURIComponent("/app/settings")}`}
           className="mag-btn inline-block bg-[#E3350D] text-white px-8 py-3.5 text-xs font-black uppercase tracking-widest border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#1a1a1a] transition-all"
         >
           {t.auth_login || "Sign In"}
-        </a>
+        </Link>
       </div>
     )
   }
@@ -98,7 +122,7 @@ export default function SettingsPage() {
               <Mail className="w-3 h-3" /> {user.email}
             </p>
             <p className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-wider flex items-center gap-1">
-              <Calendar className="w-3 h-3" /> Member since 2026
+              <Calendar className="w-3 h-3" /> Member since {memberSince}
             </p>
           </div>
         </div>
@@ -151,7 +175,7 @@ export default function SettingsPage() {
         {[
           { icon: Disc3, label: "Tazos", value: user.tazoCount ?? 0, color: "#E3350D", bg: "#E3350D08" },
           { icon: Layers, label: "Decks", value: user.deckCount ?? 0, color: "#3B4CCA", bg: "#3B4CCA08" },
-          { icon: Coins, label: "Credits", value: "--", color: "#F59E0B", bg: "#F59E0B08" },
+          { icon: Coins, label: "Credits", value: credits != null ? credits : "...", color: "#F59E0B", bg: "#F59E0B08" },
         ].map(({ icon: Icon, label, value, color, bg }) => (
           <div
             key={label}

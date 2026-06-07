@@ -4,6 +4,7 @@
 // ============================================================
 "use client"
 
+import Link from "next/link"
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
@@ -106,22 +107,19 @@ export default function QuestsPage() {
 
   if (!user) {
     return (
-      
-        <div className="max-w-2xl mx-auto py-20 text-center space-y-6">
+      <div className="max-w-2xl mx-auto py-20 text-center space-y-6">
           <Target className="w-16 h-16 mx-auto text-zinc-400" />
           <h1 className="text-2xl font-black uppercase tracking-wider text-[#1a1a1a]">QUESTS</h1>
           <p className="text-sm text-zinc-500">{t.auth_login} to track quests</p>
-          <a href="/login" className="mag-btn inline-block bg-[#FFCC00] text-[#1a1a1a] font-black uppercase px-6 py-3 border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+          <Link href="/login" className="mag-btn inline-block bg-[#FFCC00] text-[#1a1a1a] font-black uppercase px-6 py-3 border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
             {t.auth_login}
-          </a>
+          </Link>
         </div>
-      
     )
   }
 
   return (
-    
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6 space-y-4">
+    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6 space-y-4">
         {/* ═══════════════════════════════════════════ */}
         {/* MAGAZINE BANNER STRIP                      */}
         {/* ═══════════════════════════════════════════ */}
@@ -290,6 +288,5 @@ export default function QuestsPage() {
           </div>
         )}
       </div>
-    
   )
 }

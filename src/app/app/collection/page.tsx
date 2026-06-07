@@ -694,7 +694,7 @@ export default function CollectionPage() {
                             {/* Quick actions */}
                             <div className="flex gap-1 pt-1.5 border-t border-[#1a1a1a]/10">
                               <Link
-                                href={`/tazos?highlight=${item.tazoId}`}
+                                href={`/?page=tazos&highlight=${item.tazoId}`}
                                 className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#1a1a1a]/5 transition-colors flex items-center justify-center gap-0.5"
                                 title="View details"
                               >

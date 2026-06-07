@@ -127,17 +127,17 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {/* TOTAL TAZOS - White bg, big black number */}
         <div className="mag-card mag-halftone relative p-4 flex flex-col items-center justify-center text-center">
-          <div className="absolute -top-2 -left-2 bg-[var(--mag-black)] text-[var(--mag-yellow)] text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[var(--mag-black)]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.2)' }}>
+          <div className="absolute -top-2 -left-2 bg-[#1a1a1a] text-[#FFCC00] text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[#1a1a1a]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.2)' }}>
             Total
           </div>
-          <Package className="w-5 h-5 text-[var(--mag-black)] mb-1" />
-          <p className="text-4xl font-black text-[var(--mag-black)] leading-none">{stats.totalTazos}</p>
-          <p className="text-[0.65rem] font-black uppercase tracking-wider text-[var(--mag-black)]/50 mt-1">Tazos</p>
+          <Package className="w-5 h-5 text-[#1a1a1a] mb-1" />
+          <p className="text-4xl font-black text-[#1a1a1a] leading-none">{stats.totalTazos}</p>
+          <p className="text-[0.65rem] font-black uppercase tracking-wider text-[#1a1a1a]/50 mt-1">Tazos</p>
         </div>
 
         {/* OWNED - Green bg, white number */}
-        <div className="relative border-3 border-[var(--mag-black)] flex flex-col items-center justify-center text-center p-4" style={{ boxShadow: '4px 4px 0px var(--mag-black)', background: '#22C55E' }}>
-          <div className="absolute -top-2 -left-2 bg-[var(--mag-black)] text-white text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[var(--mag-black)]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
+        <div className="relative border-3 border-[#1a1a1a] flex flex-col items-center justify-center text-center p-4" style={{ boxShadow: '4px 4px 0px #1a1a1a', background: '#22C55E' }}>
+          <div className="absolute -top-2 -left-2 bg-[#1a1a1a] text-white text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[#1a1a1a]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
             Owned
           </div>
           <CheckCircle className="w-5 h-5 text-white mb-1" />
@@ -146,8 +146,8 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
         </div>
 
         {/* MISSING - Red bg, white number */}
-        <div className="relative border-3 border-[var(--mag-black)] flex flex-col items-center justify-center text-center p-4" style={{ boxShadow: '4px 4px 0px var(--mag-black)', background: 'var(--mag-red)' }}>
-          <div className="absolute -top-2 -left-2 bg-[var(--mag-black)] text-white text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[var(--mag-black)]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
+        <div className="relative border-3 border-[#1a1a1a] flex flex-col items-center justify-center text-center p-4" style={{ boxShadow: '4px 4px 0px #1a1a1a', background: '#E3350D' }}>
+          <div className="absolute -top-2 -left-2 bg-[#1a1a1a] text-white text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[#1a1a1a]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
             Missing
           </div>
           <XCircle className="w-5 h-5 text-white mb-1" />
@@ -157,38 +157,38 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
         {/* COMPLETE % - Yellow bg, black number with star */}
         <div className="mag-card-yellow relative p-4 flex flex-col items-center justify-center text-center">
-          <div className="absolute -top-2 -left-2 bg-[var(--mag-black)] text-[var(--mag-yellow)] text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[var(--mag-black)]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
+          <div className="absolute -top-2 -left-2 bg-[#1a1a1a] text-[#FFCC00] text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 border-2 border-[#1a1a1a]" style={{ boxShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
             Complete
           </div>
           <div className="flex items-center gap-1">
-            <Star className="w-5 h-5 text-[var(--mag-black)] fill-[var(--mag-black)]" />
-            <TrendingUp className="w-4 h-4 text-[var(--mag-black)]" />
+            <Star className="w-5 h-5 text-[#1a1a1a] fill-[#1a1a1a]" />
+            <TrendingUp className="w-4 h-4 text-[#1a1a1a]" />
           </div>
-          <p className="text-4xl font-black text-[var(--mag-black)] leading-none">{completionPct}%</p>
-          <p className="text-[0.65rem] font-black uppercase tracking-wider text-[var(--mag-black)]/50 mt-1">Progress</p>
+          <p className="text-4xl font-black text-[#1a1a1a] leading-none">{completionPct}%</p>
+          <p className="text-[0.65rem] font-black uppercase tracking-wider text-[#1a1a1a]/50 mt-1">Progress</p>
         </div>
       </div>
 
       {/* ====== COLLECTION PROGRESS - Magazine Subscription Card ====== */}
       <div className="mag-card mag-stripes relative p-4 overflow-hidden">
-        <div className="absolute top-0 right-0 bg-[var(--mag-red)] text-white text-[0.55rem] font-black uppercase tracking-widest px-3 py-1 border-b-3 border-l-3 border-[var(--mag-black)]">
+        <div className="absolute top-0 right-0 bg-[#E3350D] text-white text-[0.55rem] font-black uppercase tracking-widest px-3 py-1 border-b-3 border-l-3 border-[#1a1a1a]">
           Collection Status
         </div>
         <div className="flex items-center gap-4 mt-4">
           <div className="flex-1">
-            <p className="text-xs font-black uppercase tracking-wider text-[var(--mag-black)]/60 mb-2">
+            <p className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]/60 mb-2">
               Collection Progress
             </p>
             {/* Thick progress bar with diagonal stripe fill */}
-            <div className="h-6 border-3 border-[var(--mag-black)] bg-white relative overflow-hidden" style={{ boxShadow: '2px 2px 0px var(--mag-black)' }}>
+            <div className="h-6 border-3 border-[#1a1a1a] bg-white relative overflow-hidden" style={{ boxShadow: '2px 2px 0px #1a1a1a' }}>
               <div
                 className="h-full stat-bar-fill relative"
                 style={{
                   width: `${completionPct}%`,
                   background: `repeating-linear-gradient(
                     -45deg,
-                    var(--mag-yellow),
-                    var(--mag-yellow) 6px,
+                    #FFCC00,
+                    #FFCC00 6px,
                     #FFB800 6px,
                     #FFB800 12px
                   )`,
@@ -200,10 +200,10 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
             </div>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-3xl font-black text-[var(--mag-black)] mag-stroke-sm" style={{ WebkitTextStroke: '1px var(--mag-black)', color: 'var(--mag-yellow)' }}>
+            <p className="text-3xl font-black text-[#1a1a1a] mag-stroke-sm" style={{ WebkitTextStroke: '1px #1a1a1a', color: '#FFCC00' }}>
               {completionPct}%
             </p>
-            <p className="text-xs font-black text-[var(--mag-black)]/60">
+            <p className="text-xs font-black text-[#1a1a1a]/60">
               {stats.ownedTazos}/{stats.totalTazos}
             </p>
           </div>
@@ -216,9 +216,9 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
         {/* BY FRANCHISE - Yellow banner */}
         <div className="mag-card overflow-hidden">
           {/* Colored banner header */}
-          <div className="mag-card-yellow px-4 py-2 flex items-center gap-2 border-b-3 border-[var(--mag-black)]">
-            <Zap className="w-4 h-4 text-[var(--mag-black)]" />
-            <h3 className="text-sm font-black uppercase tracking-wider text-[var(--mag-black)] mag-stroke-sm">
+          <div className="mag-card-yellow px-4 py-2 flex items-center gap-2 border-b-3 border-[#1a1a1a]">
+            <Zap className="w-4 h-4 text-[#1a1a1a]" />
+            <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] mag-stroke-sm">
               By Franchise
             </h3>
           </div>
@@ -232,15 +232,15 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-1.5">
                       <span
-                        className="w-3 h-3 rounded-full border-2 border-[var(--mag-black)] shrink-0"
+                        className="w-3 h-3 rounded-full border-2 border-[#1a1a1a] shrink-0"
                         style={{ backgroundColor: FRANCHISE_DOT_COLORS[name] || '#9CA3AF' }}
                       />
-                      <span className="text-xs font-black uppercase tracking-wide text-[var(--mag-black)]">{name}</span>
+                      <span className="text-xs font-black uppercase tracking-wide text-[#1a1a1a]">{name}</span>
                     </div>
-                    <span className="text-xs font-black text-[var(--mag-black)]/60">{count} ({pct}%)</span>
+                    <span className="text-xs font-black text-[#1a1a1a]/60">{count} ({pct}%)</span>
                   </div>
                   {/* Thick horizontal bar */}
-                  <div className="h-4 border-2 border-[var(--mag-black)] bg-white/50 overflow-hidden">
+                  <div className="h-4 border-2 border-[#1a1a1a] bg-white/50 overflow-hidden">
                     <div
                       className="h-full stat-bar-fill"
                       style={{
@@ -258,7 +258,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
         {/* BY RARITY - Blue banner */}
         <div className="mag-card overflow-hidden">
-          <div className="mag-card-blue px-4 py-2 flex items-center gap-2 border-b-3 border-[var(--mag-black)]">
+          <div className="mag-card-blue px-4 py-2 flex items-center gap-2 border-b-3 border-[#1a1a1a]">
             <Star className="w-4 h-4 text-white" />
             <h3 className="text-sm font-black uppercase tracking-wider text-white mag-stroke-sm" style={{ WebkitTextStroke: '0.5px rgba(0,0,0,0.3)' }}>
               By Rarity
@@ -278,12 +278,12 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
                 return (
                   <div key={rarity}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-black uppercase tracking-wide text-[var(--mag-black)]">
+                      <span className="text-xs font-black uppercase tracking-wide text-[#1a1a1a]">
                         {config?.label || rarity}
                       </span>
-                      <span className="text-xs font-black text-[var(--mag-black)]/60">{count} ({pct}%)</span>
+                      <span className="text-xs font-black text-[#1a1a1a]/60">{count} ({pct}%)</span>
                     </div>
-                    <div className="h-4 border-2 border-[var(--mag-black)] bg-white/50 overflow-hidden">
+                    <div className="h-4 border-2 border-[#1a1a1a] bg-white/50 overflow-hidden">
                       <div
                         className="h-full stat-bar-fill"
                         style={{
@@ -301,7 +301,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
         {/* BY CONDITION - Red banner */}
         <div className="mag-card overflow-hidden">
-          <div className="mag-card-red px-4 py-2 flex items-center gap-2 border-b-3 border-[var(--mag-black)]">
+          <div className="mag-card-red px-4 py-2 flex items-center gap-2 border-b-3 border-[#1a1a1a]">
             <Shield className="w-4 h-4 text-white" />
             <h3 className="text-sm font-black uppercase tracking-wider text-white mag-stroke-sm" style={{ WebkitTextStroke: '0.5px rgba(0,0,0,0.3)' }}>
               By Condition
@@ -316,12 +316,12 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
               return (
                 <div key={condition}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-black uppercase tracking-wide text-[var(--mag-black)]">
+                    <span className="text-xs font-black uppercase tracking-wide text-[#1a1a1a]">
                       {config?.icon} {config?.label || condition}
                     </span>
-                    <span className="text-xs font-black text-[var(--mag-black)]/60">{count} ({pct}%)</span>
+                    <span className="text-xs font-black text-[#1a1a1a]/60">{count} ({pct}%)</span>
                   </div>
-                  <div className="h-4 border-2 border-[var(--mag-black)] bg-white/50 overflow-hidden">
+                  <div className="h-4 border-2 border-[#1a1a1a] bg-white/50 overflow-hidden">
                     <div
                       className="h-full stat-bar-fill"
                       style={{
@@ -344,12 +344,12 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
         <div className="exclusive-badge">Exclusive!</div>
 
         {/* Header banner */}
-        <div className="px-4 py-3 flex items-center gap-2 border-b-3 border-[var(--mag-black)]" style={{ background: 'linear-gradient(135deg, var(--mag-yellow) 0%, var(--mag-orange) 100%)' }}>
-          <Trophy className="w-5 h-5 text-[var(--mag-black)] fill-[var(--mag-black)]" />
-          <h3 className="text-lg font-black uppercase tracking-wider text-[var(--mag-black)] mag-stroke-sm">
+        <div className="px-4 py-3 flex items-center gap-2 border-b-3 border-[#1a1a1a]" style={{ background: 'linear-gradient(135deg, #FFCC00 0%, #FF6B00 100%)' }}>
+          <Trophy className="w-5 h-5 text-[#1a1a1a] fill-[#1a1a1a]" />
+          <h3 className="text-lg font-black uppercase tracking-wider text-[#1a1a1a] mag-stroke-sm">
             Power Rankings
           </h3>
-          <span className="ml-auto text-[0.6rem] font-black uppercase tracking-widest bg-[var(--mag-black)] text-[var(--mag-yellow)] px-2 py-0.5">
+          <span className="ml-auto text-[0.6rem] font-black uppercase tracking-widest bg-[#1a1a1a] text-[#FFCC00] px-2 py-0.5">
             Top Combatants
           </span>
         </div>
@@ -364,15 +364,15 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
               return (
                 <div
                   key={key}
-                  className="flex items-center gap-3 border-2 border-[var(--mag-black)] bg-white p-2 relative"
-                  style={{ boxShadow: '3px 3px 0px var(--mag-black)' }}
+                  className="flex items-center gap-3 border-2 border-[#1a1a1a] bg-white p-2 relative"
+                  style={{ boxShadow: '3px 3px 0px #1a1a1a' }}
                 >
                   {/* Rank number */}
                   <div
-                    className="w-9 h-9 flex items-center justify-center shrink-0 font-black text-lg border-2 border-[var(--mag-black)]"
+                    className="w-9 h-9 flex items-center justify-center shrink-0 font-black text-lg border-2 border-[#1a1a1a]"
                     style={{
-                      backgroundColor: rank <= 3 ? 'var(--mag-yellow)' : '#f0f0f0',
-                      color: 'var(--mag-black)',
+                      backgroundColor: rank <= 3 ? '#FFCC00' : '#f0f0f0',
+                      color: '#1a1a1a',
                       boxShadow: rank <= 3 ? 'inset 0 -2px 0 rgba(0,0,0,0.15)' : 'none',
                     }}
                   >
@@ -381,7 +381,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
                   {/* Icon */}
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border-2 border-[var(--mag-black)]"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border-2 border-[#1a1a1a]"
                     style={{ backgroundColor: `${color}20` }}
                   >
                     <Icon className="w-4 h-4" style={{ color }} />
@@ -389,13 +389,13 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
                   {/* Info */}
                   <div className="min-w-0 flex-1">
-                    <p className="text-[0.6rem] font-black uppercase tracking-widest text-[var(--mag-black)]/50">{label}</p>
+                    <p className="text-[0.6rem] font-black uppercase tracking-widest text-[#1a1a1a]/50">{label}</p>
                     <div className="flex items-center gap-1.5">
                       <span
-                        className="w-2.5 h-2.5 rounded-full border border-[var(--mag-black)] shrink-0"
+                        className="w-2.5 h-2.5 rounded-full border border-[#1a1a1a] shrink-0"
                         style={{ backgroundColor: franchiseColor }}
                       />
-                      <p className="text-sm font-black text-[var(--mag-black)] truncate">
+                      <p className="text-sm font-black text-[#1a1a1a] truncate">
                         {topTazo?.name || '—'}
                       </p>
                     </div>
@@ -403,7 +403,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
 
                   {/* Stat value */}
                   <div
-                    className="text-xl font-black shrink-0 px-2 py-0.5 border-2 border-[var(--mag-black)]"
+                    className="text-xl font-black shrink-0 px-2 py-0.5 border-2 border-[#1a1a1a]"
                     style={{
                       backgroundColor: color,
                       color: 'white',
