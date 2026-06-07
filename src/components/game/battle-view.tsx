@@ -1,7 +1,7 @@
 // ============================================================
-// Trading Tazos Game — Battle View (Magazine Edition)
-// Full battle experience: lobby → arena → throw → resolve.
-// Magazine/comic aesthetic — halftone cards, heavy borders.
+// Trading Tazos Game — Battle View v2
+// Full-page 3D arena with overlaid launching controls,
+// real disc physics, orbit camera, proper front/back tazos.
 // ============================================================
 "use client"
 
@@ -17,7 +17,6 @@ import type {
 import type { BattleFinalResult } from "@/lib/battle"
 import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
-import BattleHUD from "./battle/battle-hud"
 import LaunchSystem from "./battle/launch-system"
 import BattleResultPanel from "./battle/battle-result-panel"
 import { Disc3, RotateCcw } from "lucide-react"
@@ -62,9 +61,7 @@ async function fetchTazos(token: string): Promise<TazoCard[]> {
     if (!r.ok) return []
     const d = await r.json()
     return (d.tazos || []).map((t: any) => ({
-      id: t.id,
-      name: t.name || "?",
-      slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
+      id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
       franchise: (t.franchise || t.franchiseSlug || "minimon") as TazoCard["franchise"],
       imageUrl: t.imageUrl || null,
       attack: t.attack || 50, defense: t.defense || 50,
@@ -91,10 +88,10 @@ export default function BattleView() {
   const [throwing, setThrowing] = useState<TazoCard | null>(null)
   const [launch, setLaunch] = useState<"aim" | "power">("aim")
   const [aim, setAim] = useState({ x: 0, y: 0, accuracy: 0.8 })
+  const [hitsLanded, setHitsLanded] = useState(0)
   const busy = useRef(false)
   const resultSaved = useRef(false)
 
-  // ── Save battle result to server with actual physics data ──
   const saveBattleResult = useCallback(async (matchResult: MatchResult, playerDeck: TazoCard[], opponentDeck: TazoCard[]) => {
     if (resultSaved.current) return
     resultSaved.current = true
@@ -106,75 +103,70 @@ export default function BattleView() {
         body: JSON.stringify({
           playerTazoIds: playerDeck.map(t => t.id),
           opponentTazoIds: opponentDeck.map(t => t.id),
-          // Send ACTUAL physics results from the 3D battle
           physicsResult: {
             winner: matchResult.winner,
-            playerScore: matchResult.playerScore,
-            opponentScore: matchResult.opponentScore,
+            playerScore: matchResult.playerScore, opponentScore: matchResult.opponentScore,
             captures: matchResult.playerCaptures + matchResult.opponentCaptures,
-            ringOuts: 0,
-            flips: 0,
-            totalTurns: matchResult.totalTurns || 1,
+            ringOuts: 0, flips: 0, totalTurns: matchResult.totalTurns || 1,
           },
         }),
       })
-      if (r.ok) {
-        const data = await r.json()
-        setCreditsEarned(data.creditsEarned || 0)
-      }
-    } catch { /* non-critical — battle still shown */ }
+      if (r.ok) { const data = await r.json(); setCreditsEarned(data.creditsEarned || 0) }
+    } catch {}
   }, [token])
 
-  // ── Call save on match_end ──
   useEffect(() => {
-    if (phase === "match_end" && result && cfg) {
-      saveBattleResult(result, deck, cfg.opponentDeck)
-    }
+    if (phase === "match_end" && result && cfg) saveBattleResult(result, deck, cfg.opponentDeck)
   }, [phase, result, cfg, deck, saveBattleResult])
 
   useEffect(() => {
     (async () => {
-      let list: TazoCard[] = []
-      if (user && token) list = await fetchTazos(token)
-      setTazos(list.length >= 5 ? list : DEMO_TAZOS)
-      setLoading(false)
+      let list: TazoCard[] = DEMO_TAZOS
+      if (user && token) {
+        const fetched = await fetchTazos(token)
+        if (fetched.length >= 5) list = fetched
+      }
+      setTazos(list); setLoading(false)
     })()
   }, [user, token])
 
   const doOpponentTurn = useCallback((
     cfg: MatchConfig, _pDiscs: DiscPhysics[], _oDiscs: DiscPhysics[],
-    pCap: number, oCap: number, pHP: number, oHP: number, roundN: number, turnN: number
+    pCap: number, oCap: number, pHP: number, oHP: number, turnN: number
   ) => {
     const t = cfg.opponentDeck[Math.floor(Math.random() * cfg.opponentDeck.length)]
     const m = generateAIMove(t, _pDiscs, _oDiscs, cfg.arena, cfg.aiDifficulty)
-
     const disc: DiscPhysics = {
       id: t.id, tazoName: t.name, franchise: t.franchise,
       imageUrl: t.imageUrl, backImageUrl: BACK_ARTS[t.franchise] || null,
-      position: [(Math.random()-0.5)*1.5, 0.06, cfg.arena.radius*0.4] as [number,number,number],
-      velocity: [m.aimX*4, 0, m.aimY*4] as [number,number,number],
+      position: [(Math.random()-0.5)*1.5, 0.06, -cfg.arena.radius*0.4] as [number,number,number],
+      velocity: [m.aimX*5, 0, -m.aimY*5] as [number,number,number],
       rotation: [0,0,0] as [number,number,number],
       angularVelocity: [0,0,0] as [number,number,number],
-      facing: "front", state: "sliding", owner: "opponent" as const,
+      facing: "front", state: "sliding" as const, owner: "opponent" as const,
     }
-
+    // Simulate physics trajectory
     let px = disc.position[0], pz = disc.position[2]
     let vx = disc.velocity[0], vz = disc.velocity[2]
-    for (let s = 0; s < 35; s++) {
+    for (let s = 0; s < 45; s++) {
       vx *= cfg.arena.surfaceFriction; vz *= cfg.arena.surfaceFriction
-      px += vx * 0.016; pz += vz * 0.016
-      if (Math.sqrt(px*px+pz*pz) > cfg.arena.radius) { px *= 0.9; pz *= 0.9 }
+      px += vx*0.016; pz += vz*0.016
+      if (Math.sqrt(px*px+pz*pz) > cfg.arena.ringOutThreshold) { px *= 0.88; pz *= 0.88 }
     }
-    disc.position = [px, 0.06, pz]; disc.state = "stopped"
+    disc.position = [px, 0.06, pz]; disc.velocity = [vx*0.3, 0, vz*0.3]; disc.state = "stopped"
 
     let hits = 0; let flips = 0
     const newP = _pDiscs.map(d => {
       if (d.state === "captured") return d
       const dx = px - d.position[0], dz = pz - d.position[2]
       const dist = Math.sqrt(dx*dx+dz*dz)
-      if (dist < 0.6 && dist > 0.01) {
-        hits++; d.position[0] -= (dx/dist)*0.12; d.position[2] -= (dz/dist)*0.12; d.state = "sliding"
-        if (m.power > 0.45 && Math.random() < m.power*0.35) { d.facing = d.facing==="front"?"back":"front"; d.state = "flipped"; flips++ }
+      if (dist < 0.65 && dist > 0.01) {
+        hits++
+        const nx = dx/dist, nz = dz/dist
+        d.position = [d.position[0] + nx*0.14, d.position[1], d.position[2] + nz*0.14]
+        d.velocity = [nx*m.power*3, 0, nz*m.power*3]
+        d.state = "sliding"
+        if (m.power > 0.4 && Math.random() < m.power*0.35) { d.facing = d.facing==="front"?"back":"front"; flips++ }
         if (Math.sqrt(d.position[0]**2+d.position[2]**2) > cfg.arena.ringOutThreshold) d.state = "captured"
       }
       return d
@@ -183,7 +175,7 @@ export default function BattleView() {
     const nCap = pCap + newP.filter(d => d.state === "captured").length
     const dmg = Math.round(m.power * 18) + flips * 8 + hits * 4
     const newHP = Math.max(0, pHP - dmg)
-    setPDiscs([...newP]); setODiscs([..._oDiscs, disc]);
+    setPDiscs([...newP]); setODiscs([..._oDiscs, disc])
     setPHP(newHP); setPCap(nCap); setTurn(prev => prev + 1)
 
     const end = checkMatchEnd(
@@ -192,12 +184,11 @@ export default function BattleView() {
       newP, [..._oDiscs, disc]
     )
     if (end) { setResult({ ...end, totalTurns: turnN + 1 }); setPhase("match_end"); return }
-
     setPhase("round_end")
     setTimeout(() => {
       setRound(prev => prev + 1)
       setThrowing(deck[(turnN + 1) % deck.length]); setLaunch("aim"); setPhase("player_aim")
-    }, 1800)
+    }, 2000)
   }, [deck])
 
   const start = useCallback((mode: PlayMode, diff: AIDifficulty, d: TazoCard[]) => {
@@ -205,11 +196,11 @@ export default function BattleView() {
     const opp = [...DEMO_TAZOS].sort(() => Math.random()-0.5).slice(0,5)
     const c: MatchConfig = { mode, aiDifficulty: diff, arena: DEFAULT_ARENA_3D, rounds: 0, playerDeck: d, opponentDeck: opp }
     setCfg(c); setPHP(100); setOHP(100); setPCap(0); setOCap(0)
-    setRound(1); setTurn(0); setResult(null); busy.current = false
-    setPDiscs(makeDiscs(d, "player", 3.5)); setODiscs(makeDiscs(opp, "opponent", -3.5))
+    setRound(1); setTurn(0); setResult(null); busy.current = false; setHitsLanded(0)
+    setPDiscs(makeDiscs(d, "player", 4)); setODiscs(makeDiscs(opp, "opponent", -4))
     setThrowing(d[0]); setLaunch("aim"); setPhase("intro")
-    setTimeout(() => setPhase("round_start"), 2200)
-    setTimeout(() => { if (!busy.current) setPhase("player_aim") }, 3200)
+    setTimeout(() => setPhase("round_start"), 2000)
+    setTimeout(() => { if (!busy.current) setPhase("player_aim") }, 3000)
   }, [])
 
   const aimLock = useCallback((x: number, y: number, accuracy: number) => {
@@ -225,6 +216,20 @@ export default function BattleView() {
       accuracyPenalty: (1-aim.accuracy)*0.35 + (1-accuracy)*0.25, timestamp: Date.now(),
     }
     setPhase("throwing")
+    // Add launch velocity to the throwing disc
+    setPDiscs(prev => prev.map(d => {
+      if (d.id !== throwing.id) return d
+      // Launch velocity: -aim.y = forward (toward opponent at -z)
+      const speed = 4 + power * 8
+      return {
+        ...d,
+        velocity: [aim.x * speed * 0.7, 0, -aim.y * speed],
+        position: [d.position[0], 0.06, 4], // launch from player side
+        state: "sliding" as const,
+        facing: "front" as const,
+      }
+    }))
+
     setTimeout(() => {
       if (!cfg) return
       setPhase("physics")
@@ -233,6 +238,9 @@ export default function BattleView() {
       const dmg = r.result.hpDealt
       setOHP(prev => Math.max(0, prev - dmg))
       setOCap(prev => prev + r.result.discsCaptured.length)
+      // Bounce effect on hits
+      const totalHits = (r.result as any).flipsTriggered || r.result.discsCaptured.length
+      setHitsLanded(totalHits)
 
       setTimeout(() => {
         setPhase("resolve")
@@ -242,21 +250,19 @@ export default function BattleView() {
           pDiscs, r.discs
         )
         if (end) { setResult({ ...end, totalTurns: turn + 1 }); setPhase("match_end"); return }
-
         setTimeout(() => {
           setPhase("opponent_turn")
           setTimeout(() => {
-            doOpponentTurn(cfg, pDiscs, r.discs, pCap, oCap, pHP, oHP - dmg, round, turn + 1)
+            doOpponentTurn(cfg, pDiscs, r.discs, pCap, oCap, pHP, oHP - dmg, turn + 1)
             busy.current = false
-          }, 1200)
-        }, 1000)
-      }, 600)
-    }, 500)
+          }, 1500)
+        }, 800)
+      }, 400)
+    }, 300)
   }, [throwing, cfg, aim, deck, pHP, oHP, pDiscs, oDiscs, pCap, oCap, turn, doOpponentTurn])
 
   const rematch = () => { resultSaved.current = false; setCreditsEarned(0); if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
   const back = () => { resultSaved.current = false; setCreditsEarned(0); setPhase("lobby"); setCfg(null); setResult(null); setThrowing(null) }
-  const compact = typeof window !== "undefined" && window.innerWidth < 640
 
   if (loading) return (
     <div className="flex items-center justify-center py-28">
@@ -275,74 +281,102 @@ export default function BattleView() {
         opponentCaptures: result.opponentCaptures, summary: result.summary,
       }} playerName="You" opponentName={`AI (${cfg?.aiDifficulty})`} onRematch={rematch} creditsEarned={creditsEarned} />
       <div className="text-center">
-        <button onClick={back} className="px-6 py-3 font-black text-sm uppercase text-[#1a1a1a] bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all">
+        <button onClick={back} className="px-6 py-3 font-black text-sm uppercase text-[#1a1a1a] bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
           <RotateCcw className="w-4 h-4 inline mr-2" /> Back to Lobby
         </button>
       </div>
     </div>
   )
 
-  const isPlayer = phase.startsWith("player_")
-
+  // ── Full-page 3D Arena with overlaid controls ──
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden">
-      {/* HUD — magazine score strip */}
-      <BattleHUD
-        playerName="You"
-        opponentName={`AI (${cfg?.aiDifficulty || "skilled"})`}
-        playerHP={pHP} playerMaxHP={100}
-        opponentHP={oHP} opponentMaxHP={100}
-        playerTazos={deck.length} opponentTazos={cfg?.opponentDeck.length || 5}
-        playerCaptured={pCap} opponentCaptured={oCap}
-        round={round} phase={phase}
-        turnPlayer={isPlayer ? "player" : "opponent"}
-        compact={compact}
-      />
+    <div className="w-full" style={{ height: "calc(100vh - 56px)" }}>
+      <BattleArena3D
+        config={cfg?.arena || DEFAULT_ARENA_3D}
+        playerDiscs={pDiscs}
+        opponentDiscs={oDiscs}
+        gamePhase={phase}
+      >
+        {/* HUD overlay top */}
+        <div className="absolute top-0 left-0 right-0 p-3">
+          <div className="flex items-center justify-between">
+            {/* Player side */}
+            <div className="flex items-center gap-3 bg-black/60 backdrop-blur-sm rounded px-3 py-2 border border-white/10">
+              <span className="text-xs font-black text-white tracking-wide">YOU</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-24 h-3 bg-white/15 rounded-full overflow-hidden border border-white/20">
+                  <div className="h-full transition-all duration-300"
+                    style={{ width: `${pHP}%`, background: "linear-gradient(90deg, #29ADFF, #00A1E9)" }} />
+                </div>
+                <span className="text-[9px] font-black text-white/70">{pHP}%</span>
+              </div>
+              <span className="text-[8px] font-black text-white/40">{deck.length - pCap} tazos</span>
+            </div>
 
-      {/* Arena — fills available space */}
-      <div className="flex-1">
-        <BattleArena3D
-          config={cfg?.arena || DEFAULT_ARENA_3D}
-          playerDiscs={pDiscs} opponentDiscs={oDiscs}
-          gamePhase={phase} compact={compact}
-        />
-      </div>
+            {/* Round indicator */}
+            <div className="flex flex-col items-center">
+              <span className="text-[7px] font-black text-white/30 uppercase tracking-[0.3em]">Round</span>
+              <span className="text-sm font-black text-[#FFCC00]">{round}</span>
+            </div>
 
-      {/* Controls bar */}
-      <div className="mt-1">
-      {(phase === "player_aim" || phase === "player_power") ? (
-        <LaunchSystem
-          phase={launch}
-          onAimLock={aimLock}
-          onPowerLock={powerLock}
-          throwingTazoName={throwing?.name || "?"}
-          throwingTazoFranchise={throwing?.franchise || "minimon"}
-        />
-      ) : phase === "throwing" ? (
-        <div className="mag-card rounded-none p-4 text-center">
-          <Disc3 className="w-8 h-8 mx-auto animate-spin text-[#FFCC00]" />
-          <p className="font-black text-xs text-[#1a1a1a]/30 mt-2 uppercase tracking-[0.15em]">Throwing...</p>
+            {/* Opponent side */}
+            <div className="flex items-center gap-3 bg-black/60 backdrop-blur-sm rounded px-3 py-2 border border-white/10">
+              <span className="text-[8px] font-black text-white/40">{cfg?.opponentDeck.length || 5} tazos</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-24 h-3 bg-white/15 rounded-full overflow-hidden border border-white/20">
+                  <div className="h-full transition-all duration-300"
+                    style={{ width: `${oHP}%`, background: "linear-gradient(90deg, #FF004D, #E3350D)" }} />
+                </div>
+                <span className="text-[9px] font-black text-white/70">{oHP}%</span>
+              </div>
+              <span className="text-xs font-black text-white tracking-wide">AI</span>
+            </div>
+          </div>
+
+          {/* Phase status */}
+          <div className="text-center mt-1">
+            {(phase === "player_aim" || phase === "player_power") && (
+              <span className="text-[9px] font-black text-[#FFCC00] bg-black/50 px-3 py-0.5 rounded-full border border-[#FFCC00]/30">
+                YOUR TURN — {(throwing?.name || "?")}
+              </span>
+            )}
+            {phase === "throwing" && (
+              <span className="text-[9px] font-black text-white/60 bg-black/50 px-3 py-0.5 rounded-full">Throwing...</span>
+            )}
+            {phase === "physics" && (
+              <span className="text-[9px] font-black text-[#F59E0B] bg-black/50 px-3 py-0.5 rounded-full">
+                {hitsLanded > 0 ? `${hitsLanded} hits!` : "Resolving..."}
+              </span>
+            )}
+            {phase === "opponent_turn" && (
+              <span className="text-[9px] font-black text-[#FF004D] bg-black/50 px-3 py-0.5 rounded-full">AI throws...</span>
+            )}
+            {phase === "round_end" && (
+              <span className="text-[9px] font-black text-[#22C55E] bg-black/50 px-3 py-0.5 rounded-full">Round {round} complete</span>
+            )}
+          </div>
         </div>
-      ) : phase === "physics" ? (
-        <div className="mag-card rounded-none p-4 text-center">
-          <Disc3 className="w-8 h-8 mx-auto animate-spin text-[#F59E0B]" />
-          <p className="font-black text-xs text-[#1a1a1a]/30 mt-2 uppercase tracking-[0.15em]">Resolving...</p>
+
+        {/* Launch controls overlay bottom */}
+        <div className="absolute bottom-0 left-0 right-0">
+          {(phase === "player_aim" || phase === "player_power") ? (
+            <LaunchSystem
+              phase={launch}
+              onAimLock={aimLock}
+              onPowerLock={powerLock}
+              throwingTazoName={throwing?.name || "?"}
+              throwingTazoFranchise={throwing?.franchise || "minimon"}
+            />
+          ) : (
+            <div className="flex justify-center p-3">
+              <button onClick={back}
+                className="px-4 py-2 text-[10px] font-black text-white/40 bg-black/40 hover:bg-black/60 hover:text-white/70 border border-white/10 rounded uppercase tracking-wider transition-colors">
+                Leave Battle
+              </button>
+            </div>
+          )}
         </div>
-      ) : phase === "opponent_turn" ? (
-        <div className="mag-card-red rounded-none p-4 text-center">
-          <Disc3 className="w-8 h-8 mx-auto animate-spin text-white" />
-          <p className="font-black text-xs text-white/80 mt-2 uppercase tracking-[0.15em]">Opponent throws...</p>
-        </div>
-      ) : phase === "round_end" ? (
-        <div className="p-3 bg-[#22C55E] border-3 border-[#1a1a1a] text-center">
-          <p className="font-black text-xs text-white uppercase tracking-[0.12em]">Round {round} done — Next round...</p>
-        </div>
-      ) : (
-        <button onClick={back} className="w-full py-2.5 text-[10px] font-bold text-[#1a1a1a]/30 hover:text-[#E3350D] uppercase transition-colors tracking-[0.15em]">
-          Leave Battle
-        </button>
-      )}
-    </div>
+      </BattleArena3D>
     </div>
   )
 }

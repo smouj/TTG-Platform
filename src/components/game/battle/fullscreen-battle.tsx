@@ -103,7 +103,6 @@ export default function FullscreenBattle({ mode, roomId }: FullscreenBattleProps
   const wsRef = useRef<WebSocket | null>(null)
   const busy = useRef(false)
   const resultSaved = useRef(false)
-  const compact = typeof window !== "undefined" && window.innerWidth < 640
 
   useEffect(() => {
     if (mode === "practice") return
@@ -318,7 +317,6 @@ export default function FullscreenBattle({ mode, roomId }: FullscreenBattleProps
         playerCaptured={pCap} opponentCaptured={oCap}
         round={round} phase={phase}
         turnPlayer={isPlayer ? "player" : "opponent"}
-        compact={compact}
       />
       {mode !== "practice" && (
         <div className="border-y border-[#FFCC00]/20 bg-[#111] px-3 py-1.5 text-center text-[10px] font-black uppercase tracking-[0.12em] text-[#FFCC00]">
@@ -333,7 +331,6 @@ export default function FullscreenBattle({ mode, roomId }: FullscreenBattleProps
           playerDiscs={pDiscs}
           opponentDiscs={oDiscs}
           gamePhase={phase}
-          compact={compact}
         />
       </div>
 
