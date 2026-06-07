@@ -22,7 +22,7 @@
 
 **Aim. Throw. Flip. Capture. Collect.**
 
-Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you aim, charge power, and throw tazos into a 3D physics-simulated arena. Features 349 tazos across 3 collections (Minimon, Dracobell, Cybermon), 9 combat stats, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
+Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you stake tazos face-down in a 3D arena, charge up a vertical slam from above, and watch physics resolve flips, wobbles, and captures in real time. Features 349 tazos across 3 collections (Minimon 110, Dracobell 87, Cybermon 152), 9 combat stats, holographic/foil/prismatic finishes, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
 
 🌐 **[medaclawarena.com](https://medaclawarena.com)** &nbsp;|&nbsp; 📧 **support@medaclawarena.com**
 
@@ -75,7 +75,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 ### Battle System
 | Feature | Detail |
 |---------|--------|
-| Battle Engine | Deterministic physics with Three.js 3D rendering |
+| Battle Engine | Vertical slam physics (tazos fall from above) with seed-based deterministic RNG, Three.js 3D rendering |
 | Combat Stats | Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, Precision |
 | Tazo Roles | Attacker, Tank, Technical, Bouncer, Heavy, Light, Balanced, Special (8 roles) |
 | Aim Mechanics | 3-phase minigame: horizontal swing → vertical drop → power charge |
@@ -391,6 +391,17 @@ tazos battle --seed 42   # Simulate a physics battle
 ---
 
 ## Changelog
+
+### v0.3.1 — Vertical Slam Physics + Finish System + Deck Integration (Jun 2026)
+- **Vertical slam mechanic**: Tazos fall from above — no more air hockey. Stake face-down, aim, charge, tilt, slam.
+- **Physical finish system**: 12 finishes (holo, foil, prismatic, gold, chrome, rainbow, etc.) + 7 creature variants (shiny, shadow, golden, promo, first_edition, misprint) — all CSS-only, no extra images
+- **349 tazos with finishes**: Every tazo in the DB has a rarity-appropriate finish
+- **Battle ↔ Decks integration**: BattleView loads from user's active deck instead of all DB tazos
+- **Deterministic RNG**: Seed-based random for future PvP sync — no more `Math.random()` in combat
+- **3D geometry fix**: Tazo discs render as proper flat discs (not rotated cylinders), stakes separated correctly
+- **Control UI**: 3-phase slam pad — AIM (reticle pad) → CHARGE (hold meter with sweet spot) → TILT (direction + spin)
+- **Combat flow**: Player picks stake tazo + launcher tazo separately (no duplicate roll)
+- **HUD improvements**: STAKE badge, round counter, phase indicators
 
 ### v0.3.0 — 3D Shop + Quests + Desktop App + Public SEO (Jun 2026)
 - **Entry animations**: Staggered fade-up on landing hero, skeleton loaders, loading states
