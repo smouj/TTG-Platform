@@ -1,9 +1,9 @@
 # ============================================================
 # Trading Tazos Game — electron-builder config
-# Thin web wrapper — loads https://medaclawarena.com
+# Thin web wrapper — loads https://tradingtazosgame.com
 # No deps in the app — just Electron + main.js + assets.
 # ============================================================
-appId: com.medaclawarena.trading-tazos-game
+appId: com.tradingtazosgame.app
 productName: "Trading Tazos Game"
 copyright: "Copyright © 2026 MedaClaw Arena"
 electronVersion: "42.3.2"
@@ -62,7 +62,7 @@ linux:
   category: Game
   icon: icon-256.png
   artifactName: "${name}-${version}-linux-${arch}.${ext}"
-  maintainer: "support@medaclawarena.com"
+  maintainer: "support@tradingtazosgame.com"
 
 # ─── Publish (GitHub Releases) ────────────────────────────
 publish:
