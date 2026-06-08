@@ -193,7 +193,7 @@ def get_fonts():
         return {k: d for k in ["small","large","medium","number","tiny"]}
 
 
-def generate_tazo(tazo, bgs, fonts):
+def generate_tazo(tazo, bgs, fonts, base_only=False):
     fs = tazo["franchise_slug"]
     fx = FRANCHISE.get(fs, FRANCHISE["minimon"])
     rz = RARITY.get(tazo.get("rarity", "common"), RARITY["common"])
@@ -363,14 +363,15 @@ def generate_tazo(tazo, bgs, fonts):
         draw = ImageDraw.Draw(img)
 
     # ── Text: Collection name (top) ──
-    coll_bbox = draw.textbbox((0, 0), collection, font=fonts["small"])
-    cw = coll_bbox[2] - coll_bbox[0]
-    draw.text((CENTER - cw//2, 65), collection, fill=fx["text_light"],
-              font=fonts["small"], stroke_width=2, stroke_fill=dark)
+    if not base_only:
+        coll_bbox = draw.textbbox((0, 0), collection, font=fonts["small"])
+        cw = coll_bbox[2] - coll_bbox[0]
+        draw.text((CENTER - cw//2, 65), collection, fill=fx["text_light"],
+                  font=fonts["small"], stroke_width=2, stroke_fill=dark)
 
     # ── Character Letter(s) — with dark background pill for readability ──
     # Only show letter placeholder when no creature art exists
-    if not has_creature:
+    if not base_only and not has_creature:
         letters = ''.join([w[0] for w in name.split() if w])[:2]
         if not letters:
             letters = name[:2] if len(name) >= 2 else name[0]
@@ -399,7 +400,7 @@ def generate_tazo(tazo, bgs, fonts):
                   stroke_width=5, stroke_fill=dark)
 
     # ── Type badge (ALL franchises) — positioned at TOP of disc ──
-    if combat_type and combat_type in fx.get("type_colors", {}):
+    if not base_only and combat_type and combat_type in fx.get("type_colors", {}):
         tc = fx["type_colors"][combat_type]
         type_text = combat_type.upper()
         tbbox = draw.textbbox((0, 0), type_text, font=fonts["small"])
@@ -424,48 +425,51 @@ def generate_tazo(tazo, bgs, fonts):
                   stroke_width=1, stroke_fill=dark)
 
     # ── Name at bottom — with solid background for readability ──
-    if len(name) > 14:
-        sp = name.rfind(' ', 0, len(name)//2 + 4)
-        if sp > 3:
-            name_lines = [name[:sp], name[sp+1:]]
+    if not base_only:
+        if len(name) > 14:
+            sp = name.rfind(' ', 0, len(name)//2 + 4)
+            if sp > 3:
+                name_lines = [name[:sp], name[sp+1:]]
+            else:
+                name_lines = [name[:14], name[14:]]
         else:
-            name_lines = [name[:14], name[14:]]
-    else:
-        name_lines = [name]
+            name_lines = [name]
 
-    n_y = CENTER + RADIUS - 65
-    for line in reversed(name_lines):
-        nbbox = draw.textbbox((0, 0), line, font=fonts["medium"])
-        nw = nbbox[2] - nbbox[0]
-        pad = 8
-        # Solid background for name plate
-        draw.rounded_rectangle(
-            [CENTER - nw//2 - pad, n_y - 26 - pad,
-             CENTER + nw//2 + pad, n_y + pad],
-            radius=14, fill=(255,255,255,240), outline=dark, width=3
-        )
-        draw.text((CENTER - nw//2, n_y - 26), line, fill=dark, font=fonts["medium"])
-        n_y -= 34
+        n_y = CENTER + RADIUS - 65
+        for line in reversed(name_lines):
+            nbbox = draw.textbbox((0, 0), line, font=fonts["medium"])
+            nw = nbbox[2] - nbbox[0]
+            pad = 8
+            # Solid background for name plate
+            draw.rounded_rectangle(
+                [CENTER - nw//2 - pad, n_y - 26 - pad,
+                 CENTER + nw//2 + pad, n_y + pad],
+                radius=14, fill=(255,255,255,240), outline=dark, width=3
+            )
+            draw.text((CENTER - nw//2, n_y - 26), line, fill=dark, font=fonts["medium"])
+            n_y -= 34
 
     # ── Number badge (inside disc, bottom-right) ──
-    num_str = f"Nº {number}"
-    nbbox2 = draw.textbbox((0, 0), num_str, font=fonts["tiny"])
-    nw2 = nbbox2[2] - nbbox2[0]
-    nx = CENTER + RADIUS - 130
-    ny = CENTER + RADIUS - 130
-    draw.rounded_rectangle(
-        [nx - nw2//2 - 6, ny - 10 - 4, nx + nw2//2 + 6, ny + 10 + 4],
-        radius=8, fill=(255,255,255,230), outline=dark, width=2
-    )
-    draw.text((nx - nw2//2, ny - 10), num_str, fill=dark, font=fonts["tiny"])
+    if not base_only:
+        num_str = f"Nº {number}"
+        nbbox2 = draw.textbbox((0, 0), num_str, font=fonts["tiny"])
+        nw2 = nbbox2[2] - nbbox2[0]
+        nx = CENTER + RADIUS - 130
+        ny = CENTER + RADIUS - 130
+        draw.rounded_rectangle(
+            [nx - nw2//2 - 6, ny - 10 - 4, nx + nw2//2 + 6, ny + 10 + 4],
+            radius=8, fill=(255,255,255,230), outline=dark, width=2
+        )
+        draw.text((nx - nw2//2, ny - 10), num_str, fill=dark, font=fonts["tiny"])
 
     # ── Rarity stars ──
-    star_r = 8
-    total_w = rz["stars"] * (star_r * 3 + 2)
-    sx = CENTER - total_w // 2
-    sy = CENTER - inner_r + 35
-    for s in range(rz["stars"]):
-        draw_star(draw, sx + s*(star_r*3+2) + star_r, sy, star_r, rz["border"])
+    if not base_only:
+        star_r = 8
+        total_w = rz["stars"] * (star_r * 3 + 2)
+        sx = CENTER - total_w // 2
+        sy = CENTER - inner_r + 35
+        for s in range(rz["stars"]):
+            draw_star(draw, sx + s*(star_r*3+2) + star_r, sy, star_r, rz["border"])
 
     # ── Legendary burst ──
     if tazo.get("rarity") == "legendary":
@@ -483,12 +487,15 @@ def generate_tazo(tazo, bgs, fonts):
     return img
 
 
-    force = "--force" in sys.argv
-
 def main():
-    db_path = sys.argv[1] if len(sys.argv) > 1 else "prisma/dev.db"
+    args = [a for a in sys.argv[1:] if a.startswith("-")]
+    db_path = next((a for a in sys.argv[1:] if not a.startswith("-")), "prisma/dev.db")
+    base_only = "--base-only" in args
+    force = "--force" in args
 
-    print(f"DB: {db_path}")
+    out_dir = Path("public/tazos-base") if base_only else OUT_DIR
+
+    print(f"DB: {db_path}  base_only={base_only}  force={force}")
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     tazos = [dict(r) for r in conn.execute(
@@ -496,6 +503,7 @@ def main():
         "t.combatType, t.evolutionFrom, t.evolutionTo, t.transformStage, "
         "f.slug as franchise_slug "
         "FROM Tazo t JOIN Franchise f ON t.franchiseId = f.id "
+        "WHERE t.publishStatus = 'published' "
         "ORDER BY f.slug, t.number"
     )]
     conn.close()
@@ -512,13 +520,13 @@ def main():
     for t in tazos:
         slug = t["slug"]
         fs = t["franchise_slug"]
-        out = OUT_DIR / fs / f"{slug}.png"
-        if out.exists():
+        out = out_dir / fs / f"{slug}.png"
+        if out.exists() and not force:
             skipped += 1
             continue
         out.parent.mkdir(parents=True, exist_ok=True)
         try:
-            img = generate_tazo(t, bgs, fonts)
+            img = generate_tazo(t, bgs, fonts, base_only=base_only)
             img.save(str(out), "PNG", optimize=True)
             # Post-process with pngquant for 3-10x smaller files (falls back to PIL quantize)
             try:
@@ -546,6 +554,7 @@ def main():
             print(f"  ... {generated}/{len(tazos)}")
 
     print(f"\n=== Done: {generated} generated, {skipped} skipped, {len(tazos)} total ===")
+    print(f"Output: {out_dir.absolute()}")
 
 
 if __name__ == "__main__":

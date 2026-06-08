@@ -241,7 +241,7 @@ export default function AdminTazoDesignerPage() {
       <main className="max-w-full mx-auto px-4 py-4">
         {viewMode === "editor" && selectedTazo && (
           <TazoVisualEditor
-            tazoImageUrl={selectedTazo.imageUrl}
+            tazoImageUrl={`/tazos-base/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
             creatureImageUrl={`/tazo-creatures/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
             slug={selectedTazo.slug || ""}
             franchise={selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || ""}
