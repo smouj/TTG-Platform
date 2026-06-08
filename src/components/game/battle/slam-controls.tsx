@@ -10,6 +10,7 @@
 
 import { useCallback, useRef, useEffect, useState } from "react"
 import { Crosshair, Zap, Lock } from "lucide-react"
+import { playSfx, stopSfx } from "@/lib/battle/sfx"
 
 export interface SlamControlsProps {
   phase: "aim" | "charge" | "tilt"
@@ -58,11 +59,20 @@ export default function SlamControls(props: SlamControlsProps) {
     const orbitX = 0.65  // ellipse semi-major axis (passes near staked tazos at ±0.55)
     const orbitZ = 0.28  // ellipse semi-minor axis
     let noisePhase = Math.random() * Math.PI * 2
+    let lastTick = 0 // throttled aim_tick SFX
 
     startTimeRef.current = performance.now()
 
     const tick = (now: number) => {
       const elapsed = (now - startTimeRef.current) / 1000  // seconds
+      
+      // Aim tick SFX — every ~400ms based on control stat (slower = less frequent)
+      const tickInterval = 0.25 + (tazoControl / 100) * 0.55 // 250-800ms
+      if (elapsed - lastTick >= tickInterval && !aimLocked) {
+        lastTick = elapsed
+        playSfx("aim_tick", 0.15)
+      }
+      
       const angle = omega * elapsed
 
       // Primary elliptical orbit
@@ -91,7 +101,17 @@ export default function SlamControls(props: SlamControlsProps) {
     return () => { if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null } }
   }, [phase, tazoControl, tazoPrecision, aimLocked, onReticleMove])
 
-  // Auto-fill charge meter
+  // Charge phase SFX
+  const chargeHumRef = useRef<any>(null)
+  useEffect(() => {
+    if (phase === "charge") {
+      chargeHumRef.current = playSfx("charge_start", 0.25)
+    } else {
+      stopSfx(chargeHumRef.current)
+      chargeHumRef.current = null
+    }
+    return () => { stopSfx(chargeHumRef.current); chargeHumRef.current = null }
+  }, [phase])
   useEffect(() => {
     if (phase === "charge") {
       let level = 0
@@ -102,6 +122,7 @@ export default function SlamControls(props: SlamControlsProps) {
         if (level >= 1) {
           if (chargeInt.current) clearInterval(chargeInt.current)
           chargeInt.current = null
+          playSfx("charge_peak", 0.35)
           cbRef.current.onChargeComplete(level)
         }
       }, 50)
@@ -219,8 +240,10 @@ export default function SlamControls(props: SlamControlsProps) {
             onClick={() => {
               if (aimLocked) {
                 // Already locked, proceed to charge
+                playSfx("aim_lock", 0.4)
                 onRelease()
               } else {
+                playSfx("aim_lock", 0.4)
                 setAimLocked(true)
               }
             }}
@@ -258,7 +281,7 @@ export default function SlamControls(props: SlamControlsProps) {
         </div>
         <div className="flex items-center gap-2">
           <span className="flex-1 text-center text-[8px] font-black text-white/20">auto-charging…</span>
-          <button onClick={onRelease}
+          <button onClick={() => { stopSfx(chargeHumRef.current); chargeHumRef.current = null; playSfx("slam_launch", 0.4); onRelease() }}
             className="px-5 py-2 bg-[#FFCC00]/80 hover:bg-[#FFCC00] text-[#1a1a1a] font-black text-xs uppercase rounded-full tracking-wider active:scale-95 pointer-events-auto transition-all">
             RELEASE
           </button>
@@ -297,7 +320,7 @@ export default function SlamControls(props: SlamControlsProps) {
                 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:rounded-full
                 [&::-webkit-slider-thumb]:bg-[#FFCC00] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[#1a1a1a]" />
           </div>
-          <button onClick={onRelease}
+          <button onClick={() => { playSfx("slam_launch", 0.4); onRelease() }}
             className="w-full py-3 bg-gradient-to-r from-[#FFCC00] to-[#FFD633] hover:from-[#FFD633] hover:to-[#FFE066] text-[#1a1a1a] font-black text-sm uppercase rounded-xl tracking-wider shadow-[0_0_20px_rgba(255,204,0,0.5)] active:scale-95 pointer-events-auto transition-all">
             💥 SLAM!
           </button>

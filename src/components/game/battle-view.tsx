@@ -18,6 +18,7 @@ import {
   scoreImpact, createAirborneTazo, placeStakedTazos,
   DEFAULT_ARENA_3D,
 } from "@/lib/battle/game-loop"
+import { playSfx, warmSfx } from "@/lib/battle/sfx"
 import type {
   GameState, PlayMode, AIDifficulty,
   TazoCard, MatchConfig, MatchResult, SlamParams,
@@ -182,6 +183,24 @@ export default function BattleView() {
     if (phase === "match_end" && result) saveBattleResult(result)
   }, [phase, result, saveBattleResult])
 
+  // ═══ SFX: warm audio + match sounds ═══
+  useEffect(() => {
+    const handler = () => { warmSfx(); document.removeEventListener("click", handler) }
+    document.addEventListener("click", handler)
+    return () => document.removeEventListener("click", handler)
+  }, [])
+
+  useEffect(() => {
+    if (phase === "match_end" && result) {
+      if (result.winner === "player") playSfx("victory_fanfare", 0.5)
+      else playSfx("defeat_sting", 0.4)
+    }
+    if (phase === "intro") {
+      [600, 1200, 1800].forEach(d => setTimeout(() => playSfx("countdown_beep", 0.3), d))
+      setTimeout(() => playSfx("battle_start", 0.4), 2400)
+    }
+  }, [phase, result])
+
   // Load tazos + decks
   useEffect(() => {
     (async () => {
@@ -266,6 +285,7 @@ export default function BattleView() {
           if (!s4.cfg) { busy.current = false; return }
 
           setPhase("impact")
+          playSfx("slam_impact", 0.6)
 
           const { staked: newStaked, result: impact } = simulateSlam(
             aiTazo, slam, s4.staked, s4.cfg.arena, "opponent"
@@ -282,8 +302,8 @@ export default function BattleView() {
           setImpactMsg(impact.description)
           setShowImpact(true)
 
-          if (playerDelta > 0) spawnPopup(`+${playerDelta}`, "#29ADFF", "left")
-          if (opponentDelta > 0) spawnPopup(`+${opponentDelta}`, "#FF004D", "right")
+          if (playerDelta > 0) { spawnPopup(`+${playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
+          if (opponentDelta > 0) { spawnPopup(`+${opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
 
           setTimeout(() => {
             setShowImpact(false)
@@ -460,6 +480,7 @@ export default function BattleView() {
       if (!s2.cfg) { busy.current = false; return }
 
       setPhase("impact")
+      playSfx("slam_impact", 0.6)
 
       const { staked: newStaked, result: impact } = simulateSlam(
         t, slam, s2.staked, s2.cfg.arena, "player"
@@ -477,8 +498,8 @@ export default function BattleView() {
       setShowImpact(true)
 
       // Score popups
-      if (playerDelta > 0) spawnPopup(`+${playerDelta}`, "#29ADFF", "left")
-      if (opponentDelta > 0) spawnPopup(`+${opponentDelta}`, "#FF004D", "right")
+      if (playerDelta > 0) { spawnPopup(`+${playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
+      if (opponentDelta > 0) { spawnPopup(`+${opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
 
       setTimeout(() => {
         setShowImpact(false)
