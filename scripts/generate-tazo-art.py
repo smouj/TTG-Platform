@@ -248,10 +248,14 @@ def generate_tazo(tazo, bgs, fonts):
 
     # ── Rings (from outside in) ──
     R = RADIUS
-    # Outer border
+    # Black outer border (tazo disc edge)
+    draw.ellipse([CENTER-R-12, CENTER-R-12, CENTER+R+12, CENTER+R+12],
+                 outline=(18,18,18), width=8)
+    # Rarity-colored ring
     draw.ellipse([CENTER-R-5, CENTER-R-5, CENTER+R+5, CENTER+R+5],
-                 outline=border_color, width=10)
-    draw.ellipse([CENTER-R+5, CENTER-R+5, CENTER+R-5, CENTER+R-5],
+                 outline=border_color, width=8)
+    # Dark inner separator
+    draw.ellipse([CENTER-R+6, CENTER-R+6, CENTER+R-6, CENTER+R-6],
                  outline=(26,26,26), width=3)
 
     # Decorative rings
@@ -345,10 +349,12 @@ def generate_tazo(tazo, bgs, fonts):
         img = Image.alpha_composite(img, temp)
 
         # Clip creature to disc boundary so all tazos have the same size
+        # Use RADIUS+20 so outer border rings survive the clip
+        clip_r = RADIUS + 20
         disc_mask = Image.new("L", (SIZE, SIZE), 0)
         mask_draw = ImageDraw.Draw(disc_mask)
         mask_draw.ellipse(
-            [CENTER - RADIUS, CENTER - RADIUS, CENTER + RADIUS, CENTER + RADIUS],
+            [CENTER - clip_r, CENTER - clip_r, CENTER + clip_r, CENTER + clip_r],
             fill=255
         )
         clipped = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
