@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
-Trading Tazos Game — Premium Tazo Art Generator v2
+Trading Tazos Game — Premium Tazo Art Generator v2.1
 Composites franchise-specific background textures with character art.
 Generates 1024x1024 PNG tazo disc images.
+
+NOW READS tazo-layouts.json for user-configured element positions.
 
 Backgrounds (from frontal-bg-tazos):
   - minimon: 6 backgrounds (01-06) — assigned by number % 6
@@ -11,13 +13,15 @@ Backgrounds (from frontal-bg-tazos):
   - special: 1 background — for legendary + ultra rarity across all franchises
 """
 
-import sqlite3, os, math, random, sys
+import sqlite3, os, math, random, sys, json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 OUT_DIR = Path("public/tazos-generated")
+OUT_BASE_DIR = Path("public/tazos-base")
 BG_DIR = Path("scripts/tazo-backgrounds")
 CREATURE_DIR = Path("scripts/tazo-creatures")
+LAYOUTS_PATH = Path("prisma/tazo-layouts.json")
 SIZE = 1024
 CENTER = SIZE // 2
 RADIUS = 440  # Leave breathing room
@@ -193,7 +197,39 @@ def get_fonts():
         return {k: d for k in ["small","large","medium","number","tiny"]}
 
 
-def generate_tazo(tazo, bgs, fonts, base_only=False):
+def load_layouts():
+    """Load user-configured element positions from tazo-layouts.json.
+    Returns { "defaults": { franchise: { element: {x,y,scale} } }, "overrides": { slug: { element: {x,y,scale} } } }
+    """
+    if not LAYOUTS_PATH.exists():
+        return {"defaults": {}, "overrides": {}}
+    try:
+        with open(LAYOUTS_PATH) as f:
+            data = json.load(f)
+        return {
+            "defaults": data.get("defaults", {}),
+            "overrides": data.get("overrides", {}),
+        }
+    except Exception as e:
+        print(f"  ⚠️ Could not load layouts: {e}")
+        return {"defaults": {}, "overrides": {}}
+
+
+def get_layout_for_tazo(layouts, slug, franchise):
+    """Get the layout config for a specific tazo.
+    Checks overrides first (per-slug), then franchise defaults.
+    Returns dict of { element_name: {x, y, scale} } or empty dict.
+    """
+    # Per-slug override wins
+    overrides = layouts.get("overrides", {})
+    if slug in overrides:
+        return overrides[slug]
+    # Then franchise default
+    defaults = layouts.get("defaults", {})
+    return defaults.get(franchise, {})
+
+
+def generate_tazo(tazo, bgs, fonts, base_only=False, layouts=None):
     fs = tazo["franchise_slug"]
     fx = FRANCHISE.get(fs, FRANCHISE["minimon"])
     rz = RARITY.get(tazo.get("rarity", "common"), RARITY["common"])
@@ -205,6 +241,22 @@ def generate_tazo(tazo, bgs, fonts, base_only=False):
     border_color = rz["border"]
 
     slug = tazo["slug"]
+
+    # ── Load user-configured layout (or use fallback defaults) ──
+    layout = get_layout_for_tazo(layouts or {}, slug, fs)
+    # Helper: convert design coords (relative to center) → Python pixel coords
+    def lx(elem, default_px=CENTER):
+        """Get X pixel position for element from layout, or return default_px"""
+        e = layout.get(elem, {})
+        return CENTER + e.get("x", default_px - CENTER)
+    def ly(elem, default_px=CENTER):
+        """Get Y pixel position for element from layout, or return default_px"""
+        e = layout.get(elem, {})
+        return CENTER + e.get("y", default_px - CENTER)
+    # Use layout scale if available (1.0 means 100%)
+    def ls(elem, default_scale=1.0):
+        e = layout.get(elem, {})
+        return e.get("scale", default_scale)
     rng = random.Random(hash(slug) & 0xFFFFFFFF)
 
     # ── Pick background texture ──
@@ -366,7 +418,8 @@ def generate_tazo(tazo, bgs, fonts, base_only=False):
     if not base_only:
         coll_bbox = draw.textbbox((0, 0), collection, font=fonts["small"])
         cw = coll_bbox[2] - coll_bbox[0]
-        draw.text((CENTER - cw//2, 65), collection, fill=fx["text_light"],
+        cy = ly("collection", 65)  # default: y=65 from top
+        draw.text((CENTER - cw//2, cy), collection, fill=fx["text_light"],
                   font=fonts["small"], stroke_width=2, stroke_fill=dark)
 
     # ── Character Letter(s) — with dark background pill for readability ──
@@ -399,32 +452,37 @@ def generate_tazo(tazo, bgs, fonts, base_only=False):
                   fill=fx["text_light"], font=fonts["large"],
                   stroke_width=5, stroke_fill=dark)
 
-    # ── Type badge (ALL franchises) — positioned at TOP of disc ──
+    # ── Type badge (ALL franchises) — user-positioned via layout ──
     if not base_only and combat_type and combat_type in fx.get("type_colors", {}):
         tc = fx["type_colors"][combat_type]
         type_text = combat_type.upper()
         tbbox = draw.textbbox((0, 0), type_text, font=fonts["small"])
         tw = tbbox[2] - tbbox[0]
         th = tbbox[3] - tbbox[1]
-        # Position at top of inner disc, below collection name, ABOVE creature art
-        bad_y = CENTER - RADIUS + 100  # ~52px from top of disc, stays above creature
-        pad = 10
+        bad_x = lx("badge", CENTER)
+        bad_y = ly("badge", CENTER - RADIUS + 100)
+        badge_scale = ls("badge", 1.0)
+        pad_x = int(10 * badge_scale)
+        pad_y = int(10 * badge_scale)
+        # Scale the badge rectangle
+        bw = int((tw + pad_x * 2) * badge_scale)
+        bh = int((th + pad_y * 2) * badge_scale)
         draw.rounded_rectangle(
-            [CENTER - tw//2 - pad, bad_y - th//2 - pad,
-             CENTER + tw//2 + pad, bad_y + th//2 + pad],
-            radius=14, fill=tc + (230,), outline=dark, width=2
+            [bad_x - bw//2, bad_y - bh//2,
+             bad_x + bw//2, bad_y + bh//2],
+            radius=int(14 * badge_scale), fill=tc + (230,), outline=dark, width=2
         )
         # Subtle inner glow on badge
         draw.rounded_rectangle(
-            [CENTER - tw//2 - pad + 2, bad_y - th//2 - pad + 2,
-             CENTER + tw//2 + pad - 2, bad_y + th//2 + pad - 2],
-            radius=12, outline=(255,255,255,60), width=1
+            [bad_x - bw//2 + 2, bad_y - bh//2 + 2,
+             bad_x + bw//2 - 2, bad_y + bh//2 - 2],
+            radius=int(12 * badge_scale), outline=(255,255,255,60), width=1
         )
-        draw.text((CENTER - tw//2, bad_y - th//2), type_text,
+        draw.text((bad_x - tw//2, bad_y - th//2), type_text,
                   fill=(255,255,255), font=fonts["small"],
                   stroke_width=1, stroke_fill=dark)
 
-    # ── Name at bottom — with solid background for readability ──
+    # ── Name at bottom — with solid background, user-positioned ──
     if not base_only:
         if len(name) > 14:
             sp = name.rfind(' ', 0, len(name)//2 + 4)
@@ -435,41 +493,46 @@ def generate_tazo(tazo, bgs, fonts, base_only=False):
         else:
             name_lines = [name]
 
-        n_y = CENTER + RADIUS - 65
+        name_y = ly("name", CENTER + RADIUS - 65)
+        name_scale = ls("name", 1.0)
+        name_font_size = int(36 * name_scale) if name_scale <= 1.5 else int(36 * 1.5)
+        # Use the scaled font if possible, else fall back
+        nfont = fonts["medium"]  # default 36pt
         for line in reversed(name_lines):
-            nbbox = draw.textbbox((0, 0), line, font=fonts["medium"])
+            nbbox = draw.textbbox((0, 0), line, font=nfont)
             nw = nbbox[2] - nbbox[0]
-            pad = 8
-            # Solid background for name plate
+            pad = int(8 * name_scale)
             draw.rounded_rectangle(
-                [CENTER - nw//2 - pad, n_y - 26 - pad,
-                 CENTER + nw//2 + pad, n_y + pad],
-                radius=14, fill=(255,255,255,240), outline=dark, width=3
+                [CENTER - nw//2 - pad, name_y - 26 - pad,
+                 CENTER + nw//2 + pad, name_y + pad],
+                radius=int(14 * name_scale), fill=(255,255,255,240), outline=dark, width=3
             )
-            draw.text((CENTER - nw//2, n_y - 26), line, fill=dark, font=fonts["medium"])
-            n_y -= 34
+            draw.text((CENTER - nw//2, name_y - 26), line, fill=dark, font=nfont)
+            name_y -= int(34 * name_scale)
 
-    # ── Number badge (inside disc, bottom-right) ──
+    # ── Number badge (user-positioned) ──
     if not base_only:
         num_str = f"Nº {number}"
         nbbox2 = draw.textbbox((0, 0), num_str, font=fonts["tiny"])
         nw2 = nbbox2[2] - nbbox2[0]
-        nx = CENTER + RADIUS - 130
-        ny = CENTER + RADIUS - 130
+        num_x = lx("number", CENTER + RADIUS - 130)
+        num_y = ly("number", CENTER + RADIUS - 130)
+        num_scale = ls("number", 1.0)
+        nw2 = int(nw2 * num_scale)
         draw.rounded_rectangle(
-            [nx - nw2//2 - 6, ny - 10 - 4, nx + nw2//2 + 6, ny + 10 + 4],
+            [num_x - nw2//2 - 6, num_y - 10 - 4, num_x + nw2//2 + 6, num_y + 10 + 4],
             radius=8, fill=(255,255,255,230), outline=dark, width=2
         )
-        draw.text((nx - nw2//2, ny - 10), num_str, fill=dark, font=fonts["tiny"])
+        draw.text((num_x - nw2//2, num_y - 10), num_str, fill=dark, font=fonts["tiny"])
 
-    # ── Rarity stars ──
+    # ── Rarity stars (user-positioned) ──
     if not base_only:
-        star_r = 8
+        star_r = int(8 * ls("rarity", 1.0))
         total_w = rz["stars"] * (star_r * 3 + 2)
-        sx = CENTER - total_w // 2
-        sy = CENTER - inner_r + 35
+        rar_x = lx("rarity", CENTER - total_w // 2)
+        rar_y = ly("rarity", CENTER - inner_r + 35)
         for s in range(rz["stars"]):
-            draw_star(draw, sx + s*(star_r*3+2) + star_r, sy, star_r, rz["border"])
+            draw_star(draw, rar_x + s*(star_r*3+2) + star_r, rar_y, star_r, rz["border"])
 
     # ── Legendary burst ──
     if tazo.get("rarity") == "legendary":
@@ -515,6 +578,14 @@ def main():
         print(f"  {k}")
 
     fonts = get_fonts()
+
+    # ── Load user-configured layouts ──
+    layouts = load_layouts()
+    if layouts["defaults"]:
+        print(f"Layouts loaded: {len(layouts['defaults'])} franchise defaults, {len(layouts.get('overrides', {}))} overrides")
+    else:
+        print("⚠️ No layouts found — using hardcoded positions")
+
     generated, skipped = 0, 0
 
     for t in tazos:
@@ -526,7 +597,7 @@ def main():
             continue
         out.parent.mkdir(parents=True, exist_ok=True)
         try:
-            img = generate_tazo(t, bgs, fonts, base_only=base_only)
+            img = generate_tazo(t, bgs, fonts, base_only=base_only, layouts=layouts)
             img.save(str(out), "PNG", optimize=True)
             # Post-process with pngquant for 3-10x smaller files (falls back to PIL quantize)
             try:

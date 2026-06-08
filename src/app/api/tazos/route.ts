@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Cache-buster for image URLs: bump when images are regenerated
-    const IMG_CACHE_BUSTER = "20260608v2"
+    const IMG_CACHE_BUSTER = "20260609v1"
 
     // Flatten franchise & collection to strings + add flat metadata fields
     const flatTazos = tazos.map(t => ({
