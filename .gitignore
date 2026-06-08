@@ -109,3 +109,7 @@ prisma/dev.db.bak
 prisma/dev.db-wal
 prisma/dev.db-shm
 scripts/generate_tazo_art.py
+
+# VPS-specific (not in repo)
+prisma/tazo-layouts.json
+prisma/dev.db.bak.*
