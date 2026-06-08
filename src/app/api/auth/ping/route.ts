@@ -2,7 +2,7 @@
 // Trading Tazos Game — Auth Ping API
 // GET /api/auth/ping — lightweight session check (cookie-based)
 // Returns { authed: true, user: {...} } or { authed: false }
-// No Bearer token needed — relies on auth_token cookie.
+// No Bearer token needed — relies on ttg_auth cookie.
 // ============================================================
 
 import { NextRequest, NextResponse } from "next/server"

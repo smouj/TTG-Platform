@@ -165,17 +165,17 @@ function verifyScrypt(password: string, hash: string): boolean {
 export function extractToken(request: Request): string | null {
   const auth = request.headers.get("authorization")
   if (auth?.startsWith("Bearer ")) return auth.slice(7)
-  const match = (request.headers.get("cookie") || "").match(/(?:^|;\s*)auth_token=([^;]*)/)
+  const match = (request.headers.get("cookie") || "").match(/(?:^|;\s*)ttg_auth=([^;]*)/)
   return match ? decodeURIComponent(match[1]) : null
 }
 
 export function authCookie(token: string, maxAge = 60 * 60 * 24 * 7) {
-  return `auth_token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
+  return `ttg_auth=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
 }
 
 export function clearAuthCookies(): string[] {
   return [
-    "auth_token=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0",
+    "ttg_auth=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0",
     "ttg_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0",
   ]
 }

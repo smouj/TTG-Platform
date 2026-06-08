@@ -26,7 +26,7 @@ const LEGACY_PAGES: Record<string, string> = {
 const AUTH_REDIRECT_PAGES = ["/login"]
 
 export function proxy(req: NextRequest) {
-  const token = req.cookies.get("auth_token")?.value
+  const token = req.cookies.get("ttg_auth")?.value
   const { pathname } = req.nextUrl
 
   if (ROOT_REDIRECTS[pathname] && !req.nextUrl.searchParams.has("tab")) {
@@ -42,6 +42,7 @@ export function proxy(req: NextRequest) {
       const loginUrl = new URL("/login", req.url)
       loginUrl.searchParams.set("redirect", pathname)
       const res = NextResponse.redirect(loginUrl)
+      res.cookies.delete("ttg_auth")
       res.cookies.delete("auth_token")
       res.cookies.delete("ttg_session")
       return res

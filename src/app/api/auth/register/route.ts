@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Set auth cookie for middleware (httpOnly)
-    response.cookies.set("auth_token", token, {
+    response.cookies.set("ttg_auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
