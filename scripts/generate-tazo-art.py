@@ -85,16 +85,24 @@ RARITY = {
 # ── Background loading ──
 
 def load_backgrounds():
-    """Load all backgrounds into a dict: { 'minimon-0': Image, ... }"""
+    """Load all backgrounds into a dict: { 'minimon-0': Image, ... }
+    Backgrounds are resized to match the disc diameter (RADIUS*2), then centered
+    on a square canvas, so they fill the circular disc perfectly without cropping."""
     bgs = {}
+    disc_diameter = RADIUS * 2  # 880px — exact visible area
     for fname in sorted(os.listdir(BG_DIR)):
         if not fname.endswith('.png'):
             continue
         path = BG_DIR / fname
         img = Image.open(path).convert("RGBA")
-        img = img.resize((SIZE, SIZE), Image.LANCZOS)
+        # Resize to disc diameter so background fills the full visible circle
+        img = img.resize((disc_diameter, disc_diameter), Image.LANCZOS)
+        # Center on the full canvas so the disc mask aligns perfectly
+        canvas = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+        top_left = (CENTER - disc_diameter // 2, CENTER - disc_diameter // 2)
+        canvas.paste(img, top_left)
         key = fname.replace('.png', '').replace('bg-frontal-tazo-', '')
-        bgs[key] = img
+        bgs[key] = canvas
     return bgs
 
 
