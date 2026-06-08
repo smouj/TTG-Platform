@@ -37,7 +37,8 @@ export default function AdminTazoDesignerPage() {
       .then((data) => {
         const tazos = (data.tazos || []).map((t: any) => ({
           ...t,
-          franchiseSlug: t.franchise?.slug || "",
+          // API already flattens franchise to string; don't overwrite franchiseSlug
+          franchiseSlug: t.franchiseSlug || (typeof t.franchise === 'string' ? t.franchise : t.franchise?.slug) || "",
         }));
         setPublishedTazos(tazos);
         if (tazos.length > 0 && !selectedTazo) {
