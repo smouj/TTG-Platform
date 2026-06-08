@@ -265,21 +265,21 @@ def generate_tazo(tazo, bgs, fonts):
         dot_c = fx["ring_colors"][rng.randint(0, 2)]
         draw.ellipse([dx-3, dy-3, dx+3, dy+3], fill=dot_c + (140,))
 
-    # ── Inner disc area (semi-transparent for text visibility) ──
+    # ── Inner disc area (subtle overlay for text readability) ──
     inner_r = R - 70
     inner_badge = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     inner_draw = ImageDraw.Draw(inner_badge)
     if bg:
-        # More transparent if we have a background (let texture show through)
+        # Very subtle — let creature art and background texture dominate
         inner_draw.ellipse([
             CENTER - inner_r, CENTER - inner_r,
             CENTER + inner_r, CENTER + inner_r,
-        ], fill=fx["bg_light"] + (120,))
+        ], fill=fx["bg_light"] + (40,))
     else:
         inner_draw.ellipse([
             CENTER - inner_r, CENTER - inner_r,
             CENTER + inner_r, CENTER + inner_r,
-        ], fill=fx["bg_light"] + (200,))
+        ], fill=fx["bg_light"] + (160,))
     img = Image.alpha_composite(img, inner_badge)
     draw = ImageDraw.Draw(img)
 
@@ -305,13 +305,13 @@ def generate_tazo(tazo, bgs, fonts):
         img = Image.alpha_composite(img, stripe_overlay)
         draw = ImageDraw.Draw(img)
 
-    # ── Center shine ──
+    # ── Center shine (subtle highlight on upper half) ──
     shine_overlay = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     shine_draw = ImageDraw.Draw(shine_overlay)
     shine_draw.ellipse([
         CENTER - core_r*0.5, CENTER - core_r*0.5 - 30,
         CENTER + core_r*0.5, CENTER + core_r*0.5 - 30,
-    ], fill=(255, 255, 255, 50))
+    ], fill=(255, 255, 255, 30))
     img = Image.alpha_composite(img, shine_overlay)
     draw = ImageDraw.Draw(img)
 
@@ -384,20 +384,28 @@ def generate_tazo(tazo, bgs, fonts):
                   fill=fx["text_light"], font=fonts["large"],
                   stroke_width=5, stroke_fill=dark)
 
-    # ── Type badge (Minimon) ──
-    if combat_type and fs == "minimon" and combat_type in fx["type_colors"]:
+    # ── Type badge (ALL franchises) — positioned at TOP of disc ──
+    if combat_type and combat_type in fx.get("type_colors", {}):
         tc = fx["type_colors"][combat_type]
         type_text = combat_type.upper()
         tbbox = draw.textbbox((0, 0), type_text, font=fonts["small"])
         tw = tbbox[2] - tbbox[0]
-        bad_y = CENTER + 70
+        th = tbbox[3] - tbbox[1]
+        # Position at top of inner disc, below collection name, ABOVE creature art
+        bad_y = CENTER - RADIUS + 100  # ~52px from top of disc, stays above creature
         pad = 10
         draw.rounded_rectangle(
-            [CENTER - tw//2 - pad, bad_y - 12 - pad,
-             CENTER + tw//2 + pad, bad_y + 12 + pad],
-            radius=12, fill=tc + (220,), outline=dark, width=2
+            [CENTER - tw//2 - pad, bad_y - th//2 - pad,
+             CENTER + tw//2 + pad, bad_y + th//2 + pad],
+            radius=14, fill=tc + (230,), outline=dark, width=2
         )
-        draw.text((CENTER - tw//2, bad_y - 12), type_text,
+        # Subtle inner glow on badge
+        draw.rounded_rectangle(
+            [CENTER - tw//2 - pad + 2, bad_y - th//2 - pad + 2,
+             CENTER + tw//2 + pad - 2, bad_y + th//2 + pad - 2],
+            radius=12, outline=(255,255,255,60), width=1
+        )
+        draw.text((CENTER - tw//2, bad_y - th//2), type_text,
                   fill=(255,255,255), font=fonts["small"],
                   stroke_width=1, stroke_fill=dark)
 

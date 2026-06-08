@@ -78,6 +78,7 @@ model Tazo {
   manufacturer   String?
   country        String?
   sourceStatus   String     @default("verified") // verified, partial, pending_visual_check
+  publishStatus  String     @default("pending_review") // pending_review, published
   combatType     String?
   condition      String     @default("good")
   physicalType   String     @default("cardboard")
@@ -126,6 +127,7 @@ model Tazo {
   @@index([franchiseId])
   @@index([collectionId])
   @@index([sourceStatus])
+  @@index([publishStatus])
 }
 
 model UserTazo {

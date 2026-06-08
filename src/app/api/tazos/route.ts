@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category")
     const variant = searchParams.get("variant")
     const sourceStatus = searchParams.get("sourceStatus")
+    const publishStatus = searchParams.get("publishStatus")
     const owned = searchParams.get("owned")
     const search = searchParams.get("search")
     const sortBy = searchParams.get("sortBy") || "number"
@@ -32,6 +33,12 @@ export async function GET(request: NextRequest) {
     if (category) where.category = category
     if (variant) where.variant = variant
     if (sourceStatus) where.sourceStatus = sourceStatus
+    if (publishStatus && publishStatus !== "all") {
+      where.publishStatus = publishStatus
+    } else if (!publishStatus) {
+      // Public API: only show published tazos by default
+      where.publishStatus = "published"
+    }
     if (owned !== null && owned !== "") where.isOwned = owned === "true"
     if (search) where.name = { contains: search }
 
