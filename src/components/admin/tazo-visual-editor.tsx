@@ -764,12 +764,19 @@ export default function TazoVisualEditor({
                   transform: "translate(-50%, -50%)",
                 }}
               >
-                {/* Tazo image or placeholder */}
+                {/* Tazo image or placeholder — scaled up so disc fills container, clipping transparent padding */}
                 {tazoImageUrl ? (
                   <img
                     src={tazoImageUrl}
                     alt={displayName || "Tazo"}
-                    className="w-full h-full object-cover"
+                    className="absolute"
+                    style={{
+                      width: `${previewSize * (1024 / 904)}px`,
+                      height: `${previewSize * (1024 / 904)}px`,
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                    }}
                     draggable={false}
                   />
                 ) : (
