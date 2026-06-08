@@ -6,7 +6,7 @@
 // ============================================================
 import { useState, useEffect } from "react"
 import { useAuth } from "@/lib/auth-context"
-import { Shield, Users, Package, Database, Server, Activity, Loader2, AlertTriangle, Check, Wand2, Image as ImageIcon, Grid3X3 } from "lucide-react"
+import { Shield, Users, Package, Database, Server, Activity, Loader2, AlertTriangle, Check, Wand2, Image as ImageIcon, Grid3X3, LayoutGrid } from "lucide-react"
 import Link from "next/link"
 
 interface OverviewData {
@@ -125,6 +125,23 @@ export default function AdminPage() {
                       <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">AI-powered art generation</p>
                     </div>
                     <span className="ml-auto text-[#22C55E] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/admin/tazo-designer"
+                  className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
+                  style={{ background: 'linear-gradient(135deg, #A855F715, #3B4CCA10)' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#A855F7]">
+                      <LayoutGrid className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#A855F7] transition-colors">Tazo Designer</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Visual drag &amp; drop editor</p>
+                    </div>
+                    <span className="ml-auto text-[#A855F7] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
 
