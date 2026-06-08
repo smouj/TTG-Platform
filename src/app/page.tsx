@@ -2,6 +2,9 @@ import type { Metadata } from "next"
 import { Suspense } from "react"
 import LauncherView from "@/components/game/launcher-view"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: "Collect, Trade & Battle 349 Classic Tazos",
   description:

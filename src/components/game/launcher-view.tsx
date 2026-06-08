@@ -21,6 +21,7 @@ import {
   Trophy, Coins, Package, ArrowLeft, Loader2,
   Crown, X, ArrowUp, HelpCircle
 } from "lucide-react"
+import TazoDiscImage from "@/components/game/tazo-disc-image"
 import TazoDetailModal from '@/components/game/tazo-detail-modal'
 
 // ── Types ──
@@ -454,19 +455,19 @@ function TazoShowcase() {
         </span>
         <div className="flex-1 h-0.5 bg-[#1a1a1a]/10" />
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
         {display.map((t: any) => (
-          <div
-            key={t.id}
-            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-3 border-[#1a1a1a] flex items-center justify-center overflow-hidden bg-[#fffef0] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          <div key={t.id}
+            className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] transition-all rounded-full"
           >
-            <img
+            <TazoDiscImage
               src={t.imageUrl}
               alt={t.displayName || t.name || ""}
-              className="w-full h-full object-cover scale-110"
-              draggable={false}
-              title={`${t.displayName || t.name} — ${t.franchiseName || t.franchise}`}
-              onError={() => hideTazo(t.id)}
+              size="100%"
+              borderWidth={3}
+              franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
+              number={t.number}
+              onClick={() => {}}
             />
           </div>
         ))}
