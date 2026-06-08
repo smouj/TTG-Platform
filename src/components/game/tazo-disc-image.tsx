@@ -134,25 +134,22 @@ export default function TazoDiscImage({
       {/* Inner circle — clips the image */}
       <div className="tazo-disc-image-inner absolute inset-0 rounded-full overflow-hidden">
         {renderImage ? (
-          <div
-            className="w-full h-full rounded-full overflow-hidden relative"
+          <img
+            src={displaySrc}
+            alt={alt}
+            className={`w-full h-full tazo-character ${variantClass}`}
             style={{
-              transform: `scale(${scale})`,
+              objectFit: "cover",
+              display: "block",
+              transform: `scale(${1.02 * scale})`,
               transformOrigin: "center center",
               opacity: imgLoaded ? 1 : 0,
               transition: "opacity 0.2s ease-in",
             }}
-          >
-            <img
-              src={displaySrc}
-              alt={alt}
-              className={`w-full h-full rounded-full tazo-character ${variantClass}`}
-              style={{ objectFit: "cover", display: "block" }}
-              loading={lazy ? "lazy" : undefined}
-              onLoad={() => setImgLoaded(true)}
-              onError={() => setImgError(true)}
-            />
-          </div>
+            loading={lazy ? "lazy" : undefined}
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgError(true)}
+          />
         ) : (
           /* Fallback — franchise-colored disc with "?" */
           <div
