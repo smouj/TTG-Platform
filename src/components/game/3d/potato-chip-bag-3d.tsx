@@ -147,12 +147,12 @@ function BagModel({
         onPointerMove={interactive ? onPointerMove : undefined}
         onPointerUp={interactive ? onPointerUp : undefined}
       >
-        <meshStandardMaterial map={frontTex} roughness={0.35} metalness={0.05} side={THREE.FrontSide} />
+        <meshStandardMaterial map={frontTex} roughness={0.35} metalness={0.05} side={THREE.FrontSide} transparent alphaTest={0.01} />
       </mesh>
 
       {/* ── Back face (curved, textured, reversed) ── */}
       <mesh geometry={curvedGeo} position={[0, bodyY, -BAG_D / 2 - 0.001]} rotation={[0, Math.PI, 0]}>
-        <meshStandardMaterial map={backTex} roughness={0.35} metalness={0.05} side={THREE.FrontSide} />
+        <meshStandardMaterial map={backTex} roughness={0.35} metalness={0.05} side={THREE.FrontSide} transparent alphaTest={0.01} />
       </mesh>
 
       {/* ── Left edge (foil) ── */}

@@ -1,16 +1,18 @@
 // ============================================================
-// Trading Tazos Game — BagOpener3D (Interactive Tear v2)
-// Uses realistic PotatoChipBag3D model with front/back textures.
-// User drags across to tear the bag open dynamically.
+// Trading Tazos Game — BagOpener3D v3
+// Interactive tear with visible cut line, responsive sizing,
+// transparent canvas background (no white halo around model).
 // ============================================================
 "use client"
 
-import { useRef, useState, useMemo, useCallback, Suspense } from "react"
-import { Canvas, useThree } from "@react-three/fiber"
+import { useRef, useState, useMemo, useCallback, useEffect, Suspense } from "react"
+import { Canvas, useThree, extend } from "@react-three/fiber"
 import * as THREE from "three"
-import PotatoChipBag3D, { BAG_W, BAG_H, TOP_CRIMP, BOT_CRIMP } from "./3d/potato-chip-bag-3d"
+import PotatoChipBag3D, { BAG_W, BAG_H, TOP_CRIMP, BOT_CRIMP, BODY_H } from "./3d/potato-chip-bag-3d"
 import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX } from "@/lib/audio/sfx-engine"
+
+extend({ Line_: THREE.Line })
 
 // ── Particle burst ──
 function Particles({ active, color }: { active: boolean; color: string }) {
@@ -56,6 +58,35 @@ function Particles({ active, color }: { active: boolean; color: string }) {
   )
 }
 
+// ── Tear cut line (rendered on bag surface) ──
+function TearCutLine({ points, color }: { points: {x: number; y: number}[], color: string }) {
+  const lineRef = useRef<THREE.Line>(null!)
+  const bodyY = (TOP_CRIMP - BOT_CRIMP) / 2
+
+  const lineGeo = useMemo(() => {
+    if (points.length < 2) return new THREE.BufferGeometry()
+    const verts: number[] = []
+    for (const p of points) {
+      // Map bag-space to world-space on front face surface
+      const worldX = p.x
+      const worldY = bodyY + p.y + BODY_H/2
+      const worldZ = 0.036  // Slightly in front of bag surface
+      verts.push(worldX, worldY, worldZ)
+    }
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3))
+    return geo
+  }, [points, bodyY])
+
+  if (points.length < 2) return null
+
+  return (
+    <lineSegments ref={lineRef} geometry={lineGeo}>
+      <lineBasicMaterial color={color} linewidth={1.5} transparent opacity={0.9} depthTest={false} />
+    </lineSegments>
+  )
+}
+
 // ── Types ──
 export interface BagData {
   id: string
@@ -81,10 +112,22 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
   const [revealed, setRevealed] = useState(false)
   const [tearProgress, setTearProgress] = useState(0)
   const tearing = useRef(false)
-  const tearPaths = useRef<{x:number; y:number}[]>([])
+  const tearPaths = useRef<{ x: number; y: number }[]>([])
   const tearDone = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const tearLineGeo = useMemo(() => new THREE.BufferGeometry(), [])
+  const [canvasHeight, setCanvasHeight] = useState(500)
+
+  // Responsive height
+  useEffect(() => {
+    const update = () => {
+      const w = containerRef.current?.clientWidth || 500
+      const h = Math.min(560, Math.max(360, w * 0.85))
+      setCanvasHeight(h)
+    }
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
 
   const franchiseColor = useMemo(() => {
     const colors: Record<string, string> = { minimon: "#FFCC00", cybermon: "#3B82F6", dracobell: "#F97316" }
@@ -103,7 +146,6 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
     if (!tearing.current || tearDone.current || revealed) return
     const uv = (e as any).uv
     if (!uv) return
-    // Map UV to bag space (x is width, y is height)
     tearPaths.current.push({ x: (uv.x - 0.5) * BAG_W, y: (uv.y - 0.5) * BAG_H })
     const pts = tearPaths.current
     if (pts.length > 2) {
@@ -125,7 +167,6 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
   const handlePointerUp = useCallback(() => {
     tearing.current = false
     if (tearPaths.current.length > 0 && !tearDone.current && !revealed) {
-      // Not enough — reset
       setTearProgress(0)
       tearPaths.current = []
     }
@@ -134,13 +175,24 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
   const bagInteractive = !revealed
 
   return (
-    <div ref={containerRef} className="relative w-full h-[420px] sm:h-[500px] select-none touch-none"
-      style={{ background: "#0a0805" }}>
+    <div
+      ref={containerRef}
+      className="relative w-full select-none touch-none"
+      style={{ height: canvasHeight, background: "#0a0805" }}
+    >
+      {/* Canvas with alpha: true → no white halo around model */}
       <Canvas
         camera={{ position: [0, 0.05, 1.75], fov: 42 }}
-        gl={{ antialias: true, alpha: false }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          premultipliedAlpha: false,
+        }}
         style={{ background: "#0a0805" }}
-        onCreated={({ gl }) => { gl.setClearColor(0x0a0805, 1); gl.setPixelRatio(Math.min(window.devicePixelRatio, 2)) }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x0a0805, 0)
+          gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        }}
       >
         <ambientLight intensity={0.7} />
         <spotLight position={[3, 2, 4]} intensity={2.8} angle={0.4} penumbra={0.5} color="#fffef5" />
@@ -161,6 +213,11 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
           />
         </Suspense>
 
+        {/* Visible tear cut line — actual draggable line on bag surface */}
+        {tearPaths.current.length > 1 && tearing.current && (
+          <TearCutLine points={tearPaths.current} color={franchiseColor} />
+        )}
+
         <Particles active={revealed} color={franchiseColor} />
       </Canvas>
 
@@ -168,18 +225,17 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
       <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-3 z-10">
         {tearProgress < 0.02 && !revealed && (
           <div className="flex flex-col items-center gap-1.5">
-            <button
-              className="px-8 py-3 font-black text-sm uppercase tracking-wider border-3 animate-pulse cursor-pointer"
+            <div
+              className="px-8 py-3 font-black text-sm uppercase tracking-wider border-3 animate-pulse"
               style={{
                 backgroundColor: franchiseColor,
                 color: "#fff",
                 borderColor: "#1a1a1a",
                 boxShadow: "4px 4px 0px #1a1a1a",
               }}
-              // Just visual hint — actual tear is drag-based
             >
               DRAG ACROSS BAG TO TEAR!
-            </button>
+            </div>
             <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.25em]">
               hold &amp; drag horizontally
             </span>
@@ -190,18 +246,25 @@ export default function BagOpener3D({ bag, opening, progress, onOpen, onSkip }: 
           <div className="flex items-center gap-3">
             <div className="flex-1 max-w-[180px]">
               <div className="h-2.5 bg-black/70 rounded-full overflow-hidden border border-white/20">
-                <div className="h-full rounded-full transition-all duration-100"
-                  style={{ width: `${Math.round(tearProgress*100)}%`, backgroundColor: franchiseColor }} />
+                <div
+                  className="h-full rounded-full transition-all duration-100"
+                  style={{ width: `${Math.round(tearProgress * 100)}%`, backgroundColor: franchiseColor }}
+                />
               </div>
             </div>
             <span className="text-[10px] font-black text-white/50 uppercase tracking-[0.15em]">
-              {Math.round(tearProgress*100)}%
+              {Math.round(tearProgress * 100)}%
             </span>
-            <button onClick={() => {
-              tearDone.current = true; tearing.current = false
-              setRevealed(true); playSFX('bag_open', { volume: 0.5 })
-              setTimeout(() => onOpen(), 300)
-            }} className="px-3 py-1.5 bg-black/60 border border-white/20 text-white/70 text-[10px] font-black uppercase hover:bg-black/80">
+            <button
+              onClick={() => {
+                tearDone.current = true
+                tearing.current = false
+                setRevealed(true)
+                playSFX('bag_open', { volume: 0.5 })
+                setTimeout(() => onOpen(), 300)
+              }}
+              className="px-3 py-1.5 bg-black/60 border border-white/20 text-white/70 text-[10px] font-black uppercase hover:bg-black/80"
+            >
               Skip
             </button>
           </div>

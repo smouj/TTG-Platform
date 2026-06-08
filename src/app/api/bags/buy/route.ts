@@ -4,9 +4,9 @@ import { getAuthUser } from "@/lib/auth"
 import { db } from "@/lib/db"
 
 const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number }> = {
-  standard: { cost: 50, bonusChance: 0.08, rareBoost: 1 },
-  premium: { cost: 150, bonusChance: 0.15, rareBoost: 2 },
-  mega: { cost: 400, bonusChance: 0.25, rareBoost: 3 },
+  standard: { cost: 10, bonusChance: 0.08, rareBoost: 1 },
+  premium: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
+  mega: { cost: 10, bonusChance: 0.25, rareBoost: 3 },
 }
 
 export async function POST(request: NextRequest) {
