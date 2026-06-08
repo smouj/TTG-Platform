@@ -120,7 +120,8 @@ export async function PATCH(req: NextRequest) {
 
     // Only allow updating safe fields
     const allowedFields = [
-      "name", "displayName", "rarity", "imageUrl", "skill", "skillDesc",
+      "name", "displayName", "description", "rarity", "imageUrl", "backImageUrl",
+      "skill", "skillDesc", "category",
       "attack", "defense", "resistance", "weight", "stability", "spin",
       "control", "bounce", "precision", "role", "combatType", "finish",
       "creatureVariant", "shinyImageUrl", "isOwned", "stackable", "maxStackOn",
@@ -142,5 +143,23 @@ export async function PATCH(req: NextRequest) {
   } catch (err: any) {
     console.error("PATCH /api/admin tazo error:", err.message)
     return NextResponse.json({ error: err.message || "Update failed" }, { status: 500 })
+  }
+}
+
+// ── DELETE: Remove a tazo ──
+export async function DELETE(req: NextRequest) {
+  if (!(await isAdmin(req))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
+  }
+  try {
+    const { searchParams } = new URL(req.url)
+    const id = searchParams.get("id")
+    if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 })
+
+    const tazo = await prisma.tazo.delete({ where: { id } })
+    return NextResponse.json({ success: true, tazo })
+  } catch (err: any) {
+    console.error("DELETE /api/admin tazo error:", err.message)
+    return NextResponse.json({ error: err.message || "Delete failed" }, { status: 500 })
   }
 }

@@ -1,139 +1,82 @@
-# 🎨 ttg-artgen — Internal Art Generator for Trading Tazos Game
+# TTG Art Pipeline — Unified v4
 
-Generates original creature/fighter artwork for TTG's three fictional collectible lines:
-**Minimon**, **Cybermon**, and **Draco Bell**.
+## Overview
 
-This is an **internal development tool** — not a public-facing feature. It helps build the TTG visual catalog with consistent, reviewable, and exportable artwork.
+3 scripts, 1 consistent output. All aligned with `tazo-art-studio` reference implementation.
 
-## Quick Start
+```
+creatures.json → batch-generate-or-v2.py (OpenRouter) → artgen/output/{id}.png
+                  ↓
+            remove-bg-batch.py (rembg) → artgen/nobg/{line}/{id}.png
+                  ↓
+            composite-tazo-v4.py → public/tazos-generated/{franchise}/{slug}.png (+back)
+                  ↓
+            DB update (non-critical, with try/except)
+```
+
+## Consistency Contract
+
+The following specs are IDENTICAL across:
+- `tazo-art-studio` (reference: `src/app/api/tazo-art/route.ts`)
+- TTG Admin Creator (production: `src/app/api/admin/tazo-art/route.ts`)
+- `composite-tazo-v4.py` (batch pipeline)
+
+| Spec | Value |
+|------|-------|
+| Canvas size | 1254×1254 |
+| Creature size | 65% of canvas (815px) |
+| Background source | `public/tazo-assets/frontal/{franchise}/` |
+| Background selection | Random (matches tazo-art-studio) |
+| Franchise slugs | `minimon`, `cybermon`, `dracobell` (no hyphen) |
+| Transparency guard | Real alpha, no magenta hack |
+| Rarity colors | common=#9CA3AF, uncommon=#22C55E, rare=#3B82F6, epic=#A855F7, ultra=#FF6B00, legendary=#FBBF24 |
+| Rarity stars | common=1, uncommon=2, rare=3, epic=4, ultra/legendary=5 |
+| Output format | RGBA PNG (preserves alpha) |
+| Output path | `public/tazos-generated/{franchise}/{franchise}-{prefix}-{number}.png` |
+| Back side | Official back designs + name/rarity overlay (1024×1024) |
+
+## Scripts
+
+### 1. `batch-generate-or-v2.py`
+Generates creature art via OpenRouter (Gemini 2.5 Flash Image).
+- Resume support: skips existing `{id}-v02.png` files
+- Sorted by rarity (legendary → common)
+- $0.039/image, ~$12.35 for full 319 batch
+- Requires: `OPENROUTER_API_KEY` in `.env`
+
+### 2. `remove-bg-batch.py`
+Removes backgrounds using `rembg` (u2netp model).
+- Input: `artgen/output/{line}/{id}/{id}-v02.png`
+- Output: `artgen/nobg/{line}/{id}/{id}-v02.png`
+- ~0.7s per image on CPU
+
+### 3. `composite-tazo-v4.py`
+UNIFIED composite script. Matches tazo-art-studio specs exactly.
+- Official backgrounds from `public/tazo-assets/frontal/`
+- Creature at 65% canvas with circular mask
+- Generates front + back sides
+- DB update (non-critical, safe to kill/restart)
+- Idempotent: safe to re-run multiple times
+
+## Archive
+
+Old scripts in `archive/`:
+- `composite-tazo.py` (v1 — SVG discs)
+- `composite-tazo-v2.py` (v2 — programmed discs with black borders)
+- `composite-tazo-v3.py` (v3 — official BGs, had hyphen bug)
+- `batch-generate.mjs` (v1 — xAI direct)
+- `batch-generate-v2.py` (v2 — xAI device code)
+- `batch-generate-or.py` (v1 — OpenRouter)
+- `fix-broken-images.py` (collision fix one-shot)
+
+## Deploy
 
 ```bash
-# 1. Install dependencies
-npm install openai dotenv
+# On VPS:
+cd /home/smouj/apps/ttg/Trading-Tazos-Game
+python3 artgen/scripts/composite-tazo-v4.py
 
-# 2. Configure API key
-cp artgen/.env.example .env
-# Edit .env and add your OPENAI_API_KEY
-
-# 3. List available creatures
-node artgen/scripts/generate-ttg-art.mjs --list
-
-# 4. Generate 4 variants for a creature
-node artgen/scripts/generate-ttg-art.mjs minimon-001 4
+# Sync to local:
+rsync -avz rpgvps:/home/smouj/apps/ttg/Trading-Tazos-Game/public/tazos-generated/ \
+  public/tazos-generated/
 ```
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `node artgen/scripts/generate-ttg-art.mjs <id> [n]` | Generate `n` variants (default 1, max 8) |
-| `node artgen/scripts/generate-ttg-art.mjs --list` | List all available creatures |
-| `node artgen/scripts/generate-ttg-art.mjs --line <name>` | Filter creatures by line |
-
-## Structure
-
-```
-artgen/
-├── creatures.json          # Character/creature definitions
-├── styles/
-│   ├── minimon.json        # Cute 90s collectible anime style
-│   ├── cybermon.json       # Digital monster battle anime style
-│   └── draco-bell.json     # Martial arts energy anime style
-├── scripts/
-│   └── generate-ttg-art.mjs # Main generator script
-├── output/                 # Generated images + metadata
-│   ├── minimon/
-│   ├── cybermon/
-│   └── draco-bell/
-├── .env.example            # Configuration template
-└── README.md               # This file
-```
-
-## Workflow
-
-### 1. Create a creature entry
-
-Add to `artgen/creatures.json`:
-
-```json
-{
-  "id": "minimon-006",
-  "line": "minimon",
-  "name": "Frostwhirl",
-  "category": "creature",
-  "rarity": "rare",
-  "element": "ice",
-  "body": "small penguin-like creature with crystalline wings",
-  "features": ["diamond wing tips", "frosty breath", "icy crown"],
-  "mainColor": "ice blue",
-  "accentColors": ["white", "silver"],
-  "personality": "graceful and mysterious",
-  "pose": "gliding across an ice surface with wings spread",
-  "background": "soft snowflake pattern"
-}
-```
-
-### 2. Generate variants
-
-```bash
-node artgen/scripts/generate-ttg-art.mjs minimon-006 8
-```
-
-### 3. Review
-
-Each variant generates:
-- `minimon-006-v01.png` — the image
-- `minimon-006-v01.json` — metadata (prompt, model, status: draft)
-
-### 4. Approve
-
-When an image looks good, edit the metadata JSON:
-
-```json
-"status": "approved"
-```
-
-### 5. Export to game
-
-Copy approved images to the public assets directory:
-
-```bash
-cp artgen/output/minimon/minimon-006-frostwhirl/minimon-006-v03.png \
-   public/tazos/minimon/minimon-006.png
-```
-
-## Safety
-
-The generator automatically blocks prompts containing franchise names:
-pokémon, pikachu, digimon, agumon, dragon ball, goku, etc.
-
-This prevents accidental IP contamination in generated artwork.
-
-## Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `OPENAI_API_KEY` | — | **Required.** Your OpenAI API key |
-| `IMAGE_MODEL` | `gpt-image-2` | Model to use for generation |
-| `IMAGE_SIZE` | `1024x1024` | Output resolution |
-| `IMAGE_QUALITY` | `high` | Generation quality |
-
-## Lines
-
-| Line | Style | Vibe |
-|------|-------|------|
-| **Minimon** | Cute 90s collectible anime | Friendly, colorful, plush-like creatures |
-| **Cybermon** | Digital monster battle anime | Aggressive, armored, glowing circuits |
-| **Draco Bell** | Martial arts energy anime | Athletic, dynamic, aura bursts |
-
-## Rarity System
-
-```
-common → uncommon → rare → epic → legendary → mythic
-```
-
-## Dependencies
-
-- `openai` — OpenAI API client
-- `dotenv` — Environment variable loader
-- Node.js 22+

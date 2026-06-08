@@ -286,7 +286,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { name, description, franchise, rarity, role, collectionId, customPrompt } = body;
+    const { name, description, franchise, rarity, role, collectionId, customPrompt,
+      skill, skillDesc, combatType, category, finish } = body;
 
     if (!name || !franchise || !rarity || !role) {
       return NextResponse.json({
@@ -434,7 +435,11 @@ export async function POST(req: NextRequest) {
         control: clamp(Math.round(baseStats.control * multiplier + jitter())),
         bounce: clamp(Math.round(baseStats.bounce * multiplier + jitter())),
         precision: clamp(Math.round(baseStats.precision * multiplier + jitter())),
-        combatType: role,
+        skill: skill || null,
+        skillDesc: skillDesc || null,
+        combatType: combatType || role,
+        category: category || null,
+        finish: finish || "normal",
         sourceStatus: "verified",
       },
     });
