@@ -83,7 +83,7 @@ export default function AdminTazoCreatorPage() {
   const [error, setError] = useState("");
   const [recentCreations, setRecentCreations] = useState<any[]>([]);
 
-  const isAdmin = user?.email === "dev.viewer@tradingtazosgame.com";
+  const isAdmin = user?.email === "dev@tradingtazosgame.com";
 
   // Fetch recent creations
   useEffect(() => {

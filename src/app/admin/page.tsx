@@ -24,7 +24,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
-  const isAdmin = user?.email === "dev.viewer@tradingtazosgame.com"
+  const isAdmin = user?.email === "dev@tradingtazosgame.com"
   const effectiveLoading = loading && isAdmin
 
   useEffect(() => {

@@ -99,7 +99,7 @@ export default function MagazinePageShell({
           </span>
           <div className="flex items-center gap-2 sm:gap-3">
             <LanguageSwitcher />
-            {!loading && user && user.email === "dev.viewer@tradingtazosgame.com" && (
+            {!loading && user && user.email === "dev@tradingtazosgame.com" && (
               <Link href="/admin" className="text-[9px] font-black text-[#E3350D] hover:text-white tracking-wider uppercase"><Shield className="w-3 h-3 inline mr-1" /><span className="hidden sm:inline">Admin</span></Link>
             )}
             {!loading && user ? (
