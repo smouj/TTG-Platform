@@ -81,6 +81,7 @@ model Tazo {
   physicalType   String     @default("cardboard")
   rarity         String     @default("common")
   imageUrl       String?
+  backImageUrl   String?
   skill          String?
   skillDesc      String?
   evolutionFrom  String?

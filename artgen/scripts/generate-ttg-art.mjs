@@ -188,13 +188,11 @@ async function generateViaOpenRouter({ prompt, client, model, size }) {
   return await generateViaOpenAI({ prompt, client, model, size })
 }
 
-async function generateViaXAI({ prompt, client, model, size }) {
-  // xAI also OpenAI-compatible (mostly)
-  // For grok-imagine-image, we need to use b64_json response format
+async function generateViaXAI({ prompt, client, model }) {
+  // xAI's grok-imagine-image does NOT accept "size" parameter
   const result = await client.images.generate({
     model,
     prompt,
-    size,
     n: 1,
     response_format: "b64_json",
   })

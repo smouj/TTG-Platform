@@ -1,0 +1,436 @@
+[
+  {
+    "code": "minimon-001",
+    "name": "Leaflet Pup",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "grass"
+  },
+  {
+    "code": "minimon-002",
+    "name": "Sparkleon Cub",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "electric"
+  },
+  {
+    "code": "minimon-003",
+    "name": "Bubble Nimbo",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "water"
+  },
+  {
+    "code": "minimon-004",
+    "name": "Mossbean",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "earth"
+  },
+  {
+    "code": "minimon-005",
+    "name": "Pebblehorn",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "fire"
+  },
+  {
+    "code": "minimon-006",
+    "name": "Sunwhisk",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "air"
+  },
+  {
+    "code": "minimon-007",
+    "name": "Frostberry",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "ice"
+  },
+  {
+    "code": "minimon-008",
+    "name": "Amber Chirp",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "light"
+  },
+  {
+    "code": "minimon-009",
+    "name": "Cloudlet Ram",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "moon"
+  },
+  {
+    "code": "minimon-010",
+    "name": "Moonmoth",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "bug"
+  },
+  {
+    "code": "minimon-011",
+    "name": "Rootkit Fox",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "fairy"
+  },
+  {
+    "code": "minimon-012",
+    "name": "Puddle Sprout",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "stone"
+  },
+  {
+    "code": "minimon-013",
+    "name": "Flarebun",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "plant"
+  },
+  {
+    "code": "minimon-014",
+    "name": "Dewtail",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "storm"
+  },
+  {
+    "code": "minimon-015",
+    "name": "Acorn Drake",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "metal"
+  },
+  {
+    "code": "minimon-016",
+    "name": "Starling Puff",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "grass"
+  },
+  {
+    "code": "minimon-017",
+    "name": "Mintclaw",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "electric"
+  },
+  {
+    "code": "minimon-018",
+    "name": "Bramblebee",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "water"
+  },
+  {
+    "code": "minimon-019",
+    "name": "Coral Nib",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "earth"
+  },
+  {
+    "code": "minimon-020",
+    "name": "Glimmer Toad",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "fire"
+  },
+  {
+    "code": "minimon-021",
+    "name": "Tiny Tempest",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "air"
+  },
+  {
+    "code": "minimon-022",
+    "name": "Honeyfang",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "ice"
+  },
+  {
+    "code": "minimon-023",
+    "name": "Snowcap Sprite",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "light"
+  },
+  {
+    "code": "minimon-024",
+    "name": "Cinder Mite",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "moon"
+  },
+  {
+    "code": "minimon-025",
+    "name": "Lilyhorn",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "bug"
+  },
+  {
+    "code": "minimon-026",
+    "name": "Quartz Kit",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "fairy"
+  },
+  {
+    "code": "minimon-027",
+    "name": "Rainpuff",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "stone"
+  },
+  {
+    "code": "minimon-028",
+    "name": "Emberleaf",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "plant"
+  },
+  {
+    "code": "minimon-029",
+    "name": "Mushmello",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "storm"
+  },
+  {
+    "code": "minimon-030",
+    "name": "Copper Cub",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "metal"
+  },
+  {
+    "code": "minimon-031",
+    "name": "Ivory Tadpole",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "grass"
+  },
+  {
+    "code": "minimon-032",
+    "name": "Thornbun",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "electric"
+  },
+  {
+    "code": "minimon-033",
+    "name": "Orchid Mewl",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "water"
+  },
+  {
+    "code": "minimon-034",
+    "name": "Boltseed",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "earth"
+  },
+  {
+    "code": "minimon-035",
+    "name": "Marble Mole",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "fire"
+  },
+  {
+    "code": "minimon-036",
+    "name": "Jellyfin",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "air"
+  },
+  {
+    "code": "minimon-037",
+    "name": "Topaz Chirper",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "ice"
+  },
+  {
+    "code": "minimon-038",
+    "name": "Hollow Owl",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "light"
+  },
+  {
+    "code": "minimon-039",
+    "name": "Petal Pincer",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "moon"
+  },
+  {
+    "code": "minimon-040",
+    "name": "Breezelet",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "bug"
+  },
+  {
+    "code": "minimon-041",
+    "name": "Cricketron",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "fairy"
+  },
+  {
+    "code": "minimon-042",
+    "name": "Aurora Puff",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "stone"
+  },
+  {
+    "code": "minimon-043",
+    "name": "Fernscale",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "plant"
+  },
+  {
+    "code": "minimon-044",
+    "name": "Syrup Snail",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "storm"
+  },
+  {
+    "code": "minimon-045",
+    "name": "Glowberry",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "metal"
+  },
+  {
+    "code": "minimon-046",
+    "name": "Tidekit",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "grass"
+  },
+  {
+    "code": "minimon-047",
+    "name": "Silkwing Pup",
+    "line": "minimon",
+    "rarity": "ultra",
+    "type": "electric"
+  },
+  {
+    "code": "minimon-048",
+    "name": "Sootbud",
+    "line": "minimon",
+    "rarity": "epic",
+    "type": "water"
+  },
+  {
+    "code": "minimon-049",
+    "name": "Pearl Antler",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "earth"
+  },
+  {
+    "code": "minimon-050",
+    "name": "Velvet Wisp",
+    "line": "minimon",
+    "rarity": "rare",
+    "type": "fire"
+  },
+  {
+    "code": "minimon-051",
+    "name": "Nimbus Neko",
+    "line": "minimon",
+    "rarity": "common",
+    "type": "air"
+  },
+  {
+    "code": "cybermon-001",
+    "name": "Bitfang",
+    "line": "cybermon",
+    "rarity": "common",
+    "type": "data"
+  },
+  {
+    "code": "cybermon-002",
+    "name": "Volt Mantis",
+    "line": "cybermon",
+    "rarity": "rare",
+    "type": "electric"
+  },
+  {
+    "code": "cybermon-003",
+    "name": "Null Raptor",
+    "line": "cybermon",
+    "rarity": "common",
+    "type": "steel"
+  },
+  {
+    "code": "cybermon-004",
+    "name": "Pixel Hydra",
+    "line": "cybermon",
+    "rarity": "epic",
+    "type": "neon"
+  },
+  {
+    "code": "cybermon-005",
+    "name": "Neon Serpentis",
+    "line": "cybermon",
+    "rarity": "ultra",
+    "type": "virus"
+  },
+  {
+    "code": "cybermon-006",
+    "name": "Chrome Lynx",
+    "line": "cybermon",
+    "rarity": "rare",
+    "type": "plasma"
+  },
+  {
+    "code": "cybermon-007",
+    "name": "Titanforge",
+    "line": "cybermon",
+    "rarity": "ultra",
+    "type": "machine"
+  },
+  {
+    "code": "cybermon-008",
+    "name": "Packet Wyrm",
+    "line": "cybermon",
+    "rarity": "epic",
+    "type": "network"
+  },
+  {
+    "code": "cybermon-009",
+    "name": "Laser Garuda",
+    "line": "cybermon",
+    "rarity": "common",
+    "type": "quantum"
+  },
+  {
+    "code": "cybermon-010",
+    "name": "Nexus Beetle",
+    "line": "cybermon",
+    "rarity": "rare",
+    "type": "signal"
+  },
+  {
+    "code": "cybermon-011",
+    "name": "Circuit Drake",
+    "line": "cybermon",
+    "rarity": "common",
+    "type": "firewall"
+  }
+]
