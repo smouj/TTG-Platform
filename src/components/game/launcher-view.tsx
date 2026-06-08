@@ -258,7 +258,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div key={t.id || i} className="w-12 h-12 rounded-full border-2 border-[#FF6B00]/30 bg-white overflow-hidden flex-shrink-0 relative"
             style={{ zIndex: 4 - i }}>
             {t.imageUrl ? (
-              <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover scale-110" />
+              <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" style={{ borderRadius: '50%' }} />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[7px] font-black text-[#1a1a1a]/15">?</div>
             )}
@@ -293,7 +293,7 @@ function DeckPreview({ tazos }: { tazos: any[] }) {
           <div key={t.id || i} className="w-14 h-14 rounded-full border-2 border-[#3B4CCA]/25 bg-white overflow-hidden flex-shrink-0"
             style={{ zIndex: 3 - i }}>
             {t.imageUrl ? (
-              <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover scale-110" />
+              <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" style={{ borderRadius: '50%' }} />
             ) : (
               <div className="w-full h-full flex items-center justify-center" style={{ background: (t.color || "#3B4CCA") + "10" }}>
                 <span className="text-[10px] font-black" style={{ color: t.color || "#3B4CCA" }}>{t.label || "?"}</span>
@@ -713,7 +713,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
                   src={backArtUrl} 
                   alt={`${c.name} back art`}
                   className="w-full h-full object-cover"
-                  style={{ borderRadius: "50%", transform: "scale(1.16)", transformOrigin: "center center" }}
+                  style={{ borderRadius: "50%" }}
                   draggable={false}
                 />
               </div>

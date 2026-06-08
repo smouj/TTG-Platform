@@ -500,7 +500,7 @@ export default function TazoBackEditor({
               >
                 {/* Back base image */}
                 {backImageUrl ? (
-                  <div className="w-full h-full" style={{ transform: "scale(1.04)", transformOrigin: "center" }}>
+                  <div className="w-full h-full">
                     <img src={backImageUrl} alt="Back" className="w-full h-full" style={{ objectFit: "cover" }} />
                   </div>
                 ) : (

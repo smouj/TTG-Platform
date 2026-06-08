@@ -514,7 +514,7 @@ export default function BagShopPage() {
           style={{ background: franchiseColor }}>
           {revealedTazo.imageUrl ? (
             <img src={revealedTazo.imageUrl} alt={revealedTazo.name || ""}
-              className="w-full h-full object-cover scale-110" />
+              className="w-full h-full object-cover" />
           ) : (
             <div className="text-[#1a1a1a]/20 text-6xl">?</div>
           )}

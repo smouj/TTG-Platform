@@ -266,7 +266,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
                 }}
               >
                 {tazo.imageUrl ? (
-                  <div className="w-full h-full rounded-full overflow-hidden" style={{ transform: "scale(1.16)", transformOrigin: "center center" }}>
+                  <div className="w-full h-full rounded-full overflow-hidden">
                     <img
                       src={tazo.imageUrl}
                       alt={tazo.displayName || tazo.name || "?"}

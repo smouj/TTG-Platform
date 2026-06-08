@@ -773,10 +773,6 @@ export default function TazoVisualEditor({
                 {tazoImageUrl ? (
                   <div
                     className="w-full h-full"
-                    style={{
-                      transform: `scale(${1024 / 904})`,
-                      transformOrigin: "center center",
-                    }}
                   >
                     <img
                       src={tazoImageUrl}

@@ -85,7 +85,7 @@ function ListingCard({ listing, onBuy, onCancel, buying, isOwn, credits }: {
       <div className="w-16 h-16 shrink-0 rounded-full border-2 border-[#1a1a1a] overflow-hidden relative"
         style={{ background: t.franchise?.color || "#FFCC00" }}>
         {t.imageUrl ? (
-          <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover scale-110" />
+          <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-[#1a1a1a]/20 text-xl font-black">?</div>
         )}
@@ -174,7 +174,7 @@ function SellTazoCard({ ut, onSell, selling }: {
         <div className="w-14 h-14 shrink-0 rounded-full border-2 border-[#1a1a1a] overflow-hidden"
           style={{ background: t.franchise?.color || "#FFCC00" }}>
           {t.imageUrl ? (
-            <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover scale-110" />
+            <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" />
           ) : <div className="w-full h-full flex items-center justify-center text-[#1a1a1a]/20">?</div>}
         </div>
         <div className="flex-1 min-w-0">
@@ -281,7 +281,7 @@ function OffersTab({ token }: { token: string | null }) {
           <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#22C55E]/30"
             style={{ background: o.offeredTazo?.tazo?.franchise?.color || '#1a1a1a' }}>
             {o.offeredTazo?.tazo?.imageUrl && (
-              <img src={o.offeredTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain scale-110" />
+              <img src={o.offeredTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain" />
             )}
           </div>
           {/* Arrow */}
@@ -290,7 +290,7 @@ function OffersTab({ token }: { token: string | null }) {
           <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#E3350D]/30"
             style={{ background: o.requestedTazo?.franchise?.color || '#1a1a1a' }}>
             {o.requestedTazo?.imageUrl && (
-              <img src={o.requestedTazo.imageUrl} alt="" className="w-full h-full object-contain scale-110" />
+              <img src={o.requestedTazo.imageUrl} alt="" className="w-full h-full object-contain" />
             )}
           </div>
           {/* Info */}
@@ -426,7 +426,7 @@ function HistoryTab({ token }: { token: string | null }) {
                 background: h.userTazo?.tazo?.franchise?.color || '#1a1a1a',
               }}>
               {h.userTazo?.tazo?.imageUrl && (
-                <img src={h.userTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain scale-110" />
+                <img src={h.userTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain" />
               )}
             </div>
             {/* Info */}
