@@ -13,14 +13,7 @@ import {
 import Link from "next/link";
 import TazoVisualEditor from "@/components/admin/tazo-visual-editor";
 import type { LayoutConfig } from "@/components/admin/tazo-visual-editor";
-
-const DEFAULT_LAYOUT: LayoutConfig = {
-  badge: { x: 0, y: -280, scale: 1.0 },
-  number: { x: -280, y: 250, scale: 1.0 },
-  name: { x: 0, y: 330, scale: 1.0 },
-  rarity: { x: 280, y: 250, scale: 1.0 },
-  creature: { x: 0, y: 0, scale: 1.0 },
-};
+import { DEFAULT_LAYOUT } from "@/components/admin/tazo-visual-editor";
 
 const FRANCHISE_ORDER = ["cybermon", "dracobell", "minimon"];
 
@@ -255,6 +248,7 @@ export default function AdminTazoDesignerPage() {
             rarity={selectedTazo.rarity}
             displayName={selectedTazo.displayName || selectedTazo.name}
             number={selectedTazo.number || "—"}
+            collectionName={selectedTazo.collectionName || (selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "").toUpperCase() + " TAZOS SERIES 1"}
             combatType={selectedTazo.combatType}
             layout={layout}
             onLayoutChange={setLayout}

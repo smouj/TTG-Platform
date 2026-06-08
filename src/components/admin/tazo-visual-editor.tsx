@@ -16,6 +16,7 @@ import ElementProperties from "@/components/admin/element-properties";
 
 // ── Types ──
 export interface LayoutConfig {
+  collection: { x: number; y: number; scale: number };
   badge: { x: number; y: number; scale: number };
   number: { x: number; y: number; scale: number };
   name: { x: number; y: number; scale: number };
@@ -24,11 +25,12 @@ export interface LayoutConfig {
 }
 
 export const DEFAULT_LAYOUT: LayoutConfig = {
-  badge: { x: 0, y: -280, scale: 1.0 },        // top of disc (0=center, negative=up)
-  number: { x: -280, y: 250, scale: 1.0 },       // bottom-left
-  name: { x: 0, y: 330, scale: 1.0 },            // bottom center
-  rarity: { x: 280, y: 250, scale: 1.0 },        // bottom-right
-  creature: { x: 0, y: 0, scale: 1.0 },          // center
+  collection: { x: 0, y: -447, scale: 1.0 },     // very top (matches Python: y=65)
+  badge: { x: 0, y: -340, scale: 1.0 },          // top of disc below collection
+  number: { x: 310, y: 310, scale: 1.0 },         // bottom-right (Python: 822,822)
+  name: { x: 0, y: 349, scale: 1.0 },             // bottom center (Python: y=861)
+  rarity: { x: 0, y: -335, scale: 1.0 },          // top, below badge (Python: sy=177)
+  creature: { x: 0, y: 0, scale: 1.0 },           // center
 };
 
 export type ElementKey = keyof LayoutConfig;
@@ -81,6 +83,7 @@ function useHistory(initial: LayoutConfig) {
 }
 
 const ELEMENT_LABELS: Record<ElementKey, string> = {
+  collection: "Collection",
   badge: "Badge",
   number: "Number",
   name: "Name",
@@ -89,6 +92,7 @@ const ELEMENT_LABELS: Record<ElementKey, string> = {
 };
 
 const ELEMENT_COLORS: Record<ElementKey, string> = {
+  collection: "#06B6D4",
   badge: "#A855F7",
   number: "#3B82F6",
   name: "#22C55E",
@@ -105,6 +109,7 @@ interface TazoVisualEditorProps {
   rarity: string;
   displayName: string;
   number: string;
+  collectionName?: string;
   combatType?: string;
   layout: LayoutConfig;
   onLayoutChange: (layout: LayoutConfig) => void;
@@ -310,6 +315,24 @@ function NameElement({ name }: { name: string }) {
   );
 }
 
+// ── Collection label renderer ──
+function CollectionElement({ name }: { name: string }) {
+  return (
+    <div
+      className="text-[8px] font-black uppercase tracking-[0.15em] whitespace-nowrap px-3 py-1 rounded-full"
+      style={{
+        background: "rgba(26,26,26,0.8)",
+        color: "rgba(255,255,255,0.9)",
+        border: "1px solid rgba(255,255,255,0.15)",
+        textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+        backdropFilter: "blur(4px)",
+      }}
+    >
+      {name}
+    </div>
+  );
+}
+
 // ── Rarity stars renderer ──
 function RarityElement({ rarity }: { rarity: string }) {
   const stars: Record<string, number> = {
@@ -341,6 +364,7 @@ export default function TazoVisualEditor({
   rarity,
   displayName,
   number,
+  collectionName,
   combatType,
   layout: externalLayout,
   onLayoutChange,
@@ -355,7 +379,7 @@ export default function TazoVisualEditor({
   
   const [activeElement, setActiveElement] = useState<ElementKey | null>(null);
   const [showElements, setShowElements] = useState<Record<ElementKey, boolean>>({
-    badge: true, number: true, name: true, rarity: true, creature: true,
+    collection: true, badge: true, number: true, name: true, rarity: true, creature: true,
   });
   const [lockedElements, setLockedElements] = useState<Record<string, boolean>>({});
   const [previewSize, setPreviewSize] = useState(440);
@@ -765,6 +789,28 @@ export default function TazoVisualEditor({
 
                 {/* Draggable elements layer */}
                 <div className="absolute inset-0" style={{ pointerEvents: "auto" }}>
+                  {/* Collection Label */}
+                  {showElements.collection && (
+                    <DraggableElement
+                      id="collection"
+                      x={layout.collection.x * (previewSize / 880)}
+                      y={layout.collection.y * (previewSize / 880)}
+                      scale={layout.collection.scale}
+                      color={ELEMENT_COLORS.collection}
+                      label="Collection"
+                      active={activeElement === "collection"}
+                      locked={lockedElements["collection"] || false}
+                      onActivate={() => setActiveElement("collection")}
+                      onMove={(dx, dy) => handleMove("collection", dx / (previewSize / 880), dy / (previewSize / 880))}
+                      onNudge={(dx, dy) => handleNudge("collection", dx, dy)}
+                      onScaleChange={(d) => handleScaleChange("collection", d)}
+                      onDragStart={() => setIsDragging(true)}
+                      onDragEnd={() => setIsDragging(false)}
+                    >
+                      <CollectionElement name={collectionName || franchise.toUpperCase() + " TAZOS"} />
+                    </DraggableElement>
+                  )}
+
                   {/* Badge */}
                   {showElements.badge && (
                     <DraggableElement

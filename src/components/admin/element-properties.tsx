@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 const ELEMENT_LABELS: Record<ElementKey, string> = {
+  collection: "Collection Label",
   badge: "Combat Badge",
   number: "Number Badge",  
   name: "Creature Name",
@@ -17,6 +18,7 @@ const ELEMENT_LABELS: Record<ElementKey, string> = {
 };
 
 const ELEMENT_COLORS: Record<ElementKey, string> = {
+  collection: "#06B6D4",
   badge: "#A855F7",
   number: "#3B82F6",
   name: "#22C55E",
@@ -58,7 +60,7 @@ export default function ElementProperties({
   onReset,
 }: Props) {
   const [showAll, setShowAll] = useState(true);
-  const allKeys: ElementKey[] = ["badge", "number", "name", "rarity", "creature"];
+  const allKeys: ElementKey[] = ["collection", "badge", "number", "name", "rarity", "creature"];
 
   const handleSetX = (id: ElementKey, value: number) => {
     onLayoutChange({
