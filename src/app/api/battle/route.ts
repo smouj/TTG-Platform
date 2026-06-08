@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { getAuthUser } from '@/lib/auth'
 import { refreshUserProgress } from '@/lib/progression'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 // ── Quest progression: increment any quest with battle requirements ──
 async function progressBattleQuests(userId: string) {
@@ -392,6 +393,8 @@ function simulateRound(
 }
 
 export async function POST(request: NextRequest) {
+  const rl = checkRateLimit(request.headers, "write")
+  if (!rl.allowed) return NextResponse.json({ error: "Rate limited" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   try {
     // Try to get auth user for credit rewards (optional — battles work without auth too)
     const authUser = await getAuthUser(request).catch(() => null)

@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getAuthUser } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number }> = {
   standard: { cost: 10, bonusChance: 0.08, rareBoost: 1 },
@@ -10,6 +11,8 @@ const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: 
 }
 
 export async function POST(request: NextRequest) {
+  const rl = checkRateLimit(request.headers, "write")
+  if (!rl.allowed) return NextResponse.json({ error: "Rate limited" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   try {
     const user = await getAuthUser(request)
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

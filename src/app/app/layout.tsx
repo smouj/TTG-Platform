@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import MagazinePageShell from "@/components/magazine-page-shell"
+import ErrorBoundary from "@/components/ui/error-boundary"
 
 const PATH_TO_TAB: Record<string, string> = {
   "/app/battle": "battle",
@@ -21,5 +22,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       tab = t; break
     }
   }
-  return <MagazinePageShell currentTab={tab as any}>{children}</MagazinePageShell>
+  return (
+    <ErrorBoundary>
+      <MagazinePageShell currentTab={tab as any}>{children}</MagazinePageShell>
+    </ErrorBoundary>
+  )
 }

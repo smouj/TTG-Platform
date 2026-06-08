@@ -1,3 +1,5 @@
+import { checkRateLimit } from "@/lib/rate-limit"
+
 // POST /api/bags/open — Open a purchased bag and reveal the tazo
 import { NextRequest, NextResponse } from "next/server"
 import { getAuthUser } from "@/lib/auth"
@@ -5,6 +7,8 @@ import { db } from "@/lib/db"
 import { refreshUserProgress } from "@/lib/progression"
 
 export async function POST(request: NextRequest) {
+  const rl = checkRateLimit(request.headers, "write")
+  if (!rl.allowed) return NextResponse.json({ error: "Rate limited" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
   try {
     const user = await getAuthUser(request)
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

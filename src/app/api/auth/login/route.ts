@@ -1,8 +1,25 @@
 import { NextRequest, NextResponse } from "next/server"
 import { verifyPassword, generateToken } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
+  // Rate limit: 5 auth attempts per minute
+  const rateLimit = checkRateLimit(request.headers, "auth")
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts. Try again later." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": String(rateLimit.limit),
+          "X-RateLimit-Remaining": "0",
+          "X-RateLimit-Reset": String(rateLimit.resetAt),
+        },
+      }
+    )
+  }
   try {
     const { email, password } = await request.json()
 
