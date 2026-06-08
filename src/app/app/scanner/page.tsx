@@ -15,7 +15,7 @@ export default function ScannerPage() {
   const router = useRouter()
 
   useEffect(() => {
-    if (!loading && user?.email !== "dev.viewer@medaclawarena.com") {
+    if (!loading && user?.email !== "dev.viewer@tradingtazosgame.com") {
       router.replace("/app/collection")
     }
   }, [user, loading, router])
@@ -28,7 +28,7 @@ export default function ScannerPage() {
     )
   }
 
-  if (user?.email !== "dev.viewer@medaclawarena.com") {
+  if (user?.email !== "dev.viewer@tradingtazosgame.com") {
     return null
   }
   return (

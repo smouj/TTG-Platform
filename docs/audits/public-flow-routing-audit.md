@@ -1,5 +1,5 @@
 # Audit: Public Flow, Routing, Tabs & SEO — Historical Baseline
-> Trading Tazos Game — medaclawarena.com
+> Trading Tazos Game — tradingtazosgame.com
 > Date: 2026-06-04 | Baseline: commit `2a3701e` (branch `fix/public-flow-routing-tabs-seo`)
 
 > Superseded by `docs/audits/production-audit-2026-06-06.md`. This file is kept as historical context and should not be treated as current production truth.

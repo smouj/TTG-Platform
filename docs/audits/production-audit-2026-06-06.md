@@ -1,6 +1,6 @@
 # Production Audit — 2026-06-06
 
-Scope: routes, pagination, public claims, screenshots, deploy behavior, and WebSocket smoke for `https://medaclawarena.com`.
+Scope: routes, pagination, public claims, screenshots, deploy behavior, and WebSocket smoke for `https://tradingtazosgame.com`.
 
 ## Current Production Facts
 
@@ -10,7 +10,7 @@ Scope: routes, pagination, public claims, screenshots, deploy behavior, and WebS
 - `/api/tazos` supports real `page` and `limit` pagination and returns `totalPages`.
 - `/api/leaderboard?sort=battles` returns HTTP 200. It can be empty when production has no user-linked battle records.
 - `/api/credits/daily` exists and returns 401 without authentication.
-- WebSocket matchmaking works through `wss://medaclawarena.com/ws` with JWT auth, private rooms, and `match_found` events.
+- WebSocket matchmaking works through `wss://tradingtazosgame.com/ws` with JWT auth, private rooms, and `match_found` events.
 - PvP turn synchronization is staged. Public copy should describe matchmaking/room support, not complete end-to-end PvP gameplay.
 - PWA is installable via manifest metadata. Offline play is not claimed because no service worker was verified.
 

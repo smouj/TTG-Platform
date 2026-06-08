@@ -2,7 +2,7 @@ import { db } from "@/lib/db"
 import { getAuthUser } from "@/lib/auth"
 import { NextRequest, NextResponse } from "next/server"
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev.viewer@medaclawarena.com"
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev.viewer@tradingtazosgame.com"
 
 export async function GET(request: NextRequest) {
   try {

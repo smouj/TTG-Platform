@@ -20,4 +20,4 @@ Desktop installers for Windows, macOS, and Linux are available on the [GitHub Re
 
 ## Play Instantly
 
-No download needed — play directly at **[medaclawarena.com](https://medaclawarena.com)** in your browser, or install the PWA to your home screen.
+No download needed — play directly at **[tradingtazosgame.com](https://tradingtazosgame.com)** in your browser, or install the PWA to your home screen.

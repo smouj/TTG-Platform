@@ -47,12 +47,12 @@ export default function DisclaimerPage() {
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">6. Content Removal</h2>
           <p>
             If you believe any content on TTG infringes your rights or violates our policies, contact
-            us at <a href="mailto:support@medaclawarena.com" className="text-[#E3350D] underline">support@medaclawarena.com</a>.
+            us at <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline">support@tradingtazosgame.com</a>.
             We will review and respond within 48 hours.
           </p>
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">7. Contact</h2>
-          <p>Email: <a href="mailto:support@medaclawarena.com" className="text-[#E3350D] underline">support@medaclawarena.com</a></p>
+          <p>Email: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline">support@tradingtazosgame.com</a></p>
         </div>
       </div>
     </PublicPageShell>

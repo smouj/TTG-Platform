@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-export const SITE_URL = "https://medaclawarena.com"
+export const SITE_URL = "https://tradingtazosgame.com"
 export const SITE_NAME = "Trading Tazos Game"
 
 /**

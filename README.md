@@ -12,8 +12,8 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![Bun](https://img.shields.io/badge/Bun-1.x-FBF0DF?logo=bun)](https://bun.sh)
 [![License](https://img.shields.io/badge/license-Source_Available-blue)](./LICENSE)
-[![Status](https://img.shields.io/badge/status-Live-brightgreen)](https://medaclawarena.com)
-[![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?logo=pwa)](https://medaclawarena.com/manifest.json)
+[![Status](https://img.shields.io/badge/status-Live-brightgreen)](https://tradingtazosgame.com)
+[![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?logo=pwa)](https://tradingtazosgame.com/manifest.json)
 [![i18n](https://img.shields.io/badge/i18n-10_languages-8B5CF6)](./src/lib/i18n/locales/)
 [![Version](https://img.shields.io/badge/version-v0.3.1-FFCC00)](#changelog)
 [![Design](https://img.shields.io/badge/design-Magazine_Game-FFCC00)]()
@@ -24,7 +24,7 @@
 
 Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you stake tazos face-down in a 3D arena, charge up a vertical slam from above, and watch physics resolve flips, wobbles, and captures in real time. Features 349 tazos across 3 collections (Minimon 110, Dracobell 87, Cybermon 152), 9 combat stats, holographic/foil/prismatic finishes, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
 
-🌐 **[medaclawarena.com](https://medaclawarena.com)** &nbsp;|&nbsp; 📧 **support@medaclawarena.com**
+🌐 **[tradingtazosgame.com](https://tradingtazosgame.com)** &nbsp;|&nbsp; 📧 **support@tradingtazosgame.com**
 
 </div>
 
@@ -120,7 +120,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 ### Platform
 | Feature | Detail |
 |---------|--------|
-| Web | Full Next.js 16 app at [medaclawarena.com](https://medaclawarena.com) |
+| Web | Full Next.js 16 app at [tradingtazosgame.com](https://tradingtazosgame.com) |
 | PWA | Installable on mobile and desktop with manifest.json |
 | Desktop | Electron app — [v0.3.1](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.3.1) installers for Windows (.exe), macOS (.dmg), and Linux (.AppImage, .deb) |
 | i18n | 10 languages: EN, ES, PT, DE, FR, IT, JA, KO, ZH, RU |
@@ -300,12 +300,12 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 ## Deployment
 
-The live app runs at **[medaclawarena.com](https://medaclawarena.com)** using PM2 + Caddy on a VPS. See [`deploy.example.sh`](./deploy.example.sh) for the annotated deploy pipeline and [`Caddyfile.example`](./Caddyfile.example) for the reverse-proxy configuration.
+The live app runs at **[tradingtazosgame.com](https://tradingtazosgame.com)** using PM2 + Caddy on a VPS. See [`deploy.example.sh`](./deploy.example.sh) for the annotated deploy pipeline and [`Caddyfile.example`](./Caddyfile.example) for the reverse-proxy configuration.
 
 ### Production Architecture
 
 ```
-medaclawarena.com
+tradingtazosgame.com
   └── Caddy (TLS 1.3, gzip, CSP, HSTS, WebSocket upgrade)
       ├── PM2 `ttg`     (fork, :3000) — Next.js standalone server
       └── PM2 `ttg-ws`  (fork, :3001) — WebSocket battle server
@@ -457,7 +457,7 @@ tazos battle --seed 42   # Simulate a physics battle
 
 <div align="center">
 
-**Made by [@smouj](https://github.com/smouj)** &nbsp;|&nbsp; **[medaclawarena.com](https://medaclawarena.com)**
+**Made by [@smouj](https://github.com/smouj)** &nbsp;|&nbsp; **[tradingtazosgame.com](https://tradingtazosgame.com)**
 
 *Digital tazos. Real 3D physics. Pure nostalgia.*
 

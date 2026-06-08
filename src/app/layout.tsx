@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://medaclawarena.com";
+const SITE_URL = "https://tradingtazosgame.com";
 const SITE_NAME = "Trading Tazos Game";
 const SITE_DESC =
   "Collect, trade and battle with 349 classic tazos from Minimon, Dracobell and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.";
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   description: SITE_DESC,
   keywords: [
-    "tazos", "pogs", "trading tazos game", "ttg", "medaclawarena",
+    "tazos", "pogs", "trading tazos game", "ttg",
     "minimon tazos", "dracobell tazos", "cybermon tazos",
     "collectible game", "physics battle", "digital album", "battle",
     "multiplayer battle", "pvp tazos", "3d battle arena",
@@ -103,7 +103,7 @@ export default function RootLayout({
                 "@type": "Organization",
                 "name": "Trading Tazos Game",
                 "url": SITE_URL,
-                "email": "support@medaclawarena.com",
+                "email": "support@tradingtazosgame.com",
                 "sameAs": [
                   "https://x.com/medaclaw",
                   "https://www.reddit.com/r/MedaclawArena/",

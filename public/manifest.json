@@ -11,7 +11,7 @@
   "categories": ["games", "entertainment", "collectibles"],
   "lang": "en",
   "dir": "ltr",
-  "id": "com.medaclawarena.ttg",
+  "id": "com.tradingtazosgame.ttg",
   "icons": [
     {
       "src": "/favicon.png",
@@ -66,8 +66,8 @@
   "related_applications": [
     {
       "platform": "linux",
-      "url": "https://medaclawarena.com/download",
-      "id": "com.medaclawarena.ttg.linux"
+      "url": "https://tradingtazosgame.com/download",
+      "id": "com.tradingtazosgame.ttg.linux"
     }
   ]
 }

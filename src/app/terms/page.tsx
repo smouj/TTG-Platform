@@ -11,13 +11,13 @@ export default function TermsPage() {
           <p><strong>Last updated:</strong> June 5, 2026</p>
           <p>
             Welcome to Trading Tazos Game (&ldquo;TTG,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;).
-            TTG is a fan-made digital collectible experience available at medaclawarena.com.
+            TTG is a fan-made digital collectible experience available at tradingtazosgame.com.
             By accessing or using our service you agree to these Terms of Service.
           </p>
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">1. Acceptance of Terms</h2>
           <p>
-            By creating an account, accessing, or using medaclawarena.com you agree to be bound by these terms.
+            By creating an account, accessing, or using tradingtazosgame.com you agree to be bound by these terms.
             If you do not agree, do not use the service. We reserve the right to update these terms at any time;
             continued use after changes constitutes acceptance.
           </p>
@@ -33,7 +33,7 @@ export default function TermsPage() {
           <p>
             You are responsible for maintaining the confidentiality of your login credentials.
             You are responsible for all activity under your account. Notify us immediately at
-            support@medaclawarena.com if you suspect unauthorized access. We reserve the right to
+            support@tradingtazosgame.com if you suspect unauthorized access. We reserve the right to
             suspend or terminate accounts that violate these terms.
           </p>
 
@@ -90,9 +90,9 @@ export default function TermsPage() {
           <p>
             For questions about these Terms:
             <br />
-            Email: <a href="mailto:support@medaclawarena.com" className="text-[#E3350D] underline">support@medaclawarena.com</a>
+            Email: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline">support@tradingtazosgame.com</a>
             <br />
-            Website: <a href="https://medaclawarena.com/contact" className="text-[#E3350D] underline">medaclawarena.com/contact</a>
+            Website: <a href="https://tradingtazosgame.com/contact" className="text-[#E3350D] underline">tradingtazosgame.com/contact</a>
           </p>
         </div>
       </div>

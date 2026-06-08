@@ -31,7 +31,7 @@ export default function CookiesPage() {
           <p>We may use browser localStorage for non-personal preferences (e.g., language selection, UI state). This data stays on your device and is never sent to our servers.</p>
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">6. Contact</h2>
-          <p>Questions: <a href="mailto:support@medaclawarena.com" className="text-[#E3350D] underline">support@medaclawarena.com</a></p>
+          <p>Questions: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline">support@tradingtazosgame.com</a></p>
         </div>
       </div>
     </PublicPageShell>

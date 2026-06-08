@@ -8,7 +8,7 @@ const path = require("path")
 const fs = require("fs")
 
 const IS_DEV = process.env.NODE_ENV === "development"
-const PROD_URL = "https://medaclawarena.com"
+const PROD_URL = "https://tradingtazosgame.com"
 const DEV_URL = "http://localhost:3000"
 const VERSION = "0.3.0"
 
@@ -106,7 +106,7 @@ function createWindow() {
 
   // Open external links in browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith("https://medaclawarena.com") || url.startsWith("http://localhost")) {
+    if (url.startsWith("https://tradingtazosgame.com") || url.startsWith("http://localhost")) {
       return { action: "allow" }
     }
     shell.openExternal(url)
@@ -181,7 +181,7 @@ const menuTemplate = [
   {
     label: "Help",
     submenu: [
-      { label: "Website", click: () => shell.openExternal("https://medaclawarena.com") },
+      { label: "Website", click: () => shell.openExternal("https://tradingtazosgame.com") },
       { label: "GitHub", click: () => shell.openExternal("https://github.com/smouj/Trading-Tazos-Game") },
     ],
   },

@@ -30,7 +30,7 @@ export default function PrivacyPage() {
           <p>We retain your account and gameplay data as long as your account is active. Upon account deletion, your personal data is permanently removed within 30 days. Anonymized game statistics may be retained indefinitely.</p>
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">5. Your Rights</h2>
-          <p>Under GDPR and applicable laws, you have the right to: (a) access your data; (b) correct inaccurate data; (c) delete your account and associated data; (d) object to processing; (e) data portability. To exercise these rights, contact support@medaclawarena.com.</p>
+          <p>Under GDPR and applicable laws, you have the right to: (a) access your data; (b) correct inaccurate data; (c) delete your account and associated data; (d) object to processing; (e) data portability. To exercise these rights, contact support@tradingtazosgame.com.</p>
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">6. Children&apos;s Privacy</h2>
           <p>TTG is not directed at children under 13. We do not knowingly collect data from children under 13. If you believe a child has provided us with personal data, contact us immediately.</p>
@@ -43,9 +43,9 @@ export default function PrivacyPage() {
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">9. Contact</h2>
           <p>
-            Data controller: support@medaclawarena.com
+            Data controller: support@tradingtazosgame.com
             <br />
-            Email: <a href="mailto:support@medaclawarena.com" className="text-[#E3350D] underline">support@medaclawarena.com</a>
+            Email: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline">support@tradingtazosgame.com</a>
           </p>
         </div>
       </div>

@@ -99,7 +99,7 @@ export default function MagazinePageShell({
           </span>
           <div className="flex items-center gap-2 sm:gap-3">
             <LanguageSwitcher />
-            {!loading && user && user.email === "dev.viewer@medaclawarena.com" && (
+            {!loading && user && user.email === "dev.viewer@tradingtazosgame.com" && (
               <Link href="/admin" className="text-[9px] font-black text-[#E3350D] hover:text-white tracking-wider uppercase"><Shield className="w-3 h-3 inline mr-1" /><span className="hidden sm:inline">Admin</span></Link>
             )}
             {!loading && user ? (
@@ -199,7 +199,7 @@ export default function MagazinePageShell({
               <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-zinc-500">
                 <a href="https://github.com/smouj/Trading-Tazos-Game/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-[#FFCC00] underline">License</a>
                 <span>|</span>
-                <a href="mailto:support@medaclawarena.com" className="hover:text-[#FFCC00] underline">support@medaclawarena.com</a>
+                <a href="mailto:support@tradingtazosgame.com" className="hover:text-[#FFCC00] underline">support@tradingtazosgame.com</a>
               </div>
             </div>
           </div>
