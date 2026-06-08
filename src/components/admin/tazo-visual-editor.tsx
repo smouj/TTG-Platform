@@ -769,21 +769,23 @@ export default function TazoVisualEditor({
                   transform: "translate(-50%, -50%)",
                 }}
               >
-                {/* Tazo image or placeholder — scaled up so disc fills container, clipping transparent padding */}
+                {/* Tazo image — scaled to fill the circular container */}
                 {tazoImageUrl ? (
-                  <img
-                    src={tazoImageUrl}
-                    alt={displayName || "Tazo"}
-                    className="absolute"
+                  <div
+                    className="w-full h-full"
                     style={{
-                      width: `${previewSize * (1024 / 904)}px`,
-                      height: `${previewSize * (1024 / 904)}px`,
-                      left: '50%',
-                      top: '50%',
-                      transform: 'translate(-50%, -50%)',
+                      transform: `scale(${1024 / 904})`,
+                      transformOrigin: "center center",
                     }}
-                    draggable={false}
-                  />
+                  >
+                    <img
+                      src={tazoImageUrl}
+                      alt={displayName || "Tazo"}
+                      className="w-full h-full"
+                      style={{ objectFit: "cover" }}
+                      draggable={false}
+                    />
+                  </div>
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
                     <Disc className="w-16 h-16 text-zinc-700" />
