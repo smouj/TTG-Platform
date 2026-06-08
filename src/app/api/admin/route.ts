@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client"
 import { getAuthUser } from "@/lib/auth"
 
 const prisma = new PrismaClient()
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev.viewer@tradingtazosgame.com"
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev@tradingtazosgame.com"
 
 async function isAdmin(req: NextRequest) {
   const user = await getAuthUser(req)

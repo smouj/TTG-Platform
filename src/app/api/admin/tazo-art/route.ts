@@ -12,7 +12,7 @@ import fs from "fs";
 import path from "path";
 
 const prisma = new PrismaClient();
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev.viewer@tradingtazosgame.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev@tradingtazosgame.com";
 
 // ── Output paths ──
 const PUBLIC_DIR = path.join(process.cwd(), "public");
