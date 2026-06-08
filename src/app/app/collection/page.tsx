@@ -241,7 +241,7 @@ export default function CollectionPage() {
 
   // ── Main View ─────────────────────────────────────────
   const activeDeck = data.decks?.find(d => d.isActive)
-  const TOTAL_TOTAL = 349 // Same as global DB total
+  const totalGlobal = data.totalUnique > 0 ? Math.max(data.totalUnique, 681) : 681
 
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-4">
@@ -272,7 +272,7 @@ export default function CollectionPage() {
         </div>
         <div className="relative z-10 ml-auto flex items-center gap-2">
           <span className="text-[9px] font-black text-[#FFCC00] bg-white/10 px-2 py-0.5 border border-[#FFCC00]/30 tracking-wider">
-            {data.totalUnique} / {TOTAL_TOTAL}
+            {data.totalUnique} / {totalGlobal}
           </span>
         </div>
       </div>
@@ -285,13 +285,13 @@ export default function CollectionPage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-black text-[#1a1a1a]/50 uppercase tracking-wider">Collection progress</span>
-              <span className="text-[10px] font-black text-[#1a1a1a]">{Math.round((data.totalUnique / TOTAL_TOTAL) * 100)}%</span>
+              <span className="text-[10px] font-black text-[#1a1a1a]">{Math.round((data.totalUnique / Math.max(totalGlobal, 1)) * 100)}%</span>
             </div>
             <div className="h-4 border-2 border-[#1a1a1a] bg-[#fffef0] overflow-hidden shadow-[inset_2px_2px_0px_rgba(26,26,26,0.1)]">
               <div
                 className="h-full transition-all duration-700 ease-out"
                 style={{
-                  width: `${Math.min(100, (data.totalUnique / TOTAL_TOTAL) * 100)}%`,
+                  width: `${Math.min(100, (data.totalUnique / Math.max(totalGlobal, 1)) * 100)}%`,
                   background: "linear-gradient(90deg, #FFCB05, #FF6B00, #E3350D)",
                 }}
               />

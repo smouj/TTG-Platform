@@ -108,7 +108,6 @@ export default function BagShowcase3D({ frontUrl, backUrl }: Props) {
           <PotatoChipBag3D
             frontUrl={frontUrl}
             backUrl={backUrl}
-            autoRotate={false}
             scale={1.25}
           />
         </DragRotator>

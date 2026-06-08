@@ -6,7 +6,7 @@
 // ============================================================
 import { useState, useEffect } from "react"
 import { useAuth } from "@/lib/auth-context"
-import { Shield, Users, Package, Database, Server, Activity, Loader2, AlertTriangle, Check, Wand2, Image as ImageIcon } from "lucide-react"
+import { Shield, Users, Package, Database, Server, Activity, Loader2, AlertTriangle, Check, Wand2, Image as ImageIcon, Grid3X3 } from "lucide-react"
 import Link from "next/link"
 
 interface OverviewData {
@@ -110,7 +110,7 @@ export default function AdminPage() {
 
             {/* Quick Actions */}
             {overview && (
-              <div className="grid sm:grid-cols-2 gap-3 mb-3">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
                 <Link
                   href="/admin/tazo-creator"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
@@ -129,6 +129,23 @@ export default function AdminPage() {
                 </Link>
 
                 <Link
+                  href="/admin/tazos"
+                  className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
+                  style={{ background: 'linear-gradient(135deg, #E3350D10, #FFCC0010)' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#E3350D]">
+                      <Grid3X3 className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#E3350D] transition-colors">Tazo Manager</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">View & edit all {overview.tazos} tazos</p>
+                    </div>
+                    <span className="ml-auto text-[#E3350D] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </Link>
+
+                <Link
                   href="/tazos"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
                   style={{ background: 'linear-gradient(135deg, #3B4CCA10, #FFCC0010)' }}
@@ -138,8 +155,8 @@ export default function AdminPage() {
                       <ImageIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#3B4CCA] transition-colors">Tazo Catalog</h3>
-                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Browse all 349 tazos</p>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#3B4CCA] transition-colors">Public Catalog</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Browse all tazos (public)</p>
                     </div>
                     <span className="ml-auto text-[#3B4CCA] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
