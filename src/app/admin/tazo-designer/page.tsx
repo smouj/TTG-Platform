@@ -8,12 +8,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/lib/auth-context";
 import {
   Shield, Wand2, Loader2, LayoutGrid, RefreshCw,
-  ArrowLeft, Download, Save, Eye, Zap,
+  ArrowLeft, Download, Save, Eye, Zap, FlipHorizontal, FlipVertical,
 } from "lucide-react";
 import Link from "next/link";
 import TazoVisualEditor from "@/components/admin/tazo-visual-editor";
 import type { LayoutConfig } from "@/components/admin/tazo-visual-editor";
 import { DEFAULT_LAYOUT } from "@/components/admin/tazo-visual-editor";
+import TazoBackEditor from "@/components/admin/tazo-back-editor";
 
 const FRANCHISE_ORDER = ["cybermon", "dracobell", "minimon"];
 
@@ -28,6 +29,8 @@ export default function AdminTazoDesignerPage() {
   const [activeFranchise, setActiveFranchise] = useState<string>("");
   const [viewMode, setViewMode] = useState<"editor" | "grid">("editor");
   const [saving, setSaving] = useState(false);
+  const [designerSide, setDesignerSide] = useState<"front" | "back">("front");
+  const [backLayout, setBackLayout] = useState<any>({});
 
   // Fetch all published tazos
   useEffect(() => {
@@ -54,6 +57,7 @@ export default function AdminTazoDesignerPage() {
     if (!selectedTazo) return;
     const fs = selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "";
     setActiveFranchise(fs);
+    // Load front layout
     fetch(
       `/api/admin/tazo-layouts?franchise=${fs}&slug=${selectedTazo.slug}`,
       { credentials: "include" }
@@ -63,6 +67,16 @@ export default function AdminTazoDesignerPage() {
         if (d.layout) setLayout(d.layout);
       })
       .catch(() => setLayout(DEFAULT_LAYOUT));
+    // Load back layout
+    fetch(
+      `/api/admin/tazo-layouts?side=back&franchise=${fs}&slug=${selectedTazo.slug}`,
+      { credentials: "include" }
+    )
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.layout) setBackLayout(d.layout);
+      })
+      .catch(() => setBackLayout({}));
   }, [selectedTazo?.slug, selectedTazo?.franchiseSlug]);
 
   // Navigate tazos with keyboard
@@ -123,6 +137,27 @@ export default function AdminTazoDesignerPage() {
       setSaving(false);
     }
   }, [activeFranchise, layout, publishedTazos]);
+
+  const handleSaveBackLayout = useCallback(async () => {
+    if (!activeFranchise) return;
+    setSaving(true);
+    try {
+      await fetch("/api/admin/tazo-layouts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          franchise: activeFranchise,
+          layout: backLayout,
+          side: "back",
+        }),
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  }, [activeFranchise, backLayout]);
 
   if (authLoading) {
     return (
@@ -241,43 +276,79 @@ export default function AdminTazoDesignerPage() {
 
       <main className="max-w-full mx-auto px-4 py-4">
         {viewMode === "editor" && selectedTazo && (
-          <TazoVisualEditor
-            tazoImageUrl={`/tazos-base/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
-            creatureImageUrl={`/tazo-creatures/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
-            slug={selectedTazo.slug || ""}
-            franchise={selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || ""}
-            rarity={selectedTazo.rarity}
-            displayName={selectedTazo.displayName || selectedTazo.name}
-            number={selectedTazo.number || "—"}
-            collectionName={selectedTazo.collectionName || (selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "").toUpperCase() + " TAZOS SERIES 1"}
-            combatType={selectedTazo.combatType}
-            layout={layout}
-            onLayoutChange={setLayout}
-            wearLevel={selectedTazo.wearLevel || 0}
-            onWearLevelChange={(level) => setSelectedTazo((t: any) => ({ ...t, wearLevel: level }))}
-            publishedTazos={publishedTazos}
-            onSelectTazo={setSelectedTazo}
-          >
-            {/* Action buttons */}
-            <div className="flex items-center gap-2 ml-auto">
+          <>
+            {/* Side toggle tabs */}
+            <div className="flex gap-2 mb-4">
               <button
-                onClick={handleSaveLayout}
-                disabled={saving}
-                className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
+                onClick={() => setDesignerSide("front")}
+                className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg border-2 transition-all ${
+                  designerSide === "front"
+                    ? "bg-[#FFCC00] text-[#1a1a1a] border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
+                    : "bg-white text-[#1a1a1a]/40 border-[#1a1a1a]/10 hover:border-[#FFCC00]/50"
+                }`}
               >
-                {saving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
-                Save for {activeFranchise}
+                <FlipHorizontal className="w-3.5 h-3.5 inline mr-1" /> Front
               </button>
               <button
-                onClick={handleApplyToAll}
-                disabled={saving}
-                className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
+                onClick={() => setDesignerSide("back")}
+                className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg border-2 transition-all ${
+                  designerSide === "back"
+                    ? "bg-[#1a1a1a] text-[#FFCC00] border-[#FFCC00] shadow-[2px_2px_0px_#FFCC00]"
+                    : "bg-white text-[#1a1a1a]/40 border-[#1a1a1a]/10 hover:border-[#1a1a1a]/30"
+                }`}
               >
-                <Zap className="w-3 h-3" />
-                Apply to all {activeFranchise}
+                <FlipVertical className="w-3.5 h-3.5 inline mr-1" /> Back
               </button>
             </div>
-          </TazoVisualEditor>
+
+            {designerSide === "front" ? (
+              <TazoVisualEditor
+                tazoImageUrl={`/tazos-base/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
+                creatureImageUrl={`/tazo-creatures/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
+                slug={selectedTazo.slug || ""}
+                franchise={selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || ""}
+                rarity={selectedTazo.rarity}
+                displayName={selectedTazo.displayName || selectedTazo.name}
+                number={selectedTazo.number || "—"}
+                collectionName={selectedTazo.collectionName || (selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "").toUpperCase() + " TAZOS SERIES 1"}
+                combatType={selectedTazo.combatType}
+                layout={layout}
+                onLayoutChange={setLayout}
+                wearLevel={selectedTazo.wearLevel || 0}
+                onWearLevelChange={(level) => setSelectedTazo((t: any) => ({ ...t, wearLevel: level }))}
+                publishedTazos={publishedTazos}
+                onSelectTazo={setSelectedTazo}
+              >
+                <div className="flex items-center gap-2 ml-auto">
+                  <button
+                    onClick={handleSaveLayout}
+                    disabled={saving}
+                    className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
+                  >
+                    {saving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
+                    Save for {activeFranchise}
+                  </button>
+                  <button
+                    onClick={handleApplyToAll}
+                    disabled={saving}
+                    className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
+                  >
+                    <Zap className="w-3 h-3" />
+                    Apply to all {activeFranchise}
+                  </button>
+                </div>
+              </TazoVisualEditor>
+            ) : (
+              <TazoBackEditor
+                backImageUrl={`/tazos-artgen/backs/${activeFranchise}-back.png`}
+                franchise={activeFranchise}
+                number={selectedTazo.number || "1"}
+                layout={backLayout}
+                onLayoutChange={setBackLayout}
+                onSave={handleSaveBackLayout}
+              />
+            )}
+          </>
         )}
 
         {viewMode === "grid" && (
