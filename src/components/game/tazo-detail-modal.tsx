@@ -248,10 +248,14 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
               {viewMode === 'back' && tazo.isOwned ? (
                 /* Back face — franchise back art */
                 <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                  <img
+                  <TazoDiscImage
                     src={tazo.backImageUrl || `/tazos-artgen/backs/${franchiseSlug}-back.png`}
                     alt="Back"
-                    className="w-full h-full object-cover"
+                    size="100%"
+                    borderWidth={0}
+                    isBack
+                    number={tazo.number}
+                    franchiseSlug={franchiseSlug}
                   />
                 </div>
               ) : viewMode === '3d' && tazo.isOwned ? (
