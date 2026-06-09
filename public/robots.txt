@@ -35,8 +35,14 @@ Allow: /
 User-agent: TelegramBot
 Allow: /
 
-# Search engines
+# Search engines & ads
 User-agent: Googlebot
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
 Allow: /
 
 User-agent: Bingbot
