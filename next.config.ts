@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
       { source: "/earth", destination: "/", permanent: true },
       { source: "/status", destination: "/leaderboard", permanent: true },
 
+      // Public shop preview
+      { source: "/shop", destination: "/bag-shop", permanent: false },
+
       // Favicon fallbacks
       { source: "/favicon.ico", destination: "/favicon.png", permanent: true },
       { source: "/favicon-32x32.png", destination: "/favicon.png", permanent: true },
