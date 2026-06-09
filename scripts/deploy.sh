@@ -66,3 +66,5 @@ do
   code=$(curl -s -o /dev/null -w '%{http_code}' "$url")
   echo "  $code → $url"
 done
+# Deploy note: After deploy to VPS, fix DATABASE_URL in .next/standalone/.env
+# Run on VPS: sed -i 's|file:/home/smouj/.openclaw/workspace/Trading-Tazos-Game/prisma/dev.db|file:/home/smouj/apps/ttg/Trading-Tazos-Game/prisma/dev.db|' .next/standalone/.env
