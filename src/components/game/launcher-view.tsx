@@ -241,7 +241,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#3B82F6] rounded-lg bg-[#3B82F6]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #3B82F630" }}>
             <span className="text-[7px] font-black text-[#3B82F6] uppercase mt-1">Prem</span>
-            <span className="text-[6px] font-bold text-[#3B82F6]/50">25 cr</span>
+            <span className="text-[6px] font-bold text-[#3B82F6]/50">10 cr</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#3B82F6]/10 border-t border-[#3B82F6]/20" />
           </div>
         </div>
@@ -249,7 +249,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#A855F7] rounded-lg bg-[#A855F7]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #A855F730" }}>
             <span className="text-[7px] font-black text-[#A855F7] uppercase mt-1">Mega</span>
-            <span className="text-[6px] font-bold text-[#A855F7]/50">50 cr</span>
+            <span className="text-[6px] font-bold text-[#A855F7]/50">10 cr</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#A855F7]/10 border-t border-[#A855F7]/20" />
           </div>
         </div>
@@ -1156,9 +1156,9 @@ function TazosContent() {
 // ── Shop ──
 
 const BAGS = [
-  { type: "classic", name: "Classic Bag", bonusChance: 12, rareBoost: 1, color: "#FFCC00", bg: "#FFF8E7", border: "#E5B800", franchise: "minimon", franchiseName: "Minimon", icon: ShoppingBag, tagline: "Original collection tazos", desc: "Perfect for new collectors. Classic Minimon tazos with standard rarity distribution.", rarity: [{ l:"Common",p:55},{l:"Uncommon",p:30},{l:"Rare",p:12},{l:"Ultra Rare",p:2.5},{l:"Legendary",p:0.5}] },
-  { type: "premium", name: "Premium Bag", bonusChance: 18, rareBoost: 2, color: "#3B82F6", bg: "#EFF6FF", border: "#2563EB", franchise: "cybermon", franchiseName: "Cybermon", icon: Star, tagline: "Digital monsters and tech", desc: "Boosted rare chances. Cybermon tazos with digital finishes and enhanced rarity.", rarity: [{ l:"Common",p:45},{l:"Uncommon",p:32},{l:"Rare",p:18},{l:"Ultra Rare",p:4},{l:"Legendary",p:1}] },
-  { type: "mega", name: "Mega Bag", bonusChance: 30, rareBoost: 4, color: "#F97316", bg: "#FFF7ED", border: "#EA580C", franchise: "dracobell", franchiseName: "Dracobell", icon: Zap, tagline: "Legendary auras, top rarity", desc: "Maximum rarity boost. Dracobell tazos with legendary finishes and the highest ultra-rare drop rate.", rarity: [{ l:"Common",p:35},{l:"Uncommon",p:30},{l:"Rare",p:25},{l:"Ultra Rare",p:7},{l:"Legendary",p:3}] },
+  { type: "classic", name: "Classic Bag", bonusChance: 15, rareBoost: 2, color: "#FFCC00", bg: "#FFF8E7", border: "#E5B800", franchise: "minimon", franchiseName: "Minimon", icon: ShoppingBag, tagline: "Original collection tazos", desc: "Classic Minimon tazos with balanced rarity distribution.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
+  { type: "premium", name: "Premium Bag", bonusChance: 15, rareBoost: 2, color: "#3B82F6", bg: "#EFF6FF", border: "#2563EB", franchise: "cybermon", franchiseName: "Cybermon", icon: Star, tagline: "Digital monsters and tech", desc: "Cybermon tazos with digital finishes and balanced rarity.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
+  { type: "mega", name: "Mega Bag", bonusChance: 15, rareBoost: 2, color: "#F97316", bg: "#FFF7ED", border: "#EA580C", franchise: "dracobell", franchiseName: "Dracobell", icon: Zap, tagline: "Legendary auras, top rarity", desc: "Dracobell tazos with legendary finishes and balanced rarity.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
 ]
 const RC: Record<string, string> = { Common:"#9CA3AF", Uncommon:"#22C55E", Rare:"#3B82F6","Ultra Rare":"#A855F7", Legendary:"#F59E0B" }
 
@@ -1220,7 +1220,7 @@ function ShopContent() {
                   </div>
                   <div className="flex items-center gap-0.5 bg-white px-2 py-1 border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]">
                     <Coins className="w-3 h-3 text-[#D97706]" />
-                    <span className="text-xs font-black text-[#1a1a1a]">{bag.rarity[4].p === 3 ? 20 : 10}</span>
+                    <span className="text-xs font-black text-[#1a1a1a]">10</span>
                   </div>
                 </div>
                 <p className="text-[10px] sm:text-xs text-[#1a1a1a]/60 font-bold leading-relaxed">{bag.desc}</p>

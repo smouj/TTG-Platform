@@ -5,9 +5,9 @@ import { db } from "@/lib/db"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number }> = {
-  standard: { cost: 10, bonusChance: 0.08, rareBoost: 1 },
+  standard: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
   premium: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
-  mega: { cost: 10, bonusChance: 0.25, rareBoost: 3 },
+  mega: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
 }
 
 export async function POST(request: NextRequest) {

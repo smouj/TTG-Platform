@@ -37,19 +37,19 @@ interface BagConfig {
 const BAGS: BagConfig[] = [
   {
     type: "standard", name: "Classic Bag", cost: 10,
-    bonusChance: 12, rareBoost: 1, color: "#FFCC00", bgColor: "#FFF8E7",
+    bonusChance: 15, rareBoost: 2, color: "#FFCC00", bgColor: "#FFF8E7",
     franchise: "minimon", icon: <ShoppingBag className="w-4 h-4" />,
     tagline: "Original collection tazos",
   },
   {
     type: "premium", name: "Premium Bag", cost: 10,
-    bonusChance: 18, rareBoost: 2, color: "#3B82F6", bgColor: "#EFF6FF",
+    bonusChance: 15, rareBoost: 2, color: "#3B82F6", bgColor: "#EFF6FF",
     franchise: "cybermon", icon: <Star className="w-4 h-4" />,
     tagline: "Digital monsters and tech",
   },
   {
     type: "mega", name: "Mega Bag", cost: 10,
-    bonusChance: 30, rareBoost: 4, color: "#F97316", bgColor: "#FFF7ED",
+    bonusChance: 15, rareBoost: 2, color: "#F97316", bgColor: "#FFF7ED",
     franchise: "dracobell", icon: <Zap className="w-4 h-4" />,
     tagline: "Legendary auras, top rarity",
   },
@@ -370,7 +370,7 @@ export default function BagShopPage() {
                   if (data.bags?.length > 0) {
                     const first = data.bags[0]
                     setBagId(first.id)
-                    setSelectedBag({ type: first.bagType || "standard", name: "Mystery Bag", cost: 0, bonusChance: 10, rareBoost: 1, color: "#FFCC00", bgColor: "#FFF8E7", franchise: first.preview?.franchise || "minimon", icon: <Gift className="w-4 h-4" />, tagline: "Free bag" })
+                    setSelectedBag({ type: first.bagType || "standard", name: "Mystery Bag", cost: 0, bonusChance: 15, rareBoost: 2, color: "#FFCC00", bgColor: "#FFF8E7", franchise: first.preview?.franchise || "minimon", icon: <Gift className="w-4 h-4" />, tagline: "Free bag" })
                     setBuying(false); setStage("opening")
                     sfxEnsureUnlocked(); playSFX('coin', { volume: 0.35 })
                   }
