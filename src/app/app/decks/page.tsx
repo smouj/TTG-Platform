@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
-import { Layers, Plus, Trash2, Star, Swords, Edit3, Shield, Zap, PackageOpen } from "lucide-react"
+import { Layers, Plus, Trash2, Star, Swords, Edit3, Shield, Zap, PackageOpen, CheckCircle } from "lucide-react"
 import DeckBuilder from "@/components/game/deck-builder"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import BattleTubePreview from "@/components/tubes/BattleTubePreview"
@@ -24,11 +24,7 @@ interface DeckTazo {
 }
 interface Deck {
   id: string; name: string; isActive: boolean; tazoCount: number; tazos: DeckTazo[]
-  color?: string; starters?: string[]
-}
-
-const FRANCHISE_BORDER: Record<string, string> = {
-  minimon: "#FFCB05", cybermon: "#00A1E9", dracobell: "#FF6B00",
+  color?: string; starters?: string[]; createdAt: string; updatedAt?: string
 }
 
 function totalPower(t: DeckTazo): number {
@@ -206,161 +202,147 @@ export default function DecksPage() {
             return (
               <div
                 key={deck.id}
-                className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] overflow-hidden"
-                style={{ background: "white" }}
+                className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all"
               >
-                {/* Colored accent bar at top */}
-                <div className="h-1.5" style={{ background: deck.color || "#3B4CCA" }} />
+                <div className="flex flex-col sm:flex-row">
+                  {/* Tube preview column */}
+                  <div className="flex-shrink-0 flex items-center justify-center py-4 px-3 sm:border-r-3 border-[#1a1a1a]/10" style={{ background: deck.color + "08" }}>
+                    <BattleTubePreview
+                      name={deck.name}
+                      color={deck.color || "#3B4CCA"}
+                      count={deck.tazoCount}
+                      maxCount={20}
+                      tazos={deck.tazos.slice(0, 10).map(t => ({
+                        id: t.id, name: t.name, displayName: t.displayName,
+                        imageUrl: t.imageUrl, franchiseSlug: t.franchiseSlug || t.franchise,
+                        finish: t.finish, creatureVariant: t.creatureVariant, shinyImageUrl: t.shinyImageUrl,
+                      }))}
+                      starters={deck.starters || []}
+                      size="md"
+                      showCap
+                    />
+                  </div>
 
-                <div className="p-4 sm:p-5">
-                  {/* Header */}
-                  <div className="flex items-start gap-4">
-                    {/* Tube preview */}
-                    <div className="flex-shrink-0">
-                      <BattleTubePreview
-                        name={deck.name}
-                        color={deck.color || "#3B4CCA"}
-                        count={deck.tazoCount}
-                        maxCount={20}
-                        tazos={deck.tazos.slice(0, 8).map(t => ({
-                          id: t.id, name: t.name, displayName: t.displayName,
-                          imageUrl: t.imageUrl, franchiseSlug: t.franchiseSlug || t.franchise,
-                          finish: t.finish, creatureVariant: t.creatureVariant, shinyImageUrl: t.shinyImageUrl,
-                        }))}
-                        starters={deck.starters || []}
-                        size="sm"
-                        showCap
-                      />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h2 className="text-lg font-black text-[#1a1a1a] uppercase tracking-tight truncate">
+                  {/* Info column */}
+                  <div className="flex-1 min-w-0 p-4 sm:p-5 flex flex-col justify-between">
+                    {/* Top row: name + actions */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h2 className="text-base sm:text-lg font-black text-[#1a1a1a] uppercase tracking-tight truncate">
                           {deck.name}
                         </h2>
-                        {deck.isActive && (
-                          <span className="inline-flex items-center gap-1 text-[9px] bg-[#FFCC00] text-[#1a1a1a] font-black px-2 py-0.5 border-2 border-[#1a1a1a] uppercase tracking-wider shadow-[2px_2px_0px_#1a1a1a]">
-                            <Star className="w-2.5 h-2.5 fill-[#1a1a1a]" />
-                            {t.decks_active}
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
+                          {/* Fill badge */}
+                          <span className={`inline-flex items-center gap-1 text-[9px] font-black px-2 py-0.5 border-2 border-[#1a1a1a] uppercase tracking-wider shadow-[2px_2px_0px_#1a1a1a] ${
+                            deck.tazoCount >= 20
+                              ? "bg-[#22C55E] text-white"
+                              : "bg-[#fffef0] text-[#1a1a1a]"
+                          }`}>
+                            {deck.tazoCount >= 20 ? (
+                              <><CheckCircle className="w-2.5 h-2.5" /> Sealed</>
+                            ) : (
+                              <>{deck.tazoCount}/20 tazos</>
+                            )}
+                          </span>
+                          {/* Starter count */}
+                          <span className="text-[9px] font-bold text-[#E3350D] flex items-center gap-0.5">
+                            <Swords className="w-2.5 h-2.5" /> {deck.starters?.length || 0} starters
+                          </span>
+                          {deck.isActive && (
+                            <span className="inline-flex items-center gap-1 text-[9px] bg-[#FFCC00] text-[#1a1a1a] font-black px-2 py-0.5 border-2 border-[#1a1a1a] uppercase tracking-wider shadow-[2px_2px_0px_#1a1a1a]">
+                              <Star className="w-2.5 h-2.5 fill-[#1a1a1a]" />
+                              Active
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex gap-1.5 flex-shrink-0">
+                        <button
+                          onClick={() => {
+                            setEditingDeck(deck)
+                            setShowBuilder(true)
+                          }}
+                          className="mag-btn bg-[#1a1a1a] text-[#FFCC00] px-2.5 py-2 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border-2 border-[#1a1a1a]"
+                          title="Edit tube"
+                        >
+                          <Edit3 className="w-3 h-3" />
+                          <span className="hidden sm:inline">Edit</span>
+                        </button>
+                        {!deck.isActive && (
+                          <button
+                            onClick={() => handleActivate(deck.id)}
+                            className="mag-btn bg-[#FFCC00] text-[#1a1a1a] px-2.5 py-2 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border-2 border-[#1a1a1a]"
+                          >
+                            <Star className="w-3 h-3" />
+                            <span className="hidden sm:inline">Set Active</span>
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(deck.id)}
+                          className="mag-btn bg-white text-[#E3350D] px-2.5 py-2 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border-2 border-[#E3350D]"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Bottom: compact stats + tazo preview pills */}
+                    <div className="mt-4 space-y-3">
+                      {/* Stats row */}
+                      <div className="flex flex-wrap gap-3 text-[10px] font-bold">
+                        <span className="text-[#E3350D] flex items-center gap-0.5">
+                          <Swords className="w-3 h-3" /> {avgAtk} ATK
+                        </span>
+                        <span className="text-[#3B4CCA] flex items-center gap-0.5">
+                          <Shield className="w-3 h-3" /> {avgDef} DEF
+                        </span>
+                        <span className="text-[#FFCC00] flex items-center gap-0.5">
+                          <Zap className="w-3 h-3" /> {totalP} TP
+                        </span>
+                        <span className="text-[#1a1a1a]/30">
+                          Created {new Date(deck.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      {/* Tazo chip pills — compact, just circles */}
+                      <div className="flex items-center gap-1 flex-wrap">
+                        {deck.tazos.slice(0, 12).map(t => {
+                          const isStarter = deck.starters?.includes(t.id)
+                          return (
+                            <div
+                              key={t.id}
+                              className="w-7 h-7 rounded-full overflow-hidden border-2 flex-shrink-0"
+                              style={{
+                                background: "#1a1a1a",
+                                borderColor: isStarter ? deck.color || "#E3350D" : "#1a1a1a/30",
+                                boxShadow: isStarter ? `0 0 6px ${deck.color || "#E3350D"}40` : "none",
+                              }}
+                              title={`${t.displayName || t.name}${isStarter ? " (Starter)" : ""}`}
+                            >
+                              <TazoDiscImage
+                                src={t.imageUrl}
+                                alt={t.name || ""}
+                                size="100%"
+                                borderWidth={0}
+                                franchiseSlug={t.franchiseSlug || t.franchise}
+                                finish={t.finish as TazoFinish || "normal"}
+                                creatureVariant={t.creatureVariant as TazoCreatureVariant || "standard"}
+                                shinyImageUrl={t.shinyImageUrl}
+                                lazy
+                              />
+                            </div>
+                          )
+                        })}
+                        {deck.tazos.length > 12 && (
+                          <span className="text-[9px] font-black text-[#1a1a1a]/30 ml-1">
+                            +{deck.tazos.length - 12}
                           </span>
                         )}
                       </div>
-
-                      {/* Stats row */}
-                      <div className="flex flex-wrap gap-3 mt-1.5">
-                        <span className="text-[10px] font-black text-[#1a1a1a]/50 uppercase tracking-wider">
-                          {deck.tazoCount}/20 {t.decks_tazo_count}
-                        </span>
-                        <span className="text-[10px] font-bold text-[#E3350D] flex items-center gap-0.5">
-                          <Swords className="w-3 h-3" /> {avgAtk} ATK
-                        </span>
-                        <span className="text-[10px] font-bold text-[#3B4CCA] flex items-center gap-0.5">
-                          <Shield className="w-3 h-3" /> {avgDef} DEF
-                        </span>
-                        <span className="text-[10px] font-bold text-[#FFCC00] flex items-center gap-0.5">
-                          <Zap className="w-3 h-3" /> {totalP} TP
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-1.5 flex-shrink-0">
-                      <button
-                        onClick={() => {
-                          setEditingDeck(deck)
-                          setShowBuilder(true)
-                        }}
-                        className="mag-btn bg-[#1a1a1a] text-[#FFCC00] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border-2 border-[#1a1a1a]"
-                        title="Edit deck"
-                      >
-                        <Edit3 className="w-3 h-3" />
-                      </button>
-                      {!deck.isActive && (
-                        <button
-                          onClick={() => handleActivate(deck.id)}
-                          className="mag-btn bg-[#FFCC00] text-[#1a1a1a] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border-2 border-[#1a1a1a]"
-                        >
-                          <Star className="w-3 h-3" />
-                          {t.decks_activate}
-                        </button>
-                      )}
-                      <button
-                        onClick={() => handleDelete(deck.id)}
-                        className="mag-btn bg-white text-[#E3350D] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border-2 border-[#E3350D]"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </button>
                     </div>
                   </div>
-
-                  {/* Tazo strip */}
-                  {deck.tazos.length > 0 ? (
-                    <div className="flex gap-2 overflow-x-auto pb-1 custom-scrollbar">
-                      {deck.tazos.map((tazo) => {
-                        const borderColor = FRANCHISE_BORDER[tazo.franchiseSlug || tazo.franchise] || "#1a1a1a"
-                        const isStarter = deck.starters?.includes(tazo.id)
-                        return (
-                          <div
-                            key={tazo.id}
-                            className="shrink-0 border-3 shadow-[2px_2px_0px_#1a1a1a] overflow-hidden relative"
-                            style={{ borderColor, background: "white", width: "80px" }}
-                          >
-                            {/* Starter badge */}
-                            {isStarter && (
-                              <div className="absolute -top-1 -right-1 z-10 w-5 h-5 rounded-full bg-[#E3350D] border-2 border-[#1a1a1a] flex items-center justify-center">
-                                <Swords className="w-3 h-3 text-white" />
-                              </div>
-                            )}
-                            <div className="h-1" style={{ background: borderColor }} />
-                            <div className="p-1.5 flex items-center justify-center bg-[#fffef0]" style={{ aspectRatio: "1" }}>
-                              <TazoDiscImage
-                                src={tazo.imageUrl}
-                                alt={tazo.name || ""}
-                                size="100%"
-                                borderWidth={0}
-                                franchiseSlug={tazo.franchiseSlug}
-                                finish={tazo.finish as TazoFinish || "normal"}
-                                creatureVariant={tazo.creatureVariant as TazoCreatureVariant || "standard"}
-                                shinyImageUrl={tazo.shinyImageUrl}
-                                wear={tazo.wear || 0}
-                              />
-                            </div>
-                            <div className="p-1">
-                              <p className="text-[8px] font-black text-[#1a1a1a] truncate leading-tight">
-                                {tazo.name || "#" + tazo.number}
-                              </p>
-                              <div className="flex gap-0.5 mt-0.5">
-                                <span className="text-[7px] font-bold text-[#E3350D]">{tazo.attack}</span>
-                                <span className="text-[7px] font-bold text-[#1a1a1a]/30">/</span>
-                                <span className="text-[7px] font-bold text-[#3B4CCA]">{tazo.defense}</span>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      })}
-                      {/* Empty slots */}
-                      {Array.from({ length: Math.max(0, 20 - deck.tazos.length) }).map((_, i) => (
-                        <div
-                          key={`empty-${i}`}
-                          className="shrink-0 border-2 border-dashed border-[#1a1a1a]/15 flex items-center justify-center"
-                          style={{ width: "80px", aspectRatio: "1", background: "#fffef0" }}
-                        >
-                          <span className="text-[8px] font-black text-[#1a1a1a]/10">SLOT</span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-xs font-bold text-[#1a1a1a]/30 italic uppercase tracking-wider py-4 text-center border-2 border-dashed border-[#1a1a1a]/20">
-                      {t.decks_select_tazos}
-                    </p>
-                  )}
-
-                  {/* Empty slots counter */}
-                  {deck.tazos.length < 20 && deck.tazos.length > 0 && (
-                    <p className="text-[9px] font-bold text-[#1a1a1a]/20 uppercase tracking-wider mt-2 text-right">
-                      {20 - deck.tazos.length} empty slot{20 - deck.tazos.length !== 1 ? "s" : ""}
-                    </p>
-                  )}
                 </div>
               </div>
             )

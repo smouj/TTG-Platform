@@ -24,7 +24,7 @@ const NAV_ITEMS: { id: TabId; label: string; icon: typeof BookOpen; href: string
   { id: "collection", label: "Collection", icon: Disc3, href: "/app/collection" },
   { id: "battle", label: "Battle!", icon: Swords, href: "/app/battle" },
   { id: "shop", label: "Shop", icon: ShoppingBag, href: "/app/shop" },
-  { id: "decks", label: "Decks", icon: Layers, href: "/app/decks" },
+  { id: "decks", label: "Tubes", icon: Layers, href: "/app/decks" },
   { id: "stats", label: "Stats", icon: BarChart3, href: "/app/stats" },
   { id: "quests", label: "Quests", icon: Target, href: "/app/quests" },
   { id: "settings", label: "Settings", icon: Settings, href: "/app/settings" },
