@@ -183,21 +183,16 @@ export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps)
 
           {/* ===== BACK FACE ===== */}
           <div className="tazo-flip-back">
-            <div
-              className={`ttg-bg-disc relative w-full h-full rounded-full flex items-center justify-center overflow-hidden ${bgClasses}`}
-              style={{
-                border: '3px solid #1a1a1a',
-                padding: '3px',
-              }}
-            >
-              <div
-                className="ttg-bg-disc-inner w-full h-full rounded-full relative overflow-hidden"
-              >
-                <img
-                  src={backArt}
-                  alt={`${franchiseSlug} series back`}
-                  className="w-full h-full object-cover rounded-full"
-                />
+            <TazoDiscImage
+              src={backArt}
+              alt={`${franchiseSlug} series back`}
+              size="112px"
+              borderWidth={3}
+              borderColor="#1a1a1a"
+              isBack
+              finish="normal"
+              number={tazo.number}
+              overlay={
                 <div
                   className="absolute top-0 left-0 right-0 text-center py-1"
                   style={{
@@ -212,20 +207,8 @@ export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps)
                     {tazo.franchiseName || franchiseSlug}
                   </span>
                 </div>
-                {tazo.number && (
-                  <span
-                    className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight"
-                    style={{
-                      color: '#1a1a1a',
-                      background: 'rgba(255,255,255,0.9)',
-                      border: '1px solid #1a1a1a',
-                    }}
-                  >
-                    #{tazo.number}
-                  </span>
-                )}
-              </div>
-            </div>
+              }
+            />
           </div>
         </div>
 
