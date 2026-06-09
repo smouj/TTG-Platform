@@ -530,7 +530,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
               <span className="text-[#00A1E9]">Game</span>
             </h1>
             <p className="text-lg sm:text-xl font-black text-[#1a1a1a]/60 uppercase tracking-[0.05em]">
-              Collect. Trade. Battle.
+              {realTazoCount ? `${realTazoCount} Tazos Available` : "Collect. Trade. Battle."}
             </p>
           </div>
 
@@ -634,7 +634,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
                 style={{ background: "repeating-linear-gradient(-45deg, #E3350D08, #E3350D08 4px, transparent 4px, transparent 8px)", borderBottom: "3px solid #1a1a1a" }}>
                 <Crown className="w-4 h-4 text-[#F59E0B]" />
                 <span className="text-[10px] font-black text-[#1a1a1a] uppercase tracking-[0.2em]">Featured Tazos</span>
-                <span className="ml-auto text-[8px] font-black text-[#1a1a1a]/20 uppercase">{displayTazos.length} of 32</span>
+                <span className="ml-auto text-[8px] font-black text-[#1a1a1a]/20 uppercase">{displayTazos.length} of {realTazoCount ?? 30}</span>
               </div>
               <div className="p-3 sm:p-4">
                 <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
@@ -654,7 +654,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
 
           {/* Status line */}
           <p className="text-[8px] font-black text-[#1a1a1a]/15 uppercase tracking-[0.15em] text-center">
-            {user ? "349 Tazos · Free to Play · Browser + Desktop" : "No download · No signup needed · Play free"}
+            {user ? `${realTazoCount ?? 30} Tazos Available · Free to Play · Browser + Desktop` : "No download · No signup needed · Play free"}
           </p>
         </div>
       </div>
@@ -730,8 +730,14 @@ function BattlePreviewHome() {
 
 function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   const [seriesTazos, setSeriesTazos] = useState<Record<string, any[]>>({})
+  const [stats, setStats] = useState<{totalTazos: number; byFranchise: Record<string,number>} | null>(null)
 
   useEffect(() => {
+    // Fetch stats for accurate counts
+    fetch("/api/stats")
+      .then(r => r.json())
+      .then(d => setStats(d))
+      .catch(() => {})
     // Fetch 4 tazos per franchise for preview
     const franchises = ["minimon", "dracobell", "cybermon"]
     Promise.all(
@@ -751,15 +757,15 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
   }, [])
 
   const series = [
-    { name: "Minimon", slug: "minimon", count: FRANCHISE_BY_SLUG.minimon.count, total: FRANCHISE_BY_SLUG.minimon.total, year: 2000, color: "#FFCC00", desc: "61 creature companions with balanced combat stats — the original collection." },
-    { name: "Dracobell", slug: "dracobell", count: FRANCHISE_BY_SLUG.dracobell.count, total: FRANCHISE_BY_SLUG.dracobell.total, year: 1995, color: "#FF6B00", desc: "128 martial arts warriors across 6 categories. Home to the rarest variants." },
-    { name: "Cybermon", slug: "cybermon", count: FRANCHISE_BY_SLUG.cybermon.count, total: FRANCHISE_BY_SLUG.cybermon.total, year: 2000, color: "#00B4D8", desc: "160 digital companions in cap format. Highest precision stats." },
+    { name: "Minimon", slug: "minimon", count: stats?.byFranchise?.Minimon ?? 10, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2000, color: "#FFCC00", desc: "61 creature companions with balanced combat stats — the original collection." },
+    { name: "Dracobell", slug: "dracobell", count: stats?.byFranchise?.Dracobell ?? 10, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 1995, color: "#FF6B00", desc: "128 martial arts warriors across 6 categories. Home to the rarest variants." },
+    { name: "Cybermon", slug: "cybermon", count: stats?.byFranchise?.Cybermon ?? 10, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2000, color: "#00B4D8", desc: "160 digital companions in cap format. Highest precision stats." },
   ]
 
   return (
     <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-2 pb-10">
       <div className="text-center mb-5">
-        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · 349 Tazos</h2>
+        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 30} Tazos</h2>
         <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider">Classic snack toy collections</p>
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
@@ -785,7 +791,7 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
                 ))}
               </div>
               <h3 className="text-sm font-black text-[#1a1a1a] uppercase">{s.name}</h3>
-              <p className="text-[9px] font-bold text-[#1a1a1a]/35 mt-0.5">{s.count} of {s.total} tazos · {s.year}</p>
+              <p className="text-[9px] font-bold text-[#1a1a1a]/35 mt-0.5">{s.count} of {s.planned} tazos · {s.year}</p>
               <p className="text-[10px] font-bold text-[#1a1a1a]/45 mt-1.5 leading-relaxed">{s.desc}</p>
               <p className="mt-2 text-[10px] font-black text-[#E3350D] uppercase group-hover:underline">View Series →</p>
             </div>
