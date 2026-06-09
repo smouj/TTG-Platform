@@ -34,7 +34,6 @@ interface BattleTubePreviewProps {
   starters?: string[]
   size?: "sm" | "md" | "lg"
   showLabel?: boolean
-  showCap?: boolean
   className?: string
 }
 
@@ -77,7 +76,7 @@ function TubeLoadingFallback() {
 export default function BattleTubePreview({
   name, color = "#E3350D", count = 0, maxCount = 20,
   tazos = [], starters = [],
-  size = "md", showLabel = true, showCap = true,
+  size = "md", showLabel = true,
   className = "",
 }: BattleTubePreviewProps) {
   const sizes = {

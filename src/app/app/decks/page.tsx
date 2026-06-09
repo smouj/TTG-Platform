@@ -219,7 +219,6 @@ export default function DecksPage() {
                       }))}
                       starters={deck.starters || []}
                       size="md"
-                      showCap
                     />
                   </div>
 
@@ -315,8 +314,8 @@ export default function DecksPage() {
                               key={t.id}
                               className="w-7 h-7 rounded-full overflow-hidden border-2 flex-shrink-0"
                               style={{
-                                background: "#1a1a1a",
-                                borderColor: isStarter ? deck.color || "#E3350D" : "#1a1a1a/30",
+                                background: "transparent",
+                                borderColor: isStarter ? deck.color || "#E3350D" : "#1a1a1a/15",
                                 boxShadow: isStarter ? `0 0 6px ${deck.color || "#E3350D"}40` : "none",
                               }}
                               title={`${t.displayName || t.name}${isStarter ? " (Starter)" : ""}`}
@@ -353,7 +352,7 @@ export default function DecksPage() {
         <div className="text-center py-20 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]" style={{ background: "#fffef0" }}>
           <div className="flex justify-center mb-6">
             <div className="relative">
-              <BattleTubePreview name="" color="#E3350D" count={0} maxCount={20} size="lg" showCap showLabel={false} />
+              <BattleTubePreview name="" color="#E3350D" count={0} maxCount={20} size="lg" showLabel={false} />
               <div className="absolute -bottom-3 -right-3 w-10 h-10 bg-[#1a1a1a] border-3 border-[#FFCC00] flex items-center justify-center rounded-full shadow-[3px_3px_0px_#1a1a1a]">
                 <span className="text-[#FFCC00] text-lg font-black">?</span>
               </div>
