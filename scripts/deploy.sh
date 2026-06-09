@@ -33,6 +33,7 @@ mkdir -p .next/standalone/prisma
 mkdir -p .next/standalone/public/tazos-base
 mkdir -p .next/standalone/public/tazos-generated
 mkdir -p .next/standalone/public/tazos-backs
+mkdir -p .next/standalone/public/tazos-artgen/backs
 
 # Copy layout JSON (only if not already present — preserves user saves)
 if [ ! -f .next/standalone/prisma/tazo-layouts.json ]; then
@@ -46,6 +47,7 @@ fi
 cp -r public/tazos-base/* .next/standalone/public/tazos-base/   2>/dev/null || true
 cp -r public/tazos-generated/* .next/standalone/public/tazos-generated/ 2>/dev/null || true
 cp -r public/tazos-backs/* .next/standalone/public/tazos-backs/  2>/dev/null || true
+cp -r public/tazos-artgen/* .next/standalone/public/tazos-artgen/  2>/dev/null || true
 
 # Restart PM2
 pm2 restart ttg

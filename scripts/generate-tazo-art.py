@@ -302,9 +302,9 @@ def generate_tazo(tazo, bgs, fonts, base_only=False, layouts=None):
 
     # ── Rings (from outside in) ──
     R = RADIUS
-    # Black outer border (tazo disc edge)
+    # Black outer border (tazo disc edge) — extended inward to cover former rarity ring space
     draw.ellipse([CENTER-R-12, CENTER-R-12, CENTER+R+12, CENTER+R+12],
-                 outline=(18,18,18), width=8)
+                 outline=(18,18,18), width=12)
     # Dark inner separator
     draw.ellipse([CENTER-R+6, CENTER-R+6, CENTER+R-6, CENTER+R-6],
                  outline=(26,26,26), width=3)
