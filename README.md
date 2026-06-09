@@ -22,7 +22,7 @@
 
 **Aim. Throw. Flip. Capture. Collect.**
 
-Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you stake tazos face-down in a 3D arena, charge up a vertical slam from above, and watch physics resolve flips, wobbles, and captures in real time. Features 30 published tazos across 3 collections (Minimon, Dracobell & Cybermon) with 319 more generated and ready in the pipeline, 9 combat stats, holographic/foil/prismatic finishes, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
+Trading Tazos Game is a browser-based digital tazo (pog) battle game designed entirely with a 90s gaming magazine aesthetic — cream paper backgrounds, yellow mastheads, halftone dot patterns, bold comic typography, and 3px black border cards with drop shadows. You don't just compare stats — you stake tazos face-down in a 3D arena, charge up a vertical slam from above, and watch physics resolve flips, wobbles, and captures in real time. Features **30 published tazos** across 3 collections (Minimon, Dracobell & Cybermon) with **319 more generated** in the pipeline, 9 combat stats, holographic/foil/prismatic finishes, a unified 3D physics battle engine with AI opponents, real potato chip bag opening with 3D textures, and a full progression system with quests and achievements.
 
 🌐 **[tradingtazosgame.com](https://tradingtazosgame.com)** &nbsp;|&nbsp; 📧 **support@tradingtazosgame.com**
 
@@ -349,19 +349,20 @@ The game uses a **90s Nintendo Power / Pokémon Magazine** aesthetic specified i
 
 Desktop installers for all platforms are available on the [Releases page](https://github.com/smouj/Trading-Tazos-Game/releases/latest).
 
-| Platform | Format | Status |
-|----------|--------|--------|
-| Linux | AppImage, .deb | ✅ Available |
-| Windows | .exe (NSIS) | ✅ Available |
-| macOS | .dmg, .zip | ✅ Available |
+| Platform | Format | Version |
+|----------|--------|---------|
+| Linux | AppImage, .deb | v0.3.1 |
+| Windows | .exe (NSIS) | v0.3.1 |
+| macOS | .dmg, .zip | v0.3.1 |
 
 ---
 
-## CLI (Planned)
+## CLI
 
-A terminal interface for searching, inspecting, and simulating battles with tazos:
+A terminal interface for searching, inspecting, and simulating battles with tazos.
 
 ```bash
+npm install -g @trading-tazos-game/cli
 tazos search minimon     # Search the tazo database
 tazos info 25            # Full stats breakdown
 tazos stats              # Collection statistics
@@ -369,7 +370,7 @@ tazos top --stat attack  # Leaderboard by any stat
 tazos battle --seed 42   # Simulate a physics battle
 ```
 
-📦 CLI repo: [github.com/smouj/trading-tazos-game-cli](https://github.com/smouj/trading-tazos-game-cli) (development)
+[![npm](https://img.shields.io/npm/v/@trading-tazos-game/cli)](https://www.npmjs.com/package/@trading-tazos-game/cli) **v1.0.2** — [github.com/smouj/trading-tazos-game-cli](https://github.com/smouj/trading-tazos-game-cli)
 
 ---
 
@@ -391,6 +392,35 @@ tazos battle --seed 42   # Simulate a physics battle
 ---
 
 ## Changelog
+
+### v0.5.0 — Admin Panel + Tazo Designer + Asset Renewal + Visual Polish (Jun 2026)
+- **Admin panel**: Full CRUD at `/admin/tazos` — publish/unpublish, edit all fields, view tazo inventory
+- **Tazo Designer v2.0**: Drag-and-drop visual layout editor at `/admin/tazo-designer` — 6 elements (Collection, Badge, Number, Name, Rarity Stars, Creature) with X/Y/Scale controls, 50-step undo/redo, snap guides, layers panel (16 layers), scratch overlay (wear 0-100%), quick presets + keyboard shortcuts
+- **Creature viewer**: Preview + remove-bg (rembg/u2net) + upload — all from admin
+- **Layout persistence**: GET/POST `/api/admin/tazo-layouts` — per-tazo JSON overrides with franchise defaults
+- **Art pipeline**: Composite generation (`generate-tazo-art.py`), `regenerate-all.py` batch tool, `composite-tazo.js` Node.js alternative
+- **Asset renewal**: 18 transparent PNGs from user — 3 backs, 12 bags, 3 tube designs
+- **Unified tazo rendering**: All 36 TazoDiscImage instances use `borderWidth=0` + `borderColor="transparent"` — no CSS border inconsistency
+- **Composite fix**: Crop expanded to `RADIUS+60` (1000×1000) with 48px transparent padding — no dark edge pixels
+- **Back rendering**: TazoDiscImage `isBack` uses `scale(1.0)` (vs 1.08 for fronts), detail modal back now uses TazoDiscImage
+- **Layout sync**: User coordinates synced across `tazo-layouts.json`, visual editor `DEFAULT_LAYOUT`, and API fallback
+- **Hero fixes**: Lighting effect stays behind header, collections showcase 2-3 franchise tazos each
+- **Legal pages**: Privacy, Terms, Cookies, Disclaimer — all AdSense-compliant
+- **SEO completeness**: 404 page, sitemap, robots.txt, metadata
+- **Infrastructure**: VPS DATABASE_URL fix, deploy script auto-correction, health API `db=True`
+
+### v0.4.0 — PWA + Download Page + Tazo Showcase + SEO Pages (Jun 2026)
+- **PWA**: Full manifest.json, installable on mobile/desktop, service worker
+- **Download page**: `/download` — browser play, PWA install, mobile apps (coming soon)
+- **Tazo catalog**: `/tazos` — grid with search, franchise filter, click-to-detail modal with rarity colors
+- **Collection pages**: `/collections/minimon|dracobell|cybermon` — franchise showcases with tazo grid
+- **Tazo detail modal**: Front/Back/3D view modes, 9 combat stats, evolution info, finish display
+- **LauncherView**: Unifies landing `/` and all `/?page=xxx` routes — magazine-style navigation
+- **Collections content**: 3-series overview, how-to-play steps, bag shop preview, leaderboard preview
+- **AdSense support**: ads.txt, privacy policy, terms, GDPR-compliant footer
+- **Tazo showcase component**: Reusable grid with detail modal, used across all collection pages
+- **Deploy script**: `scripts/deploy.sh` with rsync + PM2 restart + verification
+- **CI/CD**: GitHub Actions workflow for build verification
 
 ### v0.3.1 — Vertical Slam Physics + Finish System + Deck Integration (Jun 2026)
 - **Vertical slam mechanic**: Tazos fall from above — no more air hockey. Stake face-down, aim, charge, tilt, slam.
