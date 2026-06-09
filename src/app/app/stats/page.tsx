@@ -6,6 +6,7 @@
 import { Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import StatsPanel from "@/components/game/stats-panel"
+import BattleHistory from "@/components/game/battle-history"
 import { BarChart3 } from "lucide-react"
 
 function StatsContent() {
@@ -31,6 +32,7 @@ function StatsContent() {
         <span className="text-sm font-black text-[#3B4CCA] tracking-tight">349 TAZOS</span>
       </div>
       <StatsPanel refreshKey={refreshKey} />
+      <BattleHistory />
     </div>
   )
 }
