@@ -158,7 +158,7 @@ export default function TazosCatalogPage() {
                         src={t.imageUrl}
                         alt={t.name}
                         size={80}
-                        borderWidth={3}
+                        borderWidth={0}
                         franchiseSlug={t.franchise}
                         number={t.number}
                         finish={t.finish as any}

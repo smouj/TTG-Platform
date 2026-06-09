@@ -68,7 +68,7 @@ const FRANCHISE_FALLBACK_TEXT: Record<string, string> = {
 
 export default function TazoDiscImage({
   src, alt, size = 112, scale = 1.0,
-  borderWidth = 3, borderColor = "#1a1a1a", bgColor,
+  borderWidth = 0, borderColor = "transparent", bgColor,
   className = "", isBack = false, number, franchiseSlug,
   overlay, lazy = true, onClick, onFlip,
   finish = "normal", creatureVariant = "standard",

@@ -609,7 +609,7 @@ export default function AdminTazoCreatorPage() {
                       <TazoDiscImage
                         src={result.imageUrl}
                         alt={result.name}
-                        size={140} borderWidth={3}
+                        size={140} borderWidth={0}
                         franchiseSlug={(result as any).franchise?.slug || franchise}
                         finish={(result as any).finish || "normal"}
                         creatureVariant={(result as any).creatureVariant || "standard"}
@@ -722,7 +722,7 @@ export default function AdminTazoCreatorPage() {
                 <div className="space-y-2">
                   {recentCreations.slice(0, 6).map((t: any) => (
                     <div key={t.id} className="flex items-center gap-3 p-2 border-2 border-[#1a1a1a]/10 bg-white rounded">
-                      <TazoDiscImage src={t.imageUrl} alt={t.name} size={40} borderWidth={2}
+                      <TazoDiscImage src={t.imageUrl} alt={t.name} size={40} borderWidth={0}
                         franchiseSlug={t.franchise?.slug || "minimon"}
                         finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} />
                       <div className="min-w-0 flex-1">
