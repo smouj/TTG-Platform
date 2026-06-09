@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -122,6 +123,7 @@ export default function RootLayout({
           }}
         />
         <meta name="theme-color" content="#FFCC00" />
+        <meta name="google-adsense-account" content="ca-pub-4932643710484609" />
         <meta name="geo.region" content="ES" />
         <meta name="geo.placename" content="Spain" />
         <link rel="manifest" href="/manifest.json" />
@@ -129,6 +131,13 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="TTG" />
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4932643710484609"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-background text-foreground`}
