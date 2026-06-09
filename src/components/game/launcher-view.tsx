@@ -488,11 +488,17 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
   const [hoverPlay, setHoverPlay] = useState(false)
   const [pressPlay, setPressPlay] = useState(false)
   const [featuredTazos, setFeaturedTazos] = useState<any[]>([])
+  const [realTazoCount, setRealTazoCount] = useState<number | null>(null)
 
   useEffect(() => {
     fetch(`/api/tazos?limit=16&_t=${Date.now()}`)
       .then(r => r.json())
       .then(d => setFeaturedTazos((d.tazos || []).sort(() => Math.random() - 0.5)))
+      .catch(() => {})
+    // Fetch real tazo count for tooltip
+    fetch("/api/stats")
+      .then(r => r.json())
+      .then(d => setRealTazoCount(d.totalTazos || null))
       .catch(() => {})
   }, [])
 
@@ -556,11 +562,20 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
               { number: "3", label: "Series", color: "#E3350D" },
               { number: "9", label: "Stats", color: "#00A1E9" },
               { number: "Free", label: "Play", color: "#22C55E" },
-            ].map(s => (
-              <span key={s.label} className="inline-flex px-2 py-1 text-[8px] font-black uppercase border-2 border-[#1a1a1a] bg-white" style={{ boxShadow: `2px 2px 0 ${s.color}30` }}>
-                <span style={{ color: s.color }}>{s.number}</span><span className="ml-1 text-[#1a1a1a]/40">{s.label}</span>
+            ].map(s => {
+              const isTazos = s.label === "Tazos"
+              const tooltip = isTazos && realTazoCount ? `${realTazoCount} released of ${s.number} planned` : undefined
+              return (
+              <span key={s.label} title={tooltip}
+                className={`inline-flex px-2 py-1 text-[8px] font-black uppercase border-2 border-[#1a1a1a] bg-white ${isTazos ? "cursor-help" : ""}`}
+                style={{ boxShadow: `2px 2px 0 ${s.color}30` }}>
+                <span style={{ color: s.color }}>{s.number}</span>
+                {isTazos && realTazoCount && (
+                  <span className="text-[6px] text-[#1a1a1a]/30 ml-0.5 self-end mb-[1px]">{realTazoCount}</span>
+                )}
+                <span className="ml-1 text-[#1a1a1a]/40">{s.label}</span>
               </span>
-            ))}
+            )})}
           </div>
         </div>
 

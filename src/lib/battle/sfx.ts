@@ -23,12 +23,19 @@ type SfxType =
 
 let audioCtx: AudioContext | null = null
 
-function ctx(): AudioContext {
+function ctx(): AudioContext | null {
   if (!audioCtx) {
-    audioCtx = new AudioContext()
+    try {
+      // Defer AudioContext creation until first user gesture
+      const Ctor = window.AudioContext || (window as any).webkitAudioContext
+      if (!Ctor) return null
+      audioCtx = new Ctor()
+    } catch {
+      return null
+    }
   }
   if (audioCtx.state === "suspended") {
-    audioCtx.resume()
+    audioCtx.resume().catch(() => {})
   }
   return audioCtx
 }
@@ -85,6 +92,7 @@ function noise(c: AudioContext, duration: number, target: AudioNode) {
 export function playSfx(type: SfxType, volume = 0.3) {
   try {
     const c = ctx()
+    if (!c) return
     const master = gain(c, volume, c.destination)
     const now = c.currentTime
 
@@ -283,6 +291,7 @@ export function isSfxAvailable(): boolean {
 export function warmSfx() {
   try {
     const c = ctx()
+    if (!c) return
     if (c.state === "suspended") c.resume()
   } catch { /* ok */ }
 }

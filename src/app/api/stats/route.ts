@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const [totalTazos, ownedTazos, totalFranchises, totalCollections, tazos] =
       await Promise.all([
-        db.tazo.count(),
+        db.tazo.count({ where: { publishStatus: "published" } }),
         db.userTazo.groupBy({ by: ["tazoId"] }).then(r => r.length),
         db.franchise.count(),
         db.collection.count(),
