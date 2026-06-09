@@ -20,7 +20,7 @@ import {
   Zap, Star, Disc3, Swords, Medal, PackageOpen,
   ExternalLink,
   Trophy, Coins, Package, ArrowLeft, Loader2,
-  Crown, X, ArrowUp, HelpCircle,
+  Crown, X, ArrowUp, HelpCircle, ArrowRight, ShoppingBag, Sparkles,
   User, Mail, Key, Gift, Shield, Crosshair, Gem, TrendingUp, Layers
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
@@ -31,7 +31,7 @@ import { FRANCHISES, FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
 
 type PageId = "home" | "how-to-play" | "collections" | "collections-minimon"
   | "collections-cybermon" | "collections-dracobell" | "tazos" | "leaderboard"
-  | "download" | "faq"
+  | "download" | "faq" | "shop"
 
 const PAGE_LABELS: Record<PageId, string> = {
   home: "Home",
@@ -44,6 +44,7 @@ const PAGE_LABELS: Record<PageId, string> = {
   leaderboard: "Rankings",
   download: "Download",
   faq: "FAQ",
+  shop: "Shop",
 }
 
 // ── Magazine Splash Screen ──
@@ -1127,6 +1128,145 @@ function TazosContent() {
   )
 }
 
+// ── Shop ──
+
+const BAGS = [
+  { type: "classic", name: "Classic Bag", bonusChance: 12, rareBoost: 1, color: "#FFCC00", bg: "#FFF8E7", border: "#E5B800", franchise: "minimon", franchiseName: "Minimon", icon: ShoppingBag, tagline: "Original collection tazos", desc: "Perfect for new collectors. Classic Minimon tazos with standard rarity distribution.", rarity: [{ l:"Common",p:55},{l:"Uncommon",p:30},{l:"Rare",p:12},{l:"Ultra Rare",p:2.5},{l:"Legendary",p:0.5}] },
+  { type: "premium", name: "Premium Bag", bonusChance: 18, rareBoost: 2, color: "#3B82F6", bg: "#EFF6FF", border: "#2563EB", franchise: "cybermon", franchiseName: "Cybermon", icon: Star, tagline: "Digital monsters and tech", desc: "Boosted rare chances. Cybermon tazos with digital finishes and enhanced rarity.", rarity: [{ l:"Common",p:45},{l:"Uncommon",p:32},{l:"Rare",p:18},{l:"Ultra Rare",p:4},{l:"Legendary",p:1}] },
+  { type: "mega", name: "Mega Bag", bonusChance: 30, rareBoost: 4, color: "#F97316", bg: "#FFF7ED", border: "#EA580C", franchise: "dracobell", franchiseName: "Dracobell", icon: Zap, tagline: "Legendary auras, top rarity", desc: "Maximum rarity boost. Dracobell tazos with legendary finishes and the highest ultra-rare drop rate.", rarity: [{ l:"Common",p:35},{l:"Uncommon",p:30},{l:"Rare",p:25},{l:"Ultra Rare",p:7},{l:"Legendary",p:3}] },
+]
+const RC: Record<string, string> = { Common:"#9CA3AF", Uncommon:"#22C55E", Rare:"#3B82F6","Ultra Rare":"#A855F7", Legendary:"#F59E0B" }
+
+function ShopContent() {
+  const [tazos, setTazos] = useState<any[]>([])
+  useEffect(() => {
+    fetch("/api/tazos?limit=15&publishStatus=published")
+      .then(r => r.json()).then(d => setTazos(d.tazos || [])).catch(() => {})
+  }, [])
+
+  const byF: Record<string, any[]> = {}
+  for (const t of tazos) {
+    const f = t.franchiseSlug || t.franchise?.slug || t.franchise
+    if (f) { if (!byF[f]) byF[f] = []; if (byF[f].length < 5) byF[f].push(t) }
+  }
+
+  return (
+    <div className="w-full max-w-5xl mx-auto space-y-8 sm:space-y-10">
+      {/* Hero */}
+      <section className="text-center space-y-2">
+        <p className="text-sm sm:text-base text-[#1a1a1a]/50 font-bold max-w-lg mx-auto">
+          Open bags to discover and collect tazos across 3 franchises.{" "}
+          <span className="text-[#1a1a1a]/30">10 credits per bag — free to play.</span>
+        </p>
+        <div className="flex items-center justify-center gap-2 pt-1">
+          <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#FFCC00]/10 border border-[#FFCC00]/30 text-[#1a1a1a] uppercase">
+            <Coins className="w-3.5 h-3.5 text-[#D97706]" /> 10 Credits
+          </span>
+          <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#1a1a1a] uppercase">
+            <Sparkles className="w-3.5 h-3.5 text-[#22C55E]" /> Free to Play
+          </span>
+        </div>
+      </section>
+
+      {/* Bag cards */}
+      <section className="grid md:grid-cols-3 gap-4 sm:gap-6">
+        {BAGS.map(bag => {
+          const Icon = bag.icon
+          const examples = byF[bag.franchise] || []
+          return (
+            <div key={bag.type} className="mag-card border-3 border-[#1a1a1a] bg-white overflow-hidden" style={{ boxShadow: `4px 4px 0px ${bag.border}40` }}>
+              <div className="px-4 sm:px-5 py-4 border-b-2 border-[#1a1a1a]/10" style={{ backgroundColor: bag.bg }}>
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] flex-shrink-0" style={{ backgroundColor: bag.color }}>
+                      <Icon className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-black text-[#1a1a1a] uppercase leading-tight">{bag.name}</h3>
+                      <p className="text-[9px] sm:text-[10px] font-bold text-[#1a1a1a]/50">{bag.tagline}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-0.5 bg-white px-2 py-1 border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]">
+                    <Coins className="w-3 h-3 text-[#D97706]" />
+                    <span className="text-xs font-black text-[#1a1a1a]">{bag.rarity[4].p === 3 ? 20 : 10}</span>
+                  </div>
+                </div>
+                <p className="text-[10px] sm:text-xs text-[#1a1a1a]/60 font-bold leading-relaxed">{bag.desc}</p>
+
+                {/* Rarity bar */}
+                <div className="mt-3 space-y-1.5">
+                  <div className="flex h-2 rounded-full overflow-hidden border border-[#1a1a1a]/10">
+                    {bag.rarity.map(r => (
+                      <div key={r.l} className="h-full" style={{ width: `${r.p}%`, backgroundColor: RC[r.l] }} title={`${r.l}: ${r.p}%`} />
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    {bag.rarity.map(r => (
+                      <div key={r.l} className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: RC[r.l] }} />
+                        <span className="text-[8px] font-bold text-[#1a1a1a]/50 uppercase">{r.l}</span>
+                        <span className="text-[8px] font-black text-[#1a1a1a]">{r.p}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="flex gap-3 mt-3">
+                  <span className="text-[8px] font-black text-[#1a1a1a]/40 uppercase">Bonus <span className="text-[10px]" style={{ color: bag.color }}>{bag.bonusChance}%</span></span>
+                  <span className="text-[8px] font-black text-[#1a1a1a]/40 uppercase">Rare Boost <span className="text-[10px]" style={{ color: bag.color }}>×{bag.rareBoost}</span></span>
+                </div>
+              </div>
+
+              {/* Franchise + example tazos */}
+              <div className="px-4 sm:px-5 py-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] font-black text-[#1a1a1a]/30 uppercase tracking-wider">Franchise</span>
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 border border-[#1a1a1a]/20" style={{ backgroundColor: bag.bg, color: bag.border }}>{bag.franchiseName}</span>
+                </div>
+                {examples.length > 0 && (
+                  <div>
+                    <span className="text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-wider">Example tazos</span>
+                    <div className="flex gap-1.5 mt-1">
+                      {examples.map((t: any) => (
+                        <div key={t.id} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[#1a1a1a]/15 overflow-hidden bg-[#1a1a1a]/5 flex-shrink-0 hover:border-[#FFCC00] hover:scale-110 transition-all" title={t.displayName || t.name}>
+                          <div className="w-full h-full rounded-full overflow-hidden relative">
+                            <img src={t.imageUrl || `/tazos-generated/${t.franchiseSlug || "minimon"}/${t.slug}.png`} alt={t.displayName || t.name} className="w-full h-full object-cover" loading="lazy" />
+                          </div>
+                        </div>
+                      ))}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-[#1a1a1a]/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-[7px] font-black text-[#1a1a1a]/25">+more</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        })}
+      </section>
+
+      {/* CTA */}
+      <section className="mag-card border-3 border-[#1a1a1a] bg-white p-6 sm:p-8 text-center space-y-4 relative overflow-hidden" style={{ boxShadow: "6px 6px 0px #FFCC0040" }}>
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 2px, transparent 2px, transparent 12px)" }} />
+        <div className="relative z-10 space-y-3">
+          <h3 className="text-lg sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-tight">Ready to Start Collecting?</h3>
+          <p className="text-sm text-[#1a1a1a]/50 font-bold max-w-md mx-auto">Sign up free and get starter credits to open your first bags. Collect, trade, and battle with 30 tazos across 3 franchises.</p>
+          <div className="flex items-center justify-center gap-3 pt-2">
+            <a href="/register" className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-xs sm:text-sm font-black uppercase tracking-wider bg-[#E3350D] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
+              Sign Up Free <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="/login" className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-xs sm:text-sm font-black uppercase tracking-wider bg-white text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
+              Sign In
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
 // ── Leaderboard ──
 
 const SORTS = [
@@ -1581,6 +1721,7 @@ export default function LauncherView() {
                 ["leaderboard", "Rankings"],
                 ["download", "Download"],
                 ["faq", "FAQ"],
+                ["shop", "Shop"],
               ] as [PageId, string][]).map(([id, label]) => (
                 <button key={id} onClick={() => navigate(id)}
                   className={`px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
@@ -1610,7 +1751,7 @@ export default function LauncherView() {
 
           {/* Mobile nav */}
           <nav className="sm:hidden flex items-center justify-center gap-0 px-2 pb-2 overflow-x-auto">
-            {(["home", "how-to-play", "collections", "tazos", "leaderboard", "faq"] as PageId[]).map(id => (
+            {(["home", "how-to-play", "collections", "tazos", "leaderboard", "faq", "shop"] as PageId[]).map(id => (
               <button key={id} onClick={() => navigate(id)}
                 className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
                   currentPage === id ? "text-[#FFCC00]" : "text-white/40 hover:text-[#FFCC00]"
@@ -1663,6 +1804,10 @@ export default function LauncherView() {
               <div className="w-full max-w-5xl mx-auto"><FAQContent /></div>
             )}
 
+            {currentPage === "shop" && (
+              <div className="w-full max-w-5xl mx-auto"><ShopContent /></div>
+            )}
+
             {(currentPage === "collections-minimon" || currentPage === "collections-dracobell" || currentPage === "collections-cybermon") && (
               <div className="w-full max-w-5xl mx-auto"><CollectionDetailContent collection={currentPage.replace("collections-", "")} /></div>
             )}
@@ -1684,7 +1829,7 @@ export default function LauncherView() {
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-2 gap-2">
             <div className="flex items-center gap-3 sm:gap-4">
               <button onClick={() => navigate("tazos")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Tazos</button>
-              <a href="/bag-shop" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Shop</a>
+              <button onClick={() => navigate("shop")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Shop</button>
               <button onClick={() => navigate("how-to-play")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Battle</button>
               <button onClick={() => navigate("faq")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">FAQ</button>
               <a href="/privacy" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Privacy</a>
