@@ -1,16 +1,20 @@
 /* ============================================================
- * Trading Tazos Game — Tazo Finish System v3
+ * Trading Tazos Game — Tazo Finish System v4
  *
- * Simula acabados físicos profesionales con múltiples capas
- * de luz, difracción y textura. Cada acabado compone 2-3
- * capas superpuestas para crear profundidad y realismo.
+ * Filosofía: los acabados NO son capas encima del arte.
+ * Son tratamientos de superficie que se fusionan con la
+ * imagen mediante blend modes, filtros y luces orgánicas.
  *
- * Principio: capas superficiales sobre el arte del tazo,
- * respetando border-radius: 50% del contenedor circular.
+ * Principios:
+ *  - Todo usa mix-blend-mode (overlay, soft-light, screen)
+ *  - Sin ::after con formas duras — solo gradientes suaves
+ *  - backface-visibility: hidden en capas para evitar ghosting
+ *  - will-change solo donde hay animación real
+ *  - Prefers-reduced-motion respetado en cada animación
  * ============================================================ */
 
 /* ═══════════════════════════════════════════════════════
-   CAPAS BASE
+   CAPAS BASE — Unificadas
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-layer,
@@ -22,375 +26,445 @@
   inset: 0;
   border-radius: 50%;
   pointer-events: none;
+  backface-visibility: hidden;
 }
 
-.tazo-finish-layer  { z-index: 3; }
-.tazo-finish-layer-2 { z-index: 4; }
-.tazo-gloss-layer    { z-index: 5; }
-.tazo-condition-layer { z-index: 6; }
+.tazo-disc-image-inner {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  /* borde interior sutil — como el bisel del plástico */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12),
+              inset 0 0 0 3px rgba(0,0,0,0.08);
+}
+
+/* ─── Z-index stack ─── */
+.tazo-print-grain      { z-index: 2; }
+.tazo-finish-layer     { z-index: 3; }
+.tazo-finish-layer-2   { z-index: 4; }
+.tazo-gloss-layer      { z-index: 5; }
+.tazo-condition-layer  { z-index: 6; }
 
 /* ─── Print grain (todos los tazos) ─── */
 .tazo-print-grain {
-  z-index: 2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.035;
+  opacity: 0.028;
   mix-blend-mode: multiply;
 }
 
 /* ═══════════════════════════════════════════════════════
-   NORMAL / MATTE
+   NORMAL — Solo la textura de impresión + bisel
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-normal .tazo-finish-layer,
-.tazo-finish-normal .tazo-finish-layer-2 { display: none; }
-
-.tazo-finish-matte .tazo-finish-layer {
-  background: rgba(255,255,255,0.055);
-  backdrop-filter: brightness(0.96) saturate(0.88);
-}
-
-.tazo-finish-matte .tazo-finish-layer-2 { display: none; }
+.tazo-finish-normal .tazo-finish-layer-2,
+.tazo-finish-normal .tazo-gloss-layer { display: none; }
 
 /* ═══════════════════════════════════════════════════════
-   GLOSSY — barniz brillante
+   MATTE — Acabado mate sedoso
+   Reduce saturación y brillo ligeramente + micro-textura
    ═══════════════════════════════════════════════════════ */
 
-.tazo-finish-glossy .tazo-gloss-layer {
-  background: linear-gradient(
-    150deg,
-    rgba(255,255,255,0.35) 0%,
-    transparent 40%,
-    transparent 60%,
-    rgba(255,255,255,0.10) 85%,
-    rgba(0,0,0,0.05) 100%
-  );
+.tazo-finish-matte .tazo-finish-layer {
+  background: rgba(255,255,255,0.04);
+  mix-blend-mode: overlay;
   opacity: 1;
 }
 
-.tazo-finish-glossy .tazo-finish-layer,
-.tazo-finish-glossy .tazo-finish-layer-2 { display: none; }
+.tazo-finish-matte .tazo-finish-layer-2 {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0,0,0,0.015) 2px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 1;
+}
+
+.tazo-finish-matte .tazo-character {
+  filter: brightness(0.94) saturate(0.88);
+}
 
 /* ═══════════════════════════════════════════════════════
-   HOLO v3 — Triple capa holográfica profesional
-   Capa 1: barrido arcoíris ancho (5s)
-   Capa 2: micro-líneas de difracción (2.5s, opuesto)
-   Capa 3: ::after — destello de esquina
+   GLOSSY — Barniz UV brillante
+   El brillo viene de un gradiente radial que simula
+   la curvatura del disco reflejando luz ambiental.
+   ═══════════════════════════════════════════════════════ */
+
+.tazo-finish-glossy .tazo-finish-layer {
+  background: radial-gradient(
+    ellipse 120% 80% at 30% 20%,
+    rgba(255,255,255,0.28) 0%,
+    rgba(255,255,255,0.06) 35%,
+    transparent 55%,
+    rgba(0,0,0,0.03) 80%,
+    rgba(0,0,0,0.10) 100%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 1;
+}
+
+.tazo-finish-glossy .tazo-gloss-layer {
+  background: radial-gradient(
+    ellipse 60% 40% at 25% 15%,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.08) 30%,
+    transparent 55%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.65;
+}
+
+.tazo-finish-glossy .tazo-character {
+  filter: brightness(1.04) saturate(1.06);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HOLO v4 — Holográfico que respira con el tazo
+   - Barrido de arcoíris que TIÑE la imagen (mix-blend-mode)
+   - Micro-líneas como difracción del plástico
+   - Destello suave en esquina (sin ::after duro)
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-holo .tazo-finish-layer {
-  /* Capa 1 — barrido arcoíris amplio */
   background: linear-gradient(
     105deg,
-    transparent 8%,
-    rgba(255, 20, 100, 0.22) 24%,
-    rgba(255, 200, 0, 0.20) 38%,
-    rgba(0, 230, 120, 0.18) 50%,
-    rgba(0, 180, 255, 0.22) 62%,
-    rgba(140, 60, 255, 0.20) 76%,
-    transparent 92%
+    transparent 12%,
+    rgba(255, 80, 140, 0.20) 24%,
+    rgba(255, 210, 30, 0.18) 36%,
+    rgba(40, 230, 140, 0.14) 48%,
+    rgba(30, 190, 255, 0.18) 60%,
+    rgba(150, 70, 255, 0.16) 72%,
+    transparent 88%
   );
-  mix-blend-mode: screen;
-  opacity: 0.58;
+  mix-blend-mode: overlay;
+  opacity: 0.55;
   background-size: 240% 240%;
-  animation: holo-sweep-1 5.5s linear infinite;
+  animation: holo-sweep 5.5s linear infinite;
 }
 
 .tazo-finish-holo .tazo-finish-layer-2 {
-  /* Capa 2 — micro-líneas de difracción (dirección opuesta) */
   background: repeating-linear-gradient(
     20deg,
     transparent 0px,
-    transparent 5px,
-    rgba(255, 255, 255, 0.10) 5.5px,
-    rgba(255, 120, 200, 0.08) 6px,
-    rgba(100, 200, 255, 0.10) 6.5px,
-    transparent 7px,
-    transparent 12px
+    transparent 6px,
+    rgba(255, 255, 255, 0.06) 6.5px,
+    rgba(255, 140, 220, 0.05) 7px,
+    rgba(100, 220, 255, 0.06) 7.5px,
+    transparent 8px,
+    transparent 14px
   );
-  mix-blend-mode: overlay;
-  opacity: 0.35;
+  mix-blend-mode: soft-light;
+  opacity: 0.30;
   animation: holo-lines 2.8s linear infinite;
 }
 
-/* estrella de luz en esquina superior */
-.tazo-finish-holo .tazo-disc-image-inner::after {
-  content: '';
-  position: absolute;
-  z-index: 7;
-  top: 8%;
-  left: 12%;
-  width: 22%;
-  height: 22%;
+/* destello suave integrado — sin ::after */
+.tazo-finish-holo .tazo-gloss-layer {
   background: radial-gradient(
-    circle at 50% 50%,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0.3) 20%,
-    rgba(255, 200, 255, 0.12) 40%,
-    transparent 65%
+    circle at 18% 14%,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 210, 255, 0.30) 8%,
+    rgba(255, 255, 255, 0.08) 18%,
+    transparent 35%
   );
-  border-radius: 50%;
+  mix-blend-mode: soft-light;
   opacity: 0.45;
-  animation: holo-sparkle 3.2s ease-in-out infinite;
+  animation: holo-shine-breathe 3.2s ease-in-out infinite;
 }
 
-@keyframes holo-sweep-1 {
+@keyframes holo-sweep {
   0%   { background-position: 0% 55%; }
   100% { background-position: 200% 55%; }
 }
 
 @keyframes holo-lines {
   0%   { background-position: 0px 0px; }
-  100% { background-position: -24px -24px; }
+  100% { background-position: -28px -28px; }
 }
 
-@keyframes holo-sparkle {
-  0%, 100% { opacity: 0.20; transform: scale(0.9); }
-  35%      { opacity: 0.55; transform: scale(1.15); }
-  70%      { opacity: 0.30; transform: scale(1.0); }
+@keyframes holo-shine-breathe {
+  0%, 100% { opacity: 0.22; }
+  35%      { opacity: 0.50; }
+  70%      { opacity: 0.32; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tazo-finish-holo .tazo-finish-layer,
   .tazo-finish-holo .tazo-finish-layer-2 { animation: none; }
   .tazo-finish-holo .tazo-finish-layer { background-position: 60% 55%; }
-  .tazo-finish-holo .tazo-disc-image-inner::after { animation: none; opacity: 0.35; }
+  .tazo-finish-holo .tazo-gloss-layer { animation: none; opacity: 0.38; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   REVERSE HOLO — líneas arcoíris sobre arte, sin barrido
+   REVERSE HOLO — Líneas de difracción sobre el arte
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-reverse_holo .tazo-gloss-layer {
-  inset: 6%;
   background: repeating-linear-gradient(
     110deg,
-    rgba(255,200,50,0.0) 0px,
-    rgba(255,200,50,0.0) 10px,
-    rgba(255,255,255,0.22) 12px,
-    rgba(120,220,255,0.20) 15px,
-    rgba(255,80,200,0.16) 18px,
-    rgba(255,200,50,0.0) 20px
+    transparent 0px,
+    transparent 12px,
+    rgba(255,255,255,0.16) 14px,
+    rgba(120,230,255,0.14) 17px,
+    rgba(255,100,210,0.12) 20px,
+    transparent 22px
   );
-  mix-blend-mode: screen;
-  opacity: 0.45;
+  mix-blend-mode: overlay;
+  opacity: 0.38;
 }
 
-.tazo-finish-reverse_holo .tazo-character { z-index: 5; }
-.tazo-finish-reverse_holo .tazo-finish-layer,
+.tazo-finish-reverse_holo .tazo-finish-layer {
+  background: radial-gradient(
+    ellipse 100% 60% at 30% 25%,
+    rgba(255,255,255,0.20) 0%,
+    rgba(255,255,255,0.04) 35%,
+    transparent 55%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.50;
+}
+
 .tazo-finish-reverse_holo .tazo-finish-layer-2 { display: none; }
 
 /* ═══════════════════════════════════════════════════════
-   FOIL v2 — Brillo metálico con textura de arrugas
-   Capa 1: barrido brillante con caída rápida
-   Capa 2: micro-patrón de arrugas (crinkle)
+   FOIL v3 — Lámina metálica con textura de arrugas
+   - El barrido es un brillo que cruza la superficie
+   - Las arrugas dan micro-textura física
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-foil .tazo-finish-layer {
-  /* barrido brillante nítido */
   background: linear-gradient(
     105deg,
-    transparent 28%,
-    rgba(255,255,255,0.0) 38%,
-    rgba(255,255,255,0.55) 42%,
-    rgba(255,255,255,0.15) 46%,
-    rgba(255,255,255,0.0) 50%,
+    transparent 30%,
+    rgba(255,255,255,0.0) 40%,
+    rgba(255,255,255,0.45) 44%,
+    rgba(255,255,255,0.10) 48%,
+    rgba(255,255,255,0.0) 52%,
     transparent 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0.52;
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
   background-size: 200% 100%;
-  animation: foil-sheen 3.8s ease-in-out infinite;
+  animation: foil-sheen 4s ease-in-out infinite;
 }
 
 .tazo-finish-foil .tazo-finish-layer-2 {
-  /* textura de micro-arrugas (crinkle pattern) */
   background:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 4px, rgba(255,255,255,0.04) 4px, rgba(255,255,255,0.04) 4.5px, transparent 4.5px, transparent 8px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 4px, rgba(0,0,0,0.03) 4px, rgba(0,0,0,0.03) 4.5px, transparent 4.5px, transparent 8px);
+    repeating-linear-gradient(2deg, transparent 0px, transparent 5px, rgba(255,255,255,0.03) 5px, rgba(0,0,0,0.02) 5.5px, transparent 6px, transparent 10px),
+    repeating-linear-gradient(92deg, transparent 0px, transparent 5px, rgba(0,0,0,0.02) 5px, rgba(255,255,255,0.03) 5.5px, transparent 6px, transparent 10px);
   mix-blend-mode: overlay;
-  opacity: 0.30;
-  transform: rotate(-8deg) scale(0.95);
+  opacity: 0.25;
+}
+
+.tazo-finish-foil .tazo-gloss-layer {
+  background: radial-gradient(
+    ellipse 80% 50% at 20% 18%,
+    rgba(255,255,255,0.30) 0%,
+    rgba(255,255,255,0.06) 25%,
+    transparent 45%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.40;
+}
+
+.tazo-finish-foil .tazo-character {
+  filter: brightness(1.03) contrast(1.05);
 }
 
 @keyframes foil-sheen {
-  0%, 40%  { background-position: -80% 0%; }
-  80%, 100% { background-position: 120% 0%; }
+  0%, 45%  { background-position: -80% 0%; }
+  85%, 100% { background-position: 120% 0%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tazo-finish-foil .tazo-finish-layer { animation: none; background-position: 40% 0%; }
+  .tazo-finish-foil .tazo-finish-layer { animation: none; background-position: 45% 0%; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   PRISMATIC v2 — Cono arcoíris vibrante + destellos
-   Capa 1: conic-gradient giratorio saturado
-   Capa 2: radial burst desde borde
-   Capa 3: ::after sparkle spots
+   PRISMATIC v3 — Cono arcoíris que gira suavemente
+   - El cono TIÑE la imagen en lugar de cubrirla
+   - Los sparkles son manchas suaves de luz, no puntos
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-prismatic .tazo-finish-layer {
   background: conic-gradient(
     from 0deg,
-    rgba(255, 0, 100, 0.30),
-    rgba(255, 180, 0, 0.28),
-    rgba(200, 255, 0, 0.24),
-    rgba(0, 255, 160, 0.26),
-    rgba(0, 200, 255, 0.30),
-    rgba(80, 60, 255, 0.28),
-    rgba(220, 0, 255, 0.26),
-    rgba(255, 0, 100, 0.30)
+    rgba(255, 0, 100, 0.25),
+    rgba(255, 180, 0, 0.22),
+    rgba(200, 255, 0, 0.18),
+    rgba(0, 255, 160, 0.20),
+    rgba(0, 200, 255, 0.24),
+    rgba(80, 60, 255, 0.22),
+    rgba(220, 0, 255, 0.20),
+    rgba(255, 0, 100, 0.25)
   );
-  mix-blend-mode: color-dodge;
-  opacity: 0.44;
-  animation: prismatic-spin 10s linear infinite;
+  mix-blend-mode: overlay;
+  opacity: 0.38;
+  animation: prismatic-spin 12s linear infinite;
 }
 
 .tazo-finish-prismatic .tazo-finish-layer-2 {
-  /* luz radial desde esquina superior-derecha */
   background: radial-gradient(
-    circle at 75% 20%,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 220, 255, 0.18) 15%,
+    ellipse 70% 50% at 70% 22%,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 210, 255, 0.12) 18%,
     transparent 40%
   );
-  mix-blend-mode: screen;
-  opacity: 0.40;
+  mix-blend-mode: soft-light;
+  opacity: 0.45;
 }
 
-/* sparkle spots animados */
-.tazo-finish-prismatic .tazo-disc-image-inner::after {
-  content: '';
-  position: absolute;
-  z-index: 7;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 50%;
+/* sparkles como manchas de luz suave, no puntos */
+.tazo-finish-prismatic .tazo-gloss-layer {
   background:
-    radial-gradient(circle at 25% 30%, rgba(255,255,255,0.7) 0px, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255,255,255,0.6) 0px, transparent 2.5px),
-    radial-gradient(circle at 80% 25%, rgba(255,255,255,0.5) 0px, transparent 2px),
-    radial-gradient(circle at 15% 65%, rgba(255,255,255,0.55) 0px, transparent 3px);
-  background-size: 100% 100%;
+    radial-gradient(circle at 22% 28%, rgba(255,255,255,0.55) 0%, transparent 6%),
+    radial-gradient(circle at 62% 68%, rgba(255,255,255,0.45) 0%, transparent 5%),
+    radial-gradient(circle at 78% 22%, rgba(255,255,255,0.40) 0%, transparent 4%),
+    radial-gradient(circle at 14% 62%, rgba(255,255,255,0.42) 0%, transparent 5%);
+  mix-blend-mode: soft-light;
   opacity: 0.35;
-  animation: prismatic-sparkle 2.5s ease-in-out infinite alternate;
+  animation: prismatic-sparkle-breathe 3s ease-in-out infinite alternate;
+}
+
+.tazo-finish-prismatic .tazo-character {
+  filter: brightness(1.04) saturate(1.10);
 }
 
 @keyframes prismatic-spin {
   to { transform: rotate(360deg); }
 }
 
-@keyframes prismatic-sparkle {
-  0%   { opacity: 0.20; }
-  100% { opacity: 0.50; }
+@keyframes prismatic-sparkle-breathe {
+  0%   { opacity: 0.18; }
+  100% { opacity: 0.42; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tazo-finish-prismatic .tazo-finish-layer { animation: none; }
-  .tazo-finish-prismatic .tazo-disc-image-inner::after { animation: none; opacity: 0.35; }
+  .tazo-finish-prismatic .tazo-gloss-layer { animation: none; opacity: 0.30; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   METALLIC v2 — Brillo metálico con micro-textura cepillada
+   METALLIC v2 — Acero cepillado con reflejo direccional
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-metallic .tazo-finish-layer {
   background: linear-gradient(
     125deg,
-    rgba(255,255,255,0.10) 0%,
-    rgba(255,255,255,0.48) 25%,
-    rgba(50,50,55,0.18) 48%,
-    rgba(255,255,255,0.28) 65%,
-    rgba(30,30,35,0.12) 100%
+    rgba(255,255,255,0.08) 0%,
+    rgba(255,255,255,0.42) 28%,
+    rgba(60,60,70,0.15) 50%,
+    rgba(255,255,255,0.22) 68%,
+    rgba(40,40,50,0.10) 100%
   );
   mix-blend-mode: overlay;
-  opacity: 0.60;
+  opacity: 0.55;
 }
 
 .tazo-finish-metallic .tazo-finish-layer-2 {
-  /* textura de metal cepillado */
   background: repeating-linear-gradient(
-    5deg,
+    4deg,
     transparent 0px,
-    rgba(255,255,255,0.03) 1px,
+    rgba(255,255,255,0.025) 1px,
     transparent 1.5px,
-    rgba(0,0,0,0.02) 2px,
+    rgba(0,0,0,0.018) 2px,
     transparent 2.5px
   );
   mix-blend-mode: overlay;
-  opacity: 0.35;
+  opacity: 0.32;
+}
+
+.tazo-finish-metallic .tazo-character {
+  filter: brightness(0.95) contrast(1.08);
 }
 
 /* ═══════════════════════════════════════════════════════
-   CHROME v2 — Reflejo espejo con banda de horizonte
+   CHROME v2 — Espejo con banda de horizonte
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-chrome .tazo-finish-layer {
   background: linear-gradient(
     180deg,
-    rgba(180,200,220,0.35) 0%,
-    rgba(255,255,255,0.70) 22%,
-    rgba(140,160,180,0.30) 38%,
-    rgba(40,50,60,0.40) 48%,
-    rgba(60,70,85,0.25) 52%,
-    rgba(255,255,255,0.55) 62%,
-    rgba(120,140,160,0.30) 78%,
-    rgba(255,255,255,0.25) 100%
+    rgba(180,200,220,0.30) 0%,
+    rgba(255,255,255,0.65) 20%,
+    rgba(140,160,180,0.25) 35%,
+    rgba(35,45,55,0.35) 48%,
+    rgba(55,65,80,0.22) 52%,
+    rgba(255,255,255,0.48) 60%,
+    rgba(120,140,160,0.25) 75%,
+    rgba(255,255,255,0.20) 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0.55;
+  mix-blend-mode: overlay;
+  opacity: 0.50;
 }
 
 .tazo-finish-chrome .tazo-finish-layer-2 {
-  /* brillo horizontal tipo horizonte */
   background: linear-gradient(
     180deg,
-    transparent 0%,
-    transparent 43%,
-    rgba(255,255,255,0.35) 47%,
-    rgba(40,50,60,0.30) 50%,
-    rgba(255,255,255,0.25) 53%,
-    transparent 57%,
-    transparent 100%
+    transparent 42%,
+    rgba(255,255,255,0.30) 47%,
+    rgba(35,45,55,0.28) 51%,
+    rgba(255,255,255,0.22) 55%,
+    transparent 60%
   );
-  mix-blend-mode: overlay;
-  opacity: 0.45;
+  mix-blend-mode: soft-light;
+  opacity: 0.40;
+}
+
+.tazo-finish-chrome .tazo-character {
+  filter: brightness(0.88) contrast(1.12);
 }
 
 /* ═══════════════════════════════════════════════════════
-   GOLD v2 — Dorado premium con shimmer
+   GOLD v3 — Dorado cálido que impregna el arte
+   El oro no cubre — tiñe la imagen con blend overlay
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-gold .tazo-finish-layer {
   background:
-    radial-gradient(circle at 30% 25%, rgba(255,255,220,0.55), transparent 30%),
+    radial-gradient(circle at 32% 28%, rgba(255,255,220,0.48), transparent 35%),
     linear-gradient(
       140deg,
-      rgba(255, 220, 80, 0.45) 0%,
-      rgba(210, 140, 30, 0.25) 35%,
-      rgba(255, 240, 160, 0.40) 55%,
-      rgba(160, 100, 20, 0.22) 75%,
-      rgba(255, 225, 110, 0.35) 100%
+      rgba(255, 220, 80, 0.38) 0%,
+      rgba(210, 145, 35, 0.22) 38%,
+      rgba(255, 240, 160, 0.34) 58%,
+      rgba(165, 105, 25, 0.20) 78%,
+      rgba(255, 225, 110, 0.30) 100%
     );
-  mix-blend-mode: screen;
-  opacity: 0.50;
+  mix-blend-mode: overlay;
+  opacity: 0.48;
 }
 
 .tazo-finish-gold .tazo-finish-layer-2 {
-  /* shimmer sutil */
   background: linear-gradient(
     115deg,
-    transparent 25%,
-    rgba(255,255,220,0.18) 40%,
+    transparent 28%,
+    rgba(255,255,220,0.16) 42%,
     rgba(255,255,220,0.0) 48%,
     transparent 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0.30;
+  mix-blend-mode: soft-light;
+  opacity: 0.28;
   background-size: 200% 100%;
-  animation: gold-shimmer 4s ease-in-out infinite;
+  animation: gold-shimmer 4.5s ease-in-out infinite;
+}
+
+.tazo-finish-gold .tazo-gloss-layer {
+  background: radial-gradient(
+    ellipse 60% 35% at 28% 20%,
+    rgba(255,255,240,0.42) 0%,
+    rgba(255,240,180,0.12) 20%,
+    transparent 40%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.40;
 }
 
 @keyframes gold-shimmer {
-  0%, 50%  { background-position: -60% 0%; }
+  0%, 55%  { background-position: -60% 0%; }
   100%    { background-position: 100% 0%; }
 }
 
@@ -399,42 +473,52 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   RAINBOW v2 — Arcoíris completo con micro-líneas
+   RAINBOW v3 — Arcoíris completo con micro-difracción
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-rainbow .tazo-finish-layer {
   background: linear-gradient(
     130deg,
-    rgba(255,0,0,0.24),
-    rgba(255,140,0,0.23),
-    rgba(255,230,0,0.22),
-    rgba(0,220,60,0.21),
-    rgba(0,180,255,0.23),
-    rgba(80,40,220,0.24),
-    rgba(220,0,200,0.23),
-    rgba(255,0,80,0.24)
+    rgba(255,0,0,0.22),
+    rgba(255,140,0,0.20),
+    rgba(255,230,0,0.19),
+    rgba(0,220,60,0.18),
+    rgba(0,180,255,0.20),
+    rgba(80,40,220,0.21),
+    rgba(220,0,200,0.20),
+    rgba(255,0,80,0.22)
   );
-  mix-blend-mode: screen;
-  opacity: 0.52;
+  mix-blend-mode: overlay;
+  opacity: 0.50;
   background-size: 300% 300%;
   animation: rainbow-sweep 6s linear infinite;
 }
 
 .tazo-finish-rainbow .tazo-finish-layer-2 {
-  /* microlíneas arcoíris */
   background: repeating-linear-gradient(
     25deg,
     transparent 0px,
-    transparent 8px,
-    rgba(255,255,255,0.08) 8.5px,
-    rgba(180,255,255,0.08) 9px,
-    rgba(255,180,255,0.06) 9.5px,
     transparent 10px,
-    transparent 16px
+    rgba(255,255,255,0.06) 10.5px,
+    rgba(180,255,255,0.06) 11px,
+    rgba(255,180,255,0.04) 11.5px,
+    transparent 12px,
+    transparent 20px
   );
-  mix-blend-mode: screen;
-  opacity: 0.25;
+  mix-blend-mode: overlay;
+  opacity: 0.22;
   animation: holo-lines 3s linear infinite reverse;
+}
+
+.tazo-finish-rainbow .tazo-gloss-layer {
+  background: radial-gradient(
+    ellipse 50% 35% at 25% 18%,
+    rgba(255,255,255,0.30) 0%,
+    rgba(255,255,255,0.05) 25%,
+    transparent 45%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.38;
 }
 
 @keyframes rainbow-sweep {
@@ -448,176 +532,186 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   GLITTER v2 — Purpurina granulada con brillo aleatorio
+   GLITTER v2 — Purpurina granulada
+   Los destellos son puntos suaves que brillan al rotar
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-glitter .tazo-finish-layer {
   background-image:
-    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.75) 0 1.2px, transparent 1.5px),
-    radial-gradient(circle at 55% 60%, rgba(255,240,180,0.70) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.65) 0 0.8px, transparent 1.2px),
-    radial-gradient(circle at 35% 75%, rgba(255,220,120,0.70) 0 1.1px, transparent 1.4px),
-    radial-gradient(circle at 70% 85%, rgba(255,255,255,0.60) 0 0.9px, transparent 1.3px),
-    radial-gradient(circle at 10% 50%, rgba(255,200,255,0.65) 0 1px, transparent 1.3px);
-  background-size: 24px 24px, 32px 32px, 28px 28px, 36px 36px, 30px 30px, 26px 26px;
-  background-position: 0 0, 6px 8px, 14px 3px, 3px 16px, 18px 20px, 8px 12px;
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.65) 0 1.8px, transparent 3px),
+    radial-gradient(circle at 55% 60%, rgba(255,240,180,0.58) 0 1.5px, transparent 2.8px),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.55) 0 1.2px, transparent 2.4px),
+    radial-gradient(circle at 35% 75%, rgba(255,220,120,0.60) 0 1.6px, transparent 2.8px),
+    radial-gradient(circle at 70% 85%, rgba(255,255,255,0.50) 0 1.3px, transparent 2.6px),
+    radial-gradient(circle at 10% 50%, rgba(255,200,255,0.55) 0 1.4px, transparent 2.6px),
+    radial-gradient(circle at 48% 12%, rgba(255,255,255,0.52) 0 1.0px, transparent 2.0px),
+    radial-gradient(circle at 88% 58%, rgba(255,240,200,0.48) 0 1.1px, transparent 2.2px);
+  background-size: 30px 30px, 40px 40px, 35px 35px, 44px 44px, 38px 38px, 34px 34px, 42px 42px, 36px 36px;
+  background-position: 0 0, 8px 10px, 18px 4px, 5px 22px, 22px 26px, 10px 15px, 28px 8px, 2px 32px;
   mix-blend-mode: screen;
-  opacity: 0.42;
+  opacity: 0.35;
+}
+
+.tazo-finish-glitter .tazo-finish-layer-2 {
+  background: radial-gradient(
+    ellipse 60% 40% at 22% 16%,
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0.04) 25%,
+    transparent 42%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.35;
+}
+
+.tazo-finish-glitter .tazo-character {
+  filter: brightness(1.03) saturate(1.06);
 }
 
 /* ═══════════════════════════════════════════════════════
-   STARDUST (NUEVO) — Campo de estrellas + polvo cósmico
-   Capa 1: gradiente nebuloso púrpura-azul
-   Capa 2: partículas de estrellas distribuidas
-   Capa 3: sweep de polvo estelar
+   STARDUST — Polvo cósmico que tiñe el tazo
+   Nebulosas suaves + estrellas diminutas integradas
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-stardust .tazo-finish-layer {
-  /* nebulosa base */
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(140,80,255,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 60%, rgba(40,120,255,0.16) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(200,60,180,0.12) 0%, transparent 45%);
-  mix-blend-mode: screen;
-  opacity: 0.50;
+    radial-gradient(ellipse at 28% 18%, rgba(140,80,255,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 68% 58%, rgba(40,120,255,0.13) 0%, transparent 48%),
+    radial-gradient(ellipse at 48% 78%, rgba(200,60,180,0.10) 0%, transparent 42%);
+  mix-blend-mode: overlay;
+  opacity: 0.45;
 }
 
 .tazo-finish-stardust .tazo-finish-layer-2 {
-  /* campo de estrellas */
   background-image:
-    radial-gradient(1px 1px at 15% 18%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1.2px 1.2px at 58% 22%, rgba(255,255,255,0.9), transparent),
-    radial-gradient(0.8px 0.8px at 82% 35%, rgba(255,255,255,0.7), transparent),
-    radial-gradient(1px 1px at 28% 55%, rgba(255,255,255,0.75), transparent),
-    radial-gradient(0.7px 0.7px at 70% 48%, rgba(255,255,255,0.65), transparent),
-    radial-gradient(1.3px 1.3px at 45% 72%, rgba(255,255,255,0.85), transparent),
-    radial-gradient(0.9px 0.9px at 90% 68%, rgba(255,255,255,0.7), transparent),
-    radial-gradient(1.1px 1.1px at 12% 80%, rgba(255,255,255,0.75), transparent),
-    radial-gradient(0.8px 0.8px at 62% 85%, rgba(255,255,255,0.65), transparent),
-    radial-gradient(1px 1px at 38% 38%, rgba(255,255,255,0.8), transparent);
-  background-size: 100% 100%;
+    radial-gradient(1.2px 1.2px at 15% 18%, rgba(255,255,255,0.65), transparent 3px),
+    radial-gradient(1.4px 1.4px at 58% 22%, rgba(255,255,255,0.72), transparent 3px),
+    radial-gradient(1.0px 1.0px at 82% 35%, rgba(255,255,255,0.55), transparent 2.5px),
+    radial-gradient(1.2px 1.2px at 28% 55%, rgba(255,255,255,0.60), transparent 2.8px),
+    radial-gradient(0.9px 0.9px at 70% 48%, rgba(255,255,255,0.52), transparent 2.2px),
+    radial-gradient(1.5px 1.5px at 45% 72%, rgba(255,255,255,0.68), transparent 3.2px),
+    radial-gradient(1.1px 1.1px at 90% 68%, rgba(255,255,255,0.56), transparent 2.5px),
+    radial-gradient(1.3px 1.3px at 12% 80%, rgba(255,255,255,0.60), transparent 2.8px),
+    radial-gradient(1.0px 1.0px at 62% 85%, rgba(255,255,255,0.50), transparent 2.2px),
+    radial-gradient(1.2px 1.2px at 38% 38%, rgba(255,255,255,0.64), transparent 2.8px);
   mix-blend-mode: screen;
-  opacity: 0.40;
+  opacity: 0.32;
 }
 
-.tazo-finish-stardust .tazo-disc-image-inner::after {
-  content: '';
-  position: absolute;
-  z-index: 7;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 50%;
-  /* polvo estelar que barre */
+.tazo-finish-stardust .tazo-gloss-layer {
   background: linear-gradient(
     120deg,
-    transparent 30%,
-    rgba(255,255,255,0.06) 43%,
-    rgba(180,200,255,0.10) 46%,
-    rgba(255,255,255,0.04) 49%,
-    transparent 60%
+    transparent 32%,
+    rgba(255,255,255,0.05) 44%,
+    rgba(180,200,255,0.08) 46%,
+    rgba(255,255,255,0.03) 48%,
+    transparent 58%
   );
+  mix-blend-mode: soft-light;
   background-size: 200% 100%;
-  animation: stardust-drift 5s ease-in-out infinite;
+  animation: stardust-drift 5.5s ease-in-out infinite;
   opacity: 0.40;
 }
 
 @keyframes stardust-drift {
-  0%, 40%  { background-position: -60% 0%; }
+  0%, 45%  { background-position: -60% 0%; }
   100%    { background-position: 100% 0%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tazo-finish-stardust .tazo-disc-image-inner::after { animation: none; }
+  .tazo-finish-stardust .tazo-gloss-layer { animation: none; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   AURORA (NUEVO) — Auroras boreales danzantes
-   Capa 1: bandas onduladas con blur
-   Capa 2: barrido vertical lento
+   AURORA — Luces del norte danzando sobre el tazo
+   Bandas de color que flotan orgánicamente
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-aurora .tazo-finish-layer {
-  /* bandas de aurora — verde, cian, violeta */
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 255, 160, 0.25) 15%,
-    rgba(0, 200, 200, 0.20) 28%,
-    rgba(100, 50, 255, 0.22) 42%,
-    transparent 52%,
-    rgba(0, 220, 140, 0.22) 65%,
-    rgba(150, 60, 255, 0.20) 78%,
+    rgba(0, 255, 150, 0.20) 16%,
+    rgba(0, 200, 200, 0.16) 30%,
+    rgba(100, 50, 255, 0.18) 45%,
+    transparent 53%,
+    rgba(0, 220, 130, 0.17) 68%,
+    rgba(150, 60, 255, 0.15) 80%,
     transparent 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0.48;
+  mix-blend-mode: overlay;
+  opacity: 0.42;
   background-size: 100% 250%;
+  filter: blur(3px);
   animation: aurora-wave 7s ease-in-out infinite;
 }
 
 .tazo-finish-aurora .tazo-finish-layer-2 {
-  /* wave sutil con blur — da profundidad */
   background: radial-gradient(
-    ellipse at 50% 30%,
-    rgba(0, 220, 180, 0.20) 0%,
-    transparent 55%
+    ellipse 90% 40% at 48% 28%,
+    rgba(0, 220, 180, 0.16) 0%,
+    transparent 50%
   );
-  mix-blend-mode: screen;
-  opacity: 0.35;
-  animation: aurora-pulse 3.5s ease-in-out infinite alternate;
+  mix-blend-mode: overlay;
+  opacity: 0.30;
+  animation: aurora-pulse 4s ease-in-out infinite alternate;
+}
+
+.tazo-finish-aurora .tazo-character {
+  filter: brightness(1.02) saturate(1.05);
 }
 
 @keyframes aurora-wave {
   0%, 100% { background-position: 0% 0%; }
-  50%     { background-position: 0% 80%; }
+  50%     { background-position: 0% 85%; }
 }
 
 @keyframes aurora-pulse {
-  0%   { opacity: 0.20; }
-  100% { opacity: 0.45; }
+  0%   { opacity: 0.16; }
+  100% { opacity: 0.40; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tazo-finish-aurora .tazo-finish-layer { animation: none; background-position: 0% 30%; }
-  .tazo-finish-aurora .tazo-finish-layer-2 { animation: none; opacity: 0.35; }
+  .tazo-finish-aurora .tazo-finish-layer-2 { animation: none; opacity: 0.30; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   CRACKED ICE (NUEVO) — Hielo fragmentado premium
-   Capa 1: textura geométrica de triángulos
-   Capa 2: barrido de arcoíris suave sobre los fragmentos
+   CRACKED ICE — Fragmentos con tintes arcoíris
+   Las líneas divisorias crean facetas, cada una
+   ligeramente teñida de un tono diferente.
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-cracked_ice .tazo-finish-layer {
-  /* fragmentos geométricos con tintes arcoíris */
   background:
-    /* líneas divisorias de los fragmentos */
-    linear-gradient(25deg, transparent 38%, rgba(255,255,255,0.12) 38.5%, transparent 39%),
-    linear-gradient(-30deg, transparent 55%, rgba(255,255,255,0.08) 55.5%, transparent 56%),
-    linear-gradient(70deg, transparent 28%, rgba(255,255,255,0.10) 28.5%, transparent 29%),
-    linear-gradient(-55deg, transparent 62%, rgba(255,255,255,0.09) 62.5%, transparent 63%),
-    linear-gradient(10deg, transparent 72%, rgba(255,255,255,0.11) 72.5%, transparent 73%),
-    /* tintes de color en diferentes zonas */
-    radial-gradient(ellipse at 20% 25%, rgba(255,100,200,0.22) 0%, transparent 50%),
-    radial-gradient(ellipse at 65% 35%, rgba(100,200,255,0.20) 0%, transparent 45%),
-    radial-gradient(ellipse at 45% 70%, rgba(255,220,50,0.18) 0%, transparent 48%),
-    radial-gradient(ellipse at 80% 65%, rgba(150,255,100,0.16) 0%, transparent 42%);
-  mix-blend-mode: screen;
-  opacity: 0.50;
+    linear-gradient(25deg, transparent 38%, rgba(255,255,255,0.10) 38.5%, transparent 39%),
+    linear-gradient(-30deg, transparent 55%, rgba(255,255,255,0.07) 55.5%, transparent 56%),
+    linear-gradient(70deg, transparent 28%, rgba(255,255,255,0.08) 28.5%, transparent 29%),
+    linear-gradient(-55deg, transparent 62%, rgba(255,255,255,0.07) 62.5%, transparent 63%),
+    linear-gradient(10deg, transparent 72%, rgba(255,255,255,0.09) 72.5%, transparent 73%),
+    radial-gradient(ellipse at 20% 25%, rgba(255,100,200,0.16) 0%, transparent 45%),
+    radial-gradient(ellipse at 65% 35%, rgba(100,200,255,0.15) 0%, transparent 42%),
+    radial-gradient(ellipse at 45% 70%, rgba(255,220,50,0.14) 0%, transparent 44%),
+    radial-gradient(ellipse at 80% 65%, rgba(150,255,100,0.12) 0%, transparent 40%);
+  mix-blend-mode: overlay;
+  opacity: 0.45;
 }
 
 .tazo-finish-cracked_ice .tazo-finish-layer-2 {
-  /* barrido de brillo sobre los fragmentos */
   background: linear-gradient(
     120deg,
-    transparent 25%,
-    rgba(255,255,255,0.35) 38%,
+    transparent 26%,
+    rgba(255,255,255,0.28) 38%,
     rgba(255,255,255,0.0) 42%,
     transparent 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0.30;
+  mix-blend-mode: soft-light;
+  opacity: 0.28;
   background-size: 200% 100%;
   animation: foil-sheen 4.5s ease-in-out infinite;
+}
+
+.tazo-finish-cracked_ice .tazo-character {
+  filter: brightness(1.04) saturate(1.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -625,42 +719,44 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   OIL SLICK (NUEVO) — Mancha de aceite iridiscente
-   Capa 1: remolinos orgánicos de color con blur
-   Capa 2: gradiente radial cambiante
+   OIL SLICK — Mancha de aceite iridiscente
+   Remolinos orgánicos de color con blur para fusionarse
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-oil_slick .tazo-finish-layer {
   background:
-    radial-gradient(ellipse at 30% 40%, rgba(255,0,150,0.28) 0%, transparent 50%),
-    radial-gradient(ellipse at 65% 30%, rgba(0,220,200,0.25) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 65%, rgba(255,200,0,0.24) 0%, transparent 48%),
-    radial-gradient(ellipse at 75% 55%, rgba(150,60,255,0.22) 0%, transparent 42%);
-  mix-blend-mode: color-dodge;
-  opacity: 0.42;
-  filter: blur(8px);
-  animation: oil-shift 6s ease-in-out infinite alternate;
+    radial-gradient(ellipse at 30% 40%, rgba(255,0,150,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 65% 30%, rgba(0,220,200,0.20) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 65%, rgba(255,200,0,0.19) 0%, transparent 48%),
+    radial-gradient(ellipse at 75% 55%, rgba(150,60,255,0.17) 0%, transparent 42%);
+  mix-blend-mode: overlay;
+  opacity: 0.38;
+  filter: blur(7px);
+  animation: oil-shift 6.5s ease-in-out infinite alternate;
 }
 
 .tazo-finish-oil_slick .tazo-finish-layer-2 {
-  /* anillos de interferencia finos */
   background: repeating-radial-gradient(
-    circle at 45% 40%,
+    circle at 48% 42%,
     transparent 0px,
-    transparent 12px,
-    rgba(255,255,255,0.08) 12.5px,
-    rgba(255,200,255,0.06) 13px,
-    transparent 13.5px,
-    transparent 24px
+    transparent 14px,
+    rgba(255,255,255,0.06) 14.5px,
+    rgba(255,200,255,0.04) 15px,
+    transparent 15.5px,
+    transparent 28px
   );
-  mix-blend-mode: screen;
-  opacity: 0.32;
+  mix-blend-mode: overlay;
+  opacity: 0.28;
+}
+
+.tazo-finish-oil_slick .tazo-character {
+  filter: brightness(1.02) saturate(1.08);
 }
 
 @keyframes oil-shift {
   0%   { transform: scale(1.0) rotate(0deg); }
-  50%  { transform: scale(1.08) rotate(3deg); }
-  100% { transform: scale(1.0) rotate(-2deg); }
+  50%  { transform: scale(1.06) rotate(2deg); }
+  100% { transform: scale(1.0) rotate(-1deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -668,36 +764,34 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   LENTICULAR (NUEVO) — Efecto lenticular 3D con líneas
+   LENTICULAR — Líneas de lente con efecto 3D sutil
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-lenticular .tazo-finish-layer {
-  /* líneas verticales finas tipo lente */
   background: repeating-linear-gradient(
     90deg,
     transparent 0px,
-    transparent 3px,
-    rgba(255,255,255,0.12) 3.2px,
-    rgba(0,0,0,0.06) 3.5px,
-    transparent 3.8px,
-    transparent 6px
+    transparent 3.5px,
+    rgba(255,255,255,0.10) 3.7px,
+    rgba(0,0,0,0.05) 4.0px,
+    transparent 4.3px,
+    transparent 7px
   );
   mix-blend-mode: overlay;
-  opacity: 0.40;
+  opacity: 0.35;
 }
 
 .tazo-finish-lenticular .tazo-finish-layer-2 {
-  /* shimmer que viaja entre las líneas */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    transparent 20%,
-    rgba(255,255,255,0.30) 40%,
+    transparent 22%,
+    rgba(255,255,255,0.25) 42%,
     rgba(255,255,255,0.0) 50%,
     transparent 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0.25;
+  mix-blend-mode: soft-light;
+  opacity: 0.22;
   background-size: 200% 100%;
   animation: foil-sheen 5s ease-in-out infinite;
 }
@@ -707,37 +801,40 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   PEARLESCENT (NUEVO) — Nacarado con destellos suaves
+   PEARLESCENT — Nácar suave con destellos rosados
    ═══════════════════════════════════════════════════════ */
 
 .tazo-finish-pearlescent .tazo-finish-layer {
   background:
-    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.35) 0%, transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(255,240,255,0.25) 0%, transparent 45%),
+    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.30) 0%, transparent 38%),
+    radial-gradient(circle at 68% 58%, rgba(255,240,255,0.22) 0%, transparent 42%),
     linear-gradient(
       160deg,
-      rgba(255,225,240,0.25) 0%,
-      rgba(230,240,255,0.22) 35%,
-      rgba(255,255,255,0.30) 55%,
-      rgba(240,225,255,0.24) 100%
+      rgba(255,225,240,0.20) 0%,
+      rgba(230,240,255,0.18) 38%,
+      rgba(255,255,255,0.25) 58%,
+      rgba(240,225,255,0.20) 100%
     );
-  mix-blend-mode: screen;
-  opacity: 0.45;
+  mix-blend-mode: overlay;
+  opacity: 0.42;
 }
 
 .tazo-finish-pearlescent .tazo-finish-layer-2 {
-  /* shimmer nacarado */
   background: linear-gradient(
     135deg,
-    transparent 20%,
-    rgba(255,255,255,0.22) 38%,
-    rgba(255,240,255,0.08) 44%,
-    transparent 60%
+    transparent 22%,
+    rgba(255,255,255,0.20) 40%,
+    rgba(255,240,255,0.06) 46%,
+    transparent 62%
   );
-  mix-blend-mode: screen;
+  mix-blend-mode: soft-light;
   opacity: 0.30;
   background-size: 200% 100%;
-  animation: gold-shimmer 5s ease-in-out infinite;
+  animation: gold-shimmer 5.5s ease-in-out infinite;
+}
+
+.tazo-finish-pearlescent .tazo-character {
+  filter: brightness(1.03) saturate(1.04);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -745,23 +842,23 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   VARIANTES DE CRIATURA
+   VARIANTES DE CRIATURA — Filtros sobre la imagen
    ═══════════════════════════════════════════════════════ */
 
 .tazo-variant-shiny .tazo-character {
-  filter: saturate(1.4) contrast(1.10) brightness(1.06);
+  filter: saturate(1.35) contrast(1.08) brightness(1.04);
 }
 
 .tazo-variant-shadow .tazo-character {
-  filter: brightness(0.35) saturate(0.18) contrast(1.25);
+  filter: brightness(0.32) saturate(0.15) contrast(1.28);
 }
 
 .tazo-variant-golden .tazo-character {
-  filter: sepia(0.85) saturate(1.6) brightness(1.12) hue-rotate(-8deg);
+  filter: sepia(0.80) saturate(1.55) brightness(1.10) hue-rotate(-6deg);
 }
 
 /* ═══════════════════════════════════════════════════════
-   CONDITION / WEAR SYSTEM
+   CONDITION / WEAR — Desgaste del tazo
    ═══════════════════════════════════════════════════════ */
 
 .tazo-condition-layer {
@@ -772,47 +869,47 @@
 .tazo-wear-mint .tazo-condition-layer { opacity: 0; }
 
 .tazo-wear-light_play .tazo-condition-layer {
-  opacity: 0.18;
+  opacity: 0.16;
   background:
-    radial-gradient(ellipse at 50% 50%, transparent 84%, rgba(80,70,50,0.22) 88%, rgba(60,50,40,0.28) 91%, transparent 94%),
-    repeating-linear-gradient(23deg, transparent 0px, transparent 4px, rgba(200,185,160,0.08) 4px, rgba(200,185,160,0.08) 4.5px, transparent 4.5px, transparent 7px);
+    radial-gradient(ellipse at 50% 50%, transparent 84%, rgba(80,70,50,0.18) 88%, rgba(60,50,40,0.24) 91%, transparent 94%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 5px, rgba(200,185,160,0.06) 5px, rgba(200,185,160,0.06) 5.5px, transparent 5.5px, transparent 8px);
 }
 
 .tazo-wear-played .tazo-condition-layer {
-  opacity: 0.35;
+  opacity: 0.32;
   background:
-    radial-gradient(ellipse at 50% 50%, transparent 80%, rgba(70,60,45,0.3) 86%, rgba(50,40,30,0.35) 90%, transparent 95%),
-    repeating-linear-gradient(23deg, transparent 0px, transparent 2px, rgba(200,185,160,0.12) 2px, rgba(200,185,160,0.12) 2.8px, transparent 2.8px, transparent 6px),
-    repeating-linear-gradient(-17deg, transparent 0px, transparent 3px, rgba(180,165,140,0.10) 3px, rgba(180,165,140,0.10) 3.4px, transparent 3.4px, transparent 7px),
-    linear-gradient(75deg, transparent 0%, transparent 48%, rgba(150,130,110,0.12) 48%, rgba(150,130,110,0.12) 48.6%, transparent 48.6%, transparent 52%, rgba(150,130,110,0.08) 52%, rgba(150,130,110,0.08) 52.4%, transparent 52.4%);
+    radial-gradient(ellipse at 50% 50%, transparent 80%, rgba(70,60,45,0.28) 86%, rgba(50,40,30,0.32) 90%, transparent 95%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 3px, rgba(200,185,160,0.10) 3px, rgba(200,185,160,0.10) 3.8px, transparent 3.8px, transparent 7px),
+    repeating-linear-gradient(-17deg, transparent 0px, transparent 4px, rgba(180,165,140,0.08) 4px, rgba(180,165,140,0.08) 4.4px, transparent 4.4px, transparent 8px),
+    linear-gradient(75deg, transparent 0%, transparent 48%, rgba(150,130,110,0.10) 48%, rgba(150,130,110,0.10) 48.6%, transparent 48.6%, transparent 52%, rgba(150,130,110,0.06) 52%, rgba(150,130,110,0.06) 52.4%, transparent 52.4%);
 }
 
 .tazo-wear-heavy_play .tazo-condition-layer {
-  opacity: 0.55;
+  opacity: 0.50;
   background:
-    radial-gradient(ellipse at 50% 50%, transparent 77%, rgba(60,50,35,0.4) 85%, rgba(40,30,20,0.5) 89%, transparent 93%),
-    radial-gradient(circle at 20% 30%, transparent 94%, rgba(60,50,35,0.25) 95%, transparent 97%),
-    radial-gradient(circle at 75% 70%, transparent 93%, rgba(50,40,30,0.22) 94%, transparent 96%),
-    repeating-linear-gradient(23deg, transparent 0px, transparent 1.5px, rgba(190,170,145,0.18) 1.5px, rgba(190,170,145,0.18) 2.4px, transparent 2.4px, transparent 4px),
-    repeating-linear-gradient(-17deg, transparent 0px, transparent 2px, rgba(175,155,130,0.14) 2px, rgba(175,155,130,0.14) 2.7px, transparent 2.7px, transparent 5px),
-    linear-gradient(45deg, transparent 0%, transparent 30%, rgba(120,100,80,0.18) 30%, rgba(120,100,80,0.18) 30.8%, transparent 30.8%);
+    radial-gradient(ellipse at 50% 50%, transparent 77%, rgba(60,50,35,0.36) 85%, rgba(40,30,20,0.46) 89%, transparent 93%),
+    radial-gradient(circle at 20% 30%, transparent 94%, rgba(60,50,35,0.22) 95%, transparent 97%),
+    radial-gradient(circle at 75% 70%, transparent 93%, rgba(50,40,30,0.20) 94%, transparent 96%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 2px, rgba(190,170,145,0.15) 2px, rgba(190,170,145,0.15) 2.8px, transparent 2.8px, transparent 5px),
+    repeating-linear-gradient(-17deg, transparent 0px, transparent 2.5px, rgba(175,155,130,0.12) 2.5px, rgba(175,155,130,0.12) 3.2px, transparent 3.2px, transparent 6px),
+    linear-gradient(45deg, transparent 0%, transparent 30%, rgba(120,100,80,0.15) 30%, rgba(120,100,80,0.15) 30.8%, transparent 30.8%);
 }
 
 .tazo-wear-heavy_play .tazo-character,
 .tazo-wear-damaged .tazo-character {
-  filter: saturate(0.72) contrast(0.90);
+  filter: saturate(0.75) contrast(0.92);
 }
 
 .tazo-wear-damaged .tazo-condition-layer {
-  opacity: 0.75;
+  opacity: 0.68;
   background:
-    radial-gradient(ellipse at 50% 50%, transparent 73%, rgba(50,40,30,0.55) 82%, rgba(30,20,15,0.65) 88%, transparent 92%),
-    radial-gradient(circle at 15% 25%, transparent 90%, rgba(50,40,30,0.35) 91%, transparent 94%),
-    radial-gradient(circle at 70% 65%, transparent 88%, rgba(45,35,25,0.40) 89%, transparent 93%),
-    radial-gradient(circle at 40% 80%, transparent 91%, rgba(55,45,30,0.30) 92%, transparent 95%),
-    repeating-linear-gradient(23deg, transparent 0px, transparent 1px, rgba(180,160,135,0.22) 1px, rgba(180,160,135,0.22) 2.2px, transparent 2.2px, transparent 3px),
-    repeating-linear-gradient(-17deg, transparent 0px, transparent 1.5px, rgba(170,150,125,0.18) 1.5px, rgba(170,150,125,0.18) 2.3px, transparent 2.3px, transparent 4px),
-    linear-gradient(45deg, transparent 0%, transparent 35%, rgba(90,70,50,0.25) 35%, rgba(90,70,50,0.25) 36%, transparent 36%);
+    radial-gradient(ellipse at 50% 50%, transparent 73%, rgba(50,40,30,0.50) 82%, rgba(30,20,15,0.60) 88%, transparent 92%),
+    radial-gradient(circle at 15% 25%, transparent 90%, rgba(50,40,30,0.32) 91%, transparent 94%),
+    radial-gradient(circle at 70% 65%, transparent 88%, rgba(45,35,25,0.36) 89%, transparent 93%),
+    radial-gradient(circle at 40% 80%, transparent 91%, rgba(55,45,30,0.28) 92%, transparent 95%),
+    repeating-linear-gradient(23deg, transparent 0px, transparent 1.5px, rgba(180,160,135,0.18) 1.5px, rgba(180,160,135,0.18) 2.5px, transparent 2.5px, transparent 4px),
+    repeating-linear-gradient(-17deg, transparent 0px, transparent 2px, rgba(170,150,125,0.15) 2px, rgba(170,150,125,0.15) 2.8px, transparent 2.8px, transparent 5px),
+    linear-gradient(45deg, transparent 0%, transparent 35%, rgba(90,70,50,0.22) 35%, rgba(90,70,50,0.22) 36%, transparent 36%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -825,4 +922,26 @@
     border: 2px dashed rgba(255,0,0,0.25);
     z-index: 7;
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   GLOBAL DISC VIGNETTE — Profundidad en el borde del tazo
+   Aplicado al ::after del contenedor exterior para estar
+   por encima de todas las capas de finish.
+   ═══════════════════════════════════════════════════════ */
+
+.tazo-disc-image::after {
+  content: '';
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 72%,
+    rgba(0,0,0,0.05) 82%,
+    rgba(0,0,0,0.16) 92%,
+    rgba(0,0,0,0.25) 100%
+  );
+  pointer-events: none;
 }
