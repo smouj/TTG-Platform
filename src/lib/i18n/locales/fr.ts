@@ -163,7 +163,7 @@ const fr: Dictionary = {
   auth_password_strength_fair: "Fair",
   auth_password_strength_good: "Good",
   auth_password_strength_strong: "Strong",
-  auth_agree_terms: "I agree to the Terms of Service and Privacy Policy",
+  auth_agree_terms_prefix: "I agree to the",
   auth_no_account: "Pas de compte?",
   auth_have_account: "Tu as deja un compte?",
   auth_logout: "Deconnexion",

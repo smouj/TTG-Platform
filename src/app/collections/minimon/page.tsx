@@ -34,8 +34,8 @@ export default function MinimonCollectionPage() {
           A creature adventure world about exploration, friendship, elemental habitats, and natural evolution.
         </p>
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-5xl font-black text-[#1a1a1a]">61</span>
-          <span className="text-lg font-bold text-[#1a1a1a]/40">tazos</span>
+          <span className="text-5xl font-black text-[#1a1a1a]">10</span>
+          <span className="text-lg font-bold text-[#1a1a1a]/40">of 61 tazos</span>
           <span className="text-xs font-bold bg-[#FFCC00] px-2 py-1 border-2 border-[#1a1a1a]">Matutano 2000</span>
         </div>
 
@@ -130,7 +130,7 @@ export default function MinimonCollectionPage() {
             href="/tazos?collection=minimon"
             className="mag-btn inline-block bg-[#E3350D] text-white border-2 border-[#1a1a1a] px-8 py-4 text-sm font-black uppercase tracking-wider shadow-[6px_6px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#1a1a1a] transition-all"
           >
-            Browse All 61 Minimon Tazos
+            Browse All 10 Minimon Tazos
           </Link>
         </div>
 

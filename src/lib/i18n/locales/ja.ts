@@ -163,7 +163,7 @@ const ja: Dictionary = {
   auth_password_strength_fair: "Fair",
   auth_password_strength_good: "Good",
   auth_password_strength_strong: "Strong",
-  auth_agree_terms: "I agree to the Terms of Service and Privacy Policy",
+  auth_agree_terms_prefix: "I agree to the",
   auth_no_account: "アカウントをお持ちでないですか？",
   auth_have_account: "すでにアカウントをお持ちですか？",
   auth_logout: "ログアウト",

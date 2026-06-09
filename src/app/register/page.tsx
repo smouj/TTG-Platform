@@ -49,7 +49,7 @@ export default function RegisterPage() {
       return
     }
     if (!agreedTerms) {
-      setError("You must agree to the Terms of Service and Privacy Policy")
+      setError("You must agree to the terms")
       return
     }
     setSubmitting(true)
@@ -221,10 +221,10 @@ export default function RegisterPage() {
                 className="mt-0.5 w-4 h-4 border-2 border-[#1a1a1a] accent-[#3B4CCA] shrink-0"
               />
               <label htmlFor="terms" className="text-[10px] font-bold text-[#1a1a1a]/60 leading-relaxed">
-                {t.auth_agree_terms}{" "}
-                <Link href="/terms" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">Terms of Service</Link>
-                {" "}and{" "}
-                <Link href="/privacy" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">Privacy Policy</Link>
+                {t.auth_agree_terms_prefix || "I agree to the"}{" "}
+                <Link href="/terms" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_terms || "Terms of Service"}</Link>
+                {" "}{t.common_and || "and"}{" "}
+                <Link href="/privacy" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_privacy || "Privacy Policy"}</Link>
               </label>
             </div>
 

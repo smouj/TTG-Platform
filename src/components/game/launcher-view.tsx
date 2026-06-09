@@ -487,7 +487,7 @@ function TazoShowcase() {
         ))}
       </div>
       <p className="text-center text-[8px] font-black text-[#1a1a1a]/20 uppercase tracking-[0.25em]">
-        {display.length > 0 ? `${display.length} tazos · 349 total` : "3 franchises · 349 total"}
+        {display.length > 0 ? `${display.length} tazos · 32 available` : "3 franchises · 32 available"}
       </p>
     </div>
   )
@@ -558,7 +558,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
       {/* Feature cards — 2×2 grid */}
       <div className="grid grid-cols-2 gap-2 w-full max-w-xs">
         {[
-          { icon: PackageOpen, label: "Open Bags", desc: "349 tazos", color: "#FFCC00" },
+          { icon: PackageOpen, label: "Open Bags", desc: "32 tazos", color: "#FFCC00" },
           { icon: Swords, label: "Practice", desc: "AI battles", color: "#E3350D" },
           { icon: Disc3, label: "Collect", desc: "All series", color: "#00A1E9" },
           { icon: Medal, label: "Ranked", desc: "Leaderboard", color: "#22C55E" },

@@ -209,7 +209,7 @@ export interface Dictionary {
   auth_password_strength_fair: string
   auth_password_strength_good: string
   auth_password_strength_strong: string
-  auth_agree_terms: string
+  auth_agree_terms_prefix: string
   auth_no_account: string
   auth_have_account: string
   auth_email_placeholder: string
