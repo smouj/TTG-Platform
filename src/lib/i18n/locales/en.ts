@@ -2,8 +2,8 @@ import type { Dictionary } from "../types"
 
 const en: Dictionary = {
   siteTitle: "TRADING TAZOS GAME",
-  siteSubtitle: "ARENA",
-  siteIssue: "Vol.1",
+  siteSubtitle: "APP",
+  siteIssue: "WEB",
   siteTagline: "Gotta flip 'em all!",
   siteFooterTribute: "A nostalgic tribute to the golden age of tazos",
   siteFooterTrademark: "Fan-made tribute. Minimon, Cybermon, and Dracobell are original fictional IPs for Trading Tazos Game.",
