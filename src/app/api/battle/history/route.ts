@@ -2,6 +2,45 @@ import { db } from '@/lib/db'
 import { getAuthUser } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
+// ── POST: Save battle result (from PvP WebSocket or solo battle) ──
+export async function POST(request: NextRequest) {
+  try {
+    const authUser = await getAuthUser(request).catch(() => null)
+    if (!authUser) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = await request.json()
+    const { winner, victoryType, score, turns, rounds, playerTazos, opponentTazos, opponentName, battleLog } = body
+
+    // Validate required fields
+    if (!winner || !victoryType) {
+      return NextResponse.json({ error: 'winner and victoryType required' }, { status: 400 })
+    }
+
+    const record = await db.battleRecord.create({
+      data: {
+        userId: authUser.id,
+        winner,
+        victoryType,
+        opponentName: opponentName || null,
+        score: score || '0-0',
+        turns: turns || 0,
+        rounds: rounds || 0,
+        playerTazos: playerTazos ? JSON.stringify(playerTazos) : '[]',
+        opponentTazos: opponentTazos ? JSON.stringify(opponentTazos) : '[]',
+        battleLog: battleLog ? JSON.stringify(battleLog) : null,
+      },
+    })
+
+    return NextResponse.json({ success: true, id: record.id }, { status: 201 })
+  } catch (error) {
+    console.error('Error saving battle result:', error)
+    return NextResponse.json({ error: 'Failed to save battle result' }, { status: 500 })
+  }
+}
+
+// ── GET: Fetch battle history ──
 export async function GET(request: NextRequest) {
   try {
     const authUser = await getAuthUser(request).catch(() => null)

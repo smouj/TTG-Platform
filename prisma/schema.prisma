@@ -178,6 +178,7 @@ model BattleRecord {
   opponentTazos String   // JSON array of tazo IDs
   winner        String   // "player" | "opponent" | "draw"
   victoryType   String?
+  opponentName  String?  // Opponent display name (for PvP)
   score         String?  // e.g. "3-1"
   turns         Int      @default(0)
   rounds        Int      @default(0)
