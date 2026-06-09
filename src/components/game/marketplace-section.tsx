@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/lib/auth-context"
+import TazoDiscImage from "@/components/game/tazo-disc-image"
 import {
   Store, Coins, ShoppingCart, Loader2, X, AlertTriangle,
   Search, ChevronDown, Tag, User, Clock, ArrowUpDown, Trophy,
@@ -85,7 +86,9 @@ function ListingCard({ listing, onBuy, onCancel, buying, isOwn, credits }: {
       <div className="w-16 h-16 shrink-0 rounded-full border-2 border-[#1a1a1a] overflow-hidden relative"
         style={{ background: "#1a1a1a" }}>
         {t.imageUrl ? (
-          <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" />
+          <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+            franchiseSlug={t.franchise?.slug} finish={t.finish as any} creatureVariant={t.creatureVariant as any} shinyImageUrl={t.shinyImageUrl}
+            className="w-full h-full" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-[#1a1a1a]/20 text-xl font-black">?</div>
         )}
@@ -174,7 +177,9 @@ function SellTazoCard({ ut, onSell, selling }: {
         <div className="w-14 h-14 shrink-0 rounded-full border-2 border-[#1a1a1a] overflow-hidden"
           style={{ background: "#1a1a1a" }}>
           {t.imageUrl ? (
-            <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" />
+            <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+              franchiseSlug={t.franchise?.slug} finish={t.finish as any} creatureVariant={t.creatureVariant as any} shinyImageUrl={t.shinyImageUrl}
+              className="w-full h-full" />
           ) : <div className="w-full h-full flex items-center justify-center text-[#1a1a1a]/20">?</div>}
         </div>
         <div className="flex-1 min-w-0">
@@ -281,7 +286,10 @@ function OffersTab({ token }: { token: string | null }) {
           <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#22C55E]/30"
             style={{ background: '#1a1a1a' }}>
             {o.offeredTazo?.tazo?.imageUrl && (
-              <img src={o.offeredTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain" />
+              <TazoDiscImage src={o.offeredTazo.tazo.imageUrl} alt="" size="100%" borderWidth={0}
+                franchiseSlug={o.offeredTazo.tazo.franchise?.slug} finish={o.offeredTazo.tazo.finish as any} creatureVariant={o.offeredTazo.tazo.creatureVariant as any}
+                shinyImageUrl={o.offeredTazo.tazo.shinyImageUrl}
+                className="w-full h-full" />
             )}
           </div>
           {/* Arrow */}
@@ -290,7 +298,10 @@ function OffersTab({ token }: { token: string | null }) {
           <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#E3350D]/30"
             style={{ background: '#1a1a1a' }}>
             {o.requestedTazo?.imageUrl && (
-              <img src={o.requestedTazo.imageUrl} alt="" className="w-full h-full object-contain" />
+              <TazoDiscImage src={o.requestedTazo.imageUrl} alt="" size="100%" borderWidth={0}
+                franchiseSlug={o.requestedTazo.franchise?.slug} finish={o.requestedTazo.finish as any} creatureVariant={o.requestedTazo.creatureVariant as any}
+                shinyImageUrl={o.requestedTazo.shinyImageUrl}
+                className="w-full h-full" />
             )}
           </div>
           {/* Info */}
@@ -426,7 +437,10 @@ function HistoryTab({ token }: { token: string | null }) {
                 background: '#1a1a1a',
               }}>
               {h.userTazo?.tazo?.imageUrl && (
-                <img src={h.userTazo.tazo.imageUrl} alt="" className="w-full h-full object-contain" />
+                <TazoDiscImage src={h.userTazo.tazo.imageUrl} alt="" size="100%" borderWidth={0}
+                  franchiseSlug={h.userTazo.tazo.franchise?.slug} finish={h.userTazo.tazo.finish as any} creatureVariant={h.userTazo.tazo.creatureVariant as any}
+                  shinyImageUrl={h.userTazo.tazo.shinyImageUrl}
+                  className="w-full h-full" />
               )}
             </div>
             {/* Info */}

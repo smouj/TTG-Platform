@@ -18,6 +18,7 @@ import ConfettiBurst from "@/components/game/confetti-burst"
 import type { BagData } from "@/components/game/bag-opener-3d"
 import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
+import TazoDiscImage from "@/components/game/tazo-disc-image"
 
 const BagOpener3D = dynamic(() => import("@/components/game/bag-opener-3d"), { ssr: false })
 
@@ -511,10 +512,12 @@ export default function BagShopPage() {
 
         {/* Tazo disc */}
         <div className="mx-auto w-52 h-52 rounded-full border-4 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] flex items-center justify-center overflow-hidden"
-          style={{ background: franchiseColor }}>
+          style={{ background: "#1a1a1a" }}>
           {revealedTazo.imageUrl ? (
-            <img src={revealedTazo.imageUrl} alt={revealedTazo.name || ""}
-              className="w-full h-full object-cover" />
+            <TazoDiscImage src={revealedTazo.imageUrl} alt={revealedTazo.name || ""}
+              size="100%" borderWidth={0} franchiseSlug={revealedTazo.franchiseSlug}
+              finish={revealedTazo.finish} creatureVariant={revealedTazo.creatureVariant} shinyImageUrl={revealedTazo.shinyImageUrl}
+              className="w-full h-full" />
           ) : (
             <div className="text-[#1a1a1a]/20 text-6xl">?</div>
           )}
@@ -545,8 +548,11 @@ export default function BagShopPage() {
             </div>
             <div className="flex items-center justify-center gap-4 p-2">
               {bonusTazo.imageUrl && (
-                <img src={bonusTazo.imageUrl} alt={bonusTazo.name}
-                  className="w-16 h-16 rounded-full border-2 border-[#1a1a1a] object-cover shadow-[2px_2px_0px_#1a1a1a]" />
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]" style={{ background: "#1a1a1a" }}>
+                  <TazoDiscImage src={bonusTazo.imageUrl} alt={bonusTazo.name} size="100%" borderWidth={0}
+                    franchiseSlug={bonusTazo.franchiseSlug} finish={bonusTazo.finish} creatureVariant={bonusTazo.creatureVariant} shinyImageUrl={bonusTazo.shinyImageUrl}
+                    className="w-full h-full" />
+                </div>
               )}
               <div className="text-left">
                 <p className="font-black text-sm text-[#1a1a1a]">{bonusTazo.displayName || bonusTazo.name}</p>

@@ -258,7 +258,9 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div key={t.id || i} className="w-12 h-12 rounded-full border-2 border-[#1a1a1a] bg-[#1a1a1a] overflow-hidden flex-shrink-0 relative"
             style={{ zIndex: 4 - i }}>
             {t.imageUrl ? (
-              <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" style={{ borderRadius: '50%' }} />
+              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+                franchiseSlug={t.franchiseSlug || t.franchise?.slug} finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
+                className="w-full h-full" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[7px] font-black text-[#1a1a1a]/15">?</div>
             )}
@@ -293,7 +295,9 @@ function DeckPreview({ tazos }: { tazos: any[] }) {
           <div key={t.id || i} className="w-14 h-14 rounded-full border-2 border-[#1a1a1a] bg-[#1a1a1a] overflow-hidden flex-shrink-0"
             style={{ zIndex: 3 - i }}>
             {t.imageUrl ? (
-              <img src={t.imageUrl} alt={t.displayName || t.name} className="w-full h-full object-cover" style={{ borderRadius: '50%' }} />
+              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+                franchiseSlug={t.franchiseSlug || t.franchise?.slug} finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
+                className="w-full h-full" />
             ) : (
               <div className="w-full h-full flex items-center justify-center" style={{ background: (t.color || "#3B4CCA") + "10" }}>
                 <span className="text-[10px] font-black" style={{ color: t.color || "#3B4CCA" }}>{t.label || "?"}</span>
@@ -360,8 +364,11 @@ function ArenaPreview({ tazos }: { tazos: any[] }) {
         {/* Tazo in flight */}
         {tazos.length > 0 && tazos[0].imageUrl ? (
           <div className="absolute top-[10%] left-[50%] w-6 h-6 rounded-full overflow-hidden border border-[#FFCC00]/40 -translate-x-3 animate-bounce"
-            style={{ boxShadow: "0 0 8px rgba(255,204,0,0.3)" }}>
-            <img src={tazos[0].imageUrl} alt="" className="w-full h-full object-cover" />
+            style={{ boxShadow: "0 0 8px rgba(255,204,0,0.3)", background: "#1a1a1a" }}>
+            <TazoDiscImage src={tazos[0].imageUrl} alt="" size="100%" borderWidth={0}
+              franchiseSlug={tazos[0].franchiseSlug || tazos[0].franchise?.slug}
+              finish={tazos[0].finish} creatureVariant={tazos[0].creatureVariant} shinyImageUrl={tazos[0].shinyImageUrl}
+              className="w-full h-full" />
           </div>
         ) : (
           <div className="absolute top-[10%] left-[50%] w-6 h-6 rounded-full bg-[#FFCC00]/20 border border-[#FFCC00]/30 -translate-x-3 flex items-center justify-center animate-pulse">
