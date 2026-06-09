@@ -175,9 +175,9 @@ export default function DecksPage() {
       >
         <div className="flex items-center gap-1.5">
           <Layers className="w-5 h-5 text-[#FFCC00]" />
-          <span className="text-sm font-black text-white tracking-tight uppercase">
+          <h1 className="text-sm sm:text-lg font-black text-white uppercase tracking-tight">
             {t.decks_title}
-          </span>
+          </h1>
         </div>
         <div className="w-px h-5 bg-white/15" />
         <span className="text-sm font-black text-[#FFCC00] tracking-tight">

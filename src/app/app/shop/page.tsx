@@ -355,7 +355,7 @@ export default function BagShopPage() {
         >
           <div className="flex items-center gap-2">
             <ShoppingCart className="w-5 h-5 text-[#FFCC00]" />
-            <h1 className="text-sm font-black text-white uppercase tracking-tight">
+            <h1 className="text-sm sm:text-lg font-black text-white uppercase tracking-tight">
               {t.shop_title || "Tazo Shop"}
             </h1>
           </div>

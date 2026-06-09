@@ -25,7 +25,7 @@ function StatsContent() {
       >
         <div className="flex items-center gap-1.5">
           <BarChart3 className="w-5 h-5 text-[#FFCC00]" />
-          <span className="text-sm font-black text-white tracking-tight uppercase">GLOBAL STATS</span>
+          <h1 className="text-sm sm:text-lg font-black text-white uppercase tracking-tight">GLOBAL STATS</h1>
         </div>
         <div className="w-px h-5 bg-white/15" />
         <span className="text-sm font-black text-[#3B4CCA] tracking-tight">349 TAZOS</span>
