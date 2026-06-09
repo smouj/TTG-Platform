@@ -479,7 +479,7 @@ export default function BagShopPage() {
           </p>
         </div>
 
-        <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] overflow-hidden rounded">
+        <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] overflow-hidden">
           <BagOpener3D
             bag={{ id: bagId || "", bagType: selectedBag.type, preview: { franchise: { slug: selectedBag.franchise || "minimon" } } }}
             onOpen={openBag}
