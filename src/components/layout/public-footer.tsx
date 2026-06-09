@@ -53,7 +53,7 @@ const columns = [
     title: "Game",
     links: [
       ["How to Play", "/how-to-play"],
-      ["Battle System", "/battle-system"],
+      ["Battle System", "/?page=how-to-play"],
       ["Collections", "/collections"],
       ["Tazos", "/tazos"],
       ["Leaderboard", "/leaderboard"],

@@ -103,7 +103,7 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                placeholder="tu@email.com"
+                placeholder={t.auth_email_placeholder || "you@email.com"}
                 className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#FFCC00] transition-colors"
                 style={{ background: "#fffef0" }}
               />
@@ -155,7 +155,7 @@ function LoginForm() {
             <div className="space-y-2.5">
               <div className="flex items-center gap-3">
                 <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
-                <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-widest">o continúa con</span>
+                <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-widest">{t.auth_oauth_divider || "or continue with"}</span>
                 <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
               </div>
 
@@ -166,10 +166,10 @@ function LoginForm() {
               </div>
 
               <p className="text-[9px] text-[#1a1a1a]/30 text-center leading-tight">
-                Al continuar aceptas nuestros{' '}
-                <a href="/terms" className="underline hover:text-[#1a1a1a]/50">Términos</a>
-                {' '}y{' '}
-                <a href="/privacy" className="underline hover:text-[#1a1a1a]/50">Privacidad</a>
+                {t.auth_oauth_terms || "By continuing you agree to our"}{' '}
+                <a href="/terms" className="underline hover:text-[#1a1a1a]/50">{t.auth_terms || "Terms"}</a>
+                {' '}{t.common_and || "and"}{' '}
+                <a href="/privacy" className="underline hover:text-[#1a1a1a]/50">{t.auth_privacy || "Privacy"}</a>
               </p>
             </div>
 

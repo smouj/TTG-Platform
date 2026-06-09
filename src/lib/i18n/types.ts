@@ -191,6 +191,7 @@ export interface Dictionary {
   common_cancel: string
   common_confirm_delete: string
   common_back: string
+  common_and: string
 
   // Auth
   auth_login: string
@@ -211,6 +212,11 @@ export interface Dictionary {
   auth_agree_terms: string
   auth_no_account: string
   auth_have_account: string
+  auth_email_placeholder: string
+  auth_oauth_divider: string
+  auth_oauth_terms: string
+  auth_terms: string
+  auth_privacy: string
   auth_logout: string
   auth_my_collection: string
   auth_my_decks: string

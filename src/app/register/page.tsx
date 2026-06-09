@@ -97,9 +97,6 @@ export default function RegisterPage() {
               <span className="inline-block bg-[#FFCC00] text-[#1a1a1a] text-[10px] font-black px-3 py-1 border-2 border-[#1a1a1a] uppercase tracking-widest shadow-[2px_2px_0px_#1a1a1a]">
                 {t.auth_register_subtitle}
               </span>
-              <p className="text-[10px] font-bold text-[#22C55E] uppercase tracking-wider">
-                {t.auth_register_subtitle}
-              </p>
             </div>
 
             {error && (
@@ -140,7 +137,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                placeholder="tu@email.com"
+                placeholder={t.auth_email_placeholder || "you@email.com"}
                 className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
                 style={{ background: "#fffef0" }}
               />
@@ -192,7 +189,7 @@ export default function RegisterPage() {
             <div>
               <label htmlFor="confirmPassword" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 inline mr-1" />
-                {t.auth_password_confirm || "Confirm password"}
+                {t.auth_password_confirm}
               </label>
               <input
                 id="confirmPassword"
@@ -224,7 +221,7 @@ export default function RegisterPage() {
                 className="mt-0.5 w-4 h-4 border-2 border-[#1a1a1a] accent-[#3B4CCA] shrink-0"
               />
               <label htmlFor="terms" className="text-[10px] font-bold text-[#1a1a1a]/60 leading-relaxed">
-                {t.auth_agree_terms || "I agree to the"}{" "}
+                {t.auth_agree_terms}{" "}
                 <Link href="/terms" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">Terms of Service</Link>
                 {" "}and{" "}
                 <Link href="/privacy" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">Privacy Policy</Link>

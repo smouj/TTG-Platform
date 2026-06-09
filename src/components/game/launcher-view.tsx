@@ -658,22 +658,22 @@ function HowToPlayContent() {
 
 const COLLECTION_DATA = [
   {
-    name: "Minimon", slug: "minimon", count: 61, year: 2000, origin: "Matutano", color: "#FFCC00",
+    name: "Minimon", slug: "minimon", count: 10, total: 61, year: 2000, origin: "Matutano", color: "#FFCC00",
     categories: ["Tazos"],
     desc: "The original collection that started it all. 61 creature companions with balanced combat stats — perfect for learning the battle system.",
-    highlights: ["Balanced stat distribution", "Classic creature designs", "Original 2000 Spanish series", "Versatile battle strategies"]
+    highlights: ["Balanced stat distribution", "Classic creature designs", "10 of 61 tazos available", "Original 2000 Spanish series"]
   },
   {
-    name: "Dracobell", slug: "dracobell", count: 128, year: 1995, origin: "Matutano", color: "#FF6B00",
+    name: "Dracobell", slug: "dracobell", count: 11, total: 128, year: 1995, origin: "Matutano", color: "#FF6B00",
     categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
     desc: "The most diverse collection with 128 martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
-    highlights: ["6 unique categories", "Highest average attack stats", "Rare Holo 3D variants", "Most diverse category system"]
+    highlights: ["6 unique categories", "Highest average attack stats", "11 of 128 tazos available", "Rare Holo 3D variants"]
   },
   {
-    name: "Cybermon", slug: "cybermon", count: 160, year: 2000, origin: "Magic Box", color: "#00B4D8",
+    name: "Cybermon", slug: "cybermon", count: 11, total: 160, year: 2000, origin: "Magic Box", color: "#00B4D8",
     categories: ["Caps"],
     desc: "The largest collection with 160 digital companions in cap format. High precision stats and extensive evolution trees.",
-    highlights: ["Largest collection — 160 tazos", "Complex evolution trees", "Highest precision stats", "Original Magic Box 2000 series"]
+    highlights: ["Complex evolution trees", "Highest precision stats", "11 of 160 tazos available", "Original Magic Box 2000 series"]
   },
 ]
 
@@ -762,7 +762,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
             {/* Info section */}
             <div className="p-5">
               <h3 className="text-lg font-black text-[#1a1a1a] uppercase">{c.name}</h3>
-              <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{c.count} tazos · {c.year} · {c.origin}</p>
+              <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{c.count} of {c.total} tazos · {c.year} · {c.origin}</p>
               <p className="text-[11px] font-bold text-[#1a1a1a]/60 mt-2 leading-relaxed">{c.desc}</p>
               <div className="flex flex-wrap gap-1 mt-3">
                 {c.categories.map(cat => (
@@ -977,69 +977,57 @@ const RELEASE_TAG = "v0.4.0"
 const RELEASE_VER = "0.4.0"
 const RELEASES_URL = `${GITHUB_URL}/releases`
 
-const DOWNLOADS = [
-  { id: "windows", icon: Monitor, color: "#00A4EF", label: "Windows", badge: "Available", badgeColor: "#22C55E",
-    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`, formats: [{ label: ".exe Installer", path: `trading-tazos-game-${RELEASE_VER}-win-x64.exe` }] },
-  { id: "mac", icon: Apple, color: "#1a1a1a", label: "macOS", badge: "Available", badgeColor: "#22C55E",
-    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`, formats: [
-      { label: ".dmg (Apple Silicon)", path: `trading-tazos-game-${RELEASE_VER}-mac-arm64.dmg` },
-      { label: ".dmg (Intel)", path: `trading-tazos-game-${RELEASE_VER}-mac-x64.dmg` },
-      { label: ".zip (Apple Silicon)", path: `trading-tazos-game-${RELEASE_VER}-mac-arm64.zip` },
-      { label: ".zip (Intel)", path: `trading-tazos-game-${RELEASE_VER}-mac-x64.zip` },
-    ] },
-  { id: "linux", icon: Terminal, color: "#FCC624", label: "Linux", badge: "Available", badgeColor: "#22C55E",
-    url: `${RELEASES_URL}/tag/${RELEASE_TAG}`, formats: [
-      { label: ".AppImage (Portable)", path: `trading-tazos-game-${RELEASE_VER}-linux-x86_64.AppImage` },
-      { label: ".deb (Ubuntu/Debian)", path: `trading-tazos-game-${RELEASE_VER}-linux-amd64.deb` },
-    ] },
+const DOWNLOADS: { id: string; icon: typeof Monitor; color: string; label: string; badge: string; badgeColor: string; url: string; formats: { label: string; path: string }[] }[] = [
+  { id: "windows", icon: Monitor, color: "#00A4EF", label: "Windows", badge: "Coming Soon", badgeColor: "#F59E0B",
+    url: "#", formats: [] },
+  { id: "mac", icon: Apple, color: "#1a1a1a", label: "macOS", badge: "Coming Soon", badgeColor: "#F59E0B",
+    url: "#", formats: [] },
+  { id: "linux", icon: Terminal, color: "#FCC624", label: "Linux", badge: "Coming Soon", badgeColor: "#F59E0B",
+    url: "#", formats: [] },
 ]
 
 function DownloadContent() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5">
       <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider">
-        Desktop installers for Windows, macOS & Linux · Also available as PWA
+        Play instantly in your browser — no download required · Desktop apps coming soon
       </p>
       <div className="grid md:grid-cols-3 gap-4">
         {DOWNLOADS.map(d => {
           const Icon = d.icon
-          const downloadUrl = d.formats[0]?.path
-            ? `${RELEASES_URL}/download/${RELEASE_TAG}/${d.formats[0].path}`
-            : d.url
+          const isComingSoon = d.badge === "Coming Soon"
           return (
-            <div key={d.id} className="flex flex-col border-2 border-[#1a1a1a] bg-white p-5"
-              style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
-              {/* Header */}
+            <div key={d.id} className={`flex flex-col border-2 border-dashed border-[#1a1a1a]/15 bg-white p-5 ${isComingSoon ? "opacity-60" : ""}`}
+              style={isComingSoon ? {} : { boxShadow: "4px 4px 0 #1a1a1a" }}>
               <div className="flex items-center gap-2 mb-3">
                 <Icon className="w-5 h-5 flex-shrink-0" style={{ color: d.color }} />
                 <h3 className="text-sm font-black text-[#1a1a1a] uppercase">{d.label}</h3>
                 <span className="ml-auto text-[8px] font-black text-white px-1.5 py-0.5 uppercase" style={{ background: d.badgeColor }}>{d.badge}</span>
               </div>
-
-              {/* Formats list — flex-1 pushes button down */}
-              <div className="flex-1 space-y-0.5 mb-4">
-                {d.formats.map(f => {
-                  const assetUrl = `${RELEASES_URL}/download/${RELEASE_TAG}/${encodeURIComponent(f.path)}`
-                  return (
-                    <a key={f.label} href={assetUrl} target="_blank" rel="noopener"
-                      className="block text-[10px] font-bold text-[#1a1a1a]/55 hover:text-[#E3350D] transition-colors leading-relaxed">
-                      {f.label} <ExternalLink className="w-2.5 h-2.5 inline opacity-30" />
+              <div className="flex-1 flex items-center justify-center py-4">
+                {isComingSoon ? (
+                  <p className="text-[10px] font-bold text-[#1a1a1a]/25 uppercase">Play in browser for now</p>
+                ) : (
+                  <>
+                    {d.formats.map(f => (
+                      <a key={f.label} href={`${RELEASES_URL}/download/${RELEASE_TAG}/${encodeURIComponent(f.path)}`} target="_blank" rel="noopener"
+                        className="block text-[10px] font-bold text-[#1a1a1a]/55 hover:text-[#E3350D] transition-colors leading-relaxed">
+                        {f.label} <ExternalLink className="w-2.5 h-2.5 inline opacity-30" />
+                      </a>
+                    ))}
+                    <a href={d.url} target="_blank" rel="noopener"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase border-2 border-[#1a1a1a] hover:bg-[#FFE566] transition-all mt-2">
+                      <Download className="w-3 h-3" /> Download
                     </a>
-                  )
-                })}
+                  </>
+                )}
               </div>
-
-              {/* Download button — pinned to bottom-right */}
-              <a href={downloadUrl} target="_blank" rel="noopener"
-                className="self-end inline-flex items-center gap-1.5 px-4 py-2 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase border-2 border-[#1a1a1a] hover:bg-[#FFE566] hover:shadow-[2px_2px_0px_#1a1a1a] hover:-translate-x-0.5 hover:-translate-y-0.5 active:shadow-none active:translate-x-0 active:translate-y-0 transition-all">
-                <Download className="w-3 h-3" /> Download
-              </a>
             </div>
           )
         })}
       </div>
       <p className="text-center text-[10px] font-bold text-[#1a1a1a]/30">
-        Visit <a href={RELEASES_URL} className="underline hover:text-[#E3350D]">GitHub Releases</a> for all versions
+        Source code on <a href={GITHUB_URL} className="underline hover:text-[#E3350D]">GitHub</a>
       </p>
     </div>
   )
@@ -1080,13 +1068,13 @@ function FAQContent() {
 // ══════════════════════════════════════════════════════════
 
 const COLLECTION_DETAILS: Record<string, {
-  name: string; count: number; year: number; origin: string; color: string;
+  name: string; count: number; total: number; year: number; origin: string; color: string;
   world: string; worldDesc: string;
   sections: { title: string; items: { name: string; detail: string }[] }[]
   features: string[]; motto: string; cta: string
 }> = {
   minimon: {
-    name: "Minimon", count: 61, year: 2000, origin: "Matutano", color: "#FFCC00",
+    name: "Minimon", count: 10, total: 61, year: 2000, origin: "Matutano", color: "#FFCC00",
     world: "Luminara",
     worldDesc: "A luminous land of colorful regions, winding paths, small villages, and places where elemental energy takes shape. Centuries ago, Luminara was filled with Life Spark — an invisible energy that flowed through trees, rivers, caves, clouds, and mountains. When Life Spark accumulated in one place long enough, a Minimon was born.",
     sections: [
@@ -1108,10 +1096,10 @@ const COLLECTION_DETAILS: Record<string, {
     ],
     features: ["Balanced stat distribution", "Classic creature designs", "Original Matutano 2000 series", "Versatile battle strategies"],
     motto: "Find them. Bond with them. Watch them bloom.",
-    cta: "Browse All 61 Minimon Tazos",
+    cta: "Browse All 10 Minimon Tazos",
   },
   dracobell: {
-    name: "Dracobell", count: 128, year: 1995, origin: "Matutano", color: "#FF6B00",
+    name: "Dracobell", count: 11, total: 128, year: 1995, origin: "Matutano", color: "#FF6B00",
     world: "Bellora",
     worldDesc: "A world of combat regions governed by clans. Each clan protects a technique, a philosophy, and a fragment of an ancient sonic relic — the Dracobell. Forged from meteorite metal and dragon scales, the bell was shattered during a war between clans, and its Bell Shards are now scattered across Bellora.",
     sections: [
@@ -1134,10 +1122,10 @@ const COLLECTION_DETAILS: Record<string, {
     ],
     features: ["6 unique categories", "Highest average attack stats", "Rare Holo 3D variants", "Most diverse category system"],
     motto: "Train hard. Ring loud. Rise beyond.",
-    cta: "Browse All 128 Dracobell Tazos",
+    cta: "Browse All 11 Dracobell Tazos",
   },
   cybermon: {
-    name: "Cybermon", count: 160, year: 2000, origin: "Magic Box", color: "#00B4D8",
+    name: "Cybermon", count: 11, total: 160, year: 2000, origin: "Magic Box", color: "#00B4D8",
     world: "The Neon Grid",
     worldDesc: "A hidden digital dimension behind all networks — not simply the internet, but a living dimension formed by forgotten data, lost signals, ancient code, and protocols that developed consciousness. During The Awakening Upload, data fragments mixed with human emotions and produced something unexpected: code with instinct.",
     sections: [
@@ -1160,7 +1148,7 @@ const COLLECTION_DETAILS: Record<string, {
     ],
     features: ["Largest collection — 160 tazos", "Complex evolution trees", "Highest precision stats", "Original Magic Box 2000 series"],
     motto: "Log in. Link up. Break the Null.",
-    cta: "Browse All 160 Cybermon Tazos",
+    cta: "Browse All 11 Cybermon Tazos",
   },
 }
 
@@ -1174,6 +1162,7 @@ function CollectionDetailContent({ collection }: { collection: string }) {
         <div className="h-2 mb-3" style={{ background: c.color }} />
         <div className="flex items-baseline gap-2 mb-2">
           <span className="text-2xl font-black text-[#1a1a1a]">{c.count}</span>
+          <span className="text-[10px] font-bold text-[#1a1a1a]/25 uppercase">of {c.total} planned</span>
           <span className="text-xs font-bold text-[#1a1a1a]/40 uppercase">tazos · {c.origin} {c.year}</span>
         </div>
         <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">{c.worldDesc}</p>
@@ -1386,7 +1375,7 @@ export default function LauncherView() {
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-2 gap-2">
             <div className="flex items-center gap-3 sm:gap-4">
               <button onClick={() => navigate("tazos")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Tazos</button>
-              <a href="/battle-system" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Battle</a>
+              <a href="/?page=how-to-play" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Battle</a>
               <button onClick={() => navigate("faq")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">FAQ</button>
               <a href="/privacy" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Privacy</a>
               <span className="text-white/10">|</span>
