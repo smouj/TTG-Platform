@@ -72,16 +72,16 @@ const columns = [
   {
     title: "Support",
     links: [
-      ["FAQ", "/faq"],
-      ["Contact", "/contact"],
+      ["FAQ", "/?page=faq"],
+      ["Contact", "/?page=contact"],
     ],
   },
   {
     title: "Legal",
     links: [
-      ["Terms", "/terms"],
-      ["Privacy", "/privacy"],
-      ["Cookies", "/cookies"],
+      ["Terms", "/?page=terms"],
+      ["Privacy", "/?page=privacy"],
+      ["Cookies", "/?page=cookies"],
       ["Disclaimer", "/disclaimer"],
     ],
   },

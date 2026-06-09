@@ -21,7 +21,7 @@ import {
   ExternalLink,
   Trophy, Coins, Package, ArrowLeft, Loader2,
   Crown, X, ArrowUp, HelpCircle, ArrowRight, ShoppingBag, Sparkles,
-  User, Mail, Key, Gift, Shield, Crosshair, Gem, TrendingUp, Layers
+  User, Mail, Key, Gift, Shield, Crosshair, Gem, TrendingUp, Layers, Bug
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import TazoDetailModal from '@/components/game/tazo-detail-modal'
@@ -31,7 +31,7 @@ import { FRANCHISES, FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
 
 type PageId = "home" | "how-to-play" | "collections" | "collections-minimon"
   | "collections-cybermon" | "collections-dracobell" | "tazos" | "leaderboard"
-  | "download" | "faq" | "shop"
+  | "download" | "faq" | "shop" | "privacy" | "terms" | "cookies" | "contact"
 
 const PAGE_LABELS: Record<PageId, string> = {
   home: "Home",
@@ -44,6 +44,10 @@ const PAGE_LABELS: Record<PageId, string> = {
   leaderboard: "Rankings",
   download: "Download",
   faq: "FAQ",
+  privacy: "Privacy",
+  terms: "Terms",
+  cookies: "Cookies",
+  contact: "Contact",
   shop: "Shop",
 }
 
@@ -1550,6 +1554,143 @@ function FAQContent() {
   )
 }
 
+// ── PRIVACY POLICY ──
+const PRIVACY_SECTIONS = [
+  { title: "1. Data We Collect", body: <>When you register, we collect your <strong>username, email address, and hashed password</strong> (never stored in plain text). <strong>Gameplay data:</strong> Tazos collected, decks created, battle results, quest progress, credits balance, bag purchase history. <strong>Scanner uploads:</strong> Images you voluntarily upload via the scanner feature to identify physical tazos. <strong>Technical data:</strong> IP address, browser type, device info, and access timestamps for security and debugging.</> },
+  { title: "2. How We Use Data", body: <>We use your data exclusively to: (a) provide and maintain the game service; (b) authenticate your account; (c) display your collection and stats; (d) populate leaderboards; (e) diagnose technical issues; (f) prevent abuse and fraud.</> },
+  { title: "3. Data Storage", body: <>All data is stored on servers in the European Union. We use SQLite for game data and secure, hashed password storage (bcrypt). Account credentials are never shared with third parties.</> },
+  { title: "4. Data Retention", body: <>We retain your account and gameplay data as long as your account is active. Upon account deletion, your personal data is permanently removed within 30 days. Anonymized game statistics may be retained indefinitely.</> },
+  { title: "5. Your Rights", body: <>Under GDPR and applicable laws, you have the right to: (a) access your data; (b) correct inaccurate data; (c) delete your account and associated data; (d) object to processing; (e) data portability. To exercise these rights, contact support@tradingtazosgame.com.</> },
+  { title: "6. Children's Privacy", body: <>TTG is not directed at children under 13. We do not knowingly collect data from children under 13. If you believe a child has provided us with personal data, contact us immediately.</> },
+  { title: "7. Cookies", body: <>We use essential cookies for authentication (session tokens) and security. See our <a href="/?page=cookies" className="text-[#E3350D] underline font-black">Cookie Policy</a>.</> },
+  { title: "8. Changes", body: <>We may update this policy. Significant changes will be communicated via email or site notice. Continued use after changes constitutes acceptance.</> },
+  { title: "9. Contact", body: <>Data controller: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline font-black">support@tradingtazosgame.com</a></> },
+]
+
+function PrivacyContent() {
+  return (
+    <div className="max-w-3xl mx-auto py-6 px-4">
+      <h2 className="text-2xl font-black uppercase text-[#1a1a1a] mb-2">Privacy Policy</h2>
+      <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider mb-5">Last updated: June 5, 2026</p>
+      <div className="space-y-3">
+        {PRIVACY_SECTIONS.map((s, i) => (
+          <div key={i} className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+            <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">{s.title}</h3>
+            <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ── TERMS OF SERVICE ──
+const TERMS_SECTIONS = [
+  { title: "1. Acceptance of Terms", body: <>By creating an account, accessing, or using tradingtazosgame.com you agree to be bound by these terms. If you do not agree, do not use the service. We reserve the right to update these terms at any time; continued use after changes constitutes acceptance.</> },
+  { title: "2. Eligibility", body: <>You must be at least 13 years old to create an account. If you are under 18, you must have a parent or guardian's permission. By registering you represent that you meet these requirements.</> },
+  { title: "3. Account Responsibility", body: <>You are responsible for maintaining the confidentiality of your login credentials. You are responsible for all activity under your account. Notify us immediately at support@tradingtazosgame.com if you suspect unauthorized access. We reserve the right to suspend or terminate accounts that violate these terms.</> },
+  { title: "4. User Conduct", body: <>You agree not to: (a) upload malicious content or attempt to exploit the service; (b) use automated scripts, bots, or cheats; (c) impersonate others or provide false information; (d) harass, abuse, or harm other users; (e) violate any applicable laws.</> },
+  { title: "5. Content & Scanner", body: <>The scanner feature allows users to upload images of physical tazos. By uploading content, you grant us a non-exclusive license to store and display it within the service. You represent that you own or have rights to any content you upload. We do not claim ownership of user content.</> },
+  { title: "6. Intellectual Property", body: <>Trading Tazos Game is a fan-made collector experience. Minimon, Dracobell, and Cybermon are original fictional IPs created for this game. The game code, design, artwork, and original content are protected by copyright. You may not reproduce, distribute, or create derivative works without permission.</> },
+  { title: "7. Service Availability", body: <>TTG is provided "as is" and "as available" without warranties of any kind. We do not guarantee uninterrupted access. We may modify, suspend, or discontinue features at any time without liability.</> },
+  { title: "8. Limitation of Liability", body: <>To the fullest extent permitted by law, Trading Tazos Game and its operators shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service. Our total liability is limited to the amount you have paid us, if any, in the past 12 months.</> },
+  { title: "9. Termination", body: <>We may terminate or suspend your account at any time for violation of these terms. You may delete your account at any time by contacting support. Upon termination, your right to use the service ceases immediately.</> },
+  { title: "10. Governing Law", body: <>These terms are governed by Spanish law. Any disputes shall be resolved in the courts of Spain.</> },
+  { title: "11. Contact", body: <>For questions about these Terms: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline font-black">support@tradingtazosgame.com</a></> },
+]
+
+function TermsContent() {
+  return (
+    <div className="max-w-3xl mx-auto py-6 px-4">
+      <h2 className="text-2xl font-black uppercase text-[#1a1a1a] mb-2">Terms of Service</h2>
+      <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider mb-5">Last updated: June 5, 2026</p>
+      <div className="space-y-3">
+        {TERMS_SECTIONS.map((s, i) => (
+          <div key={i} className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+            <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">{s.title}</h3>
+            <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ── COOKIE POLICY ──
+function CookiesContent() {
+  return (
+    <div className="max-w-3xl mx-auto py-6 px-4">
+      <h2 className="text-2xl font-black uppercase text-[#1a1a1a] mb-2">Cookie Policy</h2>
+      <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider mb-5">Last updated: June 5, 2026</p>
+      <div className="space-y-3">
+        <div className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">1. What Are Cookies</h3>
+          <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">Cookies are small text files stored on your device by your browser. They help websites remember your preferences, login state, and improve your experience.</p>
+        </div>
+        <div className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">2. Essential Cookies</h3>
+          <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed mb-1.5">We use only essential cookies required for the service to function:</p>
+          <ul className="list-disc pl-5 space-y-0.5 text-xs font-bold text-[#1a1a1a]/50">
+            <li><strong className="text-[#1a1a1a]/70">Session token:</strong> Authenticates your account. Set when you log in. Expires after 7 days or on logout.</li>
+            <li><strong className="text-[#1a1a1a]/70">CSRF token:</strong> Protects against cross-site request forgery attacks.</li>
+          </ul>
+        </div>
+        <div className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">3. No Tracking Cookies</h3>
+          <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">TTG does not use tracking cookies, advertising cookies, analytics cookies, or third-party cookies. We do not track you across websites. There are no "Accept Cookies" banners because we don't need your consent — we only use essential cookies.</p>
+        </div>
+        <div className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">4. Managing Cookies</h3>
+          <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">Most browsers allow you to block or delete cookies via settings. However, blocking essential cookies will prevent you from logging in or using authenticated features of TTG.</p>
+        </div>
+        <div className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">5. Local Storage</h3>
+          <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">We may use browser localStorage for non-personal preferences (e.g., language selection, UI state). This data stays on your device and is never sent to our servers.</p>
+        </div>
+        <div className="border-3 border-[#1a1a1a] bg-white p-4" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+          <h3 className="text-sm font-black uppercase text-[#1a1a1a] mb-1.5">6. Contact</h3>
+          <p className="text-xs font-bold text-[#1a1a1a]/60 leading-relaxed">Questions: <a href="mailto:support@tradingtazosgame.com" className="text-[#E3350D] underline font-black">support@tradingtazosgame.com</a></p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── CONTACT ──
+function ContactContent() {
+  const channels = [
+    { icon: <Mail className="w-6 h-6" />, title: "Email Support", desc: "For general questions, account help, and gameplay support.", action: "support@tradingtazosgame.com", href: "mailto:support@tradingtazosgame.com", color: "#E3350D" },
+    { icon: <Bug className="w-6 h-6" />, title: "Bug Reports", desc: "Found a bug? Report it on GitHub Issues with steps to reproduce.", action: "GitHub Issues", href: "https://github.com/smouj/Trading-Tazos-Game/issues", color: "#3B4CCA" },
+    { icon: <Shield className="w-6 h-6" />, title: "Privacy & Data", desc: "Data deletion requests, privacy questions, and account removal.", action: "support@tradingtazosgame.com", href: "mailto:support@tradingtazosgame.com", color: "#22C55E" },
+    { icon: <HelpCircle className="w-6 h-6" />, title: "Content Removal", desc: "If you believe any content violates our policies, let us know.", action: "support@tradingtazosgame.com", href: "mailto:support@tradingtazosgame.com", color: "#F59E0B" },
+  ]
+  return (
+    <div className="max-w-4xl mx-auto py-6 px-4">
+      <h2 className="text-2xl font-black uppercase text-[#1a1a1a] mb-1 text-center">Contact</h2>
+      <p className="text-xs font-bold text-[#1a1a1a]/40 text-center mb-5 max-w-md mx-auto">We are here to help. Choose the right channel and we will get back to you within 48 hours.</p>
+      <div className="grid sm:grid-cols-2 gap-3 mb-4">
+        {channels.map((ch, i) => (
+          <a key={i} href={ch.href} target={ch.href.startsWith("http") ? "_blank" : undefined} rel={ch.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="border-3 border-[#1a1a1a] bg-white p-4 flex items-start gap-3 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#1a1a1a] transition-all group" style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]" style={{ background: ch.color, color: "#FFF" }}>{ch.icon}</div>
+            <div className="min-w-0">
+              <h3 className="text-xs font-black uppercase text-[#1a1a1a] mb-0.5">{ch.title}</h3>
+              <p className="text-[10px] font-bold text-[#1a1a1a]/45 mb-1 leading-relaxed">{ch.desc}</p>
+              <span className="text-[9px] font-black text-[#E3350D] group-hover:underline">{ch.action} →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] text-center" style={{ background: "#FFCC00" }}>
+        <p className="text-xs font-bold text-[#1a1a1a]/60">We typically respond within <strong className="text-[#1a1a1a]">24-48 hours</strong> on business days.</p>
+      </div>
+      <p className="text-center mt-3 text-[10px] font-bold text-[#1a1a1a]/30">
+        Looking for quick answers? <a href="/?page=faq" className="text-[#E3350D] underline font-black hover:text-[#1a1a1a]">Check our FAQ →</a>
+      </p>
+    </div>
+  )
+}
+
 // ══════════════════════════════════════════════════════════
 // MAIN LAUNCHER COMPONENT
 // ══════════════════════════════════════════════════════════
@@ -1847,6 +1988,18 @@ export default function LauncherView() {
             {currentPage === "shop" && (
               <div className="w-full max-w-5xl mx-auto"><ShopContent /></div>
             )}
+            {currentPage === "privacy" && (
+              <div className="w-full max-w-5xl mx-auto"><PrivacyContent /></div>
+            )}
+            {currentPage === "terms" && (
+              <div className="w-full max-w-5xl mx-auto"><TermsContent /></div>
+            )}
+            {currentPage === "cookies" && (
+              <div className="w-full max-w-5xl mx-auto"><CookiesContent /></div>
+            )}
+            {currentPage === "contact" && (
+              <div className="w-full max-w-5xl mx-auto"><ContactContent /></div>
+            )}
 
             {(currentPage === "collections-minimon" || currentPage === "collections-dracobell" || currentPage === "collections-cybermon") && (
               <div className="w-full max-w-5xl mx-auto"><CollectionDetailContent collection={currentPage.replace("collections-", "")} /></div>
@@ -1872,7 +2025,9 @@ export default function LauncherView() {
               <button onClick={() => navigate("shop")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Shop</button>
               <button onClick={() => navigate("how-to-play")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Battle</button>
               <button onClick={() => navigate("faq")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">FAQ</button>
-              <a href="/privacy" className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Privacy</a>
+              <button onClick={() => navigate("privacy")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Privacy</button>
+              <button onClick={() => navigate("terms")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Terms</button>
+              <button onClick={() => navigate("contact")} className="text-[9px] font-bold text-white/30 hover:text-[#FFCC00] uppercase tracking-wider transition-colors">Contact</button>
               <span className="text-white/10">|</span>
               <a href="https://x.com/tazosgame" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter"
                 className="flex items-center justify-center w-6 h-6 rounded-full border border-white/15 text-zinc-400 hover:text-[#FFCC00] hover:border-[#FFCC00]/50 transition-all">

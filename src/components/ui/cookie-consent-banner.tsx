@@ -47,11 +47,11 @@ export default function CookieConsentBanner() {
           <br className="hidden sm:block" />
           <span className="text-[#1a1a1a]/40">
             By continuing, you agree to our{" "}
-            <Link href="/privacy" className="underline hover:text-[#E3350D]">Privacy Policy</Link>
+            <Link href="/?page=privacy" className="underline hover:text-[#E3350D]">Privacy Policy</Link>
             ,{" "}
-            <Link href="/cookies" className="underline hover:text-[#E3350D]">Cookie Policy</Link>
+            <Link href="/?page=cookies" className="underline hover:text-[#E3350D]">Cookie Policy</Link>
             , and{" "}
-            <Link href="/terms" className="underline hover:text-[#E3350D]">Terms</Link>.
+            <Link href="/?page=terms" className="underline hover:text-[#E3350D]">Terms</Link>.
           </span>
         </p>
         <button

@@ -167,9 +167,9 @@ function LoginForm() {
 
               <p className="text-[9px] text-[#1a1a1a]/30 text-center leading-tight">
                 {t.auth_oauth_terms || "By continuing you agree to our"}{' '}
-                <a href="/terms" className="underline hover:text-[#1a1a1a]/50">{t.auth_terms || "Terms"}</a>
+                <a href="/?page=terms" className="underline hover:text-[#1a1a1a]/50">{t.auth_terms || "Terms"}</a>
                 {' '}{t.common_and || "and"}{' '}
-                <a href="/privacy" className="underline hover:text-[#1a1a1a]/50">{t.auth_privacy || "Privacy"}</a>
+                <a href="/?page=privacy" className="underline hover:text-[#1a1a1a]/50">{t.auth_privacy || "Privacy"}</a>
               </p>
             </div>
 

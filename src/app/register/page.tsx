@@ -222,9 +222,9 @@ export default function RegisterPage() {
               />
               <label htmlFor="terms" className="text-[10px] font-bold text-[#1a1a1a]/60 leading-relaxed">
                 {t.auth_agree_terms_prefix || "I agree to the"}{" "}
-                <Link href="/terms" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_terms || "Terms of Service"}</Link>
+                <Link href="/?page=terms" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_terms || "Terms of Service"}</Link>
                 {" "}{t.common_and || "and"}{" "}
-                <Link href="/privacy" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_privacy || "Privacy Policy"}</Link>
+                <Link href="/?page=privacy" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_privacy || "Privacy Policy"}</Link>
               </label>
             </div>
 
