@@ -1,0 +1,186 @@
+{
+  "defaults": {
+    "minimon": {
+      "collection": {
+        "x": 0,
+        "y": -300,
+        "scale": 1
+      },
+      "badge": {
+        "x": 290,
+        "y": 0,
+        "scale": 1
+      },
+      "number": {
+        "x": -290,
+        "y": 0,
+        "scale": 1
+      },
+      "name": {
+        "x": 0,
+        "y": 300,
+        "scale": 1
+      },
+      "rarity": {
+        "x": 0,
+        "y": -250,
+        "scale": 1
+      },
+      "creature": {
+        "x": 0,
+        "y": 0,
+        "scale": 1
+      }
+    },
+    "cybermon": {
+      "collection": {
+        "x": 0,
+        "y": -300,
+        "scale": 1
+      },
+      "badge": {
+        "x": 290,
+        "y": 0,
+        "scale": 1
+      },
+      "number": {
+        "x": -290,
+        "y": 0,
+        "scale": 1
+      },
+      "name": {
+        "x": 0,
+        "y": 300,
+        "scale": 1
+      },
+      "rarity": {
+        "x": 0,
+        "y": -250,
+        "scale": 1
+      },
+      "creature": {
+        "x": 0,
+        "y": 0,
+        "scale": 1
+      }
+    },
+    "dracobell": {
+      "collection": {
+        "x": 0,
+        "y": -300,
+        "scale": 1
+      },
+      "badge": {
+        "x": 290,
+        "y": 0,
+        "scale": 1
+      },
+      "number": {
+        "x": -290,
+        "y": 0,
+        "scale": 1
+      },
+      "name": {
+        "x": 0,
+        "y": 300,
+        "scale": 1
+      },
+      "rarity": {
+        "x": 0,
+        "y": -250,
+        "scale": 1
+      },
+      "creature": {
+        "x": 0,
+        "y": 0,
+        "scale": 1
+      }
+    }
+  },
+  "overrides": {},
+  "lastModified": 1780966184048,
+  "backDefaults": {
+    "minimon": {
+      "centerIcon": {
+        "x": 0,
+        "y": 0,
+        "scale": 1
+      },
+      "topLabel": {
+        "x": 0,
+        "y": -280,
+        "scale": 1
+      },
+      "bottomLabel": {
+        "x": 0,
+        "y": 280,
+        "scale": 1
+      },
+      "cornerBadge": {
+        "x": 280,
+        "y": -280,
+        "scale": 1
+      },
+      "numberBadge": {
+        "x": -280,
+        "y": -280,
+        "scale": 1
+      }
+    },
+    "cybermon": {
+      "centerIcon": {
+        "x": 0,
+        "y": 0,
+        "scale": 1
+      },
+      "topLabel": {
+        "x": 0,
+        "y": -280,
+        "scale": 1
+      },
+      "bottomLabel": {
+        "x": 0,
+        "y": 280,
+        "scale": 1
+      },
+      "cornerBadge": {
+        "x": 280,
+        "y": -280,
+        "scale": 1
+      },
+      "numberBadge": {
+        "x": -280,
+        "y": -280,
+        "scale": 1
+      }
+    },
+    "dracobell": {
+      "centerIcon": {
+        "x": 0,
+        "y": 0,
+        "scale": 1
+      },
+      "topLabel": {
+        "x": 0,
+        "y": -280,
+        "scale": 1
+      },
+      "bottomLabel": {
+        "x": 0,
+        "y": 280,
+        "scale": 1
+      },
+      "cornerBadge": {
+        "x": 280,
+        "y": -280,
+        "scale": 1
+      },
+      "numberBadge": {
+        "x": -280,
+        "y": -280,
+        "scale": 1
+      }
+    }
+  },
+  "backOverrides": {}
+}
