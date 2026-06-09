@@ -1,5 +1,8 @@
 import PublicPageShell from "@/components/layout/public-page-shell"
 import Link from "next/link"
+import { FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
+
+const cybermon = FRANCHISE_BY_SLUG.cybermon
 
 const zones = [
   { name: "Boot Fields", style: "Starting zone: stable, simple code", types: "Basic Cybermon" },
@@ -36,8 +39,8 @@ export default function CybermonCollectionPage() {
           A digital companion world about living code, emotional links, shifting forms, corrupted data, and identity.
         </p>
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-5xl font-black text-[#1a1a1a]">11</span>
-          <span className="text-lg font-bold text-[#1a1a1a]/40">of 160 tazos</span>
+          <span className="text-5xl font-black text-[#1a1a1a]">{cybermon.count}</span>
+          <span className="text-lg font-bold text-[#1a1a1a]/40">of {cybermon.total} tazos</span>
           <span className="text-xs font-bold bg-[#FFCC00] px-2 py-1 border-2 border-[#1a1a1a]">Magic Box 2000</span>
         </div>
 

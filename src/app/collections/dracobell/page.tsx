@@ -1,5 +1,8 @@
 import PublicPageShell from "@/components/layout/public-page-shell"
 import Link from "next/link"
+import { FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
+
+const dracobell = FRANCHISE_BY_SLUG.dracobell
 
 const regions = [
   { name: "Ember Valley", clan: "Ember Fist", style: "Fire, direct attack" },
@@ -64,8 +67,8 @@ export default function DracobellCollectionPage() {
           A martial action world about clans, tournaments, aura, transformations, dragon power, and legendary fragments.
         </p>
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-5xl font-black text-[#1a1a1a]">11</span>
-          <span className="text-lg font-bold text-[#1a1a1a]/40">of 128 tazos</span>
+          <span className="text-5xl font-black text-[#1a1a1a]">{dracobell.count}</span>
+          <span className="text-lg font-bold text-[#1a1a1a]/40">of {dracobell.total} tazos</span>
           <span className="text-xs font-bold bg-[#FFCC00] px-2 py-1 border-2 border-[#1a1a1a]">Matutano 1995</span>
         </div>
 

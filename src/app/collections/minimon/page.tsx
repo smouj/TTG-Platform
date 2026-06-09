@@ -1,5 +1,8 @@
 import PublicPageShell from "@/components/layout/public-page-shell"
 import Link from "next/link"
+import { FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
+
+const minimon = FRANCHISE_BY_SLUG.minimon
 
 const regions = [
   { name: "Sunnyvale Fields", style: "Rolling fields, farms, and small villages", types: "Normal, solar, plant" },
@@ -34,8 +37,8 @@ export default function MinimonCollectionPage() {
           A creature adventure world about exploration, friendship, elemental habitats, and natural evolution.
         </p>
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="text-5xl font-black text-[#1a1a1a]">10</span>
-          <span className="text-lg font-bold text-[#1a1a1a]/40">of 61 tazos</span>
+          <span className="text-5xl font-black text-[#1a1a1a]">{minimon.count}</span>
+          <span className="text-lg font-bold text-[#1a1a1a]/40">of {minimon.total} tazos</span>
           <span className="text-xs font-bold bg-[#FFCC00] px-2 py-1 border-2 border-[#1a1a1a]">Matutano 2000</span>
         </div>
 

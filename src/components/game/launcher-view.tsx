@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import TazoDetailModal from '@/components/game/tazo-detail-modal'
+import { FRANCHISES, FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
 
 // ── Types ──
 
@@ -656,24 +657,26 @@ function HowToPlayContent() {
 
 // ── Collections ──
 
+const { minimon: fMinimon, dracobell: fDracobell, cybermon: fCybermon } = FRANCHISE_BY_SLUG
+
 const COLLECTION_DATA = [
   {
-    name: "Minimon", slug: "minimon", count: 10, total: 61, year: 2000, origin: "Matutano", color: "#FFCC00",
+    name: "Minimon", slug: "minimon", count: fMinimon.count, total: fMinimon.total, year: 2000, origin: "Matutano", color: "#FFCC00",
     categories: ["Tazos"],
     desc: "The original collection that started it all. 61 creature companions with balanced combat stats — perfect for learning the battle system.",
-    highlights: ["Balanced stat distribution", "Classic creature designs", "10 of 61 tazos available", "Original 2000 Spanish series"]
+    highlights: ["Balanced stat distribution", "Classic creature designs", `${fMinimon.count} of ${fMinimon.total} tazos available`, "Original 2000 Spanish series"]
   },
   {
-    name: "Dracobell", slug: "dracobell", count: 11, total: 128, year: 1995, origin: "Matutano", color: "#FF6B00",
+    name: "Dracobell", slug: "dracobell", count: fDracobell.count, total: fDracobell.total, year: 1995, origin: "Matutano", color: "#FF6B00",
     categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
     desc: "The most diverse collection with 128 martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
-    highlights: ["6 unique categories", "Highest average attack stats", "11 of 128 tazos available", "Rare Holo 3D variants"]
+    highlights: ["6 unique categories", "Highest average attack stats", `${fDracobell.count} of ${fDracobell.total} tazos available`, "Rare Holo 3D variants"]
   },
   {
-    name: "Cybermon", slug: "cybermon", count: 11, total: 160, year: 2000, origin: "Magic Box", color: "#00B4D8",
+    name: "Cybermon", slug: "cybermon", count: fCybermon.count, total: fCybermon.total, year: 2000, origin: "Magic Box", color: "#00B4D8",
     categories: ["Caps"],
     desc: "The largest collection with 160 digital companions in cap format. High precision stats and extensive evolution trees.",
-    highlights: ["Complex evolution trees", "Highest precision stats", "11 of 160 tazos available", "Original Magic Box 2000 series"]
+    highlights: ["Complex evolution trees", "Highest precision stats", `${fCybermon.count} of ${fCybermon.total} tazos available`, "Original Magic Box 2000 series"]
   },
 ]
 
@@ -1074,7 +1077,7 @@ const COLLECTION_DETAILS: Record<string, {
   features: string[]; motto: string; cta: string
 }> = {
   minimon: {
-    name: "Minimon", count: 10, total: 61, year: 2000, origin: "Matutano", color: "#FFCC00",
+    name: "Minimon", count: FRANCHISE_BY_SLUG.minimon.count, total: FRANCHISE_BY_SLUG.minimon.total, year: 2000, origin: "Matutano", color: "#FFCC00",
     world: "Luminara",
     worldDesc: "A luminous land of colorful regions, winding paths, small villages, and places where elemental energy takes shape. Centuries ago, Luminara was filled with Life Spark — an invisible energy that flowed through trees, rivers, caves, clouds, and mountains. When Life Spark accumulated in one place long enough, a Minimon was born.",
     sections: [
@@ -1099,7 +1102,7 @@ const COLLECTION_DETAILS: Record<string, {
     cta: "Browse All 10 Minimon Tazos",
   },
   dracobell: {
-    name: "Dracobell", count: 11, total: 128, year: 1995, origin: "Matutano", color: "#FF6B00",
+    name: "Dracobell", count: FRANCHISE_BY_SLUG.dracobell.count, total: FRANCHISE_BY_SLUG.dracobell.total, year: 1995, origin: "Matutano", color: "#FF6B00",
     world: "Bellora",
     worldDesc: "A world of combat regions governed by clans. Each clan protects a technique, a philosophy, and a fragment of an ancient sonic relic — the Dracobell. Forged from meteorite metal and dragon scales, the bell was shattered during a war between clans, and its Bell Shards are now scattered across Bellora.",
     sections: [
@@ -1125,7 +1128,7 @@ const COLLECTION_DETAILS: Record<string, {
     cta: "Browse All 11 Dracobell Tazos",
   },
   cybermon: {
-    name: "Cybermon", count: 11, total: 160, year: 2000, origin: "Magic Box", color: "#00B4D8",
+    name: "Cybermon", count: FRANCHISE_BY_SLUG.cybermon.count, total: FRANCHISE_BY_SLUG.cybermon.total, year: 2000, origin: "Magic Box", color: "#00B4D8",
     world: "The Neon Grid",
     worldDesc: "A hidden digital dimension behind all networks — not simply the internet, but a living dimension formed by forgotten data, lost signals, ancient code, and protocols that developed consciousness. During The Awakening Upload, data fragments mixed with human emotions and produced something unexpected: code with instinct.",
     sections: [
