@@ -4,6 +4,8 @@ import React, { useState, useMemo } from "react"
 import { Tazo, RARITY_CONFIG, CONDITION_CONFIG, TazoCondition, Rarity, SOURCE_STATUS_CONFIG, SourceStatus, OBTAINED_FROM_CONFIG, ObtainedFrom } from '@/lib/game/types'
 import { Lock, Star, ShieldCheck, ScanEye, AlertTriangle, RotateCw, ShoppingBag, Gift, Camera } from 'lucide-react'
 import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
+import TazoDiscImage from './tazo-disc-image'
+import type { TazoFinish, TazoCreatureVariant } from '@/lib/battle/game-loop'
 
 interface TazoCardProps {
   tazo: Tazo
@@ -145,63 +147,25 @@ export default function TazoCard({ tazo, onClick, forceFlipped }: TazoCardProps)
           {/* ===== FRONT FACE ===== */}
           <div className="tazo-flip-front">
             <div
-              className={`
-                ttg-bg-disc relative w-full h-full rounded-full flex items-center justify-center
-                shrink-0 overflow-hidden
-                ${circleBorderClass} ${bgClasses}
-              `}
-              style={{
-                border: isHolo ? undefined : '3px solid #1a1a1a',
-                padding: '3px',
-              }}
+              className={`ttg-bg-disc relative w-full h-full rounded-full flex items-center justify-center shrink-0 overflow-hidden ${circleBorderClass} ${bgClasses}`}
             >
-              <div
-                className={`
-                  ttg-bg-disc-inner w-full h-full rounded-full flex flex-col items-center justify-center
-                  relative overflow-hidden
-                  ${isMetallic ? 'metallic-effect' : ''}
-                  ${isWorn ? 'worn-overlay' : ''}
-                `}
-              >
-                {tazo.imageUrl ? (
-                  <div className="w-full h-full rounded-full overflow-hidden">
-                    <img
-                      src={tazo.imageUrl}
-                      alt={tazo.displayName || tazo.name || "..."}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                ) : (
-                  /* No front image — show tazo number on colored disc */
-                  <>
-                    <span
-                      className="text-[48px] font-black leading-none opacity-20"
-                      style={{ color: franchiseStripText }}
-                    >
-                      ?
-                    </span>
-                    {tazo.number && (
-                      <span
-                        className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight"
-                        style={{
-                          color: '#1a1a1a',
-                          background: 'rgba(255,255,255,0.9)',
-                          border: '1px solid #1a1a1a',
-                        }}
-                      >
-                        #{tazo.number}
-                      </span>
-                    )}
-                  </>
-                )}
-
-                {isNotOwned && (
+              <TazoDiscImage
+                src={tazo.imageUrl}
+                alt={tazo.displayName || tazo.name || "?"}
+                size="100%"
+                borderWidth={0}
+                franchiseSlug={franchiseSlug}
+                finish={tazo.finish as TazoFinish || "normal"}
+                creatureVariant={tazo.creatureVariant as TazoCreatureVariant || "standard"}
+                shinyImageUrl={tazo.shinyImageUrl}
+                wear={tazo.wear || 0}
+                number={isNotOwned ? null : tazo.number}
+                overlay={isNotOwned ? (
                   <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center">
                     <Lock className="w-6 h-6 text-white/70" style={{ animation: 'lock-pulse 2s ease-in-out infinite' }} />
                   </div>
-                )}
-              </div>
-
+                ) : undefined}
+              />
               {isLegendary && !isNotOwned && (
                 <div
                   className="absolute -top-1 -left-1 z-10 w-7 h-7 flex items-center justify-center rounded-full"

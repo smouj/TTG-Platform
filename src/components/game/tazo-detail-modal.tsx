@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/dialog'
 import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target } from 'lucide-react'
 import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
+import TazoDiscImage from '@/components/game/tazo-disc-image'
+import type { TazoFinish, TazoCreatureVariant } from '@/lib/battle/game-loop'
 
 interface TazoDetailModalProps {
   tazo: Tazo | null
@@ -244,60 +246,25 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
           <div className="flex flex-col items-center">
             {/* The Big Disc */}
             <div
-              className={`
-                ttg-bg-disc relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px]
-                rounded-full flex items-center justify-center overflow-hidden
-                ${circleBorderClass} ${bgClasses}
-              `}
-              style={{
-                border: isHolo ? undefined : isLegendary ? '5px solid #FBBF24' : '3px solid #1a1a1a',
-                padding: '6px',
-              }}
+              className={`ttg-bg-disc relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] rounded-full flex items-center justify-center overflow-hidden ${circleBorderClass} ${bgClasses}`}
             >
-              <div
-                className={`
-                  ttg-bg-disc-inner w-full h-full rounded-full flex flex-col items-center justify-center
-                  relative overflow-hidden
-                  ${isMetallic ? 'metallic-effect' : ''}
-                  ${isWorn ? 'worn-overlay' : ''}
-                `}
-                style={{
-                  border: '3px solid #1a1a1a',
-                }}
-              >
-                {tazo.imageUrl ? (
-                  <div className="w-full h-full rounded-full overflow-hidden">
-                    <img
-                      src={tazo.imageUrl}
-                      alt={tazo.displayName || tazo.name || "?"}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <img
-                      src={`/tazos-artgen/backs/${franchiseSlug}-back.png`}
-                      alt={`${franchiseSlug} back`}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                    {tazo.number && (
-                      <span
-                        className="absolute bottom-1 text-xs font-black px-2 py-0.5 rounded-full"
-                        style={{ color: 'white', background: 'rgba(0,0,0,0.5)' }}
-                      >
-                        #{tazo.number}
-                      </span>
-                    )}
-                  </>
-                )}
-
-                {/* Lock overlay */}
-                {!tazo.isOwned && (
+              <TazoDiscImage
+                src={tazo.imageUrl}
+                alt={tazo.displayName || tazo.name || "?"}
+                size="100%"
+                borderWidth={0}
+                franchiseSlug={franchiseSlug}
+                finish={tazo.finish as TazoFinish || "normal"}
+                creatureVariant={tazo.creatureVariant as TazoCreatureVariant || "standard"}
+                shinyImageUrl={tazo.shinyImageUrl}
+                wear={tazo.wear || 0}
+                number={!tazo.isOwned ? null : tazo.number}
+                overlay={!tazo.isOwned ? (
                   <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center">
                     <Lock className="w-12 h-12 text-white/70" />
                   </div>
-                )}
-              </div>
+                ) : undefined}
+              />
             </div>
 
             {/* Speech Bubble with flavor quote */}

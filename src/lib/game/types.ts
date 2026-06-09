@@ -21,6 +21,11 @@ export interface Tazo {
   physicalType: PhysicalType
   rarity: Rarity
   imageUrl: string | null
+  backImageUrl?: string | null
+  finish?: string | null
+  creatureVariant?: string | null
+  shinyImageUrl?: string | null
+  wear?: number
   skill: string | null
   skillDesc: string | null
   evolutionFrom: string | null
