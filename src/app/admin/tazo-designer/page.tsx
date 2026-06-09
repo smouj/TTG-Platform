@@ -386,6 +386,7 @@ export default function AdminTazoDesignerPage() {
                               src={`/tazos-base/${tazo.franchiseSlug || tazo.franchise?.slug || "unknown"}/${tazo.slug}.png?v=${IMG_CACHE_BUSTER}`}
                               alt={tazo.name}
                               className="w-full h-full object-cover"
+                              style={{ borderRadius: '50%' }}
                               onError={(e) => { (e.target as HTMLImageElement).src = tazo.imageUrl; }}
                             />
                           ) : (

@@ -853,8 +853,7 @@ function TazosContent() {
             <button key={t.id} onClick={() => handleTazoClick(t)}
               className="text-left border-2 border-[#1a1a1a]/15 bg-white p-2 hover:bg-[#FFF9E6] hover:border-[#FFCC00] hover:shadow-[3px_3px_0px_#1a1a1a] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group">
               {/* Disc */}
-              <div className="aspect-square rounded-full overflow-hidden mb-1.5 mx-auto max-w-[80px] border-2 border-[#1a1a1a]/10 relative"
-                style={{ background: fc.bg }}>
+              <div className="aspect-square rounded-full overflow-hidden mb-1.5 mx-auto max-w-[80px] relative">
                 {t.imageUrl ? (
                   <TazoDiscImage
                     src={t.imageUrl}

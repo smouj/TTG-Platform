@@ -421,7 +421,7 @@ export default function AdminTazoManagerPage() {
                     {!isEditing ? (
                       /* ── VIEW MODE ── */
                       <div className="w-full">
-                        <div className="relative aspect-square bg-zinc-50 flex items-center justify-center overflow-hidden cursor-pointer group"
+                        <div className="relative aspect-square bg-[#1a1a1a] flex items-center justify-center overflow-hidden cursor-pointer group"
                           onClick={() => startEdit(tazo)}>
                           {/* Select checkbox */}
                           <button
