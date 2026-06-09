@@ -546,9 +546,9 @@ def generate_tazo(tazo, bgs, fonts, base_only=False, layouts=None):
                       fill=(251,191,36,rng.randint(30,110)),
                       width=rng.randint(1,3))
 
-    # ── Crop to disc boundary (remove transparent padding) ──
-    # Crop at black border outer edge (RADIUS+12) so zero transparent pixels remain
-    CROP_R = RADIUS + 12  # 452 — disc(440) + black border(12px)
+    # ── Crop to disc boundary with transparent breathing room ──
+    # Leave 60px transparent padding so CSS circular clip looks clean
+    CROP_R = RADIUS + 60  # disc(440) + breathing room
     img = img.crop((CENTER - CROP_R, CENTER - CROP_R, CENTER + CROP_R, CENTER + CROP_R))
 
     return img
@@ -689,8 +689,8 @@ def generate_tazo_back(tazo, fonts, layouts=None):
     clipped = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     clipped.paste(img, (0, 0), disc_mask)
     
-    # Crop to disc boundary (remove transparent padding)
-    CROP_R = RADIUS + 12  # 452 — disc(440) + black border(12px)
+    # Crop to disc boundary with transparent breathing room
+    CROP_R = RADIUS + 60
     clipped = clipped.crop((CENTER - CROP_R, CENTER - CROP_R, CENTER + CROP_R, CENTER + CROP_R))
     
     return clipped
