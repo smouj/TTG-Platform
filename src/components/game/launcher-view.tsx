@@ -1166,7 +1166,7 @@ function ShopContent() {
   const byF: Record<string, any[]> = {}
   for (const t of tazos) {
     const f = t.franchiseSlug || t.franchise?.slug || t.franchise
-    if (f) { if (!byF[f]) byF[f] = []; if (byF[f].length < 5) byF[f].push(t) }
+    if (f) { if (!byF[f]) byF[f] = []; if (byF[f].length < 3) byF[f].push(t) }
   }
 
   return (
