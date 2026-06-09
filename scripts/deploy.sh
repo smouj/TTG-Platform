@@ -34,6 +34,7 @@ mkdir -p .next/standalone/public/tazos-base
 mkdir -p .next/standalone/public/tazos-generated
 mkdir -p .next/standalone/public/tazos-backs
 mkdir -p .next/standalone/public/tazos-artgen/backs
+mkdir -p .next/standalone/public/tazos-tubes
 
 # Copy layout JSON (only if not already present — preserves user saves)
 if [ ! -f .next/standalone/prisma/tazo-layouts.json ]; then
