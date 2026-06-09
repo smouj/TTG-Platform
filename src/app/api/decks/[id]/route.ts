@@ -88,6 +88,7 @@ export async function PATCH(
       where: { id },
       include: {
         deckTazos: {
+          where: { tazo: { publishStatus: "published" } },
           include: { tazo: { include: { franchise: true } } },
         },
       },
@@ -100,7 +101,9 @@ export async function PATCH(
       color: (() => { try { return updated!.settings ? JSON.parse(updated!.settings).color || null : null } catch { return null } })(),
       starters: (() => { try { return updated!.settings ? JSON.parse(updated!.settings).starterIds || [] : [] } catch { return [] } })(),
       tazoCount: updated!.deckTazos.length,
-      tazos: updated!.deckTazos.map((dt) => ({
+      tazos: updated!.deckTazos
+        .filter((dt) => dt.tazo !== null)
+        .map((dt) => ({
         id: dt.tazo.id,
         name: dt.tazo.name,
         displayName: dt.tazo.displayName,

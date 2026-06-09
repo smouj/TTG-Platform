@@ -7,10 +7,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target } from 'lucide-react'
+import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target, FlipHorizontal, View } from 'lucide-react'
 import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
 import TazoDiscImage from '@/components/game/tazo-disc-image'
 import type { TazoFinish, TazoCreatureVariant } from '@/lib/battle/game-loop'
+import { useState } from 'react'
 
 interface TazoDetailModalProps {
   tazo: Tazo | null
@@ -108,6 +109,8 @@ function getFlavorQuote(franchise: string, tazoName: string): string {
 
 export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: TazoDetailModalProps) {
   if (!tazo) return null
+
+  const [viewMode, setViewMode] = useState<'front' | 'back' | '3d'>('front')
 
   const franchiseSlug = tazo.franchise || tazo.franchiseSlug || 'minimon'
   const bgConfig = getTazoBackgroundConfig(tazo, FRANCHISE_MAX[franchiseSlug] || 150)
@@ -242,24 +245,94 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
             <div
               className={`ttg-bg-disc relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] rounded-full flex items-center justify-center overflow-hidden ${bgClasses}`}
             >
-              <TazoDiscImage
-                src={tazo.imageUrl}
-                alt={tazo.displayName || tazo.name || "?"}
-                size="100%"
-                borderWidth={0}
-                franchiseSlug={franchiseSlug}
-                finish={tazo.finish as TazoFinish || "normal"}
-                creatureVariant={tazo.creatureVariant as TazoCreatureVariant || "standard"}
-                shinyImageUrl={tazo.shinyImageUrl}
-                wear={tazo.wear || 0}
-                number={!tazo.isOwned ? null : tazo.number}
-                overlay={!tazo.isOwned ? (
-                  <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center">
-                    <Lock className="w-12 h-12 text-white/70" />
-                  </div>
-                ) : undefined}
-              />
+              {viewMode === 'back' && tazo.isOwned ? (
+                /* Back face — franchise back art */
+                <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                  <img
+                    src={tazo.backImageUrl || `/tazos-artgen/backs/${franchiseSlug}-back.png`}
+                    alt="Back"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : viewMode === '3d' && tazo.isOwned ? (
+                /* 3D rotating view */
+                <div className="w-full h-full relative" style={{
+                  perspective: '600px',
+                  animation: 'tazo-3d-spin 8s linear infinite',
+                }}>
+                  <TazoDiscImage
+                    src={tazo.imageUrl}
+                    alt={tazo.displayName || tazo.name || "?"}
+                    size="100%"
+                    borderWidth={0}
+                    franchiseSlug={franchiseSlug}
+                    finish={tazo.finish as TazoFinish || "normal"}
+                    creatureVariant={tazo.creatureVariant as TazoCreatureVariant || "standard"}
+                    shinyImageUrl={tazo.shinyImageUrl}
+                    wear={tazo.wear || 0}
+                    number={!tazo.isOwned ? null : tazo.number}
+                  />
+                </div>
+              ) : (
+                /* Front face — normal view */
+                <TazoDiscImage
+                  src={tazo.imageUrl}
+                  alt={tazo.displayName || tazo.name || "?"}
+                  size="100%"
+                  borderWidth={0}
+                  franchiseSlug={franchiseSlug}
+                  finish={tazo.finish as TazoFinish || "normal"}
+                  creatureVariant={tazo.creatureVariant as TazoCreatureVariant || "standard"}
+                  shinyImageUrl={tazo.shinyImageUrl}
+                  wear={tazo.wear || 0}
+                  number={!tazo.isOwned ? null : tazo.number}
+                  overlay={!tazo.isOwned ? (
+                    <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center">
+                      <Lock className="w-12 h-12 text-white/70" />
+                    </div>
+                  ) : undefined}
+                />
+              )}
             </div>
+
+            {/* View mode toggles */}
+            {tazo.isOwned && (
+              <div className="flex items-center gap-1 mt-2">
+                <button
+                  onClick={() => setViewMode('front')}
+                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] transition-colors"
+                  style={{
+                    background: viewMode === 'front' ? '#FFCC00' : 'white',
+                    color: '#1a1a1a',
+                    boxShadow: viewMode === 'front' ? '2px 2px 0px #1a1a1a' : 'none',
+                  }}
+                >
+                  <View className="w-3 h-3" /> Front
+                </button>
+                <button
+                  onClick={() => setViewMode('back')}
+                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] transition-colors"
+                  style={{
+                    background: viewMode === 'back' ? '#FFCC00' : 'white',
+                    color: '#1a1a1a',
+                    boxShadow: viewMode === 'back' ? '2px 2px 0px #1a1a1a' : 'none',
+                  }}
+                >
+                  <FlipHorizontal className="w-3 h-3" /> Back
+                </button>
+                <button
+                  onClick={() => setViewMode('3d')}
+                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] transition-colors"
+                  style={{
+                    background: viewMode === '3d' ? '#FFCC00' : 'white',
+                    color: '#1a1a1a',
+                    boxShadow: viewMode === '3d' ? '2px 2px 0px #1a1a1a' : 'none',
+                  }}
+                >
+                  <RotateCw className="w-3 h-3" /> 3D
+                </button>
+              </div>
+            )}
 
             {/* Speech Bubble with flavor quote */}
             <div className="mt-3 speech-bubble text-center max-w-[260px]">

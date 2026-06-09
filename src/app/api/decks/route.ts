@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
       where: { userId: user.id },
       include: {
         deckTazos: {
+          where: { tazo: { publishStatus: "published" } },
           include: {
             tazo: {
               include: { franchise: true },
@@ -35,7 +36,9 @@ export async function GET(request: NextRequest) {
           color: settingsParsed.color || null,
           starters: settingsParsed.starterIds || [],
           tazoCount: d.deckTazos.length,
-          tazos: d.deckTazos.map((dt) => ({
+          tazos: d.deckTazos
+          .filter((dt) => dt.tazo !== null)
+          .map((dt) => ({
           id: dt.tazo.id,
           name: dt.tazo.name,
           displayName: dt.tazo.displayName,

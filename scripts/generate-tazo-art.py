@@ -718,7 +718,7 @@ def main():
         "t.combatType, t.evolutionFrom, t.evolutionTo, t.transformStage, "
         "f.slug as franchise_slug "
         "FROM Tazo t JOIN Franchise f ON t.franchiseId = f.id "
-        "WHERE t.publishStatus = 'published' "
+        "WHERE 1=1 "
         "ORDER BY f.slug, t.number"
     )]
     conn.close()

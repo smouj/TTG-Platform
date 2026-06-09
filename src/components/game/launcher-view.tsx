@@ -512,7 +512,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
       <div className="flex flex-col md:flex-row items-center md:items-start md:items-center gap-4 sm:gap-5 md:gap-8 lg:gap-12">
 
         {/* ── LEFT: Branding + Description + CTAs ── */}
-        <div className="flex flex-col items-center md:items-start gap-3 sm:gap-4 shrink-0 md:w-[320px] lg:w-[380px] relative">
+        <div className="flex flex-col items-center md:items-start gap-3 sm:gap-4 shrink-0 md:w-[320px] lg:w-[380px] relative overflow-hidden">
           {/* Glow */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none"
             style={{
