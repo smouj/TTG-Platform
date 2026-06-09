@@ -3,6 +3,9 @@
 // ============================================================
 // Trading Tazos Game — Admin Tazo Designer
 // Visual drag-and-drop editor for tazo element positioning
+
+// Cache-buster: bump when images are regenerated with structural changes
+const IMG_CACHE_BUSTER = "v3";
 // ============================================================
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/lib/auth-context";
@@ -303,7 +306,7 @@ export default function AdminTazoDesignerPage() {
 
             {designerSide === "front" ? (
               <TazoVisualEditor
-                tazoImageUrl={`/tazos-base/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
+                tazoImageUrl={`/tazos-base/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png?v=${IMG_CACHE_BUSTER}`}
                 creatureImageUrl={`/tazo-creatures/${selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || "unknown"}/${selectedTazo.slug}.png`}
                 slug={selectedTazo.slug || ""}
                 franchise={selectedTazo.franchiseSlug || selectedTazo.franchise?.slug || ""}
@@ -380,7 +383,7 @@ export default function AdminTazoDesignerPage() {
                         <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#1a1a1a]/10 group-hover:border-[#3B4CCA]/50 shadow-md bg-[#1a1a1a]/5 relative">
                           {tazo.imageUrl ? (
                             <img
-                              src={`/tazos-base/${tazo.franchiseSlug || tazo.franchise?.slug || "unknown"}/${tazo.slug}.png`}
+                              src={`/tazos-base/${tazo.franchiseSlug || tazo.franchise?.slug || "unknown"}/${tazo.slug}.png?v=${IMG_CACHE_BUSTER}`}
                               alt={tazo.name}
                               className="w-full h-full object-cover"
                               onError={(e) => { (e.target as HTMLImageElement).src = tazo.imageUrl; }}
