@@ -20,6 +20,8 @@ export const ALL_LAYERS: LayerInfo[] = [
   { id: "ring-deco1", name: "Deco Ring Outer", category: "disc", description: "Decorative white ring (R-16 w1)", color: "#E5E7EB" },
   { id: "ring-deco2", name: "Deco Ring Mid", category: "disc", description: "Decorative colored ring (R-26 w1)", color: "#FBBF24" },
   { id: "ring-deco3", name: "Deco Ring Inner", category: "disc", description: "Decorative white ring (R-36 w1)", color: "#E5E7EB" },
+  { id: "ring-dots", name: "Dots Ring", category: "disc", description: "Dotted ring border (classic tazo style)", color: "#F59E0B" },
+  { id: "ring-inner", name: "Inner Border", category: "disc", description: "Thin inner ring (R-46 w1)", color: "#D1D5DB" },
   { id: "collection", name: "Collection Label", category: "element", description: "Top text label (e.g. 'Dracobell')", color: "#22C55E" },
   { id: "badge", name: "Combat Badge", category: "element", description: "Type badge with icon", color: "#A855F7" },
   { id: "name-overlay", name: "Name Overlay", category: "overlay", description: "Large creature name on disc", color: "#EC4899" },
