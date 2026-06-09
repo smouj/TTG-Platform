@@ -21,7 +21,7 @@ import {
   ExternalLink,
   Trophy, Coins, Package, ArrowLeft, Loader2,
   Crown, X, ArrowUp, HelpCircle,
-  User, Mail, Key, Gift, Shield, Crosshair, Gem, TrendingUp
+  User, Mail, Key, Gift, Shield, Crosshair, Gem, TrendingUp, Layers
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import TazoDetailModal from '@/components/game/tazo-detail-modal'
@@ -440,228 +440,375 @@ function QuestsPreview() {
 
 // ══════════════════════════════════════════════════════════
 // PAGE CONTENT COMPONENTS
-// ══════════════════════════════════════════════════════════
+// ── Home Hero (Launcher Redesign v3) ──
 
-// ── Tazo Showcase (landing page preview) ──
-
-function TazoShowcase() {
-  const [tazos, setTazos] = useState<any[]>([])
-  const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set())
-
-  const fetchShowcase = useCallback(async () => {
-    fetch(`/api/tazos?limit=24&_t=${Date.now()}`)
-      .then(r => r.json())
-      .then(d => setTazos(d.tazos || []))
-      .catch(() => {})
-  }, [])
-
-  useEffect(() => {
-    fetchShowcase()
-  }, [fetchShowcase])
-
-  // Auto-refresh when tab becomes visible
-  useVisibilityRefresh(fetchShowcase)
-
-  const hideTazo = (id: string) => setHiddenIds(prev => new Set(prev).add(id))
-  const display = tazos.filter(t => t.imageUrl && !hiddenIds.has(t.id)).slice(0, 8)
-
-  if (tazos.length === 0) return null
-
-  return (
-    <div className="max-w-5xl mx-auto w-full px-4 pb-4 space-y-3">
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-0.5 bg-[#1a1a1a]/10" />
-        <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-[0.2em] whitespace-nowrap">
-          Featured Tazos
-        </span>
-        <div className="flex-1 h-0.5 bg-[#1a1a1a]/10" />
-      </div>
-      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-        {display.map((t: any) => (
-          <div key={t.id}
-            className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] transition-all rounded-full"
-          >
-            <TazoDiscImage
-              src={t.imageUrl}
-              alt={t.displayName || t.name || ""}
-              size="100%"
-              borderWidth={0}
-              franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
-              onClick={() => {}}
-            />
-          </div>
-        ))}
-      </div>
-      <p className="text-center text-[8px] font-black text-[#1a1a1a]/20 uppercase tracking-[0.25em]">
-        {display.length > 0 ? `${display.length} tazos · 32 available` : "3 franchises · 32 available"}
-      </p>
-    </div>
-  )
+const RARITY_GRADIENTS: Record<string, { bg: string; text: string }> = {
+  common: { bg: "#9CA3AF15", text: "#9CA3AF" },
+  uncommon: { bg: "#22C55E15", text: "#22C55E" },
+  rare: { bg: "#3B82F615", text: "#3B82F6" },
+  "ultra-rare": { bg: "#A855F715", text: "#A855F7" },
+  ultra: { bg: "#A855F715", text: "#A855F7" },
+  legendary: { bg: "#F59E0B15", text: "#F59E0B" },
 }
 
-// ── Compact Featured Tazos Row ──
-
-function FeaturedTazosRow() {
-  const [tazos, setTazos] = useState<any[]>([])
-
-  useEffect(() => {
-    fetch(`/api/tazos?limit=12&_t=${Date.now()}`)
-      .then(r => r.json())
-      .then(d => {
-        const shuffled = (d.tazos || []).sort(() => Math.random() - 0.5)
-        setTazos(shuffled.slice(0, 8))
-      })
-      .catch(() => {})
-  }, [])
-
-  if (tazos.length === 0) return null
+function FeaturedTazoCard({ tazo, featured }: { tazo: any; featured?: boolean }) {
+  const [open, setOpen] = useState(false)
+  const rarityKey = (tazo.rarity || "common").replace("ultra-rare", "ultra")
+  const rarityColor = RARITY_GRADIENTS[rarityKey] || RARITY_GRADIENTS.common
 
   return (
-    <div className="flex flex-col items-center gap-2 w-full pt-1.5">
-      <div className="flex items-center gap-2 w-full">
-        <div className="flex-1 h-px bg-[#1a1a1a]/6" />
-        <span className="text-[8px] font-black text-[#1a1a1a]/20 uppercase tracking-[0.25em] whitespace-nowrap">Featured Tazos</span>
-        <div className="flex-1 h-px bg-[#1a1a1a]/6" />
-      </div>
-      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
-        {tazos.map((t: any) => (
-          <div key={t.id}
-            className="w-[56px] h-[56px] sm:w-[64px] sm:h-[64px] shadow-[3px_3px_0px_#1a1a1a12] rounded-full overflow-hidden hover:scale-110 hover:shadow-[4px_4px_0px_#1a1a1a20] transition-all duration-200"
-          >
-            <TazoDiscImage
-              src={t.imageUrl}
-              alt={t.displayName || t.name || ""}
-              size="100%"
-              borderWidth={0}
-              franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
-              finish={t.finish}
-              creatureVariant={t.creatureVariant}
-              shinyImageUrl={t.shinyImageUrl}
-              lazy
-            />
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      <button onClick={() => setOpen(true)}
+        className={`rounded-full overflow-hidden border-2 border-[#1a1a1a] bg-[#1a1a1a] transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#1a1a1a30] ${
+          featured ? "w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] shadow-[4px_4px_0px_#1a1a1a20]" : "w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] shadow-[3px_3px_0px_#1a1a1a15]"
+        }`}>
+        {tazo.imageUrl ? (
+          <TazoDiscImage
+            src={tazo.imageUrl} alt={tazo.displayName || tazo.name || ""} size="100%" borderWidth={0}
+            franchiseSlug={typeof tazo.franchise === "string" ? tazo.franchise : tazo.franchiseSlug}
+            finish={tazo.finish} creatureVariant={tazo.creatureVariant} shinyImageUrl={tazo.shinyImageUrl} lazy />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-[#1a1a1a]/5 text-[8px] font-black text-[#1a1a1a]/15">?</div>
+        )}
+      </button>
+      {/* Detail modal */}
+      {open && (
+        <TazoDetailModal
+          tazo={tazo as any}
+          open={open}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </>
   )
 }
-
-// ── Home Hero ──
 
 function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
   const [hoverPlay, setHoverPlay] = useState(false)
   const [pressPlay, setPressPlay] = useState(false)
+  const [featuredTazos, setFeaturedTazos] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch(`/api/tazos?limit=16&_t=${Date.now()}`)
+      .then(r => r.json())
+      .then(d => setFeaturedTazos((d.tazos || []).sort(() => Math.random() - 0.5)))
+      .catch(() => {})
+  }, [])
+
+  const displayTazos = featuredTazos.slice(0, 8)
 
   return (
     <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 flex flex-col justify-center py-6 sm:py-8"
       style={{ minHeight: "calc(100vh - 76px - 60px)" }}>
 
       {/* ═══ MAIN HORIZONTAL SPLIT ═══ */}
-      <div className="flex flex-col md:flex-row items-center md:items-center gap-4 sm:gap-6 md:gap-8 lg:gap-14">
+      <div className="flex flex-col md:flex-row items-center md:items-start md:items-center gap-4 sm:gap-5 md:gap-8 lg:gap-12">
 
-        {/* ── LEFT: Logo + Branding ── */}
-        <div className="flex flex-col items-center gap-2 sm:gap-3 md:gap-4 shrink-0 relative">
-          {/* Radial glow behind logo */}
+        {/* ── LEFT: Branding + Description + CTAs ── */}
+        <div className="flex flex-col items-center md:items-start gap-3 sm:gap-4 shrink-0 md:w-[320px] lg:w-[380px] relative">
+          {/* Glow */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none"
             style={{
               background: "radial-gradient(circle at 50% 40%, rgba(255,204,0,0.18) 0%, rgba(255,204,0,0.05) 40%, transparent 70%)",
               width: "200%", height: "200%", top: "-50%", left: "-50%"
             }} />
-          <img src="/logo/logo-icon-black.webp" alt="TTG"
-            className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 drop-shadow-[6px_6px_0_rgba(26,26,26,0.3)]" />
-          <div className="relative text-center">
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-[#1a1a1a] uppercase tracking-[0.04em] leading-none">
+
+          {/* Logo + Title */}
+          <div className="relative flex flex-col items-center md:items-start gap-2">
+            <img src="/logo/logo-icon-black.webp" alt="TTG"
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 drop-shadow-[6px_6px_0_rgba(26,26,26,0.3)]" />
+            <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-black text-[#1a1a1a] uppercase tracking-[0.04em] leading-none text-center md:text-left">
               <span className="text-[#E3350D]">Trading</span>{" "}
               <span className="text-[#FFCC00]">Tazos</span>{" "}
               <span className="text-[#00A1E9]">Game</span>
             </h1>
-            <p className="text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/40 uppercase tracking-[0.15em] mt-1">
-              Collect · Trade · Battle
+            <p className="text-lg sm:text-xl font-black text-[#1a1a1a]/60 uppercase tracking-[0.05em]">
+              Collect. Trade. Battle.
             </p>
+          </div>
+
+          {/* Description */}
+          <p className="relative text-xs sm:text-sm font-bold text-[#1a1a1a]/50 leading-relaxed max-w-xs text-center md:text-left">
+            Open digital bags, build your 20-tazo deck and enter a physics-based arena where every throw counts.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="relative flex flex-wrap gap-2 w-full justify-center md:justify-start">
+            <button onClick={onPlay}
+              className="mag-btn bg-[#FFCC00] text-[#1a1a1a] px-6 sm:px-8 py-3 sm:py-3.5 text-sm font-black uppercase tracking-wider border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] transition-all flex items-center gap-2">
+              <Zap className="w-4 h-4" /> Play Now
+            </button>
+            <Link href="/app/shop"
+              className="mag-btn bg-white text-[#1a1a1a] px-4 sm:px-5 py-3 sm:py-3.5 text-xs font-black uppercase tracking-wider border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] transition-all flex items-center gap-1.5">
+              <PackageOpen className="w-3.5 h-3.5" /> Open Bags
+            </Link>
+            <Link href="/app/collection"
+              className="mag-btn bg-white text-[#1a1a1a] px-4 sm:px-5 py-3 sm:py-3.5 text-xs font-black uppercase tracking-wider border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#1a1a1a] transition-all flex items-center gap-1.5">
+              <Disc3 className="w-3.5 h-3.5" /> Collection
+            </Link>
+          </div>
+
+          {/* Platform chips */}
+          <div className="relative flex flex-wrap gap-1.5 justify-center md:justify-start">
+            {[
+              { number: "349", label: "Tazos", color: "#FFCC00" },
+              { number: "3", label: "Series", color: "#E3350D" },
+              { number: "9", label: "Stats", color: "#00A1E9" },
+              { number: "Free", label: "Play", color: "#22C55E" },
+            ].map(s => (
+              <span key={s.label} className="inline-flex px-2 py-1 text-[8px] font-black uppercase border-2 border-[#1a1a1a] bg-white" style={{ boxShadow: `2px 2px 0 ${s.color}30` }}>
+                <span style={{ color: s.color }}>{s.number}</span><span className="ml-1 text-[#1a1a1a]/40">{s.label}</span>
+              </span>
+            ))}
           </div>
         </div>
 
         {/* ── DIVIDER ── */}
-        <div className="hidden md:block w-px h-36 sm:h-40 md:h-48 lg:h-56 bg-[#1a1a1a]/10 shrink-0" />
+        <div className="hidden md:block w-px h-48 lg:h-56 bg-[#1a1a1a]/8 shrink-0 self-center" />
 
-        {/* ── RIGHT: Stats + CTA + Feature Cards ── */}
-        <div className="flex-1 flex flex-col items-center md:items-start gap-3 sm:gap-4 md:gap-5 w-full">
+        {/* ── RIGHT: Launcher Panel ── */}
+        <div className="flex-1 flex flex-col gap-4 sm:gap-5 w-full max-w-[520px] mx-auto md:mx-0">
 
-          {/* Stats row — bold, unified banner */}
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 sm:gap-2">
-            <StatBadge number="349" label="Tazos" color="#FFCC00" />
-            <StatBadge number="3" label="Series" color="#E3350D" />
-            <StatBadge number="9" label="Stats" color="#00A1E9" />
-            <span className="inline-flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-[8px] sm:text-[9px] font-black uppercase border-2 border-[#1a1a1a]"
-              style={{ background: "#22C55E", color: "#fff", boxShadow: "3px 3px 0 rgba(34,197,94,0.3)" }}>FREE</span>
-          </div>
+          {/* PLAYER LAUNCHER card */}
+          <div className="border-3 border-[#1a1a1a] bg-white overflow-hidden" style={{ boxShadow: "5px 5px 0 #1a1a1a" }}>
+            {/* Header */}
+            <div className="px-5 py-3 flex items-center gap-2"
+              style={{ background: "repeating-linear-gradient(-45deg, #FFCC0010, #FFCC0010 4px, transparent 4px, transparent 8px)", borderBottom: "3px solid #1a1a1a" }}>
+              <Swords className="w-4 h-4 text-[#1a1a1a]" />
+              <span className="text-[10px] font-black text-[#1a1a1a] uppercase tracking-[0.2em]">Player Launcher</span>
+              <span className="ml-auto text-[8px] font-black text-[#22C55E] uppercase flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]" /> {user ? "Online" : "Offline"}
+              </span>
+            </div>
 
-          {/* Play Now Button */}
-          <div className="w-full flex justify-center md:justify-start">
-            <button onClick={onPlay}
-              onMouseEnter={() => setHoverPlay(true)} onMouseLeave={() => { setHoverPlay(false); setPressPlay(false) }}
-              onMouseDown={() => setPressPlay(true)} onMouseUp={() => setPressPlay(false)}
-              onTouchStart={() => setPressPlay(true)} onTouchEnd={() => setPressPlay(false)}
-              className="group relative select-none"
-              style={{ transform: pressPlay ? "translate(3px, 3px)" : hoverPlay ? "translate(-2px, -2px)" : "translate(0, 0)", transition: "transform 0.15s ease" }}>
-              <div className="absolute inset-0 translate-x-2 translate-y-2" style={{ background: "#1a1a1a" }} />
-              <div className="relative px-10 sm:px-16 md:px-20 lg:px-28 py-3 sm:py-3.5 lg:py-4 border-3 border-[#1a1a1a] overflow-hidden"
-                style={{
-                  background: (hoverPlay || pressPlay)
-                    ? "linear-gradient(180deg, #FFE566 0%, #FFCC00 50%, #F5B800 100%)"
-                    : "linear-gradient(180deg, #FFCC00 0%, #F0A800 100%)",
-                  boxShadow: (hoverPlay || pressPlay)
-                    ? "inset 0 -4px 0 rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3), 0 4px 16px rgba(255,204,0,0.35)"
-                    : "inset 0 -3px 0 rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.25)",
-                }}>
-                <span className="relative text-xs sm:text-sm md:text-base lg:text-lg font-black text-[#1a1a1a] uppercase tracking-[0.12em] whitespace-nowrap">
-                  <span className="inline-flex items-center gap-1.5">Play Now <Zap className="w-3.5 h-3.5 inline" /></span>
-                </span>
-                <div className="mag-halftone absolute inset-0 opacity-20 pointer-events-none" />
+            <div className="p-4 sm:p-5 space-y-4">
+              {/* Status + Play */}
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <p className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-[0.15em]">{user ? "Ready for battle" : "Guest access"}</p>
+                  <p className="text-xs font-bold text-[#1a1a1a]/40">Active mode: <span className="text-[#E3350D]">Practice Arena</span></p>
+                </div>
+                <button onClick={onPlay}
+                  onMouseEnter={() => setHoverPlay(true)} onMouseLeave={() => { setHoverPlay(false); setPressPlay(false) }}
+                  onMouseDown={() => setPressPlay(true)} onMouseUp={() => setPressPlay(false)}
+                  className="relative select-none"
+                  style={{ transform: pressPlay ? "translate(2px,2px)" : hoverPlay ? "translate(-1px,-1px)" : "none", transition: "transform 0.1s" }}>
+                  <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-[#1a1a1a]" />
+                  <div className="relative px-5 py-2 border-2 border-[#1a1a1a] bg-[#FFCC00] flex items-center gap-1.5"
+                    style={{ background: hoverPlay ? "linear-gradient(180deg, #FFE566 0%, #FFCC00 100%)" : "#FFCC00" }}>
+                    <span className="text-sm font-black text-[#1a1a1a] uppercase tracking-[0.08em]">PLAY</span>
+                    <Zap className="w-3.5 h-3.5 text-[#1a1a1a]" />
+                  </div>
+                </button>
               </div>
-            </button>
+
+              {/* Quick Actions — 2×2 grid */}
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { icon: PackageOpen, label: "Open Bags", sub: "Get tazos", color: "#FF6B00", href: "/app/shop" },
+                  { icon: Swords, label: "Practice", sub: "AI battles", color: "#E3350D", href: "/app/battle" },
+                  { icon: Disc3, label: "Collection", sub: "All series", color: "#00A1E9", href: "/app/collection" },
+                  { icon: Medal, label: "Ranked", sub: "Leaderboard", color: "#22C55E", href: "/?page=leaderboard" },
+                ].map(({ icon: Icon, label, sub, color, href }) => (
+                  <Link key={label} href={href}
+                    className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 border-2 border-[#1a1a1a]/10 hover:border-[#1a1a1a]/30 bg-white hover:bg-[#FFF9E6] transition-all group/qk">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border-2 border-[#1a1a1a]/15 bg-white group-hover/qk:scale-110 transition-transform">
+                      <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5" style={{ color }} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-[11px] font-black text-[#1a1a1a] uppercase leading-none">{label}</p>
+                      <p className="text-[8px] font-bold text-[#1a1a1a]/25 uppercase">{sub}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <p className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#1a1a1a]/25 uppercase tracking-wider text-center md:text-left w-full">
-            {user ? "Ready — jump into battle!" : "No download · No signup needed"}
+          {/* ═══ Featured Tazos Vitrine ═══ */}
+          {displayTazos.length > 0 && (
+            <div className="border-3 border-[#1a1a1a] bg-white overflow-hidden" style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
+              <div className="px-4 py-2.5 flex items-center gap-2"
+                style={{ background: "repeating-linear-gradient(-45deg, #E3350D08, #E3350D08 4px, transparent 4px, transparent 8px)", borderBottom: "3px solid #1a1a1a" }}>
+                <Crown className="w-4 h-4 text-[#F59E0B]" />
+                <span className="text-[10px] font-black text-[#1a1a1a] uppercase tracking-[0.2em]">Featured Tazos</span>
+                <span className="ml-auto text-[8px] font-black text-[#1a1a1a]/20 uppercase">{displayTazos.length} of 32</span>
+              </div>
+              <div className="p-3 sm:p-4">
+                <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+                  {displayTazos.map((t) => (
+                    <FeaturedTazoCard key={t.id} tazo={t} />
+                  ))}
+                </div>
+                <div className="flex flex-wrap justify-center gap-1.5 mt-3">
+                  {["common","uncommon","rare","ultra","legendary"].map(r => (
+                    <span key={r} className="text-[7px] font-black px-1.5 py-0.5 uppercase border"
+                      style={{ color: (RARITY_GRADIENTS[r]||RARITY_GRADIENTS.common).text, borderColor: (RARITY_GRADIENTS[r]||RARITY_GRADIENTS.common).text+"30", background: (RARITY_GRADIENTS[r]||RARITY_GRADIENTS.common).bg }}>{r}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Status line */}
+          <p className="text-[8px] font-black text-[#1a1a1a]/15 uppercase tracking-[0.15em] text-center">
+            {user ? "349 Tazos · Free to Play · Browser + Desktop" : "No download · No signup needed · Play free"}
           </p>
-
-          {/* Feature cards — horizontal row on desktop, 2×2 on mobile */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-2 md:gap-2.5 w-full">
-            {[
-              { icon: PackageOpen, label: "Open Bags", desc: "32 tazos", color: "#FFCC00", bgFrom: "#FFF9E6", bgTo: "#FFF0B3" },
-              { icon: Swords, label: "Practice", desc: "AI battles", color: "#E3350D", bgFrom: "#FFF5F5", bgTo: "#FFE8E8" },
-              { icon: Disc3, label: "Collect", desc: "All series", color: "#00A1E9", bgFrom: "#F5FAFF", bgTo: "#E0F2FF" },
-              { icon: Medal, label: "Ranked", desc: "Leaderboard", color: "#22C55E", bgFrom: "#F5FFF7", bgTo: "#E0FFE8" },
-            ].map(({ icon: Icon, label, desc, color, bgFrom, bgTo }) => (
-              <div key={label}
-                className="group/card flex items-center gap-1.5 sm:gap-2 p-2 sm:p-2.5 md:p-3 border-2 border-[#1a1a1a]/10 hover:border-[#1a1a1a]/25 cursor-default transition-all duration-200 hover:-translate-y-0.5"
-                style={{
-                  background: `linear-gradient(135deg, ${bgFrom} 0%, ${bgTo} 100%)`,
-                  boxShadow: "2px 2px 0 rgba(26,26,26,0.06)",
-                }}
-              >
-                <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border-2 border-[#1a1a1a]/20 bg-white rounded-full group-hover/card:scale-110 transition-transform duration-200"
-                  style={{ boxShadow: `1px 1px 0 ${color}30` }}>
-                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color }} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[10px] sm:text-[11px] font-black text-[#1a1a1a] uppercase leading-none">{label}</p>
-                  <p className="text-[8px] font-bold text-[#1a1a1a]/30 uppercase mt-0.5 group-hover/card:text-[#1a1a1a]/50 transition-colors">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* ── Compact Featured Tazos Row ── */}
-          <FeaturedTazosRow />
         </div>
       </div>
     </div>
   )
 }
 
-// ── How to Play ──
+// ── Home Extra Sections (Launcher v3) ──
+
+function HowItWorksHome() {
+  return (
+    <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-4 pb-8">
+      <div className="text-center mb-5">
+        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">How It Works</h2>
+        <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider">Three steps to become a collector</p>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
+        {[
+          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different series. Start with 10 free bags and earn more by winning battles.", color: "#FF6B00" },
+          { step: "2", icon: Layers, title: "Build Your Deck", desc: "Choose 5 tazos with 9 combat stats each. Balance attack, defense, and speed for the best results.", color: "#3B4CCA" },
+          { step: "3", icon: Swords, title: "Enter the Arena", desc: "Aim, charge, and slam your tazos from above. Flip opponent discs to capture them — first to 5 points wins!", color: "#E3350D" },
+        ].map(({ step, icon: Icon, title, desc, color }) => (
+          <div key={step} className="border-3 border-[#1a1a1a] bg-white p-4 sm:p-5 text-center hover:-translate-y-1 hover:shadow-[5px_5px_0px_#1a1a1a] transition-all"
+            style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+            <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 border-3 border-[#1a1a1a] mb-3"
+              style={{ background: color, boxShadow: "2px 2px 0 #1a1a1a" }}>
+              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <span className="text-xs font-black text-[#1a1a1a]/15">STEP {step}</span>
+            </div>
+            <h3 className="text-sm font-black text-[#1a1a1a] uppercase mb-1.5">{title}</h3>
+            <p className="text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/45 leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function BattlePreviewHome() {
+  return (
+    <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-2 pb-10">
+      <div className="border-3 border-[#1a1a1a] bg-white overflow-hidden" style={{ boxShadow: "5px 5px 0 #1a1a1a" }}>
+        <div className="px-5 py-3 border-b-3 border-[#1a1a1a] flex items-center gap-2"
+          style={{ background: "repeating-linear-gradient(-45deg, #E3350D10, #E3350D10 4px, transparent 4px, transparent 8px)" }}>
+          <Crosshair className="w-4 h-4 text-[#E3350D]" />
+          <h2 className="text-sm font-black text-[#1a1a1a] uppercase tracking-[0.06em]">Physics-Based Tazo Battles</h2>
+        </div>
+        <div className="p-5 sm:p-6">
+          <p className="text-xs sm:text-sm font-bold text-[#1a1a1a]/50 leading-relaxed mb-4">
+            Every launch uses impact, spin, bounce and flip mechanics. Aim carefully, control your power and turn each throw into a winning move.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            {[
+              { icon: Crosshair, label: "Aim", desc: "Lock your target area", color: "#FFCC00" },
+              { icon: Zap, label: "Charge", desc: "Time your power bar", color: "#FF6B00" },
+              { icon: TrendingUp, label: "Impact", desc: "Collisions & bounces", color: "#E3350D" },
+              { icon: Crown, label: "Flip", desc: "Capture rival tazos", color: "#F59E0B" },
+            ].map(({ icon: Icon, label, desc, color }) => (
+              <div key={label} className="text-center p-3 sm:p-4 border-2 border-[#1a1a1a]/10 hover:border-[#1a1a1a]/25 hover:bg-[#FFF9E6] transition-all">
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-2" style={{ color }} />
+                <h4 className="text-[10px] sm:text-xs font-black text-[#1a1a1a] uppercase mb-0.5">{label}</h4>
+                <p className="text-[8px] sm:text-[9px] font-bold text-[#1a1a1a]/35">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  const [seriesTazos, setSeriesTazos] = useState<Record<string, any[]>>({})
+
+  useEffect(() => {
+    fetch("/api/tazos?limit=12")
+      .then(r => r.json())
+      .then(d => {
+        const byFranchise: Record<string, any[]> = {}
+        for (const t of (d.tazos || [])) {
+          const f = t.franchise || t.franchiseSlug || "minimon"
+          if (!byFranchise[f]) byFranchise[f] = []
+          if (byFranchise[f].length < 4) byFranchise[f].push(t)
+        }
+        setSeriesTazos(byFranchise)
+      })
+      .catch(() => {})
+  }, [])
+
+  const series = [
+    { name: "Minimon", slug: "minimon", count: FRANCHISE_BY_SLUG.minimon.count, total: FRANCHISE_BY_SLUG.minimon.total, year: 2000, color: "#FFCC00", desc: "61 creature companions with balanced combat stats — the original collection." },
+    { name: "Dracobell", slug: "dracobell", count: FRANCHISE_BY_SLUG.dracobell.count, total: FRANCHISE_BY_SLUG.dracobell.total, year: 1995, color: "#FF6B00", desc: "128 martial arts warriors across 6 categories. Home to the rarest variants." },
+    { name: "Cybermon", slug: "cybermon", count: FRANCHISE_BY_SLUG.cybermon.count, total: FRANCHISE_BY_SLUG.cybermon.total, year: 2000, color: "#00B4D8", desc: "160 digital companions in cap format. Highest precision stats." },
+  ]
+
+  return (
+    <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-2 pb-10">
+      <div className="text-center mb-5">
+        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · 349 Tazos</h2>
+        <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider">Classic snack toy collections</p>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
+        {series.map(s => {
+          const tazos = seriesTazos[s.slug] || []
+          return (
+          <button key={s.slug} onClick={() => onNavigate(`collections-${s.slug}` as PageId)}
+            className="text-left border-3 border-[#1a1a1a] bg-white overflow-hidden hover:-translate-y-1 hover:shadow-[5px_5px_0px_#1a1a1a] transition-all group"
+            style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
+            {/* Color strip */}
+            <div className="h-1.5" style={{ background: s.color }} />
+            <div className="p-3 sm:p-4">
+              {/* Tazo grid */}
+              <div className="flex items-center justify-center gap-1.5 mb-3">
+                {tazos.slice(0, 4).map((t, i) => (
+                  <div key={t.id || i} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-[#1a1a1a]/10 bg-[#1a1a1a] group-hover:border-[#1a1a1a]/30 transition-colors">
+                    {t.imageUrl ? (
+                      <TazoDiscImage src={t.imageUrl} alt="" size="100%" borderWidth={0}
+                        franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
+                        finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} lazy />
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+              <h3 className="text-sm font-black text-[#1a1a1a] uppercase">{s.name}</h3>
+              <p className="text-[9px] font-bold text-[#1a1a1a]/35 mt-0.5">{s.count} of {s.total} tazos · {s.year}</p>
+              <p className="text-[10px] font-bold text-[#1a1a1a]/45 mt-1.5 leading-relaxed">{s.desc}</p>
+              <p className="mt-2 text-[10px] font-black text-[#E3350D] uppercase group-hover:underline">View Series →</p>
+            </div>
+          </button>
+        )})}
+      </div>
+    </div>
+  )
+}
+
+function DownloadStripHome({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  return (
+    <div className="border-t-[5px] border-[#1a1a1a] bg-[#1a1a1a]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.15em]">Available on:</span>
+          <PlatformBadge icon={Globe} label="Browser" />
+          <PlatformBadge icon={Monitor} label="Windows" />
+          <PlatformBadge icon={Apple} label="macOS" />
+          <PlatformBadge icon={Terminal} label="Linux" />
+          <button onClick={() => onNavigate("download")}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase tracking-wider border-2 border-white/20 hover:bg-[#FFE566] transition-colors">
+            <Download className="w-3 h-3" /> Download Launcher
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function HowToPlayContent() {
   const [previewTazos, setPreviewTazos] = useState<any[]>([])
@@ -1496,9 +1643,15 @@ export default function LauncherView() {
             </div>
           )}
 
-          <div className={`${isHome ? "space-y-8 pb-8" : "pb-8"}`}>
+          <div className="pb-8">
             {currentPage === "home" && (
-              <HomeHero user={user} onPlay={handlePlay} />
+              <>
+                <HomeHero user={user} onPlay={handlePlay} />
+                <HowItWorksHome />
+                <BattlePreviewHome />
+                <SeriesPreviewHome onNavigate={navigate} />
+                <DownloadStripHome onNavigate={navigate} />
+              </>
             )}
             
             {currentPage === "how-to-play" && (
