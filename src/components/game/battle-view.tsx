@@ -571,7 +571,7 @@ export default function BattleView() {
   )
 
   if (phase === "match_end" && result) return (
-    <div className="max-w-xl mx-auto py-6 space-y-6">
+    <div className="max-w-2xl mx-auto py-6 space-y-6">
       <BattleResultPanel result={{
         winner: result.winner,
         victoryType: toPanelVictoryType(result.victoryType),

@@ -97,7 +97,7 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
   const tazoCount = playerTazos.length
 
   return (
-    <div className="max-w-5xl mx-auto py-6 space-y-6">
+    <div className="space-y-6">
 
       {/* ════════════════ BANNER ════════════════ */}
       <div
