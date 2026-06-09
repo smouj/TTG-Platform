@@ -29,7 +29,7 @@ import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
 import BattleResultPanel from "./battle/battle-result-panel"
-import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock } from "lucide-react"
+import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock, Zap } from "lucide-react"
 
 const BACK_ARTS: Record<string, string> = {
   minimon: "/tazos-artgen/backs/minimon-back.png",
@@ -725,13 +725,13 @@ export default function BattleView() {
             )}
             {phase === "player_aim" && (
               <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FFCC00]/40">
-                <span className="text-[11px] font-black text-[#FFCC00] tracking-wider">🎯 AIM YOUR SHOT</span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-black text-[#FFCC00] tracking-wider"><Crosshair className="w-3.5 h-3.5" /> AIM YOUR SHOT</span>
                 <span className="text-[8px] font-black text-white/40 ml-2">{throwing?.name || "?"}</span>
               </div>
             )}
             {phase === "player_charge" && (
               <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FF8800]/40 animate-pulse">
-                <span className="text-[11px] font-black text-[#FF8800] tracking-wider">⚡ CHARGING — {Math.round(charge * 100)}%</span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-black text-[#FF8800] tracking-wider"><Zap className="w-3.5 h-3.5" /> CHARGING — {Math.round(charge * 100)}%</span>
                 <span className="text-[8px] font-black text-white/30 ml-2">{throwing?.name}</span>
               </div>
             )}
@@ -742,7 +742,7 @@ export default function BattleView() {
             )}
             {phase === "slamming" && (
               <div className="inline-block px-6 py-1.5 bg-[#FFCC00]/20 rounded-full border-2 border-[#FFCC00]/60 animate-pulse">
-                <span className="text-[14px] font-black text-[#FFCC00] tracking-widest">💥 SLAM!</span>
+                <span className="inline-flex items-center gap-1.5 text-[14px] font-black text-[#FFCC00] tracking-widest"><Zap className="w-4 h-4" /> SLAM!</span>
               </div>
             )}
             {(phase === "impact" || showImpact) && (

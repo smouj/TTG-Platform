@@ -20,7 +20,8 @@ import {
   Zap, Star, Disc3, Swords, Medal, PackageOpen,
   ExternalLink,
   Trophy, Coins, Package, ArrowLeft, Loader2,
-  Crown, X, ArrowUp, HelpCircle
+  Crown, X, ArrowUp, HelpCircle,
+  User, Mail, Key, Gift, Shield, Crosshair, Gem, TrendingUp
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import TazoDetailModal from '@/components/game/tazo-detail-modal'
@@ -190,17 +191,17 @@ function SignUpPreview() {
       <div className="flex items-center gap-3">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full border-2 border-[#1a1a1a]/20 flex items-center justify-center text-[10px]">👤</div>
+            <div className="w-6 h-6 rounded-full border-2 border-[#1a1a1a]/20 flex items-center justify-center"><User className="w-3 h-3 text-[#1a1a1a]/40" /></div>
             <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase">Name</span>
             <div className="w-28 h-5 border-2 border-[#FFCC00]/30 rounded bg-[#FFF9E6]" />
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full border-2 border-[#1a1a1a]/20 flex items-center justify-center text-[10px]">✉️</div>
+            <div className="w-6 h-6 rounded-full border-2 border-[#1a1a1a]/20 flex items-center justify-center"><Mail className="w-3 h-3 text-[#1a1a1a]/40" /></div>
             <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase">Email</span>
             <div className="w-28 h-5 border-2 border-[#1a1a1a]/10 rounded bg-white" />
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full border-2 border-[#1a1a1a]/20 flex items-center justify-center text-[10px]">🔑</div>
+            <div className="w-6 h-6 rounded-full border-2 border-[#1a1a1a]/20 flex items-center justify-center"><Key className="w-3 h-3 text-[#1a1a1a]/40" /></div>
             <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase">Pass</span>
             <div className="w-28 h-5 border-2 border-[#1a1a1a]/10 rounded bg-white flex items-center px-2">
               <span className="text-[7px] text-[#1a1a1a]/15">••••••••••</span>
@@ -211,7 +212,7 @@ function SignUpPreview() {
         {/* Result: credits + badge */}
         <div className="flex flex-col items-center gap-1">
           <div className="w-12 h-12 rounded-full border-3 border-[#22C55E] bg-[#22C55E]/10 flex items-center justify-center">
-            <span className="text-xl">🎁</span>
+            <Gift className="w-5 h-5 text-[#22C55E]" />
           </div>
           <span className="text-[8px] font-black text-[#22C55E] uppercase">10 Free Bags!</span>
           <span className="text-[7px] font-bold text-[#1a1a1a]/30">+100 credits</span>
@@ -271,7 +272,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
         )) : (
           <>
             <div className="w-12 h-12 rounded-full border-2 border-dashed border-[#FF6B00]/20 bg-[#FF6B00]/5 flex items-center justify-center">
-              <span className="text-[10px]">❓</span>
+              <HelpCircle className="w-4 h-4 text-[#FF6B00]/40" />
             </div>
             <div className="w-12 h-12 rounded-full border-2 border-dashed border-[#FF6B00]/15 bg-[#FF6B00]/5 flex items-center justify-center" />
             <div className="w-12 h-12 rounded-full border-2 border-dashed border-[#FF6B00]/10 bg-[#FF6B00]/5 flex items-center justify-center" />
@@ -350,10 +351,10 @@ function ArenaPreview({ tazos }: { tazos: any[] }) {
         </div>
         {/* Staked tazos */}
         <div className="absolute top-[35%] left-[25%] w-7 h-7 rounded-full border-2 border-[#29ADFF]/50 bg-[#29ADFF]/5 flex items-center justify-center">
-          <span className="text-[5px] font-black text-[#29ADFF]/60">⚔️</span>
+          <Swords className="w-3 h-3 text-[#29ADFF]/60" />
         </div>
         <div className="absolute top-[35%] right-[25%] w-7 h-7 rounded-full border-2 border-[#FF004D]/50 bg-[#FF004D]/5 flex items-center justify-center">
-          <span className="text-[5px] font-black text-[#FF004D]/60">🛡️</span>
+          <Shield className="w-3 h-3 text-[#FF004D]/60" />
         </div>
         {/* Crosshair */}
         <div className="absolute bottom-[15%] left-[45%] w-4 h-4 flex items-center justify-center">
@@ -373,20 +374,20 @@ function ArenaPreview({ tazos }: { tazos: any[] }) {
           </div>
         ) : (
           <div className="absolute top-[10%] left-[50%] w-6 h-6 rounded-full bg-[#FFCC00]/20 border border-[#FFCC00]/30 -translate-x-3 flex items-center justify-center animate-pulse">
-            <span className="text-[8px]">💥</span>
+            <Zap className="w-3 h-3 text-[#FFCC00]" />
           </div>
         )}
       </div>
       {/* Phase indicators */}
       <div className="flex flex-col gap-1.5">
         {[
-          { label: "AIM", icon: "🎯", color: "#FFCC00" },
-          { label: "CHARGE", icon: "⚡", color: "#FF8800" },
-          { label: "SLAM", icon: "💥", color: "#E3350D" },
+          { label: "AIM", Icon: Crosshair, color: "#FFCC00" },
+          { label: "CHARGE", Icon: Zap, color: "#FF8800" },
+          { label: "SLAM", Icon: Zap, color: "#E3350D" },
         ].map(p => (
           <div key={p.label} className="flex items-center gap-1.5 px-2 py-1 rounded border"
             style={{ borderColor: p.color + "25", background: p.color + "08" }}>
-            <span className="text-xs">{p.icon}</span>
+            <p.Icon className="w-3 h-3" style={{ color: p.color }} />
             <span className="text-[8px] font-black text-[#1a1a1a]/40 uppercase">{p.label}</span>
           </div>
         ))}
@@ -400,14 +401,18 @@ function QuestsPreview() {
     <div className="flex items-center gap-3 py-2 flex-wrap">
       {/* Achievement badges */}
       {[
-        { tier: "Bronze", color: "#CD7F32", icon: "🥉" },
-        { tier: "Silver", color: "#C0C0C0", icon: "🥈" },
-        { tier: "Gold", color: "#FFD700", icon: "🥇" },
-        { tier: "Platinum", color: "#A855F7", icon: "💎" },
+        { tier: "Bronze", color: "#CD7F32" },
+        { tier: "Silver", color: "#C0C0C0" },
+        { tier: "Gold", color: "#FFD700" },
+        { tier: "Platinum", color: "#A855F7" },
       ].map(a => (
         <div key={a.tier} className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg border-2"
           style={{ borderColor: a.color + "30", background: a.color + "08", boxShadow: `0 2px 8px ${a.color}15` }}>
-          <span className="text-lg">{a.icon}</span>
+          {a.tier === "Platinum" ? (
+            <Gem className="w-5 h-5" style={{ color: a.color }} />
+          ) : (
+            <Medal className="w-5 h-5" style={{ color: a.color }} />
+          )}
           <span className="text-[8px] font-black uppercase" style={{ color: a.color }}>{a.tier}</span>
         </div>
       ))}
@@ -546,7 +551,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
               : "inset 0 -3px 0 rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,0.25)",
           }}>
           <span className="relative text-base sm:text-lg font-black text-[#1a1a1a] uppercase tracking-[0.12em] whitespace-nowrap">
-            Play Now ⚡
+            <span className="inline-flex items-center gap-1.5">Play Now <Zap className="w-3.5 h-3.5 inline" /></span>
           </span>
           <div className="mag-halftone absolute inset-0 opacity-20 pointer-events-none" />
         </div>

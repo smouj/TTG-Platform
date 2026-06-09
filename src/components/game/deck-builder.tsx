@@ -162,7 +162,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                   "bg-white/10 text-white/40 border-white/20"
                 }`}
               >
-                {s < step ? "✓" : s}
+                {s < step ? <CheckCircle className="w-3 h-3 inline" /> : s}
               </div>
               <span className={`text-[9px] font-black uppercase tracking-wider ${
                 s === step ? "text-[#FFCC00]" : s < step ? "text-[#22C55E]" : "text-white/30"
@@ -258,7 +258,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                   "bg-white/10 text-white/40 border-white/20"
                 }`}
               >
-                {s < step ? "✓" : s}
+                {s < step ? <CheckCircle className="w-3 h-3 inline" /> : s}
               </div>
               <span className={`text-[9px] font-black uppercase tracking-wider hidden sm:inline ${
                 s === step ? "text-[#FFCC00]" : s < step ? "text-[#22C55E]" : "text-white/30"
@@ -431,7 +431,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                   "bg-white/10 text-white/40 border-white/20"
                 }`}
               >
-                {s < step ? "✓" : s}
+                {s < step ? <CheckCircle className="w-3 h-3 inline" /> : s}
               </div>
               <span className={`text-[9px] font-black uppercase tracking-wider hidden sm:inline ${
                 s === step ? "text-[#FFCC00]" : s < step ? "text-[#22C55E]" : "text-white/30"
@@ -561,7 +561,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                   "bg-white/10 text-white/40 border-white/20"
                 }`}
               >
-                {s < step ? "✓" : s}
+                {s < step ? <CheckCircle className="w-3 h-3 inline" /> : s}
               </div>
               <span className={`text-[9px] font-black uppercase tracking-wider hidden sm:inline ${
                 s === step ? "text-[#FFCC00]" : s < step ? "text-[#22C55E]" : "text-white/30"

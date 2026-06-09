@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { AlertTriangle } from "lucide-react";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -37,7 +38,7 @@ export default class ErrorBoundary extends React.Component<
         <div className="min-h-[60vh] flex items-center justify-center p-6">
           <div className="mag-card max-w-md w-full p-8 border-3 border-[#E3350D] shadow-[6px_6px_0px_#E3350D] bg-white">
             <div className="text-center space-y-4">
-              <div className="text-5xl">💥</div>
+              <div className="text-5xl"><AlertTriangle className="w-12 h-12 text-[#E3350D] mx-auto" /></div>
               <h2 className="text-xl font-black uppercase tracking-wider text-[#1a1a1a]">
                 Something broke
               </h2>

@@ -10,7 +10,7 @@ import TazoDiscImage from "@/components/game/tazo-disc-image"
 import {
   Store, Coins, ShoppingCart, Loader2, X, AlertTriangle,
   Search, ChevronDown, Tag, User, Clock, ArrowUpDown, Trophy,
-  Shield, Swords, Zap, Flame, Sparkles,
+  Shield, Swords, Zap, Flame, Sparkles, CheckCircle2, Medal,
 } from "lucide-react"
 
 interface TradeListing {
@@ -243,7 +243,7 @@ function OffersTab({ token }: { token: string | null }) {
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     })
     const data = await res.json()
-    if (res.ok) { setMsg('Trade completed! ✅'); load() }
+    if (res.ok) { setMsg('Trade completed!'); load() }
     else setMsg(data.error || 'Failed')
     setActionId(null)
   }, [token, load])
@@ -372,7 +372,9 @@ function LeaderboardTab() {
                 color: rank <= 3 ? '#1a1a1a' : '#1a1a1a40',
               }}
             >
-              {rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank}
+              {rank <= 3 ? (
+                <Medal className="w-4 h-4" style={{ color: rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : '#CD7F32' }} />
+              ) : rank}
             </div>
             {/* Name */}
             <div className="flex-1 min-w-0">

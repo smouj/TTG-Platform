@@ -252,7 +252,7 @@ export default function SlamControls(props: SlamControlsProps) {
                 ? "bg-[#22C55E] hover:bg-[#22C55E]/90 text-[#1a1a1a] shadow-[0_0_20px_rgba(34,197,94,0.6)]"
                 : "bg-[#FFCC00] hover:bg-[#FFD633] text-[#1a1a1a] shadow-[0_0_20px_rgba(255,204,0,0.4)] hover:shadow-[0_0_30px_rgba(255,204,0,0.6)]"
             } active:scale-95`}>
-            {aimLocked ? <><Lock className="w-3 h-3 inline mr-1" />CHARGE</> : <>🎯 LOCK AIM</>}
+            {aimLocked ? <><Lock className="w-3 h-3 inline mr-1" />CHARGE</> : <><Crosshair className="w-3 h-3 inline mr-1" />LOCK AIM</>}
           </button>
         </div>
       </>
@@ -268,7 +268,7 @@ export default function SlamControls(props: SlamControlsProps) {
         <div className="flex items-center justify-between px-1">
           <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Force</span>
           <span className="text-[11px] font-black" style={{ color: barColor }}>
-            {isPerfect ? "⚡ PERFECT" : Math.round(charge * 100) + "%"}
+            {isPerfect ? <span className="inline-flex items-center gap-1"><Zap className="w-3 h-3" />PERFECT</span> : Math.round(charge * 100) + "%"}
           </span>
         </div>
         <div className="relative w-full h-8 bg-black/40 rounded-full overflow-hidden border border-white/10 backdrop-blur-sm">
@@ -322,7 +322,7 @@ export default function SlamControls(props: SlamControlsProps) {
           </div>
           <button onClick={() => { playSfx("slam_launch", 0.4); onRelease() }}
             className="w-full py-3 bg-gradient-to-r from-[#FFCC00] to-[#FFD633] hover:from-[#FFD633] hover:to-[#FFE066] text-[#1a1a1a] font-black text-sm uppercase rounded-xl tracking-wider shadow-[0_0_20px_rgba(255,204,0,0.5)] active:scale-95 pointer-events-auto transition-all">
-            💥 SLAM!
+            <Zap className="w-4 h-4 inline mr-1" /> SLAM!
           </button>
         </div>
       </div>

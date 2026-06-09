@@ -8,7 +8,7 @@ import { useState, useMemo } from "react"
 import type { TazoCard, PlayMode, AIDifficulty } from "@/lib/battle/game-loop"
 import {
   Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star,
-  Sparkles, ChevronRight, Disc3, Layers,
+  Sparkles, ChevronRight, Disc3, Layers, AlertTriangle,
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
@@ -322,8 +322,8 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
           )}
 
           {playerTazos.length < 5 && playerTazos.length > 0 && (
-            <p className="text-center text-[10px] font-black text-[#E3350D]">
-              ⚠️ Need {5 - playerTazos.length} more tazos for a full deck
+            <p className="flex items-center justify-center gap-1 text-center text-[10px] font-black text-[#E3350D]">
+              <AlertTriangle className="w-3 h-3" /> Need {5 - playerTazos.length} more tazos for a full deck
             </p>
           )}
         </div>

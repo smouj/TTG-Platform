@@ -67,9 +67,13 @@ const RARITY_LABELS: Record<string, string> = {
   common: "Common", uncommon: "Uncommon", rare: "Rare",
   "ultra-rare": "Ultra Rare", legendary: "Legendary",
 }
-const RARITY_EMOJI: Record<string, string> = {
-  common: "⚪", uncommon: "🟢", rare: "🔵",
-  "ultra-rare": "🟣", legendary: "👑",
+const RARITY_COLOR: Record<string, string> = {
+  common: "#9CA3AF", uncommon: "#22C55E", rare: "#3B82F6",
+  "ultra-rare": "#A855F7", legendary: "#F59E0B",
+}
+
+const RARITY_STARS: Record<string, number> = {
+  common: 1, uncommon: 2, rare: 3, "ultra-rare": 4, legendary: 5,
 }
 
 // ── BagCard (select view) ──────────────────────────────
@@ -507,7 +511,9 @@ export default function BagShopPage() {
             color: "#fff",
             boxShadow: "3px 3px 0px #1a1a1a",
           }}>
-          {RARITY_EMOJI[rndRarity] || ""} {rarityLabel} Tazo!
+          {Array.from({ length: RARITY_STARS[rndRarity] || 1 }).map((_, i) => (
+            <Star key={i} className="w-2.5 h-2.5 inline fill-current" />
+          ))} {rarityLabel} Tazo!
         </div>
 
         {/* Tazo disc */}

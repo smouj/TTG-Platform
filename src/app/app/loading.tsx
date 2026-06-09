@@ -3,6 +3,8 @@
 // Shown instantly during route transitions (Suspense boundary)
 // Matches the magazine-style brand aesthetic
 // ============================================================
+import { Zap } from "lucide-react"
+
 export default function AppLoading() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6 p-8">
@@ -12,7 +14,7 @@ export default function AppLoading() {
         <div className="absolute inset-0 rounded-full border-4 border-t-[#3B4CCA] border-r-[#FF3E3E] border-b-[#FFD700] border-l-[#1a1a1a] animate-spin" />
         <div className="absolute inset-1 rounded-full bg-white" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-black text-[#1a1a1a]">⚡</span>
+          <Zap className="w-5 h-5 text-[#1a1a1a]" />
         </div>
       </div>
       <p className="text-sm font-bold text-[#1a1a1a]/40 uppercase tracking-widest animate-pulse">
