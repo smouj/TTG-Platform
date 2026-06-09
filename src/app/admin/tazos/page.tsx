@@ -21,7 +21,7 @@ interface TazoData {
   id: string; name: string; displayName: string | null; description: string | null; slug: string
   franchiseId: string; number: string; rarity: string
   imageUrl: string | null; backImageUrl: string | null; finish: string; creatureVariant: string
-  shinyImageUrl?: string | null; wear?: number
+  shinyImageUrl?: string | null; wear?: number; publishStatus: string
   skill: string | null; skillDesc: string | null; role: string | null; combatType: string | null
   category: string | null
   attack: number; defense: number; resistance: number; weight: number
@@ -84,7 +84,12 @@ export default function AdminTazoManagerPage() {
   // Delete confirmation
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
-  // ── Fetch tazos ──
+  // Creature art upload
+  const [artUploading, setArtUploading] = useState(false)
+  const [artStatus, setArtStatus] = useState<"idle" | "uploading" | "compositing" | "done" | "error">("idle")
+  const [artMessage, setArtMessage] = useState("")
+
+  // ── Publish/unpublish ──
   const fetchTazos = useCallback(async () => {
     if (!isAdmin) return
     setLoading(true)
@@ -167,6 +172,61 @@ export default function AdminTazoManagerPage() {
       setSaveStatus("error")
     }
     setSaving(false)
+  }
+
+  // ── Publish/unpublish quick toggle ──
+  const togglePublish = async (tazo: TazoData) => {
+    const newStatus = tazo.publishStatus === "published" ? "pending_review" : "published"
+    try {
+      const res = await fetch("/api/admin", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ id: tazo.id, publishStatus: newStatus }),
+      })
+      if (!res.ok) throw new Error("Toggle failed")
+      setTazos(prev => prev.map(t => t.id === tazo.id ? { ...t, publishStatus: newStatus } : t))
+    } catch (e) {
+      console.error("Publish toggle failed", e)
+    }
+  }
+
+  // ── Replace creature art ──
+  const replaceArt = async (tazoId: string, file: File) => {
+    setArtUploading(true)
+    setArtStatus("uploading")
+    setArtMessage("Reading image...")
+    try {
+      const reader = new FileReader()
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string)
+        reader.onerror = () => reject(new Error("Failed to read file"))
+        reader.readAsDataURL(file)
+      })
+      setArtStatus("compositing")
+      setArtMessage("Compositing with background...")
+      const res = await fetch("/api/admin/tazo-art", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ tazoId, creatureDataUrl: dataUrl }),
+      })
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error || "Upload failed")
+      setTazos(prev => prev.map(t => t.id === tazoId ? { ...t, imageUrl: data.tazo.imageUrl } : t))
+      if (editData && editingId === tazoId) {
+        setEditData(prev => prev ? { ...prev, imageUrl: data.tazo.imageUrl } : null)
+      }
+      setArtStatus("done")
+      setArtMessage(data.message || "Art replaced!")
+      setTimeout(() => { setArtStatus("idle"); setArtMessage("") }, 2500)
+    } catch (e: any) {
+      console.error("Art replacement failed", e)
+      setArtStatus("error")
+      setArtMessage(e.message || "Upload failed")
+      setTimeout(() => { setArtStatus("idle"); setArtMessage("") }, 4000)
+    }
+    setArtUploading(false)
   }
 
   // ── Delete handler ──
@@ -354,6 +414,13 @@ export default function AdminTazoManagerPage() {
                   <option value="">Role —</option>
                   {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
+                <select onChange={e => setBatchEditData(prev => ({ ...prev, publishStatus: e.target.value }))} value={batchEditData.publishStatus || ""}
+                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]">
+                  <option value="">Publish —</option>
+                  <option value="published">✅ Published</option>
+                  <option value="pending_review">⏳ Pending</option>
+                  <option value="draft">📝 Draft</option>
+                </select>
                 <button onClick={applyBatchEdit} disabled={batchSaving}
                   className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-[#22C55E] text-white border-2 border-[#1a1a1a] rounded-lg shadow-[2px_2px_0px_#1a1a1a] disabled:opacity-50">
                   {batchSaving ? "Saving..." : "Apply"}
@@ -463,6 +530,25 @@ export default function AdminTazoManagerPage() {
                             className="absolute bottom-2 right-2 p-1 rounded bg-[#E3350D]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#E3350D]"
                             title="Delete tazo"
                           ><Trash2 className="w-3.5 h-3.5" /></button>
+                          {/* Publish/unpublish quick toggle */}
+                          <button
+                            onClick={e => { e.stopPropagation(); togglePublish(tazo) }}
+                            className={`absolute bottom-2 left-2 p-1 rounded text-white opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-black uppercase tracking-wider ${
+                              tazo.publishStatus === "published" ? "bg-[#22C55E]/80 hover:bg-[#22C55E]" : "bg-[#3B4CCA]/80 hover:bg-[#3B4CCA]"
+                            }`}
+                            title="Toggle publish status"
+                          >{tazo.publishStatus === "published" ? "Unpublish" : "Publish"}</button>
+                        </div>
+                        {/* Card info bar — shows publish status */}
+                        <div className="px-2 py-1 flex items-center justify-between">
+                          <p className="text-[9px] font-black text-[#1a1a1a] truncate">{tazo.displayName || tazo.name || tazo.slug}</p>
+                          <span className={`text-[7px] font-black uppercase px-1.5 py-0.5 rounded border ${
+                            tazo.publishStatus === "published"
+                              ? "bg-[#22C55E]/10 border-[#22C55E]/30 text-[#22C55E]"
+                              : tazo.publishStatus === "pending_review"
+                              ? "bg-[#F59E0B]/10 border-[#F59E0B]/30 text-[#F59E0B]"
+                              : "bg-zinc-50 border-zinc-200 text-zinc-400"
+                          }`}>{tazo.publishStatus || "draft"}</span>
                         </div>
                         {/* Delete confirmation */}
                         {deletingId === tazo.id && (
@@ -525,6 +611,56 @@ export default function AdminTazoManagerPage() {
                           <div className="flex justify-between text-[10px] font-bold text-zinc-500">
                             <span>{tazo.franchise.name}</span><span>#{tazo.number}</span>
                           </div>
+                        </div>
+
+                        {/* ♻️ Replace Creature Art */}
+                        <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-2.5 space-y-2">
+                          <label className="text-[8px] font-black uppercase text-amber-600 tracking-wider block">
+                            ♻️ Replace Creature Art
+                          </label>
+                          <p className="text-[8px] font-bold text-amber-500">
+                            Upload a new creature PNG. Only the creature art changes — stats, layout, and name stay the same.
+                          </p>
+                          <input
+                            type="file"
+                            accept="image/png,image/webp,image/jpeg"
+                            disabled={artUploading}
+                            onChange={e => {
+                              const file = e.target.files?.[0]
+                              if (file) replaceArt(tazo.id, file)
+                              e.target.value = ""
+                            }}
+                            className="block w-full text-[10px] font-bold text-zinc-600 file:mr-2 file:px-3 file:py-1 file:text-[10px] file:font-black file:uppercase file:tracking-wider file:bg-amber-500 file:text-white file:border-0 file:rounded-lg file:cursor-pointer hover:file:bg-amber-600"
+                          />
+                          {artStatus !== "idle" && (
+                            <div className={`text-[9px] font-bold flex items-center gap-1.5 ${
+                              artStatus === "error" ? "text-[#E3350D]" :
+                              artStatus === "done" ? "text-[#22C55E]" : "text-amber-600"
+                            }`}>
+                              {artStatus === "uploading" || artStatus === "compositing" ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : artStatus === "done" ? (
+                                <Check className="w-3 h-3" />
+                              ) : (
+                                <AlertTriangle className="w-3 h-3" />
+                              )}
+                              {artMessage}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Publish Status */}
+                        <div>
+                          <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Publish Status</label>
+                          <select
+                            value={editData?.publishStatus || "pending_review"}
+                            onChange={e => updateField("publishStatus", e.target.value)}
+                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]"
+                          >
+                            <option value="published">✅ Published (visible everywhere)</option>
+                            <option value="pending_review">⏳ Pending Review (hidden)</option>
+                            <option value="draft">📝 Draft (hidden)</option>
+                          </select>
                         </div>
 
                         {/* Description */}

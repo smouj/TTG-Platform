@@ -493,3 +493,72 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: error?.message || "Failed to fetch tazos" }, { status: 500 });
   }
 }
+
+// ═══════════════════════════════════════════════════════
+// PUT — Replace creature art on EXISTING tazo
+// Keeps all stats, layout, name, rarity — only changes image
+// ═══════════════════════════════════════════════════════
+export async function PUT(req: NextRequest) {
+  if (!(await isAdmin(req))) {
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 403 })
+  }
+
+  try {
+    const body = await req.json()
+    const { tazoId, creatureDataUrl } = body
+
+    if (!tazoId || !creatureDataUrl) {
+      return NextResponse.json({ success: false, error: "Missing tazoId or creatureDataUrl" }, { status: 400 })
+    }
+
+    // Load existing tazo
+    const tazo = await prisma.tazo.findUnique({
+      where: { id: tazoId },
+      include: { franchise: { select: { slug: true } } },
+    })
+    if (!tazo) {
+      return NextResponse.json({ success: false, error: "Tazo not found" }, { status: 404 })
+    }
+
+    const franchiseSlug = tazo.franchise?.slug || "minimon"
+
+    // Decode base64 creature image (remove data: URL prefix if present)
+    const base64Data = creatureDataUrl.replace(/^data:image\/[a-z]+;base64,/, "")
+    const creatureBuffer = Buffer.from(base64Data, "base64")
+
+    // Validate it's a valid image
+    const sharp = (await import("sharp")).default
+    await sharp(creatureBuffer).metadata()
+
+    // Composite onto official tazo-art-studio background
+    const finalImageBuffer = await compositeTazo(franchiseSlug, creatureBuffer)
+
+    // Save to filesystem
+    fs.mkdirSync(path.join(TAZOS_DIR, franchiseSlug), { recursive: true })
+
+    const imageFileName = `${tazo.slug}.png`
+    const imagePath = path.join(TAZOS_DIR, franchiseSlug, imageFileName)
+    fs.writeFileSync(imagePath, finalImageBuffer)
+
+    const imageUrl = `/tazos-generated/${franchiseSlug}/${imageFileName}`
+
+    // Update DB — ONLY imageUrl, everything else untouched
+    const updated = await prisma.tazo.update({
+      where: { id: tazoId },
+      data: { imageUrl },
+      include: { franchise: { select: { name: true, slug: true } } },
+    })
+
+    return NextResponse.json({
+      success: true,
+      tazo: updated,
+      message: `Creature art replaced. New image: ${imageUrl}`,
+    })
+  } catch (error: any) {
+    console.error("PUT /api/admin/tazo-art error:", error)
+    return NextResponse.json({
+      success: false,
+      error: error?.message || "Failed to replace creature art",
+    }, { status: 500 })
+  }
+}

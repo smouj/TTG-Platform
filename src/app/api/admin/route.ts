@@ -121,7 +121,7 @@ export async function PATCH(req: NextRequest) {
     // Only allow updating safe fields
     const allowedFields = [
       "name", "displayName", "description", "rarity", "imageUrl", "backImageUrl",
-      "skill", "skillDesc", "category",
+      "skill", "skillDesc", "category", "publishStatus",
       "attack", "defense", "resistance", "weight", "stability", "spin",
       "control", "bounce", "precision", "role", "combatType", "finish",
       "creatureVariant", "shinyImageUrl", "isOwned", "stackable", "maxStackOn",
