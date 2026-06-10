@@ -45,7 +45,7 @@ function GameHUD({ credits, tazoCount }: { credits?: number; tazoCount?: number 
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
           <span className="text-[#1a1a1a]/40">{tazoCount != null ? `${tazoCount}/349` : ""} TAZOS</span>
-          <span className="text-[#1a1a1a]/25 text-[7px] sm:text-[8px] tracking-[0.15em]">v0.5.1</span>
+          <span className="text-[#1a1a1a]/25 text-[7px] sm:text-[8px] tracking-[0.15em]">v0.6.0</span>
         </div>
       </div>
     </div>
@@ -201,7 +201,7 @@ export default function MagazinePageShell({
               ))}
             </div>
             <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em] whitespace-nowrap">
-              &copy; 2026 Trading Tazos Game &middot; v0.5.1
+              &copy; 2026 Trading Tazos Game &middot; v0.6.0
             </span>
           </div>
         </footer>
