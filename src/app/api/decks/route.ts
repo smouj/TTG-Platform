@@ -34,6 +34,8 @@ export async function GET(request: NextRequest) {
           name: d.name,
           isActive: d.isActive,
           color: settingsParsed.color || null,
+          textureUrl: settingsParsed.textureUrl || null,
+          tubeSlug: settingsParsed.tubeSlug || null,
           starters: settingsParsed.starterIds || [],
           tazoCount: d.deckTazos.length,
           tazos: d.deckTazos
@@ -82,7 +84,7 @@ export async function POST(request: NextRequest) {
     const user = await getAuthUser(request)
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const { name, tazoIds, color, starterIds } = await request.json()
+    const { name, tazoIds, color, starterIds, textureUrl, tubeSlug } = await request.json()
     if (!name || !name.trim()) {
       return NextResponse.json({ error: "Tube name is required" }, { status: 400 })
     }
@@ -96,6 +98,8 @@ export async function POST(request: NextRequest) {
     // Build settings JSON
     const settings: Record<string, any> = {}
     if (color) settings.color = color
+    if (textureUrl) settings.textureUrl = textureUrl
+    if (tubeSlug) settings.tubeSlug = tubeSlug
     if (starterIds && Array.isArray(starterIds)) {
       settings.starterIds = starterIds.slice(0, 5)
     }
@@ -137,6 +141,8 @@ export async function POST(request: NextRequest) {
       tazoCount: deck.deckTazos.length,
       isActive: deck.isActive,
       color: settings.color || null,
+      textureUrl: settings.textureUrl || null,
+      tubeSlug: settings.tubeSlug || null,
       starters: settings.starterIds || [],
     })
   } catch (error) {

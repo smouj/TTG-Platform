@@ -43,6 +43,14 @@ const TUBE_TEXTURES: Record<string, string> = {
   dracobell: "/tazos-tubes/tube-dracobell.png",
 }
 
+export { TUBE_TEXTURES }
+
+export const TUBE_TEXTURE_OPTIONS = [
+  { slug: "minimon", name: "Minimon", textureUrl: TUBE_TEXTURES.minimon, color: "#FFCC00" },
+  { slug: "cybermon", name: "Cybermon", textureUrl: TUBE_TEXTURES.cybermon, color: "#00B4D8" },
+  { slug: "dracobell", name: "Dracobell", textureUrl: TUBE_TEXTURES.dracobell, color: "#FF6B00" },
+]
+
 const FRANCHISE_COLORS: Record<string, string> = {
   minimon: "#FFCC00",
   cybermon: "#00B4D8",
@@ -74,18 +82,18 @@ function TubeLoadingFallback() {
 }
 
 export default function BattleTubePreview({
-  name, color = "#E3350D", count = 0, maxCount = 20,
+  name, color = "#E3350D", textureUrl, count = 0, maxCount = 20,
   tazos = [], starters = [],
   size = "md", showLabel = true,
   className = "",
-}: BattleTubePreviewProps) {
+}: BattleTubePreviewProps & { textureUrl?: string }) {
   const sizes = {
     sm: { width: 80, height: 120 },
     md: { width: 130, height: 190 },
     lg: { width: 200, height: 290 },
   }
   const s = sizes[size]
-  const tubeTexture = getTubeTexture(tazos)
+  const tubeTexture = textureUrl || getTubeTexture(tazos)
   const tubeColor = getFranchiseColor(tazos) || color
   const tazoUrls = tazos.filter(t => t.imageUrl).map(t => t.imageUrl!) as string[]
   const labelText = name ? name.toUpperCase() : "EMPTY TUBE"

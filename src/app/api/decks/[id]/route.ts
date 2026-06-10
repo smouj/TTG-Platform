@@ -62,13 +62,15 @@ export async function PATCH(
       })
     }
 
-    // Update settings (color, starterIds)
-    if (body.color !== undefined || body.starterIds !== undefined) {
+    // Update settings (color, textureUrl, tubeSlug, starterIds)
+    if (body.color !== undefined || body.textureUrl !== undefined || body.tubeSlug !== undefined || body.starterIds !== undefined) {
       let settingsParsed: Record<string, any> = {}
       try {
         if (deck.settings) settingsParsed = JSON.parse(deck.settings)
       } catch { /* ignore */ }
       if (body.color !== undefined) settingsParsed.color = body.color
+      if (body.textureUrl !== undefined) settingsParsed.textureUrl = body.textureUrl
+      if (body.tubeSlug !== undefined) settingsParsed.tubeSlug = body.tubeSlug
       if (body.starterIds !== undefined) {
         settingsParsed.starterIds = (body.starterIds || []).slice(0, 5)
       }
@@ -99,6 +101,8 @@ export async function PATCH(
       name: updated!.name,
       isActive: updated!.isActive,
       color: (() => { try { return updated!.settings ? JSON.parse(updated!.settings).color || null : null } catch { return null } })(),
+      textureUrl: (() => { try { return updated!.settings ? JSON.parse(updated!.settings).textureUrl || null : null } catch { return null } })(),
+      tubeSlug: (() => { try { return updated!.settings ? JSON.parse(updated!.settings).tubeSlug || null : null } catch { return null } })(),
       starters: (() => { try { return updated!.settings ? JSON.parse(updated!.settings).starterIds || [] : [] } catch { return [] } })(),
       tazoCount: updated!.deckTazos.length,
       tazos: updated!.deckTazos

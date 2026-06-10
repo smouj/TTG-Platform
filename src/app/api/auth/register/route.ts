@@ -103,31 +103,45 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/** Give 10 free potato chip bags to new users — 4 Minimon, 3 Cybermon, 3 Dracobell */
+/** Give 30 welcome bags — 10 per franchise so every player can build tube decks */
 async function seedWelcomePack(userId: string) {
   try {
-    // Select tazos balanced across franchises
-    const [min, cyb, dra] = await Promise.all([
-      db.tazo.findMany({ where: { franchise: { slug: "minimon" } }, take: 4 }),
-      db.tazo.findMany({ where: { franchise: { slug: "cybermon" } }, take: 3 }),
-      db.tazo.findMany({ where: { franchise: { slug: "dracobell" } }, take: 3 }),
-    ])
-    const selected = [...min, ...cyb, ...dra]
+    const franchises = ["minimon", "cybermon", "dracobell"] as const
+    const PER_FRANCHISE = 10
 
-    if (selected.length === 0) { console.warn("No tazos available for welcome bags"); return }
+    const results: { franchise: string; count: number }[] = []
 
-    // Create 10 unopened BagPurchase records — one per tazo
-    const bags = selected.map((tazo) => ({
-      userId,
-      bagType: "welcome",
-      cost: 0,
-      tazoId: tazo.id,
-      opened: false,
-    }))
+    for (const slug of franchises) {
+      const tazos = await db.tazo.findMany({
+        where: { franchise: { slug }, publishStatus: "published" },
+        take: PER_FRANCHISE,
+      })
 
-    await db.bagPurchase.createMany({ data: bags })
+      if (tazos.length === 0) {
+        console.warn(`No published tazos for franchise: ${slug}`)
+        continue
+      }
 
-    console.log(`Welcome bags seeded for user ${userId}: ${bags.length} unopened bags`)
+      // Pad to exactly PER_FRANCHISE bags with repeats if needed
+      const selected: typeof tazos = []
+      for (let i = 0; i < PER_FRANCHISE; i++) {
+        selected.push(tazos[i % tazos.length])
+      }
+
+      const bags = selected.map((tazo) => ({
+        userId,
+        bagType: slug,  // franchise bag type for shop display
+        cost: 0,
+        tazoId: tazo.id,
+        opened: false,
+      }))
+
+      await db.bagPurchase.createMany({ data: bags })
+      results.push({ franchise: slug, count: bags.length })
+    }
+
+    const total = results.reduce((s, r) => s + r.count, 0)
+    console.log(`🎁 Welcome pack seeded for user ${userId}: ${total} bags (${results.map(r => `${r.count} ${r.franchise}`).join(", ")})`)
   } catch (err) {
     console.error("Welcome pack seed error:", err)
   }

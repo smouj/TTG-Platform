@@ -12,7 +12,7 @@ import {
   Star, Sword, Shield, Zap, Save, Palette, Filter, CheckCircle, PackageOpen,
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
-import BattleTubePreview from "@/components/tubes/BattleTubePreview"
+import BattleTubePreview, { TUBE_TEXTURE_OPTIONS } from "@/components/tubes/BattleTubePreview"
 
 // ── Types ──────────────────────────────────────────────
 interface TazoOption {
@@ -49,8 +49,8 @@ const RARITY_COLOR: Record<string, string> = {
 }
 
 interface DeckBuilderProps {
-  initialDeck?: { id: string; name: string; color?: string; tazos: TazoOption[]; starters?: string[] } | null
-  onSave: (data: { name: string; color: string; tazoIds: string[]; starterIds: string[] }) => void
+  initialDeck?: { id: string; name: string; color?: string; textureUrl?: string; tubeSlug?: string; tazos: TazoOption[]; starters?: string[] } | null
+  onSave: (data: { name: string; color: string; tazoIds: string[]; starterIds: string[]; textureUrl?: string; tubeSlug?: string }) => void
   onCancel: () => void
 }
 
@@ -90,6 +90,11 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
   const [step, setStep] = useState(1)
   const [name, setName] = useState(initialDeck?.name || "")
   const [color, setColor] = useState(initialDeck?.color || "#E3350D")
+  // Tube texture selection (replaces old color cap picker)
+  const initTexture = initialDeck?.textureUrl || TUBE_TEXTURE_OPTIONS[0].textureUrl
+  const initSlug = initialDeck?.tubeSlug || TUBE_TEXTURE_OPTIONS[0].slug
+  const [tubeTexture, setTubeTexture] = useState(initTexture)
+  const [tubeSlug, setTubeSlug] = useState(initSlug)
   const [allTazos, setAllTazos] = useState<TazoOption[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set(initialDeck?.tazos.map(t => t.id) || []))
@@ -209,21 +214,26 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
               <div>
                 <label className="block text-[10px] font-black uppercase text-[#1a1a1a]/50 mb-2 tracking-wider">
                   <Palette className="w-3 h-3 inline mr-1" />
-                  Tube Cap Color
+                  Tube Texture
                 </label>
-                <div className="flex flex-wrap gap-2">
-                  {DECK_COLORS.map(c => (
+                <div className="grid grid-cols-3 gap-3">
+                  {TUBE_TEXTURE_OPTIONS.map(opt => (
                     <button
-                      key={c.value}
-                      onClick={() => setColor(c.value)}
-                      className={`w-9 h-9 rounded-full border-3 transition-all ${
-                        color === c.value
-                          ? "border-[#1a1a1a] scale-110 shadow-[2px_2px_0px_#1a1a1a]"
-                          : "border-transparent hover:border-[#1a1a1a]/30"
-                      }`}
-                      style={{ background: c.value }}
-                      title={c.name}
-                    />
+                      key={opt.slug}
+                      onClick={() => { setTubeTexture(opt.textureUrl); setTubeSlug(opt.slug); setColor(opt.color) }}
+                      className={`p-2 border-3 transition-all ${
+                        tubeSlug === opt.slug
+                          ? "border-[#1a1a1a] bg-[#FFCC00]/10 scale-105 shadow-[3px_3px_0px_#1a1a1a]"
+                          : "border-[#1a1a1a]/20 bg-white hover:border-[#1a1a1a]/50"
+                      }`}>
+                      <div className="w-full aspect-[3/4] rounded overflow-hidden mb-1.5" style={{ background: opt.color + "08" }}>
+                        <img src={opt.textureUrl} alt={opt.name} className="w-full h-full object-cover" />
+                      </div>
+                      <span className="text-[9px] font-black uppercase text-[#1a1a1a] block text-center">{opt.name}</span>
+                      {tubeSlug === opt.slug && (
+                        <span className="text-[7px] font-black text-[#22C55E] block text-center mt-0.5">SELECTED</span>
+                      )}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -248,6 +258,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
               <BattleTubePreview
                 name={name || "New Tube"}
                 color={color}
+                textureUrl={tubeTexture}
                 count={0}
                 maxCount={20}
                 size="md"
@@ -401,6 +412,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 <BattleTubePreview
                   name={name || "Tube"}
                   color={color}
+                  textureUrl={tubeTexture}
                   count={selectedIds.size}
                   maxCount={20}
                   tazos={tubeTazos}
@@ -578,6 +590,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
               <BattleTubePreview
                 name={name}
                 color={color}
+                textureUrl={tubeTexture}
                 count={selectedIds.size}
                 maxCount={20}
                 tazos={tubeTazos}
@@ -609,10 +622,15 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 </div>
               </div>
 
-              {/* Color + Cap preview */}
-              <div className="flex items-center gap-2 p-2 bg-[#fffef0] border-2 border-[#1a1a1a]">
-                <div className="w-5 h-5 rounded-full border-2 border-[#1a1a1a]" style={{ background: color }} />
-                <span className="text-[10px] font-black text-[#1a1a1a]">Cap Color: {DECK_COLORS.find(c => c.value === color)?.name || "Custom"}</span>
+              {/* Texture + Franchise preview */}
+              <div className="flex items-center gap-3 p-3 bg-[#fffef0] border-2 border-[#1a1a1a]">
+                <div className="w-10 h-14 rounded overflow-hidden border border-[#1a1a1a]/20 flex-shrink-0">
+                  <img src={tubeTexture} alt="Tube texture" className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black text-[#1a1a1a] block">Tube: {TUBE_TEXTURE_OPTIONS.find(o => o.slug === tubeSlug)?.name || "Custom"}</span>
+                  <span className="text-[8px] font-bold text-[#1a1a1a]/35">Textured body wrap</span>
+                </div>
               </div>
 
               {/* Starter preview */}
@@ -653,6 +671,8 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                     name, color,
                     tazoIds: Array.from(selectedIds),
                     starterIds: Array.from(starterIds),
+                    textureUrl: tubeTexture,
+                    tubeSlug,
                   })}
                   disabled={!canSave}
                   className="mag-btn px-6 py-2.5 text-[11px] font-black uppercase bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none">

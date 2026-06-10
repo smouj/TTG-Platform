@@ -24,7 +24,7 @@ interface DeckTazo {
 }
 interface Deck {
   id: string; name: string; isActive: boolean; tazoCount: number; tazos: DeckTazo[]
-  color?: string; starters?: string[]; createdAt: string; updatedAt?: string
+  color?: string; textureUrl?: string; tubeSlug?: string; starters?: string[]; createdAt: string; updatedAt?: string
 }
 
 function totalPower(t: DeckTazo): number {
@@ -51,8 +51,8 @@ export default function DecksPage() {
 
   useEffect(() => { fetchDecks() }, [fetchDecks])
 
-  const handleSaveBuilder = async (data: { name: string; color: string; tazoIds: string[]; starterIds: string[] }) => {
-    if (data.tazoIds.length < 1) return // Safety: API requires ≥1 tazo
+  const handleSaveBuilder = async (data: { name: string; color: string; tazoIds: string[]; starterIds: string[]; textureUrl?: string; tubeSlug?: string }) => {
+    if (data.tazoIds.length < 1) return
 
     try {
       const method = editingDeck ? "PATCH" : "POST"
@@ -63,6 +63,8 @@ export default function DecksPage() {
         tazoIds: data.tazoIds,
         color: data.color,
         starterIds: data.starterIds,
+        textureUrl: data.textureUrl,
+        tubeSlug: data.tubeSlug,
       }
       if (editingDeck) body.name = data.name
 
@@ -142,6 +144,8 @@ export default function DecksPage() {
             id: editingDeck.id,
             name: editingDeck.name,
             color: editingDeck.color || "#E3350D",
+            textureUrl: editingDeck.textureUrl,
+            tubeSlug: editingDeck.tubeSlug,
             tazos: editingDeck.tazos,
             starters: editingDeck.starters || [],
           } : null}
