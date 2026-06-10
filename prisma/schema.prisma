@@ -172,6 +172,11 @@ model TazoInstance {
   isNew           Boolean  @default(true)
   acquiredAt      DateTime @default(now())
   lastSeenAt      DateTime?
+  tgaTier         Int?      // 1=Standard, 2=Specialty, 3=Premium, 4=Grail
+  tgaGrade        Float?    // 0.1-100.0 overall grade
+  tgaSurface      Float?    // 0.1-100.0 surface sub-grade
+  tgaBorders      Float?    // 0.1-100.0 borders sub-grade
+  tgaCertNumber   String?   // unique cert number
 
   @@index([userId])
   @@index([userTazoId])

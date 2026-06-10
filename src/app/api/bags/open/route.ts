@@ -1,4 +1,5 @@
 import { checkRateLimit } from "@/lib/rate-limit"
+import { generateTGAGrade } from "@/lib/grading/tga"
 
 // POST /api/bags/open — Open a purchased bag and reveal the tazo
 import { NextRequest, NextResponse } from "next/server"
@@ -80,6 +81,7 @@ export async function POST(request: NextRequest) {
 
     // Create a unique instance with randomized stats
     const finish = randomFinish(tazo.rarity || "common")
+    const tgaGrade = generateTGAGrade(tazo.rarity || "common", finish)
     const instance = await db.tazoInstance.create({
       data: {
         userTazoId: userTazo.id,
@@ -97,6 +99,11 @@ export async function POST(request: NextRequest) {
         finish,
         creatureVariant: tazo.creatureVariant || "standard",
         isNew: true,
+        tgaTier: tgaGrade.tier,
+        tgaGrade: tgaGrade.grade,
+        tgaSurface: tgaGrade.surface,
+        tgaBorders: tgaGrade.borders,
+        tgaCertNumber: tgaGrade.certNumber,
       },
     })
 
@@ -125,6 +132,8 @@ export async function POST(request: NextRequest) {
           create: { userId: user.id, tazoId: bonusTazo.id, quantity: 1, obtainedFrom },
           update: { quantity: { increment: 1 } },
         })
+        const bFinish = randomFinish(bonusTazo.rarity || "common")
+        const bTgaGrade = generateTGAGrade(bonusTazo.rarity || "common", bFinish)
         await db.tazoInstance.create({
           data: {
             userTazoId: bUserTazo.id,
@@ -139,9 +148,14 @@ export async function POST(request: NextRequest) {
             control: randomizeStat(bonusTazo.control),
             bounce: randomizeStat(bonusTazo.bounce),
             precision: randomizeStat(bonusTazo.precision),
-            finish: randomFinish(bonusTazo.rarity || "common"),
+            finish: bFinish,
             creatureVariant: bonusTazo.creatureVariant || "standard",
             isNew: true,
+            tgaTier: bTgaGrade.tier,
+            tgaGrade: bTgaGrade.grade,
+            tgaSurface: bTgaGrade.surface,
+            tgaBorders: bTgaGrade.borders,
+            tgaCertNumber: bTgaGrade.certNumber,
           },
         })
       }
@@ -176,6 +190,8 @@ export async function POST(request: NextRequest) {
         precision: instance.precision,
         role: tazo.role,
         isNew: true,
+        tgaGrade: tgaGrade.grade,
+        tgaTier: tgaGrade.tier,
       },
       bonusTazo: bonusTazo ? {
         id: bonusTazo.id,

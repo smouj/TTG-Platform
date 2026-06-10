@@ -10,6 +10,7 @@ import {
 import { Lock, Unlock, Swords, X, ChevronLeft, ChevronRight, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target, FlipHorizontal, View } from 'lucide-react'
 import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
 import TazoDiscImage from '@/components/game/tazo-disc-image'
+import { TGASlabLabel } from '@/components/game/tga-slab-label'
 import type { TazoFinish, TazoCreatureVariant } from '@/lib/battle/game-loop'
 import { useState } from 'react'
 
@@ -481,6 +482,28 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               </div>
             </div>
           </div>
+
+          {/* ===== TGA GRADE SLAB — owned tazos only ===== */}
+          {tazo.isOwned && (tazo as any).tgaGrade != null && (
+            <div className="overflow-hidden"
+              style={{
+                border: '3px solid #1a1a1a',
+                boxShadow: '4px 4px 0px #1a1a1a',
+              }}
+            >
+              <TGASlabLabel
+                tazoName={tazo.displayName || tazo.name || 'Unknown'}
+                setName="TRADING TAZOS"
+                setYear="2026"
+                franchiseName={franchiseSlug}
+                tgaGrade={(tazo as any).tgaGrade}
+                tgaTier={(tazo as any).tgaTier}
+                tgaSurface={(tazo as any).tgaSurface}
+                tgaBorders={(tazo as any).tgaBorders}
+                tgaCertNumber={(tazo as any).tgaCertNumber}
+              />
+            </div>
+          )}
 
           {/* ===== SKILL SECTION - Yellow Strip ===== */}
           {tazo.skill && (

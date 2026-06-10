@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
+import { TGAGradeBadge } from "@/components/game/tga-grade-badge"
 import {
   Package, Swords, Star, TrendingUp, ArrowUpDown,
   Clock, ChevronRight, BookOpen, Sparkles,
@@ -15,7 +16,7 @@ import {
 // ── Types ──────────────────────────────────────────────
 interface DeckTazo { id: string; name: string; displayName: string; slug: string; number: string; imageUrl: string; rarity: string; franchiseSlug: string; attack: number; defense: number; resistance: number }
 interface Deck { id: string; name: string; isActive: boolean; tazos: DeckTazo[] }
-interface CollectionTazo { id: string; tazoId: string; isOwned?: boolean; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; instances?: Array<{id:string;attack:number;defense:number;resistance:number;weight:number;stability:number;spin:number;control:number;bounce:number;precision:number;finish?:string;creatureVariant?:string;isNew:boolean;acquiredAt:string}>; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; backImageUrl?: string | null; number?: string | number; franchiseColor?: string } }
+interface CollectionTazo { id: string; tazoId: string; isOwned?: boolean; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; instances?: Array<{id:string;attack:number;defense:number;resistance:number;weight:number;stability:number;spin:number;control:number;bounce:number;precision:number;finish?:string;creatureVariant?:string;isNew:boolean;acquiredAt:string;tgaTier?:number;tgaGrade?:number;tgaSurface?:number;tgaBorders?:number;tgaCertNumber?:string}>; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; backImageUrl?: string | null; number?: string | number; franchiseColor?: string } }
 interface CollectionData { items: CollectionTazo[]; total: number; totalUnique: number; decks: Deck[]; franchiseSummary: Record<string, number> }
 
 // ── Constants ──────────────────────────────────────────
@@ -713,7 +714,7 @@ export default function CollectionPage() {
                               </p>
                             </div>
 
-                            {/* Rarity bar + wear badge */}
+                            {/* Rarity bar + wear badge + TGA grade */}
                             <div className="flex items-center gap-2 flex-wrap">
                               <span
                                 className="text-[8px] font-black uppercase px-1.5 py-0.5 border border-[#1a1a1a]/20"
@@ -724,6 +725,14 @@ export default function CollectionPage() {
                               >
                                 {RARITY_STARS[item.tazo.rarity] || ""}
                               </span>
+                              {/* TGA grade for owned */}
+                              {owned && instanceStats && (
+                                <TGAGradeBadge
+                                  tgaGrade={instanceStats.tgaGrade}
+                                  tgaTier={instanceStats.tgaTier}
+                                  size="sm"
+                                />
+                              )}
                               {/* Wear badge */}
                               {((item as any).wear || 0) > 0 && (
                                 <span
