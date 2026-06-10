@@ -166,6 +166,8 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4932643710484609"
           crossOrigin="anonymous"
         />
+        {/* Plausible Analytics — privacy-first, no cookies */}
+        <script defer data-domain="tradingtazosgame.com" src="https://plausible.rpgclaw.com/js/script.js" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-background text-foreground`}

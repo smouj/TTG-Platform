@@ -46,7 +46,10 @@ async function run() {
   await test("Landing /", async () => await get("/"));
   await test("Login page", async () => await get("/login"));
   await test("Register page", async () => await get("/register"));
-  await test("Contact page", async () => await get("/contact"));
+  await test("Contact redirect → 307", async () => {
+    const res = await fetch(`${BASE}/contact`, { redirect: "manual" });
+    if (res.status !== 307 && res.status !== 308) throw new Error(`Expected redirect, got ${res.status}`);
+  });
   await test("Collections /cybermon", async () => await get("/collections/cybermon"));
   await test("Collections /dracobell", async () => await get("/collections/dracobell"));
   await test("Collections /minimon", async () => await get("/collections/minimon"));
@@ -130,6 +133,65 @@ async function run() {
 
   await test("Admin /admin/tazos", async () => {
     await get("/admin/tazos");
+  });
+
+  // ── Structured Data + SEO verification ──
+  await test("JSON-LD VideoGame on landing", async () => {
+    const res = await fetch(`${BASE}/`);
+    const html = await res.text();
+    if (!html.includes('"@type":"VideoGame"')) throw new Error("Missing VideoGame schema");
+    if (!html.includes('"@type":"WebSite"')) throw new Error("Missing WebSite schema");
+    if (!html.includes('"@type":"SearchAction"')) throw new Error("Missing SearchAction");
+  });
+
+  await test("OG metadata on landing", async () => {
+    const res = await fetch(`${BASE}/`);
+    const html = await res.text();
+    if (!html.includes("og:title")) throw new Error("Missing og:title");
+    if (!html.includes("og:description")) throw new Error("Missing og:description");
+    if (!html.includes("og:image")) throw new Error("Missing og:image");
+    if (!html.includes("twitter:card")) throw new Error("Missing twitter:card");
+  });
+
+  await test("Plausible analytics script", async () => {
+    const res = await fetch(`${BASE}/`);
+    const html = await res.text();
+    if (!html.includes("plausible.rpgclaw.com")) throw new Error("Missing Plausible script");
+  });
+
+  await test("Legal redirect chain /privacy → 307", async () => {
+    const res = await fetch(`${BASE}/privacy`, { redirect: "manual" });
+    if (res.status !== 307 && res.status !== 308) throw new Error(`Expected redirect, got ${res.status}`);
+  });
+
+  await test("Legal redirect /terms → 307", async () => {
+    const res = await fetch(`${BASE}/terms`, { redirect: "manual" });
+    if (res.status !== 307 && res.status !== 308) throw new Error(`Expected redirect, got ${res.status}`);
+  });
+
+  await test("Battle history API (auth required)", async () => {
+    const res = await fetch(`${BASE}/api/battle/history`);
+    if (res.status !== 401) throw new Error(`Expected 401, got ${res.status}`);
+  });
+
+  await test("AdSense script present", async () => {
+    const res = await fetch(`${BASE}/`);
+    const html = await res.text();
+    if (!html.includes("pagead2.googlesyndication.com")) throw new Error("Missing AdSense script");
+    if (!html.includes("ca-pub-4932643710484609")) throw new Error("Missing publisher ID");
+  });
+
+  await test("hreflang alternates", async () => {
+    const res = await fetch(`${BASE}/`);
+    const html = await res.text();
+    if (!html.includes("hrefLang")) throw new Error("Missing hreflang tags");
+  });
+
+  await test("manifest.json (PWA)", async () => {
+    const res = await fetch(`${BASE}/manifest.json`);
+    if (res.status !== 200) throw new Error("Missing manifest");
+    const json = await res.json();
+    if (json.name !== "Trading Tazos Game") throw new Error("Wrong name");
   });
 
   // ── Results ──
