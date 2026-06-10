@@ -7,7 +7,13 @@ export const metadata: Metadata = {
   title: "Privacy Policy — Trading Tazos Game",
   description: "Privacy Policy for Trading Tazos Game — how we collect, use, and protect your personal data.",
   robots: "index, follow",
-  alternates: { canonical: "https://tradingtazosgame.com/privacy" },
+  alternates: {
+    canonical: "https://tradingtazosgame.com/privacy",
+    languages: {
+      "en": "https://tradingtazosgame.com/privacy",
+      "es": "https://tradingtazosgame.com/privacy?lang=es",
+    },
+  },
   openGraph: {
     title: "Privacy Policy — Trading Tazos Game",
     description: "How we collect, use, and protect your personal data.",

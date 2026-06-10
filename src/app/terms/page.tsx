@@ -7,7 +7,13 @@ export const metadata: Metadata = {
   title: "Terms of Service — Trading Tazos Game",
   description: "Terms of Service for Trading Tazos Game — rules, responsibilities, and legal terms for using the service.",
   robots: "index, follow",
-  alternates: { canonical: "https://tradingtazosgame.com/terms" },
+  alternates: {
+    canonical: "https://tradingtazosgame.com/terms",
+    languages: {
+      "en": "https://tradingtazosgame.com/terms",
+      "es": "https://tradingtazosgame.com/terms?lang=es",
+    },
+  },
   openGraph: {
     title: "Terms of Service — Trading Tazos Game",
     description: "Rules, responsibilities, and legal terms for using the service.",

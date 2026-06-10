@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react"
 
 /**
  * Google AdSense responsive ad unit.
- * Renders only on the client side. Follows magazine aesthetic with subtle borders.
+ * Renders only on the client side. Gates behind NEXT_PUBLIC_ADSENSE_ENABLED.
+ * Follows magazine aesthetic with subtle borders.
  * 
  * Usage: <AdUnit slot="1234567890" format="horizontal" />
  */
@@ -19,6 +20,10 @@ export default function AdUnit({
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const initialized = useRef(false)
+  const enabled = process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true"
+
+  // Don't render anything if AdSense is disabled
+  if (!enabled) return null
 
   useEffect(() => {
     // Load AdSense script only once (not globally in layout)

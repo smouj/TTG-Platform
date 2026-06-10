@@ -7,7 +7,13 @@ export const metadata: Metadata = {
   title: "Cookie Policy — Trading Tazos Game",
   description: "Cookie Policy for Trading Tazos Game — what cookies we use and how to manage them.",
   robots: "index, follow",
-  alternates: { canonical: "https://tradingtazosgame.com/cookies" },
+  alternates: {
+    canonical: "https://tradingtazosgame.com/cookies",
+    languages: {
+      "en": "https://tradingtazosgame.com/cookies",
+      "es": "https://tradingtazosgame.com/cookies?lang=es",
+    },
+  },
   openGraph: {
     title: "Cookie Policy — Trading Tazos Game",
     description: "What cookies we use and how to manage them.",

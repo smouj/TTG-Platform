@@ -1,6 +1,25 @@
 import PublicPageShell from "@/components/layout/public-page-shell"
+import type { Metadata } from "next"
 
-export const metadata = { title: "Disclaimer", description: "Disclaimer for Trading Tazos Game." }
+export const metadata: Metadata = {
+  title: "Disclaimer — Trading Tazos Game",
+  description: "Legal disclaimer for Trading Tazos Game — an independent fictional digital tazo game. Not affiliated with any third-party brand.",
+  robots: "index, follow",
+  alternates: {
+    canonical: "https://tradingtazosgame.com/disclaimer",
+    languages: {
+      "en": "https://tradingtazosgame.com/disclaimer",
+      "es": "https://tradingtazosgame.com/disclaimer?lang=es",
+    },
+  },
+  openGraph: {
+    title: "Disclaimer — Trading Tazos Game",
+    description: "Independent fictional digital tazo game — not affiliated with any third-party brand.",
+    url: "https://tradingtazosgame.com/disclaimer",
+    siteName: "Trading Tazos Game",
+    type: "website",
+  },
+}
 
 export default function DisclaimerPage() {
   return (
@@ -8,7 +27,7 @@ export default function DisclaimerPage() {
       <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
         <h1 className="text-3xl sm:text-4xl font-black uppercase text-[#1a1a1a] mb-6">Disclaimer</h1>
         <div className="prose prose-sm font-bold text-[#1a1a1a]/70 max-w-none space-y-4">
-          <p><strong>Last updated:</strong> June 5, 2026</p>
+          <p><strong>Last updated:</strong> June 10, 2026</p>
 
           <h2 className="text-lg font-black uppercase text-[#1a1a1a] mt-6">1. Fan-Made Experience</h2>
           <p>

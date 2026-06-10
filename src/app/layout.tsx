@@ -85,6 +85,8 @@ export const metadata: Metadata = {
   },
 };
 
+const ADSENSE_ENABLED = process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -170,8 +172,92 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* JSON-LD FAQPage */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "What is Trading Tazos Game?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A free browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 original fictional franchises. Build decks of 5, then enter the 3D arena to slam your tazos and flip opponent discs."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is Trading Tazos Game free to play?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, completely free. Start with 10 free bags and earn credits by battling, completing quests, and daily login bonuses — no credit card required."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is Trading Tazos Game affiliated with any real brand?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. TTG is an independent fictional digital tazo game. Minimon, Dracobell, and Cybermon are original fictional IPs created for this game. TTG is not affiliated with, endorsed by, or connected to any third-party toy, anime, game or collectible brand."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How does the battle system work?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Use the Vertical Slam system: aim your crosshair at the center, charge the power bar for slam force, then tilt to control your landing angle. Flip opponent tazos to capture them. Eliminate all opponent tazos to claim victory."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How do I get started?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Create a free account at tradingtazosgame.com, open your welcome bags, build a deck of 5 tazos, and enter the Battle Arena."
+                  }
+                }
+              ]
+            }),
+          }}
+        />
+        {/* JSON-LD BreadcrumbList */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": SITE_URL
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Collections",
+                  "item": `${SITE_URL}/?page=collections`
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Tazo Catalog",
+                  "item": `${SITE_URL}/?page=tazos`
+                }
+              ]
+            }),
+          }}
+        />
         <meta name="theme-color" content="#FFCC00" />
-        <meta name="google-adsense-account" content="ca-pub-4932643710484609" />
+        {ADSENSE_ENABLED && (
+          <meta name="google-adsense-account" content="ca-pub-4932643710484609" />
+        )}
         <meta name="geo.region" content="ES" />
         <meta name="geo.placename" content="Spain" />
         <link rel="manifest" href="/manifest.json" />
