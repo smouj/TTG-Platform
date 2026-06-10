@@ -33,8 +33,11 @@ interface BagConfig {
   franchise: string
   icon: React.ReactNode
   tagline: string
+  frontUrl?: string
+  backUrl?: string
 }
-const BAGS: BagConfig[] = [
+
+const DEFAULT_BAGS: BagConfig[] = [
   {
     type: "standard", name: "Classic Bag", cost: 10,
     bonusChance: 15, rareBoost: 2, color: "#FFCC00", bgColor: "#FFF8E7",
@@ -205,7 +208,8 @@ export default function BagShopPage() {
   const { t } = useI18n()
   const { user, token } = useAuth()
   const [credits, setCredits] = useState(0)
-  const [selectedBag, setSelectedBag] = useState<BagConfig>(BAGS[0])
+  const [bags, setBags] = useState<BagConfig[]>(DEFAULT_BAGS)
+  const [selectedBag, setSelectedBag] = useState<BagConfig>(DEFAULT_BAGS[0])
   const [buying, setBuying] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [bagId, setBagId] = useState<string | null>(null)
@@ -240,6 +244,33 @@ export default function BagShopPage() {
     fetch("/api/credits/daily", { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json()).then(d => setDailyClaimable(!!d.claimable)).catch(() => {})
   }, [token])
+
+  // Fetch bag models from DB (falls back to defaults)
+  useEffect(() => {
+    fetch("/api/bag-models")
+      .then(r => r.json())
+      .then(data => {
+        if (data.models?.length > 0) {
+          const mapped: BagConfig[] = data.models.map((m: any) => ({
+            type: m.type || m.name.toLowerCase().replace(/\s+/g, "-"),
+            name: m.name,
+            cost: m.cost,
+            bonusChance: m.bonusChance,
+            rareBoost: m.rareBoost,
+            color: m.color,
+            bgColor: m.bgColor,
+            franchise: m.franchise,
+            icon: <ShoppingBag className="w-4 h-4" />,
+            tagline: m.tagline,
+            frontUrl: m.frontUrl,
+            backUrl: m.backUrl,
+          }))
+          setBags(mapped)
+          setSelectedBag(mapped[0])
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const handleBuy = useCallback(async (bag: BagConfig) => {
     if (!token) return
@@ -419,7 +450,7 @@ export default function BagShopPage() {
 
         {/* ── BAG CARDS ── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {BAGS.map(bag => (
+          {bags.map(bag => (
             <BagCard
               key={bag.type}
               bag={bag}
@@ -477,6 +508,8 @@ export default function BagShopPage() {
         <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] overflow-hidden">
           <BagOpener3D
             bag={{ id: bagId || "", bagType: selectedBag.type, preview: { franchise: { slug: selectedBag.franchise || "minimon" } } }}
+            frontUrl={selectedBag.frontUrl}
+            backUrl={selectedBag.backUrl}
             onOpen={openBag}
             onSkip={() => openBag()}
           />

@@ -344,3 +344,32 @@ model TradeOffer {
   @@index([status])
   @@index([offererId])
 }
+
+model TubeModel {
+  id          String   @id @default(cuid())
+  name        String
+  textureUrl  String
+  franchise   String   // minimon, cybermon, dracobell
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BagModel {
+  id          String   @id @default(cuid())
+  name        String
+  frontUrl    String
+  backUrl     String
+  franchise   String   // minimon, cybermon, dracobell
+  cost        Int      @default(10)
+  bonusChance Int      @default(15)
+  rareBoost   Int      @default(2)
+  color       String   @default("#FFCC00")
+  bgColor     String   @default("#FFF8E7")
+  tagline     String   @default("")
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

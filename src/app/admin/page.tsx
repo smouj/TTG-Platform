@@ -6,7 +6,7 @@
 // ============================================================
 import { useState, useEffect } from "react"
 import { useAuth } from "@/lib/auth-context"
-import { Shield, Users, Package, Database, Server, Activity, Loader2, Check, Wand2, Image as ImageIcon, Grid3X3, LayoutGrid } from "lucide-react"
+import { Shield, Users, Package, Database, Server, Activity, Loader2, Check, Wand2, Image as ImageIcon, Grid3X3, LayoutGrid, ShoppingBag } from "lucide-react"
 import Link from "next/link"
 
 interface OverviewData {
@@ -159,6 +159,40 @@ export default function AdminPage() {
                       <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Upload & manage battle tube wraps</p>
                     </div>
                     <span className="ml-auto text-[#FF6B00] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/admin/tube-models"
+                  className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
+                  style={{ background: 'linear-gradient(135deg, #FF6B0010, #E3350D10)' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#E3350D]">
+                      <Package className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#E3350D] transition-colors">Tube Models</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Create & manage tube models</p>
+                    </div>
+                    <span className="ml-auto text-[#E3350D] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/admin/bag-models"
+                  className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
+                  style={{ background: 'linear-gradient(135deg, #F9731610, #FFCC0010)' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#F97316]">
+                      <ShoppingBag className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#F97316] transition-colors">Bag Models</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Create potato-chip bag designs</p>
+                    </div>
+                    <span className="ml-auto text-[#F97316] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
 

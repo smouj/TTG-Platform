@@ -49,11 +49,19 @@ function BagCamera({ interacting, opening }: { interacting: boolean; opening: bo
 // ══════════════════════════════════════════════════════════
 export interface BagData { id: string; bagType?: string; preview?: { franchise?: { slug?: string } } | null }
 
-export default function BagOpener3D({ bag, onOpen, onSkip }: { bag: BagData | null; onOpen: () => void; onSkip: () => void }) {
-  const { frontUrl, backUrl, franchise } = useMemo(() => {
+export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: propBackUrl, onOpen, onSkip }: {
+  bag: BagData | null
+  frontUrl?: string
+  backUrl?: string
+  onOpen: () => void
+  onSkip: () => void
+}) {
+  const { frontUrl: variantFront, backUrl: variantBack, franchise } = useMemo(() => {
     const slug = bag?.preview?.franchise?.slug
     return pickBagVariant(slug)
   }, [bag])
+  const frontUrl = propFrontUrl || variantFront
+  const backUrl = propBackUrl || variantBack
 
   const [stage, setStage] = useState<"idle" | "tearing" | "opening" | "reveal">("idle")
   const [tearProgress, setTearProgress] = useState(0)
