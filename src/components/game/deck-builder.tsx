@@ -1,7 +1,6 @@
 // ============================================================
 // Trading Tazos Game — Battle Tube Builder
-// Step 1: Name & Color, Step 2: Fill Tube, Step 3: Pick Starters,
-// Step 4: Review & Seal
+// Step 1: Name & Texture, Step 2: Fill Tube, Step 3: Review & Seal
 // ============================================================
 "use client"
 
@@ -49,12 +48,12 @@ const RARITY_COLOR: Record<string, string> = {
 }
 
 interface DeckBuilderProps {
-  initialDeck?: { id: string; name: string; color?: string; textureUrl?: string; tubeSlug?: string; tazos: TazoOption[]; starters?: string[] } | null
-  onSave: (data: { name: string; color: string; tazoIds: string[]; starterIds: string[]; textureUrl?: string; tubeSlug?: string }) => void
+  initialDeck?: { id: string; name: string; color?: string; textureUrl?: string; tubeSlug?: string; tazos: TazoOption[] } | null
+  onSave: (data: { name: string; color: string; tazoIds: string[]; textureUrl?: string; tubeSlug?: string }) => void
   onCancel: () => void
 }
 
-const STEP_LABELS = ["Name", "Tazos", "Starters", "Seal"]
+const STEP_LABELS = ["Name", "Tazos", "Seal"]
 
 function StepIndicator({ step }: { step: number }) {
   return (
@@ -77,7 +76,7 @@ function StepIndicator({ step }: { step: number }) {
             }`}>
               {label}
             </span>
-            {s < 4 && <span className="text-white/10 font-black text-[9px]">›</span>}
+            {s < 3 && <span className="text-white/10 font-black text-[9px]">›</span>}
           </div>
         )
       })}
@@ -98,7 +97,6 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
   const [allTazos, setAllTazos] = useState<TazoOption[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set(initialDeck?.tazos.map(t => t.id) || []))
-  const [starterIds, setStarterIds] = useState<Set<string>>(new Set(initialDeck?.starters || []))
   const [search, setSearch] = useState("")
   const [franchiseFilter, setFranchiseFilter] = useState<string>("all")
   const [rarityFilter, setRarityFilter] = useState<string>("all")
@@ -152,20 +150,10 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
       const next = new Set(prev)
       if (next.has(id)) {
         next.delete(id)
-        setStarterIds(s => { const ns = new Set(s); ns.delete(id); return ns })
       } else {
         if (prev.size >= 20) return prev
         next.add(id)
       }
-      return next
-    })
-  }
-
-  const toggleStarter = (id: string) => {
-    setStarterIds(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else { if (prev.size >= 5) return prev; next.add(id) }
       return next
     })
   }
@@ -400,7 +388,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 </button>
                 <button onClick={() => selectedIds.size >= 1 && setStep(3)} disabled={selectedIds.size < 1}
                   className="mag-btn px-5 py-2 text-[10px] font-black uppercase bg-[#3B4CCA] text-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] disabled:opacity-30 disabled:cursor-not-allowed">
-                  Next: Starters <ChevronRight className="w-3.5 h-3.5 inline ml-1" />
+                  Next: Review <ChevronRight className="w-3.5 h-3.5 inline ml-1" />
                 </button>
               </div>
             </div>
@@ -441,134 +429,10 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
   }
 
   // ════════════════════════════════════════════════════════
-  // STEP 3: Pick 5 Starters
+  // ════════════════════════════════════════════════════════
+  // STEP 3: Review & Seal
   // ════════════════════════════════════════════════════════
   if (step === 3) {
-    const starterTazos = selectedTazos.filter(t => starterIds.has(t.id))
-    const reserveTazos = selectedTazos.filter(t => !starterIds.has(t.id))
-
-    return (
-      <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white">
-        <StepIndicator step={3} />
-        <div className="p-4 sm:p-6 space-y-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-black uppercase text-[#1a1a1a] tracking-wide flex items-center gap-2">
-                <Sword className="w-5 h-5 text-[#E3350D]" />
-                Step 3: Pick 5 Starters
-              </h3>
-              <p className="text-[10px] font-bold text-[#1a1a1a]/35 mt-0.5">
-                These 5 tazos will be your active hand — ready to launch from the top of your tube
-              </p>
-            </div>
-            <span className={`text-sm font-black uppercase ${starterIds.size === 5 ? "text-[#22C55E]" : "text-[#E3350D]"}`}>
-              {starterIds.size}/5
-            </span>
-          </div>
-
-          {/* ══ STARTER CHAMBER ══ */}
-          <div className="border-3 border-[#E3350D] bg-[#E3350D]/3 p-4">
-            <p className="text-[9px] font-black uppercase text-[#E3350D] mb-3 tracking-[0.15em] flex items-center gap-1.5">
-              <Sword className="w-3.5 h-3.5" /> Active Starter Chamber
-            </p>
-            <div className="flex gap-2 flex-wrap">
-              {Array.from({ length: 5 }).map((_, i) => {
-                const tazo = starterTazos[i]
-                if (tazo) {
-                  return (
-                    <button key={tazo.id} onClick={() => toggleStarter(tazo.id)}
-                      className="w-[72px] border-3 border-[#E3350D] bg-white shadow-[2px_2px_0px_#E3350D] hover:-translate-y-0.5 transition-all">
-                      <div className="h-1" style={{ background: "#E3350D" }} />
-                      <div className="p-1.5 flex flex-col items-center gap-1">
-                        <div className="w-10 h-10 rounded-full overflow-hidden bg-[#1a1a1a]">
-                          <TazoDiscImage src={tazo.imageUrl} alt={tazo.name} size="100%" borderWidth={0}
-                            franchiseSlug={tazo.franchiseSlug} finish={(tazo as any).finish}
-                            creatureVariant={(tazo as any).creatureVariant} shinyImageUrl={(tazo as any).shinyImageUrl} lazy />
-                        </div>
-                        <p className="text-[8px] font-black text-[#1a1a1a] truncate max-w-full">{tazo.displayName || tazo.name}</p>
-                        <p className="text-[7px] font-bold text-[#E3350D]">{tazo.attack} ATK</p>
-                      </div>
-                    </button>
-                  )
-                }
-                return (
-                  <div key={`empty-${i}`}
-                    className="w-[72px] border-3 border-dashed border-[#E3350D]/20 bg-[#E3350D]/3 flex flex-col items-center justify-center p-3"
-                    style={{ minHeight: 96 }}>
-                    <span className="text-2xl font-black text-[#E3350D]/15">{i + 1}</span>
-                    <span className="text-[7px] font-black text-[#E3350D]/15 uppercase">Empty</span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* ══ RESERVE STACK ══ */}
-          {reserveTazos.length > 0 && (
-            <div className="border-2 border-[#1a1a1a]/10 p-4 bg-[#fffef0]">
-              <p className="text-[9px] font-black uppercase text-[#1a1a1a]/30 mb-3 tracking-[0.15em]">
-                Reserve Stack ({reserveTazos.length} remaining)
-              </p>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
-                {reserveTazos.map(tazo => {
-                  const fb = FRANCHISE_COLORS[tazo.franchiseSlug] || "#1a1a1a"
-                  return (
-                    <button key={tazo.id} onClick={() => toggleStarter(tazo.id)}
-                      className="border-2 border-[#1a1a1a]/15 bg-white hover:border-[#E3350D]/50 transition-all text-left">
-                      <div className="h-0.5" style={{ background: fb }} />
-                      <div className="p-1.5 flex items-center gap-1.5">
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-[#1a1a1a]">
-                          <TazoDiscImage src={tazo.imageUrl} alt={tazo.name} size="100%" borderWidth={0}
-                            franchiseSlug={tazo.franchiseSlug} finish={(tazo as any).finish}
-                            creatureVariant={(tazo as any).creatureVariant} shinyImageUrl={(tazo as any).shinyImageUrl} lazy />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[8px] font-black text-[#1a1a1a] truncate">{tazo.displayName || tazo.name}</p>
-                          <p className="text-[7px] font-bold text-[#E3350D]">{totalPower(tazo)} TP</p>
-                        </div>
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Summary */}
-          {starterIds.size > 0 && (
-            <div className="bg-[#E3350D]/5 border-2 border-[#E3350D] p-3">
-              <p className="text-[9px] font-black uppercase text-[#E3350D] mb-1 tracking-wider">
-                Active Starters:
-              </p>
-              <div className="flex flex-wrap gap-1">
-                {starterTazos.map(t => (
-                  <span key={t.id} className="text-[9px] font-black text-[#1a1a1a]">{t.displayName || t.name}{t !== starterTazos[starterTazos.length-1] ? " · " : ""}</span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Actions */}
-          <div className="flex justify-between pt-2 border-t-2 border-[#1a1a1a]/10">
-            <button onClick={() => setStep(2)}
-              className="mag-btn px-4 py-2 text-[10px] font-black uppercase bg-white text-[#1a1a1a] border-3 border-[#1a1a1a]">
-              <ChevronLeft className="w-3.5 h-3.5 inline mr-1" /> Back
-            </button>
-            <button onClick={() => setStep(4)}
-              className="mag-btn px-5 py-2 text-[10px] font-black uppercase bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
-              Review & Seal <ChevronRight className="w-3.5 h-3.5 inline ml-1" />
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // ════════════════════════════════════════════════════════
-  // STEP 4: Review & Seal
-  // ════════════════════════════════════════════════════════
-  if (step === 4) {
-    const starterTazos = selectedTazos.filter(t => starterIds.has(t.id))
     const totalP = selectedTazos.reduce((s, t) => s + totalPower(t), 0)
     const tubeTazos = selectedTazos.slice(0, 16).map(t => ({
       id: t.id, name: t.name, displayName: t.displayName,
@@ -578,7 +442,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
 
     return (
       <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white">
-        <StepIndicator step={4} />
+        <StepIndicator step={3} />
         <div className="p-4 sm:p-6">
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Left: Tube visual */}
@@ -594,7 +458,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 count={selectedIds.size}
                 maxCount={20}
                 tazos={tubeTazos}
-                starters={Array.from(starterIds)}
+                starters={[]}
                 size="lg"
               />
             </div>
@@ -603,7 +467,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
             <div className="flex-1 space-y-4">
               <p className="text-[10px] font-bold text-[#1a1a1a]/35">Your battle tube is ready to be sealed</p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div className="p-3 border-2 border-[#1a1a1a] bg-[#fffef0] text-center">
                   <div className="text-[8px] font-black uppercase text-[#1a1a1a]/40 tracking-wider mb-1">Name</div>
                   <div className="text-sm font-black text-[#1a1a1a]">{name}</div>
@@ -611,10 +475,6 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 <div className="p-3 border-2 border-[#1a1a1a] bg-[#fffef0] text-center">
                   <div className="text-[8px] font-black uppercase text-[#1a1a1a]/40 tracking-wider mb-1">Tazos</div>
                   <div className={`text-sm font-black ${selectedIds.size >= 20 ? "text-[#22C55E]" : "text-[#3B4CCA]"}`}>{selectedIds.size}/20</div>
-                </div>
-                <div className="p-3 border-2 border-[#1a1a1a] bg-[#fffef0] text-center">
-                  <div className="text-[8px] font-black uppercase text-[#1a1a1a]/40 tracking-wider mb-1">Starters</div>
-                  <div className={`text-sm font-black ${starterIds.size >= 5 ? "text-[#22C55E]" : "text-[#E3350D]"}`}>{starterIds.size}/5</div>
                 </div>
                 <div className="p-3 border-2 border-[#1a1a1a] bg-[#fffef0] text-center">
                   <div className="text-[8px] font-black uppercase text-[#1a1a1a]/40 tracking-wider mb-1">Total Power</div>
@@ -629,40 +489,37 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 </div>
                 <div>
                   <span className="text-[10px] font-black text-[#1a1a1a] block">Tube: {TUBE_TEXTURE_OPTIONS.find(o => o.slug === tubeSlug)?.name || "Custom"}</span>
-                  <span className="text-[8px] font-bold text-[#1a1a1a]/35">Textured body wrap</span>
+                  <span className="text-[8px] font-bold text-[#1a1a1a]/35">Textured body wrap · {selectedIds.size} tazos loaded</span>
                 </div>
               </div>
 
-              {/* Starter preview */}
-              {starterTazos.length > 0 && (
+              {/* Tazos in tube preview */}
+              {selectedTazos.length > 0 && (
                 <div>
                   <p className="text-[9px] font-black uppercase text-[#1a1a1a]/40 mb-2 tracking-wider">
-                    Active Starters ({starterTazos.length}):
+                    Loaded Tazos ({selectedTazos.length}/20):
                   </p>
-                  <div className="flex gap-2 flex-wrap">
-                    {starterTazos.map(t => {
-                      const fc = FRANCHISE_COLORS[t.franchiseSlug] || "#1a1a1a"
-                      return (
-                        <div key={t.id} className="flex items-center gap-1.5 p-1.5 border-2 border-[#1a1a1a] bg-white">
-                          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ background: "#1a1a1a" }}>
-                            <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" borderWidth={0}
-                              franchiseSlug={t.franchiseSlug} finish={(t as any).finish}
-                              creatureVariant={(t as any).creatureVariant} shinyImageUrl={(t as any).shinyImageUrl} lazy />
-                          </div>
-                          <div>
-                            <p className="text-[9px] font-black text-[#1a1a1a]">{t.displayName || t.name}</p>
-                            <p className="text-[7px] font-bold text-[#E3350D]">ATK {t.attack} · DEF {t.defense}</p>
-                          </div>
+                  <div className="flex gap-1.5 flex-wrap max-h-[120px] overflow-y-auto">
+                    {selectedTazos.map(t => (
+                      <div key={t.id} className="flex items-center gap-1.5 p-1 border-2 border-[#1a1a1a]/10 bg-white">
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ background: "#1a1a1a" }}>
+                          <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" borderWidth={0}
+                            franchiseSlug={t.franchiseSlug} finish={(t as any).finish}
+                            creatureVariant={(t as any).creatureVariant} shinyImageUrl={(t as any).shinyImageUrl} lazy />
                         </div>
-                      )
-                    })}
+                        <div className="min-w-0">
+                          <p className="text-[8px] font-black text-[#1a1a1a] truncate max-w-[80px]">{t.displayName || t.name}</p>
+                          <p className="text-[7px] font-bold text-[#E3350D]">ATK {t.attack}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
 
               {/* Actions */}
               <div className="flex justify-between pt-2 border-t-2 border-[#1a1a1a]/10">
-                <button onClick={() => setStep(3)}
+                <button onClick={() => setStep(2)}
                   className="mag-btn px-4 py-2 text-[10px] font-black uppercase bg-white text-[#1a1a1a] border-3 border-[#1a1a1a]">
                   <ChevronLeft className="w-3.5 h-3.5 inline mr-1" /> Back
                 </button>
@@ -670,7 +527,6 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                   onClick={() => onSave({
                     name, color,
                     tazoIds: Array.from(selectedIds),
-                    starterIds: Array.from(starterIds),
                     textureUrl: tubeTexture,
                     tubeSlug,
                   })}
@@ -687,5 +543,4 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
     )
   }
 
-  return null
 }

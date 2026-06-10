@@ -8,7 +8,7 @@ import { useState, useMemo } from "react"
 import type { TazoCard, PlayMode, AIDifficulty } from "@/lib/battle/game-loop"
 import {
   Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star,
-  Sparkles, ChevronRight, Disc3, Layers, AlertTriangle,
+  Sparkles, ChevronRight, Layers,
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
@@ -65,36 +65,29 @@ function fColor(f: string) {
 export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, onSelectDeck, onStart, isLoading, isAuthenticated }: Props) {
   const [mode, setMode] = useState<PlayMode>("practice")
   const [difficulty, setDifficulty] = useState<AIDifficulty>("skilled")
-  const [sel, setSel] = useState<number[]>([])
+  // Deck is selected via deck selector — all tazos included
+  const [,setDeckTazos] = useState<TazoCard[]>([])
 
-  // Auto-select 5 best tazos by power
-  const best = useMemo(() =>
-    [...playerTazos]
-      .sort((a, b) =>
-        (b.attack + b.defense + b.bounce + b.spin + b.precision) -
-        (a.attack + a.defense + a.bounce + a.spin + a.precision)
-      )
-      .slice(0, 5),
-  [playerTazos])
+  // When a deck is selected, load its tazos for preview stats
+  const selectedDeck = useMemo(() => {
+    if (!selectedDeckId || !playerDecks) return null
+    return playerDecks.find(d => d.id === selectedDeckId) || null
+  }, [selectedDeckId, playerDecks])
 
-  const deck = sel.length === 5
-    ? playerTazos.filter(t => sel.includes(playerTazos.indexOf(t)))
-    : best
+  const deckTotals = useMemo(() => {
+    const tazos = selectedDeck?.tazos || []
+    if (tazos.length === 0) return { atk: 0, def: 0, spd: 0, spn: 0, prc: 0, count: 0 }
+    return {
+      atk: tazos.reduce((s:number, t:any) => s + (t.attack || 50), 0),
+      def: tazos.reduce((s:number, t:any) => s + (t.defense || 50), 0),
+      spd: tazos.reduce((s:number, t:any) => s + (t.bounce || 50), 0),
+      spn: tazos.reduce((s:number, t:any) => s + (t.spin || 50), 0),
+      prc: tazos.reduce((s:number, t:any) => s + (t.precision || 50), 0),
+      count: tazos.length,
+    }
+  }, [selectedDeck])
 
-  const totals = deck.reduce((a, t) => ({
-    atk: a.atk + t.attack,
-    def: a.def + t.defense,
-    spd: a.spd + t.bounce,
-    spn: a.spn + t.spin,
-    prc: a.prc + t.precision,
-  }), { atk: 0, def: 0, spd: 0, spn: 0, prc: 0 })
-
-  const toggle = (i: number) => setSel(p =>
-    p.includes(i) ? p.filter(x => x !== i) : p.length >= 5 ? [...p.slice(1), i] : [...p, i]
-  )
-
-  const canStart = mode === "practice" || isAuthenticated
-  const tazoCount = playerTazos.length
+  const canStart = (mode === "practice" || isAuthenticated) && selectedDeckId && deckTotals.count >= 1
 
   return (
     <div className="space-y-6">
@@ -112,11 +105,8 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
         <h1 className="text-sm font-black text-white uppercase tracking-tight">BATTLE ARENA</h1>
         <div className="w-px h-5 bg-white/15" />
         <span className="text-xs font-black text-[#FFCC00]">
-          {tazoCount} TAZOS
+          {selectedDeck ? `${selectedDeck.name} · ${deckTotals.count} tazos` : `${playerTazos.length} TAZOS AVAILABLE`}
         </span>
-        {tazoCount < 5 && (
-          <span className="text-[9px] font-black text-white/40 ml-auto">Need 5+ tazos</span>
-        )}
         <span className="ml-auto text-[9px] font-black text-white/30 uppercase">
           {isAuthenticated ? "Ready" : "Guest"}
         </span>
@@ -236,94 +226,63 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
         </div>
       )}
 
-      {/* ════════════════ DECK BUILDER ════════════════ */}
+      {/* ════════════════ SELECTED DECK ════════════════ */}
       <div className="bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] overflow-hidden">
         <div className="mag-card-yellow px-4 py-2.5 flex items-center justify-between border-b-3 border-[#1a1a1a]">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-[#1a1a1a]" />
+            <Layers className="w-4 h-4 text-[#1a1a1a]" />
             <h3 className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]">
-              Your Deck <span className="text-[#1a1a1a]/25 text-[9px]">({deck.length}/5)</span>
+              {selectedDeck ? `Selected: ${selectedDeck.name}` : "Select a Battle Tube"}
             </h3>
           </div>
-          <div className="flex items-center gap-2">
-            {sel.length > 0 && (
-              <button onClick={() => setSel([])} className="text-[8px] font-black text-[#1a1a1a]/30 uppercase border border-[#1a1a1a]/15 px-1.5 py-0.5 hover:bg-[#1a1a1a]/5">
-                Auto
-              </button>
-            )}
-            <span className="text-[7px] font-black text-[#1a1a1a]/20 uppercase tracking-widest">
-              {sel.length > 0 ? "CUSTOM" : "Auto-Best"}
-            </span>
-          </div>
+          {selectedDeck && (
+            <span className="text-[8px] font-black text-[#22C55E] uppercase">✓ {deckTotals.count} tazos loaded</span>
+          )}
         </div>
 
         <div className="p-4 space-y-3">
-          {/* Totals bar */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            {([
-              { icon: Zap, label: "ATK", value: totals.atk, color: "#E3350D" },
-              { icon: Shield, label: "DEF", value: totals.def, color: "#3B4CCA" },
-              { icon: Crosshair, label: "PRC", value: totals.prc, color: "#A855F7" },
-              { icon: Star, label: "SPD+SPN", value: totals.spd + totals.spn, color: "#F59E0B" },
-            ]).map(s => (
-              <div key={s.label}
-                className="flex items-center gap-1 px-2.5 py-1 bg-white border-2 border-[#1a1a1a]/10 text-[10px] font-black shadow-[1px_1px_0px_#1a1a1a08]">
-                <span style={{ color: s.color }}>
-                  <s.icon className="w-3 h-3" />
+          {selectedDeck ? (
+            <>
+              {/* Tube stats */}
+              <div className="flex flex-wrap items-center gap-1.5">
+                {([
+                  { icon: Zap, label: "ATK", value: deckTotals.atk, color: "#E3350D" },
+                  { icon: Shield, label: "DEF", value: deckTotals.def, color: "#3B4CCA" },
+                  { icon: Crosshair, label: "PRC", value: deckTotals.prc, color: "#A855F7" },
+                  { icon: Star, label: "SPD+SPN", value: deckTotals.spd + deckTotals.spn, color: "#F59E0B" },
+                ]).map(s => (
+                  <div key={s.label}
+                    className="flex items-center gap-1 px-2.5 py-1 bg-white border-2 border-[#1a1a1a]/10 text-[10px] font-black shadow-[1px_1px_0px_#1a1a1a08]">
+                    <span style={{ color: s.color }}>
+                      <s.icon className="w-3 h-3" />
+                    </span>
+                    <span className="text-[#1a1a1a]/30">{s.label}</span>
+                    <span className="text-[#1a1a1a] text-xs">{s.value}</span>
+                  </div>
+                ))}
+                <span className="ml-auto text-[8px] font-black text-[#1a1a1a]/20 uppercase">
+                  {deckTotals.count} tazos
                 </span>
-                <span className="text-[#1a1a1a]/30">{s.label}</span>
-                <span className="text-[#1a1a1a] text-xs">{s.value}</span>
               </div>
-            ))}
-            <span className="ml-auto text-[8px] font-black text-[#1a1a1a]/20 uppercase">
-              Pick 5 for best synergy
-            </span>
-          </div>
 
-          {/* Tazo selection grid */}
-          {playerTazos.length > 0 ? (
-            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 max-h-[210px] overflow-y-auto">
-              {playerTazos.map((t, i) => {
-                const selected = sel.length > 0 ? sel.includes(i) : best.some(b => b.id === t.id)
-                const total = t.attack + t.defense + t.bounce + t.spin + t.precision
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => toggle(i)}
-                    className={`p-1.5 border-2 text-center transition-all ${
-                      selected
-                        ? "border-[#FFCC00] bg-[#FFCB050a] shadow-[2px_2px_0px_#FFCC00]"
-                        : "border-[#1a1a1a]/6 opacity-55 hover:opacity-85 hover:border-[#1a1a1a]/20"
-                    }`}
-                  >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-full overflow-hidden border-0 mb-1 bg-[#1a1a1a]">
-                      <TazoDiscImage
-                        src={t.imageUrl} alt={t.name} size="100%"
-                        borderWidth={0} franchiseSlug={t.franchise}
-                        finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
-                        lazy className="w-full h-full"
-                      />
+              {/* Tazo mini chips */}
+              <div className="flex gap-1 flex-wrap max-h-[80px] overflow-y-auto">
+                {selectedDeck.tazos?.slice(0, 20).map((t: any) => (
+                  <div key={t.id} className="flex items-center gap-1 p-1 border-2 border-[#1a1a1a]/8 bg-[#fffef0]">
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ background: "#1a1a1a" }}>
+                      <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" borderWidth={0}
+                        franchiseSlug={t.franchiseSlug} lazy className="w-full h-full" />
                     </div>
-                    <div className="text-[8px] font-black text-[#1a1a1a] truncate leading-tight">
-                      {t.name}
-                    </div>
-                    <div className="text-[7px] font-black mt-0.5 flex items-center justify-center gap-0.5"
-                      style={{ color: fColor(t.franchise) }}>
-                      <Disc3 className="w-1.5 h-1.5" />{total}
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
+                    <span className="text-[7px] font-black text-[#1a1a1a] truncate max-w-[60px]">{t.displayName || t.name}</span>
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (
-            <p className="text-center text-[11px] font-bold text-[#1a1a1a]/25 py-8">
-              No tazos yet — open bags in the Shop!
-            </p>
-          )}
-
-          {playerTazos.length < 5 && playerTazos.length > 0 && (
-            <p className="flex items-center justify-center gap-1 text-center text-[10px] font-black text-[#E3350D]">
-              <AlertTriangle className="w-3 h-3" /> Need {5 - playerTazos.length} more tazos for a full deck
+            <p className="text-center text-[11px] font-bold text-[#1a1a1a]/25 py-6">
+              {playerDecks && playerDecks.length > 0
+                ? "Pick a Battle Tube above to see its stats"
+                : "Create a Battle Tube in Decks first!"}
             </p>
           )}
         </div>
@@ -333,22 +292,31 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
       <div className="text-center pt-1">
         <button
           onClick={() => {
-            if (!canStart || playerTazos.length < 5 || isLoading) return
+            if (!canStart || isLoading) return
             sfxEnsureUnlocked()
             playSFX('equip')
-            onStart(mode, difficulty, deck)
+            const deckTazos = selectedDeck?.tazos?.map((t: any) => ({
+              id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
+              franchise: (t.franchiseSlug || "minimon") as TazoCard["franchise"],
+              imageUrl: t.imageUrl, shinyImageUrl: t.shinyImageUrl,
+              rarity: t.rarity || "common", finish: t.finish || "normal", creatureVariant: t.creatureVariant || "standard",
+              attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
+              weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
+              control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+            })) || []
+            onStart(mode, difficulty, deckTazos)
           }}
-          disabled={playerTazos.length < 5 || isLoading || !canStart}
+          disabled={!canStart || isLoading}
           className={`px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-3 border-[#1a1a1a] transition-all ${
-            playerTazos.length >= 5 && canStart
+            canStart
               ? "bg-[#E3350D] text-white shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px]"
               : "bg-zinc-300 text-zinc-500 cursor-not-allowed shadow-none"
           }`}
         >
           {isLoading ? (
             <span className="flex items-center gap-2"><Loader2Like className="w-5 h-5" /> Loading...</span>
-          ) : playerTazos.length < 5 ? (
-            <span className="flex items-center gap-2">Need 5+ Tazos <ChevronRight className="w-5 h-5" /></span>
+          ) : !selectedDeckId ? (
+            <span className="flex items-center gap-2">Select a Battle Tube <ChevronRight className="w-5 h-5" /></span>
           ) : mode === "practice" ? (
             <span className="flex items-center gap-2">
               <Swords className="w-5 h-5" />

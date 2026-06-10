@@ -396,11 +396,16 @@ export default function BattleView() {
     setAirborne(prev => prev ? { ...prev, position: [reticleX * 0.3, h, reticleZ * 0.3] } : prev)
   }, [reticleX, reticleZ, charge, phase])
   const start = useCallback((mode: PlayMode, diff: AIDifficulty, d: TazoCard[]) => {
+    // Draw 5 random from full deck for the active round hand
+    const shuffled = [...d].sort(() => Math.random() - 0.5)
+    const hand = shuffled.slice(0, Math.min(5, shuffled.length))
     setDeck(d)
-    const opp = [...DEMO_TAZOS].sort(() => Math.random() - 0.5).slice(0, 5)
+    // Opponent gets a full deck from demo tazos (practice mode)
+    const oppFull = [...DEMO_TAZOS, ...DEMO_TAZOS, ...DEMO_TAZOS].slice(0, 20)
+    const oppHand = [...oppFull].sort(() => Math.random() - 0.5).slice(0, 5)
     const c: MatchConfig = {
       mode, aiDifficulty: diff, arena: DEFAULT_ARENA_3D,
-      scoreToWin: 5, playerDeck: d, opponentDeck: opp,
+      scoreToWin: 5, playerDeck: hand, opponentDeck: oppHand,
     }
     setCfg(c)
     setPScore(0); setOScore(0)
@@ -411,7 +416,7 @@ export default function BattleView() {
     setPhase("intro")
     setTimeout(() => {
       setPhase("round_start")
-      startNewRound(d, opp, c.arena)
+      startNewRound(hand, oppHand, c.arena)
     }, 2000)
   }, [startNewRound])
 

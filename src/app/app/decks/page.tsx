@@ -51,7 +51,7 @@ export default function DecksPage() {
 
   useEffect(() => { fetchDecks() }, [fetchDecks])
 
-  const handleSaveBuilder = async (data: { name: string; color: string; tazoIds: string[]; starterIds: string[]; textureUrl?: string; tubeSlug?: string }) => {
+  const handleSaveBuilder = async (data: { name: string; color: string; tazoIds: string[]; textureUrl?: string; tubeSlug?: string }) => {
     if (data.tazoIds.length < 1) return
 
     try {
@@ -62,7 +62,6 @@ export default function DecksPage() {
         name: data.name,
         tazoIds: data.tazoIds,
         color: data.color,
-        starterIds: data.starterIds,
         textureUrl: data.textureUrl,
         tubeSlug: data.tubeSlug,
       }
@@ -147,7 +146,6 @@ export default function DecksPage() {
             textureUrl: editingDeck.textureUrl,
             tubeSlug: editingDeck.tubeSlug,
             tazos: editingDeck.tazos,
-            starters: editingDeck.starters || [],
           } : null}
           onSave={handleSaveBuilder}
           onCancel={() => { setShowBuilder(false); setEditingDeck(null) }}
