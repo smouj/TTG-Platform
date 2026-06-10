@@ -154,6 +154,7 @@ export default function CollectionPage() {
   const [sortKey, setSortKey] = useState<SortKey>("power")
   const [flippedItems, setFlippedItems] = useState<Set<string>>(new Set())
   const [listedUserTazoIds, setListedUserTazoIds] = useState<Set<string>>(new Set())
+  const [detailItem, setDetailItem] = useState<CollectionTazo | null>(null)
 
   // Back art for each franchise
   const FRANCHISE_BACK: Record<string, string> = {
@@ -175,7 +176,7 @@ export default function CollectionPage() {
   useEffect(() => {
     let cancelled = false
     if (!token) return
-    fetch("/api/collection?limit=500&includeDecks=true&fullCatalog=true", {
+    fetch("/api/collection?limit=500&includeDecks=true", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -238,7 +239,6 @@ export default function CollectionPage() {
     }
     // Sort
     items = [...items].sort((a, b) => {
-      if (a.isOwned !== b.isOwned) return a.isOwned ? -1 : 1
       switch (sortKey) {
         case "power": return totalPower(b.tazo) - totalPower(a.tazo)
         case "power-asc": return totalPower(a.tazo) - totalPower(b.tazo)
@@ -611,7 +611,6 @@ export default function CollectionPage() {
                       const obtainedLabel = item.obtainedFrom ? (OBTAINED_LABEL[item.obtainedFrom] || item.obtainedFrom) : null
                       const isInDeck = !!item.inDeckId
                       const isFlipped = flippedItems.has(item.id)
-                      const owned = item.isOwned !== false
                       const instanceStats = item.instances?.[0]
                       const hasNew = item.instances?.some(i => i.isNew) ?? false
 
@@ -649,22 +648,6 @@ export default function CollectionPage() {
 
                           {/* TazoDiscImage with mouse-tracking tilt for finish effects */}
                           <TazoDiscTilt isFlipped={isFlipped} wear={item.wear || 0}>
-                            {!owned ? (
-                              <div className="w-full h-full relative">
-                                <TazoDiscImage
-                                  src={FRANCHISE_BACK[item.tazo.franchiseSlug] || FRANCHISE_BACK.minimon}
-                                  alt={`Undiscovered ${label} tazo`}
-                                  size="100%"
-                                  borderWidth={0}
-                                  franchiseSlug={item.tazo.franchiseSlug}
-                                  isBack
-                                  lazy
-                                />
-                                <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#1a1a1a]/80 flex items-center justify-center border border-[#FFCC00]/50">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                </div>
-                              </div>
-                            ) : (
                             <TazoDiscImage
                               src={isFlipped
                                 ? (FRANCHISE_BACK[item.tazo.franchiseSlug] || FRANCHISE_BACK.minimon)
@@ -689,7 +672,6 @@ export default function CollectionPage() {
                               }
                               lazy
                             />
-                            )}
                           </TazoDiscTilt>
 
                           {/* Flip hint */}
@@ -710,7 +692,7 @@ export default function CollectionPage() {
                                 {item.tazo.name || item.tazo.displayName || `#${item.tazo.number}`}
                               </p>
                               <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase mt-0.5">
-                                {label} #{item.tazo.number}{!owned && " · ???"}
+                                {label} #{item.tazo.number}
                               </p>
                             </div>
 
@@ -725,8 +707,8 @@ export default function CollectionPage() {
                               >
                                 {RARITY_STARS[item.tazo.rarity] || ""}
                               </span>
-                              {/* TGA grade for owned */}
-                              {owned && instanceStats && (
+                              {/* TGA grade */}
+                              {instanceStats && (
                                 <TGAGradeBadge
                                   tgaGrade={instanceStats.tgaGrade}
                                   tgaTier={instanceStats.tgaTier}
@@ -792,13 +774,13 @@ export default function CollectionPage() {
 
                             {/* Quick actions */}
                             <div className="flex gap-1 pt-1.5 border-t border-[#1a1a1a]/10">
-                              <Link
-                                href={`/?page=tazos&highlight=${item.tazo.slug || item.tazo.id}`}
+                              <button
+                                onClick={() => setDetailItem(detailItem?.id === item.id ? null : item)}
                                 className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#1a1a1a]/5 transition-colors flex items-center justify-center gap-0.5"
                                 title="View details"
                               >
                                 <Eye className="w-2.5 h-2.5" /> View
-                              </Link>
+                              </button>
                               <Link
                                 href="/app/decks"
                                 className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#1a1a1a]/5 transition-colors flex items-center justify-center gap-0.5"
@@ -841,7 +823,177 @@ export default function CollectionPage() {
       )}
 
       {/* ═══════════════════════════════════════════════ */}
-      {/* ⑦ QUICK LINKS                                  */}
+      {/* ⑦ DETAIL PANEL (inline expand)                  */}
+      {/* ═══════════════════════════════════════════════ */}
+      {detailItem && (() => {
+        const d = detailItem
+        const dGradient = FRANCHISE_GRADIENT[d.tazo.franchiseSlug || d.tazo.franchise] || "#1a1a1a"
+        const dLabel = FRANCHISE_LABEL[d.tazo.franchiseSlug || d.tazo.franchise] || d.tazo.franchiseSlug || "Unknown"
+        const dInst = d.instances?.[0]
+        const dPower = totalPower(d.tazo)
+        const isDetailFlipped = flippedItems.has(d.id)
+        return (
+          <div
+            className="border-3 border-[#1a1a1a] bg-white shadow-[4px_4px_0px_#1a1a1a] overflow-hidden"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-3" style={{ background: dGradient, borderBottom: "3px solid #1a1a1a" }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full border-2 border-[#1a1a1a] overflow-hidden bg-white flex items-center justify-center shrink-0">
+                  <TazoDiscImage
+                    src={d.tazo.imageUrl}
+                    alt={d.tazo.name || ""}
+                    size={40}
+                    borderWidth={0}
+                    finish={(d.tazo as any).finish}
+                    creatureVariant={(d.tazo as any).creatureVariant}
+                    shinyImageUrl={(d.tazo as any).shinyImageUrl}
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-[#1a1a1a] uppercase tracking-wide leading-tight">
+                    {d.tazo.displayName || d.tazo.name}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[10px] font-black text-[#1a1a1a]/60 uppercase">
+                      {dLabel} #{d.tazo.number}
+                    </span>
+                    <span
+                      className="text-[9px] font-black uppercase px-1.5 py-0.5 border"
+                      style={{
+                        background: (RARITY_COLOR[d.tazo.rarity] || "#9CA3AF") + "20",
+                        color: RARITY_COLOR[d.tazo.rarity] || "#9CA3AF",
+                        borderColor: (RARITY_COLOR[d.tazo.rarity] || "#9CA3AF") + "40",
+                      }}
+                    >
+                      {d.tazo.rarity}
+                    </span>
+                    {dInst && <TGAGradeBadge tgaGrade={dInst.tgaGrade} tgaTier={dInst.tgaTier} size="sm" />}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setDetailItem(null)}
+                className="w-8 h-8 flex items-center justify-center bg-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:bg-[#FFCC00] transition-colors font-black text-lg leading-none"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Left: Large disc */}
+              <div className="flex items-center justify-center">
+                <div className="relative" style={{ width: 240, height: 240 }}>
+                  <TazoDiscImage
+                    src={isDetailFlipped
+                      ? (FRANCHISE_BACK[d.tazo.franchiseSlug] || FRANCHISE_BACK.minimon)
+                      : d.tazo.imageUrl}
+                    alt={d.tazo.name || ""}
+                    size={240}
+                    borderWidth={4}
+                    borderColor="#1a1a1a"
+                    franchiseSlug={d.tazo.franchiseSlug}
+                    number={d.tazo.number}
+                    finish={(d.tazo as any).finish}
+                    creatureVariant={(d.tazo as any).creatureVariant}
+                    shinyImageUrl={(d.tazo as any).shinyImageUrl}
+                    wear={d.wear || 0}
+                    isBack={isDetailFlipped}
+                    onFlip={() => toggleFlip(d.id)}
+                  />
+                </div>
+              </div>
+
+              {/* Right: Full stats */}
+              <div className="space-y-3">
+                {/* Power */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider">Total Power</span>
+                  <span className="text-xl font-black text-[#1a1a1a]">{dPower}</span>
+                </div>
+
+                {/* All stats grid */}
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { label: "ATK", value: d.tazo.attack, color: "#E3350D" },
+                    { label: "DEF", value: d.tazo.defense, color: "#3B4CCA" },
+                    { label: "RES", value: d.tazo.resistance, color: "#6366F1" },
+                    { label: "WGT", value: d.tazo.weight, color: "#F59E0B" },
+                    { label: "STA", value: d.tazo.stability, color: "#14B8A6" },
+                    { label: "SPN", value: d.tazo.spin, color: "#10B981" },
+                    { label: "CTR", value: d.tazo.control, color: "#EC4899" },
+                    { label: "BNC", value: d.tazo.bounce, color: "#F97316" },
+                    { label: "PRC", value: d.tazo.precision, color: "#06B6D4" },
+                  ].map(s => (
+                    <div key={s.label} className="text-center p-1.5 border-2 border-[#1a1a1a]/10 bg-[#fffef0]">
+                      <div className="text-[7px] font-black text-[#1a1a1a]/40 uppercase">{s.label}</div>
+                      <div className="text-sm font-black" style={{ color: s.color }}>{s.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Meta info */}
+                <div className="space-y-1.5 text-[10px]">
+                  {d.quantity > 1 && (
+                    <div className="flex justify-between">
+                      <span className="font-bold text-[#1a1a1a]/40">Quantity</span>
+                      <span className="font-black text-[#1a1a1a]">x{d.quantity}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span className="font-bold text-[#1a1a1a]/40">Acquired</span>
+                    <span className="font-black text-[#1a1a1a]">{timeAgo(d.acquiredAt)}</span>
+                  </div>
+                  {d.obtainedFrom && (
+                    <div className="flex justify-between">
+                      <span className="font-bold text-[#1a1a1a]/40">Source</span>
+                      <span className="font-black text-[#1a1a1a] uppercase">{OBTAINED_LABEL[d.obtainedFrom] || d.obtainedFrom}</span>
+                    </div>
+                  )}
+                  {(d as any).wear > 0 && (
+                    <div className="flex justify-between">
+                      <span className="font-bold text-[#1a1a1a]/40">Wear</span>
+                      <span className="font-black text-[#1a1a1a]">{(d as any).wear}%</span>
+                    </div>
+                  )}
+                  {d.inDeckId && (
+                    <div className="flex justify-between">
+                      <span className="font-bold text-[#1a1a1a]/40">Deck</span>
+                      <span className="font-black text-[#E3350D]">{d.deckName || "Active Deck"}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-2">
+                  <button
+                    onClick={() => toggleFlip(d.id)}
+                    className="flex-1 py-2 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] bg-white hover:bg-[#FFCC00]/10 transition-colors shadow-[2px_2px_0px_#1a1a1a]"
+                  >
+                    {isDetailFlipped ? "SHOW FRONT" : "FLIP"}
+                  </button>
+                  <Link
+                    href="/app/decks"
+                    className="flex-1 py-2 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] bg-white hover:bg-[#1a1a1a]/5 transition-colors shadow-[2px_2px_0px_#1a1a1a] text-center"
+                  >
+                    DECK
+                  </Link>
+                  <Link
+                    href="/app/battle"
+                    className="flex-1 py-2 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] bg-[#E3350D] text-white hover:bg-[#C0280B] transition-colors shadow-[2px_2px_0px_#1a1a1a] text-center"
+                  >
+                    BATTLE
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* ⑧ QUICK LINKS                                  */}
       {/* ═══════════════════════════════════════════════ */}
       <div className="flex flex-wrap gap-3 justify-center pt-2">
         <Link href="/tazos" className="mag-btn px-5 py-2.5 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
