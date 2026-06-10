@@ -160,12 +160,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="TTG" />
-        {/* Google AdSense */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4932643710484609"
-          crossOrigin="anonymous"
-        />
         {/* Plausible Analytics — privacy-first, no cookies */}
         <script defer data-domain="tradingtazosgame.com" src="https://plausible.rpgclaw.com/js/script.js" />
       </head>

@@ -21,6 +21,15 @@ export default function AdUnit({
   const initialized = useRef(false)
 
   useEffect(() => {
+    // Load AdSense script only once (not globally in layout)
+    if (!document.querySelector('script[src*="pagead2.googlesyndication.com"]')) {
+      const script = document.createElement('script')
+      script.async = true
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4932643710484609'
+      script.crossOrigin = 'anonymous'
+      document.head.appendChild(script)
+    }
+
     if (initialized.current || !containerRef.current) return
     initialized.current = true
 
