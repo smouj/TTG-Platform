@@ -7,7 +7,7 @@
 //   3. Aim reticle → charge vertical force → adjust tilt/spin
 //   4. Release → tazo falls vertically, slams face-down tazos
 //   5. Impact physics: flip (capture/secure), wobble, ring-out, miss
-//   6. First to 5 points wins
+//   6. Capture rival tazos — eliminate their deck to win
 // ============================================================
 "use client"
 
@@ -47,8 +47,8 @@ const DEMO_TAZOS: TazoCard[] = [
 ]
 
 function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFinalResult["victoryType"] {
-  if (victoryType === "points") return "points"
-  if (victoryType === "all_captured") return "all_captured"
+  if (victoryType === "elimination") return "all_captured"
+  if (victoryType === "tko") return "points"
   if (victoryType === "forfeit") return "surrender"
   return "points"
 }
@@ -310,7 +310,7 @@ export default function BattleView() {
             setPhase("resolve_impact")
 
             const end = checkMatchEnd(
-              newPScore, newOScore, s4.cfg!.scoreToWin,
+              newPScore, newOScore,
               s4.deck.length, s4.cfg!.opponentDeck.length
             )
             if (end) {
@@ -334,13 +334,17 @@ export default function BattleView() {
 
   // ── Start new round (place stakes) ──
   const startNewRound = useCallback((playerDeck: TazoCard[], opponentDeck: TazoCard[], arena: typeof DEFAULT_ARENA_3D) => {
-    // Pick stake tazos — one for each player (not the same as launcher)
-    const pStake = playerDeck[Math.floor(Math.random() * playerDeck.length)]
-    const oStake = opponentDeck[Math.floor(Math.random() * opponentDeck.length)]
+    // BETTING: Each player stakes 1 tazo from their current hand
+    const pStake = playerDeck.length > 0
+      ? playerDeck[Math.floor(Math.random() * playerDeck.length)]
+      : playerDeck[0]
+    const oStake = opponentDeck.length > 0
+      ? opponentDeck[Math.floor(Math.random() * opponentDeck.length)]
+      : opponentDeck[0]
     const newStaked = placeStakedTazos(pStake, oStake)
     setStaked(newStaked)
 
-    // Pick launcher from remaining deck (NOT the staked tazo)
+    // Pick launcher from hand (not the staked tazo)
     const availPlayer = playerDeck.filter(t => t.id !== pStake.id)
     const launcher = availPlayer.length > 0
       ? availPlayer[Math.floor(Math.random() * availPlayer.length)]
@@ -356,7 +360,9 @@ export default function BattleView() {
     setCharge(0); setTiltDeg(0); setTiltIntensity(0); setSpinIntensity(0)
     setSlamPhase("aim")
 
-    setTimeout(() => setPhase("player_aim"), 500)
+    // Coin flip → player always slams first in practice
+    setPhase("coin_flip")
+    setTimeout(() => setPhase("player_aim"), 1500)
   }, [])
 
   // ── Deck selection ──
@@ -511,7 +517,7 @@ export default function BattleView() {
         setPhase("resolve_impact")
 
         const end = checkMatchEnd(
-          newPScore, newOScore, s2.cfg!.scoreToWin,
+          newPScore, newOScore,
           s2.deck.length, s2.cfg!.opponentDeck.length
         )
         if (end) {
@@ -597,7 +603,7 @@ export default function BattleView() {
 
   // ── Full-page 3D Arena ──
   const isAiming = phase === "player_aim" || phase === "player_charge" || phase === "player_tilt"
-  const showReticle = isAiming || phase === "placing_stakes"
+  const showReticle = isAiming || phase === "betting" || phase === "stakes_reveal"
 
   return (
     <div ref={containerRef} className="w-full relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 110px)" }}>
@@ -645,9 +651,9 @@ export default function BattleView() {
         {/* ── HUD overlay top (compact) ── */}
         <div className="absolute top-2 left-2 right-2 z-20">
           <div className="flex items-center gap-2">
-            {/* Player score pill */}
+            {/* Player captured pill */}
             <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
-              <span className="text-[9px] font-black text-white/60">YOU</span>
+              <span className="text-[8px] font-black text-white/50 uppercase">CAPT</span>
               <span className="text-sm font-black text-[#29ADFF]">{pScore}</span>
               {selectedDeckName && (
                 <span className="text-[7px] font-black text-[#FFCC00]/60 ml-1">{selectedDeckName}</span>
@@ -656,18 +662,18 @@ export default function BattleView() {
 
             <div className="flex-1" />
 
-            {/* Round */}
+            {/* Round + Tazos left */}
             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/5">
               <span className="text-[8px] font-black text-white/20 uppercase">R{round}</span>
-              <span className="text-[7px] font-black text-white/10">to {cfg?.scoreToWin || 5}</span>
+              <span className="text-[7px] font-black text-white/10">t{deck.length + (cfg?.opponentDeck?.length || 0)} left</span>
             </div>
 
             <div className="flex-1" />
 
-            {/* Opponent score pill */}
+            {/* Opponent captured pill */}
             <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
               <span className="text-sm font-black text-[#FF004D]">{oScore}</span>
-              <span className="text-[9px] font-black text-white/60">AI</span>
+              <span className="text-[8px] font-black text-white/50 uppercase">CAPT</span>
             </div>
           </div>
 
@@ -724,9 +730,14 @@ export default function BattleView() {
               </div>
             )}
             {phase === "round_start" && (
-              <span className="text-[9px] font-black text-white/30 bg-black/50 px-3 py-0.5 rounded-full">
-                Placing stakes...
-              </span>
+              <div className="inline-block px-6 py-1.5 bg-black/60 rounded-full border border-[#FFCC00]/30">
+                <span className="text-[10px] font-black text-[#FFCC00]/60 tracking-wider">Betting — stake your tazo...</span>
+              </div>
+            )}
+            {phase === "coin_flip" && (
+              <div className="inline-block px-6 py-1.5 bg-[#FFCC00]/15 rounded-full border-2 border-[#FFCC00]/50 animate-pulse">
+                <span className="text-[11px] font-black text-[#FFCC00] tracking-wider">🪙 COIN FLIP — YOU SLAM FIRST!</span>
+              </div>
             )}
             {phase === "player_aim" && (
               <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FFCC00]/40">
@@ -771,9 +782,9 @@ export default function BattleView() {
             )}
           </div>
 
-          {/* Score to win */}
+          {/* Win condition */}
           <div className="text-center mt-0.5">
-            <span className="text-[7px] font-black text-white/20">First to {cfg?.scoreToWin || 5}</span>
+            <span className="text-[7px] font-black text-white/20">Eliminate all opponent tazos to win</span>
           </div>
         </div>
 

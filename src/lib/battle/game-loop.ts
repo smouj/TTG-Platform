@@ -1,16 +1,17 @@
 // ============================================================
-// Trading Tazos Game — Battle Game Loop v3
-// Vertical Slam Throw mechanics (tazo real physics).
+// Trading Tazos Game — Battle Game Loop v4
+// Betting Slam — high-stakes elimination mechanic.
 //
-// CORRECT MECHANIC (not air hockey / chapas):
-//   1. Both players stake 1 tazo face-down in the center circle.
-//   2. On your turn, pick a launcher tazo from your deck.
-//   3. The launcher appears in the air ABOVE the circle.
-//   4. Aim reticle → charge vertical force → adjust tilt & spin.
-//   5. Release → tazo falls from above, slams vertically.
-//   6. Impact tries to flip face-down staked tazos face-up.
-//   7. Flip your own = secure (+1pt). Flip rival = capture (+2pts).
-//   8. First to 5 points wins.
+// CORRECT MECHANIC (tazo betting):
+//   1. Each player draws 5 random tazos from their deck of 20.
+//   2. Both stake 1 tazo face-down at center as a BET.
+//   3. Coin flip determines who slams first.
+//   4. Slammer picks a launcher tazo from their hand.
+//   5. Launcher falls from above, tries to flip opponent's staked tazo.
+//   6. FLIP → capture rival's tazo (+1 to score), keep yours.
+//   7. MISS → your thrown tazo becomes staked (lost from hand).
+//   8. When a player's hand runs out, draw 5 more from deck.
+//   9. Win when opponent has NO tazos remaining (elimination).
 // ============================================================
 
 // ────────────────────────────────────────
@@ -177,8 +178,10 @@ export type TiltDirection = "flat" | "forward" | "backward" | "left" | "right"
 export type GameState =
   | "lobby"              // Mode select, deck setup
   | "intro"              // Camera flyover, opponent reveal
-  | "round_start"        // Round begins
-  | "placing_stakes"     // Both players select tazo to stake
+  | "round_start"        // Round begins, draw 5 from deck
+  | "betting"            // Both players secretly select tazo to bet
+  | "stakes_reveal"      // Reveal both staked tazos at center
+  | "coin_flip"          // Random flip to determine who slams first
   | "player_aim"         // Player positions reticle over circle
   | "player_charge"      // Player holds to charge vertical force
   | "player_tilt"        // Player adjusts tilt & spin
@@ -187,7 +190,8 @@ export type GameState =
   | "resolve_impact"     // Show result: flip / wobble / miss
   | "opponent_aim"       // AI aims
   | "opponent_slam"      // AI slams
-  | "round_end"          // Score update, next round
+  | "turn_transition"    // Pass turn to next player
+  | "round_end"          // Draw new hand, next round
   | "match_end"          // Final results
   | "paused"
 
@@ -259,21 +263,30 @@ export interface ImpactResult {
   impactForce: number      // 0-1 actual force at contact
   edgeBonus: number        // Multiplier for edge hit
   description: string
+  /** Whether the thrower's tazo becomes staked (lost it) */
+  lostLauncher: boolean
+  /** Whether the opponent's staked tazo was captured */
+  opponentCaptured: boolean
 }
 
 export interface RoundResult {
   roundNumber: number
   throwerId: "player" | "opponent"
+  throwerWonCoinFlip: boolean
   impact: ImpactResult
   playerScore: number
   opponentScore: number
+  playerTazosLeft: number
+  opponentTazosLeft: number
 }
 
 export interface MatchResult {
   winner: "player" | "opponent" | "draw"
-  victoryType: "points" | "all_captured" | "forfeit" | "draw"
+  victoryType: "elimination" | "tko" | "forfeit" | "draw"
   playerScore: number
   opponentScore: number
+  playerRemaining: number
+  opponentRemaining: number
   rounds: RoundResult[]
   totalTurns: number
   playerCaptures: number
@@ -503,6 +516,13 @@ export function simulateSlam(
 
   // ── 8. Build result ──
   const doubleFlip = flipped.length >= 2
+  const opponentCaptured = flipped.some(id => {
+    const st = staked.find(s => s.id === id)
+    return st && st.owner !== thrower
+  })
+  // Launcher is lost if no tazo was flipped at all
+  const lostLauncher = flipped.length === 0 && !badLanding
+
   const result: ImpactResult = {
     flipped,
     wobbled,
@@ -511,17 +531,19 @@ export function simulateSlam(
     badLanding,
     impactForce: slamPower,
     edgeBonus: hitsEdge ? 1.5 : 1.0,
+    lostLauncher: lostLauncher && !badLanding,
+    opponentCaptured,
     description: doubleFlip
       ? "DOUBLE FLIP!"
       : flipped.length === 1
-        ? "FLIP!"
+        ? (opponentCaptured ? "CAPTURED!" : "SECURED!")
         : wobbled.length > 0
           ? "WOBBLE..."
           : ringOut.length > 0
             ? "RING OUT"
             : badLanding
               ? "BAD LANDING"
-              : "MISS",
+              : "MISS — Lost it!",
   }
 
   return { staked: newStaked, result }
@@ -600,46 +622,110 @@ export function generateAISlam(
 }
 
 // ────────────────────────────────────────
-// Score calculation from impact
+// Score calculation from impact (betting system)
 // ────────────────────────────────────────
+
+export function scoreBettingImpact(
+  impact: ImpactResult,
+  thrower: "player" | "opponent"
+): { playerDelta: number; opponentDelta: number; playerLostTazos: number; opponentLostTazos: number } {
+  let playerDelta = 0
+  let opponentDelta = 0
+  let playerLostTazos = 0
+  let opponentLostTazos = 0
+
+  // Captures: flipped opponent's staked tazo
+  if (impact.opponentCaptured) {
+    if (thrower === "player") {
+      playerDelta += 1
+      opponentLostTazos += 1  // Opponent lost their bet
+    } else {
+      opponentDelta += 1
+      playerLostTazos += 1     // Player lost their bet
+    }
+  }
+
+  // Launcher lost: thrown tazo becomes staked
+  if (impact.lostLauncher) {
+    if (thrower === "player") {
+      playerLostTazos += 1
+    } else {
+      opponentLostTazos += 1
+    }
+  }
+
+  // Bad landing: launcher stays but no effect
+  // Double flip: capture both
+  if (impact.doubleFlip) {
+    if (thrower === "player") {
+      playerDelta += 1  // Bonus for flipping both
+      opponentLostTazos += 1
+    } else {
+      opponentDelta += 1
+      playerLostTazos += 1
+    }
+  }
+
+  return { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos }
+}
 
 export function scoreImpact(
   impact: ImpactResult,
   staked: StakedTazo[],
   thrower: "player" | "opponent"
 ): { playerDelta: number; opponentDelta: number } {
-  let playerDelta = 0
-  let opponentDelta = 0
-
-  for (const id of impact.flipped) {
-    const st = staked.find(s => s.id === id)
-    if (!st) continue
-    const wasMyTazo = st.owner === thrower
-    if (wasMyTazo) {
-      // Flipped own tazo = secure it (+1)
-      if (thrower === "player") playerDelta += 1
-      else opponentDelta += 1
-    } else {
-      // Flipped rival tazo = capture it (+2)
-      if (thrower === "player") playerDelta += 2
-      else opponentDelta += 2
-    }
-  }
-
-  // Double flip bonus
-  if (impact.doubleFlip) {
-    if (thrower === "player") playerDelta += 1
-    else opponentDelta += 1
-  }
-
-  return { playerDelta, opponentDelta }
+  // Legacy compat: redirect to betting scorer
+  const r = scoreBettingImpact(impact, thrower)
+  return { playerDelta: r.playerDelta, opponentDelta: r.opponentDelta }
 }
 
 // ────────────────────────────────────────
-// Match end check
+// Match end check (elimination system)
 // ────────────────────────────────────────
 
 export function checkMatchEnd(
+  playerScore: number,
+  opponentScore: number,
+  playerRemaining: number,
+  opponentRemaining: number
+): MatchResult | null {
+  // Win by elimination: opponent has no tazos left
+  if (opponentRemaining <= 0) {
+    return {
+      winner: "player",
+      victoryType: "elimination",
+      playerScore,
+      opponentScore,
+      playerRemaining,
+      opponentRemaining: 0,
+      rounds: [],
+      totalTurns: 0,
+      playerCaptures: playerScore,
+      opponentCaptures: opponentScore,
+      xpEarned: 25 + playerScore * 5,
+      summary: `ELIMINATION! You captured all ${playerScore} of their tazos!`,
+    }
+  }
+  if (playerRemaining <= 0) {
+    return {
+      winner: "opponent",
+      victoryType: "elimination",
+      playerScore,
+      opponentScore,
+      playerRemaining: 0,
+      opponentRemaining,
+      rounds: [],
+      totalTurns: 0,
+      playerCaptures: playerScore,
+      opponentCaptures: opponentScore,
+      xpEarned: 5,
+      summary: `ELIMINATED! You lost all your tazos — ${opponentScore} captured.`,
+    }
+  }
+  return null // Match continues
+}
+
+export function checkMatchEndLegacy(
   playerScore: number,
   opponentScore: number,
   scoreToWin: number,
@@ -649,9 +735,11 @@ export function checkMatchEnd(
   if (playerScore >= scoreToWin) {
     return {
       winner: "player",
-      victoryType: "points",
+      victoryType: "tko",
       playerScore,
       opponentScore,
+      playerRemaining,
+      opponentRemaining,
       rounds: [],
       totalTurns: 0,
       playerCaptures: playerScore,
@@ -663,9 +751,11 @@ export function checkMatchEnd(
   if (opponentScore >= scoreToWin) {
     return {
       winner: "opponent",
-      victoryType: "points",
+      victoryType: "tko",
       playerScore,
       opponentScore,
+      playerRemaining,
+      opponentRemaining,
       rounds: [],
       totalTurns: 0,
       playerCaptures: playerScore,
@@ -675,6 +765,25 @@ export function checkMatchEnd(
     }
   }
   return null // Match continues
+}
+
+// ────────────────────────────────────────
+// Coin flip utility
+// ────────────────────────────────────────
+
+export function coinFlip(): "player" | "opponent" {
+  return rng() < 0.5 ? "player" : "opponent"
+}
+
+// ────────────────────────────────────────
+// Draw hand from deck
+// ────────────────────────────────────────
+
+export function drawHand(deck: TazoCard[], count: number = 5): { hand: TazoCard[]; remaining: TazoCard[] } {
+  const shuffled = [...deck].sort(() => rng() - 0.5)
+  const hand = shuffled.slice(0, Math.min(count, shuffled.length))
+  const remaining = shuffled.slice(Math.min(count, shuffled.length))
+  return { hand, remaining }
 }
 
 // ────────────────────────────────────────

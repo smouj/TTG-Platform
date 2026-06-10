@@ -685,7 +685,7 @@ function HowItWorksHome() {
         {[
           { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different series. Start with 10 free bags and earn more by winning battles.", color: "#FF6B00" },
           { step: "2", icon: Layers, title: "Build Your Deck", desc: "Choose 5 tazos with 9 combat stats each. Balance attack, defense, and speed for the best results.", color: "#3B4CCA" },
-          { step: "3", icon: Swords, title: "Enter the Arena", desc: "Aim, charge, and slam your tazos from above. Flip opponent discs to capture them — first to 5 points wins!", color: "#E3350D" },
+          { step: "3", icon: Swords, title: "Enter the Arena", desc: "Bet one tazo at center, then slam from above. Flip opponent discs to capture them — eliminate their entire deck to win!", color: "#E3350D" },
         ].map(({ step, icon: Icon, title, desc, color }) => (
           <div key={step} className="border-3 border-[#1a1a1a] bg-white p-4 sm:p-5 text-center hover:-translate-y-1 hover:shadow-[5px_5px_0px_#1a1a1a] transition-all"
             style={{ boxShadow: "3px 3px 0 #1a1a1a" }}>
@@ -892,7 +892,7 @@ function HowToPlayContent() {
           <li><strong>Charge</strong> — Time your power bar for maximum slam force</li>
           <li><strong>Tilt</strong> — Angle your throw for precise landing control</li>
         </ul>
-        <p>Your tazo drops from above, slamming into the arena. Hit hard enough and you&apos;ll <strong>flip</strong> face-down opponent tazos — capturing them for points. First to <strong>5 points</strong> wins!</p>
+        <p>Your tazo drops from above, slamming into the arena. Hit hard enough and you&apos;ll <strong>flip</strong> face-down opponent tazos — capturing them. Each miss costs you your thrown tazo. <strong>Eliminate their deck</strong> to win!</p>
       </SectionCard>
 
       <SectionCard step={5} color="#22C55E" bgColor="#22C55E" title="Complete Quests & Climb Ranks"
@@ -1583,7 +1583,7 @@ function DownloadContent() {
 const FAQS = [
   { q: "What is Trading Tazos Game?", a: "A browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 franchises. Build decks of 5, then enter the 3D arena where you aim, charge, and slam your tazos to flip opponent discs and capture them for points." },
   { q: "Is it free to play?", a: "Yes, completely free. Start with 10 free bags and earn credits by battling, completing quests, and daily logins — no credit card required." },
-  { q: "How does the battle system work?", a: "Use the Vertical Slam system: aim your crosshair at the target zone, charge the power bar for slam force, then tilt to control your landing angle. Your tazo drops from above — hit opponent tazos hard enough and they flip, scoring points. First to 5 points wins!" },
+  { q: "How does the battle system work?", a: "Use the Vertical Slam system: aim your crosshair at the center, charge the power bar for slam force, then tilt to control your landing angle. Flip opponent tazos to capture them. Miss and you lose your thrown tazo. Eliminate all opponent tazos to claim victory!" },
   { q: "What are the combat stats?", a: "Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision. Building a balanced deck with complementary stats is key." },
   { q: "Can I play on mobile?", a: "Yes! Visit tradingtazosgame.com on your phone, install as PWA, and play full-screen. Desktop versions also available." },
   { q: "How do credits work?", a: "Credits buy tazo bags in the Shop. Earn them by winning battles, completing quests, and daily login bonuses." },
