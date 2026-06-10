@@ -54,6 +54,9 @@ cp -r public/tazos-generated/* .next/standalone/public/tazos-generated/ 2>/dev/n
 cp -r public/tazos-backs/* .next/standalone/public/tazos-backs/  2>/dev/null || true
 cp -r public/tazos-artgen/* .next/standalone/public/tazos-artgen/  2>/dev/null || true
 
+# Checkpoint WAL to ensure all data is in main DB file before copy
+sqlite3 prisma/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
+
 # Copy DB to standalone (rsync --delete removes it)
 cp prisma/dev.db .next/standalone/prisma/dev.db
 
