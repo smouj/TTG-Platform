@@ -105,20 +105,24 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
 
   useEffect(() => {
     if (!token) return
-    fetch("/api/tazos?limit=400", { headers: { Authorization: `Bearer ${token}` } })
+    // Use collection API to only show tazos the user actually owns
+    fetch("/api/collection?limit=500", { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
       .then(d => {
-        const mapped: TazoOption[] = (d.tazos || []).map((t: any) => ({
-          id: t.id, name: t.name, displayName: t.displayName || t.name,
-          number: t.number, imageUrl: t.imageUrl, rarity: t.rarity,
-          franchise: t.franchiseName || t.franchiseSlug || "minimon",
-          franchiseSlug: t.franchiseSlug || t.franchise || "minimon",
-          attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
-          weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
-          control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
-          role: t.role || null,
-          finish: t.finish || null, creatureVariant: t.creatureVariant || null, shinyImageUrl: t.shinyImageUrl || null,
-        }))
+        const mapped: TazoOption[] = (d.items || []).map((item: any) => {
+          const t = item.tazo || item  // collection API nests under .tazo
+          return {
+            id: t.id, name: t.name, displayName: t.displayName || t.name,
+            number: t.number, imageUrl: t.imageUrl, rarity: t.rarity,
+            franchise: t.franchise || t.franchiseSlug || "minimon",
+            franchiseSlug: t.franchiseSlug || "minimon",
+            attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
+            weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
+            control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+            role: t.role || null,
+            finish: t.finish || null, creatureVariant: t.creatureVariant || null, shinyImageUrl: t.shinyImageUrl || null,
+          }
+        })
         setAllTazos(mapped)
         if (initialDeck?.tazos?.length) {
           setSelectedIds(new Set(initialDeck.tazos.map(t => t.id)))
