@@ -1,41 +1,32 @@
 // ============================================================
-// Trading Tazos Game — Battle View v3 (Vertical Slam)
+// Trading Tazos Game — Battle View v4 (FSM-powered)
 //
-// CORRECT TAZO MECHANIC:
-//   1. Both players stake 1 tazo face-down in the center circle
-//   2. Pick launcher tazo from deck → appears in air above circle
-//   3. Aim reticle → charge vertical force → adjust tilt/spin
-//   4. Release → tazo falls vertically, slams face-down tazos
-//   5. Impact physics: flip (capture/secure), wobble, ring-out, miss
-//   6. Capture rival tazos — eliminate their deck to win
+// Powered by useBattleEngine — formal finite state machine
+// drives all gameplay. UI reads from BattleContext, actions
+// dispatch through applyTransition(). Persistence auto-saves
+// on match_end via battle-integration.ts.
 // ============================================================
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import {
-  createMatch, simulateSlam, generateAISlam, checkMatchEnd,
-  scoreImpact, scoreBettingImpact, createAirborneTazo, placeStakedTazos,
-  DEFAULT_ARENA_3D,
+  DEFAULT_ARENA_3D, createAirborneTazo, simulateSlam,
+  scoreBettingImpact, checkMatchEnd, generateAISlam, placeStakedTazos,
 } from "@/lib/battle/game-loop"
 import { playSfx, warmSfx } from "@/lib/battle/sfx"
 import type {
-  GameState, PlayMode, AIDifficulty,
   TazoCard, MatchConfig, MatchResult, SlamParams,
-  PlayerGameState, StakedTazo, AirborneTazo, ImpactResult,
+  StakedTazo, AirborneTazo, ImpactResult,
 } from "@/lib/battle/game-loop"
 import type { BattleFinalResult } from "@/lib/battle"
+import { useBattleEngine } from "@/lib/battle/use-battle-engine"
+import type { BattleContext } from "@/lib/battle/state-machine"
 import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
 import BattleResultPanel from "./battle/battle-result-panel"
 import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock, Zap } from "lucide-react"
-
-const BACK_ARTS: Record<string, string> = {
-  minimon: "/tazos-artgen/backs/minimon-back.png",
-  cybermon: "/tazos-artgen/backs/cybermon-back.png",
-  dracobell: "/tazos-artgen/backs/dracobell-back.png",
-}
 
 const DEMO_TAZOS: TazoCard[] = [
   { id: "d1", name: "Aquafin", slug: "aquafin", franchise: "minimon", imageUrl: "/tazos-generated/minimon/aquafin.png", finish: "holo", creatureVariant: "standard", attack: 65, defense: 55, resistance: 60, weight: 45, stability: 50, spin: 55, control: 60, bounce: 40, precision: 55 },
@@ -58,139 +49,83 @@ function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFina
 }
 
 async function fetchTazos(token: string): Promise<{ tazos: TazoCard[]; decks: any[] }> {
-  // Load user's decks first — if they have an active deck, use it
   let allDecks: any[] = []
   try {
     const dr = await fetch("/api/decks", { headers: { Authorization: `Bearer ${token}` } })
     if (dr.ok) {
       const dd = await dr.json()
       allDecks = dd.decks || []
-      const activeDeck = allDecks.find((d:any) => d.isActive) || allDecks[0]
+      const activeDeck = allDecks.find((d: any) => d.isActive) || allDecks[0]
       if (activeDeck && activeDeck.tazos?.length >= 5) {
-        const deckTazos: TazoCard[] = activeDeck.tazos.map((t:any) => ({
+        const deckTazos: TazoCard[] = activeDeck.tazos.map((t: any) => ({
           id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
           franchise: (t.franchiseSlug || "minimon") as TazoCard["franchise"],
-          imageUrl: t.imageUrl || null,
-          shinyImageUrl: t.shinyImageUrl || null,
-          rarity: t.rarity || "common",
-          finish: t.finish || "normal",
-          creatureVariant: t.creatureVariant || "standard",
-          attack: t.attack || 50, defense: t.defense || 50,
-          resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,
-          spin: t.spin || 50, control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+          imageUrl: t.imageUrl || null, shinyImageUrl: t.shinyImageUrl || null,
+          rarity: t.rarity || "common", finish: t.finish || "normal", creatureVariant: t.creatureVariant || "standard",
+          attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
+          weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
+          control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
         }))
         return { tazos: deckTazos, decks: allDecks }
       }
     }
-  } catch { /* deck API failed, fall back to tazos API */ }
-
-  // Fallback: load from public tazo API
+  } catch { /* fallback */ }
   const r = await fetch("/api/tazos?limit=100", { headers: { Authorization: `Bearer ${token}` } })
   if (!r.ok) return { tazos: [], decks: [] }
   const d = await r.json()
-  const tazos: TazoCard[] = (d.tazos || []).map((t:any) => ({
+  const tazos: TazoCard[] = (d.tazos || []).map((t: any) => ({
     id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
     franchise: (t.franchise || t.franchiseSlug || "minimon") as TazoCard["franchise"],
-    imageUrl: t.imageUrl || null,
-    shinyImageUrl: t.shinyImageUrl || null,
-    rarity: t.rarity || "common",
-    finish: t.finish || "normal",
-    creatureVariant: t.creatureVariant || "standard",
-    attack: t.attack || 50, defense: t.defense || 50,
-    resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,
-    spin: t.spin || 50, control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+    imageUrl: t.imageUrl || null, shinyImageUrl: t.shinyImageUrl || null,
+    rarity: t.rarity || "common", finish: t.finish || "normal", creatureVariant: t.creatureVariant || "standard",
+    attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
+    weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
+    control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
   }))
   return { tazos, decks: [] }
 }
 
 export default function BattleView() {
   const { user, token } = useAuth()
-  const [phase, setPhase] = useState<GameState>("lobby")
+  const engine = useBattleEngine()
+  const { ctx } = engine
+
   const [loading, setLoading] = useState(true)
   const [tazos, setTazos] = useState<TazoCard[]>([])
   const [deck, setDeck] = useState<TazoCard[]>([])
   const [allDecks, setAllDecks] = useState<any[]>([])
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null)
   const [selectedDeckName, setSelectedDeckName] = useState<string>("")
-  const [allTazos, setAllTazos] = useState<TazoCard[]>([])  // full fallback list
-  const [cfg, setCfg] = useState<MatchConfig | null>(null)
-  const [pScore, setPScore] = useState(0)
-  const [oScore, setOScore] = useState(0)
-  const [round, setRound] = useState(1)
-  const [turn, setTurn] = useState(0)
-  const [staked, setStaked] = useState<StakedTazo[]>([])
-  const [airborne, setAirborne] = useState<AirborneTazo | null>(null)
-  const [result, setResult] = useState<MatchResult | null>(null)
+  const [allTazos, setAllTazos] = useState<TazoCard[]>([])
   const [creditsEarned, setCreditsEarned] = useState(0)
-  const [throwing, setThrowing] = useState<TazoCard | null>(null)
-  const [playerRemaining, setPlayerRemaining] = useState(0)
-  const [opponentRemaining, setOpponentRemaining] = useState(0)
+  const [airborne, setAirborne] = useState<AirborneTazo | null>(null)
 
-  // Slam input state
-  const [reticleX, setReticleX] = useState(0)
-  const [reticleZ, setReticleZ] = useState(0)
-  const [charge, setCharge] = useState(0)
-  const [tiltDeg, setTiltDeg] = useState(0)
-  const [tiltIntensity, setTiltIntensity] = useState(0)
-  const [spinIntensity, setSpinIntensity] = useState(0)
-  const [slamPhase, setSlamPhase] = useState<"aim" | "charge" | "tilt">("aim")
-  const [impactMsg, setImpactMsg] = useState("")
-  const [showImpact, setShowImpact] = useState(false)
-  
-  // Score popups: float up and fade
-  const [scorePopups, setScorePopups] = useState<Array<{id:number, text:string, color:string, side:'left'|'right'}>>([])
-  let popupId = useRef(0)
-  const spawnPopup = (text: string, color: string, side: 'left' | 'right') => {
-    const id = ++popupId.current
-    setScorePopups(prev => [...prev, {id, text, color, side}])
-    setTimeout(() => setScorePopups(prev => prev.filter(p => p.id !== id)), 1800)
-  }
-
-  const busy = useRef(false)
   const resultSaved = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
-  // State ref for async callbacks
-  const stateRef = useRef({
-    pScore: 0, oScore: 0, staked: [] as StakedTazo[], round: 1, turn: 0,
-    deck: [] as TazoCard[], cfg: null as MatchConfig | null,
-    reticleX: 0, reticleZ: 0, charge: 0, tiltDeg: 0, tiltIntensity: 0, spinIntensity: 0,
-    playerRemaining: 0, opponentRemaining: 0,
-  })
-  useEffect(() => {
-    stateRef.current = { pScore, oScore, staked, round, turn, deck, cfg, reticleX, reticleZ, charge, tiltDeg, tiltIntensity, spinIntensity, playerRemaining, opponentRemaining }
-  }, [pScore, oScore, staked, round, turn, deck, cfg, reticleX, reticleZ, charge, tiltDeg, tiltIntensity, spinIntensity, playerRemaining, opponentRemaining])
+  // Phase from FSM ctx
+  const phase = ctx?.state || "lobby"
+  const pScore = ctx?.player.score ?? 0
+  const oScore = ctx?.opponent.score ?? 0
+  const round = ctx?.currentRound ?? 1
+  const turn = ctx?.turnNumber ?? 0
+  const staked = ctx?.stakedTazos ?? []
+  const result = ctx?.matchResult ?? null
+  const playerRemaining = ctx?.playerRemaining ?? 0
+  const opponentRemaining = ctx?.opponentRemaining ?? 0
+  const cfg = ctx?.config ?? null
 
-  const saveBattleResult = useCallback(async (matchResult: MatchResult) => {
-    if (resultSaved.current || !cfg) return
-    resultSaved.current = true
-    try {
-      const headers: Record<string, string> = { "Content-Type": "application/json" }
-      if (token) headers["Authorization"] = `Bearer ${token}`
-      const r = await fetch("/api/battle", {
-        method: "POST", headers,
-        body: JSON.stringify({
-          playerTazoIds: deck.map(t => t.id),
-          opponentTazoIds: cfg.opponentDeck.map(t => t.id),
-          physicsResult: {
-            winner: matchResult.winner,
-            playerScore: matchResult.playerScore,
-            opponentScore: matchResult.opponentScore,
-            captures: matchResult.playerCaptures + matchResult.opponentCaptures,
-            ringOuts: 0, flips: 0, totalTurns: matchResult.totalTurns,
-          },
-        }),
-      })
-      if (r.ok) { const data = await r.json(); setCreditsEarned(data.creditsEarned || 0) }
-    } catch {}
-  }, [token, deck, cfg])
+  // ── Score popups ──
+  const [scorePopups, setScorePopups] = useState<Array<{ id: number; text: string; color: string; side: "left" | "right" }>>([])
+  const popupId = useRef(0)
+  const spawnPopup = (text: string, color: string, side: "left" | "right") => {
+    const id = ++popupId.current
+    setScorePopups(prev => [...prev, { id, text, color, side }])
+    setTimeout(() => setScorePopups(prev => prev.filter(p => p.id !== id)), 1800)
+  }
 
-  useEffect(() => {
-    if (phase === "match_end" && result) saveBattleResult(result)
-  }, [phase, result, saveBattleResult])
-
-  // ═══ SFX: warm audio + match sounds ═══
+  // ── SFX ──
   useEffect(() => {
     const handler = () => { warmSfx(); document.removeEventListener("click", handler) }
     document.addEventListener("click", handler)
@@ -208,7 +143,19 @@ export default function BattleView() {
     }
   }, [phase, result])
 
-  // Load tazos + decks
+  // ── Auto-save on match_end ──
+  useEffect(() => {
+    if (phase === "match_end" && result && !resultSaved.current && user && token) {
+      resultSaved.current = true
+      const saveMatch = async () => {
+        const pr = await engine.saveBattle(token)
+        setCreditsEarned(pr?.creditsEarned || result?.xpEarned || 0)
+      }
+      saveMatch()
+    }
+  }, [phase, result, user, token, engine])
+
+  // ── Load tazos + decks ──
   useEffect(() => {
     (async () => {
       let list: TazoCard[] = DEMO_TAZOS
@@ -218,246 +165,118 @@ export default function BattleView() {
         if (fetched.tazos.length >= 3) { list = fetched.tazos; dlist = fetched.decks }
       }
       setTazos(list); setAllTazos(list); setAllDecks(dlist); setLoading(false)
-      // Auto-select active deck
       if (dlist.length > 0) {
-        const active = dlist.find((d:any) => d.isActive) || dlist[0]
+        const active = dlist.find((d: any) => d.isActive) || dlist[0]
         setSelectedDeckId(active.id)
         setSelectedDeckName(active.name || "")
       }
     })()
   }, [user, token])
 
-  // ── AI slam turn ──
-  const doOpponentSlam = useCallback(() => {
-    const s = stateRef.current
-    if (!s.cfg || busy.current) return
-    busy.current = true
+  // ── Airborne tazo position follows reticle ──
+  useEffect(() => {
+    if (!airborne || !(phase === "player_aim" || phase === "player_charge" || phase === "player_tilt")) return
+    const arena = cfg?.arena || DEFAULT_ARENA_3D
+    const h = phase === "player_aim" ? arena.maxLaunchHeight * 0.5
+      : phase === "player_charge" ? arena.maxLaunchHeight * (0.4 + engine.ui.charge * 0.6)
+      : arena.maxLaunchHeight * (0.6 + engine.ui.charge * 0.4)
+    setAirborne(prev => prev ? { ...prev, position: [engine.ui.reticleX * 0.3, h, engine.ui.reticleZ * 0.3] } : prev)
+  }, [engine.ui.reticleX, engine.ui.reticleZ, engine.ui.charge, phase])
 
-    // Pick AI launcher tazo (avoid staked tazo)
-    const oppStake = s.staked.find(st => st.owner === "opponent" && !st.scored)
-    const availOpp = s.cfg.opponentDeck.filter(t => t.id !== oppStake?.id)
-    const aiTazo = availOpp.length > 0
-      ? availOpp[Math.floor(Math.random() * availOpp.length)]
-      : s.cfg.opponentDeck[0]
-    setThrowing(aiTazo)
-
-    // Create airborne tazo for AI
-    const aiAirborne = createAirborneTazo(aiTazo, "opponent", s.cfg.arena)
-    aiAirborne.state = "aiming"
-    setAirborne(aiAirborne)
-
-    // Brief aiming delay
-    setTimeout(() => {
-      const s2 = stateRef.current
-      if (!s2.cfg) { busy.current = false; return }
-
-      const slam = generateAISlam(aiTazo, s2.staked, s2.cfg.arena, s2.cfg.aiDifficulty)
-
-      // Position the airborne tazo above target
-      const updatedAirborne: AirborneTazo = {
-        ...aiAirborne,
-        state: "charging",
-        position: [
-          slam.impactX * 0.3,
-          s2.cfg.arena.maxLaunchHeight * (0.2 + slam.verticalForce * 0.8),
-          slam.impactZ * 0.3,
-        ],
-        charge: slam.verticalForce,
-        targetX: slam.impactX,
-        targetZ: slam.impactZ,
-      }
-      setAirborne(updatedAirborne)
-      setPhase("opponent_slam")
-
-      // Brief charge, then launch
-      setTimeout(() => {
-        const s3 = stateRef.current
-        if (!s3.cfg) { busy.current = false; return }
-
-        const falling: AirborneTazo = {
-          ...updatedAirborne,
-          state: "falling",
-          position: [
-            updatedAirborne.position[0],
-            updatedAirborne.position[1],
-            updatedAirborne.position[2],
-          ],
-        }
-        setAirborne(falling)
-
-        // Impact after gravity fall
-        const fallTime = Math.sqrt(2 * updatedAirborne.position[1] / s3.cfg.arena.gravity) * 1000
-        setTimeout(() => {
-          const s4 = stateRef.current
-          if (!s4.cfg) { busy.current = false; return }
-
-          setPhase("impact")
-          playSfx("slam_impact", 0.6)
-
-          const { staked: newStaked, result: impact } = simulateSlam(
-            aiTazo, slam, s4.staked, s4.cfg.arena, "opponent"
-          )
-          setStaked(newStaked)
-          setAirborne(null)
-
-          const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "opponent")
-          const newPScore = s4.pScore + playerDelta
-          const newOScore = s4.oScore + opponentDelta
-          const newPlayerRemaining = Math.max(0, s4.playerRemaining - playerLostTazos)
-          const newOpponentRemaining = Math.max(0, s4.opponentRemaining - opponentLostTazos)
-          setPScore(newPScore)
-          setOScore(newOScore)
-          setPlayerRemaining(newPlayerRemaining)
-          setOpponentRemaining(newOpponentRemaining)
-
-          setImpactMsg(impact.description)
-          setShowImpact(true)
-
-          if (playerDelta > 0) { spawnPopup(`+${playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
-          if (opponentDelta > 0) { spawnPopup(`+${opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
-          if (playerLostTazos > 0) { spawnPopup(`-${playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
-          if (opponentLostTazos > 0) { spawnPopup(`-${opponentLostTazos} tazo`, "#29ADFF", "right"); playSfx("damage_taken", 0.35) }
-
-          setTimeout(() => {
-            setShowImpact(false)
-            setPhase("resolve_impact")
-
-            const end = checkMatchEnd(
-              newPScore, newOScore,
-              newPlayerRemaining, newOpponentRemaining
-            )
-            if (end) {
-              setResult({ ...end, totalTurns: s4.turn + 1, playerScore: newPScore, opponentScore: newOScore })
-              setPhase("match_end")
-              busy.current = false
-              return
-            }
-            setPhase("round_end")
-            setTimeout(() => {
-              setRound(prev => prev + 1)
-              setTurn(prev => prev + 1)
-              startNewRound(s4.deck, s4.cfg!.opponentDeck, s4.cfg!.arena)
-              busy.current = false
-            }, 2000)
-          }, 1200)
-        }, fallTime * 0.8)
-      }, 800)
-    }, 600)
+  // ── Fullscreen ──
+  const toggleFullscreen = useCallback(() => {
+    const el = containerRef.current; if (!el) return
+    if (!document.fullscreenElement) {
+      el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {})
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {})
+    }
   }, [])
-
-  // ── Start new round (place stakes) ──
-  const startNewRound = useCallback((playerDeck: TazoCard[], opponentDeck: TazoCard[], arena: typeof DEFAULT_ARENA_3D) => {
-    // Filter decks to only include tazos that haven't been captured
-    const s = stateRef.current
-    const alivePlayer = playerDeck.slice(0, s.playerRemaining)
-    const aliveOpponent = opponentDeck.slice(0, s.opponentRemaining)
-
-    // BETTING: Each player stakes 1 tazo from remaining alive tazos
-    const pStake = alivePlayer.length > 0
-      ? alivePlayer[Math.floor(Math.random() * alivePlayer.length)]
-      : playerDeck[0]
-    const oStake = aliveOpponent.length > 0
-      ? aliveOpponent[Math.floor(Math.random() * aliveOpponent.length)]
-      : opponentDeck[0]
-    const newStaked = placeStakedTazos(pStake, oStake)
-    setStaked(newStaked)
-
-    // Pick launcher from alive hand (not the staked tazo)
-    const availPlayer = alivePlayer.filter(t => t.id !== pStake.id)
-    const launcher = availPlayer.length > 0
-      ? availPlayer[Math.floor(Math.random() * availPlayer.length)]
-      : playerDeck[0]
-    setThrowing(launcher)
-
-    // Create airborne tazo
-    const ab = createAirborneTazo(launcher, "player", arena)
-    setAirborne(ab)
-
-    // Reset inputs
-    setReticleX(0); setReticleZ(0)
-    setCharge(0); setTiltDeg(0); setTiltIntensity(0); setSpinIntensity(0)
-    setSlamPhase("aim")
-
-    // Coin flip → player always slams first in practice
-    setPhase("coin_flip")
-    setTimeout(() => setPhase("player_aim"), 1500)
+  useEffect(() => {
+    const h = () => setIsFullscreen(!!document.fullscreenElement)
+    document.addEventListener("fullscreenchange", h)
+    return () => document.removeEventListener("fullscreenchange", h)
   }, [])
 
   // ── Deck selection ──
   const handleSelectDeck = useCallback((deckId: string | null) => {
     setSelectedDeckId(deckId)
-    if (!deckId) {
-      setTazos(allTazos)
-      setSelectedDeckName("")
-      return
-    }
-    const deck = allDecks.find((d: any) => d.id === deckId)
-    setSelectedDeckName(deck?.name || "")
-    if (deck?.tazos) {
-      const dt: TazoCard[] = deck.tazos.map((t: any) => ({
+    if (!deckId) { setTazos(allTazos); setSelectedDeckName(""); return }
+    const d = allDecks.find((d: any) => d.id === deckId)
+    setSelectedDeckName(d?.name || "")
+    if (d?.tazos) {
+      setTazos(d.tazos.map((t: any) => ({
         id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
         franchise: (t.franchiseSlug || "minimon") as TazoCard["franchise"],
-        imageUrl: t.imageUrl || null,
-        shinyImageUrl: t.shinyImageUrl || null,
-        rarity: t.rarity || "common",
-        finish: t.finish || "normal",
-        creatureVariant: t.creatureVariant || "standard",
-        attack: t.attack || 50, defense: t.defense || 50,
-        resistance: t.resistance || 50, weight: t.weight || 50, stability: t.stability || 50,
-        spin: t.spin || 50, control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
-      }))
-      setTazos(dt)
+        imageUrl: t.imageUrl || null, shinyImageUrl: t.shinyImageUrl || null,
+        rarity: t.rarity || "common", finish: t.finish || "normal", creatureVariant: t.creatureVariant || "standard",
+        attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
+        weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
+        control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+      })))
     }
   }, [allDecks, allTazos])
 
-  // Update airborne tazo position to follow reticle during aim/charge
-  useEffect(() => {
-    if (!airborne || !(phase === "player_aim" || phase === "player_charge" || phase === "player_tilt")) return
-    const arena = cfg?.arena || DEFAULT_ARENA_3D
-    const h = phase === "player_aim" ? arena.maxLaunchHeight * 0.5
-           : phase === "player_charge" ? arena.maxLaunchHeight * (0.4 + charge * 0.6)
-           : arena.maxLaunchHeight * (0.6 + charge * 0.4)
-    setAirborne(prev => prev ? { ...prev, position: [reticleX * 0.3, h, reticleZ * 0.3] } : prev)
-  }, [reticleX, reticleZ, charge, phase])
-  const start = useCallback((mode: PlayMode, diff: AIDifficulty, d: TazoCard[]) => {
-    // Draw 5 random from full deck for the active round hand
+  // ═══════════════════════════════════════════════
+  //  START MATCH — wiring to FSM
+  // ═══════════════════════════════════════════════
+  const start = useCallback((mode: "practice" | "pvp_ranked" | "pvp_friend", diff: any, d: TazoCard[]) => {
     const shuffled = [...d].sort(() => Math.random() - 0.5)
     const hand = shuffled.slice(0, Math.min(5, shuffled.length))
     setDeck(d)
-    // Opponent gets a full deck from demo tazos (practice mode)
     const oppFull = [...DEMO_TAZOS, ...DEMO_TAZOS, ...DEMO_TAZOS].slice(0, 20)
     const oppHand = [...oppFull].sort(() => Math.random() - 0.5).slice(0, 5)
-    const c: MatchConfig = {
+    const config: MatchConfig = {
       mode, aiDifficulty: diff, arena: DEFAULT_ARENA_3D,
       scoreToWin: 5, playerDeck: hand, opponentDeck: oppHand,
     }
-    setCfg(c)
-    setPScore(0); setOScore(0)
-    setPlayerRemaining(hand.length); setOpponentRemaining(oppHand.length)
-    setRound(1); setTurn(0); setResult(null)
-    busy.current = false
-    setShowImpact(false)
 
-    setPhase("intro")
+    engine.startMatch(config)
+
+    // ── Sequence after start ──
+    setTimeout(() => engine.introDone(), 2000)
     setTimeout(() => {
-      setPhase("round_start")
-      startNewRound(hand, oppHand, c.arena)
-    }, 2000)
-  }, [startNewRound])
+      // Draw hands and place bets
+      engine.startBetting()
 
-  // ── Player slam ──
+      // Auto-place stakes (one tazo from each hand)
+      const pStake = hand[Math.floor(Math.random() * hand.length)]
+      const oStake = oppHand[Math.floor(Math.random() * oppHand.length)]
+      engine.placeBets(pStake, oStake)
+
+      // Reveal stakes
+      setTimeout(() => {
+        engine.revealStakes()
+        // Coin flip
+        setTimeout(() => {
+          engine.doCoinFlip()
+          // Setup player aim
+          setTimeout(() => {
+            const launcher = hand.filter(t => t.id !== pStake.id)[0] || hand[0]
+            const ab = createAirborneTazo(launcher, "player", config.arena)
+            setAirborne(ab)
+            engine.lockAim(0, 0)
+          }, 1500)
+        }, 1000)
+      }, 1200)
+    }, 1000)
+  }, [engine])
+
+  // ═══════════════════════════════════════════════
+  //  PLAYER SLAM
+  // ═══════════════════════════════════════════════
   const handleSlamRelease = useCallback(() => {
-    const s = stateRef.current
-    if (!s.cfg || busy.current) return
-    busy.current = true
+    if (engine.ui.busy || !cfg) return
+    engine.setBusy(true)
 
-    const t = throwing
-    if (!t) { busy.current = false; return }
+    const t = ctx?.playerBetTazo || (deck.length > 0 ? deck[0] : null)
+    if (!t) { engine.setBusy(false); return }
 
-    // Calculate tilt direction from degrees
-    const absDeg = ((s.tiltDeg % 360) + 360) % 360
+    // Calc tilt direction
+    const { tiltDeg, tiltIntensity, reticleX, reticleZ, charge, spinIntensity } = engine.ui
+    const absDeg = ((tiltDeg % 360) + 360) % 360
     let tiltDir: SlamParams["tilt"] = "flat"
-    if (s.tiltIntensity > 0.12) {
+    if (tiltIntensity > 0.12) {
       if (absDeg < 45 || absDeg > 315) tiltDir = "right"
       else if (absDeg >= 45 && absDeg < 135) tiltDir = "forward"
       else if (absDeg >= 135 && absDeg < 225) tiltDir = "left"
@@ -466,135 +285,154 @@ export default function BattleView() {
 
     const slam: SlamParams = {
       tazoId: t.id,
-      impactX: s.reticleX,
-      impactZ: s.reticleZ,
-      verticalForce: s.charge,
-      timingAccuracy: s.charge > 0.6 && s.charge < 0.82 ? 0.95 : 0.6,
+      impactX: reticleX,
+      impactZ: reticleZ,
+      verticalForce: charge,
+      timingAccuracy: charge > 0.6 && charge < 0.82 ? 0.95 : 0.6,
       tilt: tiltDir,
-      tiltIntensity: s.tiltIntensity,
-      spinIntensity: s.spinIntensity,
+      tiltIntensity,
+      spinIntensity,
       aimPrecision: Math.max(0.2, (t.precision || 50) / 100),
     }
 
-    // Animate airborne tazo rising then falling
-    const ab = airborne
-    if (ab) {
-      const chargeHeight = s.cfg.arena.maxLaunchHeight * (0.2 + s.charge * 0.8)
-      const falling: AirborneTazo = {
-        ...ab,
+    // Animate airborne falling
+    if (airborne) {
+      const chargeHeight = cfg.arena.maxLaunchHeight * (0.2 + charge * 0.8)
+      setAirborne({
+        ...airborne,
         state: "falling",
-        position: [
-          s.reticleX * 0.3,
-          chargeHeight,
-          s.reticleZ * 0.3,
-        ],
-        tilt: [s.tiltIntensity * (Math.cos(s.tiltDeg * Math.PI / 180)) * 0.5, 0,
-              s.tiltIntensity * (Math.sin(s.tiltDeg * Math.PI / 180)) * 0.5],
-        angularVelocity: [0, s.spinIntensity * 8, 0],
-        charge: s.charge,
-        targetX: s.reticleX,
-        targetZ: s.reticleZ,
-      }
-      setAirborne(falling)
+        position: [reticleX * 0.3, chargeHeight, reticleZ * 0.3],
+        tilt: [tiltIntensity * Math.cos(tiltDeg * Math.PI / 180) * 0.5, 0,
+              tiltIntensity * Math.sin(tiltDeg * Math.PI / 180) * 0.5],
+        angularVelocity: [0, spinIntensity * 8, 0],
+        charge, targetX: reticleX, targetZ: reticleZ,
+      })
     }
 
-    setPhase("slamming")
+    // Impact after gravity
+    const fallHeight = cfg.arena.maxLaunchHeight * (0.2 + charge * 0.8)
+    const fallTimeMs = Math.sqrt(2 * fallHeight / cfg.arena.gravity) * 1000
 
-    // Calculate fall time based on height
-    const fallHeight = s.cfg.arena.maxLaunchHeight * (0.2 + s.charge * 0.8)
-    const fallTimeMs = Math.sqrt(2 * fallHeight / s.cfg.arena.gravity) * 1000
-
-    // Impact
     setTimeout(() => {
-      const s2 = stateRef.current
-      if (!s2.cfg) { busy.current = false; return }
+      const currentCtx = engine.ctx
+      if (!currentCtx || !cfg) { engine.setBusy(false); return }
 
-      setPhase("impact")
       playSfx("slam_impact", 0.6)
 
-      const { staked: newStaked, result: impact } = simulateSlam(
-        t, slam, s2.staked, s2.cfg.arena, "player"
-      )
-      setStaked(newStaked)
+      const { staked: newStaked, result: impact } = simulateSlam(t, slam, currentCtx.stakedTazos, cfg.arena, "player")
+      const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "player")
+
+      // Resolve through FSM
+      engine.resolveImpact(impact, "player")
       setAirborne(null)
 
-      const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "player")
-      const newPScore = s2.pScore + playerDelta
-      const newOScore = s2.oScore + opponentDelta
-      const newPlayerRemaining = Math.max(0, s2.playerRemaining - playerLostTazos)
-      const newOpponentRemaining = Math.max(0, s2.opponentRemaining - opponentLostTazos)
-      setPScore(newPScore)
-      setOScore(newOScore)
-      setPlayerRemaining(newPlayerRemaining)
-      setOpponentRemaining(newOpponentRemaining)
+      engine.setImpactMsg(impact.description)
+      engine.setShowImpact(true)
 
-      setImpactMsg(impact.description)
-      setShowImpact(true)
-
-      // Score popups
       if (playerDelta > 0) { spawnPopup(`+${playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
       if (opponentDelta > 0) { spawnPopup(`+${opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
-      // Elimination popups
       if (playerLostTazos > 0) { spawnPopup(`-${playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
       if (opponentLostTazos > 0) { spawnPopup(`-${opponentLostTazos} tazo`, "#29ADFF", "right"); playSfx("damage_taken", 0.35) }
 
-      setTimeout(() => {
-        setShowImpact(false)
-        setPhase("resolve_impact")
+      // Check if match ended
+      const newPR = Math.max(0, currentCtx.playerRemaining - playerLostTazos)
+      const newOR = Math.max(0, currentCtx.opponentRemaining - opponentLostTazos)
+      const newPScore = currentCtx.player.score + playerDelta
+      const newOScore = currentCtx.opponent.score + opponentDelta
+      const end = checkMatchEnd(newPScore, newOScore, newPR, newOR)
 
-        const end = checkMatchEnd(
-          newPScore, newOScore,
-          newPlayerRemaining, newOpponentRemaining
-        )
+      setTimeout(() => {
+        engine.setShowImpact(false)
+
         if (end) {
-          setResult({
-            ...end,
-            totalTurns: s2.turn + 1,
-            playerScore: newPScore,
-            opponentScore: newOScore,
-            playerCaptures: playerDelta,
-            opponentCaptures: opponentDelta,
-          })
-          setPhase("match_end")
-          busy.current = false
+          engine.showResult()
+          engine.setBusy(false)
           return
         }
 
-        // Opponent turn
+        // Opponent's turn
         setTimeout(() => {
-          setPhase("opponent_aim")
-          doOpponentSlam()
+          // Run AI slam via the engine
+          const aiTazo = currentCtx.opponentBetTazo
+          if (!aiTazo || !cfg) { engine.setBusy(false); return }
+
+          const aiSlam = generateAISlam(aiTazo, currentCtx.stakedTazos, cfg.arena, cfg.aiDifficulty)
+          const aiAirborne = createAirborneTazo(aiTazo, "opponent", cfg.arena)
+          aiAirborne.state = "aiming"
+
+          const fallH = cfg.arena.maxLaunchHeight * (0.2 + aiSlam.verticalForce * 0.8)
+          const aiFallMs = Math.sqrt(2 * fallH / cfg.arena.gravity) * 1000
+
+          setTimeout(() => {
+            if (!engine.ctx) { engine.setBusy(false); return }
+            playSfx("slam_impact", 0.6)
+
+            const { staked: newStakedAI, result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent")
+            const aiScoring = scoreBettingImpact(aiImpact, "opponent")
+
+            engine.resolveImpact(aiImpact, "opponent")
+            engine.setImpactMsg(aiImpact.description)
+            engine.setShowImpact(true)
+
+            if (aiScoring.opponentDelta > 0) { spawnPopup(`+${aiScoring.opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
+            if (aiScoring.playerDelta > 0) { spawnPopup(`+${aiScoring.playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
+            if (aiScoring.playerLostTazos > 0) { spawnPopup(`-${aiScoring.playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
+
+            const ctx2 = engine.ctx
+            const finalPR = Math.max(0, (ctx2?.playerRemaining ?? newPR) - aiScoring.playerLostTazos)
+            const finalOR = Math.max(0, (ctx2?.opponentRemaining ?? newOR) - aiScoring.opponentLostTazos)
+            const finalPS = (ctx2?.player.score ?? newPScore) + aiScoring.playerDelta
+            const finalOS = (ctx2?.opponent.score ?? newOScore) + aiScoring.opponentDelta
+            const aiEnd = checkMatchEnd(finalPS, finalOS, finalPR, finalOR)
+
+            setTimeout(() => {
+              engine.setShowImpact(false)
+              if (aiEnd) {
+                engine.showResult()
+              } else {
+                engine.nextRound()
+                // Setup new round with fresh stakes
+                setTimeout(() => {
+                  const c3 = engine.ctx
+                  if (!c3) { engine.setBusy(false); return }
+                  const pDeck = deck
+                  const oDeck = cfg.opponentDeck
+                  const aliveP = pDeck.slice(0, c3.playerRemaining)
+                  const aliveO = oDeck.slice(0, c3.opponentRemaining)
+                  const pS = aliveP.length > 0 ? aliveP[Math.floor(Math.random() * aliveP.length)] : pDeck[0]
+                  const oS = aliveO.length > 0 ? aliveO[Math.floor(Math.random() * aliveO.length)] : oDeck[0]
+                  engine.placeBets(pS, oS)
+                  engine.revealStakes()
+                  setTimeout(() => {
+                    engine.doCoinFlip()
+                    setTimeout(() => {
+                      const launch = aliveP.filter(t => t.id !== pS.id)[0] || pDeck[0]
+                      const ab = createAirborneTazo(launch, "player", cfg.arena)
+                      setAirborne(ab)
+                      engine.lockAim(0, 0)
+                    }, 1500)
+                  }, 1000)
+                }, 1000)
+              }
+              engine.setBusy(false)
+            }, 1500)
+          }, aiFallMs * 0.75)
         }, 1500)
       }, 1500)
     }, fallTimeMs * 0.75)
-  }, [throwing, airborne, doOpponentSlam])
+  }, [engine, cfg, ctx, deck, airborne])
 
   const rematch = () => { resultSaved.current = false; setCreditsEarned(0); if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
-  const back = () => { resultSaved.current = false; setCreditsEarned(0); setPhase("lobby"); setCfg(null); setResult(null); setThrowing(null); setStaked([]); setAirborne(null); setPScore(0); setOScore(0); setRound(1); setTurn(0) }
+  const back = () => { resultSaved.current = false; setCreditsEarned(0); setAirborne(null); engine.resetToLobby() }
 
-  // Fullscreen toggle
-  const toggleFullscreen = useCallback(() => {
-    const el = containerRef.current
-    if (!el) return
-    if (!document.fullscreenElement) {
-      el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {})
-    } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {})
-    }
-  }, [])
-
-  useEffect(() => {
-    const handler = () => setIsFullscreen(!!document.fullscreenElement)
-    document.addEventListener("fullscreenchange", handler)
-    return () => document.removeEventListener("fullscreenchange", handler)
-  }, [])
-
+  // ── Loading ──
   if (loading) return (
     <div className="flex items-center justify-center py-28 px-4 sm:px-6">
       <Disc3 className="w-12 h-12 animate-spin text-[#FFCC00]" />
     </div>
   )
 
+  // ── Lobby ──
   if (phase === "lobby") return (
     <GameLobby
       playerTazos={tazos}
@@ -607,6 +445,7 @@ export default function BattleView() {
     />
   )
 
+  // ── Match End ──
   if (phase === "match_end" && result) return (
     <div className="max-w-2xl mx-auto py-6 space-y-6">
       <BattleResultPanel result={{
@@ -627,19 +466,19 @@ export default function BattleView() {
     </div>
   )
 
-  // ── Full-page 3D Arena ──
+  // ── Battle Arena ──
   const isAiming = phase === "player_aim" || phase === "player_charge" || phase === "player_tilt"
   const showReticle = isAiming || phase === "betting" || phase === "stakes_reveal"
+  const throwing = ctx?.playerBetTazo || (deck.length > 0 ? deck[0] : null)
 
   return (
     <div ref={containerRef} className="w-full relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 110px)" }}>
-      {/* Fullscreen toggle — top-right corner */}
       <button onClick={toggleFullscreen}
         className="absolute top-2 right-2 z-30 p-2 bg-black/40 hover:bg-black/60 rounded-full border border-white/10 text-white/50 hover:text-white/80 transition-all"
         title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
         {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
       </button>
-      {/* Keyframe animation for score popups */}
+
       <style>{`
         @keyframes popUp {
           0% { opacity: 1; transform: translateY(0) scale(1); }
@@ -665,48 +504,40 @@ export default function BattleView() {
           100% { transform: scale(1); }
         }
       `}</style>
+
       <BattleArena3D
         config={cfg?.arena || DEFAULT_ARENA_3D}
         stakedTazos={staked}
         airborneTazo={airborne}
         gamePhase={phase}
         showReticle={showReticle}
-        reticleX={reticleX}
-        reticleZ={reticleZ}
+        reticleX={engine.ui.reticleX}
+        reticleZ={engine.ui.reticleZ}
       >
-        {/* ── HUD overlay top (compact) ── */}
+        {/* ── HUD overlay ── */}
         <div className="absolute top-2 left-2 right-2 z-20">
           <div className="flex items-center gap-2">
-            {/* Player captured pill */}
             <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
               <span className="text-[8px] font-black text-white/50 uppercase">CAPT</span>
               <span className="text-sm font-black text-[#29ADFF]">{pScore}</span>
-              {selectedDeckName && (
-                <span className="text-[7px] font-black text-[#FFCC00]/60 ml-1">{selectedDeckName}</span>
-              )}
+              {selectedDeckName && <span className="text-[7px] font-black text-[#FFCC00]/60 ml-1">{selectedDeckName}</span>}
             </div>
-
             <div className="flex-1" />
-
-            {/* Round + Tazos left */}
             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/5">
               <span className="text-[8px] font-black text-white/20 uppercase">R{round}</span>
               <span className="text-[7px] font-black text-white/10">t{deck.length + (cfg?.opponentDeck?.length || 0)} left</span>
             </div>
-
             <div className="flex-1" />
-
-            {/* Opponent captured pill */}
             <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
               <span className="text-sm font-black text-[#FF004D]">{oScore}</span>
               <span className="text-[8px] font-black text-white/50 uppercase">CAPT</span>
             </div>
           </div>
 
-          {/* Score popups — float up beside scores */}
+          {/* Score popups */}
           {scorePopups.map(p => (
             <div key={p.id}
-              className={`absolute top-12 ${p.side === "left" ? "left-6" : "right-6"} animate-[popUp_1.8s_ease-out_forwards] pointer-events-none`}
+              className={`absolute top-12 ${p.side === "left" ? "left-6" : "right-6"} pointer-events-none`}
               style={{
                 color: p.color,
                 fontSize: p.text.length > 2 ? "18px" : "28px",
@@ -714,13 +545,11 @@ export default function BattleView() {
                 textShadow: `0 0 16px ${p.color}, 0 2px 8px rgba(0,0,0,0.8)`,
                 animation: "popUp 1.8s ease-out forwards",
               }}
-            >
-              {p.text}
-            </div>
+            >{p.text}</div>
           ))}
 
-          {/* Impact particles — burst from center on slam */}
-          {(phase === "impact" || showImpact) && (
+          {/* Impact particles */}
+          {(phase === "impact" || engine.ui.showImpact) && (
             <div className="absolute top-1/2 left-1/2 pointer-events-none" style={{ marginLeft: -120, marginTop: -120 }}>
               {[...Array(18)].map((_, i) => {
                 const angle = (i / 18) * Math.PI * 2
@@ -728,19 +557,16 @@ export default function BattleView() {
                 const px = Math.cos(angle) * dist
                 const py = Math.sin(angle) * dist
                 const size = 3 + Math.random() * 5
-                const colors = ["#FFCC00", "#FF8800", "#FFAA00", "#FFDD44", "#FFF"]
-                const color = colors[Math.floor(Math.random() * colors.length)]
+                const color = ["#FFCC00", "#FF8800", "#FFAA00", "#FFDD44", "#FFF"][Math.floor(Math.random() * 5)]
                 return (
                   <div key={i} className="absolute rounded-full"
                     style={{
-                      left: 120, top: 120,
-                      width: size, height: size,
+                      left: 120, top: 120, width: size, height: size,
                       background: color,
                       boxShadow: `0 0 ${size * 2}px ${color}`,
                       animation: "particleFly 1.2s ease-out forwards",
                       animationDelay: `${i * 0.02}s`,
-                      "--px": `${px}px`,
-                      "--py": `${py}px`,
+                      "--px": `${px}px`, "--py": `${py}px`,
                     } as React.CSSProperties}
                   />
                 )
@@ -748,7 +574,7 @@ export default function BattleView() {
             </div>
           )}
 
-          {/* Phase status — centered pill */}
+          {/* Phase status */}
           <div className="flex justify-center mt-2">
             {phase === "intro" && (
               <div className="inline-block px-8 py-2 bg-[#FFCC00]/15 rounded-full border-2 border-[#FFCC00]/50 animate-pulse">
@@ -773,7 +599,7 @@ export default function BattleView() {
             )}
             {phase === "player_charge" && (
               <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FF8800]/40 animate-pulse">
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-black text-[#FF8800] tracking-wider"><Zap className="w-3.5 h-3.5" /> CHARGING — {Math.round(charge * 100)}%</span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-black text-[#FF8800] tracking-wider"><Zap className="w-3.5 h-3.5" /> CHARGING — {Math.round(engine.ui.charge * 100)}%</span>
                 <span className="text-[8px] font-black text-white/30 ml-2">{throwing?.name}</span>
               </div>
             )}
@@ -787,9 +613,9 @@ export default function BattleView() {
                 <span className="inline-flex items-center gap-1.5 text-[14px] font-black text-[#FFCC00] tracking-widest"><Zap className="w-4 h-4" /> SLAM!</span>
               </div>
             )}
-            {(phase === "impact" || showImpact) && (
+            {(phase === "impact" || engine.ui.showImpact) && (
               <div className="inline-block px-5 py-1.5 bg-[#FFCC00]/10 rounded-full border-2 border-[#FFCC00]/50">
-                <span className="text-[12px] font-black text-[#FFCC00] tracking-wider">{impactMsg || "IMPACT!"}</span>
+                <span className="text-[12px] font-black text-[#FFCC00] tracking-wider">{engine.ui.impactMsg || "IMPACT!"}</span>
               </div>
             )}
             {phase === "opponent_aim" && (
@@ -800,7 +626,7 @@ export default function BattleView() {
             )}
             {phase === "resolve_impact" && (
               <span className="text-[9px] font-black text-[#22C55E] bg-black/50 px-3 py-0.5 rounded-full">
-                {impactMsg || "Resolving..."}
+                {engine.ui.impactMsg || "Resolving..."}
               </span>
             )}
             {phase === "round_end" && (
@@ -808,63 +634,54 @@ export default function BattleView() {
             )}
           </div>
 
-          {/* Win condition */}
           <div className="text-center mt-0.5">
             <span className="text-[7px] font-black text-white/20">Eliminate all opponent tazos to win</span>
           </div>
         </div>
 
-        {/* ── Floating slam controls (self-positioned) ── */}
+        {/* ── Slam Controls ── */}
         {isAiming && throwing ? (
-            <SlamControls
-              phase={slamPhase}
-              tazoName={throwing.name}
-              tazoFranchise={throwing.franchise}
-              tazoControl={throwing.control || 50}
-              tazoPrecision={throwing.precision || 50}
-              reticleX={reticleX}
-              reticleZ={reticleZ}
-              charge={charge}
-              tiltDeg={tiltDeg}
-              spinIntensity={spinIntensity}
-              onReticleMove={(x, z) => { setReticleX(x); setReticleZ(z) }}
-              onCharge={(level) => setCharge(level)}
-              onChargeComplete={(level) => {
-                if (busy.current || slamPhase !== "charge") return
-                setSlamPhase("tilt")
-                setCharge(level)
-                setPhase("player_tilt")
-              }}
-              onTilt={(deg, intensity) => {
-                setTiltDeg(deg)
-                setTiltIntensity(intensity)
-              }}
-              onSpin={(intensity) => setSpinIntensity(intensity)}
-              onRelease={() => {
-                if (slamPhase === "aim") {
-                  setSlamPhase("charge")
-                  setPhase("player_charge")
-                  return
-                }
-                if (slamPhase === "charge") {
-                  // User released early — skip tilt, go directly to slam
-                  // Clean interval via effect cleanup
-                  handleSlamRelease()
-                  return
-                }
-                // Tilt phase — release the slam
+          <SlamControls
+            phase={engine.ui.slamPhase}
+            tazoName={throwing.name}
+            tazoFranchise={throwing.franchise}
+            tazoControl={throwing.control || 50}
+            tazoPrecision={throwing.precision || 50}
+            reticleX={engine.ui.reticleX}
+            reticleZ={engine.ui.reticleZ}
+            charge={engine.ui.charge}
+            tiltDeg={engine.ui.tiltDeg}
+            spinIntensity={engine.ui.spinIntensity}
+            onReticleMove={(x, z) => { engine.setReticleX(x); engine.setReticleZ(z) }}
+            onCharge={(level) => engine.setCharge(level)}
+            onChargeComplete={(level) => {
+              if (engine.ui.busy || engine.ui.slamPhase !== "charge") return
+              engine.setSlamPhase("tilt")
+              engine.setCharge(level)
+            }}
+            onTilt={(deg, intensity) => { engine.setTiltDeg(deg); engine.setTiltIntensity(intensity) }}
+            onSpin={(intensity) => engine.setSpinIntensity(intensity)}
+            onRelease={() => {
+              if (engine.ui.slamPhase === "aim") {
+                engine.setSlamPhase("charge")
+                return
+              }
+              if (engine.ui.slamPhase === "charge") {
                 handleSlamRelease()
-              }}
-              onBack={back}
-            />
-          ) : (
-            <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-center p-4">
-              <button onClick={back}
-                className="px-5 py-2.5 text-[10px] font-black text-white/40 bg-black/60 hover:bg-black/80 hover:text-white/70 border border-white/15 uppercase tracking-wider transition-colors">
-                Leave Battle
-              </button>
-            </div>
-          )}
+                return
+              }
+              handleSlamRelease()
+            }}
+            onBack={back}
+          />
+        ) : (
+          <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-center p-4">
+            <button onClick={back}
+              className="px-5 py-2.5 text-[10px] font-black text-white/40 bg-black/60 hover:bg-black/80 hover:text-white/70 border border-white/15 uppercase tracking-wider transition-colors">
+              Leave Battle
+            </button>
+          </div>
+        )}
       </BattleArena3D>
     </div>
   )

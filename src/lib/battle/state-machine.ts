@@ -280,10 +280,25 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     event: "IMPACT_RESOLVED",
     action(ctx, event) {
       const e = event as Extract<BattleEvent, { type: "IMPACT_RESOLVED" }>
+      const thrower = ctx.currentThrower || "player"
+      // Apply scoring deltas
+      const scoring = scoreBettingImpact(e.result, thrower)
       return {
         ...ctx,
         state: "resolve_impact",
         lastImpact: e.result,
+        player: {
+          ...ctx.player,
+          score: ctx.player.score + scoring.playerDelta,
+          tazosRemaining: Math.max(0, (ctx.player.tazosRemaining || ctx.playerRemaining) - scoring.playerLostTazos),
+        },
+        opponent: {
+          ...ctx.opponent,
+          score: ctx.opponent.score + scoring.opponentDelta,
+          tazosRemaining: Math.max(0, (ctx.opponent.tazosRemaining || ctx.opponentRemaining) - scoring.opponentLostTazos),
+        },
+        playerRemaining: Math.max(0, ctx.playerRemaining - scoring.playerLostTazos),
+        opponentRemaining: Math.max(0, ctx.opponentRemaining - scoring.opponentLostTazos),
       }
     },
   },
