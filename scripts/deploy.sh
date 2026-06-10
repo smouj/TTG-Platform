@@ -57,6 +57,9 @@ cp -r public/tazos-artgen/* .next/standalone/public/tazos-artgen/  2>/dev/null |
 # Copy DB to standalone (rsync --delete removes it)
 cp prisma/dev.db .next/standalone/prisma/dev.db
 
+# Push schema changes to ensure DB tables match (safe: SQLite adds missing columns/tables only)
+DATABASE_URL="file:/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db" npx prisma db push --schema=./prisma/schema.prisma --skip-generate 2>/dev/null || true
+
 # Restart PM2
 pm2 restart ttg
 
