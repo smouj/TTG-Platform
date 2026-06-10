@@ -15,7 +15,7 @@ import { sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 import LanguageSwitcher from "@/components/ui/language-switcher"
 import {
   BookOpen, Swords, BarChart3, ShoppingBag, Disc3,
-  Target, Layers, LogOut, Home, Settings, Shield, Coins,
+  Target, Layers, LogOut, Settings, Shield, Coins,
 } from "lucide-react"
 
 type TabId = "battle" | "stats" | "shop" | "quests" | "collection" | "decks" | "settings"
@@ -93,89 +93,72 @@ export default function MagazinePageShell({
       <div className="mag-halftone fixed inset-0 pointer-events-none opacity-25 z-0" />
 
       {/* ═══════════════════════════════════════ */}
-      {/* MAGAZINE MASTHEAD                        */}
+      {/* DARK HEADER — matches landing launcher  */}
       {/* ═══════════════════════════════════════ */}
-      <header className="sticky top-0 z-40 border-b-[3px] border-[#1a1a1a]" style={{
-        background: `#FFCC00`,
-        backgroundImage: `repeating-linear-gradient(
-          -30deg,
-          transparent,
-          transparent 6px,
-          rgba(0,0,0,0.04) 6px,
-          rgba(0,0,0,0.04) 12px
-        ), repeating-linear-gradient(
-          30deg,
-          transparent,
-          transparent 6px,
-          rgba(0,0,0,0.03) 6px,
-          rgba(0,0,0,0.03) 12px
-        )`,
-      }}>
-        {/* Top bar — utility strip */}
-        <div className="bg-[#1a1a1a] text-white text-center py-1 px-3 sm:px-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1 text-[9px] sm:text-[10px] font-black text-zinc-400 hover:text-[#FFCC00] transition-colors tracking-wider uppercase">
-            <Home className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            <span className="hidden sm:inline">{t.nav_back_to_home || "Back to Home"}</span>
-          </Link>
-          <span className="text-[9px] sm:text-[10px] font-black tracking-[3px] uppercase text-[#FFCC00]">
-            {t.siteMastheadBadge || "MAGAZINE"}
-          </span>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <LanguageSwitcher />
-            {!loading && user && user.email === "dev@tradingtazosgame.com" && (
-              <Link href="/admin" className="text-[9px] font-black text-[#E3350D] hover:text-white tracking-wider uppercase"><Shield className="w-3 h-3 inline mr-1" /><span className="hidden sm:inline">Admin</span></Link>
-            )}
-            {!loading && user ? (
-              <button onClick={() => { logout(); router.push("/") }} className="flex items-center gap-1 px-2 py-1 text-[9px] sm:text-[10px] font-black text-[#E3350D] bg-white/10 hover:bg-[#E3350D]/15 border border-[#E3350D]/30 hover:border-[#E3350D] transition-colors tracking-wider uppercase">
-                <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span>{t.auth_logout || "Logout"}</span>
-              </button>
-            ) : (
-              <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 tracking-wider uppercase">{t.siteMastheadBadge || "DASHBOARD"}</span>
-            )}
-          </div>
-        </div>
-
-        {/* Title Row */}
-        <div className="max-w-7xl mx-auto px-4 py-2 sm:py-2.5">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Link href="/app/collection" className="relative shrink-0">
-              <img src="/logo/logo-icon-black.webp" alt="TTG" className="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]" />
+      <header className="sticky top-0 z-40 border-b-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
+        {/* Top row: logo + title + auth */}
+        <div className="flex items-center justify-between px-4 sm:px-6 py-2.5">
+          <div className="flex items-center gap-2.5">
+            <Link href="/" className="shrink-0">
+              <img src="/favicon-192.png" alt="TTG" className="w-7 h-7 sm:w-8 sm:h-8" />
             </Link>
-            <div className="min-w-0 flex-1">
-              <h1 className="text-lg sm:text-2xl lg:text-3xl font-black leading-none tracking-tight" style={{ color: "#1a1a1a" }}>
-                {t.siteTitle || "TRADING TAZOS GAME"}
-              </h1>
-              <div className="flex items-baseline gap-2 mt-0.5">
-                <span className="text-xs sm:text-base lg:text-lg font-black leading-none" style={{ color: "#E3350D" }}>
-                  {t.siteSubtitle || "COLLECT. TRADE. BATTLE."}
-                </span>
-                <span className="hidden sm:inline text-[8px] font-black text-[#1a1a1a] bg-white/80 border-2 border-[#1a1a1a] px-1.5 py-0.5 shadow-[2px_2px_0px_#1a1a1a] uppercase tracking-wider">
-                  {t.siteIssue || "ISSUE #001"}
-                </span>
-              </div>
+            <div>
+              <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-[0.08em] leading-none">
+                TRADING<span className="text-[#FFCC00]">TAZOS</span><span className="text-white/80">GAME</span>
+              </h2>
+              <p className="text-[8px] font-bold text-[#FFCC00]/70 uppercase tracking-[0.3em] leading-none mt-0.5">
+                {t.siteSubtitle || "APP"} &middot; {t.siteIssue || "WEB"}
+              </p>
             </div>
           </div>
-        </div>
 
-        {/* Tab Bar — equal-width grid, magazine-style */}
-        <nav className="max-w-7xl mx-auto px-1 sm:px-4">
-          <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+          {/* Desktop nav tabs */}
+          <nav className="hidden sm:flex items-center gap-1">
             {NAV_ITEMS.map(({ id, label, icon: Icon, href }) => {
               const isActive = currentTab === id || pathname === href
               return (
                 <Link key={id} href={href}
-                  className={`relative flex items-center justify-center gap-1 sm:gap-1.5 px-0.5 sm:px-3 py-2 sm:py-2.5 font-black text-[8px] sm:text-[10px] tracking-wider uppercase transition-all whitespace-nowrap border-[3px] border-b-0 ${
-                    isActive
-                      ? "bg-[#FFCC00] text-[#1a1a1a] border-[#1a1a1a] -mb-[1px] z-10"
-                      : "bg-white/60 text-[#1a1a1a]/40 border-[#1a1a1a]/10 hover:bg-white/90 hover:text-[#1a1a1a]/65 hover:border-[#1a1a1a]/20"
-                  }`}
-                  style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
-                  <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
-                  <span className="truncate">{label}</span>
+                  className={`flex items-center gap-1 px-2 py-1 text-[10px] font-black uppercase tracking-wider transition-colors whitespace-nowrap ${
+                    isActive ? "text-[#FFCC00]" : "text-white/45 hover:text-[#FFCC00]/80"
+                  }`}>
+                  <Icon className="w-3 h-3" />
+                  {label}
                 </Link>
               )
             })}
+          </nav>
+
+          {/* Auth + lang */}
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            {!loading && user && user.email === "dev@tradingtazosgame.com" && (
+              <Link href="/admin" className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-black text-[#E3350D]/70 hover:text-[#E3350D] uppercase tracking-wider transition-colors border border-[#E3350D]/20 hover:border-[#E3350D]/50">
+                <Shield className="w-3 h-3" /> Admin
+              </Link>
+            )}
+            {!loading && user ? (
+              <button onClick={() => { logout(); router.push("/") }}
+                className="px-3 py-1 text-[10px] font-black text-white/40 uppercase tracking-wider border-2 border-white/10 hover:border-[#E3350D] hover:text-[#E3350D] transition-colors">
+                <LogOut className="w-3 h-3 inline sm:hidden" /> <span className="hidden sm:inline">Log Out</span>
+              </button>
+            ) : (
+              <a href="/login"
+                className="px-3 py-1 text-[10px] font-black text-white uppercase tracking-wider border-2 border-white/30 hover:border-[#FFCC00] hover:text-[#FFCC00] transition-colors">Sign In</a>
+            )}
           </div>
+        </div>
+
+        {/* Mobile nav tabs */}
+        <nav className="sm:hidden flex items-center justify-start gap-0 px-2 pb-2 overflow-x-auto">
+          {NAV_ITEMS.map(({ id, label, href }) => {
+            const isActive = currentTab === id || pathname === href
+            return (
+              <Link key={id} href={href}
+                className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
+                  isActive ? "text-[#FFCC00]" : "text-white/35 hover:text-[#FFCC00]/80"
+                }`}>{label}</Link>
+            )
+          })}
         </nav>
       </header>
 
