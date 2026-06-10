@@ -15,7 +15,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import {
   createMatch, simulateSlam, generateAISlam, checkMatchEnd,
-  scoreImpact, createAirborneTazo, placeStakedTazos,
+  scoreImpact, scoreBettingImpact, createAirborneTazo, placeStakedTazos,
   DEFAULT_ARENA_3D,
 } from "@/lib/battle/game-loop"
 import { playSfx, warmSfx } from "@/lib/battle/sfx"
@@ -38,12 +38,16 @@ const BACK_ARTS: Record<string, string> = {
 }
 
 const DEMO_TAZOS: TazoCard[] = [
-  { id: "d1", name: "Lumipuff", slug: "lumipuff", franchise: "minimon", imageUrl: "/tazos-artgen/minimon/minimon-001.png", finish: "reverse_holo", creatureVariant: "standard", attack: 45, defense: 40, resistance: 35, weight: 35, stability: 40, spin: 55, control: 50, bounce: 45, precision: 55 },
-  { id: "d2", name: "Leafroll", slug: "leafroll", franchise: "minimon", imageUrl: "/tazos-artgen/minimon/minimon-004.png", finish: "glossy", creatureVariant: "standard", attack: 55, defense: 60, resistance: 50, weight: 35, stability: 55, spin: 40, control: 50, bounce: 50, precision: 48 },
-  { id: "d3", name: "Voltcrab-X", slug: "voltcrab-x", franchise: "cybermon", imageUrl: "/tazos-artgen/cybermon/cybermon-001.png", finish: "metallic", creatureVariant: "standard", attack: 70, defense: 45, resistance: 50, weight: 55, stability: 50, spin: 60, control: 40, bounce: 35, precision: 45 },
-  { id: "d4", name: "Datadrake", slug: "datadrake", franchise: "cybermon", imageUrl: "/tazos-artgen/cybermon/cybermon-002.png", finish: "holo", creatureVariant: "standard", attack: 60, defense: 55, resistance: 50, weight: 45, stability: 55, spin: 50, control: 60, bounce: 45, precision: 55 },
-  { id: "d5", name: "Bytefang", slug: "bytefang", franchise: "cybermon", imageUrl: "/tazos-artgen/cybermon/cybermon-003.png", finish: "chrome", creatureVariant: "shiny", shinyImageUrl: "/tazos-artgen/cybermon/cybermon-003.png", attack: 65, defense: 48, resistance: 42, weight: 48, stability: 45, spin: 62, control: 44, bounce: 40, precision: 50 },
-  { id: "d7", name: "Tenzan Blaze", slug: "tenzan-blaze", franchise: "dracobell", imageUrl: "/tazos-artgen/dracobell/dracobell-002.png", finish: "prismatic", creatureVariant: "standard", attack: 80, defense: 55, resistance: 52, weight: 58, stability: 55, spin: 65, control: 60, bounce: 48, precision: 55 },
+  { id: "d1", name: "Aquafin", slug: "aquafin", franchise: "minimon", imageUrl: "/tazos-generated/minimon/aquafin.png", finish: "holo", creatureVariant: "standard", attack: 65, defense: 55, resistance: 60, weight: 45, stability: 50, spin: 55, control: 60, bounce: 40, precision: 55 },
+  { id: "d2", name: "Aurorix", slug: "aurorix", franchise: "minimon", imageUrl: "/tazos-generated/minimon/aurorix.png", finish: "rainbow", creatureVariant: "standard", attack: 58, defense: 62, resistance: 50, weight: 35, stability: 55, spin: 45, control: 50, bounce: 50, precision: 48 },
+  { id: "d3", name: "Cipherion", slug: "cipherion", franchise: "cybermon", imageUrl: "/tazos-generated/cybermon/cipherion.png", finish: "metallic", creatureVariant: "standard", attack: 75, defense: 48, resistance: 52, weight: 55, stability: 50, spin: 60, control: 40, bounce: 35, precision: 45 },
+  { id: "d4", name: "Datadrake", slug: "datadrake", franchise: "cybermon", imageUrl: "/tazos-generated/cybermon/datadrake.png", finish: "holo", creatureVariant: "standard", attack: 60, defense: 55, resistance: 50, weight: 45, stability: 55, spin: 50, control: 60, bounce: 45, precision: 55 },
+  { id: "d5", name: "Debugger", slug: "debugger", franchise: "cybermon", imageUrl: "/tazos-generated/cybermon/debugger.png", finish: "chrome", creatureVariant: "standard", attack: 68, defense: 45, resistance: 42, weight: 48, stability: 45, spin: 62, control: 44, bounce: 40, precision: 50 },
+  { id: "d6", name: "Firewall", slug: "firewall", franchise: "cybermon", imageUrl: "/tazos-generated/cybermon/firewall.png", finish: "prismatic", creatureVariant: "standard", attack: 70, defense: 58, resistance: 55, weight: 60, stability: 55, spin: 42, control: 52, bounce: 38, precision: 50 },
+  { id: "d7", name: "Koori Frost", slug: "koori-frost", franchise: "dracobell", imageUrl: "/tazos-generated/dracobell/koori-frost.png", finish: "prismatic", creatureVariant: "standard", attack: 80, defense: 55, resistance: 52, weight: 58, stability: 55, spin: 65, control: 60, bounce: 48, precision: 55 },
+  { id: "d8", name: "Ikari Rage", slug: "ikari-rage", franchise: "dracobell", imageUrl: "/tazos-generated/dracobell/ikari-rage.png", finish: "gold", creatureVariant: "golden", shinyImageUrl: "/tazos-generated/dracobell/ikari-rage.png", attack: 85, defense: 50, resistance: 48, weight: 62, stability: 50, spin: 55, control: 58, bounce: 42, precision: 52 },
+  { id: "d9", name: "Hikaru Light", slug: "hikaru-light", franchise: "dracobell", imageUrl: "/tazos-generated/dracobell/hikaru-light.png", finish: "holo", creatureVariant: "standard", attack: 72, defense: 60, resistance: 54, weight: 50, stability: 58, spin: 48, control: 62, bounce: 40, precision: 56 },
+  { id: "d10", name: "Kaji Flame", slug: "kaji-flame", franchise: "dracobell", imageUrl: "/tazos-generated/dracobell/kaji-flame.png", finish: "metallic", creatureVariant: "standard", attack: 78, defense: 52, resistance: 50, weight: 55, stability: 52, spin: 58, control: 50, bounce: 45, precision: 48 },
 ]
 
 function toPanelVictoryType(victoryType: MatchResult["victoryType"]): BattleFinalResult["victoryType"] {
@@ -119,6 +123,8 @@ export default function BattleView() {
   const [result, setResult] = useState<MatchResult | null>(null)
   const [creditsEarned, setCreditsEarned] = useState(0)
   const [throwing, setThrowing] = useState<TazoCard | null>(null)
+  const [playerRemaining, setPlayerRemaining] = useState(0)
+  const [opponentRemaining, setOpponentRemaining] = useState(0)
 
   // Slam input state
   const [reticleX, setReticleX] = useState(0)
@@ -150,10 +156,11 @@ export default function BattleView() {
     pScore: 0, oScore: 0, staked: [] as StakedTazo[], round: 1, turn: 0,
     deck: [] as TazoCard[], cfg: null as MatchConfig | null,
     reticleX: 0, reticleZ: 0, charge: 0, tiltDeg: 0, tiltIntensity: 0, spinIntensity: 0,
+    playerRemaining: 0, opponentRemaining: 0,
   })
   useEffect(() => {
-    stateRef.current = { pScore, oScore, staked, round, turn, deck, cfg, reticleX, reticleZ, charge, tiltDeg, tiltIntensity, spinIntensity }
-  }, [pScore, oScore, staked, round, turn, deck, cfg, reticleX, reticleZ, charge, tiltDeg, tiltIntensity, spinIntensity])
+    stateRef.current = { pScore, oScore, staked, round, turn, deck, cfg, reticleX, reticleZ, charge, tiltDeg, tiltIntensity, spinIntensity, playerRemaining, opponentRemaining }
+  }, [pScore, oScore, staked, round, turn, deck, cfg, reticleX, reticleZ, charge, tiltDeg, tiltIntensity, spinIntensity, playerRemaining, opponentRemaining])
 
   const saveBattleResult = useCallback(async (matchResult: MatchResult) => {
     if (resultSaved.current || !cfg) return
@@ -293,17 +300,23 @@ export default function BattleView() {
           setStaked(newStaked)
           setAirborne(null)
 
-          const { playerDelta, opponentDelta } = scoreImpact(impact, newStaked, "opponent")
+          const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "opponent")
           const newPScore = s4.pScore + playerDelta
           const newOScore = s4.oScore + opponentDelta
+          const newPlayerRemaining = Math.max(0, s4.playerRemaining - playerLostTazos)
+          const newOpponentRemaining = Math.max(0, s4.opponentRemaining - opponentLostTazos)
           setPScore(newPScore)
           setOScore(newOScore)
+          setPlayerRemaining(newPlayerRemaining)
+          setOpponentRemaining(newOpponentRemaining)
 
           setImpactMsg(impact.description)
           setShowImpact(true)
 
           if (playerDelta > 0) { spawnPopup(`+${playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
           if (opponentDelta > 0) { spawnPopup(`+${opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
+          if (playerLostTazos > 0) { spawnPopup(`-${playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
+          if (opponentLostTazos > 0) { spawnPopup(`-${opponentLostTazos} tazo`, "#29ADFF", "right"); playSfx("damage_taken", 0.35) }
 
           setTimeout(() => {
             setShowImpact(false)
@@ -311,7 +324,7 @@ export default function BattleView() {
 
             const end = checkMatchEnd(
               newPScore, newOScore,
-              s4.deck.length, s4.cfg!.opponentDeck.length
+              newPlayerRemaining, newOpponentRemaining
             )
             if (end) {
               setResult({ ...end, totalTurns: s4.turn + 1, playerScore: newPScore, opponentScore: newOScore })
@@ -334,18 +347,23 @@ export default function BattleView() {
 
   // ── Start new round (place stakes) ──
   const startNewRound = useCallback((playerDeck: TazoCard[], opponentDeck: TazoCard[], arena: typeof DEFAULT_ARENA_3D) => {
-    // BETTING: Each player stakes 1 tazo from their current hand
-    const pStake = playerDeck.length > 0
-      ? playerDeck[Math.floor(Math.random() * playerDeck.length)]
+    // Filter decks to only include tazos that haven't been captured
+    const s = stateRef.current
+    const alivePlayer = playerDeck.slice(0, s.playerRemaining)
+    const aliveOpponent = opponentDeck.slice(0, s.opponentRemaining)
+
+    // BETTING: Each player stakes 1 tazo from remaining alive tazos
+    const pStake = alivePlayer.length > 0
+      ? alivePlayer[Math.floor(Math.random() * alivePlayer.length)]
       : playerDeck[0]
-    const oStake = opponentDeck.length > 0
-      ? opponentDeck[Math.floor(Math.random() * opponentDeck.length)]
+    const oStake = aliveOpponent.length > 0
+      ? aliveOpponent[Math.floor(Math.random() * aliveOpponent.length)]
       : opponentDeck[0]
     const newStaked = placeStakedTazos(pStake, oStake)
     setStaked(newStaked)
 
-    // Pick launcher from hand (not the staked tazo)
-    const availPlayer = playerDeck.filter(t => t.id !== pStake.id)
+    // Pick launcher from alive hand (not the staked tazo)
+    const availPlayer = alivePlayer.filter(t => t.id !== pStake.id)
     const launcher = availPlayer.length > 0
       ? availPlayer[Math.floor(Math.random() * availPlayer.length)]
       : playerDeck[0]
@@ -415,6 +433,7 @@ export default function BattleView() {
     }
     setCfg(c)
     setPScore(0); setOScore(0)
+    setPlayerRemaining(hand.length); setOpponentRemaining(oppHand.length)
     setRound(1); setTurn(0); setResult(null)
     busy.current = false
     setShowImpact(false)
@@ -499,11 +518,15 @@ export default function BattleView() {
       setStaked(newStaked)
       setAirborne(null)
 
-      const { playerDelta, opponentDelta } = scoreImpact(impact, newStaked, "player")
+      const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "player")
       const newPScore = s2.pScore + playerDelta
       const newOScore = s2.oScore + opponentDelta
+      const newPlayerRemaining = Math.max(0, s2.playerRemaining - playerLostTazos)
+      const newOpponentRemaining = Math.max(0, s2.opponentRemaining - opponentLostTazos)
       setPScore(newPScore)
       setOScore(newOScore)
+      setPlayerRemaining(newPlayerRemaining)
+      setOpponentRemaining(newOpponentRemaining)
 
       setImpactMsg(impact.description)
       setShowImpact(true)
@@ -511,6 +534,9 @@ export default function BattleView() {
       // Score popups
       if (playerDelta > 0) { spawnPopup(`+${playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
       if (opponentDelta > 0) { spawnPopup(`+${opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
+      // Elimination popups
+      if (playerLostTazos > 0) { spawnPopup(`-${playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
+      if (opponentLostTazos > 0) { spawnPopup(`-${opponentLostTazos} tazo`, "#29ADFF", "right"); playSfx("damage_taken", 0.35) }
 
       setTimeout(() => {
         setShowImpact(false)
@@ -518,7 +544,7 @@ export default function BattleView() {
 
         const end = checkMatchEnd(
           newPScore, newOScore,
-          s2.deck.length, s2.cfg!.opponentDeck.length
+          newPlayerRemaining, newOpponentRemaining
         )
         if (end) {
           setResult({

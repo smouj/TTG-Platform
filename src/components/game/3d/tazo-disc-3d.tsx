@@ -6,7 +6,7 @@
 // ============================================================
 "use client"
 
-import { useRef, useMemo } from "react"
+import { useRef, useMemo, useEffect, useState, useCallback } from "react"
 import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 
@@ -24,19 +24,32 @@ const FRANCHISE_COLORS: Record<string, { primary: string; secondary: string; rim
 
 // ─── Texture cache ───
 const textureCache = new Map<string, THREE.Texture>()
+const pendingLoads = new Set<string>()
 
-function loadTexture(url: string): THREE.Texture | null {
+function loadTexture(url: string, onLoaded?: (tex: THREE.Texture) => void): THREE.Texture | null {
   if (textureCache.has(url)) return textureCache.get(url)!
-  const tex = new THREE.TextureLoader().load(
-    url,
-    undefined, undefined,
-    () => textureCache.delete(url)
-  )
-  tex.colorSpace = THREE.SRGBColorSpace
-  tex.minFilter = THREE.LinearMipmapLinearFilter
-  tex.magFilter = THREE.LinearFilter
-  textureCache.set(url, tex)
-  return tex
+  
+  // Return null while loading; callback or re-render will provide the texture
+  if (!pendingLoads.has(url)) {
+    pendingLoads.add(url)
+    new THREE.TextureLoader().load(
+      url,
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace
+        tex.minFilter = THREE.LinearMipmapLinearFilter
+        tex.magFilter = THREE.LinearFilter
+        textureCache.set(url, tex)
+        pendingLoads.delete(url)
+        onLoaded?.(tex)
+      },
+      undefined,
+      () => {
+        pendingLoads.delete(url)
+        onLoaded?.(makeFallbackTexture("", ""))  // signal error
+      }
+    )
+  }
+  return null
 }
 
 // ─── Procedural fallback ───
@@ -103,24 +116,34 @@ export default function TazoDisc3D({
   const rimColor = finish ? (FINISH_RIM_COLORS[finish] || colors.rim) : colors.rim
   const rimMetalness = finish ? (FINISH_RIM_METALNESS[finish] || 0.85) : 0.85
 
-  // Front face texture
-  const faceTex = useMemo(() => {
+  // Front face texture — loaded async, fallback while loading
+  const [faceTex, setFaceTex] = useState<THREE.Texture | null>(null)
+  const faceFallback = useMemo(() => makeFallbackTexture(name, franchise), [name, franchise])
+  
+  useEffect(() => {
     if (imageUrl) {
-      const tex = loadTexture(imageUrl)
-      if (tex) return tex
+      const cached = loadTexture(imageUrl, (tex) => setFaceTex(tex))
+      if (cached) setFaceTex(cached)
+    } else {
+      setFaceTex(null)
     }
-    return makeFallbackTexture(name, franchise)
-  }, [imageUrl, name, franchise])
+    return () => {} // keep cache alive across unmount/remount
+  }, [imageUrl])
 
   // Back texture — franchise back art or fallback
-  const backTex = useMemo(() => {
+  const [backTex, setBackTex] = useState<THREE.Texture | null>(null)
+  const backFallback = useMemo(() => makeFallbackTexture(name, franchise), [name, franchise])
+
+  useEffect(() => {
     const url = backImageUrl || BACK_ARTS[franchise.toLowerCase()]
     if (url) {
-      const tex = loadTexture(url)
-      if (tex) return tex
+      const cached = loadTexture(url, (tex) => setBackTex(tex))
+      if (cached) setBackTex(cached)
+    } else {
+      setBackTex(null)
     }
-    return makeFallbackTexture(name, franchise)
-  }, [backImageUrl, franchise, name])
+    return () => {}
+  }, [backImageUrl, franchise])
 
   useFrame((_, delta) => {
     if (!groupRef.current || !autoRotate) return
@@ -138,13 +161,23 @@ export default function TazoDisc3D({
       {/* Front face — tazo art, rotated to XZ plane (facing +Y) */}
       <mesh position={[0, thickness / 2 + 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[size * 0.96, 64]} />
-        <meshStandardMaterial map={faceTex} roughness={0.4} metalness={0.05} side={THREE.FrontSide} />
+        <meshStandardMaterial
+          map={faceTex || faceFallback}
+          roughness={0.4}
+          metalness={0.05}
+          side={THREE.DoubleSide}
+        />
       </mesh>
 
       {/* Back face — franchise back art, rotated to XZ plane (facing -Y) */}
       <mesh position={[0, -thickness / 2 - 0.002, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <circleGeometry args={[size * 0.96, 64]} />
-        <meshStandardMaterial map={backTex} roughness={0.4} metalness={0.05} side={THREE.FrontSide} />
+        <meshStandardMaterial
+          map={backTex || backFallback}
+          roughness={0.4}
+          metalness={0.05}
+          side={THREE.DoubleSide}
+        />
       </mesh>
 
       {/* Metallic rim — in XZ plane */}
