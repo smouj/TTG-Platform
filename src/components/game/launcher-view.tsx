@@ -460,20 +460,20 @@ function FeaturedTazoCard({ tazo, featured }: { tazo: any; featured?: boolean })
   const [open, setOpen] = useState(false)
   const rarityKey = (tazo.rarity || "common").replace("ultra-rare", "ultra")
   const rarityColor = RARITY_GRADIENTS[rarityKey] || RARITY_GRADIENTS.common
+  const size = "w-[58px] h-[58px] sm:w-[70px] sm:h-[70px]"
 
   return (
     <>
       <button onClick={() => setOpen(true)}
-        className={`rounded-full overflow-hidden border-2 border-white/5 bg-transparent transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#1a1a1a30] ${
-          featured ? "w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] shadow-[4px_4px_0px_#1a1a1a20]" : "w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] shadow-[3px_3px_0px_#1a1a1a15]"
-        }`}>
+        className={`${size} rounded-full border-2 border-[#1a1a1a]/10 bg-black/[0.03] transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:border-[#1a1a1a]/30 ${featured ? "ring-1 ring-[#FFCC00]/20" : ""}`}
+        style={{ boxShadow: featured ? "2px 4px 8px rgba(0,0,0,0.12)" : "2px 3px 6px rgba(0,0,0,0.08)" }}>
         {tazo.imageUrl ? (
           <TazoDiscImage
             src={tazo.imageUrl} alt={tazo.displayName || tazo.name || ""} size="100%" borderWidth={0}
             franchiseSlug={typeof tazo.franchise === "string" ? tazo.franchise : tazo.franchiseSlug}
             finish={tazo.finish} creatureVariant={tazo.creatureVariant} shinyImageUrl={tazo.shinyImageUrl} lazy />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-[#1a1a1a]/5 text-[8px] font-black text-[#1a1a1a]/15">?</div>
+          <div className="w-full h-full rounded-full flex items-center justify-center bg-[#1a1a1a]/5 text-[8px] font-black text-[#1a1a1a]/15">?</div>
         )}
       </button>
       {/* Detail modal */}
@@ -580,25 +580,18 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
           {/* Stat chips — magazine factoid bar */}
           <div className="relative flex flex-wrap gap-1.5 justify-center md:justify-start">
             {[
-              { number: "349", label: "Tazos", color: "#FFCC00" },
+              { number: "349", label: "Tazos", color: "#FFCC00", tooltip: realTazoCount ? `${realTazoCount} released of 349 designed` : undefined },
               { number: "3", label: "Series", color: "#E3350D" },
               { number: "9", label: "Stats", color: "#00A1E9" },
               { number: "Free", label: "Play", color: "#22C55E" },
-            ].map(s => {
-              const isTazos = s.label === "Tazos"
-              const tooltip = isTazos && realTazoCount
-                ? `${realTazoCount} released of ${s.number} designed` : undefined
-              return (
-              <span key={s.label} title={tooltip}
-                className={`inline-flex items-center gap-0.5 px-2.5 py-1 text-[9px] sm:text-[10px] font-black uppercase border-2 border-[#1a1a1a]/15 bg-white ${isTazos ? "cursor-help" : ""}`}
+            ].map(s => (
+              <span key={s.label} title={s.tooltip}
+                className={`inline-flex items-center gap-1 px-2.5 py-1 text-[9px] sm:text-[10px] font-black uppercase border-2 border-[#1a1a1a]/15 bg-white ${s.tooltip ? "cursor-help" : ""}`}
                 style={{ boxShadow: `2px 2px 0 ${s.color}20` }}>
                 <span style={{ color: s.color }} className="text-xs">{s.number}</span>
-                {isTazos && realTazoCount && (
-                  <span className="text-[7px] text-[#1a1a1a]/25 self-end mb-px">/{realTazoCount}</span>
-                )}
                 <span className="text-[#1a1a1a]/40">{s.label}</span>
               </span>
-            )})}
+            ))}
           </div>
         </div>
 
@@ -667,11 +660,11 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
       </div>{/* end magazine spread */}
 
       {/* ═══ BOTTOM TEASER STRIP ═══ */}
-      <div className="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6 text-[9px] sm:text-[10px] font-black text-[#1a1a1a]/15 uppercase tracking-[0.25em]">
-        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 bg-[#E3350D]" /> Minimon</span>
-        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 bg-[#00A1E9]" /> Cybermon</span>
-        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 bg-[#22C55E]" /> Dracobell</span>
-        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 bg-[#FFCC00]" /> Cross-Platform</span>
+      <div className="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6 text-[9px] sm:text-[10px] font-black text-[#1a1a1a]/20 uppercase tracking-[0.25em]">
+        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00]" /> Minimon</span>
+        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8]" /> Cybermon</span>
+        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#FF6B00]" /> Dracobell</span>
+        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]/25" /> Cross-Platform</span>
       </div>
 
       </div>
