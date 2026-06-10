@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * limit
     const includeDecks = searchParams.get("includeDecks") === "true"
     const fullCatalog = searchParams.get("fullCatalog") === "true"
+    const viewInstances = searchParams.get("view") === "instances"
 
     // Get user's owned tazos (with instances)
     const userTazos = await db.userTazo.findMany({
@@ -213,12 +214,111 @@ export async function GET(request: NextRequest) {
     }
 
     const response: any = {
-      items: items.map(mapOwnedTazo),
-      total,
+      items: viewInstances
+        ? items.flatMap(ut => {
+            if (ut.instances.length > 0) {
+              return ut.instances.map(inst => ({
+                id: inst.id,
+                userTazoId: ut.id,
+                quantity: 1,
+                instances: [{
+                  id: inst.id,
+                  attack: inst.attack, defense: inst.defense, resistance: inst.resistance,
+                  weight: inst.weight, stability: inst.stability,
+                  spin: inst.spin, control: inst.control,
+                  bounce: inst.bounce, precision: inst.precision,
+                  finish: inst.finish, creatureVariant: inst.creatureVariant,
+                  isNew: inst.isNew, acquiredAt: inst.acquiredAt,
+                  tgaTier: inst.tgaTier, tgaGrade: inst.tgaGrade,
+                  tgaSurface: inst.tgaSurface, tgaBorders: inst.tgaBorders,
+                  tgaCertNumber: inst.tgaCertNumber,
+                }],
+                isFavorite: ut.isFavorite,
+                obtainedFrom: ut.obtainedFrom,
+                acquiredAt: inst.acquiredAt,
+                wear: ut.wear,
+                battleCount: ut.battleCount,
+                tazo: {
+                  id: ut.tazo.id,
+                  name: ut.tazo.name,
+                  displayName: ut.tazo.displayName,
+                  slug: ut.tazo.slug,
+                  number: ut.tazo.number,
+                  imageUrl: ut.tazo.imageUrl,
+                  backImageUrl: ut.tazo.backImageUrl,
+                  shinyImageUrl: ut.tazo.shinyImageUrl,
+                  rarity: ut.tazo.rarity,
+                  finish: inst.finish || ut.tazo.finish,
+                  creatureVariant: inst.creatureVariant || ut.tazo.creatureVariant,
+                  category: ut.tazo.category,
+                  franchise: ut.tazo.franchise.name,
+                  franchiseSlug: ut.tazo.franchise.slug,
+                  collection: ut.tazo.collection.name,
+                  attack: inst.attack,
+                  defense: inst.defense,
+                  resistance: inst.resistance,
+                  weight: inst.weight,
+                  stability: inst.stability,
+                  spin: inst.spin,
+                  control: inst.control,
+                  bounce: inst.bounce,
+                  precision: inst.precision,
+                  role: ut.tazo.role,
+                  battleWins: ut.tazo.battleWins,
+                  battleLosses: ut.tazo.battleLosses,
+            },
+          }))
+            }
+            // No instances yet — show as single item with base tazo stats
+            return [{
+              id: ut.id,
+              userTazoId: ut.id,
+              quantity: ut.quantity,
+              instances: [],
+              isFavorite: ut.isFavorite,
+              obtainedFrom: ut.obtainedFrom,
+              acquiredAt: ut.acquiredAt,
+              wear: ut.wear,
+              battleCount: ut.battleCount,
+              tazo: {
+                id: ut.tazo.id,
+                name: ut.tazo.name,
+                displayName: ut.tazo.displayName,
+                slug: ut.tazo.slug,
+                number: ut.tazo.number,
+                imageUrl: ut.tazo.imageUrl,
+                backImageUrl: ut.tazo.backImageUrl,
+                shinyImageUrl: ut.tazo.shinyImageUrl,
+                rarity: ut.tazo.rarity,
+                finish: ut.tazo.finish,
+                creatureVariant: ut.tazo.creatureVariant,
+                category: ut.tazo.category,
+                franchise: ut.tazo.franchise.name,
+                franchiseSlug: ut.tazo.franchise.slug,
+                collection: ut.tazo.collection.name,
+                attack: ut.tazo.attack,
+                defense: ut.tazo.defense,
+                resistance: ut.tazo.resistance,
+                weight: ut.tazo.weight,
+                stability: ut.tazo.stability,
+                spin: ut.tazo.spin,
+                control: ut.tazo.control,
+                bounce: ut.tazo.bounce,
+                precision: ut.tazo.precision,
+                role: ut.tazo.role,
+                battleWins: ut.tazo.battleWins,
+                battleLosses: ut.tazo.battleLosses,
+              },
+            }]
+          })
+        : items.map(mapOwnedTazo),
+      total: viewInstances
+        ? summaryItems.reduce((sum, ut) => sum + Math.max(ut.quantity, 1), 0)
+        : total,
       totalUnique: uniqueCount,
       page,
       limit,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil((viewInstances ? summaryItems.reduce((sum, ut) => sum + Math.max(ut.quantity, 1), 0) : total) / limit),
       franchiseSummary: Object.fromEntries(franchiseSummary),
     }
 

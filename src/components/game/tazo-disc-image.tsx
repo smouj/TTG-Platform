@@ -141,7 +141,7 @@ export default function TazoDiscImage({
             style={{
               objectFit: "cover",
               display: "block",
-              transform: `scale(${isBack ? 1.03 * scale : 1.08 * scale})`,
+              transform: `scale(${isBack ? 1.03 * scale : 1.14 * scale})`,
               transformOrigin: "center center",
               opacity: imgLoaded ? 1 : 0,
               transition: "opacity 0.2s ease-in",

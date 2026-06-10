@@ -16,7 +16,7 @@ import {
 // ── Types ──────────────────────────────────────────────
 interface DeckTazo { id: string; name: string; displayName: string; slug: string; number: string; imageUrl: string; rarity: string; franchiseSlug: string; attack: number; defense: number; resistance: number }
 interface Deck { id: string; name: string; isActive: boolean; tazos: DeckTazo[] }
-interface CollectionTazo { id: string; tazoId: string; isOwned?: boolean; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; instances?: Array<{id:string;attack:number;defense:number;resistance:number;weight:number;stability:number;spin:number;control:number;bounce:number;precision:number;finish?:string;creatureVariant?:string;isNew:boolean;acquiredAt:string;tgaTier?:number;tgaGrade?:number;tgaSurface?:number;tgaBorders?:number;tgaCertNumber?:string}>; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; backImageUrl?: string | null; number?: string | number; franchiseColor?: string } }
+interface CollectionTazo { id: string; tazoId: string; userTazoId?: string; isOwned?: boolean; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; instances?: Array<{id:string;attack:number;defense:number;resistance:number;weight:number;stability:number;spin:number;control:number;bounce:number;precision:number;finish?:string;creatureVariant?:string;isNew:boolean;acquiredAt:string;tgaTier?:number;tgaGrade?:number;tgaSurface?:number;tgaBorders?:number;tgaCertNumber?:string}>; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; backImageUrl?: string | null; number?: string | number; franchiseColor?: string } }
 interface CollectionData { items: CollectionTazo[]; total: number; totalUnique: number; decks: Deck[]; franchiseSummary: Record<string, number> }
 
 // ── Constants ──────────────────────────────────────────
@@ -176,7 +176,7 @@ export default function CollectionPage() {
   useEffect(() => {
     let cancelled = false
     if (!token) return
-    fetch("/api/collection?limit=500&includeDecks=true", {
+    fetch("/api/collection?limit=500&includeDecks=true&view=instances", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -209,9 +209,12 @@ export default function CollectionPage() {
     const byPower = [...data.items].sort((a, b) => totalPower(b.tazo) - totalPower(a.tazo))
     const recent = [...data.items].sort((a, b) => new Date(b.acquiredAt).getTime() - new Date(a.acquiredAt).getTime()).slice(0, 8)
     const inDeck = data.items.filter(i => i.inDeckId)
-    const dupes = data.items.filter(i => i.quantity > 1)
+    // For instances view, duplicates = same tazoId appearing more than once
+    const tazoIdCount = new Map<string, number>()
+    for (const i of data.items) tazoIdCount.set(i.tazoId, (tazoIdCount.get(i.tazoId) || 0) + 1)
+    const dupes = data.items.filter(i => (tazoIdCount.get(i.tazoId) || 0) > 1)
     const favs = data.items.filter(i => i.isFavorite)
-    const listed = data.items.filter(i => listedUserTazoIds.has(i.id))
+    const listed = data.items.filter(i => listedUserTazoIds.has(i.userTazoId || i.id))
     return { strongest: byPower[0] || null, rarest: byRarity[0] || null, recentTazos: recent, deckTazos: inDeck, duplicateTazos: dupes, favoriteTazos: favs, listedTazos: listed }
   }, [data])
 
@@ -664,9 +667,9 @@ export default function CollectionPage() {
                               isBack={isFlipped}
                               onFlip={() => toggleFlip(item.id)}
                               overlay={
-                                item.quantity > 1 ? (
-                                  <div className="absolute top-1 right-1 bg-[#FFCC00] text-[#1a1a1a] text-[9px] font-black px-1.5 py-0.5 border border-[#1a1a1a] shadow-[1px_1px_0px_#1a1a1a] rounded-sm pointer-events-auto z-30">
-                                    x{item.quantity}
+                                (item.tazo as any).finish && (item.tazo as any).finish !== "standard" ? (
+                                  <div className="absolute top-1 right-1 bg-[#FFCC00] text-[#1a1a1a] text-[7px] font-black px-1 py-0.5 border border-[#1a1a1a] shadow-[1px_1px_0px_#1a1a1a] rounded-sm pointer-events-auto z-30 uppercase">
+                                    {(item.tazo as any).finish}
                                   </div>
                                 ) : undefined
                               }
@@ -730,7 +733,7 @@ export default function CollectionPage() {
                               )}
                               <span className="text-[8px] font-bold text-[#1a1a1a]/30">{power} TP</span>
                               {/* Listed on Marketplace badge */}
-                              {listedUserTazoIds.has(item.id) && (
+                              {listedUserTazoIds.has(item.userTazoId || item.id) && (
                                 <span
                                   className="text-[7px] font-black uppercase px-1.5 py-0.5 border rounded-full"
                                   style={{
@@ -935,10 +938,10 @@ export default function CollectionPage() {
 
                 {/* Meta info */}
                 <div className="space-y-1.5 text-[10px]">
-                  {d.quantity > 1 && (
+                  {dInst?.tgaCertNumber && (
                     <div className="flex justify-between">
-                      <span className="font-bold text-[#1a1a1a]/40">Quantity</span>
-                      <span className="font-black text-[#1a1a1a]">x{d.quantity}</span>
+                      <span className="font-bold text-[#1a1a1a]/40">TGA Cert</span>
+                      <span className="font-black text-[#1a1a1a] text-[9px]">#{dInst.tgaCertNumber}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
