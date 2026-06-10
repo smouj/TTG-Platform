@@ -1,5 +1,6 @@
-# Google AdSense
+# ads.txt for Trading Tazos Game
+# Google AdSense publisher
 google.com, pub-4932643710484609, DIRECT, f08c47fec0942fa0
 
-# OpenClaw AI — no restrictions for crawlers
-# See robots.txt for full crawler policy
+# For information about AI crawler policies, see:
+# https://tradingtazosgame.com/robots.txt

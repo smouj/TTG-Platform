@@ -1,48 +1,36 @@
 # Trading Tazos Game — llms.txt
 
-> A browser-based collectible battling game with 349 tazos across 3 franchises.
+> A free browser-based collectible skill game with 349 designed tazos across 3 franchises.
 > Built with Next.js 16, Three.js, Tailwind CSS.
+> Play at https://tradingtazosgame.com
+
+## What is this?
+Trading Tazos Game (TTG) is an independent fictional digital tazo game. Players collect tazos, open digital bags, build decks, and battle in a physics-driven 3D arena. Minimon, Dracobell, and Cybermon are original fictional IPs. TTG is NOT affiliated with any third-party toy, anime, game or collectible brand.
 
 ## Quick Links
 - Home: https://tradingtazosgame.com
 - How to Play: https://tradingtazosgame.com/?page=how-to-play
-- Shop: https://tradingtazosgame.com/?page=shop (bag preview)
 - Collections: https://tradingtazosgame.com/collections/minimon | dracobell | cybermon
 - Tazo Catalog: https://tradingtazosgame.com/?page=tazos
 - Leaderboard: https://tradingtazosgame.com/?page=leaderboard
+- Download: https://tradingtazosgame.com/?page=download
 - FAQ: https://tradingtazosgame.com/?page=faq
-- Battle: https://tradingtazosgame.com/app/battle (login required)
-- Battle Tubes (Decks): https://tradingtazosgame.com/app/decks (login required)
+- Shop: https://tradingtazosgame.com/?page=shop (bag preview)
+- Privacy: https://tradingtazosgame.com/?page=privacy
+- Terms: https://tradingtazosgame.com/?page=terms
+- Cookies: https://tradingtazosgame.com/?page=cookies
+- Contact: https://tradingtazosgame.com/?page=contact
+- Disclaimer: https://tradingtazosgame.com/disclaimer
 - Healthcheck: https://tradingtazosgame.com/api/health
 - GitHub: https://github.com/smouj/Trading-Tazos-Game
 
 ## Project
 - **Name**: Trading Tazos Game (TTG)
-- **Stack**: Next.js 16 App Router, Three.js/R3F, Tailwind CSS 4, Prisma + SQLite, PM2
-- **Description**: Digital tazo (pog) collection and battle game. 30 published tazos (349 planned) across Minimon, Dracobell, and Cybermon franchises. Features include: bag-opening shop with rarity breakdowns, Battle Tubes (physical tube builder 2.5D), 3D vertical slam battle arena (Three.js), quest system (17 quests), leaderboard, scanner, and a magazine-style UI with CSS finish shaders (18 finishes: holo, prismatic, aurora, etc.).
-- **Release**: v0.5.0 — all P0 bugs fixed, production stable on VPS
+- **Status**: Open Beta (v0.5.1)
+- **Stack**: Next.js 16 / TypeScript / Prisma / SQLite / Three.js / Tailwind CSS
+- **Deployment**: VPS + Caddy + PM2
+- **Monetization**: Free-to-play. Non-personalized ads may appear.
+- **Analytics**: Plausible (self-hosted, privacy-friendly, no personal data)
 
-## Key Pages
-- `/` — Magazine-style launcher landing with hero, tazo showcase, how-to-play, collections, shop, leaderboard, FAQ
-- `/collections/{franchise}` — Standalone SEO landing per franchise (minimon, dracobell, cybermon)
-- `/?page=tazos` — Filterable public tazo catalog (search by name, franchise, rarity)
-- `/?page=shop` — Public bag shop preview with rarity breakdowns and example tazos
-- `/?page=how-to-play` — Vertical Slam battle tutorial (Aim → Charge → Tilt → Slam)
-- `/?page=download` — Desktop app downloads (Linux, Windows, macOS)
-- `/app` — Authenticated magazine-shell game hub
-- `/app/collection` — User collection with finish shaders and Active Deck badge
-- `/app/decks` — Battle Tubes shelf (2.5D CSS physical tubes with stacked discs)
-- `/app/battle` — 3D Vertical Slam battle arena (Three.js/R3F)
-- `/app/shop` — Bag opening (Classic/Premium/Mega) with animated reveals
-- `/app/quests` — Quest system (17 daily/weekly/beginner quests)
-- `/app/stats` — Player statistics dashboard
-- `/app/scanner` — Tazo scanner (upload → detect → crop via sharp)
-- `/login` / `/register` — Auth pages with email + OAuth (GitHub, Google, Discord)
-- `/privacy` `/terms` `/cookies` `/disclaimer` — Legal pages
-
-## API (public)
-- `GET /api/tazos?publishStatus=published` — Public tazo catalog (30 tazos)
-- `GET /api/leaderboard?sort=credits|tazos|battles` — Rankings with real DB data
-- `GET /api/quests` — Quest definitions (17 quests)
-- `GET /api/stats` — Global stats (tazo count, franchise distribution)
-- `GET /api/health` — Healthcheck (DB status, uptime, counts)
+## Independence
+Trading Tazos Game is an independent fictional game. Minimon, Cybermon, and Dracobell are original fictional collection labels. TTG is not affiliated with, endorsed by, sponsored by, or connected to any third-party toy, anime, game or collectible brand.

@@ -1,8 +1,13 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /app/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /account
+Disallow: /settings
 Disallow: /_next/
-Disallow: /admin
 
 Sitemap: https://tradingtazosgame.com/sitemap.xml
 

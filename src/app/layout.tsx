@@ -151,6 +151,25 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* JSON-LD Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Trading Tazos Game",
+              "url": SITE_URL,
+              "description": "Independent fictional digital tazo game — collect, trade, and battle with 349 designed tazos across 3 franchises.",
+              "email": "support@tradingtazosgame.com",
+              "logo": `${SITE_URL}/icon-512x512.png`,
+              "sameAs": [
+                "https://x.com/tazosgame",
+                "https://github.com/smouj/Trading-Tazos-Game"
+              ]
+            }),
+          }}
+        />
         <meta name="theme-color" content="#FFCC00" />
         <meta name="google-adsense-account" content="ca-pub-4932643710484609" />
         <meta name="geo.region" content="ES" />
