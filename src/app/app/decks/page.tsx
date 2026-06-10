@@ -51,8 +51,13 @@ export default function DecksPage() {
 
   useEffect(() => { fetchDecks() }, [fetchDecks])
 
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState("")
+
   const handleSaveBuilder = async (data: { name: string; color: string; tazoIds: string[]; textureUrl?: string; tubeSlug?: string }) => {
     if (data.tazoIds.length < 1) return
+    setSaving(true)
+    setSaveError("")
 
     try {
       const method = editingDeck ? "PATCH" : "POST"
@@ -76,12 +81,19 @@ export default function DecksPage() {
         body: JSON.stringify(body),
       })
 
+      const result = await res.json()
       if (res.ok) {
         setShowBuilder(false)
         setEditingDeck(null)
         fetchDecks()
+      } else {
+        setSaveError(result.error || "Failed to save deck")
       }
-    } catch { /* handled by refetch */ }
+    } catch (err: any) {
+      setSaveError(err.message || "Network error")
+    } finally {
+      setSaving(false)
+    }
   }
 
   const handleActivate = async (deckId: string) => {
@@ -148,7 +160,9 @@ export default function DecksPage() {
             tazos: editingDeck.tazos,
           } : null}
           onSave={handleSaveBuilder}
-          onCancel={() => { setShowBuilder(false); setEditingDeck(null) }}
+          onCancel={() => { setShowBuilder(false); setEditingDeck(null); setSaveError("") }}
+          saving={saving}
+          saveError={saveError}
         />
       </div>
     )

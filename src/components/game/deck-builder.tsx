@@ -8,7 +8,7 @@ import { useState, useEffect, useMemo } from "react"
 import { useAuth } from "@/lib/auth-context"
 import {
   Search, X, ChevronLeft, ChevronRight,
-  Star, Sword, Shield, Zap, Save, Palette, Filter, CheckCircle, PackageOpen,
+  Star, Sword, Shield, Zap, Save, Palette, Filter, CheckCircle, PackageOpen, Loader2,
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import BattleTubePreview, { TUBE_TEXTURE_OPTIONS } from "@/components/tubes/BattleTubePreview"
@@ -51,6 +51,8 @@ interface DeckBuilderProps {
   initialDeck?: { id: string; name: string; color?: string; textureUrl?: string; tubeSlug?: string; tazos: TazoOption[] } | null
   onSave: (data: { name: string; color: string; tazoIds: string[]; textureUrl?: string; tubeSlug?: string }) => void
   onCancel: () => void
+  saving?: boolean
+  saveError?: string
 }
 
 const STEP_LABELS = ["Name", "Tazos", "Seal"]
@@ -84,7 +86,7 @@ function StepIndicator({ step }: { step: number }) {
   )
 }
 
-export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuilderProps) {
+export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, saveError }: DeckBuilderProps) {
   const { token } = useAuth()
   const [step, setStep] = useState(1)
   const [name, setName] = useState(initialDeck?.name || "")
@@ -517,24 +519,35 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel }: DeckBuild
                 </div>
               )}
 
-              {/* Actions */}
-              <div className="flex justify-between pt-2 border-t-2 border-[#1a1a1a]/10">
-                <button onClick={() => setStep(2)}
-                  className="mag-btn px-4 py-2 text-[10px] font-black uppercase bg-white text-[#1a1a1a] border-3 border-[#1a1a1a]">
-                  <ChevronLeft className="w-3.5 h-3.5 inline mr-1" /> Back
-                </button>
-                <button
-                  onClick={() => onSave({
-                    name, color,
-                    tazoIds: Array.from(selectedIds),
-                    textureUrl: tubeTexture,
-                    tubeSlug,
-                  })}
-                  disabled={!canSave}
-                  className="mag-btn px-6 py-2.5 text-[11px] font-black uppercase bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none">
-                  <PackageOpen className="w-4 h-4 inline mr-1.5" />
-                  Seal Battle Tube
-                </button>
+                {/* Actions */}
+              <div className="space-y-2">
+                {/* Error message */}
+                {saveError && (
+                  <div className="p-2 border-2 border-[#E3350D] bg-[#E3350D]/10 text-center text-[10px] font-black text-[#E3350D] uppercase">
+                    {saveError}
+                  </div>
+                )}
+                <div className="flex justify-between pt-2 border-t-2 border-[#1a1a1a]/10">
+                  <button onClick={() => setStep(2)}
+                    className="mag-btn px-4 py-2 text-[10px] font-black uppercase bg-white text-[#1a1a1a] border-3 border-[#1a1a1a]">
+                    <ChevronLeft className="w-3.5 h-3.5 inline mr-1" /> Back
+                  </button>
+                  <button
+                    onClick={() => onSave({
+                      name, color,
+                      tazoIds: Array.from(selectedIds),
+                      textureUrl: tubeTexture,
+                      tubeSlug,
+                    })}
+                    disabled={!canSave || saving}
+                    className="mag-btn px-6 py-2.5 text-[11px] font-black uppercase bg-[#22C55E] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none">
+                    {saving ? (
+                      <><Loader2 className="w-4 h-4 inline mr-1.5 animate-spin" />Sealing...</>
+                    ) : (
+                      <><PackageOpen className="w-4 h-4 inline mr-1.5" />Seal Battle Tube</>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
