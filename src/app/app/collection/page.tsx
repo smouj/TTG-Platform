@@ -667,9 +667,12 @@ export default function CollectionPage() {
                               isBack={isFlipped}
                               onFlip={() => toggleFlip(item.id)}
                               overlay={
-                                (item.tazo as any).finish && (item.tazo as any).finish !== "standard" ? (
+                                (item.tazo as any).finish &&
+                                (item.tazo as any).finish !== "normal" &&
+                                (item.tazo as any).finish !== "standard" &&
+                                (item.tazo as any).finish !== "matte" ? (
                                   <div className="absolute top-1 right-1 bg-[#FFCC00] text-[#1a1a1a] text-[7px] font-black px-1 py-0.5 border border-[#1a1a1a] shadow-[1px_1px_0px_#1a1a1a] rounded-sm pointer-events-auto z-30 uppercase">
-                                    {(item.tazo as any).finish}
+                                    {(item.tazo as any).finish?.replace(/_/g, " ")}
                                   </div>
                                 ) : undefined
                               }
