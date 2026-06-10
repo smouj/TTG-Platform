@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Lock, Unlock, Swords, X, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target, FlipHorizontal, View } from 'lucide-react'
+import { Lock, Unlock, Swords, X, ChevronLeft, ChevronRight, ArrowUpCircle, ArrowRight, Shield, Scale, RotateCw, Zap, BarChart3, Flame, Sparkles, Diamond, Square, Target, FlipHorizontal, View } from 'lucide-react'
 import { getTazoBackgroundConfig, getTazoBackgroundClasses, FRANCHISE_MAX } from '@/lib/tazoBackgrounds'
 import TazoDiscImage from '@/components/game/tazo-disc-image'
 import type { TazoFinish, TazoCreatureVariant } from '@/lib/battle/game-loop'
@@ -18,6 +18,10 @@ interface TazoDetailModalProps {
   open: boolean
   onClose: () => void
   onToggleOwned?: (tazo: Tazo) => void
+  onPrev?: () => void
+  onNext?: () => void
+  hasPrev?: boolean
+  hasNext?: boolean
 }
 
 const FRANCHISE_COLORS: Record<string, { from: string; to: string; text: string; border: string; banner: string }> = {
@@ -107,7 +111,7 @@ function getFlavorQuote(franchise: string, tazoName: string): string {
   return quotes[hash % quotes.length]
 }
 
-export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: TazoDetailModalProps) {
+export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, onPrev, onNext, hasPrev, hasNext }: TazoDetailModalProps) {
   if (!tazo) return null
 
   const [viewMode, setViewMode] = useState<'front' | 'back' | '3d'>('front')
@@ -175,6 +179,30 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned }: 
           >
             <X className="w-5 h-5" />
           </button>
+
+          {/* Prev/Next navigation */}
+          {(onPrev || onNext) && (
+            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-20 flex items-center gap-1.5">
+              <button
+                onClick={onPrev}
+                disabled={!hasPrev}
+                className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-[#FFCC00] disabled:opacity-25 disabled:cursor-not-allowed transition-colors font-black text-sm"
+                style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
+                aria-label="Previous tazo"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={onNext}
+                disabled={!hasNext}
+                className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-[#FFCC00] disabled:opacity-25 disabled:cursor-not-allowed transition-colors font-black text-sm"
+                style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
+                aria-label="Next tazo"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
 
           {/* Collection tag */}
           <div className="relative z-10 mb-1">

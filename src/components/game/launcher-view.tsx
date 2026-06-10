@@ -1053,8 +1053,11 @@ function TazosContent() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
   const [franchiseFilter, setFranchiseFilter] = useState("all")
+  const [sortBy, setSortBy] = useState<"name"|"rarity"|"attack"|"number">("number")
+  const [sortDir, setSortDir] = useState<"asc"|"desc">("asc")
   const [selectedTazo, setSelectedTazo] = useState<any>(null)
   const [detailOpen, setDetailOpen] = useState(false)
+  const [detailIndex, setDetailIndex] = useState(0)
 
   const fetchContent = useCallback(async () => {
     fetch(`/api/tazos?limit=60&_t=${Date.now()}`).then(r => r.json()).then(d => {
@@ -1069,14 +1072,40 @@ function TazosContent() {
 
   useVisibilityRefresh(fetchContent)
 
-  const filtered = tazos.filter(t =>
-    (franchiseFilter === "all" || t.franchise === franchiseFilter) &&
-    (!search || (t.displayName || t.name || "").toLowerCase().includes(search.toLowerCase()))
-  )
+  const rarityOrder: Record<string, number> = { common: 0, uncommon: 1, rare: 2, "ultra-rare": 3, ultra: 3, legendary: 4 }
 
-  const handleTazoClick = (t: any) => {
+  const filtered = tazos
+    .filter(t =>
+      (franchiseFilter === "all" || t.franchise === franchiseFilter) &&
+      (!search || (t.displayName || t.name || "").toLowerCase().includes(search.toLowerCase()))
+    )
+    .sort((a: any, b: any) => {
+      const dir = sortDir === "asc" ? 1 : -1
+      switch (sortBy) {
+        case "name":
+          return dir * (a.displayName || a.name || "").localeCompare(b.displayName || b.name || "")
+        case "rarity":
+          return dir * ((rarityOrder[a.rarity] ?? 0) - (rarityOrder[b.rarity] ?? 0))
+        case "attack":
+          return dir * ((a.attack || 0) - (b.attack || 0))
+        case "number":
+        default:
+          return dir * ((a.number ?? 999) - (b.number ?? 999))
+      }
+    })
+
+  const handleTazoClick = (t: any, idx: number) => {
     setSelectedTazo(t)
+    setDetailIndex(idx)
     setDetailOpen(true)
+  }
+
+  const handleNavDetail = (dir: 1 | -1) => {
+    const nextIdx = detailIndex + dir
+    if (nextIdx >= 0 && nextIdx < filtered.length) {
+      setSelectedTazo(filtered[nextIdx])
+      setDetailIndex(nextIdx)
+    }
   }
 
   const fColors: Record<string, { bg: string; badge: string }> = {
@@ -1088,11 +1117,11 @@ function TazosContent() {
   return (
     <>
     <div className="w-full max-w-5xl mx-auto space-y-4">
-      {/* Filters */}
-      <div className="flex flex-wrap items-center gap-2">
+      {/* Filters + Sorting */}
+      <div className="flex flex-wrap items-center gap-2 p-2.5 bg-white border-2 border-[#1a1a1a]/10 mag-stripes">
         <input value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search tazos..."
-          className="px-3 py-1.5 text-xs font-bold border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 outline-none flex-1 max-w-[200px]" />
+          className="px-3 py-1.5 text-xs font-bold border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 outline-none flex-1 min-w-[140px] max-w-[200px]" />
         {["all", "minimon", "dracobell", "cybermon"].map(f => (
           <button key={f} onClick={() => setFranchiseFilter(f)}
             className={`px-3 py-1 text-[10px] font-black uppercase border-2 transition-all ${
@@ -1101,7 +1130,22 @@ function TazosContent() {
                 : "bg-white text-[#1a1a1a] border-[#1a1a1a]/15 hover:border-[#FFCC00]"
             }`}>{f === "all" ? "All" : f}</button>
         ))}
-        <span className="ml-auto text-[9px] font-black text-[#1a1a1a]/25 uppercase">
+        {/* Sort controls */}
+        <div className="flex items-center gap-1 ml-auto">
+          <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
+            className="px-2 py-1 text-[9px] font-black uppercase border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] outline-none cursor-pointer">
+            <option value="number">#</option>
+            <option value="name">Name</option>
+            <option value="rarity">Rarity</option>
+            <option value="attack">ATK</option>
+          </select>
+          <button onClick={() => setSortDir(d => d === "asc" ? "desc" : "asc")}
+            className="px-2 py-1 text-[9px] font-black uppercase border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] hover:bg-[#FFCC00] transition-colors"
+            title={`Sort ${sortDir === "asc" ? "descending" : "ascending"}`}>
+            {sortDir === "asc" ? "↑" : "↓"}
+          </button>
+        </div>
+        <span className="text-[9px] font-black text-[#1a1a1a]/25 uppercase">
           {filtered.length} tazos
         </span>
       </div>
@@ -1110,7 +1154,7 @@ function TazosContent() {
         <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-[#1a1a1a]/40" /></div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
-          {filtered.map((t: any) => {
+          {filtered.map((t: any, idx: number) => {
             const f = t.franchise || "minimon"
             const fc = fColors[f] || fColors.minimon
             const rarityColor = {
@@ -1119,7 +1163,7 @@ function TazosContent() {
               ultra: "#A855F7",
             }[t.rarity] || "#9CA3AF"
             return (
-            <button key={t.id} onClick={() => handleTazoClick(t)}
+            <button key={t.id} onClick={() => handleTazoClick(t, idx)}
               className="text-left border-2 border-[#1a1a1a]/10 bg-white p-2.5 hover:bg-[#FFF9E6] hover:border-[#FFCC00] hover:shadow-[3px_3px_0px_#1a1a1a] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group">
               {/* Disc */}
               <div className="aspect-square rounded-full overflow-hidden mb-1.5 mx-auto max-w-[92px] relative">
@@ -1163,6 +1207,10 @@ function TazosContent() {
         tazo={selectedTazo as any}
         open={detailOpen}
         onClose={() => { setDetailOpen(false); setSelectedTazo(null) }}
+        onPrev={detailIndex > 0 ? () => handleNavDetail(-1) : undefined}
+        onNext={detailIndex < filtered.length - 1 ? () => handleNavDetail(1) : undefined}
+        hasPrev={detailIndex > 0}
+        hasNext={detailIndex < filtered.length - 1}
       />
     )}
     </>
