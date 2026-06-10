@@ -1584,15 +1584,60 @@ function DownloadContent() {
         </div>
       </div>
 
-      {/* ═══ GitHub link ═══ */}
-      <div className="flex items-center justify-center gap-2 pt-2">
-        <span className="text-[10px] font-bold text-[#1a1a1a]/30">
-          Open source —{" "}
-          <a href={GITHUB_URL} target="_blank" rel="noopener" className="underline hover:text-[#E3350D] transition-colors">
-            GitHub
-          </a>
-        </span>
-        <ExternalLink className="w-2.5 h-2.5 text-[#1a1a1a]/20" />
+      {/* ═══ GitHub / Build from Source ═══ */}
+      <div className="border-[3px] border-[#1a1a1a] bg-[#1a1a1a] overflow-hidden"
+        style={{ boxShadow: "6px 6px 0 #FFCC00" }}>
+        <div className="px-6 py-5 sm:px-8 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-[#FFCC00] flex items-center justify-center">
+              <Terminal className="w-7 h-7 sm:w-8 sm:h-8 text-[#1a1a1a]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg sm:text-xl font-black text-[#FFCC00] uppercase leading-none mb-1">
+                Build from Source
+              </h3>
+              <p className="text-xs font-bold text-white/60 leading-relaxed">
+                Developers: clone the repo and run locally in 3 commands.
+              </p>
+              <div className="mt-3 space-y-2">
+                <div className="bg-white/10 px-3 py-2 font-mono text-[10px] sm:text-xs text-white/80">
+                  git clone https://github.com/smouj/Trading-Tazos-Game.git
+                </div>
+                <div className="bg-white/10 px-3 py-2 font-mono text-[10px] sm:text-xs text-white/80">
+                  cd Trading-Tazos-Game &amp;&amp; npm install &amp;&amp; npm run dev
+                </div>
+                <div className="bg-white/10 px-3 py-2 font-mono text-[10px] sm:text-xs text-[#55FF55]/80">
+                  → Open http://localhost:3000
+                </div>
+              </div>
+              <a href={GITHUB_URL} target="_blank" rel="noopener"
+                className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black text-[#FFCC00] hover:text-white uppercase transition-colors">
+                View on GitHub <ExternalLink className="w-2.5 h-2.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ System Requirements ═══ */}
+      <div className="border-2 border-[#1a1a1a]/10 bg-white/50 p-5 sm:p-6">
+        <h3 className="text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-3">System Requirements</h3>
+        <div className="grid grid-cols-3 gap-3 text-center">
+          {[
+            { label: "Browser", spec: "Chrome / Firefox / Safari", icon: Globe },
+            { label: "RAM", spec: "2 GB minimum", icon: Zap },
+            { label: "3D", spec: "WebGL 2.0 support", icon: Monitor },
+          ].map(r => {
+            const Icon = r.icon
+            return (
+              <div key={r.label} className="space-y-1">
+                <Icon className="w-4 h-4 mx-auto text-[#1a1a1a]/30" />
+                <div className="text-[8px] font-black text-[#1a1a1a]/40 uppercase">{r.label}</div>
+                <div className="text-[9px] font-bold text-[#1a1a1a]/60">{r.spec}</div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

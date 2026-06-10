@@ -79,11 +79,25 @@ function send(ws, msg) {
 
 function makeRoom(p1, p2, roomId) {
   const id = roomId || `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
-  const room = { id, players: [p1, p2], createdAt: Date.now(), gameState: "waiting" }
+  const room = {
+    id, players: [p1, p2], createdAt: Date.now(),
+    // ── Authoritative game state ──
+    auth: {
+      phase: "lobby",        // lobby | betting | playing | finished
+      currentTurn: null,      // userId of player whose turn it is
+      turnNumber: 0,
+      roundNumber: 0,
+      scores: { player: 0, opponent: 0 },
+      playerIds: [p1.userId, p2.userId],
+      playerBets: {},         // { userId: tazoId }
+      readyCount: 0,
+    },
+  }
   rooms.set(id, room)
   for (const p of [p1, p2]) {
     const opp = p === p1 ? p2 : p1
-    send(p.ws, { type: "match_found", payload: { roomId: id, opponent: { userId: opp.userId, name: opp.name }, yourSide: p === p1 ? "player" : "opponent" } })
+    const yourSide = p === p1 ? "player" : "opponent"
+    send(p.ws, { type: "match_found", payload: { roomId: id, opponent: { userId: opp.userId, name: opp.name }, yourSide } })
   }
   console.log(`[WS] Match: ${p1.name} vs ${p2.name} [${id}]`)
   return room
@@ -102,7 +116,7 @@ function cleanupPlayer(player) {
     const idx = room.players.indexOf(player)
     if (idx >= 0) {
       const opp = room.players[1 - idx]
-      if (room.gameState !== "finished") send(opp.ws, { type: "opponent_disconnected", payload: { message: "Your opponent disconnected" } })
+      if (room.auth.phase !== "finished") send(opp.ws, { type: "opponent_disconnected", payload: { message: "Your opponent disconnected" } })
       rooms.delete(id)
       break
     }
@@ -182,11 +196,52 @@ wss.on("connection", (ws, req) => {
       case "turn_action":
         for (const [, room] of rooms) {
           const idx = room.players.indexOf(player)
-          if (idx >= 0) {
-            room.gameState = "playing"
-            send(room.players[1 - idx].ws, { type: "turn_received", payload: msg.payload })
+          if (idx < 0) continue
+          const a = room.auth
+
+          // ── Authoritative validation ──
+          // Accept game_start to transition from lobby to betting
+          if (msg.payload?.phase === "game_start" && a.phase === "lobby") {
+            a.phase = "betting"
+            send(room.players[1 - idx].ws, { type: "turn_received", payload: { phase: "game_start" } })
             break
           }
+
+          // Bet placement during betting phase
+          if (msg.payload?.phase === "place_bet" && a.phase === "betting") {
+            a.playerBets[player.userId] = msg.payload.betTazoId
+            // When both bets are in, randomly choose who goes first
+            if (Object.keys(a.playerBets).length >= 2) {
+              const goFirst = Math.random() < 0.5 ? a.playerIds[0] : a.playerIds[1]
+              a.currentTurn = goFirst
+              a.phase = "playing"
+              a.roundNumber = 1
+              a.turnNumber = 1
+              const goFirstPlayer = room.players.find(p => p.userId === goFirst)
+              const goSecondPlayer = room.players.find(p => p.userId !== goFirst)
+              if (goFirstPlayer) send(goFirstPlayer.ws, { type: "turn_received", payload: { phase: "your_turn", round: 1, turn: 1 } })
+              if (goSecondPlayer) send(goSecondPlayer.ws, { type: "turn_received", payload: { phase: "opponent_turn", round: 1, turn: 1 } })
+            }
+            break
+          }
+
+          // Slam action during playing phase — only currentTurn player can act
+          if (msg.payload?.phase === "slam" && a.phase === "playing") {
+            if (a.currentTurn !== player.userId) {
+              send(ws, { type: "room_error", payload: { message: "Not your turn" } })
+              break
+            }
+            // Relay to opponent
+            send(room.players[1 - idx].ws, { type: "turn_received", payload: msg.payload })
+            // Switch turn to opponent
+            a.currentTurn = a.currentTurn === a.playerIds[0] ? a.playerIds[1] : a.playerIds[0]
+            a.turnNumber++
+            break
+          }
+
+          // Fallback: relay (for non-authoritative messages)
+          send(room.players[1 - idx].ws, { type: "turn_received", payload: msg.payload })
+          break
         }
         break
       case "turn_result":
@@ -198,7 +253,7 @@ wss.on("connection", (ws, req) => {
       case "game_over":
         for (const [id, room] of rooms) {
           if (room.players.includes(player)) {
-            room.gameState = "finished"
+            room.auth.phase = "finished"
             const opp = room.players.find(p => p !== player)
             if (opp) send(opp.ws, { type: "game_over", payload: msg.payload })
             rooms.delete(id)
