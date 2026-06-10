@@ -1,16 +1,17 @@
 "use client"
 
-// Friend Battle — PvP with room code via WebSocket
+// Friend Battle + Ranked — PvP via WebSocket
 // URL pattern: /game/friend/[roomId]
-//   - If roomId is the route param → join that room
-//   - Otherwise create a new room with a random code
+//   - "new" → create room UI
+//   - "ranked" → ranked matchmaking queue
+//   - "ABCD" → join that room
 
 import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { usePvPWebSocket } from "@/lib/battle/use-pvp-websocket"
 import BattleView from "@/components/game/battle-view"
-import { Disc3, Users, Copy, Check, ArrowLeft } from "lucide-react"
+import { Disc3, Users, Copy, Check, ArrowLeft, Zap, Swords, Timer } from "lucide-react"
 
 function randomRoomCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
@@ -29,23 +30,35 @@ export default function FriendPage() {
   const [copied, setCopied] = useState(false)
   const [localRoomCode, setLocalRoomCode] = useState("")
   const [joinCode, setJoinCode] = useState("")
-  const [mode, setMode] = useState<"create" | "join" | "waiting" | "battle">("create")
+  const [mode, setMode] = useState<"create" | "join" | "waiting" | "battle" | "ranked">("create")
 
   // Init: if URL has room code, join it; otherwise show create UI
   useEffect(() => {
     if (!roomId || roomId === "new") {
       setMode("create")
+    } else if (roomId === "ranked") {
+      setMode("ranked")
+      // Auto-join queue after connection
+      setTimeout(() => {
+        if (pvp.state.status === "connected") pvp.joinQueue()
+      }, 1500)
     } else {
       setMode("join")
       setJoinCode(roomId)
     }
   }, [roomId])
 
+  // Auto-join queue when connected in ranked mode
+  useEffect(() => {
+    if (mode === "ranked" && pvp.state.status === "connected") {
+      pvp.joinQueue()
+    }
+  }, [mode, pvp.state.status])
+
   // Handle WebSocket state changes
   useEffect(() => {
     if (pvp.state.status === "waiting_room") {
       setMode("waiting")
-      // Update URL to the room code
       if (pvp.state.roomId && roomId !== pvp.state.roomId) {
         router.replace(`/game/friend/${pvp.state.roomId}`)
       }
@@ -53,7 +66,10 @@ export default function FriendPage() {
     if (pvp.state.status === "matched") {
       setMode("battle")
     }
-  }, [pvp.state.status, pvp.state.roomId, roomId, router])
+    if (pvp.state.status === "queued" && mode === "ranked") {
+      // Stay in ranked mode, show queue position
+    }
+  }, [pvp.state.status, pvp.state.roomId, roomId, router, mode])
 
   const handleCreate = useCallback(() => {
     const code = randomRoomCode()
@@ -164,6 +180,51 @@ export default function FriendPage() {
         <button onClick={() => { pvp.disconnect(); setMode("create"); router.push("/game/friend/new") }}
           className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#1a1a1a]/30 hover:text-[#E3350D] uppercase tracking-wider">
           <ArrowLeft className="w-3 h-3" /> Back
+        </button>
+      </div>
+    </div>
+  )
+
+  // ── Ranked Queue UI ──
+  if (mode === "ranked") return (
+    <div className="min-h-[80vh] flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-6 text-center">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-[#FF004D] border-3 border-[#1a1a1a] mb-3"
+          style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
+          <Swords className="w-7 h-7 text-white" />
+        </div>
+        <h1 className="text-xl font-black text-[#1a1a1a] uppercase">Ranked PvP</h1>
+        <p className="text-xs font-bold text-[#1a1a1a]/40">
+          {pvp.state.status === "queued"
+            ? `Searching for opponent... #${pvp.state.queuePosition} in queue`
+            : pvp.state.status === "connecting"
+            ? "Connecting to matchmaking..."
+            : "Elo-ranked matchmaking"}
+        </p>
+
+        {pvp.state.status === "queued" && (
+          <>
+            <div className="flex items-center justify-center gap-2">
+              <Disc3 className="w-8 h-8 animate-spin text-[#FF004D]" />
+              <Timer className="w-5 h-5 text-[#1a1a1a]/40" />
+            </div>
+            <p className="text-[10px] font-bold text-[#1a1a1a]/30">
+              {pvp.state.queuePosition <= 1 ? "You&apos;re next!" : `${pvp.state.queuePosition} players ahead of you`}
+            </p>
+          </>
+        )}
+
+        {pvp.state.status === "connected" && !pvp.state.queuePosition && (
+          <button onClick={() => pvp.joinQueue()}
+            className="w-full py-4 font-black text-sm uppercase text-white bg-[#FF004D] border-3 border-[#1a1a1a] transition-all hover:bg-[#E3350D]"
+            style={{ boxShadow: "5px 5px 0 #1a1a1a" }}>
+            <Zap className="w-4 h-4 inline mr-2" /> Find Match
+          </button>
+        )}
+
+        <button onClick={() => { pvp.leaveQueue(); pvp.disconnect(); router.push("/app/battle"); }}
+          className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#1a1a1a]/30 hover:text-[#E3350D] uppercase tracking-wider">
+          <ArrowLeft className="w-3 h-3" /> Back to Lobby
         </button>
       </div>
     </div>
