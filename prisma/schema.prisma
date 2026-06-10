@@ -143,8 +143,38 @@ model UserTazo {
   wear         Int      @default(0)   // 0-100 wear from battle use
   battleCount  Int      @default(0)   // battles participated in
 
+  instances TazoInstance[]
+
   @@unique([userId, tazoId])
   @@index([userId])
+}
+
+model TazoInstance {
+  id              String   @id @default(cuid())
+  userTazoId      String
+  userTazo        UserTazo @relation(fields: [userTazoId], references: [id], onDelete: Cascade)
+  userId          String
+  tazoId          String
+  // Randomized stats per instance
+  attack          Int      @default(50)
+  defense         Int      @default(50)
+  resistance      Int      @default(50)
+  weight          Int      @default(50)
+  stability       Int      @default(50)
+  spin            Int      @default(50)
+  control         Int      @default(50)
+  bounce          Int      @default(50)
+  precision       Int      @default(50)
+  // Randomized cosmetics
+  finish          String?  @default("normal")
+  creatureVariant String?  @default("standard")
+  // State
+  isNew           Boolean  @default(true)
+  acquiredAt      DateTime @default(now())
+  lastSeenAt      DateTime?
+
+  @@index([userId])
+  @@index([userTazoId])
 }
 
 model Deck {

@@ -15,7 +15,7 @@ import {
 // ── Types ──────────────────────────────────────────────
 interface DeckTazo { id: string; name: string; displayName: string; slug: string; number: string; imageUrl: string; rarity: string; franchiseSlug: string; attack: number; defense: number; resistance: number }
 interface Deck { id: string; name: string; isActive: boolean; tazos: DeckTazo[] }
-interface CollectionTazo { id: string; tazoId: string; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; number?: string | number; franchiseColor?: string } }
+interface CollectionTazo { id: string; tazoId: string; isOwned?: boolean; quantity: number; acquiredAt: string; obtainedFrom?: string | null; isFavorite: boolean; inDeckId?: string | null; deckName?: string | null; wear?: number; battleCount?: number; instances?: Array<{id:string;attack:number;defense:number;resistance:number;weight:number;stability:number;spin:number;control:number;bounce:number;precision:number;finish?:string;creatureVariant?:string;isNew:boolean;acquiredAt:string}>; tazo: DeckTazo & { precision: number; bounce: number; control: number; spin: number; stability: number; weight: number; franchise: string; imageUrl?: string | null; backImageUrl?: string | null; number?: string | number; franchiseColor?: string } }
 interface CollectionData { items: CollectionTazo[]; total: number; totalUnique: number; decks: Deck[]; franchiseSummary: Record<string, number> }
 
 // ── Constants ──────────────────────────────────────────
@@ -174,7 +174,7 @@ export default function CollectionPage() {
   useEffect(() => {
     let cancelled = false
     if (!token) return
-    fetch("/api/collection?limit=500&includeDecks=true", {
+    fetch("/api/collection?limit=500&includeDecks=true&fullCatalog=true", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -237,6 +237,7 @@ export default function CollectionPage() {
     }
     // Sort
     items = [...items].sort((a, b) => {
+      if (a.isOwned !== b.isOwned) return a.isOwned ? -1 : 1
       switch (sortKey) {
         case "power": return totalPower(b.tazo) - totalPower(a.tazo)
         case "power-asc": return totalPower(a.tazo) - totalPower(b.tazo)
@@ -609,12 +610,21 @@ export default function CollectionPage() {
                       const obtainedLabel = item.obtainedFrom ? (OBTAINED_LABEL[item.obtainedFrom] || item.obtainedFrom) : null
                       const isInDeck = !!item.inDeckId
                       const isFlipped = flippedItems.has(item.id)
+                      const owned = item.isOwned !== false
+                      const instanceStats = item.instances?.[0]
+                      const hasNew = item.instances?.some(i => i.isNew) ?? false
 
                       return (
                         <div
                           key={item.id}
                           className="group border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] overflow-hidden hover:shadow-[5px_5px_0px_#1a1a1a] hover:-translate-y-[2px] transition-all bg-white relative"
                         >
+                          {/* NEW badge */}
+                          {hasNew && (
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 px-2 py-0.5 bg-[#FFCC00] text-[#1a1a1a] border-b-2 border-x-2 border-[#1a1a1a] text-[8px] font-black shadow-[0_2px_0px_#1a1a1a] animate-pulse">
+                              NEW!
+                            </div>
+                          )}
                           {/* Deck indicator */}
                           {isInDeck && (
                             <div
@@ -638,6 +648,22 @@ export default function CollectionPage() {
 
                           {/* TazoDiscImage with mouse-tracking tilt for finish effects */}
                           <TazoDiscTilt isFlipped={isFlipped} wear={item.wear || 0}>
+                            {!owned ? (
+                              <div className="w-full h-full relative">
+                                <TazoDiscImage
+                                  src={FRANCHISE_BACK[item.tazo.franchiseSlug] || FRANCHISE_BACK.minimon}
+                                  alt={`Undiscovered ${label} tazo`}
+                                  size="100%"
+                                  borderWidth={0}
+                                  franchiseSlug={item.tazo.franchiseSlug}
+                                  isBack
+                                  lazy
+                                />
+                                <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#1a1a1a]/80 flex items-center justify-center border border-[#FFCC00]/50">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </div>
+                              </div>
+                            ) : (
                             <TazoDiscImage
                               src={isFlipped
                                 ? (FRANCHISE_BACK[item.tazo.franchiseSlug] || FRANCHISE_BACK.minimon)
@@ -662,6 +688,7 @@ export default function CollectionPage() {
                               }
                               lazy
                             />
+                            )}
                           </TazoDiscTilt>
 
                           {/* Flip hint */}
@@ -682,7 +709,7 @@ export default function CollectionPage() {
                                 {item.tazo.name || item.tazo.displayName || `#${item.tazo.number}`}
                               </p>
                               <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase mt-0.5">
-                                {label} #{item.tazo.number}
+                                {label} #{item.tazo.number}{!owned && " · ???"}
                               </p>
                             </div>
 
