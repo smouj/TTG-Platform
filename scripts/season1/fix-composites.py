@@ -6,7 +6,7 @@ Run on VPS: python3 scripts/season1/fix-composites.py
 from PIL import Image
 import os, sys
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 COMPOS_DIR = os.path.join(BASE, "public", "tazos-generated")
 
 def is_fuchsia(r, g, b):
