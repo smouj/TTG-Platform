@@ -23,8 +23,8 @@ export const FRANCHISES: FranchiseConfig[] = [
   {
     slug: "minimon",
     name: "Minimon",
-    count: 10,
-    total: 61,
+    count: 50,
+    total: 50,
     year: 2000,
     origin: "Matutano",
     color: "#FFCC00",
@@ -33,8 +33,8 @@ export const FRANCHISES: FranchiseConfig[] = [
   {
     slug: "dracobell",
     name: "Dracobell",
-    count: 10,
-    total: 128,
+    count: 50,
+    total: 50,
     year: 1995,
     origin: "Matutano",
     color: "#FF6B00",
@@ -43,8 +43,8 @@ export const FRANCHISES: FranchiseConfig[] = [
   {
     slug: "cybermon",
     name: "Cybermon",
-    count: 10,
-    total: 160,
+    count: 48,
+    total: 48,
     year: 2000,
     origin: "Magic Box",
     color: "#00B4D8",

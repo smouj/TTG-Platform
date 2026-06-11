@@ -6,13 +6,13 @@ export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: "Collect, Trade & Battle 349 Classic Tazos",
+  title: "Collect, Trade & Battle 148 Tazos",
   description:
-    "Trading Tazos Game is a free browser-based skill game where you collect 349 tazos, build decks of 5, and battle in a physics-driven 3D arena. Minimon, Dracobell & Cybermon collections.",
+    "Trading Tazos Game is a free browser-based skill game where you collect 148 tazos, build decks of 5, and battle in a physics-driven 3D arena. Minimon, Dracobell & Cybermon collections.",
   openGraph: {
     title: "Trading Tazos Game — Aim. Throw. Flip. Capture.",
     description:
-      "349 classic tazos across 3 collections. 9 combat stats. 2D collection views and a skill-based 3D battle arena. Free to play.",
+      "148 tazos across 3 collections. 9 combat stats. 2D collection views and a skill-based 3D battle arena. Free to play.",
     images: [{ url: "/logo/social-preview.webp", width: 1200, height: 630 }],
   },
   twitter: {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     site: "@tazosgame",
     creator: "@tazosgame",
     title: "Trading Tazos Game — Aim. Throw. Flip. Capture.",
-    description: "349 classic tazos, 3 collections, 9 combat stats, skill-based 3D battle arena. Free to play.",
+    description: "148 tazos, 3 collections, 9 combat stats, skill-based 3D battle arena. Free to play.",
     images: ["/logo/social-preview.webp"],
   },
 }

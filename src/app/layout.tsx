@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://tradingtazosgame.com";
 const SITE_NAME = "Trading Tazos Game";
 const SITE_DESC =
-  "Collect, trade and battle with 349 classic tazos from Minimon, Dracobell and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.";
+  "Collect, trade and battle with 148 tazos from Minimon, Dracobell and Cybermon. Build a 2D album, open tazo bags, and compete in a skill-based 3D battle arena.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
       url: `${SITE_URL}/logo/social-preview.webp`,
       width: 1200,
       height: 630,
-      alt: "Trading Tazos Game — 349 tazos from Minimon, Dracobell & Cybermon",
+      alt: "Trading Tazos Game — 148 tazos from Minimon, Dracobell & Cybermon",
     }],
   },
   twitter: {
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     site: "@tazosgame",
     creator: "@tazosgame",
     title: `${SITE_NAME} — Collect, Trade & Battle Your Tazos`,
-    description: "349 classic tazos, 3 collections, 9 combat stats, 2D collection views, and a skill-based 3D battle arena.",
+    description: "148 tazos, 3 collections, 9 combat stats, 2D collection views, and a skill-based 3D battle arena.",
     images: [`${SITE_URL}/logo/social-preview.webp`],
   },
   alternates: {
@@ -162,7 +162,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Trading Tazos Game",
               "url": SITE_URL,
-              "description": "Independent fictional digital tazo game — collect, trade, and battle with 349 designed tazos across 3 franchises.",
+              "description": "Independent fictional digital tazo game — collect, trade, and battle with 148 tazos across 3 franchises.",
               "email": "support@tradingtazosgame.com",
               "logo": `${SITE_URL}/icon-512x512.png`,
               "sameAs": [
@@ -185,7 +185,7 @@ export default function RootLayout({
                   "name": "What is Trading Tazos Game?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "A free browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 original fictional franchises. Build decks of 5, then enter the 3D arena to slam your tazos and flip opponent discs."
+                    "text": "A free browser-based skill game where you collect and battle with digital tazos. Open bags to discover 148 unique tazos across 3 original fictional franchises. Build decks of 5, then enter the 3D arena to slam your tazos and flip opponent discs."
                   }
                 },
                 {

@@ -1,0 +1,3722 @@
+[
+  {
+    "slug": "aurorix",
+    "status": "error",
+    "error": "Could not extract image from response: {'id': 'gen-1781134059-jKbOW5O9DP7JdULlNQ4o', 'object': 'chat.completion', 'created': 1781134059, 'model': 'goo",
+    "time": 1781134062
+  },
+  {
+    "slug": "aurorix",
+    "status": "ok",
+    "error": null,
+    "time": 1781134109
+  },
+  {
+    "slug": "minimon-t1-1",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134118
+  },
+  {
+    "slug": "aquafin",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134123
+  },
+  {
+    "slug": "aurorix",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134129
+  },
+  {
+    "slug": "boltling",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134134
+  },
+  {
+    "slug": "floramora",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134138
+  },
+  {
+    "slug": "glacipod",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134143
+  },
+  {
+    "slug": "nocturna",
+    "status": "ok",
+    "error": null,
+    "time": 1781134159
+  },
+  {
+    "slug": "pyrokit",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134164
+  },
+  {
+    "slug": "terradon",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134167
+  },
+  {
+    "slug": "zephyrix",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134173
+  },
+  {
+    "slug": "cipherion",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134178
+  },
+  {
+    "slug": "circuitron",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134184
+  },
+  {
+    "slug": "datadrake",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134189
+  },
+  {
+    "slug": "debugger",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134195
+  },
+  {
+    "slug": "firewall",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134198
+  },
+  {
+    "slug": "glitchorb",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134204
+  },
+  {
+    "slug": "kerneloid",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134209
+  },
+  {
+    "slug": "mainframe",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134215
+  },
+  {
+    "slug": "neurabyte",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134220
+  },
+  {
+    "slug": "pixelisk",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134226
+  },
+  {
+    "slug": "hikaru-light",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134229
+  },
+  {
+    "slug": "ikari-rage",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134235
+  },
+  {
+    "slug": "kaji-flame",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134240
+  },
+  {
+    "slug": "kaze-wind",
+    "status": "ok",
+    "error": null,
+    "time": 1781134256
+  },
+  {
+    "slug": "koori-frost",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134261
+  },
+  {
+    "slug": "mizu-wave",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134267
+  },
+  {
+    "slug": "riku-stone",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134272
+  },
+  {
+    "slug": "sora-tide",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134277
+  },
+  {
+    "slug": "tetsu-iron",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134283
+  },
+  {
+    "slug": "yami-shadow",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134287
+  },
+  {
+    "slug": "quillzeta",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134292
+  },
+  {
+    "slug": "glacicoil",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134298
+  },
+  {
+    "slug": "skynox",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134303
+  },
+  {
+    "slug": "novaling",
+    "status": "ok",
+    "error": null,
+    "time": 1781134320
+  },
+  {
+    "slug": "chillfin",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134325
+  },
+  {
+    "slug": "suncrest",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134331
+  },
+  {
+    "slug": "voltspark",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134336
+  },
+  {
+    "slug": "shiverscorch",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134342
+  },
+  {
+    "slug": "lunaflame",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134347
+  },
+  {
+    "slug": "sandfin",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134351
+  },
+  {
+    "slug": "novaskip",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134356
+  },
+  {
+    "slug": "thornling",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134362
+  },
+  {
+    "slug": "chillling",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134367
+  },
+  {
+    "slug": "voltbeak",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134373
+  },
+  {
+    "slug": "razorpod",
+    "status": "ok",
+    "error": null,
+    "time": 1781134388
+  },
+  {
+    "slug": "zephymite",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134393
+  },
+  {
+    "slug": "magneflare",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134399
+  },
+  {
+    "slug": "voltslide",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134404
+  },
+  {
+    "slug": "frostpuff",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134408
+  },
+  {
+    "slug": "ironkit",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134413
+  },
+  {
+    "slug": "cloudraze",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134418
+  },
+  {
+    "slug": "cloudlith",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134424
+  },
+  {
+    "slug": "prismmoth",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134429
+  },
+  {
+    "slug": "quillpuppy",
+    "status": "ok",
+    "error": null,
+    "time": 1781134444
+  },
+  {
+    "slug": "cloudmora",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134449
+  },
+  {
+    "slug": "craghog",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134455
+  },
+  {
+    "slug": "sunmite",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134461
+  },
+  {
+    "slug": "frostnox",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134467
+  },
+  {
+    "slug": "puddlepod",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134470
+  },
+  {
+    "slug": "chillxis",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134476
+  },
+  {
+    "slug": "emberxis",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134481
+  },
+  {
+    "slug": "pyrospike",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134487
+  },
+  {
+    "slug": "talonleaf",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134492
+  },
+  {
+    "slug": "puddleflame",
+    "status": "ok",
+    "error": null,
+    "time": 1781134508
+  },
+  {
+    "slug": "wispshell",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134514
+  },
+  {
+    "slug": "chillsheer",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134519
+  },
+  {
+    "slug": "frostnut",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134525
+  },
+  {
+    "slug": "aquafin",
+    "status": "ok",
+    "error": null,
+    "time": 1781134529
+  },
+  {
+    "slug": "muddyleaf",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134528
+  },
+  {
+    "slug": "lumiling",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134534
+  },
+  {
+    "slug": "coralwing",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134539
+  },
+  {
+    "slug": "glimmerhog",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134545
+  },
+  {
+    "slug": "gravidon",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134551
+  },
+  {
+    "slug": "puddlepetal",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134556
+  },
+  {
+    "slug": "floramist",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134559
+  },
+  {
+    "slug": "cloudclaw",
+    "status": "ok",
+    "error": null,
+    "time": 1781134576
+  },
+  {
+    "slug": "thornclaw",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134582
+  },
+  {
+    "slug": "glimmercoil",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134588
+  },
+  {
+    "slug": "minimon-t1-1",
+    "status": "ok",
+    "error": null,
+    "time": 1781134590
+  },
+  {
+    "slug": "blazejaw",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134591
+  },
+  {
+    "slug": "novabright",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134597
+  },
+  {
+    "slug": "aquafin",
+    "status": "ok",
+    "error": null,
+    "time": 1781134600
+  },
+  {
+    "slug": "suntusk",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134603
+  },
+  {
+    "slug": "tidalmora",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134609
+  },
+  {
+    "slug": "aurorix",
+    "status": "ok",
+    "error": null,
+    "time": 1781134614
+  },
+  {
+    "slug": "kenshi-ocean",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134614
+  },
+  {
+    "slug": "tsubasa-wave",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134620
+  },
+  {
+    "slug": "buru-shadow",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134623
+  },
+  {
+    "slug": "boltling",
+    "status": "ok",
+    "error": null,
+    "time": 1781134626
+  },
+  {
+    "slug": "hakai-awaken",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134629
+  },
+  {
+    "slug": "umi-battle",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134634
+  },
+  {
+    "slug": "nendo-blaze",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134640
+  },
+  {
+    "slug": "floramora",
+    "status": "ok",
+    "error": null,
+    "time": 1781134642
+  },
+  {
+    "slug": "umi-sage",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134646
+  },
+  {
+    "slug": "mugen-comet",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134649
+  },
+  {
+    "slug": "glacipod",
+    "status": "ok",
+    "error": null,
+    "time": 1781134652
+  },
+  {
+    "slug": "kasai-tempest",
+    "status": "ok",
+    "error": null,
+    "time": 1781134665
+  },
+  {
+    "slug": "nocturna",
+    "status": "ok",
+    "error": null,
+    "time": 1781134667
+  },
+  {
+    "slug": "nensho-star",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134671
+  },
+  {
+    "slug": "akuma-snake",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134676
+  },
+  {
+    "slug": "hone-calm",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134680
+  },
+  {
+    "slug": "pyrokit",
+    "status": "ok",
+    "error": null,
+    "time": 1781134681
+  },
+  {
+    "slug": "tokage-tide",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134685
+  },
+  {
+    "slug": "maboro-cloud",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134691
+  },
+  {
+    "slug": "terradon",
+    "status": "ok",
+    "error": null,
+    "time": 1781134693
+  },
+  {
+    "slug": "genshi-blaze",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134696
+  },
+  {
+    "slug": "riku-iron",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134702
+  },
+  {
+    "slug": "zephyrix",
+    "status": "ok",
+    "error": null,
+    "time": 1781134704
+  },
+  {
+    "slug": "kessho-quake",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134707
+  },
+  {
+    "slug": "cipherion",
+    "status": "ok",
+    "error": null,
+    "time": 1781134716
+  },
+  {
+    "slug": "yami-void",
+    "status": "ok",
+    "error": null,
+    "time": 1781134723
+  },
+  {
+    "slug": "yajuu-armor",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134728
+  },
+  {
+    "slug": "circuitron",
+    "status": "ok",
+    "error": null,
+    "time": 1781134729
+  },
+  {
+    "slug": "daichi-flame",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134734
+  },
+  {
+    "slug": "yugure-power",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134739
+  },
+  {
+    "slug": "datadrake",
+    "status": "ok",
+    "error": null,
+    "time": 1781134742
+  },
+  {
+    "slug": "jishin-sprite",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134742
+  },
+  {
+    "slug": "taiyo-burn",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134748
+  },
+  {
+    "slug": "firewall",
+    "status": "ok",
+    "error": null,
+    "time": 1781134755
+  },
+  {
+    "slug": "jishin-illusion",
+    "status": "ok",
+    "error": null,
+    "time": 1781134765
+  },
+  {
+    "slug": "kerneloid",
+    "status": "ok",
+    "error": null,
+    "time": 1781134768
+  },
+  {
+    "slug": "buru-fang",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134770
+  },
+  {
+    "slug": "arashi-lone",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134774
+  },
+  {
+    "slug": "mainframe",
+    "status": "ok",
+    "error": null,
+    "time": 1781134779
+  },
+  {
+    "slug": "yugure-dragon",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134780
+  },
+  {
+    "slug": "ikari-moon",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134785
+  },
+  {
+    "slug": "neurabyte",
+    "status": "ok",
+    "error": null,
+    "time": 1781134792
+  },
+  {
+    "slug": "arata-storm",
+    "status": "ok",
+    "error": null,
+    "time": 1781134801
+  },
+  {
+    "slug": "hone-spirit",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134806
+  },
+  {
+    "slug": "hikaru-light",
+    "status": "ok",
+    "error": null,
+    "time": 1781134807
+  },
+  {
+    "slug": "reikan-abyss",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134812
+  },
+  {
+    "slug": "denki-beast",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134817
+  },
+  {
+    "slug": "kenshi-tide",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134823
+  },
+  {
+    "slug": "ikari-rage",
+    "status": "ok",
+    "error": null,
+    "time": 1781134823
+  },
+  {
+    "slug": "shinku-firestorm",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134828
+  },
+  {
+    "slug": "kaji-flame",
+    "status": "ok",
+    "error": null,
+    "time": 1781134834
+  },
+  {
+    "slug": "ikari-ocean",
+    "status": "ok",
+    "error": null,
+    "time": 1781134844
+  },
+  {
+    "slug": "jishin-clay",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134849
+  },
+  {
+    "slug": "kaze-wind",
+    "status": "ok",
+    "error": null,
+    "time": 1781134852
+  },
+  {
+    "slug": "sora-giant",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134855
+  },
+  {
+    "slug": "enmu-black",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134860
+  },
+  {
+    "slug": "koori-frost",
+    "status": "ok",
+    "error": null,
+    "time": 1781134864
+  },
+  {
+    "slug": "tatakai-iron",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134864
+  },
+  {
+    "slug": "mizu-firestorm",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134870
+  },
+  {
+    "slug": "toge-cell",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134875
+  },
+  {
+    "slug": "riku-stone",
+    "status": "ok",
+    "error": null,
+    "time": 1781134879
+  },
+  {
+    "slug": "riku-illusion",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134881
+  },
+  {
+    "slug": "hayate-wind",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134886
+  },
+  {
+    "slug": "kodai-power",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134891
+  },
+  {
+    "slug": "sora-tide",
+    "status": "ok",
+    "error": null,
+    "time": 1781134895
+  },
+  {
+    "slug": "chikara-wind",
+    "status": "ok",
+    "error": null,
+    "time": 1781134907
+  },
+  {
+    "slug": "tetsu-iron",
+    "status": "ok",
+    "error": null,
+    "time": 1781134909
+  },
+  {
+    "slug": "yami-shadow",
+    "status": "ok",
+    "error": null,
+    "time": 1781134923
+  },
+  {
+    "slug": "buru-destroy",
+    "status": "ok",
+    "error": null,
+    "time": 1781134924
+  },
+  {
+    "slug": "shinku-sun",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134929
+  },
+  {
+    "slug": "glacicoil",
+    "status": "ok",
+    "error": null,
+    "time": 1781134942
+  },
+  {
+    "slug": "kinzoku-sky",
+    "status": "ok",
+    "error": null,
+    "time": 1781134946
+  },
+  {
+    "slug": "kaji-quake",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134952
+  },
+  {
+    "slug": "skynox",
+    "status": "ok",
+    "error": null,
+    "time": 1781134952
+  },
+  {
+    "slug": "novaling",
+    "status": "ok",
+    "error": null,
+    "time": 1781134964
+  },
+  {
+    "slug": "ryuujin-dusk",
+    "status": "ok",
+    "error": null,
+    "time": 1781134968
+  },
+  {
+    "slug": "atsui-lone",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134974
+  },
+  {
+    "slug": "chillfin",
+    "status": "ok",
+    "error": null,
+    "time": 1781134978
+  },
+  {
+    "slug": "tenku-heat",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134979
+  },
+  {
+    "slug": "saiho-new",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134983
+  },
+  {
+    "slug": "koori-tiger",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134989
+  },
+  {
+    "slug": "shiverscorch",
+    "status": "ok",
+    "error": null,
+    "time": 1781134994
+  },
+  {
+    "slug": "shin'en-sprite",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781134996
+  },
+  {
+    "slug": "kodoku-star",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135002
+  },
+  {
+    "slug": "lunaflame",
+    "status": "ok",
+    "error": null,
+    "time": 1781135010
+  },
+  {
+    "slug": "hayate-fear",
+    "status": "ok",
+    "error": null,
+    "time": 1781135016
+  },
+  {
+    "slug": "saiho-quake",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135022
+  },
+  {
+    "slug": "chillling",
+    "status": "ok",
+    "error": null,
+    "time": 1781135022
+  },
+  {
+    "slug": "kumo-tide",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135028
+  },
+  {
+    "slug": "kuroku-battle",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135033
+  },
+  {
+    "slug": "voltbeak",
+    "status": "ok",
+    "error": null,
+    "time": 1781135034
+  },
+  {
+    "slug": "kodai-beast",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135039
+  },
+  {
+    "slug": "suisei-wave",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135044
+  },
+  {
+    "slug": "razorpod",
+    "status": "ok",
+    "error": null,
+    "time": 1781135046
+  },
+  {
+    "slug": "kiri-fear",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135048
+  },
+  {
+    "slug": "jiku-metal",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135053
+  },
+  {
+    "slug": "magneflare",
+    "status": "ok",
+    "error": null,
+    "time": 1781135059
+  },
+  {
+    "slug": "tokage-crystal",
+    "status": "ok",
+    "error": null,
+    "time": 1781135070
+  },
+  {
+    "slug": "saiho-chain",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135074
+  },
+  {
+    "slug": "voltslide",
+    "status": "ok",
+    "error": null,
+    "time": 1781135074
+  },
+  {
+    "slug": "tenku-battle",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135079
+  },
+  {
+    "slug": "kessho-shock",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135085
+  },
+  {
+    "slug": "frostpuff",
+    "status": "ok",
+    "error": null,
+    "time": 1781135086
+  },
+  {
+    "slug": "koori-destroy",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135091
+  },
+  {
+    "slug": "kumo-storm",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135096
+  },
+  {
+    "slug": "maboro-shock",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135102
+  },
+  {
+    "slug": "ironkit",
+    "status": "ok",
+    "error": null,
+    "time": 1781135103
+  },
+  {
+    "slug": "hakai-burn",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135105
+  },
+  {
+    "slug": "cloudraze",
+    "status": "ok",
+    "error": null,
+    "time": 1781135118
+  },
+  {
+    "slug": "seirei-blaze",
+    "status": "ok",
+    "error": null,
+    "time": 1781135125
+  },
+  {
+    "slug": "kaji-swift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135128
+  },
+  {
+    "slug": "kodoku-sprite",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135132
+  },
+  {
+    "slug": "cloudlith",
+    "status": "ok",
+    "error": null,
+    "time": 1781135132
+  },
+  {
+    "slug": "quillpuppy",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135134
+  },
+  {
+    "slug": "rekka-cell",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135135
+  },
+  {
+    "slug": "cloudmora",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135134
+  },
+  {
+    "slug": "hagane-wave",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135138
+  },
+  {
+    "slug": "craghog",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135139
+  },
+  {
+    "slug": "sunmite",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135143
+  },
+  {
+    "slug": "kumo-spirit",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135143
+  },
+  {
+    "slug": "frostnox",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135147
+  },
+  {
+    "slug": "maboro-beast",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135149
+  },
+  {
+    "slug": "chillxis",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135151
+  },
+  {
+    "slug": "shinku-battle",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135153
+  },
+  {
+    "slug": "emberxis",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135154
+  },
+  {
+    "slug": "pyrospike",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135156
+  },
+  {
+    "slug": "hebi-new",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135158
+  },
+  {
+    "slug": "talonleaf",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135160
+  },
+  {
+    "slug": "rekka-firestorm",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135162
+  },
+  {
+    "slug": "puddleflame",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135164
+  },
+  {
+    "slug": "tokage-wind",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135166
+  },
+  {
+    "slug": "chillsheer",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135164
+  },
+  {
+    "slug": "frostnut",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135166
+  },
+  {
+    "slug": "tokage-flame",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135170
+  },
+  {
+    "slug": "muddyleaf",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135170
+  },
+  {
+    "slug": "lumiling",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135173
+  },
+  {
+    "slug": "yajuu-ancient",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135173
+  },
+  {
+    "slug": "coralwing",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135175
+  },
+  {
+    "slug": "hagane-infinite",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135176
+  },
+  {
+    "slug": "glimmerhog",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135177
+  },
+  {
+    "slug": "gravidon",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135179
+  },
+  {
+    "slug": "shin'en-void",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135181
+  },
+  {
+    "slug": "puddlepetal",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135182
+  },
+  {
+    "slug": "floramist",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135184
+  },
+  {
+    "slug": "mizu-new",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135185
+  },
+  {
+    "slug": "cloudclaw",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135186
+  },
+  {
+    "slug": "daichi-quake",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135188
+  },
+  {
+    "slug": "glimmercoil",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135188
+  },
+  {
+    "slug": "kami-frost",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135191
+  },
+  {
+    "slug": "blazejaw",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135192
+  },
+  {
+    "slug": "novabright",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135194
+  },
+  {
+    "slug": "suntusk",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135194
+  },
+  {
+    "slug": "maboro-lone",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135195
+  },
+  {
+    "slug": "tidalmora",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135197
+  },
+  {
+    "slug": "arashi-new",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135198
+  },
+  {
+    "slug": "tsubasa-wave",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135199
+  },
+  {
+    "slug": "buru-shadow",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135201
+  },
+  {
+    "slug": "shizuka-ocean",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135201
+  },
+  {
+    "slug": "nendo-blaze",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135203
+  },
+  {
+    "slug": "genshi-fear",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135205
+  },
+  {
+    "slug": "nensho-star",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135205
+  },
+  {
+    "slug": "hone-calm",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135208
+  },
+  {
+    "slug": "ikari-giant",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135208
+  },
+  {
+    "slug": "tokage-tide",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135210
+  },
+  {
+    "slug": "yami-power",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135212
+  },
+  {
+    "slug": "maboro-cloud",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135212
+  },
+  {
+    "slug": "genshi-blaze",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135214
+  },
+  {
+    "slug": "rekka-moon",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135215
+  },
+  {
+    "slug": "kessho-quake",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135216
+  },
+  {
+    "slug": "mezame-lizard",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135218
+  },
+  {
+    "slug": "yami-void",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135218
+  },
+  {
+    "slug": "taiyo-burn",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135220
+  },
+  {
+    "slug": "jiku-black",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135221
+  },
+  {
+    "slug": "shinku-firestorm",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135223
+  },
+  {
+    "slug": "kyofu-inferno",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135224
+  },
+  {
+    "slug": "sora-giant",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135225
+  },
+  {
+    "slug": "tatakai-iron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135225
+  },
+  {
+    "slug": "tetsu-illusion",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135225
+  },
+  {
+    "slug": "hakai-star",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135229
+  },
+  {
+    "slug": "mizu-firestorm",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135229
+  },
+  {
+    "slug": "toge-cell",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135231
+  },
+  {
+    "slug": "maboro-bone",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135232
+  },
+  {
+    "slug": "riku-illusion",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135233
+  },
+  {
+    "slug": "riku-atom",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135235
+  },
+  {
+    "slug": "buru-destroy",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135235
+  },
+  {
+    "slug": "ryuujin-dusk",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135237
+  },
+  {
+    "slug": "atsui-lone",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135240
+  },
+  {
+    "slug": "atsui-bone",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135240
+  },
+  {
+    "slug": "tenku-heat",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135243
+  },
+  {
+    "slug": "umi-cell",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135244
+  },
+  {
+    "slug": "shin'en-sprite",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135245
+  },
+  {
+    "slug": "kaen-light",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135247
+  },
+  {
+    "slug": "kodoku-star",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135247
+  },
+  {
+    "slug": "hayate-fear",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135249
+  },
+  {
+    "slug": "arashi-blaze",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135250
+  },
+  {
+    "slug": "jiku-metal",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135251
+  },
+  {
+    "slug": "arashi-chain",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135253
+  },
+  {
+    "slug": "kumo-storm",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135254
+  },
+  {
+    "slug": "maboro-shock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135256
+  },
+  {
+    "slug": "kenshi-mist",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135257
+  },
+  {
+    "slug": "hakai-burn",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135256
+  },
+  {
+    "slug": "jishin-battle",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135258
+  },
+  {
+    "slug": "seirei-blaze",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135258
+  },
+  {
+    "slug": "rekka-cell",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135260
+  },
+  {
+    "slug": "genshi-cell",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135261
+  },
+  {
+    "slug": "maboro-beast",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135263
+  },
+  {
+    "slug": "kasai-metal",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135264
+  },
+  {
+    "slug": "rekka-firestorm",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135265
+  },
+  {
+    "slug": "tokage-wind",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135267
+  },
+  {
+    "slug": "suisei-thorn",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135268
+  },
+  {
+    "slug": "hagane-infinite",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135270
+  },
+  {
+    "slug": "tsubasa-inferno",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135271
+  },
+  {
+    "slug": "kami-frost",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135272
+  },
+  {
+    "slug": "arashi-new",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135274
+  },
+  {
+    "slug": "kuroku-shock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135274
+  },
+  {
+    "slug": "tetsu-illusion",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135276
+  },
+  {
+    "slug": "jiku-chain",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135277
+  },
+  {
+    "slug": "riku-atom",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135278
+  },
+  {
+    "slug": "atsui-bone",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135280
+  },
+  {
+    "slug": "chisphere",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135280
+  },
+  {
+    "slug": "suisei-thorn",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135282
+  },
+  {
+    "slug": "alphahub",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135284
+  },
+  {
+    "slug": "kuroku-shock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135285
+  },
+  {
+    "slug": "lambdachip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135287
+  },
+  {
+    "slug": "lambdachip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135287
+  },
+  {
+    "slug": "betatron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135287
+  },
+  {
+    "slug": "betatron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135288
+  },
+  {
+    "slug": "fissiontype",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135289
+  },
+  {
+    "slug": "fissiontype",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135291
+  },
+  {
+    "slug": "photonkey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135291
+  },
+  {
+    "slug": "plasmabot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135293
+  },
+  {
+    "slug": "betapulse",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135294
+  },
+  {
+    "slug": "queuestack",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135295
+  },
+  {
+    "slug": "photonkey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135297
+  },
+  {
+    "slug": "epsilontron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135298
+  },
+  {
+    "slug": "deltamorph",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135300
+  },
+  {
+    "slug": "voxelforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135301
+  },
+  {
+    "slug": "psigrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135302
+  },
+  {
+    "slug": "deltaforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135304
+  },
+  {
+    "slug": "technocode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135304
+  },
+  {
+    "slug": "nexusforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135306
+  },
+  {
+    "slug": "mechadrive",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135307
+  },
+  {
+    "slug": "aetherforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135309
+  },
+  {
+    "slug": "glyphnet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135310
+  },
+  {
+    "slug": "queueshift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135311
+  },
+  {
+    "slug": "plasmacore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135313
+  },
+  {
+    "slug": "stackvault",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135313
+  },
+  {
+    "slug": "nanocast",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135315
+  },
+  {
+    "slug": "lambdamorph",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135316
+  },
+  {
+    "slug": "datalock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135317
+  },
+  {
+    "slug": "hexapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135317
+  },
+  {
+    "slug": "plasmabot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135317
+  },
+  {
+    "slug": "cyberkey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135319
+  },
+  {
+    "slug": "glyphpulse",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135321
+  },
+  {
+    "slug": "matrixware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135322
+  },
+  {
+    "slug": "arraylink",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135324
+  },
+  {
+    "slug": "pulsedrive",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135324
+  },
+  {
+    "slug": "logicnode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135326
+  },
+  {
+    "slug": "alphatek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135327
+  },
+  {
+    "slug": "digitallock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135328
+  },
+  {
+    "slug": "kappawave",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135330
+  },
+  {
+    "slug": "lambdascan",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135330
+  },
+  {
+    "slug": "epsiloncode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135332
+  },
+  {
+    "slug": "arrayhub",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135333
+  },
+  {
+    "slug": "mechaforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135336
+  },
+  {
+    "slug": "psichip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135337
+  },
+  {
+    "slug": "singularstack",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135340
+  },
+  {
+    "slug": "epsilonnode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135342
+  },
+  {
+    "slug": "zetagate",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135343
+  },
+  {
+    "slug": "chitron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135344
+  },
+  {
+    "slug": "fusionbot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135346
+  },
+  {
+    "slug": "prismcode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135346
+  },
+  {
+    "slug": "cryptokey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135347
+  },
+  {
+    "slug": "hexasphere",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135347
+  },
+  {
+    "slug": "cryptosync",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135349
+  },
+  {
+    "slug": "omniware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135350
+  },
+  {
+    "slug": "cryptobot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135351
+  },
+  {
+    "slug": "dataforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135353
+  },
+  {
+    "slug": "queuestack",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135353
+  },
+  {
+    "slug": "phibyte",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135355
+  },
+  {
+    "slug": "protolock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135356
+  },
+  {
+    "slug": "logicchip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135357
+  },
+  {
+    "slug": "fusionlink",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135359
+  },
+  {
+    "slug": "alphanet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135360
+  },
+  {
+    "slug": "voxelgrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135362
+  },
+  {
+    "slug": "metashift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135363
+  },
+  {
+    "slug": "lambdatron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135364
+  },
+  {
+    "slug": "logiccode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135366
+  },
+  {
+    "slug": "hexaform",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135368
+  },
+  {
+    "slug": "vantashift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135369
+  },
+  {
+    "slug": "omegapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135370
+  },
+  {
+    "slug": "epsilontron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135372
+  },
+  {
+    "slug": "hexabot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135372
+  },
+  {
+    "slug": "logicdrive",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135374
+  },
+  {
+    "slug": "phiform",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135375
+  },
+  {
+    "slug": "metatek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135377
+  },
+  {
+    "slug": "deltamorph",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135376
+  },
+  {
+    "slug": "rhoflux",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135379
+  },
+  {
+    "slug": "psigrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135382
+  },
+  {
+    "slug": "psidroid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135386
+  },
+  {
+    "slug": "technocode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135389
+  },
+  {
+    "slug": "zetapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135392
+  },
+  {
+    "slug": "ultrapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135395
+  },
+  {
+    "slug": "zetacast",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135398
+  },
+  {
+    "slug": "rhotek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135401
+  },
+  {
+    "slug": "phibot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135404
+  },
+  {
+    "slug": "mechamorph",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135408
+  },
+  {
+    "slug": "sigmacore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135409
+  },
+  {
+    "slug": "sigmanode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135412
+  },
+  {
+    "slug": "ultraplex",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135415
+  },
+  {
+    "slug": "hashtype",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135418
+  },
+  {
+    "slug": "epsilonnet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135422
+  },
+  {
+    "slug": "singularkey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135425
+  },
+  {
+    "slug": "nexusforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135428
+  },
+  {
+    "slug": "cachebot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135431
+  },
+  {
+    "slug": "singularport",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135434
+  },
+  {
+    "slug": "aetherforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135437
+  },
+  {
+    "slug": "queueshift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135438
+  },
+  {
+    "slug": "kappaforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135442
+  },
+  {
+    "slug": "plasmacore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135445
+  },
+  {
+    "slug": "psiware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135448
+  },
+  {
+    "slug": "nanocast",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135451
+  },
+  {
+    "slug": "synthhub",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135454
+  },
+  {
+    "slug": "datalock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135457
+  },
+  {
+    "slug": "rhomesh",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135460
+  },
+  {
+    "slug": "digitalnet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135464
+  },
+  {
+    "slug": "hexapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135467
+  },
+  {
+    "slug": "quantumcore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135468
+  },
+  {
+    "slug": "aetherware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135471
+  },
+  {
+    "slug": "betaforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135474
+  },
+  {
+    "slug": "cyberkey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135477
+  },
+  {
+    "slug": "matrixware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135481
+  },
+  {
+    "slug": "arraylink",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135484
+  },
+  {
+    "slug": "prismnode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135487
+  },
+  {
+    "slug": "quantumlock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135490
+  },
+  {
+    "slug": "pulseport",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135493
+  },
+  {
+    "slug": "synthforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135496
+  },
+  {
+    "slug": "logicmesh",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135498
+  },
+  {
+    "slug": "matrixgrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135501
+  },
+  {
+    "slug": "protocode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135504
+  },
+  {
+    "slug": "logicnode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135507
+  },
+  {
+    "slug": "fusiondroid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135510
+  },
+  {
+    "slug": "epsilonforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135513
+  },
+  {
+    "slug": "digitallock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135517
+  },
+  {
+    "slug": "ioncore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135520
+  },
+  {
+    "slug": "synthcore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135523
+  },
+  {
+    "slug": "lambdascan",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135526
+  },
+  {
+    "slug": "prismforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135530
+  },
+  {
+    "slug": "photonflux",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135531
+  },
+  {
+    "slug": "fusionform",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135534
+  },
+  {
+    "slug": "epsiloncode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135537
+  },
+  {
+    "slug": "mechapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135540
+  },
+  {
+    "slug": "lambdaware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135543
+  },
+  {
+    "slug": "epsilonline",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135546
+  },
+  {
+    "slug": "glyphtron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135550
+  },
+  {
+    "slug": "omniforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135553
+  },
+  {
+    "slug": "hashwave",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135556
+  },
+  {
+    "slug": "deltaplex",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135559
+  },
+  {
+    "slug": "psichip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135561
+  },
+  {
+    "slug": "epsilonnode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135564
+  },
+  {
+    "slug": "chitron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135567
+  },
+  {
+    "slug": "vantacode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135571
+  },
+  {
+    "slug": "logicdroid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135574
+  },
+  {
+    "slug": "voxelport",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135577
+  },
+  {
+    "slug": "kappascan",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135580
+  },
+  {
+    "slug": "voxelware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135583
+  },
+  {
+    "slug": "pulsecore",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135586
+  },
+  {
+    "slug": "prismcode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135590
+  },
+  {
+    "slug": "cryptokey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135591
+  },
+  {
+    "slug": "cyberform",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135594
+  },
+  {
+    "slug": "thetatron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135597
+  },
+  {
+    "slug": "mechatype",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135600
+  },
+  {
+    "slug": "cryptosync",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135603
+  },
+  {
+    "slug": "cryptobot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135606
+  },
+  {
+    "slug": "metacast",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135610
+  },
+  {
+    "slug": "digitalport",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135613
+  },
+  {
+    "slug": "chinet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135616
+  },
+  {
+    "slug": "sigmaware",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135619
+  },
+  {
+    "slug": "dataforge",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135620
+  },
+  {
+    "slug": "phibyte",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135623
+  },
+  {
+    "slug": "logicchip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135627
+  },
+  {
+    "slug": "cyberscan",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135630
+  },
+  {
+    "slug": "cyphershift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135633
+  },
+  {
+    "slug": "epsilonport",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135636
+  },
+  {
+    "slug": "taunet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135639
+  },
+  {
+    "slug": "iongrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135642
+  },
+  {
+    "slug": "fluxgrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135646
+  },
+  {
+    "slug": "fusionlink",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135649
+  },
+  {
+    "slug": "voxelgrid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135650
+  },
+  {
+    "slug": "entropychip",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135653
+  },
+  {
+    "slug": "hyperdroid",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135656
+  },
+  {
+    "slug": "taubeam",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135659
+  },
+  {
+    "slug": "sigmacode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135663
+  },
+  {
+    "slug": "pulsebyte",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135666
+  },
+  {
+    "slug": "lambdatron",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135669
+  },
+  {
+    "slug": "plasmalock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135672
+  },
+  {
+    "slug": "ultrascan",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135676
+  },
+  {
+    "slug": "fluxbyte",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135679
+  },
+  {
+    "slug": "singularlock",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135680
+  },
+  {
+    "slug": "logiccode",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135683
+  },
+  {
+    "slug": "hexaform",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135686
+  },
+  {
+    "slug": "nexustek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135689
+  },
+  {
+    "slug": "fissionbeam",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135693
+  },
+  {
+    "slug": "wiredmorph",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135696
+  },
+  {
+    "slug": "quantumnet",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135699
+  },
+  {
+    "slug": "omegapath",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135702
+  },
+  {
+    "slug": "hexabot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135705
+  },
+  {
+    "slug": "phikey",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135708
+  },
+  {
+    "slug": "voxelline",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135710
+  },
+  {
+    "slug": "logicdrive",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135713
+  },
+  {
+    "slug": "entropyshift",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135716
+  },
+  {
+    "slug": "metatek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781135719
+  },
+  {
+    "slug": "voxelcast",
+    "status": "error",
+    "error": "Could not extract image from response. images=0",
+    "time": 1781135725
+  },
+  {
+    "slug": "cloudmora",
+    "status": "ok",
+    "error": null,
+    "time": 1781136316
+  },
+  {
+    "slug": "craghog",
+    "status": "ok",
+    "error": null,
+    "time": 1781136334
+  },
+  {
+    "slug": "sunmite",
+    "status": "ok",
+    "error": null,
+    "time": 1781136346
+  },
+  {
+    "slug": "frostnox",
+    "status": "ok",
+    "error": null,
+    "time": 1781136361
+  },
+  {
+    "slug": "chillxis",
+    "status": "ok",
+    "error": null,
+    "time": 1781136376
+  },
+  {
+    "slug": "emberxis",
+    "status": "ok",
+    "error": null,
+    "time": 1781136389
+  },
+  {
+    "slug": "pyrospike",
+    "status": "ok",
+    "error": null,
+    "time": 1781136404
+  },
+  {
+    "slug": "talonleaf",
+    "status": "ok",
+    "error": null,
+    "time": 1781136418
+  },
+  {
+    "slug": "chillsheer",
+    "status": "ok",
+    "error": null,
+    "time": 1781136433
+  },
+  {
+    "slug": "frostnut",
+    "status": "ok",
+    "error": null,
+    "time": 1781136444
+  },
+  {
+    "slug": "muddyleaf",
+    "status": "ok",
+    "error": null,
+    "time": 1781136459
+  },
+  {
+    "slug": "lumiling",
+    "status": "ok",
+    "error": null,
+    "time": 1781136471
+  },
+  {
+    "slug": "coralwing",
+    "status": "ok",
+    "error": null,
+    "time": 1781136488
+  },
+  {
+    "slug": "glimmerhog",
+    "status": "ok",
+    "error": null,
+    "time": 1781136499
+  },
+  {
+    "slug": "gravidon",
+    "status": "ok",
+    "error": null,
+    "time": 1781136514
+  },
+  {
+    "slug": "puddlepetal",
+    "status": "ok",
+    "error": null,
+    "time": 1781136528
+  },
+  {
+    "slug": "floramist",
+    "status": "ok",
+    "error": null,
+    "time": 1781136539
+  },
+  {
+    "slug": "glimmercoil",
+    "status": "ok",
+    "error": null,
+    "time": 1781136554
+  },
+  {
+    "slug": "blazejaw",
+    "status": "ok",
+    "error": null,
+    "time": 1781136567
+  },
+  {
+    "slug": "novabright",
+    "status": "ok",
+    "error": null,
+    "time": 1781136583
+  },
+  {
+    "slug": "suntusk",
+    "status": "ok",
+    "error": null,
+    "time": 1781136596
+  },
+  {
+    "slug": "tidalmora",
+    "status": "ok",
+    "error": null,
+    "time": 1781136608
+  },
+  {
+    "slug": "tsubasa-wave",
+    "status": "ok",
+    "error": null,
+    "time": 1781136623
+  },
+  {
+    "slug": "buru-shadow",
+    "status": "ok",
+    "error": null,
+    "time": 1781136636
+  },
+  {
+    "slug": "nendo-blaze",
+    "status": "ok",
+    "error": null,
+    "time": 1781136652
+  },
+  {
+    "slug": "nensho-star",
+    "status": "ok",
+    "error": null,
+    "time": 1781136667
+  },
+  {
+    "slug": "hone-calm",
+    "status": "ok",
+    "error": null,
+    "time": 1781136682
+  },
+  {
+    "slug": "tokage-tide",
+    "status": "ok",
+    "error": null,
+    "time": 1781136698
+  },
+  {
+    "slug": "maboro-cloud",
+    "status": "ok",
+    "error": null,
+    "time": 1781136712
+  },
+  {
+    "slug": "genshi-blaze",
+    "status": "ok",
+    "error": null,
+    "time": 1781136726
+  },
+  {
+    "slug": "kessho-quake",
+    "status": "ok",
+    "error": null,
+    "time": 1781136740
+  },
+  {
+    "slug": "taiyo-burn",
+    "status": "ok",
+    "error": null,
+    "time": 1781136753
+  },
+  {
+    "slug": "shinku-firestorm",
+    "status": "ok",
+    "error": null,
+    "time": 1781136767
+  },
+  {
+    "slug": "sora-giant",
+    "status": "ok",
+    "error": null,
+    "time": 1781136780
+  },
+  {
+    "slug": "tatakai-iron",
+    "status": "ok",
+    "error": null,
+    "time": 1781136794
+  },
+  {
+    "slug": "mizu-firestorm",
+    "status": "ok",
+    "error": null,
+    "time": 1781136809
+  },
+  {
+    "slug": "toge-cell",
+    "status": "ok",
+    "error": null,
+    "time": 1781136823
+  },
+  {
+    "slug": "riku-illusion",
+    "status": "ok",
+    "error": null,
+    "time": 1781136835
+  },
+  {
+    "slug": "atsui-lone",
+    "status": "ok",
+    "error": null,
+    "time": 1781136849
+  },
+  {
+    "slug": "tenku-heat",
+    "status": "ok",
+    "error": null,
+    "time": 1781136861
+  },
+  {
+    "slug": "shin'en-sprite",
+    "status": "ok",
+    "error": null,
+    "time": 1781136876
+  },
+  {
+    "slug": "kodoku-star",
+    "status": "ok",
+    "error": null,
+    "time": 1781136891
+  },
+  {
+    "slug": "jiku-metal",
+    "status": "ok",
+    "error": null,
+    "time": 1781136904
+  },
+  {
+    "slug": "kumo-storm",
+    "status": "ok",
+    "error": null,
+    "time": 1781136920
+  },
+  {
+    "slug": "maboro-shock",
+    "status": "ok",
+    "error": null,
+    "time": 1781136932
+  },
+  {
+    "slug": "hakai-burn",
+    "status": "ok",
+    "error": null,
+    "time": 1781136945
+  },
+  {
+    "slug": "rekka-cell",
+    "status": "ok",
+    "error": null,
+    "time": 1781136956
+  },
+  {
+    "slug": "maboro-beast",
+    "status": "ok",
+    "error": null,
+    "time": 1781136971
+  },
+  {
+    "slug": "rekka-firestorm",
+    "status": "ok",
+    "error": null,
+    "time": 1781136983
+  },
+  {
+    "slug": "tokage-wind",
+    "status": "ok",
+    "error": null,
+    "time": 1781136999
+  },
+  {
+    "slug": "hagane-infinite",
+    "status": "ok",
+    "error": null,
+    "time": 1781137013
+  },
+  {
+    "slug": "kami-frost",
+    "status": "ok",
+    "error": null,
+    "time": 1781137026
+  },
+  {
+    "slug": "arashi-new",
+    "status": "ok",
+    "error": null,
+    "time": 1781137042
+  },
+  {
+    "slug": "tetsu-illusion",
+    "status": "ok",
+    "error": null,
+    "time": 1781137053
+  },
+  {
+    "slug": "riku-atom",
+    "status": "ok",
+    "error": null,
+    "time": 1781137068
+  },
+  {
+    "slug": "atsui-bone",
+    "status": "ok",
+    "error": null,
+    "time": 1781137083
+  },
+  {
+    "slug": "suisei-thorn",
+    "status": "ok",
+    "error": null,
+    "time": 1781137098
+  },
+  {
+    "slug": "kuroku-shock",
+    "status": "ok",
+    "error": null,
+    "time": 1781137113
+  },
+  {
+    "slug": "lambdachip",
+    "status": "ok",
+    "error": null,
+    "time": 1781137127
+  },
+  {
+    "slug": "betatron",
+    "status": "ok",
+    "error": null,
+    "time": 1781137138
+  },
+  {
+    "slug": "fissiontype",
+    "status": "ok",
+    "error": null,
+    "time": 1781137151
+  },
+  {
+    "slug": "photonkey",
+    "status": "ok",
+    "error": null,
+    "time": 1781137164
+  },
+  {
+    "slug": "plasmabot",
+    "status": "ok",
+    "error": null,
+    "time": 1781137179
+  },
+  {
+    "slug": "queuestack",
+    "status": "ok",
+    "error": null,
+    "time": 1781137194
+  },
+  {
+    "slug": "epsilontron",
+    "status": "ok",
+    "error": null,
+    "time": 1781137207
+  },
+  {
+    "slug": "deltamorph",
+    "status": "ok",
+    "error": null,
+    "time": 1781137220
+  },
+  {
+    "slug": "psigrid",
+    "status": "ok",
+    "error": null,
+    "time": 1781137231
+  },
+  {
+    "slug": "technocode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137244
+  },
+  {
+    "slug": "nexusforge",
+    "status": "ok",
+    "error": null,
+    "time": 1781137258
+  },
+  {
+    "slug": "aetherforge",
+    "status": "ok",
+    "error": null,
+    "time": 1781137276
+  },
+  {
+    "slug": "queueshift",
+    "status": "ok",
+    "error": null,
+    "time": 1781137290
+  },
+  {
+    "slug": "plasmacore",
+    "status": "ok",
+    "error": null,
+    "time": 1781137306
+  },
+  {
+    "slug": "nanocast",
+    "status": "ok",
+    "error": null,
+    "time": 1781137318
+  },
+  {
+    "slug": "datalock",
+    "status": "ok",
+    "error": null,
+    "time": 1781137331
+  },
+  {
+    "slug": "hexapath",
+    "status": "ok",
+    "error": null,
+    "time": 1781137345
+  },
+  {
+    "slug": "cyberkey",
+    "status": "ok",
+    "error": null,
+    "time": 1781137357
+  },
+  {
+    "slug": "matrixware",
+    "status": "ok",
+    "error": null,
+    "time": 1781137373
+  },
+  {
+    "slug": "arraylink",
+    "status": "ok",
+    "error": null,
+    "time": 1781137385
+  },
+  {
+    "slug": "logicnode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137400
+  },
+  {
+    "slug": "digitallock",
+    "status": "ok",
+    "error": null,
+    "time": 1781137412
+  },
+  {
+    "slug": "lambdascan",
+    "status": "ok",
+    "error": null,
+    "time": 1781137427
+  },
+  {
+    "slug": "epsiloncode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137441
+  },
+  {
+    "slug": "psichip",
+    "status": "ok",
+    "error": null,
+    "time": 1781137455
+  },
+  {
+    "slug": "psichip",
+    "status": "ok",
+    "error": null,
+    "time": 1781137467
+  },
+  {
+    "slug": "epsilonnode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137468
+  },
+  {
+    "slug": "epsilonnode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137476
+  },
+  {
+    "slug": "chitron",
+    "status": "ok",
+    "error": null,
+    "time": 1781137484
+  },
+  {
+    "slug": "chitron",
+    "status": "ok",
+    "error": null,
+    "time": 1781137489
+  },
+  {
+    "slug": "prismcode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137499
+  },
+  {
+    "slug": "prismcode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137502
+  },
+  {
+    "slug": "cryptokey",
+    "status": "ok",
+    "error": null,
+    "time": 1781137514
+  },
+  {
+    "slug": "cryptokey",
+    "status": "ok",
+    "error": null,
+    "time": 1781137516
+  },
+  {
+    "slug": "cryptosync",
+    "status": "ok",
+    "error": null,
+    "time": 1781137528
+  },
+  {
+    "slug": "cryptosync",
+    "status": "ok",
+    "error": null,
+    "time": 1781137529
+  },
+  {
+    "slug": "cryptobot",
+    "status": "ok",
+    "error": null,
+    "time": 1781137540
+  },
+  {
+    "slug": "cryptobot",
+    "status": "ok",
+    "error": null,
+    "time": 1781137544
+  },
+  {
+    "slug": "dataforge",
+    "status": "ok",
+    "error": null,
+    "time": 1781137555
+  },
+  {
+    "slug": "dataforge",
+    "status": "ok",
+    "error": null,
+    "time": 1781137557
+  },
+  {
+    "slug": "phibyte",
+    "status": "ok",
+    "error": null,
+    "time": 1781137568
+  },
+  {
+    "slug": "phibyte",
+    "status": "ok",
+    "error": null,
+    "time": 1781137569
+  },
+  {
+    "slug": "logicchip",
+    "status": "ok",
+    "error": null,
+    "time": 1781137582
+  },
+  {
+    "slug": "logicchip",
+    "status": "ok",
+    "error": null,
+    "time": 1781137585
+  },
+  {
+    "slug": "fusionlink",
+    "status": "ok",
+    "error": null,
+    "time": 1781137596
+  },
+  {
+    "slug": "fusionlink",
+    "status": "ok",
+    "error": null,
+    "time": 1781137598
+  },
+  {
+    "slug": "voxelgrid",
+    "status": "ok",
+    "error": null,
+    "time": 1781137612
+  },
+  {
+    "slug": "voxelgrid",
+    "status": "ok",
+    "error": null,
+    "time": 1781137614
+  },
+  {
+    "slug": "lambdatron",
+    "status": "ok",
+    "error": null,
+    "time": 1781137625
+  },
+  {
+    "slug": "lambdatron",
+    "status": "ok",
+    "error": null,
+    "time": 1781137627
+  },
+  {
+    "slug": "logiccode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137639
+  },
+  {
+    "slug": "logiccode",
+    "status": "ok",
+    "error": null,
+    "time": 1781137642
+  },
+  {
+    "slug": "hexaform",
+    "status": "ok",
+    "error": null,
+    "time": 1781137651
+  },
+  {
+    "slug": "hexaform",
+    "status": "ok",
+    "error": null,
+    "time": 1781137656
+  },
+  {
+    "slug": "omegapath",
+    "status": "ok",
+    "error": null,
+    "time": 1781137666
+  },
+  {
+    "slug": "omegapath",
+    "status": "ok",
+    "error": null,
+    "time": 1781137671
+  },
+  {
+    "slug": "hexabot",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781137675
+  },
+  {
+    "slug": "logicdrive",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781137678
+  },
+  {
+    "slug": "hexabot",
+    "status": "ok",
+    "error": null,
+    "time": 1781137678
+  },
+  {
+    "slug": "metatek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781137680
+  },
+  {
+    "slug": "logicdrive",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781137681
+  },
+  {
+    "slug": "metatek",
+    "status": "error",
+    "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+    "time": 1781137685
+  }
+]

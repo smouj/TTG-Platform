@@ -510,7 +510,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
 
   const displayTazos = featuredTazos.slice(0, 8)
   const countLabel = realTazoCount ? `${realTazoCount} Tazos Available` : "Collect. Trade. Battle."
-  const totalDesignedLabel = realTazoCount ? `(of 349 designed)` : ""
+  const totalDesignedLabel = ""
 
   return (
     <div className="max-w-6xl mx-auto w-full px-4 sm:px-6" style={{ minHeight: "calc(100vh - 76px - 60px)" }}>
@@ -584,7 +584,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
           {/* Stat chips — magazine factoid bar */}
           <div className="relative flex flex-wrap gap-1.5 justify-center md:justify-start">
             {[
-              { number: "349", label: "Tazos", color: "#FFCC00", tooltip: realTazoCount ? `${realTazoCount} released of 349 designed` : undefined },
+              { number: "148", label: "Tazos", color: "#FFCC00", tooltip: realTazoCount ? `${realTazoCount} published tazos` : undefined },
               { number: "3", label: "Series", color: "#E3350D" },
               { number: "9", label: "Stats", color: "#00A1E9" },
               { number: "Free", label: "Play", color: "#22C55E" },
@@ -771,9 +771,9 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
   }, [])
 
   const series = [
-    { name: "Minimon", slug: "minimon", count: stats?.byFranchise?.Minimon ?? 10, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2000, color: "#FFCC00", desc: "61 creature companions with balanced combat stats — the original collection." },
-    { name: "Dracobell", slug: "dracobell", count: stats?.byFranchise?.Dracobell ?? 10, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 1995, color: "#FF6B00", desc: "128 martial arts warriors across 6 categories. Home to the rarest variants." },
-    { name: "Cybermon", slug: "cybermon", count: stats?.byFranchise?.Cybermon ?? 10, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2000, color: "#00B4D8", desc: "160 digital companions in cap format. Highest precision stats." },
+    { name: "Minimon", slug: "minimon", count: stats?.byFranchise?.Minimon ?? 10, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2000, color: "#FFCC00", desc: "Creature companions with balanced combat stats — the original collection." },
+    { name: "Dracobell", slug: "dracobell", count: stats?.byFranchise?.Dracobell ?? 10, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 1995, color: "#FF6B00", desc: "Martial arts warriors across 6 categories. Home to the rarest variants." },
+    { name: "Cybermon", slug: "cybermon", count: stats?.byFranchise?.Cybermon ?? 10, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2000, color: "#00B4D8", desc: "Digital companions in cap format. Highest precision stats." },
   ]
 
   return (
@@ -915,19 +915,19 @@ const COLLECTION_DATA = [
   {
     name: "Minimon", slug: "minimon", count: fMinimon.count, total: fMinimon.total, year: 2000, origin: "Matutano", color: "#FFCC00",
     categories: ["Tazos"],
-    desc: "The original collection that started it all. 61 creature companions with balanced combat stats — perfect for learning the battle system.",
+    desc: "The original collection that started it all. Creature companions with balanced combat stats — perfect for learning the battle system.",
     highlights: ["Balanced stat distribution", "Classic creature designs", `${fMinimon.count} of ${fMinimon.total} tazos available`, "Original 2000 Spanish series"]
   },
   {
     name: "Dracobell", slug: "dracobell", count: fDracobell.count, total: fDracobell.total, year: 1995, origin: "Matutano", color: "#FF6B00",
     categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
-    desc: "The most diverse collection with 128 martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
+    desc: "The most diverse collection with martial arts warriors across 6 categories. Home to the rarest Holo 3D and Mastertazo variants.",
     highlights: ["6 unique categories", "Highest average attack stats", `${fDracobell.count} of ${fDracobell.total} tazos available`, "Rare Holo 3D variants"]
   },
   {
     name: "Cybermon", slug: "cybermon", count: fCybermon.count, total: fCybermon.total, year: 2000, origin: "Magic Box", color: "#00B4D8",
     categories: ["Caps"],
-    desc: "The largest collection with 160 digital companions in cap format. High precision stats and extensive evolution trees.",
+    desc: "Digital companions in cap format. High precision stats and extensive evolution trees.",
     highlights: ["Complex evolution trees", "Highest precision stats", `${fCybermon.count} of ${fCybermon.total} tazos available`, "Original Magic Box 2000 series"]
   },
 ]
@@ -959,7 +959,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5">
       <p className="text-xs font-bold text-[#1a1a1a]/50 uppercase tracking-wider">
-        3 Franchises · 349 Tazos · Classic collectible tazo series
+        3 Franchises · 148 Tazos · Classic collectible tazo series
       </p>
       <div className="grid md:grid-cols-3 gap-4">
         {COLLECTION_DATA.map(c => {
@@ -1646,7 +1646,7 @@ function DownloadContent() {
 // ── FAQ ──
 
 const FAQS = [
-  { q: "What is Trading Tazos Game?", a: "A browser-based skill game where you collect and battle with digital tazos. Open bags to discover 349 unique tazos across 3 franchises. Build decks of 5, then enter the 3D arena where you aim, charge, and slam your tazos to flip opponent discs and capture them for points." },
+  { q: "What is Trading Tazos Game?", a: "A browser-based skill game where you collect and battle with digital tazos. Open bags to discover 148 unique tazos across 3 franchises. Build decks of 5, then enter the 3D arena where you aim, charge, and slam your tazos to flip opponent discs and capture them for points." },
   { q: "Is it free to play?", a: "Yes, completely free. Start with 10 free bags and earn credits by battling, completing quests, and daily logins — no credit card required." },
   { q: "How does the battle system work?", a: "Use the Vertical Slam system: aim your crosshair at the center, charge the power bar for slam force, then tilt to control your landing angle. Flip opponent tazos to capture them. Miss and you lose your thrown tazo. Eliminate all opponent tazos to claim victory!" },
   { q: "What are the combat stats?", a: "Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision. Building a balanced deck with complementary stats is key." },
