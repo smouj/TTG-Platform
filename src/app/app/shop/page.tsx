@@ -81,6 +81,8 @@ function BagCard({ bag, selected, onSelect, onBuy, buying, credits }: {
 }) {
   const canAfford = credits >= bag.cost
   const variant = useMemo(() => pickBagVariant(bag.franchise), [bag.franchise])
+  const frontUrl = bag.frontUrl || variant.frontUrl
+  const backUrl = bag.backUrl || variant.backUrl
 
   return (
     <button
@@ -113,13 +115,13 @@ function BagCard({ bag, selected, onSelect, onBuy, buying, credits }: {
         style={{ background: bag.bgColor }}>
         <div className="relative h-full w-28 sm:w-36">
           <img
-            src={variant.backUrl}
+            src={backUrl}
             alt={`${bag.name} back`}
             className="absolute right-0 top-6 h-[70%] w-auto rotate-8 object-contain opacity-75 drop-shadow-[4px_6px_0_rgba(26,26,26,0.18)] z-0"
             draggable={false}
           />
           <img
-            src={variant.frontUrl}
+            src={frontUrl}
             alt={`${bag.name} front`}
             className="absolute left-0 top-3 h-[85%] w-auto -rotate-6 object-contain drop-shadow-[6px_8px_0_rgba(26,26,26,0.25)] z-10"
             draggable={false}

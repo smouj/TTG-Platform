@@ -4,10 +4,18 @@ import { getAuthUser } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { checkRateLimit } from "@/lib/rate-limit"
 
-const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number }> = {
-  standard: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
-  premium: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
-  mega: { cost: 10, bonusChance: 0.15, rareBoost: 2 },
+const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number; franchise?: string }> = {
+  standard: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
+  premium: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "cybermon" },
+  mega: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "dracobell" },
+}
+
+function modelType(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, "-")
+}
+
+function normalizeBonusChance(value: number): number {
+  return value > 1 ? value / 100 : value
 }
 
 export async function POST(request: NextRequest) {
@@ -19,7 +27,19 @@ export async function POST(request: NextRequest) {
 
     const { bagType = "standard" } = await request.json().catch(() => ({}))
 
-    const bagConfig = BAG_TYPES[bagType]
+    const activeModels = await db.bagModel.findMany({
+      where: { isActive: true },
+    })
+    const activeModel = activeModels.find((model) => modelType(model.name) === bagType)
+    const bagConfig = activeModel
+      ? {
+          cost: activeModel.cost,
+          bonusChance: activeModel.bonusChance,
+          rareBoost: activeModel.rareBoost,
+          franchise: activeModel.franchise,
+        }
+      : BAG_TYPES[bagType]
+
     if (!bagConfig) {
       return NextResponse.json({ error: "Invalid bag type" }, { status: 400 })
     }
@@ -35,10 +55,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Determine tazo inside (weighted random by rarity)
-    const allTazos = await db.tazo.findMany({
+    const tazoWhere = {
+      sourceStatus: "verified",
+      ...(bagConfig.franchise ? { franchise: { slug: bagConfig.franchise } } : {}),
+    }
+    let allTazos = await db.tazo.findMany({
       select: { id: true, rarity: true, franchiseId: true },
-      where: { sourceStatus: "verified" },
+      where: tazoWhere,
     })
+
+    if (allTazos.length === 0 && bagConfig.franchise) {
+      allTazos = await db.tazo.findMany({
+        select: { id: true, rarity: true, franchiseId: true },
+        where: { sourceStatus: "verified" },
+      })
+    }
 
     if (allTazos.length === 0) {
       return NextResponse.json({ error: "No tazos available" }, { status: 500 })
@@ -48,6 +79,7 @@ export async function POST(request: NextRequest) {
       common: 50,
       uncommon: 25,
       rare: 15,
+      ultra: 7,
       "ultra-rare": 7,
       legendary: 3,
     }
@@ -55,7 +87,7 @@ export async function POST(request: NextRequest) {
     // Boost rare chances based on bag type
     const boostedWeights = { ...rarityWeights }
     if (bagConfig.rareBoost > 1) {
-      for (const key of ["rare", "ultra-rare", "legendary"]) {
+      for (const key of ["rare", "ultra", "ultra-rare", "legendary"]) {
         boostedWeights[key] = (boostedWeights[key] || 0) * bagConfig.rareBoost
       }
       boostedWeights.common = Math.max(10, boostedWeights.common - bagConfig.rareBoost * 10)
@@ -77,7 +109,7 @@ export async function POST(request: NextRequest) {
 
     // Check bonus tazo
     let bonusTazoId: string | null = null
-    if (Math.random() < bagConfig.bonusChance) {
+    if (Math.random() < normalizeBonusChance(bagConfig.bonusChance)) {
       const bonusRoll = Math.random() * totalWeight
       let bRoll = bonusRoll
       for (const t of pool) {
