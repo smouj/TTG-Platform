@@ -120,16 +120,8 @@ export default function TazoDiscImage({
         }
         onClick?.()
       }}
-      role={onClick || onFlip ? "button" : undefined}
-      tabIndex={onClick || onFlip ? 0 : undefined}
-      aria-label={alt}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault()
-          if (onFlip) { onFlip(); return }
-          onClick?.()
-        }
-      }}
+      role={undefined}
+      aria-label={onClick || onFlip ? alt : undefined}
     >
       {/* Inner circle — clips the image */}
       <div className="tazo-disc-image-inner absolute inset-0 rounded-full overflow-hidden">

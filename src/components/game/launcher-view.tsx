@@ -1190,7 +1190,7 @@ function TazosContent() {
                 {t.imageUrl ? (
                   <TazoDiscImage
                     src={t.imageUrl}
-                    alt={t.displayName || t.name}
+                    alt=""
                     size="100%"
                     borderWidth={0}
                     franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
