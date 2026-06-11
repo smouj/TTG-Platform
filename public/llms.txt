@@ -26,7 +26,7 @@ Trading Tazos Game (TTG) is an independent fictional digital tazo game. Players 
 
 ## Project
 - **Name**: Trading Tazos Game (TTG)
-- **Status**: Open Beta (v0.6.2)
+- **Status**: Open Beta (v0.6.3)
 - **Stack**: Next.js 16 / TypeScript / Prisma / SQLite / Three.js / Tailwind CSS
 - **Deployment**: VPS + Caddy + PM2
 - **Monetization**: Free-to-play. Non-personalized ads may appear.

@@ -124,7 +124,7 @@ It's a game of **physical tazo throwing** — aim, power, physics, chain rebound
 |---------|--------|
 | Web | Full Next.js 16 app at [tradingtazosgame.com](https://tradingtazosgame.com) |
 | PWA | Installable on mobile and desktop with manifest.json |
-| Desktop | Electron app — [latest installers](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.6.1) for Windows (.exe), macOS (.dmg), and Linux (.AppImage, .deb) |
+| Desktop | Electron app — [latest installers](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.6.3) for Windows (.exe), macOS (.dmg), and Linux (.AppImage, .deb) |
 | i18n | 10 languages: EN, ES, PT, DE, FR, IT, JA, KO, ZH, RU |
 | SEO | JSON-LD VideoGame schema, sitemap.xml, robots.txt, hreflang alternates |
 | Security | CSP + HSTS + X-Frame-Options + dual cookie auth |
@@ -336,7 +336,7 @@ Detects language from `navigator.languages` / `Accept-Language` header, persists
 
 ## Design System
 
-The game uses a **90s Nintendo Power / Pokémon Magazine** aesthetic specified in [`THEME.md`](./THEME.md). Every visual element follows a documented design system:
+The game uses a **90s collectible game magazine** aesthetic specified in [`THEME.md`](./THEME.md). Every visual element follows a documented design system:
 
 - 12-token color palette (`#FFCC00` yellow, `#E3350D` red, `#3B4CCA` blue, ...)
 - 7-level typography hierarchy (all `font-black` + `uppercase`)
@@ -349,13 +349,13 @@ The game uses a **90s Nintendo Power / Pokémon Magazine** aesthetic specified i
 
 ## Desktop App
 
-Desktop installers for all platforms are available on the [v0.6.1 Releases page](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.6.1).
+Desktop installers for all platforms are available on the [v0.6.3 Releases page](https://github.com/smouj/Trading-Tazos-Game/releases/tag/v0.6.3).
 
 | Platform | Format | Version |
 |----------|--------|---------|
-| Linux | AppImage, .deb | desktop v0.4.0 |
-| Windows | .exe (NSIS) | desktop v0.4.0 |
-| macOS | .dmg, .zip | desktop v0.4.0 |
+| Linux | AppImage, .deb | desktop v0.6.3 |
+| Windows | .exe (NSIS) | desktop v0.6.3 |
+| macOS | .dmg, .zip | desktop v0.6.3 |
 
 ---
 
@@ -386,7 +386,7 @@ Transactional email is configured through the Hostinger/API bridge documented in
 
 ## Disclaimer
 
-**This is an original game built on verified physical collection data.** Tazo names have been minimally tweaked to avoid intellectual property conflicts with the franchises that inspired the original physical tazos (Pokémon, Dragon Ball, Digimon). No copyrighted images, audio, or brand assets are included — all tazo visuals are original generated SVGs. The game's engine, design, styling, and codebase are original work.
+**This is an original independent game.** Minimon, Dracobell, and Cybermon are fictional TTG collections with original lore, stats, and visuals. No third-party images, audio, brand assets, or copyrighted characters are included; the game's engine, design, styling, and codebase are original work.
 
 ---
 
@@ -402,6 +402,13 @@ Transactional email is configured through the Hostinger/API bridge documented in
 ---
 
 ## Changelog
+
+### v0.6.3 — Canon Cleanup + Complete Season 1 Desktop Release (Jun 2026)
+- **Season 1 complete**: 150 published tazos, evenly split across Minimon, Cybermon, and Dracobell.
+- **Canon guard**: CI blocks legacy third-party franchise terms in active code/data before typecheck.
+- **Dracobell classes**: Combat types use TTG canon classes such as Striker, Guardian, Voidwalker, Skyfighter, and Ironbody.
+- **Metadata sync**: Public APIs, LLM files, health/version endpoints, and download links all align on v0.6.3.
+- **Desktop installers**: Windows, macOS, and Linux packages refresh to the latest web/canon state.
 
 ### v0.6.0 — Season 1 Canon + Public Catalog Safety (Jun 2026)
 - **Season 1 canon**: Minimon, Dracobell, and Cybermon now use the original TTG lore bible with 50 tazos each.
