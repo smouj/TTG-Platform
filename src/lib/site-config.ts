@@ -11,7 +11,7 @@ export const SITE_CONFIG = {
   version: "0.6.0",
   canonicalUrl: "https://tradingtazosgame.com",
   totalTazos: 150,
-  publishedTazos: 26,
+  publishedTazos: 150,
   totalSeries: 3,
   statsCount: 8,
   freeToPlay: true,
@@ -26,7 +26,7 @@ export const SITE_CONFIG = {
       slug: "minimon",
       name: "Minimon",
       total: 50,
-      published: 10,
+      published: 50,
       year: 2026,
       realm: "Luminara",
       description:
@@ -37,7 +37,7 @@ export const SITE_CONFIG = {
       slug: "dracobell",
       name: "Dracobell",
       total: 50,
-      published: 9,
+      published: 51,
       year: 2026,
       realm: "Bellora",
       description:
@@ -48,7 +48,7 @@ export const SITE_CONFIG = {
       slug: "cybermon",
       name: "Cybermon",
       total: 50,
-      published: 7,
+      published: 49,
       year: 2026,
       realm: "Neon Grid",
       description:
