@@ -55,7 +55,8 @@ mkdir -p .next/standalone/public/tazos-artgen/backs
 mkdir -p .next/standalone/public/tazos-tubes
 
 # Fix DATABASE_URL to VPS path (prevent stale WSL paths in standalone .env)
-sed -i 's|file:/home/smouj/.openclaw/workspace/Trading-Tazos-Game/prisma/dev.db|file:/home/smouj/apps/ttg/Trading-Tazos-Game/prisma/dev.db|' .next/standalone/.env
+# Match ANY path that isn't the correct VPS standalone path
+sed -i 's|DATABASE_URL=.*|DATABASE_URL="file:/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db"|' .next/standalone/.env
 
 # Copy static assets to standalone (Next.js standalone bug workaround)
 cp -r .next/static/* .next/standalone/.next/static/
