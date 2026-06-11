@@ -10,8 +10,8 @@ export const SITE_CONFIG = {
   shortName: "TTG",
   version: "0.6.2",
   canonicalUrl: "https://tradingtazosgame.com",
-  totalTazos: 150,
-  publishedTazos: 150,
+  totalTazos: 150, // 149 published + 1 pending (Cybermon #50 missing composite)
+  publishedTazos: 149,
   totalSeries: 3,
   statsCount: 8,
   freeToPlay: true,
