@@ -10,8 +10,8 @@ Trading Tazos Game (TTG) is a browser-based digital collectible and battle game.
 
 ### Collections
 - **3 original franchises**: Minimon, Dracobell, Cybermon
-- **150 Season 1 tazos** planned, 149 currently published
-- Each tazo has original character art, 8 combat stats, rarity, and physical finish effect (18 types)
+- **150 Season 1 tazos** planned and currently published
+- Each tazo has original character art, 9 combat stats, rarity, and physical finish effect (18 types)
 
 ### Battle System (Vertical Slam)
 1. **Aim** — Lock crosshair on target zone
@@ -65,7 +65,7 @@ common, uncommon, rare, ultra, legendary, epic
 |-------|------------|
 | `/` | Magazine launcher landing — hero, how-to-play, battle preview, series preview |
 | `/?page=how-to-play` | Vertical Slam tutorial (Aim→Charge→Tilt→Slam) |
-| `/?page=tazos` | Filterable tazo catalog (149 published) |
+| `/?page=tazos` | Filterable tazo catalog (150 published) |
 | `/?page=collections` | Franchise collection browser |
 | `/?page=leaderboard` | Rankings (credits, tazos, battles) |
 | `/?page=shop` | Bag shop preview with rarity breakdowns |

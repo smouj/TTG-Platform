@@ -1,6 +1,6 @@
 # Trading Tazos Game — llms.txt
 
-> A free browser-based collectible skill game with 150 planned Season 1 tazos across 3 original franchises, 149 currently published.
+> A free browser-based collectible skill game with 150 planned Season 1 tazos across 3 original franchises, all 150 currently published.
 > Built with Next.js 16, Three.js, Tailwind CSS.
 > Play at https://tradingtazosgame.com
 

@@ -10,10 +10,10 @@ export const SITE_CONFIG = {
   shortName: "TTG",
   version: "0.6.2",
   canonicalUrl: "https://tradingtazosgame.com",
-  totalTazos: 150, // 149 published + 1 pending (Cybermon #50 missing composite)
-  publishedTazos: 149,
+  totalTazos: 150,
+  publishedTazos: 150,
   totalSeries: 3,
-  statsCount: 8,
+  statsCount: 9,
   freeToPlay: true,
   tagline: "Collect. Trade. Battle.",
   disclaimer:
@@ -48,7 +48,7 @@ export const SITE_CONFIG = {
       slug: "cybermon",
       name: "Cybermon",
       total: 50,
-      published: 49,
+      published: 50,
       year: 2026,
       realm: "Neon Grid",
       description:
@@ -112,7 +112,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   "how-to-play": {
     title: "How to Play — Trading Tazos Game",
     description:
-      "Learn how to collect, trade, and battle tazos. Master the 8 combat stats (Attack, Defense, Spin, Control, Bounce, Weight, Resistance, Precision), build decks, and compete in the 3D arena.",
+      "Learn how to collect, trade, and battle tazos. Master the 9 combat stats (Attack, Defense, Spin, Control, Bounce, Weight, Resistance, Stability, Precision), build decks, and compete in the 3D arena.",
     canonicalPath: "/?page=how-to-play",
   },
   collections: {
@@ -124,7 +124,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   tazos: {
     title: "Tazo Catalog — Browse All Published Tazos | Trading Tazos Game",
     description:
-      "Browse the full catalog of published tazos. Filter by franchise, rarity, condition, and element. Each tazo has 8 combat stats, a finish type, and unique art.",
+      "Browse the full catalog of published tazos. Filter by franchise, rarity, condition, and element. Each tazo has 9 combat stats, a finish type, and unique art.",
     canonicalPath: "/?page=tazos",
   },
   leaderboard: {
