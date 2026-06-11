@@ -37,7 +37,7 @@ export const SITE_CONFIG = {
       slug: "dracobell",
       name: "Dracobell",
       total: 50,
-      published: 51,
+      published: 50,
       year: 2026,
       realm: "Bellora",
       description:
@@ -78,6 +78,18 @@ export function getTotalPlanned(): number {
 
 export function getTotalPublished(): number {
   return SITE_CONFIG.series.reduce((sum, s) => sum + s.published, 0)
+}
+
+export function getLanguageAlternates(canonicalPath = "") {
+  const canonical = `${SITE_CONFIG.canonicalUrl}${canonicalPath}`
+  const separator = canonical.includes("?") ? "&" : "?"
+  return {
+    canonical,
+    languages: {
+      en: canonical,
+      es: `${canonical}${separator}lang=es`,
+    },
+  }
 }
 
 // ── Page-level metadata helpers ──

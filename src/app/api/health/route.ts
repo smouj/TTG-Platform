@@ -4,6 +4,7 @@
 // ============================================================
 import { NextResponse } from "next/server"
 import { db as prisma } from "@/lib/db"
+import { SITE_CONFIG } from "@/lib/site-config"
 
 export async function GET() {
   try {
@@ -28,7 +29,7 @@ export async function GET() {
 
     return NextResponse.json({
       status: "ok",
-      version: "0.6.0",
+      version: SITE_CONFIG.version,
       uptime: process.uptime(),
       db: { connected: dbConnected, latencyMs: dbLatency },
       counts: { tazos: tazoCount, users: userCount, decks: deckCount, quests: questCount },

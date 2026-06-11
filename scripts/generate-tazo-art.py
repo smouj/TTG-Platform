@@ -72,8 +72,12 @@ FRANCHISE = {
         "collection": "DRACOBELL MASTER SERIES",
         "ring_colors": [(255,107,0), (204,68,0), (124,45,18)],
         "type_colors": {
-            "saiyan":(227,53,13),"namekian":(34,197,94),
-            "human":(245,158,11),"android":(139,92,246),"fusion":(236,72,153),
+            "striker":(227,53,13),"guardian":(34,197,94),
+            "auralord":(139,92,246),"stormfist":(59,130,246),
+            "voidwalker":(76,29,149),"ironbody":(107,114,128),
+            "skyfighter":(14,165,233),"sunborn":(251,191,36),
+            "beastborn":(245,158,11),"monkblade":(236,72,153),
+            "dragonkin":(124,45,18),"bell_sage":(20,184,166),
         }
     },
 }
@@ -792,6 +796,9 @@ def main():
                     final = final.quantize(colors=256, method=2,
                         kmeans=1, dither=Image.Dither.FLOYDSTEINBERG)
                 final.save(str(out), "PNG", optimize=True)
+            # Keep generated assets in RGBA so deploys never reintroduce palette-mode composites.
+            final = Image.open(str(out)).convert("RGBA")
+            final.save(str(out), "PNG", optimize=True)
             generated += 1
         except Exception as e:
             print(f"  ERROR {slug}: {e}")

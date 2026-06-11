@@ -21,8 +21,8 @@ LOG_FILE = ROOT / "scripts" / "ai-creature-log.json"
 
 # Franchise-specific art styles
 STYLE_PROMPTS = {
-    "minimon": "cute chibi pixel-art creature, simple rounded shapes, bright colors, kawaii style, Pokemon-inspired",
-    "dracobell": "fierce dragon-like creature, bold angular shapes, fire and scale textures, Digimon-inspired style",
+    "minimon": "cute original elemental creature, simple rounded shapes, bright colors, clean collectible style",
+    "dracobell": "fierce original martial fantasy fighter, bold angular shapes, aura energy, clan-inspired TTG style",
     "cybermon": "futuristic cyber-creature, neon accents, mechanical parts, sleek design, digital monster style",
 }
 

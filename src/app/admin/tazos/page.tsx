@@ -40,7 +40,8 @@ const COMBAT_TYPES = [
   // Cybermon  
   "data", "virus", "vaccine", "free",
   // Dracobell
-  "saiyan", "namekian", "human", "android", "fusion",
+  "striker", "guardian", "auralord", "beastborn", "monkblade", "stormfist",
+  "voidwalker", "sunborn", "ironbody", "skyfighter", "dragonkin", "bell_sage",
 ]
 const CATEGORIES = ["creature", "trainer", "equipment", "arena", "special"]
 

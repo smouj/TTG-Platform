@@ -99,7 +99,7 @@ const FLAVOR_QUOTES: Record<string, string[]> = {
   dracobell: [
     "It's OVER 9000 RPM!",
     "Power level: MAXIMUM SPIN!",
-    "This tazo goes Super Saiyan!",
+    "This tazo unleashes its peak aura!",
     "Kamehameha spin incoming!",
     "The strongest in the universe!",
   ],

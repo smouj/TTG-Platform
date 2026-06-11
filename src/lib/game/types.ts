@@ -104,10 +104,23 @@ export const OBTAINED_FROM_CONFIG: Record<ObtainedFrom, { label: string; icon: s
   scanner: { label: "Scanned", icon: "SC", color: "#065F46", bg: "#D1FAE5" },
 }
 
-// ---- Legacy combat types (for compatibility) ----
+// ---- Canon combat types ----
 export const MINIMON_TYPES = ["fire", "water", "grass", "electric", "psychic", "ghost", "dragon", "normal"] as const
 export const CYBERMON_TYPES = ["vaccine", "virus", "data"] as const
-export const DRACOBELL_TYPES = ["saiyan", "namekian", "android", "majin", "frieza"] as const
+export const DRACOBELL_TYPES = [
+  "striker",
+  "guardian",
+  "auralord",
+  "beastborn",
+  "monkblade",
+  "stormfist",
+  "voidwalker",
+  "sunborn",
+  "ironbody",
+  "skyfighter",
+  "dragonkin",
+  "bell_sage",
+] as const
 
 // ---- Dracobell Categories ----
 export const DRACOBELL_CATEGORIES = [

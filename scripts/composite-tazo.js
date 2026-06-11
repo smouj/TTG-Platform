@@ -29,7 +29,7 @@ const FRANCHISE = {
     name: 'Cybermon',
     gradient: { start: '#00A1E9', startOp: 0.9, mid: '#00A1E9', midOp: 0.6, end: '#0057B7', endOp: 0.85 },
     stroke: '#00A1E9',
-    collectionName: 'DIGIMON MAGIC BOX 2000',
+    collectionName: 'CYBERMON DIGITAL SERIES',
     category: 'Caps',
   },
   dracobell: {

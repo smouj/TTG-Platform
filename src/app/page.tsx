@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
 import LauncherView from "@/components/game/launcher-view"
-import { SITE_CONFIG, PAGE_META } from "@/lib/site-config"
+import { SITE_CONFIG, PAGE_META, getLanguageAlternates } from "@/lib/site-config"
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -20,9 +20,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       title: meta.title,
       description: meta.description,
       robots: meta.noIndex ? { index: false } : { index: true, follow: true },
-      alternates: {
-        canonical: `${SITE_CONFIG.canonicalUrl}${meta.canonicalPath || ""}`,
-      },
+      alternates: getLanguageAlternates(meta.canonicalPath || ""),
       openGraph: {
         title: meta.title,
         description: meta.description,
@@ -47,7 +45,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       `Trading Tazos Game is a free browser-based skill game where you collect ${SITE_CONFIG.totalTazos} tazos across Minimon, Dracobell & Cybermon collections. Build decks of 5 and battle in a physics-driven 3D arena.` +
       (SITE_CONFIG.disclaimer ? ` ${SITE_CONFIG.disclaimer}` : ""),
     robots: { index: true, follow: true },
-    alternates: { canonical: SITE_CONFIG.canonicalUrl },
+    alternates: getLanguageAlternates(),
     openGraph: {
       title: "Trading Tazos Game — Aim. Throw. Flip. Capture.",
       description:

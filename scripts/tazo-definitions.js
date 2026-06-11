@@ -225,7 +225,7 @@ const TAZO_DEFINITIONS = [
   // ── End Minimon (61) ──
 
   // ═══════════════════════════════════════════════════
-  // DRACOBELL — 128 tazos (Dragon Ball Z-style warriors)
+  // DRACOBELL — Season 1 martial-aura fighters
   // ═══════════════════════════════════════════════════
   // EXISTING (11):
   { name: "Kaji Flame", slug: "kaji-flame", franchise: "dracobell", rarity: "rare", role: "attacker", category: "tazos",

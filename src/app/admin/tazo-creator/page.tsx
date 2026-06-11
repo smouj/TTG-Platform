@@ -92,11 +92,18 @@ const COMBAT_TYPES = [
   { slug: "vaccine", name: "Vaccine" },
   { slug: "free", name: "Free" },
   // Dracobell
-  { slug: "saiyan", name: "Saiyan" },
-  { slug: "namekian", name: "Namekian" },
-  { slug: "human", name: "Human" },
-  { slug: "android", name: "Android" },
-  { slug: "fusion", name: "Fusion" },
+  { slug: "striker", name: "Striker" },
+  { slug: "guardian", name: "Guardian" },
+  { slug: "auralord", name: "Auralord" },
+  { slug: "beastborn", name: "Beastborn" },
+  { slug: "monkblade", name: "Monkblade" },
+  { slug: "stormfist", name: "Stormfist" },
+  { slug: "voidwalker", name: "Voidwalker" },
+  { slug: "sunborn", name: "Sunborn" },
+  { slug: "ironbody", name: "Ironbody" },
+  { slug: "skyfighter", name: "Skyfighter" },
+  { slug: "dragonkin", name: "Dragonkin" },
+  { slug: "bell_sage", name: "Bell Sage" },
 ];
 
 const CATEGORIES = [

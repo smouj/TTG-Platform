@@ -269,7 +269,9 @@ function BadgeElement({ combatType }: { combatType?: string }) {
   const typeIcons: Record<string, string> = {
     fire: "🔥", water: "💧", electric: "⚡", ghost: "👻", grass: "🌿",
     ice: "❄️", psychic: "🔮", dark: "🌑", earth: "🪨", light: "☀️",
-    human: "👤", saiyan: "💪", namekian: "👽",
+    striker: "⚔️", guardian: "🛡️", auralord: "✨", beastborn: "🐾",
+    monkblade: "🗡️", stormfist: "⚡", voidwalker: "🌑", sunborn: "☀️",
+    ironbody: "⬢", skyfighter: "🪽", dragonkin: "◆", bell_sage: "🔔",
     melee: "⚔️", ranged: "🏹", hybrid: "🔀", support: "💊",
     data: "💾", virus: "🦠", tech: "⚙️",
   };

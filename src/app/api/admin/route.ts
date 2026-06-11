@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
 import { getAuthUser } from "@/lib/auth"
+import { SITE_CONFIG } from "@/lib/site-config"
 
 const prisma = new PrismaClient()
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev@tradingtazosgame.com"
@@ -44,7 +45,7 @@ export async function GET(req: NextRequest) {
       decks: deckCount,
       quests: questCount,
       serverTime: new Date().toISOString(),
-      version: "0.6.0",
+      version: SITE_CONFIG.version,
     })
   }
 

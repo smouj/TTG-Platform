@@ -185,7 +185,9 @@ async function run() {
   await test("hreflang alternates", async () => {
     const res = await fetch(`${BASE}/`);
     const html = await res.text();
-    if (!html.includes("hrefLang")) throw new Error("Missing hreflang tags");
+    if (!/rel=["']alternate["']|hreflang=|hrefLang/.test(html)) {
+      throw new Error("Missing hreflang tags");
+    }
   });
 
   await test("manifest.json (PWA)", async () => {

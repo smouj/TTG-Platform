@@ -25,8 +25,8 @@ GEN_DIR = ROOT / "public" / "tazos-generated"
 DATA_PATH = ROOT / "scripts" / "all-tazos.json"
 
 FRANCHISE_PROMPTS = {
-    "minimon": "A cute cartoon monster creature, Pokemon-style art, vibrant colors, round shapes, game character, isolated on transparent background, digital art, trading card game style, clean lines",
-    "dracobell": "A powerful martial arts warrior in Dragon Ball Z anime style, spiky hair, intense expression, dynamic pose, manga art, vibrant colors, isolated on transparent background, digital art, trading card game style",
+    "minimon": "An original elemental fantasy creature from TTG, cute expressive collectible design, vibrant colors, round shapes, isolated on transparent background, digital art, clean lines, clear tazo silhouette",
+    "dracobell": "An original fantasy martial-arts fighter from TTG, invented outfit, unique aura, strong readable posture, vibrant colors, isolated on transparent background, digital art, clear tazo silhouette",
     "cybermon": "A futuristic digital creature, cyberpunk mecha style, neon circuits, robotic features, holographic glow, sleek design, digital art, isolated on transparent background, trading card game style, clean lines",
 }
 
