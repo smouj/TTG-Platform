@@ -844,37 +844,16 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
             </div>
           </div>
 
-          {/* ===== ACTION BUTTONS ===== */}
-          <div className="flex gap-3 pt-1">
-            {/* Toggle Owned - Yellow Magazine Button */}
-            <button
-              onClick={() => onToggleOwned?.(tazo)}
-              className="mag-btn flex-1 py-3 px-4 flex items-center justify-center gap-2 text-sm"
-              style={{
-                background: tazo.isOwned ? '#FFCC00' : '#FFCC00',
-                color: '#1a1a1a',
-              }}
-            >
-              {tazo.isOwned ? (
-                <>
-                  <Unlock className="w-4 h-4" />
-                  Mark as Missing
-                </>
-              ) : (
-                <>
-                  <Lock className="w-4 h-4" />
-                  Mark as Owned
-                </>
-              )}
-            </button>
-
-            {/* Close - Red Magazine Button */}
+          {/* ===== CLOSE BUTTON ===== */}
+          <div className="flex justify-center pt-1">
             <button
               onClick={onClose}
-              className="mag-btn py-3 px-5 flex items-center justify-center gap-2 text-sm"
+              className="mag-btn py-3 px-10 flex items-center justify-center gap-2 text-sm font-black uppercase tracking-wider"
               style={{
-                background: '#E3350D',
-                color: 'white',
+                background: '#1a1a1a',
+                color: '#FFCC00',
+                border: '3px solid #1a1a1a',
+                boxShadow: '3px 3px 0px #1a1a1a',
               }}
             >
               <X className="w-4 h-4" />

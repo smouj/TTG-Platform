@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
+import TazoDetailModal from "@/components/game/tazo-detail-modal"
 import { TGAGradeBadge } from "@/components/game/tga-grade-badge"
 import {
   Package, Swords, Star, TrendingUp, ArrowUpDown,
@@ -781,9 +782,9 @@ export default function CollectionPage() {
                             {/* Quick actions */}
                             <div className="flex gap-1 pt-1.5 border-t border-[#1a1a1a]/10">
                               <button
-                                onClick={() => setDetailItem(detailItem?.id === item.id ? null : item)}
-                                className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#1a1a1a]/5 transition-colors flex items-center justify-center gap-0.5"
-                                title="View details"
+                                onClick={() => setDetailItem(item)}
+                                className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#FFCC00]/20 transition-colors flex items-center justify-center gap-0.5"
+                                title="View full details"
                               >
                                 <Eye className="w-2.5 h-2.5" /> View
                               </button>

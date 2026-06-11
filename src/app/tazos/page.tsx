@@ -6,8 +6,8 @@
 import { useState, useEffect, useCallback } from "react"
 import PublicPageShell from "@/components/layout/public-page-shell"
 import Link from "next/link"
-import { Star, Zap, Flame, Cpu, Loader2, Package, ChevronLeft, ChevronRight, Eye } from "lucide-react"
-import TazoDiscImage from "@/components/game/tazo-disc-image"
+import { Star, Zap, Flame, Cpu, Loader2, Package, ChevronLeft, ChevronRight } from "lucide-react"
+import TazoCard from "@/components/game/tazo-card"
 import TazoDetailModal from "@/components/game/tazo-detail-modal"
 import { useVisibilityRefresh } from "@/lib/use-visibility-refresh"
 
@@ -33,38 +33,20 @@ const RARITY_COLORS: Record<string, string> = {
 const FRANCHISES = ["all", "minimon", "cybermon", "dracobell"]
 const PAGE_SIZE = 48
 
-function TazoCard({ tazo, onClick }: { tazo: TazoData; onClick: (t: TazoData) => void }) {
-  const style = FRANCHISE_STYLE[tazo.franchise] || FRANCHISE_STYLE.minimon
-  const total = (tazo.attack || 0) + (tazo.defense || 0) + (tazo.bounce || 0) + (tazo.spin || 0) + (tazo.precision || 0)
-  return (
-    <button
-      onClick={() => onClick(tazo)}
-      className="mag-card bg-white p-3 flex flex-col items-center gap-1.5 hover:translate-y-[-3px] hover:shadow-[5px_5px_0px_#1a1a1a] active:translate-y-0 transition-all group cursor-pointer text-left"
-    >
-      <div className="relative">
-        <TazoDiscImage
-          src={tazo.imageUrl}
-          alt={tazo.name}
-          size={112}
-          borderWidth={0}
-          franchiseSlug={tazo.franchise}
-          number={tazo.number}
-          finish={tazo.finish as any}
-          creatureVariant={tazo.creatureVariant as any}
-          shinyImageUrl={tazo.shinyImageUrl}
-        />
-        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 group-hover:bg-black/10 transition-colors">
-          <Eye className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" />
-        </div>
-      </div>
-      <p className="text-[10px] sm:text-[11px] font-black text-[#1a1a1a] text-center leading-tight line-clamp-2 px-0.5">{tazo.displayName || tazo.name}</p>
-      <div className="flex items-center gap-1.5 flex-wrap justify-center">
-        <span className="text-[8px] font-black uppercase tracking-wide px-1.5 py-0.5 border border-[#1a1a1a]/20" style={{ background: style.bg + '22', color: style.text === '#FFFFFF' ? '#1a1a1a' : style.text }}>{tazo.franchise}</span>
-        <span className="text-[8px] font-black" style={{ color: RARITY_COLORS[tazo.rarity] || "#9CA3AF" }}>{tazo.rarity}</span>
-      </div>
-      {total > 0 && <span className="text-[8px] font-black text-[#1a1a1a]/25 tabular-nums">{total} TP</span>}
-    </button>
-  )
+// Map API tazo data to format expected by shared TazoCard / TazoDetailModal
+function toTazoCard(t: TazoData): any {
+  return {
+    ...t,
+    franchiseSlug: t.franchiseSlug || t.franchise || "minimon",
+    franchise: t.franchise || "minimon",
+    franchiseName: t.franchise.charAt(0).toUpperCase() + t.franchise.slice(1),
+    isOwned: false, // public catalog — none are owned
+    condition: t.finish === "holo" ? "holo" : t.finish === "metallic" ? "metallic" : "mint",
+    battleWins: 0,
+    battleLosses: 0,
+    weight: 50, stability: 50, control: 50,
+    imageUrl: t.imageUrl || "/tazos-artgen/backs/minimon-back.png",
+  }
 }
 
 export default function TazosCatalogPage() {
@@ -148,39 +130,7 @@ export default function TazosCatalogPage() {
                 .filter(t => t.imageUrl && (t.rarity === "legendary" || t.rarity === "ultra" || t.rarity === "rare"))
                 .slice(0, 5)
                 .map(t => (
-                  <button
-                    key={t.id}
-                    onClick={() => setDetailTazo(t)}
-                    className="bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] p-2 flex flex-col items-center gap-1.5 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#1a1a1a] transition-all cursor-pointer group"
-                  >
-                    <div className="relative">
-                      <TazoDiscImage
-                        src={t.imageUrl}
-                        alt={t.name}
-                        size={80}
-                        borderWidth={0}
-                        franchiseSlug={t.franchise}
-                        number={t.number}
-                        finish={t.finish as any}
-                        creatureVariant={t.creatureVariant as any}
-                        shinyImageUrl={t.shinyImageUrl}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 group-hover:bg-black/15 transition-colors">
-                        <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow" />
-                      </div>
-                    </div>
-                    <p className="text-[10px] sm:text-[11px] font-black text-[#1a1a1a] text-center leading-tight line-clamp-2">{t.displayName || t.name}</p>
-                    <span className="text-[8px] font-black uppercase px-1.5 py-0.5 border border-[#1a1a1a]"
-                      style={{ background: FRANCHISE_STYLE[t.franchise]?.bg || "#FFCC00", color: FRANCHISE_STYLE[t.franchise]?.text === '#FFFFFF' ? '#1a1a1a' : FRANCHISE_STYLE[t.franchise]?.text || "#1a1a1a" }}>
-                      {t.franchise}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      <span className="text-[8px] font-black" style={{ color: RARITY_COLORS[t.rarity] || "#9CA3AF" }}>{t.rarity}</span>
-                      <span className="text-[7px] font-bold text-[#1a1a1a]/25">
-                        {(t.attack||0)+(t.defense||0)+(t.bounce||0)+(t.spin||0)+(t.precision||0)} TP
-                      </span>
-                    </div>
-                  </button>
+                  <TazoCard key={t.id} tazo={toTazoCard(t)} onClick={(tzo: any) => setDetailTazo(t)} />
                 ))}
             </div>
           </div>
@@ -234,7 +184,7 @@ export default function TazosCatalogPage() {
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
               {paginated.map(t => (
-                <TazoCard key={t.id} tazo={t} onClick={setDetailTazo} />
+                <TazoCard key={t.id} tazo={toTazoCard(t)} onClick={(tzo: any) => setDetailTazo(t)} />
               ))}
             </div>
 
@@ -304,7 +254,7 @@ export default function TazosCatalogPage() {
 
       {/* Detail modal */}
       <TazoDetailModal
-        tazo={detailTazo as any}
+        tazo={detailTazo ? toTazoCard(detailTazo) : null}
         open={!!detailTazo}
         onClose={() => setDetailTazo(null)}
       />
