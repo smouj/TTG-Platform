@@ -66,7 +66,7 @@ SMTP_HOST=smtp.hostinger.com
 SMTP_PORT=465
 SMTP_SECURE=true
 SMTP_USER=support@tradingtazosgame.com
-SMTP_PASS=MqN7Q8icrT22BVDSFs5yRvkDecO0nBmYaIYWSP3Y6253cac1
+SMTP_PASS=4x8q;u\$3w1D&
 MAIL_FROM_NAME=Trading Tazos Game Support
 MAIL_FROM_EMAIL=support@tradingtazosgame.com
 SMTPEOF
