@@ -19,6 +19,7 @@ Scope: WSL local repo, VPS production checkout, GitHub repositories, npm package
 - `src/app/api/health/route.ts` returned `version: "0.5.0"` while the app package/admin/PM2 were `0.6.0`.
 - `src/components/layout/public-footer.tsx` still printed `Version 0.5.0`.
 - GitHub CI failed at `npm ci` because `openai@6.42.0` requires peer `ws@^8.18.0`, while the app pinned `ws@7.5.10`.
+- GitHub CI also depended on an implicit local SQLite state. It now creates `prisma/ci.db`, applies `prisma db push`, and seeds minimal smoke data before build/API checks.
 - Production DB had 122 tazos with `publishStatus='published'` but `sourceStatus='pending_visual_check'`.
 - WSL had a runaway old `node --eval ... tazo-definitions` process consuming about 95% CPU for more than a day; it was terminated.
 
@@ -50,6 +51,7 @@ Local:
 npm ci
 npx tsc --noEmit
 npm run build
+BASE_URL=http://localhost:3010 node tests/api.test.js
 ```
 
 Production API after DB correction:
