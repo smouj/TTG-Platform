@@ -773,15 +773,15 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
   }, [])
 
   const series = [
-    { name: "Minimon", slug: "minimon", count: stats?.byFranchise?.Minimon ?? 10, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2026, color: "#FFCC00", desc: "Natural creatures born from Vital Sparks in Luminara. They grow through trust, purpose, and lineage awakening." },
-    { name: "Dracobell", slug: "dracobell", count: stats?.byFranchise?.Dracobell ?? 9, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 2026, color: "#FF6B00", desc: "Martial fighters from Bellora. Roar Aura, clan discipline, Bell Shards, and Crown Bell mastery." },
-    { name: "Cybermon", slug: "cybermon", count: stats?.byFranchise?.Cybermon ?? 7, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2026, color: "#00B4D8", desc: "Living digital monsters from the Neon Grid. Soul Protocols shift through patches, surges, cores, and prime forms." },
+    { name: "Minimon", slug: "minimon", count: stats?.byFranchise?.Minimon ?? 50, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2026, color: "#FFCC00", desc: "Natural creatures born from Vital Sparks in Luminara. They grow through trust, purpose, and lineage awakening." },
+    { name: "Dracobell", slug: "dracobell", count: stats?.byFranchise?.Dracobell ?? 50, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 2026, color: "#FF6B00", desc: "Martial fighters from Bellora. Roar Aura, clan discipline, Bell Shards, and Crown Bell mastery." },
+    { name: "Cybermon", slug: "cybermon", count: stats?.byFranchise?.Cybermon ?? 49, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2026, color: "#00B4D8", desc: "Living digital monsters from the Neon Grid. Soul Protocols shift through patches, surges, cores, and prime forms." },
   ]
 
   return (
     <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-2 pb-10">
       <div className="text-center mb-5">
-        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 30} Tazos Published</h2>
+        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 149} Tazos Published</h2>
         <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider">Original TTG lore series</p>
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
