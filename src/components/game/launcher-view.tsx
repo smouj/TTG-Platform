@@ -244,7 +244,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#9CA3AF] rounded-lg bg-[#9CA3AF]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #9CA3AF30" }}>
             <span className="text-[7px] font-black text-[#9CA3AF] uppercase mt-1">Std</span>
-            <span className="text-[6px] font-bold text-[#9CA3AF]/50">10 cr</span>
+            <span className="text-[6px] font-bold text-[#9CA3AF]/50">100 cr</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#9CA3AF]/10 border-t border-[#9CA3AF]/20" />
           </div>
         </div>
@@ -252,7 +252,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#3B82F6] rounded-lg bg-[#3B82F6]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #3B82F630" }}>
             <span className="text-[7px] font-black text-[#3B82F6] uppercase mt-1">Prem</span>
-            <span className="text-[6px] font-bold text-[#3B82F6]/50">10 cr</span>
+            <span className="text-[6px] font-bold text-[#3B82F6]/50">100 cr</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#3B82F6]/10 border-t border-[#3B82F6]/20" />
           </div>
         </div>
@@ -260,7 +260,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#A855F7] rounded-lg bg-[#A855F7]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #A855F730" }}>
             <span className="text-[7px] font-black text-[#A855F7] uppercase mt-1">Mega</span>
-            <span className="text-[6px] font-bold text-[#A855F7]/50">10 cr</span>
+            <span className="text-[6px] font-bold text-[#A855F7]/50">100 cr</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#A855F7]/10 border-t border-[#A855F7]/20" />
           </div>
         </div>
@@ -691,7 +691,7 @@ function HowItWorksHome() {
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
         {[
-          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different franchises. Start with 30 welcome bags + 100 credits and earn more by winning battles.", color: "#FF6B00" },
+          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different franchises. Start with 30 welcome bags + 100 credits (1 free bag!) and earn more by winning battles.", color: "#FF6B00" },
           { step: "2", icon: Layers, title: "Build Your Deck", desc: "Choose 5 tazos with 9 combat stats each. Balance attack, defense, and speed for the best results.", color: "#3B4CCA" },
           { step: "3", icon: Swords, title: "Enter the Arena", desc: "Bet one tazo at center, then slam from above. Flip opponent discs to capture them — eliminate their entire deck to win!", color: "#E3350D" },
         ].map(({ step, icon: Icon, title, desc, color }) => (
@@ -1244,9 +1244,9 @@ function TazosContent() {
 // ── Shop ──
 
 const BAGS = [
-  { type: "classic", name: "Classic Bag", cost: 10, bonusChance: 15, rareBoost: 2, color: "#FFCC00", bg: "#FFF8E7", border: "#E5B800", franchise: "minimon", franchiseName: "Minimon", icon: ShoppingBag, tagline: "Original collection tazos", desc: "Classic Minimon tazos with balanced rarity distribution.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
-  { type: "premium", name: "Premium Bag", cost: 10, bonusChance: 15, rareBoost: 2, color: "#3B82F6", bg: "#EFF6FF", border: "#2563EB", franchise: "cybermon", franchiseName: "Cybermon", icon: Star, tagline: "Digital monsters and tech", desc: "Cybermon tazos with digital finishes and balanced rarity.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
-  { type: "mega", name: "Mega Bag", cost: 10, bonusChance: 15, rareBoost: 2, color: "#F97316", bg: "#FFF7ED", border: "#EA580C", franchise: "dracobell", franchiseName: "Dracobell", icon: Zap, tagline: "Legendary auras, top rarity", desc: "Dracobell tazos with legendary finishes and balanced rarity.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
+  { type: "classic", name: "Classic Bag", cost: 100, bonusChance: 15, rareBoost: 2, color: "#FFCC00", bg: "#FFF8E7", border: "#E5B800", franchise: "minimon", franchiseName: "Minimon", icon: ShoppingBag, tagline: "Original collection tazos", desc: "Classic Minimon tazos with balanced rarity distribution.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
+  { type: "premium", name: "Premium Bag", cost: 100, bonusChance: 15, rareBoost: 2, color: "#3B82F6", bg: "#EFF6FF", border: "#2563EB", franchise: "cybermon", franchiseName: "Cybermon", icon: Star, tagline: "Digital monsters and tech", desc: "Cybermon tazos with digital finishes and balanced rarity.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
+  { type: "mega", name: "Mega Bag", cost: 100, bonusChance: 15, rareBoost: 2, color: "#F97316", bg: "#FFF7ED", border: "#EA580C", franchise: "dracobell", franchiseName: "Dracobell", icon: Zap, tagline: "Legendary auras, top rarity", desc: "Dracobell tazos with legendary finishes and balanced rarity.", rarity: [{ l:"Common",p:48},{l:"Uncommon",p:30},{l:"Rare",p:15},{l:"Ultra Rare",p:5},{l:"Legendary",p:2}] },
 ]
 const RC: Record<string, string> = { Common:"#9CA3AF", Uncommon:"#22C55E", Rare:"#3B82F6","Ultra Rare":"#A855F7", Legendary:"#F59E0B" }
 
@@ -1276,7 +1276,7 @@ function ShopContent() {
       <section className="text-center space-y-2">
         <p className="text-sm sm:text-base text-[#1a1a1a]/50 font-bold max-w-lg mx-auto">
           Open bags to discover and collect tazos across 3 franchises.{" "}
-          <span className="text-[#1a1a1a]/30">Bags from 10 credits — free to play.</span>
+          <span className="text-[#1a1a1a]/30">Bags 100cr each — earn credits by playing or buy packs.</span>
         </p>
         <div className="flex items-center justify-center gap-2 pt-1">
           <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#FFCC00]/10 border border-[#FFCC00]/30 text-[#1a1a1a] uppercase">
@@ -1664,7 +1664,7 @@ const FAQS = [
   { q: "How does the battle system work?", a: "Use the Vertical Slam system: aim your crosshair at the center, charge the power bar for slam force, then tilt to control your landing angle. Flip opponent tazos to capture them. Miss and you lose your thrown tazo. Eliminate all opponent tazos to claim victory!" },
   { q: "What are the combat stats?", a: "Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision. Building a balanced deck with complementary stats is key." },
   { q: "Can I play on mobile?", a: "Yes! Visit tradingtazosgame.com on your phone, install as PWA, and play full-screen. Desktop versions also available." },
-{ q: "How do credits work?", a: "Credits buy tazo bags (10 credits each — max 10 bags per day). Earn them through battles, quests, daily bonuses, and rewarded ads. Each bag type drops tazos from a different franchise with the same odds." },
+{ q: "How do credits work?", a: "Credits buy tazo bags (100 credits each). Earn them through battles (10cr/win, max 10 wins/day), quests, daily bonuses (25cr), and rewarded ads (5×20cr). The Starter credit pack gives you 5 bags — perfect to begin your collection." },
   { q: "What quests are there?", a: "17 quests across 4 categories (Beginner, Daily, Weekly, Special) and 18 achievements with Bronze → Platinum tiers." },
   { q: "How do I get started?", a: "Create a free account, open your welcome bags, build a deck of 5, and enter the Battle Arena." },
   { q: "Is Trading Tazos Game affiliated with any real brand?", a: "No. TTG is an independent fictional digital tazo game. Minimon, Dracobell, and Cybermon are original fictional IPs created for this game. TTG is not affiliated with, endorsed by, or connected to any third-party toy, anime, game or collectible brand." },

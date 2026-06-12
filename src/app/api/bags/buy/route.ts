@@ -5,12 +5,12 @@ import { db } from "@/lib/db"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number; franchise?: string }> = {
-  classic: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
-  premium: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "cybermon" },
-  mega: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "dracobell" },
-  // Legacy aliases (from renamed types)
-  standard: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
-  legendary: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "dracobell" },
+  classic: { cost: 100, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
+  premium: { cost: 100, bonusChance: 15, rareBoost: 2, franchise: "cybermon" },
+  mega: { cost: 100, bonusChance: 15, rareBoost: 2, franchise: "dracobell" },
+  // Legacy aliases
+  standard: { cost: 100, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
+  legendary: { cost: 100, bonusChance: 15, rareBoost: 2, franchise: "dracobell" },
 }
 
 function modelType(name: string): string {
@@ -55,21 +55,6 @@ export async function POST(request: NextRequest) {
         required: bagConfig.cost,
         available: currentUser?.credits ?? 0,
       }, { status: 402 })
-    }
-
-    // Check daily bag opening limit (prevents whale insta-completion)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    const bagsOpenedToday = await db.bagPurchase.count({
-      where: { userId: user.id, createdAt: { gte: today } },
-    })
-    const DAILY_BAG_LIMIT = 10
-    if (bagsOpenedToday >= DAILY_BAG_LIMIT) {
-      return NextResponse.json({
-        error: "Daily bag limit reached",
-        opened: bagsOpenedToday,
-        limit: DAILY_BAG_LIMIT,
-      }, { status: 429 })
     }
 
     // Determine tazo inside (weighted random by rarity)

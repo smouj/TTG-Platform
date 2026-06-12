@@ -106,32 +106,22 @@ export const BATTLE_WIN_DAILY_CAP = 10
 /** Credits earned per battle loss (encourages playing) */
 export const BATTLE_LOSS_CREDITS = 2
 
-// ─── Bag Tiers ────────────────────────────────────────────
+// ─── Bag Costs ────────────────────────────────────────────
 
-/** Standard bag cost (Common+) */
-export const BAG_COST_STANDARD = 10
-
-/** Premium bag cost (Rare+ guaranteed, better odds) */
-export const BAG_COST_PREMIUM = 25
-
-/** Legendary bag cost (Ultra Rare+ guaranteed) */
-export const BAG_COST_LEGENDARY = 50
+/** Credits per bag (all types) */
+export const BAG_COST = 100
 
 // ─── Daily Economy ────────────────────────────────────────
 
 /** Daily login bonus credits */
 export const DAILY_BONUS_CREDITS = 25
 
-/** Max bags a player can open per day (prevents whale insta-completion) */
-export const DAILY_BAG_OPEN_LIMIT = 10
-
 /** Total max daily free credits (theoretical cap) */
 export const MAX_DAILY_FREE_CREDITS =
   DAILY_BONUS_CREDITS +
   MAX_REWARDED_ADS_PER_DAY * REWARDED_AD_CREDITS +
   BATTLE_WIN_DAILY_CAP * BATTLE_WIN_CREDITS
-// = 25 + (5×20) + (10×10) = 225 credits/day max
-// At 10cr/bag with 10 bags/day cap = 100cr effective daily spending cap
+// = 25 + (5×20) + (10×10) = 225 credits/day = ~2.25 bags/day
 
 // ─── Stripe Helpers ───────────────────────────────────────
 
