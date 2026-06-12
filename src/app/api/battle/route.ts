@@ -445,14 +445,35 @@ export async function POST(request: NextRequest) {
             battleLog: JSON.stringify({ physics: physicsResult }),
           },
         })
-        // Award credits for win
+        // Award credits for win (capped daily)
         if (winner === 'player') {
-          await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: 30 } } })
+          const today = new Date()
+          today.setHours(0, 0, 0, 0)
+          const winCount = await db.creditTransaction.count({
+            where: { userId: authUser.id, source: 'battle_win', createdAt: { gte: today } },
+          })
+          const BATTLE_WIN_CREDITS = 10
+          const BATTLE_WIN_DAILY_CAP = 10
+          if (winCount < BATTLE_WIN_DAILY_CAP) {
+            await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: BATTLE_WIN_CREDITS } } })
+            await db.creditTransaction.create({
+              data: {
+                userId: authUser.id,
+                amount: BATTLE_WIN_CREDITS,
+                source: 'battle_win',
+                reference: `battle_${Date.now()}`,
+              },
+            })
+          }
+        } else {
+          // Loss consolation — small reward to encourage playing
+          const BATTLE_LOSS_CREDITS = 2
+          await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: BATTLE_LOSS_CREDITS } } })
           await db.creditTransaction.create({
             data: {
               userId: authUser.id,
-              amount: 30,
-              source: 'battle_win',
+              amount: BATTLE_LOSS_CREDITS,
+              source: 'battle_loss',
               reference: `battle_${Date.now()}`,
             },
           })
@@ -480,7 +501,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           winner, victoryType: 'physics_arena', rounds: physicsResult.totalTurns,
           battleLog: [{ physics: physicsResult }],
-          creditsEarned: winner === 'player' ? 30 : 0,
+          creditsEarned: winner === 'player' ? 10 : 2,
           credits: u?.credits ?? null,
         })
       }
@@ -626,22 +647,42 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Award credits for authenticated winner
+    // Award credits for authenticated winner (capped daily)
     if (authUser && winner === 'player') {
+      try {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        const winCount = await db.creditTransaction.count({
+          where: { userId: authUser.id, source: 'battle_win', createdAt: { gte: today } },
+        })
+        const BATTLE_WIN_CREDITS = 10
+        const BATTLE_WIN_DAILY_CAP = 10
+        if (winCount < BATTLE_WIN_DAILY_CAP) {
+          await db.user.update({
+            where: { id: authUser.id },
+            data: { credits: { increment: BATTLE_WIN_CREDITS } },
+          })
+          await db.creditTransaction.create({
+            data: {
+              userId: authUser.id,
+              amount: BATTLE_WIN_CREDITS,
+              source: 'battle_win',
+              reference: `battle_${Date.now()}`,
+            },
+          })
+        }
+      } catch (_) { /* credits are non-critical */ }
+    } else if (authUser && winner !== 'draw') {
+      // Loss consolation
       try {
         await db.user.update({
           where: { id: authUser.id },
-          data: { credits: { increment: 30 } },
+          data: { credits: { increment: 2 } },
         })
         await db.creditTransaction.create({
-          data: {
-            userId: authUser.id,
-            amount: 30,
-            source: 'battle_win',
-            reference: `battle_${Date.now()}`,
-          },
+          data: { userId: authUser.id, amount: 2, source: 'battle_loss', reference: `battle_${Date.now()}` },
         })
-      } catch (_) { /* credits are non-critical */ }
+      } catch (_) {}
     }
 
     if (authUser) {
@@ -685,7 +726,7 @@ export async function POST(request: NextRequest) {
       battleLog,
       playerTazos: playerTazos.map(formatTazo),
       opponentTazos: opponentTazos.map(formatTazo),
-      creditsEarned: (authUser && winner === 'player') ? 30 : 0,
+      creditsEarned: (authUser && winner === 'player') ? 10 : (authUser && winner !== 'draw' && winner !== 'player') ? 2 : 0,
       credits,
     })
   } catch (error) {

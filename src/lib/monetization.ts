@@ -95,6 +95,40 @@ export const REWARDED_AD_CREDITS = 20
 /** Cooldown between rewarded ads (seconds) */
 export const REWARDED_AD_COOLDOWN_SECONDS = 120
 
+// ─── Battle Economy ───────────────────────────────────────
+
+/** Credits earned per battle win */
+export const BATTLE_WIN_CREDITS = 10
+
+/** Max battle win credits per day (prevents farming) */
+export const BATTLE_WIN_DAILY_CAP = 10
+
+/** Credits earned per battle loss (encourages playing) */
+export const BATTLE_LOSS_CREDITS = 2
+
+// ─── Bag Tiers ────────────────────────────────────────────
+
+/** Standard bag cost (Common+) */
+export const BAG_COST_STANDARD = 10
+
+/** Premium bag cost (Rare+ guaranteed, better odds) */
+export const BAG_COST_PREMIUM = 25
+
+/** Legendary bag cost (Ultra Rare+ guaranteed) */
+export const BAG_COST_LEGENDARY = 50
+
+// ─── Daily Economy ────────────────────────────────────────
+
+/** Daily login bonus credits */
+export const DAILY_BONUS_CREDITS = 25
+
+/** Total max daily free credits (theoretical cap) */
+export const MAX_DAILY_FREE_CREDITS =
+  DAILY_BONUS_CREDITS +
+  MAX_REWARDED_ADS_PER_DAY * REWARDED_AD_CREDITS +
+  BATTLE_WIN_DAILY_CAP * BATTLE_WIN_CREDITS
+// = 25 + (5×20) + (10×10) = 225 credits/day max
+
 // ─── Stripe Helpers ───────────────────────────────────────
 
 /** Check if Stripe is configured */

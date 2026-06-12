@@ -6,8 +6,11 @@ import { checkRateLimit } from "@/lib/rate-limit"
 
 const BAG_TYPES: Record<string, { cost: number; bonusChance: number; rareBoost: number; franchise?: string }> = {
   standard: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
-  premium: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "cybermon" },
-  mega: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "dracobell" },
+  premium: { cost: 25, bonusChance: 25, rareBoost: 4, franchise: "cybermon" },
+  legendary: { cost: 50, bonusChance: 40, rareBoost: 8, franchise: "dracobell" },
+  // Legacy aliases
+  classic: { cost: 10, bonusChance: 15, rareBoost: 2, franchise: "minimon" },
+  mega: { cost: 50, bonusChance: 40, rareBoost: 8, franchise: "dracobell" },
 }
 
 function modelType(name: string): string {

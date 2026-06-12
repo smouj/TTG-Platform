@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate source
-    const validSources = ["battle_win", "quest", "daily", "admin"]
+    const validSources = ["battle_win", "battle_loss", "quest", "daily", "admin", "bag_purchase"]
     if (!validSources.includes(source)) {
       return NextResponse.json({ error: `Invalid source. Must be: ${validSources.join(", ")}` }, { status: 400 })
     }
