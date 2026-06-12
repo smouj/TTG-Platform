@@ -7,6 +7,7 @@ import AuthProviderComponent from "@/components/auth-provider";
 import CookieConsentBanner from "@/components/ui/cookie-consent-banner";
 import ScrollReveal from "@/components/scroll-reveal";
 import { SITE_CONFIG } from "@/lib/site-config";
+import { generateFaqJsonLd } from "@/lib/faq-content";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -167,56 +168,11 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* JSON-LD FAQPage */}
+        {/* JSON-LD FAQPage — synced with src/lib/faq-content.ts */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "What is Trading Tazos Game?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": `A free browser-based skill game where you collect and battle with digital tazos. Open bags to discover ${SITE_CONFIG.totalTazos} unique tazos across ${SITE_CONFIG.totalSeries} original fictional franchises (Minimon, Dracobell, Cybermon). Build decks of 5, then enter the 3D arena to slam your tazos and flip opponent discs.`
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Is Trading Tazos Game free to play?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, completely free. Start with 10 free bags and earn credits by battling, completing quests, and daily login bonuses — no credit card required."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Is Trading Tazos Game affiliated with any real brand?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "No. TTG is an independent fictional digital tazo game. Minimon, Dracobell, and Cybermon are original fictional IPs created for this game. TTG is not affiliated with, endorsed by, or connected to any third-party toy, anime, game or collectible brand."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How does the battle system work?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Use the Vertical Slam system: aim your crosshair at the center, charge the power bar for slam force, then tilt to control your landing angle. Flip opponent tazos to capture them. Eliminate all opponent tazos to claim victory."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How do I get started?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Create a free account at tradingtazosgame.com, open your welcome bags, build a deck of 5 tazos, and enter the Battle Arena."
-                  }
-                }
-              ]
-            }),
+            __html: JSON.stringify(generateFaqJsonLd()),
           }}
         />
         {/* JSON-LD BreadcrumbList */}

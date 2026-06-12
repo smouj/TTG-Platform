@@ -4,7 +4,9 @@ import { promisify } from "util";
 import fs from "fs";
 import path from "path";
 import os from "os";
+import { getAuthUser } from "@/lib/auth";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev@tradingtazosgame.com";
 const execAsync = promisify(exec);
 
 const CREATURES_DIR = path.join(process.cwd(), "scripts", "tazo-creatures");
@@ -76,6 +78,10 @@ print("OK")
 
 // POST /api/admin/remove-bg
 export async function POST(req: NextRequest) {
+  const user = await getAuthUser(req);
+  if (user?.email !== ADMIN_EMAIL) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   try {
     let franchise = "";
     let slug = "";

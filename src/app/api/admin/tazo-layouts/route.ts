@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { getAuthUser } from "@/lib/auth";
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev@tradingtazosgame.com";
 
 const LAYOUTS_FILE = path.join(process.cwd(), "prisma", "tazo-layouts.json");
 
@@ -57,6 +60,10 @@ function writeStore(store: LayoutStore) {
 
 // GET /api/admin/tazo-layouts?franchise=minimon&slug=boltling&type=back
 export async function GET(req: NextRequest) {
+  const user = await getAuthUser(req);
+  if (user?.email !== ADMIN_EMAIL) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const franchise = req.nextUrl.searchParams.get("franchise");
   const slug = req.nextUrl.searchParams.get("slug");
   const side = req.nextUrl.searchParams.get("side") || "front"; // "front" | "back"
