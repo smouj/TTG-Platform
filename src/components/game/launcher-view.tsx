@@ -783,7 +783,7 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
   return (
     <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-2 pb-10">
       <div className="text-center mb-5">
-        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 149} Tazos Published</h2>
+        <h2 className="text-lg sm:text-xl font-black text-[#1a1a1a] uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 150} Tazos Published</h2>
         <p className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase tracking-wider">Original TTG lore series</p>
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Master Tazo Generator — generates 349 tazo definitions as JSON.
+Master Tazo Generator — generates 150 tazo definitions as JSON (Season 1).
 Output: scripts/all-tazos.json
 """
 

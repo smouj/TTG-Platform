@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Procedural Creature Art Generator
-Creates stylized creature characters for all 349 tazos using geometric shapes and colors.
+Creates stylized creature characters for all 150 tazos (Season 1) using geometric shapes and colors.
 Output: scripts/tazo-creatures/{franchise}/{slug}.png (880x880 RGBA with transparency)
 """
 
