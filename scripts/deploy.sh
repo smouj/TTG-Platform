@@ -54,9 +54,17 @@ mkdir -p .next/standalone/public/tazos-backs
 mkdir -p .next/standalone/public/tazos-artgen/backs
 mkdir -p .next/standalone/public/tazos-tubes
 
-# Fix DATABASE_URL to VPS path (prevent stale WSL paths in standalone .env)
-# Match ANY path that isn't the correct VPS standalone path
-sed -i 's|^DATABASE_URL=.*|DATABASE_URL=file:/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db|' .next/standalone/.env
+# Fix DATABASE_URL to VPS path (CRITICAL: stale WSL path = production 500)
+TARGET_DB="file:/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db"
+sed -i "s|^DATABASE_URL=.*|DATABASE_URL=\"$TARGET_DB\"|" .next/standalone/.env
+
+# VERIFY the DATABASE_URL was actually fixed (abort deploy if not)
+if ! grep -qF "DATABASE_URL=\"$TARGET_DB\"" .next/standalone/.env; then
+  echo "❌ FATAL: DATABASE_URL in standalone .env is NOT the VPS path!"
+  grep DATABASE_URL .next/standalone/.env
+  exit 1
+fi
+echo "  ✅ DATABASE_URL verified: VPS path"
 
 # Sync Stripe env from ecosystem.config.js (keep standalone .env in sync with PM2 env)
 # All sensitive keys live in ecosystem.config.js — this just mirrors for standalone process
