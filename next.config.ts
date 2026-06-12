@@ -8,10 +8,8 @@ const nextConfig: NextConfig = {
   },
 
   // Force-include packages that static analysis misses
-  experimental: {
-    outputFileTracingIncludes: {
-      "/**/*": ["nodemailer", "stripe"],
-    },
+  outputFileTracingIncludes: {
+    "/**/*": ["nodemailer", "stripe"],
   },
 
   // ── Security Headers ──

@@ -41,6 +41,7 @@ export function detectLang(requestedLangs?: readonly string[]): Lang {
   const sources = requestedLangs || (typeof navigator !== "undefined" ? navigator.languages || [navigator.language] : [])
 
   for (const lang of sources) {
+    if (typeof lang !== "string") continue
     const code = FULL_MAP[lang.trim().toLowerCase()]
     if (code) return code
   }
