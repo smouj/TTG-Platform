@@ -6,7 +6,11 @@ import { Suspense } from "react"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
-import { Disc3, ArrowRight, Mail, Lock, ArrowLeft } from "lucide-react"
+import MagazineHeader from "@/components/game/magazine-header"
+import MagazineFooter from "@/components/game/magazine-footer"
+import {
+  Disc3, ArrowRight, Mail, Lock, Eye, EyeOff, AlertTriangle, ArrowLeft,
+} from "lucide-react"
 
 // ── OAuth Icons ──
 const OAUTH_ICONS: Record<string, string> = {
@@ -54,11 +58,11 @@ function LoginForm() {
   const oauthError = searchParams.get("error")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [oauthProviders, setOauthProviders] = useState<OAuthProvider[]>([])
 
-  // Fetch available OAuth providers
   useEffect(() => {
     fetch("/api/auth/ping", { credentials: "include" })
       .then((r) => r.json())
@@ -96,101 +100,114 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col mag-bg">
-      {/* Masthead */}
-      <header className="bg-[#FFCC00] border-b-4 border-[#1a1a1a] mag-stripes">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Link href="/" className="text-[#1a1a1a] hover:opacity-70">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div className="flex items-center gap-3">
-            <img
-              src="/logo/logo-icon-black.webp"
-              alt="TTG"
-              className="w-10 h-10 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
-            />
-            <h1 className="text-xl sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-tight mag-stroke-sm">
+    <div className="min-h-screen flex flex-col" style={{ background: "#FFF9E6" }}>
+      <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
+
+      <MagazineHeader />
+
+      {/* Decorative stripe below header */}
+      <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+
+      {/* Form area */}
+      <main
+        id="main-content"
+        className="relative z-10 flex-1 flex items-center justify-center px-4 py-10 sm:py-14"
+      >
+        <div className="w-full max-w-md space-y-5">
+          {/* Page Title */}
+          <div className="text-center space-y-1">
+            <h1 className="text-3xl sm:text-4xl font-black text-[#1a1a1a] uppercase tracking-tight mag-stroke-sm">
               {t.auth_login}
             </h1>
+            <p className="text-xs font-bold text-[#1a1a1a]/40 uppercase tracking-widest">
+              {t.auth_login_subtitle}
+            </p>
           </div>
-        </div>
-      </header>
 
-      {/* Form */}
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md space-y-6">
           {/* Magazine-style card */}
           <form
             onSubmit={handleSubmit}
-            className="space-y-5 border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-8"
+            className="space-y-5 border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-6 sm:p-8"
             style={{ background: "white" }}
           >
-            {/* Badge */}
-            <div className="text-center space-y-1">
-              <span className="inline-block bg-[#E3350D] text-white text-[10px] font-black px-3 py-1 border-2 border-[#1a1a1a] uppercase tracking-widest shadow-[2px_2px_0px_#1a1a1a]">
-                {t.auth_login_subtitle}
-              </span>
-            </div>
-
+            {/* Error alert */}
             {error && (
-              <div className="border-3 border-[#E3350D] bg-[#E3350D10] p-3 text-center">
-                <p className="text-sm font-bold text-[#E3350D]">{error}</p>
+              <div className="border-3 border-[#E3350D] bg-[#E3350D0A] p-3 flex items-start gap-2.5">
+                <AlertTriangle className="w-4 h-4 text-[#E3350D] shrink-0 mt-0.5" />
+                <p className="text-xs font-bold text-[#E3350D] leading-relaxed">{error}</p>
               </div>
             )}
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
-                <Mail className="w-3.5 h-3.5 inline mr-1" />
+              <label
+                htmlFor="login-email"
+                className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5"
+              >
+                <Mail className="w-3.5 h-3.5 inline mr-1.5" />
                 {t.auth_email}
               </label>
               <input
-                id="email"
+                id="login-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
                 placeholder={t.auth_email_placeholder || "you@email.com"}
-                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#FFCC00] transition-colors"
-                style={{ background: "#fffef0" }}
+                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#FFCC00] transition-colors"
+                style={{ background: "#FFFEF7" }}
               />
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
-                <Lock className="w-3.5 h-3.5 inline mr-1" />
+              <label
+                htmlFor="login-password"
+                className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5"
+              >
+                <Lock className="w-3.5 h-3.5 inline mr-1.5" />
                 {t.auth_password}
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-                placeholder="••••••••"
-                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#FFCC00] transition-colors"
-                style={{ background: "#fffef0" }}
-              />
-            </div>
+              <div className="relative">
+                <input
+                  id="login-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  className="w-full border-3 border-[#1a1a1a] pl-4 pr-11 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#FFCC00] transition-colors"
+                  style={{ background: "#FFFEF7" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1a1a1a]/25 hover:text-[#1a1a1a]/60 transition-colors"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
 
-            {/* Forgot password */}
-            <div className="text-right">
-              <Link
-                href="/forgot-password"
-                className="text-xs font-bold text-[#1a1a1a]/50 hover:text-[#E3350D] transition-colors uppercase tracking-wider"
-              >
-                Forgot password?
-              </Link>
+              {/* Forgot password */}
+              <div className="mt-1.5 text-right">
+                <Link
+                  href="/forgot-password"
+                  className="text-[10px] font-bold text-[#1a1a1a]/35 hover:text-[#E3350D] transition-colors uppercase tracking-wider no-underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {/* Submit */}
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 mag-btn bg-[#E3350D] text-white flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 mag-btn bg-[#E3350D] text-white flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {submitting ? (
                 <Disc3 className="w-4 h-4 animate-spin" />
@@ -202,55 +219,67 @@ function LoginForm() {
               )}
             </button>
 
-            {/* OAuth Providers — only show if any are configured */}
+            {/* OAuth Providers */}
             {oauthProviders.length > 0 && (
               <div className="space-y-2.5">
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
-                  <span className="text-[10px] font-black text-[#1a1a1a]/30 uppercase tracking-widest">
+                  <div className="flex-1 border-t-2 border-[#1a1a1a]/10" />
+                  <span className="text-[9px] font-black text-[#1a1a1a]/25 uppercase tracking-widest">
                     {t.auth_oauth_divider || "or continue with"}
                   </span>
-                  <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
+                  <div className="flex-1 border-t-2 border-[#1a1a1a]/10" />
                 </div>
 
-                <div className={`grid gap-2 ${oauthProviders.length === 1 ? "grid-cols-1" : oauthProviders.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                <div
+                  className={`grid gap-2 ${
+                    oauthProviders.length === 1
+                      ? "grid-cols-1"
+                      : oauthProviders.length === 2
+                      ? "grid-cols-2"
+                      : "grid-cols-3"
+                  }`}
+                >
                   {oauthProviders.map((provider) => (
                     <OAuthButton key={provider} provider={provider} redirectTo={redirectTo} />
                   ))}
                 </div>
 
-                <p className="text-[9px] text-[#1a1a1a]/30 text-center leading-tight">
-                  {t.auth_oauth_terms || "By continuing you agree to our"}{' '}
-                  <a href="/?page=terms" className="underline hover:text-[#1a1a1a]/50">{t.auth_terms || "Terms"}</a>
-                  {' '}{t.common_and || "and"}{' '}
-                  <a href="/?page=privacy" className="underline hover:text-[#1a1a1a]/50">{t.auth_privacy || "Privacy"}</a>
+                <p className="text-[8px] text-[#1a1a1a]/25 text-center leading-tight">
+                  {t.auth_oauth_terms || "By continuing you agree to our"}{" "}
+                  <a href="/?page=terms" className="underline hover:text-[#1a1a1a]/50">
+                    {t.auth_terms || "Terms"}
+                  </a>{" "}
+                  {t.common_and || "and"}{" "}
+                  <a href="/?page=privacy" className="underline hover:text-[#1a1a1a]/50">
+                    {t.auth_privacy || "Privacy"}
+                  </a>
                 </p>
               </div>
             )}
 
             {/* Divider */}
             <div className="flex items-center gap-3">
-              <div className="flex-1 border-t-2 border-[#1a1a1a]" />
-              <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase">
+              <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
+              <span className="text-[9px] font-black text-[#1a1a1a]/30 uppercase tracking-wider">
                 {t.auth_no_account}
               </span>
-              <div className="flex-1 border-t-2 border-[#1a1a1a]" />
+              <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
             </div>
 
             {/* Register link */}
             <Link
               href="/register"
-              className="block w-full py-3 mag-btn bg-[#3B4CCA] text-white text-center text-sm font-black uppercase tracking-widest"
+              className="block w-full py-3 mag-btn bg-[#3B4CCA] text-white text-center text-sm font-black uppercase tracking-widest no-underline"
             >
               {t.auth_register}
             </Link>
           </form>
 
-          {/* Back to hub */}
-          <div className="text-center">
+          {/* Back to landing */}
+          <div className="text-center pb-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/35 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider no-underline"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               {t.common_back || "Back to Arena"}
@@ -258,44 +287,40 @@ function LoginForm() {
           </div>
         </div>
       </main>
+
+      {/* Decorative stripe above footer */}
+      <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+
+      <MagazineFooter />
     </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<LoginSkeleton />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col" style={{ background: "#FFF9E6" }}>
+          <MagazineHeader />
+          <main className="flex-1 flex items-center justify-center px-4 py-12">
+            <div className="w-full max-w-md space-y-5">
+              <div className="text-center">
+                <div className="inline-block w-40 h-8 bg-[#1a1a1a]/5 rounded" />
+              </div>
+              <div className="border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-8 bg-white space-y-4">
+                <div className="h-3 w-12 bg-[#1a1a1a]/8 rounded" />
+                <div className="h-12 w-full bg-[#1a1a1a]/4 rounded" />
+                <div className="h-3 w-16 bg-[#1a1a1a]/8 rounded" />
+                <div className="h-12 w-full bg-[#1a1a1a]/4 rounded" />
+                <div className="h-12 w-full bg-[#E3350D]/50 rounded" />
+              </div>
+            </div>
+          </main>
+          <MagazineFooter />
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
-  )
-}
-
-function LoginSkeleton() {
-  return (
-    <div className="min-h-screen flex flex-col mag-bg">
-      <header className="bg-[#FFCC00] border-b-4 border-[#1a1a1a] mag-stripes">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-          <div className="w-5 h-5 bg-[#1a1a1a]/10 rounded" />
-          <div className="w-10 h-10 bg-[#1a1a1a]/10 rounded" />
-          <div className="h-6 w-24 bg-[#1a1a1a]/10 rounded" />
-        </div>
-      </header>
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md space-y-5">
-          <div className="border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-8 bg-white">
-            <div className="text-center mb-6">
-              <div className="inline-block w-32 h-6 bg-[#1a1a1a]/5 rounded" />
-            </div>
-            <div className="space-y-4">
-              <div className="h-3 w-12 bg-[#1a1a1a]/10 rounded" />
-              <div className="h-12 w-full bg-[#1a1a1a]/5 rounded" />
-              <div className="h-3 w-16 bg-[#1a1a1a]/10 rounded" />
-              <div className="h-12 w-full bg-[#1a1a1a]/5 rounded" />
-              <div className="h-12 w-full bg-[#E3350D]/60 rounded" />
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
   )
 }

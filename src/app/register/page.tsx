@@ -5,9 +5,18 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
-import { Disc3, ArrowRight, Mail, Lock, User, ArrowLeft, ShieldCheck } from "lucide-react"
+import MagazineHeader from "@/components/game/magazine-header"
+import MagazineFooter from "@/components/game/magazine-footer"
+import {
+  Disc3, ArrowRight, Mail, Lock, User, ArrowLeft, ShieldCheck,
+  Eye, EyeOff, AlertTriangle, CheckCircle2,
+} from "lucide-react"
 
-function getPasswordStrength(pw: string): { score: number; label: string; color: string } {
+function getPasswordStrength(pw: string): {
+  score: number
+  label: string
+  color: string
+} {
   if (!pw) return { score: 0, label: "", color: "#E5E7EB" }
   let score = 0
   if (pw.length >= 10) score++
@@ -29,7 +38,9 @@ export default function RegisterPage() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [showConfirm, setShowConfirm] = useState(false)
   const [agreedTerms, setAgreedTerms] = useState(false)
   const [error, setError] = useState("")
   const [submitting, setSubmitting] = useState(false)
@@ -40,8 +51,13 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+
+    if (!name.trim()) {
+      setError("Please enter your name")
+      return
+    }
     if (password.length < 10) {
-      setError(t.auth_password_min)
+      setError(t.auth_password_min || "Password must be at least 10 characters")
       return
     }
     if (password !== confirmPassword) {
@@ -49,9 +65,10 @@ export default function RegisterPage() {
       return
     }
     if (!agreedTerms) {
-      setError("You must agree to the terms")
+      setError("You must agree to the Terms of Service to continue")
       return
     }
+
     setSubmitting(true)
     try {
       await register(email, password, name)
@@ -64,106 +81,124 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col mag-bg">
-      {/* Masthead */}
-      <header className="bg-[#FFCC00] border-b-4 border-[#1a1a1a] mag-stripes">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Link href="/" className="text-[#1a1a1a] hover:opacity-70">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div className="flex items-center gap-3">
-            <img
-              src="/logo/logo-icon-black.webp"
-              alt="TTG"
-              className="w-10 h-10 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
-            />
-            <h1 className="text-xl sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-tight">
+    <div className="min-h-screen flex flex-col" style={{ background: "#FFF9E6" }}>
+      <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
+
+      <MagazineHeader />
+
+      {/* Decorative stripe below header */}
+      <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+
+      {/* Form area */}
+      <main
+        id="main-content"
+        className="relative z-10 flex-1 flex items-center justify-center px-4 py-10 sm:py-14"
+      >
+        <div className="w-full max-w-md space-y-5">
+          {/* Page Title */}
+          <div className="text-center space-y-1">
+            <h1 className="text-3xl sm:text-4xl font-black text-[#1a1a1a] uppercase tracking-tight mag-stroke-sm">
               {t.auth_register}
             </h1>
+            <p className="text-xs font-bold text-[#1a1a1a]/40 uppercase tracking-widest">
+              {t.auth_register_subtitle}
+            </p>
           </div>
-        </div>
-      </header>
 
-      {/* Form */}
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md space-y-6">
+          {/* Magazine-style card */}
           <form
             onSubmit={handleSubmit}
-            className="space-y-5 border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-8"
+            className="space-y-5 border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-6 sm:p-8"
             style={{ background: "white" }}
           >
-            {/* Badge */}
-            <div className="text-center space-y-1">
-              <span className="inline-block bg-[#FFCC00] text-[#1a1a1a] text-[10px] font-black px-3 py-1 border-2 border-[#1a1a1a] uppercase tracking-widest shadow-[2px_2px_0px_#1a1a1a]">
-                {t.auth_register_subtitle}
-              </span>
-            </div>
-
+            {/* Error alert */}
             {error && (
-              <div className="border-3 border-[#E3350D] bg-[#E3350D10] p-3 text-center">
-                <p className="text-sm font-bold text-[#E3350D]">{error}</p>
+              <div className="border-3 border-[#E3350D] bg-[#E3350D0A] p-3 flex items-start gap-2.5">
+                <AlertTriangle className="w-4 h-4 text-[#E3350D] shrink-0 mt-0.5" />
+                <p className="text-xs font-bold text-[#E3350D] leading-relaxed">{error}</p>
               </div>
             )}
 
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
-                <User className="w-3.5 h-3.5 inline mr-1" />
+              <label
+                htmlFor="reg-name"
+                className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5"
+              >
+                <User className="w-3.5 h-3.5 inline mr-1.5" />
                 {t.auth_name}
               </label>
               <input
-                id="name"
+                id="reg-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 autoComplete="name"
-                placeholder={t.auth_name_placeholder}
-                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
-                style={{ background: "#fffef0" }}
+                placeholder={t.auth_name_placeholder || "Your Name"}
+                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
+                style={{ background: "#FFFEF7" }}
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
-                <Mail className="w-3.5 h-3.5 inline mr-1" />
+              <label
+                htmlFor="reg-email"
+                className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5"
+              >
+                <Mail className="w-3.5 h-3.5 inline mr-1.5" />
                 {t.auth_email}
               </label>
               <input
-                id="email"
+                id="reg-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
                 placeholder={t.auth_email_placeholder || "you@email.com"}
-                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
-                style={{ background: "#fffef0" }}
+                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
+                style={{ background: "#FFFEF7" }}
               />
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
-                <Lock className="w-3.5 h-3.5 inline mr-1" />
+              <label
+                htmlFor="reg-password"
+                className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5"
+              >
+                <Lock className="w-3.5 h-3.5 inline mr-1.5" />
                 {t.auth_password}
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={10}
-                autoComplete="new-password"
-                placeholder="••••••••••"
-                className="w-full border-3 border-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/30 shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
-                style={{ background: "#fffef0" }}
-              />
-              <p className="mt-1 text-[10px] font-bold text-[#1a1a1a]/40 uppercase">
-                {t.auth_password_min}
+              <div className="relative">
+                <input
+                  id="reg-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={10}
+                  autoComplete="new-password"
+                  placeholder="••••••••••"
+                  className="w-full border-3 border-[#1a1a1a] pl-4 pr-11 py-3 text-sm font-bold text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 shadow-[3px_3px_0px_#1a1a1a] focus:outline-none focus:border-[#3B4CCA] transition-colors"
+                  style={{ background: "#FFFEF7" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1a1a1a]/25 hover:text-[#1a1a1a]/60 transition-colors"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="mt-1 text-[10px] font-bold text-[#1a1a1a]/35 uppercase">
+                {t.auth_password_min || "Minimum 10 characters"}
               </p>
+
               {/* Strength bar */}
               {password && (
                 <div className="mt-2">
@@ -171,14 +206,18 @@ export default function RegisterPage() {
                     {[1, 2, 3, 4].map((level) => (
                       <div
                         key={level}
-                        className="h-1.5 flex-1 border border-[#1a1a1a] transition-colors"
+                        className="h-1.5 flex-1 border border-[#1a1a1a]/15 transition-colors rounded-sm"
                         style={{
-                          background: level <= strength.score ? strength.color : "#E5E7EB",
+                          background:
+                            level <= strength.score ? strength.color : "#E5E7EB",
                         }}
                       />
                     ))}
                   </div>
-                  <p className="text-[9px] font-black uppercase tracking-wider" style={{ color: strength.color }}>
+                  <p
+                    className="text-[9px] font-black uppercase tracking-wider"
+                    style={{ color: strength.color }}
+                  >
                     {strength.label}
                   </p>
                 </div>
@@ -187,44 +226,82 @@ export default function RegisterPage() {
 
             {/* Confirm Password */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 inline mr-1" />
-                {t.auth_password_confirm}
+              <label
+                htmlFor="reg-confirm"
+                className="block text-xs font-black text-[#1a1a1a] uppercase tracking-wider mb-1.5"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 inline mr-1.5" />
+                {t.auth_password_confirm || "Confirm Password"}
               </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                autoComplete="new-password"
-                placeholder="••••••••••"
-                className={`w-full border-3 px-4 py-3 text-sm font-bold placeholder:text-[#1a1a1a]/30 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none transition-colors ${
-                  passwordsMismatch ? "border-[#E3350D]" : "border-[#1a1a1a] focus:border-[#3B4CCA]"
-                }`}
-                style={{ background: "#fffef0" }}
-              />
+              <div className="relative">
+                <input
+                  id="reg-confirm"
+                  type={showConfirm ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                  placeholder="••••••••••"
+                  className={`w-full border-3 pl-4 pr-11 py-3 text-sm font-bold placeholder:text-[#1a1a1a]/25 placeholder:font-bold shadow-[3px_3px_0px_#1a1a1a] focus:outline-none transition-colors ${
+                    passwordsMismatch
+                      ? "border-[#E3350D] focus:border-[#E3350D]"
+                      : confirmPassword
+                      ? "border-[#22C55E] focus:border-[#22C55E]"
+                      : "border-[#1a1a1a] focus:border-[#3B4CCA]"
+                  }`}
+                  style={{ background: "#FFFEF7" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1a1a1a]/25 hover:text-[#1a1a1a]/60 transition-colors"
+                  tabIndex={-1}
+                  aria-label={showConfirm ? "Hide password" : "Show password"}
+                >
+                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
               {passwordsMismatch && (
-                <p className="mt-1 text-[10px] font-bold text-[#E3350D]">
+                <p className="mt-1 flex items-center gap-1 text-[10px] font-bold text-[#E3350D]">
+                  <AlertTriangle className="w-3 h-3" />
                   Passwords do not match
+                </p>
+              )}
+              {confirmPassword && !passwordsMismatch && (
+                <p className="mt-1 flex items-center gap-1 text-[10px] font-bold text-[#22C55E]">
+                  <CheckCircle2 className="w-3 h-3" />
+                  Passwords match
                 </p>
               )}
             </div>
 
             {/* Terms agreement */}
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2.5">
               <input
-                id="terms"
+                id="reg-terms"
                 type="checkbox"
                 checked={agreedTerms}
                 onChange={(e) => setAgreedTerms(e.target.checked)}
-                className="mt-0.5 w-4 h-4 border-2 border-[#1a1a1a] accent-[#3B4CCA] shrink-0"
+                className="mt-0.5 w-4 h-4 border-2 border-[#1a1a1a] accent-[#3B4CCA] shrink-0 cursor-pointer"
               />
-              <label htmlFor="terms" className="text-[10px] font-bold text-[#1a1a1a]/60 leading-relaxed">
+              <label
+                htmlFor="reg-terms"
+                className="text-[10px] font-bold text-[#1a1a1a]/50 leading-relaxed cursor-pointer"
+              >
                 {t.auth_agree_terms_prefix || "I agree to the"}{" "}
-                <Link href="/?page=terms" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_terms || "Terms of Service"}</Link>
-                {" "}{t.common_and || "and"}{" "}
-                <Link href="/?page=privacy" className="underline text-[#3B4CCA] hover:text-[#1a1a1a]">{t.auth_privacy || "Privacy Policy"}</Link>
+                <Link
+                  href="/?page=terms"
+                  className="underline text-[#3B4CCA] hover:text-[#1a1a1a]"
+                >
+                  {t.auth_terms || "Terms of Service"}
+                </Link>{" "}
+                {t.common_and || "and"}{" "}
+                <Link
+                  href="/?page=privacy"
+                  className="underline text-[#3B4CCA] hover:text-[#1a1a1a]"
+                >
+                  {t.auth_privacy || "Privacy Policy"}
+                </Link>
               </label>
             </div>
 
@@ -232,7 +309,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 mag-btn bg-[#3B4CCA] text-white flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 mag-btn bg-[#3B4CCA] text-white flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {submitting ? (
                 <Disc3 className="w-4 h-4 animate-spin" />
@@ -246,27 +323,27 @@ export default function RegisterPage() {
 
             {/* Divider */}
             <div className="flex items-center gap-3">
-              <div className="flex-1 border-t-2 border-[#1a1a1a]" />
-              <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase">
+              <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
+              <span className="text-[9px] font-black text-[#1a1a1a]/30 uppercase tracking-wider">
                 {t.auth_have_account}
               </span>
-              <div className="flex-1 border-t-2 border-[#1a1a1a]" />
+              <div className="flex-1 border-t-2 border-[#1a1a1a]/15" />
             </div>
 
             {/* Login link */}
             <Link
               href="/login"
-              className="block w-full py-3 mag-btn bg-[#1a1a1a] text-[#FFCC00] text-center text-sm font-black uppercase tracking-widest"
+              className="block w-full py-3 mag-btn bg-[#1a1a1a] text-[#FFCC00] text-center text-sm font-black uppercase tracking-widest no-underline"
             >
               {t.auth_login}
             </Link>
           </form>
 
-          {/* Back to arena */}
-          <div className="text-center">
+          {/* Back to landing */}
+          <div className="text-center pb-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/35 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider no-underline"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               {t.common_back || "Back to Arena"}
@@ -274,6 +351,11 @@ export default function RegisterPage() {
           </div>
         </div>
       </main>
+
+      {/* Decorative stripe above footer */}
+      <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+
+      <MagazineFooter />
     </div>
   )
 }
