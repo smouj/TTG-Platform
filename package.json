@@ -10,6 +10,7 @@
     "canon:guard": "node scripts/check-canon-guard.js",
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/check-canon-guard.js && tsc --noEmit && eslint . && next build",
+    "audit": "npm audit --omit=dev --audit-level=moderate",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",

@@ -112,14 +112,7 @@ async function run() {
     ["/app/settings", "Settings"],
   ];
   for (const [path, label] of authGuarded) {
-    await test(label, () => {
-      // These should redirect to /login (or /register) when not auth'd
-      return fetch(path).then(res => {
-        if (res.status !== 307 && res.status !== 200) {
-          throw new Error(`HTTP ${res.status} (expected 307 or 200)`);
-        }
-      });
-    });
+    await test(label, () => fetchStatus(path, 307));
   }
 
   // ── APIs (200) ──
