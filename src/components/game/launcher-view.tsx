@@ -1382,7 +1382,7 @@ function ShopContent() {
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 2px, transparent 2px, transparent 12px)" }} />
         <div className="relative z-10 space-y-3">
           <h3 className="text-lg sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-tight">Ready to Start Collecting?</h3>
-          <p className="text-sm text-[#1a1a1a]/50 font-bold max-w-md mx-auto">Sign up free and get starter credits to open your first bags. Collect, trade, and battle with 30 tazos across 3 franchises.</p>
+          <p className="text-sm text-[#1a1a1a]/50 font-bold max-w-md mx-auto">Sign up free and get starter credits to open your first bags. Collect, trade, and battle with 150 tazos across 3 franchises.</p>
           <div className="flex items-center justify-center gap-3 pt-2">
             <a href="/register" className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-xs sm:text-sm font-black uppercase tracking-wider bg-[#E3350D] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
               Sign Up Free <ArrowRight className="w-4 h-4" />
@@ -1402,15 +1402,12 @@ function ShopContent() {
 function RewardedAdWidget() {
   const { user, loading } = useAuth()
   const isAuth = !loading && !!user
-  const userCredits = user?.credits ?? 0
 
   return (
-    <div className="flex justify-center">
-      <RewardedAdButton
-        isAuthenticated={isAuth}
-        onRewardClaimed={() => {}}
-      />
-    </div>
+    <RewardedAdButton
+      isAuthenticated={isAuth}
+      onRewardClaimed={() => {}}
+    />
   )
 }
 

@@ -31,7 +31,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
         setStatus(data)
       }
     } catch {
-      // Silently fail — user can still try
+      // Silently fail
     }
   }, [isAuthenticated])
 
@@ -57,14 +57,6 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
     setClaimed(false)
 
     try {
-      // In a real implementation, this would show an actual AdSense rewarded ad.
-      // For now, we simulate the ad completion and call the API.
-      //
-      // Production flow:
-      // 1. Load AdSense rewarded ad via google.ads.slot or Ad Manager
-      // 2. On ad completion, call POST /api/credits/rewarded-ad
-      // 3. Grant credits server-side with rate limiting
-
       const res = await fetch("/api/credits/rewarded-ad", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -80,10 +72,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
 
       setClaimed(true)
       onRewardClaimed?.(data.credits)
-      // Refresh status
       fetchStatus()
-
-      // Reset claimed message after 3s
       setTimeout(() => setClaimed(false), 3000)
     } catch {
       setError("Network error. Please try again.")
@@ -92,36 +81,178 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
     }
   }
 
-  if (!isAuthenticated) return null
+  // ── Logged out: show CTA ──
+  if (!isAuthenticated) {
+    return (
+      <div style={{
+        background: "linear-gradient(160deg, #FFFBEB, #FFF7E0)",
+        border: "3px solid #FFCC00",
+        boxShadow: "3px 3px 0px #1a1a1a15",
+        padding: "16px 20px",
+        textAlign: "center",
+      }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+          marginBottom: "8px",
+        }}>
+          <span style={{ fontSize: "1.4rem" }}>🎬</span>
+          <span style={{
+            fontSize: "0.9rem",
+            fontWeight: 900,
+            color: "#1a1a1a",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            Watch & Earn Free Credits
+          </span>
+        </div>
+        <p style={{
+          fontSize: "0.75rem",
+          color: "#888",
+          fontWeight: 600,
+          margin: "0 0 10px",
+        }}>
+          Watch short ads to earn up to {MAX_REWARDED_ADS_PER_DAY * REWARDED_AD_CREDITS} credits daily
+        </p>
+        <a
+          href="/login"
+          style={{
+            display: "inline-block",
+            padding: "8px 24px",
+            background: "#1a1a1a",
+            color: "#FFCC00",
+            border: "2px solid #1a1a1a",
+            fontSize: "0.75rem",
+            fontWeight: 900,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            textDecoration: "none",
+            boxShadow: "3px 3px 0px #1a1a1a",
+          }}
+        >
+          Sign In to Earn
+        </a>
+      </div>
+    )
+  }
 
+  // ── Authenticated ──
   const canWatch =
     status && status.remaining > 0 && status.cooldownRemaining === 0 && !loading
 
   return (
-    <div className="rewarded-ad">
-      <div className="rewarded-header">
-        <span className="rewarded-icon">🎬</span>
+    <div style={{
+      background: "linear-gradient(160deg, #FFFBEB, #FFF7E0)",
+      border: "3px solid #FFCC00",
+      boxShadow: "3px 3px 0px #1a1a1a15",
+      padding: "16px 20px",
+    }}>
+      {/* Header */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        marginBottom: "10px",
+      }}>
+        <span style={{ fontSize: "1.6rem" }}>🎬</span>
         <div>
-          <strong>Watch & Earn</strong>
-          <p>Watch a short ad to earn free credits</p>
+          <div style={{
+            fontSize: "0.9rem",
+            fontWeight: 900,
+            color: "#1a1a1a",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            Watch & Earn
+          </div>
+          <div style={{
+            fontSize: "0.7rem",
+            color: "#888",
+            fontWeight: 600,
+            marginTop: "1px",
+          }}>
+            Watch a short ad to earn free credits
+          </div>
         </div>
       </div>
 
-      <div className="rewarded-info">
-        <span className="reward-num">+{REWARDED_AD_CREDITS} credits</span>
-        <span className="reward-divider">·</span>
-        <span className="reward-limit">
+      {/* Info bar */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        marginBottom: "10px",
+        fontSize: "0.8rem",
+        fontWeight: 700,
+      }}>
+        <span style={{ color: "#E3350D" }}>+{REWARDED_AD_CREDITS} credits</span>
+        <span style={{ color: "#ccc" }}>·</span>
+        <span style={{ color: "#888" }}>
           {status ? `${status.remaining}/${status.dailyLimit} remaining today` : "Loading..."}
         </span>
       </div>
 
-      {error && <div className="ad-error">{error}</div>}
-      {claimed && <div className="ad-success">✅ +{REWARDED_AD_CREDITS} credits earned!</div>}
+      {/* Error / Success */}
+      {error && (
+        <div style={{
+          background: "#FEE2E2",
+          color: "#991B1B",
+          border: "2px solid #FCA5A5",
+          padding: "6px 10px",
+          marginBottom: "10px",
+          fontSize: "0.75rem",
+          fontWeight: 700,
+        }}>
+          {error}
+        </div>
+      )}
+      {claimed && (
+        <div style={{
+          background: "#D1FAE5",
+          color: "#065F46",
+          border: "2px solid #6EE7B7",
+          padding: "6px 10px",
+          marginBottom: "10px",
+          fontSize: "0.8rem",
+          fontWeight: 700,
+        }}>
+          ✅ +{REWARDED_AD_CREDITS} credits earned!
+        </div>
+      )}
 
+      {/* Button */}
       <button
-        className="watch-ad-button"
         onClick={handleWatchAd}
         disabled={!canWatch}
+        style={{
+          width: "100%",
+          padding: "10px",
+          background: canWatch ? "#E3350D" : "#ddd",
+          color: canWatch ? "#fff" : "#999",
+          border: "3px solid #1a1a1a",
+          fontSize: "0.8rem",
+          fontWeight: 900,
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          cursor: canWatch ? "pointer" : "not-allowed",
+          boxShadow: canWatch ? "3px 3px 0px #1a1a1a" : "none",
+          transition: "all 0.1s",
+        }}
+        onMouseEnter={(e) => {
+          if (canWatch) {
+            e.currentTarget.style.boxShadow = "1px 1px 0px #1a1a1a"
+            e.currentTarget.style.transform = "translate(2px, 2px)"
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (canWatch) {
+            e.currentTarget.style.boxShadow = "3px 3px 0px #1a1a1a"
+            e.currentTarget.style.transform = ""
+          }
+        }}
       >
         {loading
           ? "Loading ad..."
@@ -133,96 +264,16 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
       </button>
 
       {status?.remaining === 0 && (
-        <p className="resets-note">Resets at midnight (CEST).</p>
+        <p style={{
+          textAlign: "center",
+          color: "#aaa",
+          fontSize: "0.7rem",
+          fontWeight: 600,
+          margin: "8px 0 0",
+        }}>
+          Resets at midnight (CEST)
+        </p>
       )}
-
-      <style jsx>{`
-        .rewarded-ad {
-          background: linear-gradient(135deg, #FEF3C7, #FFFBEB);
-          border: 2px solid #FFCC00;
-          border-radius: 12px;
-          padding: 16px 20px;
-          max-width: 400px;
-        }
-        .rewarded-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 10px;
-        }
-        .rewarded-icon {
-          font-size: 1.8rem;
-        }
-        .rewarded-header strong {
-          display: block;
-          font-size: 1rem;
-          color: #1a1a1a;
-        }
-        .rewarded-header p {
-          margin: 2px 0 0;
-          font-size: 0.8rem;
-          color: #666;
-        }
-        .rewarded-info {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 12px;
-          font-size: 0.85rem;
-        }
-        .reward-num {
-          font-weight: 700;
-          color: #E3350D;
-        }
-        .reward-divider {
-          color: #ccc;
-        }
-        .reward-limit {
-          color: #888;
-        }
-        .ad-error {
-          background: #FEE2E2;
-          color: #991B1B;
-          padding: 6px 10px;
-          border-radius: 6px;
-          margin-bottom: 10px;
-          font-size: 0.8rem;
-        }
-        .ad-success {
-          background: #D1FAE5;
-          color: #065F46;
-          padding: 6px 10px;
-          border-radius: 6px;
-          margin-bottom: 10px;
-          font-size: 0.85rem;
-          font-weight: 600;
-        }
-        .watch-ad-button {
-          width: 100%;
-          padding: 10px;
-          background: #1a1a1a;
-          color: #FFCC00;
-          border: none;
-          border-radius: 8px;
-          font-size: 0.95rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background 0.15s;
-        }
-        .watch-ad-button:hover:not(:disabled) {
-          background: #333;
-        }
-        .watch-ad-button:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-        .resets-note {
-          text-align: center;
-          color: #aaa;
-          font-size: 0.75rem;
-          margin: 8px 0 0;
-        }
-      `}</style>
     </div>
   )
 }
