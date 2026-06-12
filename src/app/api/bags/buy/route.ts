@@ -57,6 +57,21 @@ export async function POST(request: NextRequest) {
       }, { status: 402 })
     }
 
+    // Check daily bag opening limit (prevents whale insta-completion)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const bagsOpenedToday = await db.bagPurchase.count({
+      where: { userId: user.id, createdAt: { gte: today } },
+    })
+    const DAILY_BAG_LIMIT = 10
+    if (bagsOpenedToday >= DAILY_BAG_LIMIT) {
+      return NextResponse.json({
+        error: "Daily bag limit reached",
+        opened: bagsOpenedToday,
+        limit: DAILY_BAG_LIMIT,
+      }, { status: 429 })
+    }
+
     // Determine tazo inside (weighted random by rarity)
     const tazoWhere = {
       sourceStatus: "verified",

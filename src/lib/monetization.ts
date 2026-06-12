@@ -122,12 +122,16 @@ export const BAG_COST_LEGENDARY = 50
 /** Daily login bonus credits */
 export const DAILY_BONUS_CREDITS = 25
 
+/** Max bags a player can open per day (prevents whale insta-completion) */
+export const DAILY_BAG_OPEN_LIMIT = 10
+
 /** Total max daily free credits (theoretical cap) */
 export const MAX_DAILY_FREE_CREDITS =
   DAILY_BONUS_CREDITS +
   MAX_REWARDED_ADS_PER_DAY * REWARDED_AD_CREDITS +
   BATTLE_WIN_DAILY_CAP * BATTLE_WIN_CREDITS
 // = 25 + (5×20) + (10×10) = 225 credits/day max
+// At 10cr/bag with 10 bags/day cap = 100cr effective daily spending cap
 
 // ─── Stripe Helpers ───────────────────────────────────────
 
