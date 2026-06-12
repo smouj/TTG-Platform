@@ -1280,7 +1280,7 @@ function ShopContent() {
         </p>
         <div className="flex items-center justify-center gap-2 pt-1">
           <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#FFCC00]/10 border border-[#FFCC00]/30 text-[#1a1a1a] uppercase">
-            <Coins className="w-3.5 h-3.5 text-[#D97706]" /> 10 Credits
+            <Coins className="w-3.5 h-3.5 text-[#D97706]" /> 100 Credits
           </span>
           <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#1a1a1a] uppercase">
             <Sparkles className="w-3.5 h-3.5 text-[#22C55E]" /> Free to Play
