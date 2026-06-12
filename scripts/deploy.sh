@@ -58,6 +58,26 @@ mkdir -p .next/standalone/public/tazos-tubes
 # Match ANY path that isn't the correct VPS standalone path
 sed -i 's|^DATABASE_URL=.*|DATABASE_URL=file:/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db|' .next/standalone/.env
 
+# Sync Stripe env from ecosystem.config.js (keep standalone .env in sync with PM2 env)
+# All sensitive keys live in ecosystem.config.js — this just mirrors for standalone process
+node -e "
+const fs=require('fs');
+const eco=fs.readFileSync('../ecosystem.config.js','utf8');
+const env=eco.match(/env:\s*\{([^}]+)\}/s);
+if(env){
+  const vars=env[1].match(/[A-Z_]+:\s*'[^']*'/g)||[];
+  let d=fs.readFileSync('.next/standalone/.env','utf8');
+  vars.forEach(v=>{
+    const [k,val]=v.split(/\s*:\s*/);
+    const clean=val.replace(/^'|'$/g,'');
+    if(k.startsWith('NEXT_PUBLIC_')||['STRIPE_SECRET_KEY','STRIPE_MODE'].includes(k)){
+      if(!d.includes(k+'=')) d+='\n'+k+'='+clean;
+    }
+  });
+  fs.writeFileSync('.next/standalone/.env',d);
+}
+" 2>/dev/null || echo "  ⚠️ Stripe env sync skipped"
+
 # Ensure email (SMTP) env vars are present
 if ! grep -q '^SMTP_HOST=' .next/standalone/.env; then
   cat >> .next/standalone/.env << 'SMTPEOF'

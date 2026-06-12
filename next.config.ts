@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   // Force-include packages that static analysis misses
   experimental: {
     outputFileTracingIncludes: {
-      "/**/*": ["nodemailer"],
+      "/**/*": ["nodemailer", "stripe"],
     },
   },
 

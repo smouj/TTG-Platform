@@ -23,7 +23,7 @@ export interface CreditPackageDef {
   id: string
   name: string
   credits: number
-  priceCents: number   // in USD cents (displayed as EUR with approximate conversion)
+  priceCents: number   // in EUR cents
   bonusPct: number      // e.g. 20 = "+20% EXTRA"
   isPopular: boolean
   stripePriceId?: string
@@ -43,6 +43,7 @@ export const CREDIT_PACKAGES: CreditPackageDef[] = [
     priceCents: 299,    // €2.99
     bonusPct: 0,
     isPopular: false,
+    stripePriceIdTest: "price_1ThJ3d1KB51dvcAfMaIrteyu",
   },
   {
     id: "booster",
@@ -51,6 +52,7 @@ export const CREDIT_PACKAGES: CreditPackageDef[] = [
     priceCents: 599,    // €5.99
     bonusPct: 20,       // +20% vs base rate
     isPopular: true,
+    stripePriceIdTest: "price_1ThJ3e1KB51dvcAfcUN77sOC",
   },
   {
     id: "pro",
@@ -59,6 +61,7 @@ export const CREDIT_PACKAGES: CreditPackageDef[] = [
     priceCents: 1199,   // €11.99
     bonusPct: 50,       // +50% vs base rate
     isPopular: false,
+    stripePriceIdTest: "price_1ThJ3e1KB51dvcAfHKs6kVyM",
   },
   {
     id: "mega",
@@ -67,6 +70,7 @@ export const CREDIT_PACKAGES: CreditPackageDef[] = [
     priceCents: 2499,   // €24.99
     bonusPct: 80,       // +80% vs base rate
     isPopular: false,
+    stripePriceIdTest: "price_1ThJ3f1KB51dvcAfIfWtjtJO",
   },
 ]
 
