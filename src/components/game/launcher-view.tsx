@@ -1069,7 +1069,7 @@ function TazosContent() {
   const [detailIndex, setDetailIndex] = useState(0)
 
   const fetchContent = useCallback(async () => {
-    fetch(`/api/tazos?limit=60&_t=${Date.now()}`).then(r => r.json()).then(d => {
+    fetch(`/api/tazos?limit=200&_t=${Date.now()}`).then(r => r.json()).then(d => {
       setTazos(d.tazos || [])
       setLoading(false)
     }).catch(() => setLoading(false))
