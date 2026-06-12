@@ -39,8 +39,8 @@ export const CREDIT_PACKAGES: CreditPackageDef[] = [
   {
     id: "starter",
     name: "Starter Pack",
-    credits: 500,
-    priceCents: 299,    // €2.99
+    credits: 500,        // 5 bags
+    priceCents: 299,     // €2.99
     bonusPct: 0,
     isPopular: false,
     stripePriceIdTest: "price_1ThJ3d1KB51dvcAfMaIrteyu",
@@ -48,27 +48,27 @@ export const CREDIT_PACKAGES: CreditPackageDef[] = [
   {
     id: "booster",
     name: "Booster Pack",
-    credits: 1200,
-    priceCents: 599,    // €5.99
-    bonusPct: 20,       // +20% vs base rate
+    credits: 1200,       // 12 bags
+    priceCents: 599,     // €5.99
+    bonusPct: 20,        // 200 extra vs base rate
     isPopular: true,
     stripePriceIdTest: "price_1ThJ3e1KB51dvcAfcUN77sOC",
   },
   {
     id: "pro",
     name: "Pro Pack",
-    credits: 3000,
-    priceCents: 1199,   // €11.99
-    bonusPct: 50,       // +50% vs base rate
+    credits: 2500,       // 25 bags
+    priceCents: 1199,    // €11.99
+    bonusPct: 25,        // 500 extra vs base rate
     isPopular: false,
     stripePriceIdTest: "price_1ThJ3e1KB51dvcAfHKs6kVyM",
   },
   {
     id: "mega",
     name: "Mega Pack",
-    credits: 7500,
-    priceCents: 2499,   // €24.99
-    bonusPct: 80,       // +80% vs base rate
+    credits: 5500,       // 55 bags
+    priceCents: 2499,    // €24.99
+    bonusPct: 32,        // 1333 extra vs base rate
     isPopular: false,
     stripePriceIdTest: "price_1ThJ3f1KB51dvcAfIfWtjtJO",
   },
