@@ -166,6 +166,32 @@ DATABASE_URL="file:/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/pris
 
 echo "  → DB schema pushed OK"
 
+# Re-seed demo passwords using VPS Node.js (avoids bash $scrypt$ escaping issues)
+# Write hashes to temp files via Node.js, then update DB via Python
+python3 << "PYREHASH"
+import sqlite3, subprocess, os
+
+DB = "/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db"
+
+# Generate hashes on VPS using Node.js (same crypto as the bundled server)
+for email, pw in [("demo@tradingtazosgame.com", "demo1234"), ("dev@tradingtazosgame.com", "test123")]:
+    r = subprocess.run(["node", "-e", f"""
+const {{ scryptSync, randomBytes }} = require("crypto");
+const salt = randomBytes(32);
+const digest = scryptSync("{pw}", salt, 64, {{ N: 16384, r: 8, p: 1 }});
+process.stdout.write("$scrypt$" + salt.toString("base64url") + "$" + digest.toString("base64url"));
+"""], capture_output=True, text=True)
+    h = r.stdout.strip()
+    db = sqlite3.connect(DB)
+    db.execute("UPDATE User SET passwordHash = ? WHERE email = ?", (h, email))
+    db.commit()
+    row = db.execute("SELECT length(passwordHash) FROM User WHERE email = ?", (email,)).fetchone()
+    print(f"  Rehashed {email}: len={row[0]}" if row else f"  WARNING: {email} not found in DB!")
+    db.close()
+
+print("  → Demo passwords re-seeded OK")
+PYREHASH
+
 # Clean any stale WAL/SHM files on VPS (prevents Prisma error code 14)
 sqlite3 /home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
 rm -f /home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db-wal /home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db-shm
