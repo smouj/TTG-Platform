@@ -11,7 +11,7 @@
 
 import { execSync } from "node:child_process";
 
-const BASE = process.env.BASE_URL || "http://localhost:3000";
+const BASE = process.env.BASE_URL || (process.env.CI === "1" ? "https://tradingtazosgame.com" : "http://localhost:3000");
 const CI = process.env.CI === "1";
 let passed = 0;
 let failed = 0;

@@ -1,0 +1,25 @@
+# ============================================================
+# TTG Smoke Tests — Runs after deploy, on schedule, or manual
+# ============================================================
+name: Smoke Tests
+
+on:
+  workflow_dispatch:         # Manual trigger
+  workflow_run:              # After CI build completes on main
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: "0 */4 * * *"    # Every 4 hours
+
+jobs:
+  smoke:
+    name: Production Smoke
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/smoke-test.mjs
+        env:
+          CI: "1"
+          BASE_URL: "https://tradingtazosgame.com"
