@@ -32,6 +32,69 @@ import BattleHand from "./battle/battle-hand"
 import BattleSideStack from "./battle/battle-side-stack"
 import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock, Zap, Swords } from "lucide-react"
 
+// ── PhaseBadge: Inline HUD component for phase indication ──
+function PhaseBadge({ phase, bettingPhase, chargePct }: { phase: string; bettingPhase?: string; chargePct?: number }) {
+  const config: Record<string, { icon?: React.ReactNode; text: string; color: string; pulse?: boolean }> = {
+    round_start: { text: "Stake a tazo", color: "#FFCC00" },
+    player_aim: { icon: <Crosshair className="w-3 h-3 inline" />, text: "AIM", color: "#FFCC00" },
+    player_charge: { icon: <Zap className="w-3 h-3 inline" />, text: chargePct != null ? `CHARGE ${chargePct}%` : "CHARGE", color: "#FF8800", pulse: true },
+    player_tilt: { text: "TILT & RELEASE", color: "#FF004D" },
+    slamming: { icon: <Zap className="w-3 h-3 inline" />, text: "SLAM!", color: "#FFCC00", pulse: true },
+    impact: { text: "IMPACT!", color: "#FFCC00", pulse: true },
+    resolve_impact: { text: "Resolving...", color: "#22C55E" },
+    opponent_aim: { text: "AI aims...", color: "#FF004D" },
+    opponent_slam: { text: "AI slams!", color: "#FF004D", pulse: true },
+    round_end: { text: "Round complete", color: "#888" },
+    coin_flip: { text: "🪙 COIN FLIP", color: "#FFCC00", pulse: true },
+  }
+
+  const c = config[phase]
+  if (!c) {
+    // Show betting phase info when in round_start
+    if (bettingPhase === "bet_locked" || bettingPhase === "revealed") {
+      const revealed = bettingPhase === "revealed"
+      return (
+        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${revealed ? "border-[#FFCC00]/50 bg-[#FFCC00]/10" : "border-[#22C55E]/30 bg-[#22C55E]/08"}`}>
+          <span className={`text-[9px] font-black tracking-wider ${revealed ? "text-[#FFCC00]" : "text-[#22C55E]"}`}>
+            {revealed ? "STAKES REVEALED" : "STAKES LOCKED"}
+          </span>
+        </div>
+      )
+    }
+    return null
+  }
+
+  return (
+    <div
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${c.pulse ? "animate-pulse" : ""}`}
+      style={{ background: `${c.color}10`, borderColor: `${c.color}40` }}
+    >
+      <span className="text-[9px] sm:text-[10px] font-black tracking-wider" style={{ color: c.color }}>
+        {c.icon}{c.icon ? " " : ""}{c.text}
+      </span>
+    </div>
+  )
+}
+
+// ── BettingReveal: Animated overlay when both stakes are shown ──
+function BettingReveal({ playerTazo, opponentTazo }: { playerTazo: TazoCard; opponentTazo: TazoCard }) {
+  return (
+    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+      <div className="flex items-center gap-3 sm:gap-5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        <div className="flex flex-col items-center gap-1 animate-[fadeInLeft_0.4s_ease-out]">
+          <span className="text-[7px] font-black text-[#29ADFF]/60 uppercase tracking-widest">You</span>
+          <span className="text-[9px] font-black text-white truncate max-w-[80px] text-center">{playerTazo.name}</span>
+        </div>
+        <div className="text-[#FFCC00] text-lg font-black animate-pulse">⚡</div>
+        <div className="flex flex-col items-center gap-1 animate-[fadeInRight_0.4s_ease-out]">
+          <span className="text-[7px] font-black text-[#FF004D]/60 uppercase tracking-widest">Rival</span>
+          <span className="text-[9px] font-black text-white truncate max-w-[80px] text-center">{opponentTazo.name}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const DEMO_TAZOS: TazoCard[] = [
   { id: "d1", name: "Aquafin", slug: "aquafin", franchise: "minimon", imageUrl: "/tazos-generated/minimon/aquafin.png", finish: "holo", creatureVariant: "standard", attack: 65, defense: 55, resistance: 60, weight: 45, stability: 50, spin: 55, control: 60, bounce: 40, precision: 55 },
   { id: "d2", name: "Aurorix", slug: "aurorix", franchise: "minimon", imageUrl: "/tazos-generated/minimon/aurorix.png", finish: "rainbow", creatureVariant: "standard", attack: 58, defense: 62, resistance: 50, weight: 35, stability: 55, spin: 45, control: 50, bounce: 50, precision: 48 },
@@ -770,35 +833,69 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         />
 
         {/* ── HUD overlay ── */}
-        <div className="absolute top-2 left-2 right-2 z-20">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
-              <span className="text-[8px] font-black text-white/50 uppercase">CAPT</span>
-              <span className="text-sm font-black text-[#29ADFF]">{pScore}</span>
-              {selectedDeckName && <span className="text-[7px] font-black text-[#FFCC00]/60 ml-1">{selectedDeckName}</span>}
-            </div>
-            <div className="flex-1" />
-            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/5">
-              <span className="text-[8px] font-black text-white/20 uppercase">R{round}</span>
-              <span className="text-[7px] font-black text-white/10">t{deck.length + (cfg?.opponentDeck?.length || 0)} left</span>
-            </div>
-            <div className="flex-1" />
-            <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
-              <span className="text-sm font-black text-[#FF004D]">{oScore}</span>
-              <span className="text-[8px] font-black text-white/50 uppercase">CAPT</span>
+        <div className="absolute top-0 left-0 right-0 z-20 pointer-events-none">
+          {/* Top bar — player scores */}
+          <div className="px-3 sm:px-5 pt-2.5">
+            <div className="flex items-center justify-between gap-3">
+              {/* Player (left) */}
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border-2 relative overflow-hidden"
+                  style={{ background: "linear-gradient(135deg, #29ADFF20, #29ADFF08)", borderColor: "#29ADFF40" }}>
+                  <span className="text-base sm:text-lg font-black text-[#29ADFF] tabular-nums" style={{ textShadow: "0 0 12px #29ADFF88" }}>
+                    {pScore}
+                  </span>
+                  {phase === "player_aim" && <div className="absolute inset-0 bg-[#29ADFF]/10 animate-pulse" />}
+                </div>
+                <div className="hidden sm:block">
+                  <div className="text-[9px] font-black text-[#29ADFF] uppercase tracking-wider leading-tight">You</div>
+                  <div className="text-[6px] font-black text-[#29ADFF]/40 uppercase tracking-widest">{selectedDeckName || "Player"}</div>
+                </div>
+              </div>
+
+              {/* Center — phase + round */}
+              <div className="flex flex-col items-center">
+                {phase === "intro" && (
+                  <div className="px-5 py-1.5 rounded-full border-2 border-[#FFCC00]/60 bg-[#FFCC00]/10 animate-pulse">
+                    <span className="text-[11px] sm:text-[13px] font-black text-[#FFCC00] tracking-[0.25em]">GET READY!</span>
+                  </div>
+                )}
+                {phase !== "intro" && (
+                  <>
+                    <div className="text-[8px] font-black text-white/15 uppercase tracking-[0.25em] mb-0.5">Round {round}</div>
+                    <PhaseBadge phase={phase} bettingPhase={bettingPhase} chargePct={Math.round(engine.ui.charge * 100)} />
+                  </>
+                )}
+              </div>
+
+              {/* Opponent (right) */}
+              <div className="flex items-center gap-2">
+                <div className="hidden sm:block text-right">
+                  <div className="text-[9px] font-black text-[#FF004D] uppercase tracking-wider leading-tight">
+                    {cfg?.mode === "practice" ? `AI ${cfg.aiDifficulty}` : "Opponent"}
+                  </div>
+                  <div className="text-[6px] font-black text-[#FF004D]/40 uppercase tracking-widest">Rival</div>
+                </div>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border-2 relative overflow-hidden"
+                  style={{ background: "linear-gradient(135deg, #FF004D20, #FF004D08)", borderColor: "#FF004D40" }}>
+                  <span className="text-base sm:text-lg font-black text-[#FF004D] tabular-nums" style={{ textShadow: "0 0 12px #FF004D88" }}>
+                    {oScore}
+                  </span>
+                  {(phase === "opponent_aim" || phase === "opponent_slam") && <div className="absolute inset-0 bg-[#FF004D]/10 animate-pulse" />}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Score popups */}
           {scorePopups.map(p => (
             <div key={p.id}
-              className={`absolute top-12 ${p.side === "left" ? "left-6" : "right-6"} pointer-events-none`}
+              className={`absolute top-14 ${p.side === "left" ? "left-6" : "right-6"} pointer-events-none`}
               style={{
                 color: p.color,
-                fontSize: p.text.length > 2 ? "18px" : "28px",
+                fontSize: p.text.length > 2 ? "18px" : "30px",
                 fontWeight: 900,
-                textShadow: `0 0 16px ${p.color}, 0 2px 8px rgba(0,0,0,0.8)`,
-                animation: "popUp 1.8s ease-out forwards",
+                textShadow: `0 0 20px ${p.color}, 0 3px 10px rgba(0,0,0,0.8)`,
+                animation: "popUp 1.5s ease-out forwards",
               }}
             >{p.text}</div>
           ))}
@@ -806,21 +903,21 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           {/* Impact particles */}
           {(phase === "impact" || engine.ui.showImpact) && (
             <div className="absolute top-1/2 left-1/2 pointer-events-none" style={{ marginLeft: -120, marginTop: -120 }}>
-              {[...Array(18)].map((_, i) => {
-                const angle = (i / 18) * Math.PI * 2
-                const dist = 40 + Math.random() * 80
+              {[...Array(20)].map((_, i) => {
+                const angle = (i / 20) * Math.PI * 2
+                const dist = 50 + Math.random() * 100
                 const px = Math.cos(angle) * dist
                 const py = Math.sin(angle) * dist
-                const size = 3 + Math.random() * 5
-                const color = ["#FFCC00", "#FF8800", "#FFAA00", "#FFDD44", "#FFF"][Math.floor(Math.random() * 5)]
+                const size = 3 + Math.random() * 6
+                const color = ["#FFCC00", "#FF8800", "#FFAA00", "#FFDD44", "#FFF", "#FFD700"][Math.floor(Math.random() * 6)]
                 return (
                   <div key={i} className="absolute rounded-full"
                     style={{
                       left: 120, top: 120, width: size, height: size,
                       background: color,
-                      boxShadow: `0 0 ${size * 2}px ${color}`,
-                      animation: "particleFly 1.2s ease-out forwards",
-                      animationDelay: `${i * 0.02}s`,
+                      boxShadow: `0 0 ${size * 2.5}px ${color}`,
+                      animation: "particleFly 1.1s ease-out forwards",
+                      animationDelay: `${i * 0.015}s`,
                       "--px": `${px}px`, "--py": `${py}px`,
                     } as React.CSSProperties}
                   />
@@ -829,69 +926,13 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             </div>
           )}
 
-          {/* Phase status */}
-          <div className="flex justify-center mt-2">
-            {phase === "intro" && (
-              <div className="inline-block px-8 py-2 bg-[#FFCC00]/15 rounded-full border-2 border-[#FFCC00]/50 animate-pulse">
-                <span className="text-[16px] font-black text-[#FFCC00] tracking-[0.3em]">GET READY!</span>
-              </div>
-            )}
-            {phase === "round_start" && (
-              <div className="inline-block px-6 py-1.5 bg-black/60 rounded-full border border-[#FFCC00]/30">
-                <span className="text-[10px] font-black text-[#FFCC00]/60 tracking-wider">Betting — stake your tazo...</span>
-              </div>
-            )}
-            {phase === "coin_flip" && (
-              <div className="inline-block px-6 py-1.5 bg-[#FFCC00]/15 rounded-full border-2 border-[#FFCC00]/50 animate-pulse">
-                <span className="text-[11px] font-black text-[#FFCC00] tracking-wider">🪙 COIN FLIP — YOU SLAM FIRST!</span>
-              </div>
-            )}
-            {phase === "player_aim" && (
-              <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FFCC00]/40">
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-black text-[#FFCC00] tracking-wider"><Crosshair className="w-3.5 h-3.5" /> AIM YOUR SHOT</span>
-                <span className="text-[8px] font-black text-white/40 ml-2">{throwing?.name || "?"}</span>
-              </div>
-            )}
-            {phase === "player_charge" && (
-              <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FF8800]/40 animate-pulse">
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-black text-[#FF8800] tracking-wider"><Zap className="w-3.5 h-3.5" /> CHARGING — {Math.round(engine.ui.charge * 100)}%</span>
-                <span className="text-[8px] font-black text-white/30 ml-2">{throwing?.name}</span>
-              </div>
-            )}
-            {phase === "player_tilt" && (
-              <div className="inline-block px-4 py-1 bg-black/60 rounded-full border border-[#FF004D]/40">
-                <span className="text-[11px] font-black text-[#FF004D] tracking-wider">↗ TILT &amp; RELEASE</span>
-              </div>
-            )}
-            {phase === "slamming" && (
-              <div className="inline-block px-6 py-1.5 bg-[#FFCC00]/20 rounded-full border-2 border-[#FFCC00]/60 animate-pulse">
-                <span className="inline-flex items-center gap-1.5 text-[14px] font-black text-[#FFCC00] tracking-widest"><Zap className="w-4 h-4" /> SLAM!</span>
-              </div>
-            )}
-            {(phase === "impact" || engine.ui.showImpact) && (
-              <div className="inline-block px-5 py-1.5 bg-[#FFCC00]/10 rounded-full border-2 border-[#FFCC00]/50">
-                <span className="text-[12px] font-black text-[#FFCC00] tracking-wider">{engine.ui.impactMsg || "IMPACT!"}</span>
-              </div>
-            )}
-            {phase === "opponent_aim" && (
-              <span className="text-[9px] font-black text-[#FF004D] bg-black/50 px-3 py-0.5 rounded-full">AI aims...</span>
-            )}
-            {phase === "opponent_slam" && (
-              <span className="text-[9px] font-black text-[#FF004D] bg-black/50 px-3 py-0.5 rounded-full animate-pulse">AI slams!</span>
-            )}
-            {phase === "resolve_impact" && (
-              <span className="text-[9px] font-black text-[#22C55E] bg-black/50 px-3 py-0.5 rounded-full">
-                {engine.ui.impactMsg || "Resolving..."}
-              </span>
-            )}
-            {phase === "round_end" && (
-              <span className="text-[9px] font-black text-white/50 bg-black/50 px-3 py-0.5 rounded-full">Round {round} complete</span>
-            )}
-          </div>
-
-          <div className="text-center mt-0.5">
-            <span className="text-[7px] font-black text-white/20">Eliminate all opponent tazos to win</span>
-          </div>
+          {/* Betting reveal overlay */}
+          {bettingPhase === "revealed" && selectedBetId && opponentBetId && (
+            <BettingReveal
+              playerTazo={playerHand.find(t => t.id === selectedBetId)!}
+              opponentTazo={opponentHand.find(t => t.id === opponentBetId)!}
+            />
+          )}
         </div>
 
         {/* ── Slam Controls ── */}
