@@ -15,7 +15,8 @@ import {
   User, Settings, LogOut, Disc3, Layers, Coins,
   Mail, Calendar, Shield, Edit3, Check, X,
   Globe, Volume2, VolumeX, Sun, Moon, Monitor,
-  Music, Radio, Link as LinkIcon,
+  Music, Radio, Link as LinkIcon, TicketPercent,
+  Loader2,
 } from "lucide-react"
 
 // ── localStorage helpers ────────────────────────────
@@ -90,6 +91,11 @@ export default function SettingsPage() {
   const { user, logout, token, refresh } = useAuth()
   const [credits, setCredits] = useState<number | null>(null)
   const [memberSince, setMemberSince] = useState<string>("2026")
+
+  // ── Redeem Code ──
+  const [redeemCode, setRedeemCode] = useState("")
+  const [redeemStatus, setRedeemStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [redeemMessage, setRedeemMessage] = useState("")
 
   // ── Local state ──
   const [editingName, setEditingName] = useState(false)
@@ -463,6 +469,79 @@ export default function SettingsPage() {
                 </div>
                 <span className="text-[8px] font-black text-[#1a1a1a]/20 uppercase px-2 py-1 border border-[#1a1a1a]/10">Coming soon</span>
               </div>
+            </div>
+          </div>
+
+          {/* ── REDEEM CODE ── */}
+          <div className="border-3 border-[#F59E0B] bg-white overflow-hidden">
+            <div className="px-5 py-3 border-b-3 border-[#F59E0B] flex items-center gap-2"
+              style={{ background: "repeating-linear-gradient(-45deg, #F59E0B08, #F59E0B08 4px, transparent 4px, transparent 8px)" }}>
+              <TicketPercent className="w-4 h-4 text-[#F59E0B]" />
+              <h2 className="text-xs font-black text-[#F59E0B] uppercase tracking-[0.2em]">Redeem Code</h2>
+            </div>
+            <div className="p-4 space-y-3">
+              <div className="flex gap-2">
+                <input
+                  value={redeemCode}
+                  onChange={e => { setRedeemCode(e.target.value.toUpperCase()); if (redeemStatus !== "idle") { setRedeemStatus("idle"); setRedeemMessage("") } }}
+                  placeholder="ENTER CODE"
+                  maxLength={24}
+                  disabled={redeemStatus === "loading"}
+                  className="flex-1 px-3 py-2.5 text-sm font-black text-[#1a1a1a] border-2 border-[#1a1a1a] bg-[#FFFEF0] focus:outline-none focus:border-[#F59E0B] placeholder:text-[#1a1a1a]/15 uppercase tracking-widest disabled:opacity-50"
+                />
+                <button
+                  onClick={async () => {
+                    if (!redeemCode.trim() || !token) return
+                    setRedeemStatus("loading")
+                    setRedeemMessage("")
+                    try {
+                      const res = await fetch("/api/promo/redeem", {
+                        method: "POST",
+                        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+                        body: JSON.stringify({ code: redeemCode.trim() }),
+                      })
+                      const data = await res.json()
+                      if (res.ok) {
+                        setRedeemStatus("success")
+                        setRedeemMessage(data.message || "Code redeemed!")
+                        setRedeemCode("")
+                        // Refresh credits
+                        if (refresh) refresh()
+                        setCredits(prev => prev !== null ? prev + (data.creditsAwarded || 0) : prev)
+                      } else {
+                        setRedeemStatus("error")
+                        setRedeemMessage(data.error || "Failed to redeem code.")
+                      }
+                    } catch {
+                      setRedeemStatus("error")
+                      setRedeemMessage("Network error. Please try again.")
+                    }
+                  }}
+                  disabled={!redeemCode.trim() || redeemStatus === "loading"}
+                  className="mag-btn bg-[#F59E0B] text-white px-4 py-2.5 text-xs font-black uppercase tracking-wider border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                >
+                  {redeemStatus === "loading" ? (
+                    <><Loader2 className="w-3 h-3 animate-spin" /> Redeeming...</>
+                  ) : (
+                    "Redeem"
+                  )}
+                </button>
+              </div>
+              {redeemStatus === "success" && (
+                <div className="flex items-center gap-2 p-2.5 border-2 border-[#22C55E] bg-[#F0FFF4]">
+                  <Check className="w-3.5 h-3.5 text-[#22C55E] flex-shrink-0" />
+                  <p className="text-[10px] font-black text-[#22C55E] uppercase">{redeemMessage}</p>
+                </div>
+              )}
+              {redeemStatus === "error" && (
+                <div className="flex items-center gap-2 p-2.5 border-2 border-[#E3350D] bg-[#FFF5F5]">
+                  <X className="w-3.5 h-3.5 text-[#E3350D] flex-shrink-0" />
+                  <p className="text-[10px] font-black text-[#E3350D] uppercase">{redeemMessage}</p>
+                </div>
+              )}
+              <p className="text-[8px] font-bold text-[#1a1a1a]/20 uppercase text-center">
+                Enter a promo code to earn credits or rewards
+              </p>
             </div>
           </div>
 

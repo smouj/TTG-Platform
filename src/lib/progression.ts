@@ -10,7 +10,7 @@ function startOfToday() {
 
 async function getUserMetrics(userId: string, since?: Date): Promise<ProgressMetric> {
   const dateFilter = since ? { gte: since } : undefined
-  const [collectCount, battleWins, credits, deckCount, bagCount] = await Promise.all([
+  const [collectCount, battleWins, credits, deckCount, bagCount, creditsSpent] = await Promise.all([
     db.userTazo.count({ where: { userId, ...(dateFilter ? { acquiredAt: dateFilter } : {}) } }),
     db.battleRecord.count({ where: { userId, winner: "player", ...(dateFilter ? { createdAt: dateFilter } : {}) } }),
     db.creditTransaction.aggregate({
@@ -19,18 +19,33 @@ async function getUserMetrics(userId: string, since?: Date): Promise<ProgressMet
     }),
     db.deck.count({ where: { userId, ...(dateFilter ? { createdAt: dateFilter } : {}) } }),
     db.bagPurchase.count({ where: { userId, opened: true, ...(dateFilter ? { createdAt: dateFilter } : {}) } }),
+    // Credits spent (negative amounts = purchases)
+    db.creditTransaction.aggregate({
+      where: { userId, amount: { lt: 0 }, source: { in: ["shop", "bag", "marketplace"] }, ...(dateFilter ? { createdAt: dateFilter } : {}) },
+      _sum: { amount: true },
+    }),
   ])
+
+  // Count unique tazos the user owns (for own_tazos / own_all quests)
+  const uniqueOwned = await db.userTazo.count({ where: { userId } })
 
   return {
     collect_count: collectCount,
     collect_tazos: collectCount,
+    own_tazos: uniqueOwned,
+    own_all: uniqueOwned,
     battle_wins: battleWins,
     win_battles: battleWins,
     credits_earned: credits._sum.amount ?? 0,
+    credits_spent: Math.abs(creditsSpent._sum.amount ?? 0),
+    spend_credits: Math.abs(creditsSpent._sum.amount ?? 0),
     deck_count: deckCount,
     create_deck: deckCount,
+    create_decks: deckCount,
+    build_decks: deckCount,
     bag_count: bagCount,
     open_bags: bagCount,
+    login_days: 0,
     perfect_throws: 0,
     perfect_throw: 0,
   }
