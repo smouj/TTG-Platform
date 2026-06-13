@@ -872,20 +872,25 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   // ── Lobby ──
   if (phase === "lobby") return (
-    <GameLobby
-      playerTazos={tazos}
-      playerDecks={allDecks.length > 0 ? allDecks : undefined}
-      selectedDeckId={allDecks.length > 0 ? selectedDeckId : undefined}
-      onSelectDeck={allDecks.length > 0 ? handleSelectDeck : undefined}
-      onStart={start}
-      isLoading={false}
-      isAuthenticated={!!user}
-    />
+    <div className="h-full flex flex-col items-center justify-center px-4">
+      <div className="w-full max-w-2xl">
+        <GameLobby
+          playerTazos={tazos}
+          playerDecks={allDecks.length > 0 ? allDecks : undefined}
+          selectedDeckId={allDecks.length > 0 ? selectedDeckId : undefined}
+          onSelectDeck={allDecks.length > 0 ? handleSelectDeck : undefined}
+          onStart={start}
+          isLoading={false}
+          isAuthenticated={!!user}
+        />
+      </div>
+    </div>
   )
 
   // ── Match End ──
   if (phase === "match_end" && result) return (
-    <div className="max-w-2xl mx-auto py-6 space-y-6">
+    <div className="h-full flex flex-col items-center justify-center px-4">
+      <div className="w-full max-w-sm">
       <BattleResultPanel result={{
         winner: result.winner,
         victoryType: toPanelVictoryType(result.victoryType),
@@ -896,10 +901,17 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         opponentCaptures: result.opponentCaptures,
         summary: result.summary,
       }} playerName="You" opponentName={`AI (${cfg?.aiDifficulty})`} onRematch={rematch} creditsEarned={creditsEarned} />
-      <div className="text-center">
-        <button onClick={back} className="px-6 py-3 font-black text-sm uppercase text-[#1a1a1a] bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
-          <RotateCcw className="w-4 h-4 inline mr-2" /> Back to Lobby
+      <div className="text-center mt-4">
+        <button onClick={back}
+          className="px-5 py-2 text-[10px] font-black uppercase tracking-[0.15em] rounded-xl transition-all"
+          style={{
+            background: "white", color: "#1a1a1a",
+            border: "1px solid rgba(0,0,0,0.08)",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+          }}>
+          <RotateCcw className="w-3.5 h-3.5 inline mr-1.5" /> Back to Lobby
         </button>
+      </div>
       </div>
     </div>
   )
@@ -911,7 +923,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   return (
     <BattleErrorBoundary>
-    <div ref={containerRef} className="w-full relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 110px)" }}>
+    <div ref={containerRef} className={`w-full relative ${isFullscreen ? "fixed inset-0 z-50" : "h-full"}`}>
       {/* Tutorial */}
       {showTutorial && <BattleTutorial onClose={() => setShowTutorial(false)} />}
       

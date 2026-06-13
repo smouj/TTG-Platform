@@ -161,11 +161,17 @@ export default function MagazinePageShell({
       {/* ═══════════════════════════════════════ */}
       {/* PAGE CONTENT                             */}
       {/* ═══════════════════════════════════════ */}
-      <main className="relative z-10 flex-1 pb-12" id="main-content" role="main" aria-label="Page content">
-        <div className="max-w-7xl mx-auto relative">
+      {currentTab === "battle" ? (
+        <main className="relative z-10 flex-1 overflow-hidden" id="main-content" role="main" aria-label="Battle arena">
           {children}
-        </div>
-      </main>
+        </main>
+      ) : (
+        <main className="relative z-10 flex-1 pb-12" id="main-content" role="main" aria-label="Page content">
+          <div className="max-w-7xl mx-auto relative">
+            {children}
+          </div>
+        </main>
+      )}
 
       {/* ═══════════════════════════════════════ */}
       {/* GAME HUD (bottom status bar)            */}
@@ -173,9 +179,9 @@ export default function MagazinePageShell({
       <GameHUD credits={credits} tazoCount={user?.tazoCount} />
 
       {/* ═══════════════════════════════════════ */}
-      {/* MAGAZINE FOOTER — matching landing style*/}
+      {/* MAGAZINE FOOTER — hidden on battle (full-bleed arena) */}
       {/* ═══════════════════════════════════════ */}
-      {showFooter && (
+      {showFooter && currentTab !== "battle" && (
         <footer className="bg-[#1a1a1a] border-t-[3px] border-[#FFCC00]">
           {/* Links + social */}
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-3 gap-3">
