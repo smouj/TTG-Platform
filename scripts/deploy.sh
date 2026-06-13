@@ -174,7 +174,7 @@ import sqlite3, subprocess, os
 DB = "/home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/prisma/dev.db"
 
 # Generate hashes on VPS using Node.js (same crypto as the bundled server)
-for email, pw in [("demo@tradingtazosgame.com", "demo1234"), ("dev@tradingtazosgame.com", "test123")]:
+for email, pw in [("demo@tradingtazosgame.com", "Tt9_4b93e142_XH"), ("dev@tradingtazosgame.com", "Tt9_4b93e142_XH")]:
     r = subprocess.run(["node", "-e", f"""
 const {{ scryptSync, randomBytes }} = require("crypto");
 const salt = randomBytes(32);

@@ -227,25 +227,21 @@ export const PAGE_META: Record<string, PageMeta> = {
 
 export const FOOTER_LINKS = {
   info: [
-    { label: "How to Play", href: "/?page=how-to-play" },
-    { label: "Collections", href: "/?page=collections" },
-    { label: "Tazo Catalog", href: "/?page=tazos" },
-    { label: "Leaderboard", href: "/?page=leaderboard" },
-    { label: "Download", href: "/?page=download" },
+    { label: "Tazos", href: "/?page=tazos" },
+    { label: "Shop", href: "/?page=shop" },
+    { label: "Battle", href: "/?page=how-to-play" },
     { label: "FAQ", href: "/?page=faq" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "/?page=privacy" },
-    { label: "Terms of Service", href: "/?page=terms" },
-    { label: "Cookie Policy", href: "/?page=cookies" },
+    { label: "Privacy", href: "/?page=privacy" },
+    { label: "Terms", href: "/?page=terms" },
+    { label: "Cookies", href: "/?page=cookies" },
     { label: "Contact", href: "/?page=contact" },
   ],
+  legal: [],
   social: [
     { label: "X / Twitter", href: "https://x.com/tazosgame" },
     { label: "Reddit", href: "https://www.reddit.com/r/tradingtazosgame/" },
     { label: "Telegram", href: "https://t.me/tradingtazosgame" },
-    { label: "Instagram", href: "https://www.instagram.com/tradingtazosgame/" },
     { label: "Discord", href: "https://discord.gg/4mUhnc2REb" },
-    { label: "GitHub", href: "https://github.com/smouj/Trading-Tazos-Game" },
+    { label: "Instagram", href: "https://www.instagram.com/tradingtazosgame/" },
   ],
 }
