@@ -24,6 +24,7 @@ import type { BattleFinalResult } from "@/lib/battle"
 import { useBattleEngine } from "@/lib/battle/use-battle-engine"
 import type { BattleContext } from "@/lib/battle/state-machine"
 import type { PvPWebSocket, TurnAction } from "@/lib/battle/use-pvp-websocket"
+import BattleErrorBoundary from "./battle/battle-error-boundary"
 import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
@@ -228,8 +229,15 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [coinFlipWinner, setCoinFlipWinner] = useState<"player" | "opponent">("player")
   const [showTutorial, setShowTutorial] = useState(false)
 
+  // ── Cleanup on unmount ──
+  useEffect(() => {
+    mountedRef.current = true
+    return () => { mountedRef.current = false }
+  }, [])
+
   const resultSaved = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const mountedRef = useRef(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
   // Phase from FSM ctx
@@ -429,6 +437,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             setCoinFlipShow(false)
             // Pick launcher (different tazo from bet, or first remaining)
             const launcher = playerHand.filter(t => t.id !== tazo.id)[0] || playerHand[0]
+            if (!launcher) { engine.setBusy(false); return }
             const ab = createAirborneTazo(launcher, "player", cfg.arena)
             setAirborne(ab)
             setBettingPhase("idle")
@@ -501,11 +510,13 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
     // Impact after gravity
     const fallHeight = cfg.arena.maxLaunchHeight * (0.2 + charge * 0.8)
-    const fallTimeMs = Math.sqrt(2 * fallHeight / cfg.arena.gravity) * 1000
+    const g = cfg.arena.gravity || 9.8
+    const fallTimeMs = Number.isFinite(fallHeight) && fallHeight > 0 ? Math.sqrt(2 * fallHeight / g) * 1000 : 600
 
     playSfx("slam_launch", 0.3)
 
     setTimeout(() => {
+      if (!mountedRef.current) return
       const currentCtx = engine.ctx
       if (!currentCtx || !cfg) { engine.setBusy(false); return }
 
@@ -534,6 +545,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       const end = checkMatchEnd(newPScore, newOScore, newPR, newOR)
 
       setTimeout(() => {
+        if (!mountedRef.current) return
         engine.setShowImpact(false)
 
         if (end) {
@@ -547,6 +559,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
         // Opponent's turn — show AI tazo airborne, aim, then slam
         setTimeout(() => {
+          if (!mountedRef.current) return
           const aiTazo = currentCtx.opponentBetTazo
           if (!aiTazo || !cfg) { engine.setBusy(false); return }
 
@@ -562,12 +575,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           // Phase: opponent aims
           const aimDuration = 800 + Math.random() * 500
           setTimeout(() => {
+            if (!mountedRef.current) return
             // Update airborne to charging position
             setAirborne(prev => prev ? { ...prev, state: "charging", position: [aiSlam.impactX * 0.3, cfg.arena.maxLaunchHeight * 0.7, aiSlam.impactZ * 0.3] } : prev)
             playSfx("charge_start", 0.2)
 
             // Simulate brief charge, then slam down
             setTimeout(() => {
+              if (!mountedRef.current) return
               if (!engine.ctx) { engine.setBusy(false); return }
               playSfx("slam_impact", 0.6)
 
@@ -593,6 +608,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             const aiEnd = checkMatchEnd(finalPS, finalOS, finalPR, finalOR)
 
             setTimeout(() => {
+              if (!mountedRef.current) return
               engine.setShowImpact(false)
               setAirborne(null) // Clear AI's airborne after impact
               if (aiEnd) {
@@ -601,20 +617,26 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
                 engine.nextRound()
                 // Setup new round with fresh stakes
                 setTimeout(() => {
+                  if (!mountedRef.current) return
                   const c3 = engine.ctx
                   if (!c3) { engine.setBusy(false); return }
                   const pDeck = deck
                   const oDeck = cfg.opponentDeck
+                  if (!pDeck.length || !oDeck.length) { engine.setBusy(false); return }
                   const aliveP = pDeck.slice(0, c3.playerRemaining)
                   const aliveO = oDeck.slice(0, c3.opponentRemaining)
                   const pS = aliveP.length > 0 ? aliveP[Math.floor(Math.random() * aliveP.length)] : pDeck[0]
                   const oS = aliveO.length > 0 ? aliveO[Math.floor(Math.random() * aliveO.length)] : oDeck[0]
+                  if (!pS || !oS) { engine.setBusy(false); return }
                   engine.placeBets(pS, oS)
                   engine.revealStakes()
                   setTimeout(() => {
+                    if (!mountedRef.current) return
                     engine.doCoinFlip()
                     setTimeout(() => {
+                      if (!mountedRef.current) return
                       const launch = aliveP.filter(t => t.id !== pS.id)[0] || pDeck[0]
+                      if (!launch) { engine.setBusy(false); return }
                       const ab = createAirborneTazo(launch, "player", cfg.arena)
                       setAirborne(ab)
                       engine.lockAim(0, 0)
@@ -760,7 +782,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
     // Simulate locally
     const fallHeight = cfg.arena.maxLaunchHeight * (0.2 + charge * 0.8)
-    const fallTimeMs = Math.sqrt(2 * fallHeight / cfg.arena.gravity) * 1000
+    const g2 = cfg.arena.gravity || 9.8
+    const fallTimeMs = Number.isFinite(fallHeight) && fallHeight > 0 ? Math.sqrt(2 * fallHeight / g2) * 1000 : 600
 
     setTimeout(() => {
       if (!engine.ctx || !cfg) { engine.setBusy(false); return }
@@ -848,6 +871,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const throwing = ctx?.playerBetTazo || (deck.length > 0 ? deck[0] : null)
 
   return (
+    <BattleErrorBoundary>
     <div ref={containerRef} className="w-full relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 110px)" }}>
       {/* Tutorial */}
       {showTutorial && <BattleTutorial onClose={() => setShowTutorial(false)} />}
@@ -1056,5 +1080,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         )}
       </BattleArena3D>
     </div>
+    </BattleErrorBoundary>
   )
 }
