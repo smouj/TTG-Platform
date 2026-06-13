@@ -121,5 +121,7 @@
   "author": "Trading Tazos Game <support@tradingtazosgame.com>",
   "repository": "https://github.com/smouj/Trading-Tazos-Game",
   "homepage": "https://tradingtazosgame.com",
-  "overrides": {}
+  "overrides": {
+    "postcss": "8.5.15"
+  }
 }
