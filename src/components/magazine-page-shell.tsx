@@ -108,22 +108,6 @@ export default function MagazinePageShell({
             </div>
           </div>
 
-          {/* Desktop nav tabs */}
-          <nav className="hidden sm:flex items-center gap-1">
-            {NAV_ITEMS.map(({ id, label, icon: Icon, href }) => {
-              const isActive = currentTab === id || pathname === href
-              return (
-                <Link key={id} href={href}
-                  className={`flex items-center gap-1 px-2 py-1 text-[10px] font-black uppercase tracking-wider transition-colors whitespace-nowrap ${
-                    isActive ? "text-[#FFCC00]" : "text-white/45 hover:text-[#FFCC00]/80"
-                  }`}>
-                  <Icon className="w-3 h-3" />
-                  {label}
-                </Link>
-              )
-            })}
-          </nav>
-
           {/* Auth + lang */}
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -144,15 +128,18 @@ export default function MagazinePageShell({
           </div>
         </div>
 
-        {/* Mobile nav tabs */}
-        <nav className="sm:hidden flex items-center justify-start gap-0 px-2 pb-2 overflow-x-auto">
-          {NAV_ITEMS.map(({ id, label, href }) => {
+        {/* Desktop + Mobile nav tabs row */}
+        <nav className="flex items-center justify-center gap-0.5 px-4 pb-2 overflow-x-auto border-t border-white/5">
+          {NAV_ITEMS.map(({ id, label, icon: Icon, href }) => {
             const isActive = currentTab === id || pathname === href
             return (
               <Link key={id} href={href}
-                className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
-                  isActive ? "text-[#FFCC00]" : "text-white/35 hover:text-[#FFCC00]/80"
-                }`}>{label}</Link>
+                className={`flex items-center gap-1 px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider transition-colors whitespace-nowrap rounded ${
+                  isActive ? "text-[#FFCC00] bg-[#FFCC00]/10" : "text-white/40 hover:text-[#FFCC00]/80 hover:bg-white/5"
+                }`}>
+                <Icon className="w-3.5 h-3.5" />
+                {label}
+              </Link>
             )
           })}
         </nav>

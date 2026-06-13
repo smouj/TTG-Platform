@@ -7,7 +7,7 @@ import BattleView from "@/components/game/battle-view"
 
 export default function BattlePage() {
   return (
-    <div className="flex-1 w-full overflow-hidden relative">
+    <div className="absolute inset-0 overflow-hidden">
       <BattleView />
     </div>
   )

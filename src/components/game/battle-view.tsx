@@ -943,7 +943,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   // ── Loading ──
   if (loading) return (
-    <div className="flex items-center justify-center py-28 px-4 sm:px-6">
+    <div className="absolute inset-0 flex items-center justify-center">
       <div className="flex flex-col items-center gap-3">
         <Disc3 className="w-12 h-12 animate-spin text-[#FFCC00]" />
         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">Loading Arena</span>
@@ -953,7 +953,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   // ── Lobby ──
   if (phase === "lobby") return (
-    <div className="h-full flex flex-col items-center justify-center px-4 sm:px-6">
+    <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6">
       <div className="w-full max-w-7xl">
         <GameLobby
           playerTazos={tazos}
@@ -970,7 +970,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   // ── Match End ──
   if (phase === "match_end" && result) return (
-    <div className="h-full flex flex-col items-center justify-center px-4 sm:px-6">
+    <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6">
       <div className="w-full max-w-lg">
       <BattleResultPanel result={{
         winner: result.winner,
@@ -1004,7 +1004,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   return (
     <BattleErrorBoundary>
-    <div ref={containerRef} className={`w-full relative ${isFullscreen ? "fixed inset-0 z-50" : "h-full"}`}>
+    <div ref={containerRef} className={`w-full ${isFullscreen ? "fixed inset-0 z-50" : "absolute inset-0"}`}>
       {/* Tutorial */}
       {showTutorial && <BattleTutorial onClose={() => setShowTutorial(false)} />}
       
