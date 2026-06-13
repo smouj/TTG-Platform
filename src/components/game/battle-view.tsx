@@ -838,32 +838,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
       </button>
 
-      <style>{`
-        @keyframes popUp {
-          0% { opacity: 1; transform: translateY(0) scale(1); }
-          20% { opacity: 1; transform: translateY(-8px) scale(1.3); }
-          60% { opacity: 0.8; transform: translateY(-30px) scale(1.1); }
-          100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
-        }
-        @keyframes sparkBurst {
-          0% { opacity: 1; transform: scale(0) rotate(0deg); }
-          30% { opacity: 1; transform: scale(1.2) rotate(15deg); }
-          100% { opacity: 0; transform: scale(1.8) rotate(45deg); }
-        }
-        @keyframes particleFly {
-          0% { opacity: 1; transform: translate(0, 0) scale(1); }
-          100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
-        }
-        @keyframes slamBounce {
-          0% { transform: scale(1); }
-          15% { transform: scale(1.08); }
-          30% { transform: scale(0.95); }
-          50% { transform: scale(1.03); }
-          70% { transform: scale(0.98); }
-          100% { transform: scale(1); }
-        }
-      `}</style>
-
       <BattleArena3D
         config={cfg?.arena || DEFAULT_ARENA_3D}
         stakedTazos={staked}
