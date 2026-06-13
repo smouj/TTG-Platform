@@ -81,16 +81,38 @@ function PhaseBadge({ phase, bettingPhase, chargePct, tazoName }: { phase: strin
 // ── BettingReveal: Animated overlay when both stakes are shown ──
 function BettingReveal({ playerTazo, opponentTazo }: { playerTazo: TazoCard; opponentTazo: TazoCard }) {
   return (
-    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-      <div className="flex items-center gap-3 sm:gap-5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-        <div className="flex flex-col items-center gap-1 animate-[fadeInLeft_0.4s_ease-out]">
-          <span className="text-[7px] font-black text-[#29ADFF]/60 uppercase tracking-widest">You</span>
-          <span className="text-[9px] font-black text-white truncate max-w-[80px] text-center">{playerTazo.name}</span>
+    <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+      <div className="flex items-center gap-4 sm:gap-6 bg-black/80 backdrop-blur-xl rounded-3xl border border-[#FFCC00]/20 px-6 py-5 shadow-[0_12px_48px_rgba(255,204,0,0.2)]">
+        {/* Player tazo */}
+        <div className="flex flex-col items-center gap-2 animate-[fadeInLeft_0.5s_ease-out]">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl border-2 border-[#29ADFF]/40 overflow-hidden bg-[#29ADFF]/5 flex items-center justify-center">
+            {playerTazo.imageUrl ? (
+              <img src={playerTazo.imageUrl} alt={playerTazo.name} className="w-full h-full object-contain" />
+            ) : (
+              <span className="text-[#29ADFF] text-2xl font-black">{playerTazo.name[0]}</span>
+            )}
+          </div>
+          <span className="text-[8px] font-black text-[#29ADFF] uppercase tracking-widest">Your stake</span>
+          <span className="text-[10px] font-black text-white max-w-[80px] text-center leading-tight">{playerTazo.name}</span>
         </div>
-        <div className="text-[#FFCC00] text-lg font-black animate-pulse">⚡</div>
-        <div className="flex flex-col items-center gap-1 animate-[fadeInRight_0.4s_ease-out]">
-          <span className="text-[7px] font-black text-[#FF004D]/60 uppercase tracking-widest">Rival</span>
-          <span className="text-[9px] font-black text-white truncate max-w-[80px] text-center">{opponentTazo.name}</span>
+        
+        {/* VS divider */}
+        <div className="flex flex-col items-center gap-1">
+          <div className="text-[#FFCC00] text-2xl font-black animate-pulse" style={{ textShadow: "0 0 20px #FFCC00" }}>⚡</div>
+          <span className="text-[7px] font-black text-[#FFCC00]/50 uppercase tracking-[0.3em]">VS</span>
+        </div>
+
+        {/* Opponent tazo */}
+        <div className="flex flex-col items-center gap-2 animate-[fadeInRight_0.5s_ease-out]">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl border-2 border-[#FF004D]/40 overflow-hidden bg-[#FF004D]/5 flex items-center justify-center">
+            {opponentTazo.imageUrl ? (
+              <img src={opponentTazo.imageUrl} alt={opponentTazo.name} className="w-full h-full object-contain" />
+            ) : (
+              <span className="text-[#FF004D] text-2xl font-black">{opponentTazo.name[0]}</span>
+            )}
+          </div>
+          <span className="text-[8px] font-black text-[#FF004D] uppercase tracking-widest">AI stake</span>
+          <span className="text-[10px] font-black text-white max-w-[80px] text-center leading-tight">{opponentTazo.name}</span>
         </div>
       </div>
     </div>
@@ -115,32 +137,36 @@ function CoinFlipOverlay({ show, winner }: { show: boolean; winner: "player" | "
 
   return (
     <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
-      <div className="bg-black/70 backdrop-blur-lg rounded-3xl border border-white/10 px-8 py-6 shadow-[0_0_60px_rgba(255,204,0,0.15)] flex flex-col items-center gap-4">
+      <div className="bg-black/80 backdrop-blur-xl rounded-3xl border border-[#FFCC00]/20 px-8 py-6 shadow-[0_0_80px_rgba(255,204,0,0.2)] flex flex-col items-center gap-4">
         {/* Coin */}
-        <div className={`w-16 h-16 rounded-full flex items-center justify-center border-4 ${animPhase === "flipping" ? "animate-[spin_0.4s_linear_infinite]" : ""}`}
+        <div className={`w-20 h-20 rounded-full flex items-center justify-center border-[3px] transition-all duration-500 ${
+          animPhase === "flipping" 
+            ? "animate-[spin3d_1.2s_linear]" 
+            : isPlayerFirst ? "border-[#29ADFF] shadow-[0_0_30px_#29ADFF60]" : "border-[#FF004D] shadow-[0_0_30px_#FF004D60]"
+        }`}
           style={{
             background: animPhase === "reveal"
-              ? isPlayerFirst ? "linear-gradient(135deg, #29ADFF, #0066CC)" : "linear-gradient(135deg, #FF004D, #CC0000)"
-              : "linear-gradient(135deg, #FFD700, #DAA520)",
-            borderColor: animPhase === "reveal"
-              ? isPlayerFirst ? "#29ADFF" : "#FF004D"
-              : "#FFCC00",
-            boxShadow: `0 0 30px ${animPhase === "reveal" ? (isPlayerFirst ? "#29ADFF" : "#FF004D") : "#FFCC00"}66`,
+              ? isPlayerFirst ? "linear-gradient(135deg, #29ADFF, #003388)" : "linear-gradient(135deg, #FF004D, #880000)"
+              : "linear-gradient(135deg, #FFD700, #B8860B)",
+            transform: animPhase === "reveal" ? "rotateY(0deg)" : undefined,
           }}
         >
           {animPhase === "flipping" ? (
-            <span className="text-2xl">🪙</span>
+            <span className="text-3xl drop-shadow-lg">🪙</span>
           ) : isPlayerFirst ? (
-            <span className="text-xl font-black text-white">YOU</span>
+            <span className="text-xl font-black text-white drop-shadow-lg">YOU</span>
           ) : (
-            <span className="text-xl font-black text-white">AI</span>
+            <span className="text-xl font-black text-white drop-shadow-lg">AI</span>
           )}
         </div>
 
         {/* Result text */}
         <div className={`text-center transition-all duration-300 ${animPhase === "reveal" ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}>
-          <div className="text-[12px] font-black text-[#FFCC00] tracking-widest">
-            {animPhase === "flipping" ? "FLIPPING..." : `${isPlayerFirst ? "⭐ YOU" : "⚔️ AI"} SLAMS FIRST!`}
+          <div className="text-[14px] font-black tracking-widest" style={{
+            color: animPhase === "flipping" ? "#FFCC00" : isPlayerFirst ? "#29ADFF" : "#FF004D",
+            textShadow: `0 0 20px ${isPlayerFirst ? "#29ADFF" : "#FF004D"}`,
+          }}>
+            {animPhase === "flipping" ? "Flipping..." : `${isPlayerFirst ? "⭐ YOU" : "⚔️ AI"} SLAMS FIRST!`}
           </div>
         </div>
       </div>
@@ -228,6 +254,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [coinFlipShow, setCoinFlipShow] = useState(false)
   const [coinFlipWinner, setCoinFlipWinner] = useState<"player" | "opponent">("player")
   const [showTutorial, setShowTutorial] = useState(false)
+  const [introCountdown, setIntroCountdown] = useState<number | null>(null)
+  const [roundBanner, setRoundBanner] = useState<number | null>(null)
+  const [scoreFlash, setScoreFlash] = useState<"player" | "opponent" | null>(null)
 
   // ── Cleanup on unmount ──
   useEffect(() => {
@@ -251,6 +280,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const playerRemaining = ctx?.playerRemaining ?? 0
   const opponentRemaining = ctx?.opponentRemaining ?? 0
   const cfg = ctx?.config ?? null
+
+  // ── Sync hands from engine when entering betting phase ──
+  useEffect(() => {
+    if (phase === "betting" && ctx?.playerHand?.length && ctx?.opponentHand?.length) {
+      setPlayerHand(ctx.playerHand)
+      setOpponentHand(ctx.opponentHand)
+    }
+  }, [phase, ctx?.playerHand, ctx?.opponentHand])
 
   // ── Score popups ──
   const [scorePopups, setScorePopups] = useState<Array<{ id: number; text: string; color: string; side: "left" | "right" }>>([])
@@ -282,10 +319,35 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       else playSfx("defeat_sting", 0.4)
     }
     if (phase === "intro") {
-      [600, 1200, 1800].forEach(d => setTimeout(() => playSfx("countdown_beep", 0.3), d))
+      // Visible countdown: 3 → 2 → 1 → FIGHT!
+      setIntroCountdown(3)
+      const t1 = setTimeout(() => setIntroCountdown(2), 600)
+      const t2 = setTimeout(() => setIntroCountdown(1), 1200)
+      const t3 = setTimeout(() => setIntroCountdown(null), 1800)
+      ;[600, 1200, 1800].forEach(d => setTimeout(() => playSfx("countdown_beep", 0.3), d))
       setTimeout(() => playSfx("battle_start", 0.4), 2400)
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
     }
   }, [phase, result])
+
+  // ── Round banner when entering betting ──
+  useEffect(() => {
+    if (phase === "betting" && round > 0) {
+      setRoundBanner(round)
+      const t = setTimeout(() => setRoundBanner(null), 1500)
+      return () => clearTimeout(t)
+    }
+  }, [phase, round])
+
+  // ── Score flash on player/opponent score change ──
+  const prevPScore = useRef(pScore)
+  const prevOScore = useRef(oScore)
+  useEffect(() => {
+    if (pScore > prevPScore.current) { setScoreFlash("player"); setTimeout(() => setScoreFlash(null), 400) }
+    if (oScore > prevOScore.current) { setScoreFlash("opponent"); setTimeout(() => setScoreFlash(null), 400) }
+    prevPScore.current = pScore
+    prevOScore.current = oScore
+  }, [pScore, oScore])
 
   // ── Auto-save on match_end ──
   useEffect(() => {
@@ -392,13 +454,13 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
     engine.startMatch(config)
 
-    // ── Sequence after start ──
+    // ── Sequence: intro → betting ──
     setTimeout(() => engine.introDone(), 2000)
     setTimeout(() => {
       engine.startBetting()
       setBettingPhase("betting")
-      // WAIT for player to select their tazo via handleBet()
-    }, 1000)
+      // Wait for player to select their tazo via handleBet()
+    }, 3500)
   }, [engine])
 
   // ═══════════════════════════════════════════════
@@ -615,33 +677,13 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
                 engine.showResult()
               } else {
                 engine.nextRound()
-                // Setup new round with fresh stakes
+                // Reset UI for new round — let player bet interactively
                 setTimeout(() => {
                   if (!mountedRef.current) return
-                  const c3 = engine.ctx
-                  if (!c3) { engine.setBusy(false); return }
-                  const pDeck = deck
-                  const oDeck = cfg.opponentDeck
-                  if (!pDeck.length || !oDeck.length) { engine.setBusy(false); return }
-                  const aliveP = pDeck.slice(0, c3.playerRemaining)
-                  const aliveO = oDeck.slice(0, c3.opponentRemaining)
-                  const pS = aliveP.length > 0 ? aliveP[Math.floor(Math.random() * aliveP.length)] : pDeck[0]
-                  const oS = aliveO.length > 0 ? aliveO[Math.floor(Math.random() * aliveO.length)] : oDeck[0]
-                  if (!pS || !oS) { engine.setBusy(false); return }
-                  engine.placeBets(pS, oS)
-                  engine.revealStakes()
-                  setTimeout(() => {
-                    if (!mountedRef.current) return
-                    engine.doCoinFlip()
-                    setTimeout(() => {
-                      if (!mountedRef.current) return
-                      const launch = aliveP.filter(t => t.id !== pS.id)[0] || pDeck[0]
-                      if (!launch) { engine.setBusy(false); return }
-                      const ab = createAirborneTazo(launch, "player", cfg.arena)
-                      setAirborne(ab)
-                      engine.lockAim(0, 0)
-                    }, 1500)
-                  }, 1000)
+                  setSelectedBetId(null)
+                  setOpponentBetId(null)
+                  setBettingPhase("betting")
+                  engine.setBusy(false)
                 }, 800)
               }
               engine.setBusy(false)
@@ -936,8 +978,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             <div className="flex items-center justify-between gap-3">
               {/* Player (left) */}
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border-2 relative overflow-hidden"
-                  style={{ background: "linear-gradient(135deg, #29ADFF20, #29ADFF08)", borderColor: "#29ADFF40" }}>
+                <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border-2 relative overflow-hidden transition-transform duration-200 ${scoreFlash === "player" ? "scale-125" : ""}`}
+                  style={{ background: "linear-gradient(135deg, #29ADFF20, #29ADFF08)", borderColor: scoreFlash === "player" ? "#29ADFF" : "#29ADFF40" }}>
                   <span className="text-base sm:text-lg font-black text-[#29ADFF] tabular-nums" style={{ textShadow: "0 0 12px #29ADFF88" }}>
                     {pScore}
                   </span>
@@ -952,8 +994,19 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
               {/* Center — phase + round */}
               <div className="flex flex-col items-center">
                 {phase === "intro" && (
-                  <div className="px-5 py-1.5 rounded-full border-2 border-[#FFCC00]/60 bg-[#FFCC00]/10 animate-pulse">
-                    <span className="text-[11px] sm:text-[13px] font-black text-[#FFCC00] tracking-[0.25em]">GET READY!</span>
+                  <div className="flex flex-col items-center gap-1">
+                    {introCountdown !== null ? (
+                      <span className="text-5xl sm:text-7xl font-black text-[#FFCC00] animate-[popUp_0.4s_ease-out]"
+                        style={{ textShadow: "0 0 40px #FFCC00, 0 0 80px #FFCC0060" }}
+                        key={introCountdown}>
+                        {introCountdown}
+                      </span>
+                    ) : (
+                      <span className="text-2xl sm:text-3xl font-black text-[#FFCC00] animate-[popUp_0.3s_ease-out]"
+                        style={{ textShadow: "0 0 30px #FFCC00" }}>
+                        ⚡ FIGHT!
+                      </span>
+                    )}
                   </div>
                 )}
                 {phase !== "intro" && (
@@ -972,8 +1025,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
                   </div>
                   <div className="text-[6px] font-black text-[#FF004D]/40 uppercase tracking-widest">Rival</div>
                 </div>
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border-2 relative overflow-hidden"
-                  style={{ background: "linear-gradient(135deg, #FF004D20, #FF004D08)", borderColor: "#FF004D40" }}>
+                <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border-2 relative overflow-hidden transition-transform duration-200 ${scoreFlash === "opponent" ? "scale-125" : ""}`}
+                  style={{ background: "linear-gradient(135deg, #FF004D20, #FF004D08)", borderColor: scoreFlash === "opponent" ? "#FF004D" : "#FF004D40" }}>
                   <span className="text-base sm:text-lg font-black text-[#FF004D] tabular-nums" style={{ textShadow: "0 0 12px #FF004D88" }}>
                     {oScore}
                   </span>
@@ -1033,6 +1086,18 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
           {/* Coin flip overlay */}
           <CoinFlipOverlay show={coinFlipShow} winner={coinFlipWinner} />
+
+          {/* Round banner */}
+          {roundBanner !== null && (
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 pointer-events-none z-30">
+              <div className="animate-[popUp_0.3s_ease-out]" key={roundBanner}>
+                <div className="text-[10px] font-black text-[#FFCC00]/40 uppercase tracking-[0.3em] text-center mb-1">Round</div>
+                <div className="text-5xl font-black text-[#FFCC00] text-center" style={{ textShadow: "0 0 30px #FFCC0060" }}>
+                  {roundBanner}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── Slam Controls ── */}
