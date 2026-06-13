@@ -39,6 +39,12 @@ ssh "$VPS" 'if [ -f /home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/pri
 echo "→ Syncing .next/ to VPS..."
 rsync -avz --delete .next/ "$VPS:$VPS_APP/.next/"
 
+# 2b. Sync canonical DB from WSL to VPS repo (critical: VPS repo DB is stale otherwise)
+echo "→ Syncing DB to VPS repo..."
+sqlite3 prisma/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
+rm -f prisma/dev.db-wal prisma/dev.db-shm
+scp prisma/dev.db "$VPS:$VPS_APP/prisma/dev.db"
+
 # 3. Post-deploy steps on VPS
 echo "→ Running post-deploy on VPS..."
 ssh "$VPS" << 'ENDSSH'
@@ -139,13 +145,19 @@ for d in ['minimon','dracobell','cybermon']:
 cp -r public/tazos-backs/* .next/standalone/public/tazos-backs/  2>/dev/null || true
 cp -r public/tazos-artgen/* .next/standalone/public/tazos-artgen/  2>/dev/null || true
 
+# IMPORTANT: The repo DB on VPS may be stale (only synced on deploy).
+# The WSL DB has the canonical data including seeded users.
+# We must copy from the WSL-synced file, not the VPS-local repo copy.
+# The rsync above syncs prisma/dev.db from WSL → VPS repo.
+# Now copy it to standalone:
+
 # Checkpoint WAL to ensure all data is in main DB file before copy
 sqlite3 prisma/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
 
 # Clean standalone WAL/SHM to prevent stale data
 rm -f .next/standalone/prisma/dev.db-wal .next/standalone/prisma/dev.db-shm
 
-# Copy DB to standalone (rsync --delete removes it)
+# Copy DB to standalone (the repo copy was just synced from WSL via rsync)
 cp prisma/dev.db .next/standalone/prisma/dev.db
 
 # Push schema changes to ensure DB tables match
