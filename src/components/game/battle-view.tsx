@@ -29,6 +29,7 @@ import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
 import BattleResultPanel from "./battle/battle-result-panel"
 import BattleHand from "./battle/battle-hand"
+import BattleTutorial, { isTutorialDone } from "./battle/battle-tutorial"
 import BattleSideStack from "./battle/battle-side-stack"
 import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock, Zap, Swords } from "lucide-react"
 
@@ -225,6 +226,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [opponentBetId, setOpponentBetId] = useState<string | null>(null)
   const [coinFlipShow, setCoinFlipShow] = useState(false)
   const [coinFlipWinner, setCoinFlipWinner] = useState<"player" | "opponent">("player")
+  const [showTutorial, setShowTutorial] = useState(false)
 
   const resultSaved = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -257,6 +259,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     document.addEventListener("click", handler)
     return () => document.removeEventListener("click", handler)
   }, [])
+
+  // ── Tutorial — show on first visit ──
+  useEffect(() => {
+    if (!isTutorialDone()) {
+      const t = setTimeout(() => setShowTutorial(true), 800) // Delay so arena renders first
+      return () => clearTimeout(t)
+    }
+  }, [cfg])
 
   useEffect(() => {
     if (phase === "match_end" && result) {
@@ -391,7 +401,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     engine.setBusy(true)
     setSelectedBetId(tazo.id)
     setBettingPhase("bet_locked")
-    playSfx("battle_start", 0.3)
+    playSfx("ui_click", 0.15)
 
     // Auto-pick opponent bet
     const oppPick = opponentHand[Math.floor(Math.random() * opponentHand.length)]
@@ -405,7 +415,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       
       setTimeout(() => {
         engine.revealStakes()
-        playSfx("battle_start", 0.35)
+        playSfx("tazo_flip", 0.3)
         
         setTimeout(() => {
           engine.doCoinFlip()
@@ -413,7 +423,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           const winner = isPlayer ? "player" : "opponent"
           setCoinFlipWinner(winner as "player" | "opponent")
           setCoinFlipShow(true)
-          playSfx("countdown_beep", 0.3)
+          playSfx("tazo_flip", 0.3)
           
           setTimeout(() => {
             setCoinFlipShow(false)
@@ -447,6 +457,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const handleSlamRelease = useCallback(() => {
     if (engine.ui.busy || !cfg) return
     engine.setBusy(true)
+    playSfx("aim_lock", 0.2)
 
     const t = ctx?.playerBetTazo || (deck.length > 0 ? deck[0] : null)
     if (!t) { engine.setBusy(false); return }
@@ -492,6 +503,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     const fallHeight = cfg.arena.maxLaunchHeight * (0.2 + charge * 0.8)
     const fallTimeMs = Math.sqrt(2 * fallHeight / cfg.arena.gravity) * 1000
 
+    playSfx("slam_launch", 0.3)
+
     setTimeout(() => {
       const currentCtx = engine.ctx
       if (!currentCtx || !cfg) { engine.setBusy(false); return }
@@ -528,6 +541,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           engine.setBusy(false)
           return
         }
+
+        // Round won — triumphant sound
+        playSfx("tazo_secure", 0.25)
 
         // Opponent's turn — show AI tazo airborne, aim, then slam
         setTimeout(() => {
@@ -703,6 +719,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     if (!pvp) return slamRef.current()
 
     if (engine.ui.busy || !cfg) return
+    playSfx("aim_lock", 0.2)
     engine.setBusy(true)
 
     const t = ctx?.playerBetTazo || (deck.length > 0 ? deck[0] : null)
@@ -832,11 +849,21 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   return (
     <div ref={containerRef} className="w-full relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 110px)" }}>
-      <button onClick={toggleFullscreen}
-        className="absolute top-2 right-2 z-30 p-2 bg-black/40 hover:bg-black/60 rounded-full border border-white/10 text-white/50 hover:text-white/80 transition-all"
-        title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
-        {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
-      </button>
+      {/* Tutorial */}
+      {showTutorial && <BattleTutorial onClose={() => setShowTutorial(false)} />}
+      
+      <div className="absolute top-2 right-2 z-30 flex gap-2">
+        <button onClick={() => setShowTutorial(true)}
+          className="p-2 bg-black/40 hover:bg-black/60 rounded-full border border-white/10 text-white/40 hover:text-white/70 transition-all"
+          title="How to play">
+          <Swords className="w-3.5 h-3.5" />
+        </button>
+        <button onClick={toggleFullscreen}
+          className="p-2 bg-black/40 hover:bg-black/60 rounded-full border border-white/10 text-white/50 hover:text-white/80 transition-all"
+          title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
+          {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+        </button>
+      </div>
 
       <BattleArena3D
         config={cfg?.arena || DEFAULT_ARENA_3D}
