@@ -389,6 +389,33 @@ model BagModel {
   updatedAt   DateTime @updatedAt
 }
 
+// ─── Promotion Codes ───
+
+model PromotionCode {
+  id          String   @id @default(cuid())
+  code        String   @unique            // e.g. "WELCOME50"
+  description String?                     // Admin note for what this code does
+  type        String   @default("credits") // credits, bag, design, premium
+  value       Int      @default(0)        // Amount (credits) or bag/design ID reference
+  maxUses     Int      @default(100)      // Max total redemptions (0 = unlimited)
+  usedCount   Int      @default(0)        // Current redemption count
+  minLevel    Int      @default(0)        // Minimum user level/rank required
+  expiresAt   DateTime?                   // Optional expiration
+  isActive    Boolean  @default(true)
+  createdBy   String?                     // Admin user who created it
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Site Configuration ───
+
+model SiteConfig {
+  key       String   @id                 // e.g. "maintenance_mode", "welcome_credits"
+  value     String                       // JSON-encoded value
+  updatedAt DateTime @updatedAt
+  updatedBy String?                      // Admin user who updated it
+}
+
 // ─── Monetization ───
 
 model CreditPackage {

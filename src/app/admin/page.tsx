@@ -6,7 +6,7 @@
 // ============================================================
 import { useState, useEffect } from "react"
 import { useAuth } from "@/lib/auth-context"
-import { Users, Package, Database, Server, Activity, Loader2, Check, Wand2, Image as ImageIcon, Grid3X3, LayoutGrid, ShoppingBag } from "lucide-react"
+import { Users, Package, Database, Server, Activity, Loader2, Check, Wand2, Image as ImageIcon, Grid3X3, LayoutGrid, ShoppingBag, Settings } from "lucide-react"
 import Link from "next/link"
 import AdminShell from "@/components/admin/admin-shell"
 
@@ -172,17 +172,34 @@ export default function AdminPage() {
                 <Link
                   href="/admin/bags"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
-                  style={{ background: 'linear-gradient(135deg, #F9731605, #E3350D10)' }}
+                  style={{ background: 'linear-gradient(135deg, #8B5CF610, #A855F710)' }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#E3350D]">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#8B5CF6]">
                       <ShoppingBag className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#E3350D] transition-colors">Bag Textures</h3>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#8B5CF6] transition-colors">Bag Textures</h3>
                       <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Upload bag material designs</p>
                     </div>
-                    <span className="ml-auto text-[#E3350D] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
+                    <span className="ml-auto text-[#8B5CF6] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/admin/site-config"
+                  className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
+                  style={{ background: 'linear-gradient(135deg, #06B6D410, #22C55E10)' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#06B6D4]">
+                      <Settings className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#06B6D4] transition-colors">Site Config</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Credits, promos &amp; settings</p>
+                    </div>
+                    <span className="ml-auto text-[#06B6D4] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
 

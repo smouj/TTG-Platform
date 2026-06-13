@@ -8,7 +8,7 @@ import { useAuth } from "@/lib/auth-context";
 import {
   Shield, Users, Package, Database, Server, Activity,
   Wand2, LayoutGrid, Grid3X3, ShoppingBag, Loader2,
-  ChevronRight, Home
+  ChevronRight, Home, Settings
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -63,6 +63,12 @@ const ADMIN_TABS = [
     label: "Bag Models",
     icon: Server,
     color: "#F97316",
+  },
+  {
+    href: "/admin/site-config",
+    label: "Site Config",
+    icon: Settings,
+    color: "#06B6D4",
   },
 ];
 
