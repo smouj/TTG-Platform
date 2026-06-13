@@ -52,7 +52,7 @@ export interface BattleEngine {
   startBetting: () => void
   placeBets: (playerTazo: TazoCard, opponentTazo: TazoCard) => void
   revealStakes: () => void
-  doCoinFlip: () => void
+  doCoinFlip: () => "player" | "opponent"
   lockAim: (x: number, z: number) => void
   lockCharge: (level: number) => void
   releaseSlam: () => void
@@ -159,9 +159,10 @@ export function useBattleEngine(): BattleEngine {
     send({ type: "STAKES_REVEALED" })
   }, [send])
 
-  const doCoinFlip = useCallback(() => {
+  const doCoinFlip = useCallback((): "player" | "opponent" => {
     const winner = coinFlip()
     send({ type: "COIN_DECIDED", winner })
+    return winner
   }, [send])
 
   const lockAim = useCallback((targetX: number, targetZ: number) => {

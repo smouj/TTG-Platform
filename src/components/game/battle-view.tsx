@@ -250,6 +250,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [opponentBetId, setOpponentBetId] = useState<string | null>(null)
   const [coinFlipShow, setCoinFlipShow] = useState(false)
   const [coinFlipWinner, setCoinFlipWinner] = useState<"player" | "opponent">("player")
+  const playerWentFirstRef = useRef(false)
   const [showTutorial, setShowTutorial] = useState(false)
   const [introCountdown, setIntroCountdown] = useState<number | null>(null)
   const [roundBanner, setRoundBanner] = useState<number | null>(null)
@@ -310,122 +311,11 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     }
   }, [cfg])
 
-  // ── Coin flip display: sync winner from engine state ──
-  useEffect(() => {
-    if (!coinFlipShow && (phase === "player_aim" || phase === "opponent_aim")) {
-      // Set the coin flip winner based on actual engine state
-      setCoinFlipWinner(phase === "player_aim" ? "player" : "opponent")
-    }
-  }, [phase, coinFlipShow])
-
-  // ── Post-coin-flip: transition into aim or opponent turn ──
-  const coinFlipDoneRef = useRef(false)
-  const playerGoesFirstRef = useRef(false)
-  useEffect(() => {
-    if (!ctx || !cfg || coinFlipShow) return
-    const isCoinResult = phase === "player_aim" || phase === "opponent_aim"
-    if (!isCoinResult || coinFlipDoneRef.current) return
-    
-    // Prevent re-entry
-    coinFlipDoneRef.current = true
-    
-    if (phase === "player_aim") {
-      // Player won coin flip — goes first this round
-      playerGoesFirstRef.current = true
-      // Player won coin flip — set up airborne and let them aim
-      const launcher = playerHand.find(t => t.id !== selectedBetId) || playerHand[0]
-      if (launcher) {
-        const ab = createAirborneTazo(launcher, "player", cfg.arena)
-        setAirborne(ab)
-      }
-      setBettingPhase("idle")
-      engine.setBusy(false)
-    } else {
-      // AI won coin flip — AI goes first, player responds second
-      playerGoesFirstRef.current = false
-      // AI won coin flip — run opponent turn, then let player slam
-      setBettingPhase("idle")
-      setTimeout(() => {
-        if (!mountedRef.current) return
-        const c2 = engine.ctx
-        if (!c2 || !cfg) { engine.setBusy(false); return }
-        const aiTazo = cfg.opponentDeck[Math.floor(Math.random() * cfg.opponentDeck.length)]
-        if (!aiTazo) { engine.setBusy(false); return }
-        
-        // Show AI tazo airborne
-        const ab = createAirborneTazo(aiTazo, "opponent", cfg.arena)
-        setAirborne(ab)
-        
-        // AI aim duration
-        const aimDuration = 800 + Math.random() * 500
-        setTimeout(() => {
-          if (!mountedRef.current) return
-          const c3 = engine.ctx
-          if (!c3 || !cfg) { engine.setBusy(false); return }
-          
-          // Generate AI slam
-          const aiSlam = generateAISlam(aiTazo, c3.stakedTazos, cfg.arena, cfg.aiDifficulty)
-          engine.lockAim(aiSlam.impactX, aiSlam.impactZ)
-          engine.lockCharge(aiSlam.verticalForce)
-          
-          const chargeDur = 300 + Math.random() * 300
-          setTimeout(() => {
-            if (!mountedRef.current) return
-            engine.releaseSlam()
-            playSfx("slam_impact", 0.5)
-            
-            const { result: impact } = simulateSlam(aiTazo, aiSlam, c3.stakedTazos, cfg.arena, "opponent")
-            const scoring = scoreBettingImpact(impact, "opponent")
-            engine.resolveImpact(impact, "opponent")
-            engine.setImpactMsg(impact.description)
-            engine.setShowImpact(true)
-            
-            if (scoring.opponentDelta > 0) { spawnPopup(`+${scoring.opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
-            if (scoring.playerDelta > 0) { spawnPopup(`+${scoring.playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
-            if (scoring.playerLostTazos > 0) { spawnPopup(`-${scoring.playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
-            
-            setTimeout(() => {
-              if (!mountedRef.current) return
-              engine.setShowImpact(false)
-              setAirborne(null)
-              
-              const c4 = engine.ctx
-              if (!c4) { engine.setBusy(false); return }
-              const playerEnd = checkMatchEnd(
-                c4.player.score + scoring.playerDelta,
-                c4.opponent.score + scoring.opponentDelta,
-                Math.max(0, c4.playerRemaining - scoring.playerLostTazos),
-                Math.max(0, c4.opponentRemaining - scoring.opponentLostTazos)
-              )
-              if (playerEnd) {
-                engine.showResult()
-              } else {
-                // Round not over — now it's player's turn to slam
-                playSfx("tazo_secure", 0.25)
-                const launcher = playerHand.find(t => t.id !== selectedBetId) || playerHand[0]
-                if (launcher) {
-                  const pab = createAirborneTazo(launcher, "player", cfg.arena)
-                  setAirborne(pab)
-                }
-                engine.setBusy(false)
-              }
-            }, 1500)
-          }, chargeDur)
-        }, aimDuration)
-      }, 400)
-    }
-  }, [phase, coinFlipShow, ctx, cfg])
-
-  // ── Match end sounds ──
   useEffect(() => {
     if (phase === "match_end" && result) {
       if (result.winner === "player") playSfx("victory_fanfare", 0.5)
       else playSfx("defeat_sting", 0.4)
     }
-  }, [phase, result])
-
-  // ── Intro countdown + sounds ──
-  useEffect(() => {
     if (phase === "intro") {
       // Visible countdown: 3 → 2 → 1 → FIGHT!
       setIntroCountdown(3)
@@ -552,8 +442,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     setPlayerHand(hand)
     setSelectedBetId(null)
     setBettingPhase("idle")
-    coinFlipDoneRef.current = false
-    playerGoesFirstRef.current = false
+    playerWentFirstRef.current = false
     const oppFull = [...DEMO_TAZOS, ...DEMO_TAZOS, ...DEMO_TAZOS].slice(0, 20)
     const oppHand = [...oppFull].sort(() => Math.random() - 0.5).slice(0, 5)
     setOpponentHand(oppHand)
@@ -587,7 +476,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     const oppPick = opponentHand[Math.floor(Math.random() * opponentHand.length)]
     setOpponentBetId(oppPick.id)
 
-    // Delay for anticipation, then auto-cycle: place → reveal → coin flip
+    // Brief delay for anticipation
     setTimeout(() => {
       if (!engine.ctx) { engine.setBusy(false); return }
       engine.placeBets(tazo, oppPick)
@@ -598,105 +487,102 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         playSfx("tazo_flip", 0.3)
         
         setTimeout(() => {
-          engine.doCoinFlip()
-          // Do NOT read ctx here — React hasn't re-rendered yet.
-          // The useEffect below will detect phase change and continue the flow.
+          // doCoinFlip now returns the winner — no stale ctx read needed
+          const cfWinner = engine.doCoinFlip()
+          setCoinFlipWinner(cfWinner)
           setCoinFlipShow(true)
           playSfx("tazo_flip", 0.3)
           
-          // After 2s, hide coin flip and let the useEffect handle the rest
           setTimeout(() => {
             setCoinFlipShow(false)
+            
+            if (cfWinner === "player") {
+              playerWentFirstRef.current = true
+              // Player wins coin flip — let them aim
+              const launcher = playerHand.filter(t => t.id !== tazo.id)[0] || playerHand[0]
+              if (!launcher) { engine.setBusy(false); return }
+              const ab = createAirborneTazo(launcher, "player", cfg.arena)
+              setAirborne(ab)
+              setBettingPhase("idle")
+              engine.setBusy(false)
+            } else {
+              playerWentFirstRef.current = false
+              // AI wins coin flip — DON'T call lockAim, run opponent turn instead
+              setBettingPhase("idle")
+              // Let the opponent turn aftermath code handle it via a phase-aware effect
+              // For now, we set airborne null and mark engine not busy
+              // The existing opponent turn code in handleSlamRelease will not run yet
+              // because the player hasn't slammed.
+              // Instead, we need to run the opponent's turn here:
+              const ctx = engine.ctx
+              if (!ctx) { engine.setBusy(false); return }
+              const aiTazo = cfg.opponentDeck[Math.floor(Math.random() * cfg.opponentDeck.length)]
+              if (!aiTazo) { engine.setBusy(false); return }
+              
+              // Show AI tazo airborne
+              const ab = createAirborneTazo(aiTazo, "opponent", cfg.arena)
+              setAirborne(ab)
+              
+              // AI aim, then charge, then slam (mirrors opponent turn code)
+              const aiSlam = generateAISlam(aiTazo, ctx.stakedTazos, cfg.arena, cfg.aiDifficulty)
+              
+              setTimeout(() => {
+                if (!engine.ctx || !cfg) return
+                playSfx("slam_impact", 0.6)
+                const { result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent")
+                const aiScoring = scoreBettingImpact(aiImpact, "opponent")
+                
+                engine.resolveImpact(aiImpact, "opponent")
+                engine.setImpactMsg(aiImpact.description)
+                engine.setShowImpact(true)
+                
+                if (aiScoring.opponentDelta > 0) { spawnPopup(`+${aiScoring.opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
+                if (aiScoring.playerDelta > 0) { spawnPopup(`+${aiScoring.playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
+                if (aiScoring.playerLostTazos > 0) { spawnPopup(`-${aiScoring.playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
+                
+                setTimeout(() => {
+                  if (!engine.ctx) return
+                  engine.setShowImpact(false)
+                  setAirborne(null)
+                  
+                  const newPR = Math.max(0, (engine.ctx?.playerRemaining ?? ctx.playerRemaining) - aiScoring.playerLostTazos)
+                  const newPS = (engine.ctx?.player.score ?? 0) + aiScoring.playerDelta
+                  const newOS = (engine.ctx?.opponent.score ?? 0) + aiScoring.opponentDelta
+                  const end = checkMatchEnd(newPS, newOS, newPR, ctx.opponentRemaining)
+                  
+                  if (end) {
+                    engine.showResult()
+                    engine.setBusy(false)
+                  } else {
+                    // AI went first — now let player slam back
+                    const launcher = playerHand.filter(t => t.id !== tazo.id)[0] || playerHand[0]
+                    if (launcher && cfg) {
+                      const pab = createAirborneTazo(launcher, "player", cfg.arena)
+                      setAirborne(pab)
+                    }
+                    engine.setBusy(false)
+                  }
+                }, 1500)
+              }, 1200)
+            }
           }, 2000)
-        }, 600)
-      }, 600)
+        }, 1000)
+      }, 1000)
     }, 800)
   }, [bettingPhase, cfg, engine, opponentHand, playerHand])
 
   const rematch = () => {
     resultSaved.current = false; setCreditsEarned(0)
     setSelectedBetId(null); setBettingPhase("idle")
-    coinFlipDoneRef.current = false
-    playerGoesFirstRef.current = false
+    playerWentFirstRef.current = false
     if (cfg) start(cfg.mode, cfg.aiDifficulty, deck)
   }
   const back = () => {
     resultSaved.current = false; setCreditsEarned(0); setAirborne(null)
     setSelectedBetId(null); setBettingPhase("idle")
-    coinFlipDoneRef.current = false
-    playerGoesFirstRef.current = false
+    playerWentFirstRef.current = false
     engine.resetToLobby()
   }
-
-  // ═══════════════════════════════════════════════
-  //  OPPONENT TURN — AI aims, charges, slams
-  // ═══════════════════════════════════════════════
-  const runOpponentTurn = useCallback((currentCtx: typeof ctx, newPR: number, newOR: number, newPScore: number, newOScore: number) => {
-    if (!currentCtx || !cfg) return
-    const aiTazo = currentCtx.opponentBetTazo
-    if (!aiTazo) { engine.setBusy(false); return }
-
-    const aiSlam = generateAISlam(aiTazo, currentCtx.stakedTazos, cfg.arena, cfg.aiDifficulty)
-    const aiAirborne = createAirborneTazo(aiTazo, "opponent", cfg.arena)
-    aiAirborne.state = "aiming"
-    aiAirborne.position = [aiSlam.impactX * 0.3, cfg.arena.maxLaunchHeight * 0.4, aiSlam.impactZ * 0.3]
-
-    setAirborne(aiAirborne)
-    playSfx("aim_tick", 0.2)
-
-    const aimDuration = 800 + Math.random() * 500
-    setTimeout(() => {
-      if (!mountedRef.current) return
-      setAirborne(prev => prev ? { ...prev, state: "charging", position: [aiSlam.impactX * 0.3, cfg.arena.maxLaunchHeight * 0.6, aiSlam.impactZ * 0.3] } : prev)
-      playSfx("charge_start", 0.2)
-
-      setTimeout(() => {
-        if (!mountedRef.current) return
-        playSfx("slam_impact", 0.6)
-        setAirborne(prev => prev ? { ...prev, state: "falling", position: [aiSlam.impactX * 0.3, 0.05, aiSlam.impactZ * 0.3] } : prev)
-
-        const { result: aiImpact } = simulateSlam(aiTazo, aiSlam, currentCtx.stakedTazos, cfg.arena, "opponent")
-        const aiScoring = scoreBettingImpact(aiImpact, "opponent")
-        engine.resolveImpact(aiImpact, "opponent")
-        engine.setImpactMsg(aiImpact.description)
-        engine.setShowImpact(true)
-
-        if (aiScoring.opponentDelta > 0) { spawnPopup(`+${aiScoring.opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
-        if (aiScoring.playerDelta > 0) { spawnPopup(`+${aiScoring.playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
-        if (aiScoring.playerLostTazos > 0) { spawnPopup(`-${aiScoring.playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
-
-        setTimeout(() => {
-          if (!mountedRef.current) return
-          engine.setShowImpact(false)
-          setAirborne(null)
-
-          const ctx2 = engine.ctx
-          const finalPR = Math.max(0, (ctx2?.playerRemaining ?? newPR) - aiScoring.playerLostTazos)
-          const finalOR = Math.max(0, (ctx2?.opponentRemaining ?? newOR) - aiScoring.opponentLostTazos)
-          const finalPS = (ctx2?.player.score ?? newPScore) + aiScoring.playerDelta
-          const finalOS = (ctx2?.opponent.score ?? newOScore) + aiScoring.opponentDelta
-          const aiEnd = checkMatchEnd(finalPS, finalOS, finalPR, finalOR)
-
-          if (aiEnd) {
-            engine.showResult()
-            engine.setBusy(false)
-          } else {
-            // Both sides have slammed — round over, next betting phase
-            engine.nextRound()
-            setTimeout(() => {
-              if (!mountedRef.current) return
-              setSelectedBetId(null)
-              setOpponentBetId(null)
-              setBettingPhase("betting")
-              setAirborne(null)
-              coinFlipDoneRef.current = false
-              engine.setBusy(false)
-            }, 800)
-          }
-        }, 1500)
-      }, 400)
-    }, aimDuration)
-  }, [engine, cfg, mountedRef, setAirborne, setSelectedBetId, setOpponentBetId, setBettingPhase, spawnPopup])
 
   // ═══════════════════════════════════════════════
   //  PLAYER SLAM
@@ -795,30 +681,93 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         // Round won — triumphant sound
         playSfx("tazo_secure", 0.25)
 
-        if (playerGoesFirstRef.current) {
+        if (playerWentFirstRef.current) {
           // Player went first — now opponent responds
-          runOpponentTurn(currentCtx, newPR, newOR, newPScore, newOScore)
-        } else {
-          // Player responded second (AI already went) — round is OVER
-          // Go to next round: new betting phase
-          const aliveP = deck.slice(0, currentCtx.playerRemaining)
-          const aliveO = currentCtx.config.opponentDeck.slice(0, currentCtx.opponentRemaining)
-          if (aliveP.length > 0 && aliveO.length > 0) {
-            engine.nextRound()
+          // Opponent's turn — show AI tazo airborne, aim, then slam
+          setTimeout(() => {
+            if (!mountedRef.current) return
+            const aiTazo = currentCtx.opponentBetTazo
+            if (!aiTazo || !cfg) { engine.setBusy(false); return }
+
+            const aiSlam = generateAISlam(aiTazo, currentCtx.stakedTazos, cfg.arena, cfg.aiDifficulty)
+            const aiAirborne = createAirborneTazo(aiTazo, "opponent", cfg.arena)
+            aiAirborne.state = "aiming"
+            aiAirborne.position = [aiSlam.impactX * 0.3, cfg.arena.maxLaunchHeight * 0.4, aiSlam.impactZ * 0.3]
+
+            // Show AI tazo in arena
+            setAirborne(aiAirborne)
+            playSfx("aim_tick", 0.2)
+
+            // Phase: opponent aims
+            const aimDuration = 800 + Math.random() * 500
             setTimeout(() => {
               if (!mountedRef.current) return
-              setSelectedBetId(null)
-              setOpponentBetId(null)
-              setBettingPhase("betting")
+              // Update airborne to charging position
+              setAirborne(prev => prev ? { ...prev, state: "charging", position: [aiSlam.impactX * 0.3, cfg.arena.maxLaunchHeight * 0.7, aiSlam.impactZ * 0.3] } : prev)
+              playSfx("charge_start", 0.2)
+
+              // Simulate brief charge, then slam down
+              setTimeout(() => {
+                if (!mountedRef.current) return
+                if (!engine.ctx) { engine.setBusy(false); return }
+                playSfx("slam_impact", 0.6)
+
+                // Animate airborne falling to impact
+                setAirborne(prev => prev ? { ...prev, state: "falling", position: [aiSlam.impactX * 0.3, 0.05, aiSlam.impactZ * 0.3] } : prev)
+
+                const { staked: newStakedAI, result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent")
+                const aiScoring = scoreBettingImpact(aiImpact, "opponent")
+
+                engine.resolveImpact(aiImpact, "opponent")
+                engine.setImpactMsg(aiImpact.description)
+                engine.setShowImpact(true)
+
+            if (aiScoring.opponentDelta > 0) { spawnPopup(`+${aiScoring.opponentDelta}`, "#FF004D", "right"); playSfx("score_pop", 0.3) }
+            if (aiScoring.playerDelta > 0) { spawnPopup(`+${aiScoring.playerDelta}`, "#29ADFF", "left"); playSfx("score_pop", 0.3) }
+            if (aiScoring.playerLostTazos > 0) { spawnPopup(`-${aiScoring.playerLostTazos} tazo`, "#FF004D", "left"); playSfx("damage_taken", 0.35) }
+
+            const ctx2 = engine.ctx
+            const finalPR = Math.max(0, (ctx2?.playerRemaining ?? newPR) - aiScoring.playerLostTazos)
+            const finalOR = Math.max(0, (ctx2?.opponentRemaining ?? newOR) - aiScoring.opponentLostTazos)
+            const finalPS = (ctx2?.player.score ?? newPScore) + aiScoring.playerDelta
+            const finalOS = (ctx2?.opponent.score ?? newOScore) + aiScoring.opponentDelta
+            const aiEnd = checkMatchEnd(finalPS, finalOS, finalPR, finalOR)
+
+            setTimeout(() => {
+              if (!mountedRef.current) return
+              engine.setShowImpact(false)
+              setAirborne(null) // Clear AI's airborne after impact
+              if (aiEnd) {
+                engine.showResult()
+              } else {
+                engine.nextRound()
+                // Reset UI for new round — let player bet interactively
+                setTimeout(() => {
+                  if (!mountedRef.current) return
+                  setSelectedBetId(null)
+                  setOpponentBetId(null)
+                  setBettingPhase("betting")
+                  engine.setBusy(false)
+                }, 800)
+              }
               engine.setBusy(false)
-            }, 800)
-          } else {
-            engine.showResult()
+            }, 1500)
+          }, 400)
+        }, aimDuration)
+      }, 1500)
+        } else {
+          // Player responded second (AI already went) — round is OVER, go to next betting
+          engine.nextRound()
+          setTimeout(() => {
+            if (!mountedRef.current) return
+            setSelectedBetId(null)
+            setOpponentBetId(null)
+            setBettingPhase("betting")
             engine.setBusy(false)
-          }
+          }, 800)
         }
       }, 1500)
-    }, fallTimeMs * 0.75)
+  }, fallTimeMs * 0.75)
   }, [engine, cfg, ctx, deck, airborne])
 
   // ═══════════════════════════════════════════════
