@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// ── GET: Check if composite exists ──
+// ── GET: Check if composite exists OR list recent tazos ──
 export async function GET(req: NextRequest) {
   try {
     const user = await getAuthUser(req);
@@ -77,9 +77,26 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const slug = searchParams.get("slug");
     const franchiseSlug = searchParams.get("franchiseSlug");
+    const limit = parseInt(searchParams.get("limit") || "0", 10);
 
+    // Mode: list recent tazos (used by tazo-creator sidebar)
+    if (limit > 0) {
+      const recent = await prisma.tazo.findMany({
+        where: { imageUrl: { not: null } },
+        orderBy: { updatedAt: "desc" },
+        take: Math.min(limit, 50),
+        select: {
+          id: true, slug: true, name: true, displayName: true,
+          imageUrl: true, rarity: true, franchiseId: true,
+          franchise: { select: { slug: true, name: true } },
+        },
+      });
+      return NextResponse.json({ data: recent });
+    }
+
+    // Mode: check if a specific tazo composite exists
     if (!slug || !franchiseSlug) {
-      return NextResponse.json({ error: "slug and franchiseSlug required" }, { status: 400 });
+      return NextResponse.json({ error: "slug and franchiseSlug required (or use ?limit=N)" }, { status: 400 });
     }
 
     const compositePath = path.join(TAZOS_DIR, franchiseSlug, `${slug}.png`);
