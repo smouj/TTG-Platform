@@ -28,7 +28,9 @@ import GameLobby from "./battle/game-lobby"
 import BattleArena3D from "./battle/battle-arena-3d"
 import SlamControls from "./battle/slam-controls"
 import BattleResultPanel from "./battle/battle-result-panel"
-import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock, Zap } from "lucide-react"
+import BattleHand from "./battle/battle-hand"
+import BattleSideStack from "./battle/battle-side-stack"
+import { Disc3, RotateCcw, Crosshair, ArrowDown, Maximize, Minimize, Lock, Zap, Swords } from "lucide-react"
 
 const DEMO_TAZOS: TazoCard[] = [
   { id: "d1", name: "Aquafin", slug: "aquafin", franchise: "minimon", imageUrl: "/tazos-generated/minimon/aquafin.png", finish: "holo", creatureVariant: "standard", attack: 65, defense: 55, resistance: 60, weight: 45, stability: 50, spin: 55, control: 60, bounce: 40, precision: 55 },
@@ -102,6 +104,11 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [allTazos, setAllTazos] = useState<TazoCard[]>([])
   const [creditsEarned, setCreditsEarned] = useState(0)
   const [airborne, setAirborne] = useState<AirborneTazo | null>(null)
+  const [bettingPhase, setBettingPhase] = useState<"idle" | "betting" | "bet_locked" | "revealed">("idle")
+  const [selectedBetId, setSelectedBetId] = useState<string | null>(null)
+  const [playerHand, setPlayerHand] = useState<TazoCard[]>([])
+  const [opponentHand, setOpponentHand] = useState<TazoCard[]>([])
+  const [opponentBetId, setOpponentBetId] = useState<string | null>(null)
 
   const resultSaved = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -238,8 +245,12 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     const shuffled = [...d].sort(() => Math.random() - 0.5)
     const hand = shuffled.slice(0, Math.min(5, shuffled.length))
     setDeck(d)
+    setPlayerHand(hand)
+    setSelectedBetId(null)
+    setBettingPhase("idle")
     const oppFull = [...DEMO_TAZOS, ...DEMO_TAZOS, ...DEMO_TAZOS].slice(0, 20)
     const oppHand = [...oppFull].sort(() => Math.random() - 0.5).slice(0, 5)
+    setOpponentHand(oppHand)
     const config: MatchConfig = {
       mode, aiDifficulty: diff, arena: DEFAULT_ARENA_3D,
       scoreToWin: 5, playerDeck: hand, opponentDeck: oppHand,
@@ -250,31 +261,64 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     // ── Sequence after start ──
     setTimeout(() => engine.introDone(), 2000)
     setTimeout(() => {
-      // Draw hands and place bets
       engine.startBetting()
-
-      // Auto-place stakes (one tazo from each hand)
-      const pStake = hand[Math.floor(Math.random() * hand.length)]
-      const oStake = oppHand[Math.floor(Math.random() * oppHand.length)]
-      engine.placeBets(pStake, oStake)
-
-      // Reveal stakes
-      setTimeout(() => {
-        engine.revealStakes()
-        // Coin flip
-        setTimeout(() => {
-          engine.doCoinFlip()
-          // Setup player aim
-          setTimeout(() => {
-            const launcher = hand.filter(t => t.id !== pStake.id)[0] || hand[0]
-            const ab = createAirborneTazo(launcher, "player", config.arena)
-            setAirborne(ab)
-            engine.lockAim(0, 0)
-          }, 1500)
-        }, 1000)
-      }, 1200)
+      setBettingPhase("betting")
+      // WAIT for player to select their tazo via handleBet()
     }, 1000)
   }, [engine])
+
+  // ═══════════════════════════════════════════════
+  //  PLAYER BET — interactive tazo selection
+  // ═══════════════════════════════════════════════
+  const handleBet = useCallback((tazo: TazoCard) => {
+    if (bettingPhase !== "betting" || !cfg || engine.ui.busy) return
+    engine.setBusy(true)
+    setSelectedBetId(tazo.id)
+    setBettingPhase("bet_locked")
+    playSfx("battle_start", 0.3)
+
+    // Auto-pick opponent bet
+    const oppPick = opponentHand[Math.floor(Math.random() * opponentHand.length)]
+    setOpponentBetId(oppPick.id)
+
+    // Brief delay for anticipation
+    setTimeout(() => {
+      if (!engine.ctx) { engine.setBusy(false); return }
+      engine.placeBets(tazo, oppPick)
+      setBettingPhase("revealed")
+      
+      setTimeout(() => {
+        engine.revealStakes()
+        playSfx("battle_start", 0.35)
+        
+        setTimeout(() => {
+          engine.doCoinFlip()
+          playSfx("countdown_beep", 0.3)
+          
+          setTimeout(() => {
+            // Pick launcher (different tazo from bet, or first remaining)
+            const launcher = playerHand.filter(t => t.id !== tazo.id)[0] || playerHand[0]
+            const ab = createAirborneTazo(launcher, "player", cfg.arena)
+            setAirborne(ab)
+            setBettingPhase("idle")
+            engine.lockAim(0, 0)
+            engine.setBusy(false)
+          }, 1500)
+        }, 1000)
+      }, 1000)
+    }, 800)
+  }, [bettingPhase, cfg, engine, opponentHand, playerHand])
+
+  const rematch = () => {
+    resultSaved.current = false; setCreditsEarned(0)
+    setSelectedBetId(null); setBettingPhase("idle")
+    if (cfg) start(cfg.mode, cfg.aiDifficulty, deck)
+  }
+  const back = () => {
+    resultSaved.current = false; setCreditsEarned(0); setAirborne(null)
+    setSelectedBetId(null); setBettingPhase("idle")
+    engine.resetToLobby()
+  }
 
   // ═══════════════════════════════════════════════
   //  PLAYER SLAM
@@ -605,9 +649,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   // Use PvP slam handler when in PvP mode
   const effectiveSlamRelease = pvp ? handleSlamForPvP : handleSlamRelease
 
-  const rematch = () => { resultSaved.current = false; setCreditsEarned(0); if (cfg) start(cfg.mode, cfg.aiDifficulty, deck) }
-  const back = () => { resultSaved.current = false; setCreditsEarned(0); setAirborne(null); engine.resetToLobby() }
-
   // ── Loading ──
   if (loading) return (
     <div className="flex items-center justify-center py-28 px-4 sm:px-6">
@@ -697,6 +738,37 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         reticleX={engine.ui.reticleX}
         reticleZ={engine.ui.reticleZ}
       >
+        {/* ── Side Stacks (Player left, Opponent right) ── */}
+        <BattleSideStack
+          playerName="You"
+          totalTazos={deck.length}
+          remainingTazos={playerRemaining}
+          capturedTazos={pScore}
+          side="left"
+          isActive={phase === "player_aim" || phase === "player_charge" || phase === "player_tilt"}
+          playerType="player"
+          franchise={playerHand[0]?.franchise}
+        />
+        <BattleSideStack
+          playerName={cfg?.mode === "practice" ? `AI (${cfg.aiDifficulty})` : "Opponent"}
+          totalTazos={cfg?.opponentDeck?.length || 0}
+          remainingTazos={opponentRemaining}
+          capturedTazos={oScore}
+          side="right"
+          isActive={phase === "opponent_aim" || phase === "opponent_slam"}
+          playerType="opponent"
+          franchise={opponentHand[0]?.franchise}
+        />
+
+        {/* ── Battle Hand (betting phase) ── */}
+        <BattleHand
+          hand={playerHand}
+          phase={bettingPhase}
+          selectedId={selectedBetId}
+          airborneId={airborne?.id}
+          onSelect={handleBet}
+        />
+
         {/* ── HUD overlay ── */}
         <div className="absolute top-2 left-2 right-2 z-20">
           <div className="flex items-center gap-2">
