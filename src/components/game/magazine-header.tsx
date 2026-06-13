@@ -31,7 +31,7 @@ export default function MagazineHeader() {
 
   return (
     <header
-      className="relative z-10 border-b-[5px] border-[#1a1a1a]"
+      className="sticky top-0 z-40 border-b-[5px] border-[#1a1a1a]"
       style={{ background: "#1a1a1a" }}
     >
       <div className="flex items-center justify-between px-4 sm:px-6 py-2.5">

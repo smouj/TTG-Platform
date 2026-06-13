@@ -36,7 +36,7 @@ function PlatformBadge({ icon, label }: { icon: any; label: string }) {
 export default function MagazineFooter() {
   return (
     <footer
-      className="relative z-10 border-t-[5px] border-[#1a1a1a]"
+      className="relative z-10 border-t-[5px] border-[#FFCC00]"
       style={{ background: "#1a1a1a" }}
     >
       {/* Platform badges + Download button */}

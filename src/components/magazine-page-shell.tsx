@@ -145,7 +145,7 @@ export default function MagazinePageShell({
       </header>
 
       {/* Magazine decorative stripe — header/content separator */}
-      <div className="relative z-10 h-2 mag-stripes opacity-15 pointer-events-none" />
+      <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
 
       {/* ═══════════════════════════════════════ */}
       {/* PAGE CONTENT                             */}

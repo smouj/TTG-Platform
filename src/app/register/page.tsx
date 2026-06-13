@@ -87,7 +87,7 @@ export default function RegisterPage() {
       <MagazineHeader />
 
       {/* Decorative stripe below header */}
-      <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+      <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
 
       {/* Form area */}
       <main
@@ -353,7 +353,7 @@ export default function RegisterPage() {
       </main>
 
       {/* Decorative stripe above footer */}
-      <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+      <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
 
       <MagazineFooter />
     </div>

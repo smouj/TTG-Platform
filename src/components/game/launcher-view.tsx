@@ -182,7 +182,7 @@ function SectionCard({ step, color, title, children, bgColor, preview }: {
       </div>
       {preview && (
         <div className="relative border-t-2 border-b-2 border-[#1a1a1a]/10 bg-[#fafaf5] overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 mag-stripes opacity-15 z-10" />
+          <div className="absolute top-0 left-0 right-0 h-1.5 mag-stripes opacity-20 z-10" />
           <div className="p-3 flex items-center justify-center">
             {preview}
           </div>
@@ -1952,7 +1952,7 @@ export default function LauncherView() {
         <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
 
         {/* ═══ MASTHEAD ═══ */}
-        <header className="relative z-10 border-b-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
+        <header className="sticky top-0 z-40 border-b-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
           <div className="flex items-center justify-between px-4 sm:px-6 py-2.5">
             <div className="flex items-center gap-2.5">
               <button onClick={() => navigate("home")} className="cursor-pointer">
@@ -2017,7 +2017,7 @@ export default function LauncherView() {
 
         {/* ═══ CONTENT AREA ═══ */}
         <main className="relative z-10 flex-1 flex flex-col px-4 sm:px-6">
-          <div className="absolute top-0 left-0 right-0 h-2 mag-stripes opacity-20 pointer-events-none" />
+          <div className="absolute top-0 left-0 right-0 h-1.5 mag-stripes opacity-20 pointer-events-none" />
 
           {!isHome && (
             <div className="max-w-5xl mx-auto w-full pt-6">
@@ -2082,7 +2082,7 @@ export default function LauncherView() {
         </main>
 
         {/* ═══ FOOTER ═══ */}
-        <footer className="relative z-10 border-t-[5px] border-[#1a1a1a]" style={{ background: "#1a1a1a" }}>
+        <footer className="relative z-10 border-t-[5px] border-[#FFCC00]" style={{ background: "#1a1a1a" }}>
           <div className="flex items-center justify-center gap-1.5 sm:gap-3 px-3 py-2.5 border-b border-white/10">
             <PlatformBadge icon={Globe} label="Browser" />
             <PlatformBadge icon={Monitor} label="Windows" />
@@ -2134,7 +2134,7 @@ export default function LauncherView() {
           </div>
         </footer>
 
-        <div className="absolute bottom-0 left-0 right-0 h-2 mag-stripes opacity-20 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 mag-stripes opacity-20 pointer-events-none" />
       </div>
     </>
   )

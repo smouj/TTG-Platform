@@ -302,7 +302,7 @@ export default function LoginPage() {
       fallback={
         <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
           <MagazineHeader />
-          <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+          <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
           <main className="flex-1 flex items-center justify-center px-4 py-12 relative">
             <div className="mag-halftone absolute inset-0 opacity-25 pointer-events-none" />
             <div className="relative z-10 flex flex-col items-center gap-4">
@@ -310,7 +310,7 @@ export default function LoginPage() {
               <p className="text-xs font-black text-[#1a1a1a]/30 uppercase tracking-[0.3em]">Loading&hellip;</p>
             </div>
           </main>
-          <div className="relative z-10 h-2 mag-stripes opacity-20 pointer-events-none" />
+          <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
           <MagazineFooter />
         </div>
       }
