@@ -18,6 +18,7 @@ import { SITE_CONFIG, FOOTER_LINKS } from "@/lib/site-config"
 import {
   BookOpen, Swords, BarChart3, ShoppingBag, Disc3,
   Target, Layers, LogOut, Settings, Shield, Coins,
+  Globe, Monitor, Apple, Terminal, Download,
 } from "lucide-react"
 
 type TabId = "battle" | "stats" | "shop" | "quests" | "collection" | "decks" | "settings"
@@ -169,7 +170,21 @@ export default function MagazinePageShell({
       {/* MAGAZINE FOOTER — hidden on battle (full-bleed arena) */}
       {/* ═══════════════════════════════════════ */}
       {showFooter && currentTab !== "battle" && (
-        <footer className="bg-[#1a1a1a] border-t-[3px] border-[#FFCC00]">
+        <footer className="bg-[#1a1a1a] border-t-[5px] border-[#FFCC00]">
+          {/* Platform badges — matches launcher footer */}
+          <div className="flex items-center justify-center gap-1.5 sm:gap-3 px-3 py-2.5 border-b border-white/10 flex-wrap">
+            <PlatformBadge icon={Globe} label="Browser" />
+            <PlatformBadge icon={Monitor} label="Windows" />
+            <PlatformBadge icon={Apple} label="macOS" />
+            <PlatformBadge icon={Terminal} label="Linux" />
+            <Link
+              href="/?page=download"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-[10px] font-black text-[#1a1a1a] bg-[#FFCC00] uppercase tracking-wider border-2 border-white/20 hover:bg-[#FFE566] transition-colors no-underline"
+            >
+              <Download className="w-3 h-3" /> Download
+            </Link>
+          </div>
+
           {/* Links + social */}
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-3 gap-3">
             <div className="flex items-center gap-3 sm:gap-4">
@@ -194,6 +209,16 @@ export default function MagazinePageShell({
         </footer>
       )}
     </div>
+  )
+}
+
+// ── Platform badge (matches launcher footer) ──
+function PlatformBadge({ icon: Icon, label }: { icon: any; label: string }) {
+  return (
+    <span className="flex items-center gap-1 px-2 py-1 border border-white/10 text-[#FFCC00]/40">
+      <Icon className="w-3 h-3" />
+      <span className="text-[9px] font-black text-[#FFCC00]/30 uppercase tracking-wider">{label}</span>
+    </span>
   )
 }
 

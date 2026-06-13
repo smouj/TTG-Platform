@@ -303,17 +303,13 @@ export default function LoginPage() {
         <div className="min-h-screen flex flex-col" style={{ background: "#FFF9E6" }}>
           <MagazineHeader />
           <main className="flex-1 flex items-center justify-center px-4 py-12">
-            <div className="w-full max-w-md space-y-5">
-              <div className="text-center">
-                <div className="inline-block w-40 h-8 bg-[#1a1a1a]/5 rounded" />
-              </div>
-              <div className="border-3 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] p-8 bg-white space-y-4">
-                <div className="h-3 w-12 bg-[#1a1a1a]/8 rounded" />
-                <div className="h-12 w-full bg-[#1a1a1a]/4 rounded" />
-                <div className="h-3 w-16 bg-[#1a1a1a]/8 rounded" />
-                <div className="h-12 w-full bg-[#1a1a1a]/4 rounded" />
-                <div className="h-12 w-full bg-[#E3350D]/50 rounded" />
-              </div>
+            <div className="flex flex-col items-center gap-4">
+              <svg className="w-10 h-10 animate-spin text-[#FFCC00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="12" cy="12" r="10" strokeDasharray="32" strokeDashoffset="32" strokeLinecap="round">
+                  <animate attributeName="stroke-dashoffset" values="32;0" dur="0.8s" fill="freeze" />
+                </circle>
+              </svg>
+              <p className="text-xs font-black text-[#1a1a1a]/30 uppercase tracking-[0.3em]">Loading&hellip;</p>
             </div>
           </main>
           <MagazineFooter />
