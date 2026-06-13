@@ -6,7 +6,7 @@
 // Integrates with Google Consent Mode v2 when AdSense enabled.
 // ============================================================
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 
 const ADSENSE_ENABLED = typeof window !== "undefined"
@@ -17,9 +17,10 @@ function grantConsent(adConsent = true) {
   if (typeof window === "undefined") return
   localStorage.setItem("ttg-cookie-consent", "1")
   if (!adConsent) localStorage.setItem("ttg-ad-consent", "0")
+  else localStorage.removeItem("ttg-ad-consent")
   document.cookie = "cookie_consent=1; max-age=31536000; path=/; SameSite=Lax"
 
-  // Google Consent Mode v2
+  // Google Consent Mode v2 — update from defaults
   if (ADSENSE_ENABLED && (window as any).gtag) {
     ;(window as any).gtag("consent", "update", {
       ad_storage: adConsent ? "granted" : "denied",
@@ -34,12 +35,17 @@ export default function CookieConsentBanner() {
   const [showBanner, setShowBanner] = useState(false)
   const [mounted, setMounted] = useState(false)
 
+  const show = useCallback(() => setShowBanner(true), [])
+
   useEffect(() => {
     setMounted(true)
     if (!localStorage.getItem("ttg-cookie-consent")) {
       setShowBanner(true)
     }
-  }, [])
+    // Allow re-opening from footer "Cookie Settings" link
+    window.addEventListener("ttg:cookie-settings", show)
+    return () => window.removeEventListener("ttg:cookie-settings", show)
+  }, [show])
 
   if (!mounted || !showBanner) return null
 

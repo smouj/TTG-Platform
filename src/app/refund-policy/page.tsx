@@ -24,7 +24,7 @@ export default function RefundPolicyPage() {
     <div style={{ margin: 0, background: "#f4f4f4", fontFamily: "system-ui, sans-serif" }}>
       <header style={{ background: "#1a1a1a", borderBottom: "4px solid #E3350D", padding: "16px 24px", display: "flex", alignItems: "center", gap: "16px" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-          <Image src="/pwa-512.png" alt="TTG" width={36} height={36} style={{ borderRadius: 8 }} />
+          <Image src="/pwa-512.webp" alt="TTG" width={36} height={36} style={{ borderRadius: 8 }} />
           <span style={{ color: "#fff", fontSize: 14, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.05em" }}>Trading Tazos Game</span>
         </Link>
       </header>

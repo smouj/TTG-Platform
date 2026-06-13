@@ -17,6 +17,7 @@ const FOOTER_LINKS = [
   ["faq", "FAQ"],
   ["privacy", "Privacy"],
   ["terms", "Terms"],
+  ["cookies", "Cookies"],
   ["contact", "Contact"],
 ] as const
 

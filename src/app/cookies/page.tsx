@@ -29,7 +29,7 @@ export default function CookiesPage() {
       <body style={{ margin: 0, background: "#f4f4f4", fontFamily: "system-ui, sans-serif" }}>
         <header style={{ background: "#1a1a1a", borderBottom: "4px solid #E3350D", padding: "16px 24px", display: "flex", alignItems: "center", gap: "16px" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-            <Image src="/pwa-512.png" alt="TTG" width={36} height={36} style={{ borderRadius: 8 }} />
+            <Image src="/pwa-512.webp" alt="TTG" width={36} height={36} style={{ borderRadius: 8 }} />
             <span style={{ color: "#fff", fontSize: 14, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.05em" }}>Trading Tazos Game</span>
           </Link>
         </header>
@@ -44,6 +44,22 @@ export default function CookiesPage() {
               <p style={{ fontSize: 12, fontWeight: 600, color: "#666", lineHeight: 1.6, margin: 0 }}>{s.body}</p>
             </section>
           ))}
+
+          <div style={{ background: "#fff", border: "3px solid #1a1a1a", padding: "20px", marginTop: 24, boxShadow: "3px 3px 0 #1a1a1a", textAlign: "center" }}>
+            <h2 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a1a", textTransform: "uppercase", margin: "0 0 8px" }}>Manage Your Preferences</h2>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "#666", lineHeight: 1.6, margin: "0 0 12px" }}>You can update your cookie consent preferences at any time.</p>
+            <button
+              id="cookie-settings-btn"
+              style={{ background: "#22C55E", color: "#fff", border: "2px solid #1a1a1a", padding: "10px 24px", fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer", boxShadow: "2px 2px 0 #1a1a1a" }}
+            >
+              Cookie Settings
+            </button>
+            <script dangerouslySetInnerHTML={{ __html: `
+              document.getElementById("cookie-settings-btn").onclick = function() {
+                window.dispatchEvent(new Event("ttg:cookie-settings"));
+              };
+            `}} />
+          </div>
 
           <footer style={{ marginTop: 32, paddingTop: 16, borderTop: "2px solid #ddd", textAlign: "center" }}>
             <nav style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>

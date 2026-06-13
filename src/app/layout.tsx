@@ -160,7 +160,7 @@ export default function RootLayout({
               "url": SITE_URL,
               "description": `${SITE_CONFIG.disclaimer} — collect, trade, and battle with ${SITE_CONFIG.totalTazos} tazos across ${SITE_CONFIG.totalSeries} franchises.`,
               "email": SITE_CONFIG.supportEmail,
-              "logo": `${SITE_URL}/pwa-512.png`,
+              "logo": `${SITE_URL}/pwa-512.webp`,
               "sameAs": [
                 SITE_CONFIG.social.x,
                 SITE_CONFIG.social.github
@@ -216,6 +216,32 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="TTG" />
+        {/* Google Consent Mode v2 — default to denied, updated by CMP banner */}
+        {ADSENSE_ENABLED && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('consent', 'default', {
+                  ad_storage: 'denied',
+                  ad_user_data: 'denied',
+                  ad_personalization: 'denied',
+                  analytics_storage: 'denied',
+                  wait_for_update: 500
+                });
+                gtag('set', 'ads_data_redaction', true);
+              `,
+            }}
+          />
+        )}
+        {/* Google Funding Choices — CMP for EEA/UK */}
+        {ADSENSE_ENABLED && (
+          <script
+            async
+            src="https://fundingchoicesmessages.google.com/i/pub-4932643710484609?ers=1"
+          />
+        )}
         {/* Plausible Analytics — privacy-first, no cookies */}
         <script defer data-domain="tradingtazosgame.com" src="https://plausible.rpgclaw.com/js/script.js" />
       </head>
