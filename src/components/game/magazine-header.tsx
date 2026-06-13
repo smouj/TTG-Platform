@@ -59,7 +59,7 @@ export default function MagazineHeader() {
 
         {/* Desktop nav — identical items to launcher */}
         <nav
-          className="hidden sm:flex items-center gap-2"
+          className="hidden sm:flex items-center gap-1"
           role="navigation"
           aria-label="Main navigation"
         >
@@ -67,7 +67,7 @@ export default function MagazineHeader() {
             <a
               key={page}
               href={page === "home" ? "/" : `/?page=${page}`}
-              className="px-3 py-1 text-[10px] font-black uppercase tracking-wider transition-colors no-underline text-white/50 hover:text-[#FFCC00]"
+              className="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors no-underline text-white/50 hover:text-[#FFCC00]"
             >
               {label}
             </a>
@@ -111,7 +111,7 @@ export default function MagazineHeader() {
       </div>
 
       {/* Mobile nav — identical to launcher */}
-      <nav className="sm:hidden flex items-center justify-center gap-1 px-2 pb-2 overflow-x-auto">
+      <nav className="sm:hidden flex items-center justify-center gap-0 px-2 pb-2 overflow-x-auto">
         {NAV_ITEMS.map(([page, label]) => (
           <a
             key={page}

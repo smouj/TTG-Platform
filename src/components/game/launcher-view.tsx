@@ -1967,7 +1967,7 @@ export default function LauncherView() {
             </div>
 
             {/* Desktop nav */}
-            <nav className="hidden sm:flex items-center gap-2" role="navigation" aria-label="Main navigation">
+            <nav className="hidden sm:flex items-center gap-1" role="navigation" aria-label="Main navigation">
               {([
                 ["home", "Home"],
                 ["how-to-play", "How to Play"],
@@ -1979,7 +1979,7 @@ export default function LauncherView() {
                 ["shop", "Shop"],
               ] as [PageId, string][]).map(([id, label]) => (
                 <button key={id} onClick={() => navigate(id)}
-                  className={`px-3 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
+                  className={`px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
                     currentPage === id ? "text-[#FFCC00]" : "text-white/50 hover:text-[#FFCC00]"
                   }`}>
                   {label}
@@ -2005,7 +2005,7 @@ export default function LauncherView() {
           </div>
 
           {/* Mobile nav */}
-          <nav className="sm:hidden flex items-center justify-center gap-1 px-2 pb-2 overflow-x-auto">
+          <nav className="sm:hidden flex items-center justify-center gap-0 px-2 pb-2 overflow-x-auto">
             {(["home", "how-to-play", "collections", "tazos", "leaderboard", "faq", "shop"] as PageId[]).map(id => (
               <button key={id} onClick={() => navigate(id)}
                 className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
