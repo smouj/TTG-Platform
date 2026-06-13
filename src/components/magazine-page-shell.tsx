@@ -102,7 +102,7 @@ export default function MagazinePageShell({
                 TRADING<span className="text-[#FFCC00]">TAZOS</span><span className="text-white/80">GAME</span>
               </h2>
               <p className="text-[8px] font-bold text-[#FFCC00]/70 uppercase tracking-[0.3em] leading-none mt-0.5">
-                {t.siteSubtitle || "APP"} &middot; {t.siteIssue || "WEB"}
+                Official TTG Beta
               </p>
             </div>
           </div>
