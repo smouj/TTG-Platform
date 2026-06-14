@@ -8,13 +8,15 @@ productName: "Trading Tazos Game"
 copyright: "Copyright © 2026 Trading Tazos Game"
 electronVersion: "42.3.2"
 
+# Prevent node_modules collection — thin web wrapper, zero runtime deps
+extraMetadata:
+  dependencies: {}
+
 directories:
   output: dist-electron
   app: electron
   buildResources: electron/assets
 
-files:
-  - "**/*"
 
 npmRebuild: false
 nodeGypRebuild: false

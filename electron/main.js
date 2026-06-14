@@ -10,7 +10,7 @@ const fs = require("fs")
 const IS_DEV = process.env.NODE_ENV === "development"
 const PROD_URL = "https://tradingtazosgame.com"
 const DEV_URL = "http://localhost:3000"
-const VERSION = "0.6.5"
+const VERSION = "0.7.0"
 
 let mainWindow = null
 let splashWindow = null

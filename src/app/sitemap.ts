@@ -19,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "?page=cookies", priority: 0.4, changeFreq: "yearly" as const },
     { path: "?page=contact", priority: 0.5, changeFreq: "monthly" as const },
     { path: "login", priority: 0.6, changeFreq: "monthly" as const },
+    { path: "register", priority: 0.6, changeFreq: "monthly" as const },
+    { path: "privacy", priority: 0.4, changeFreq: "yearly" as const },
+    { path: "terms", priority: 0.4, changeFreq: "yearly" as const },
+    { path: "cookies", priority: 0.4, changeFreq: "yearly" as const },
+    { path: "disclaimer", priority: 0.4, changeFreq: "yearly" as const },
+    { path: "refund-policy", priority: 0.4, changeFreq: "yearly" as const },
   ]
 
   return staticPages.map(({ path, priority, changeFreq }) => ({
