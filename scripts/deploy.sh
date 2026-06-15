@@ -39,11 +39,8 @@ ssh "$VPS" 'if [ -f /home/smouj/apps/ttg/Trading-Tazos-Game/.next/standalone/pri
 echo "→ Syncing .next/ to VPS..."
 rsync -avz --delete .next/ "$VPS:$VPS_APP/.next/"
 
-# 2b. Sync canonical DB from WSL to VPS repo (critical: VPS repo DB is stale otherwise)
-echo "→ Syncing DB to VPS repo..."
-sqlite3 prisma/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
-rm -f prisma/dev.db-wal prisma/dev.db-shm
-scp prisma/dev.db "$VPS:$VPS_APP/prisma/dev.db"
+# Note: prisma/dev.db (seed DB) is NOT synced to VPS anymore — the live DB
+# at data/dev.db is the single source of truth. Schema changes via prisma db push.
 
 # 3. Post-deploy steps on VPS
 echo "→ Running post-deploy on VPS..."
@@ -162,12 +159,9 @@ sqlite3 data/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
 rm -f data/dev.db-wal data/dev.db-shm
 
 # Ensure data directory exists with the synced DB
+# ⚠️  NEVER copy prisma/dev.db to data/dev.db — that overwrites live user data!
+# data/dev.db is the LIVE canonical DB. prisma db push (below) handles schema.
 mkdir -p data
-if [ -f prisma/dev.db ]; then
-  cp prisma/dev.db data/dev.db
-  echo "  → DB synced to data/dev.db"
-fi
-
 # Create or verify symlink (standalone reads data/dev.db directly)
 rm -f .next/standalone/prisma/dev.db
 ln -sf /home/smouj/apps/ttg/Trading-Tazos-Game/data/dev.db .next/standalone/prisma/dev.db
