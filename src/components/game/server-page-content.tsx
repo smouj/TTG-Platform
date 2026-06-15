@@ -18,6 +18,15 @@ export default function ServerPageContent({ page }: Props) {
   if (page === "collections") {
     return <ServerCollections />
   }
+  if (page === "collections-minimon") {
+    return <ServerMinimon />
+  }
+  if (page === "collections-dracobell") {
+    return <ServerDracobell />
+  }
+  if (page === "collections-cybermon") {
+    return <ServerCybermon />
+  }
   if (page === "tazos") {
     return <ServerTazos />
   }
@@ -248,6 +257,86 @@ function ServerDisclaimer() {
       <p>This game is not affiliated with, endorsed by, or associated with any third-party brand, trademark, or licensed intellectual property.</p>
       <p>All series, characters, lore, designs, names, and game mechanics are original fictional works. Any resemblance to existing IP is coincidental.</p>
       <p>The game is free-to-play. Credits cannot be purchased with real currency. All game features are accessible through gameplay alone.</p>
+    </section>
+  )
+}
+
+// ── Minimon Collection ──
+function ServerMinimon() {
+  return (
+    <section className="sr-only">
+      <h1>Minimon Collection — Creature Companions from Luminara</h1>
+      <p>50 Minimon tazos from the world of Luminara, a luminous land of colorful regions, winding paths, and elemental energy.</p>
+      <p>Minimon are born when Life Spark energy accumulates in one place. Each creature is connected to its environment — fields, forests, coasts, hills, mountains.</p>
+      <h2>Regions</h2>
+      <ul>
+        <li>Sunnyvale Fields — Rolling fields, farms, villages (Normal, Solar, Plant)</li>
+        <li>Mossdeep Woods — Ancient forests with deep roots (Plant, Insect, Earth, Mystic)</li>
+        <li>Bluefin Coast — Beaches, reefs, lighthouses (Water, Wind, Soft Ice)</li>
+        <li>Cinderpop Hills — Warm hills, volcanic caves (Fire, Rock, Metal)</li>
+        <li>Stormtail Ridge — Storm-swept peaks (Electric, Flying, Lesser Dragon)</li>
+        <li>Moonberry Hollow — Strange nocturnal zone (Shadow, Dream, Illusion)</li>
+        <li>Aurora Summit — Legendary endgame region (Rare forms and guardians)</li>
+      </ul>
+      <h2>Blooming Evolution</h2>
+      <p>Minimon evolve through Blooming: Tiny Form → Trail Form → Guardian Form → Mythic Bloom. Evolution happens through bonding with Pathfinders, overcoming challenges, and awakening emotions.</p>
+      <h2>Pathfinders</h2>
+      <p>Explorers who travel with Minimon through Bond Marks — a mark of trust. A Minimon does not obey out of obligation. It follows because it trusts.</p>
+      <h2>The Stillness</h2>
+      <p>The Stillness freezes growth, creating Faded Minimon that lose color and personality. A Pathfinder&apos;s goal is to restore their Life Spark.</p>
+      <p>Official Motto: Find them. Bond with them. Watch them bloom.</p>
+    </section>
+  )
+}
+
+// ── Dracobell Collection ──
+function ServerDracobell() {
+  return (
+    <section className="sr-only">
+      <h1>Dracobell Collection — Martial Warriors of Bellora</h1>
+      <p>50 Dracobell tazos from Bellora, a world of combat regions governed by clans. Each clan protects a technique, a philosophy, and a fragment of the legendary Dracobell.</p>
+      <h2>Clans</h2>
+      <ul>
+        <li>Ember Fist — Ember Valley (Fire, Direct Attack)</li>
+        <li>Storm Fang — Storm Peaks (Lightning, Speed)</li>
+        <li>Iron Horn — Iron Plateau (Defense, Endurance)</li>
+        <li>Frost Scale — Frost Temple (Control, Precision)</li>
+        <li>Shadow Claw — Shadow Basin (Counterattack, Stealth)</li>
+        <li>Golden Roar — Golden Shrine (Aura, Mastery)</li>
+      </ul>
+      <h2>Ascension</h2>
+      <p>Warriors ascend through phases: Base Fighter → Aura Release → Clan Ascension → Champion Ascension → Dragon Bell. Roar Aura fuels each warrior&apos;s growth.</p>
+      <h2>Bell Shards</h2>
+      <p>The Dracobell is a legendary bell forged from meteorite metal and dragon scales. Shattered during a clan war, its Bell Shards are now scattered and sought by all clans.</p>
+      <h2>Grand Bell Tournament</h2>
+      <p>The ultimate combat event where clans compete to gather Bell Shards. The Silent Clan opposes restoring the bell. The tournament decides Bellora&apos;s fate.</p>
+      <p>Official Motto: Train hard. Ring loud. Rise beyond.</p>
+    </section>
+  )
+}
+
+// ── Cybermon Collection ──
+function ServerCybermon() {
+  return (
+    <section className="sr-only">
+      <h1>Cybermon Collection — Digital Beasts of the Neon Grid</h1>
+      <p>50 Cybermon tazos from the Neon Grid, a hidden digital dimension behind all networks. Living digital creatures with Soul Protocols — not robots, not simple programs.</p>
+      <h2>Sectors</h2>
+      <ul>
+        <li>Boot Fields — Stable simple code (Basic Cybermon)</li>
+        <li>Pixel Ruins — Ancient games and lost systems (Pixel, Glitch)</li>
+        <li>Volt Highway — Highways of pure electricity (Volt, Speed, Signal)</li>
+        <li>Firewall Citadel — Fortified stronghold (Armor, Shield, Core)</li>
+        <li>Data Ocean — Endless sea of flowing information (Aqua-data, Memory)</li>
+        <li>Kernel Tower — Core of the entire digital world (Advanced forms)</li>
+      </ul>
+      <h2>Shift Phases</h2>
+      <p>Cybermon evolve through: Boot Form → Link Form → Overdrive → Prime Form → Corrupt → Omega Patch. Soul Protocols define each digital identity.</p>
+      <h2>Linkers</h2>
+      <p>Humans who synchronize with Cybermon through Link Pulse. A partnership built on digital trust and shared protocols.</p>
+      <h2>Null Signal</h2>
+      <p>The enemy force that corrupts Cybermon into Null Shells. Linkers fight to restore corrupted protocols and break the Null.</p>
+      <p>Official Motto: Log in. Link up. Break the Null.</p>
     </section>
   )
 }

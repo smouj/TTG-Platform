@@ -115,6 +115,24 @@ export const PAGE_META: Record<string, PageMeta> = {
       "Learn how to collect, trade, and battle tazos. Master the 9 combat stats (Attack, Defense, Spin, Control, Bounce, Weight, Resistance, Stability, Precision), build decks, and compete in the 3D arena.",
     canonicalPath: "/?page=how-to-play",
   },
+  "collections-minimon": {
+    title: "Minimon Collection — Creature Companions from Luminara | Trading Tazos Game",
+    description:
+      "Explore the Minimon series — 50 natural creatures from Luminara. Discover regions, blooming evolution, Pathfinders, creature habitats, and elemental companions.",
+    canonicalPath: "/collections/minimon",
+  },
+  "collections-dracobell": {
+    title: "Dracobell Collection — Martial Warriors of Bellora | Trading Tazos Game",
+    description:
+      "Explore the Dracobell series — 50 martial warriors from Bellora. Clans, Roar Aura, Bell Shards, ascension phases, and the legendary Dracobell tournament.",
+    canonicalPath: "/collections/dracobell",
+  },
+  "collections-cybermon": {
+    title: "Cybermon Collection — Digital Beasts of the Neon Grid | Trading Tazos Game",
+    description:
+      "Explore the Cybermon series — 50 digital monsters from the Neon Grid. Sectors, Soul Protocols, shift phases, Linkers, and the fight against the Null Signal.",
+    canonicalPath: "/collections/cybermon",
+  },
   collections: {
     title: "Collections — 150 Tazos Across 3 Series | Trading Tazos Game",
     description:
