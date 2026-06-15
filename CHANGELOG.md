@@ -10,6 +10,15 @@
 - **Deploy script v3.3**: Never overwrites live DB — removed seed DB copy. Only runs `prisma db push`.
   — Data restored from backup after discovery of deploy bug (58 UserTazos, 28 Instances)
 
+### 🟡 Visual Polish — Auth + App Shell (2026-06-15 late)
+- **TG yellow brand logo**: All headers now use `logo-tg-yellow.png` (launcher dark header, /app MagazineHeader, auth pages)
+- **Auth pages refreshed**: Login, register, forgot-password, reset-password, verify-email — TG yellow logo + "Back to Home" link
+- **App tab strip flush to header**: No decorative gap between black header and nav tabs in /app shell
+- **Favicon regenerated**: Yellow TG logo as favicon (32px, 192px, apple-touch-icon)
+- **3D bag in shop**: `BagCardMini3D` auto-rotating 3D bag component, compact 180-200px layout
+- **Dashboard hidden in /app header**: When `variant="app"`, only Admin + Log Out shown
+- **Deploy script improvements**: Auto git sync VPS, syncs logos + textures + favicons to standalone
+
 ### 🗺️ Clean Route Schema
 - **Removed ALL /game routes** (7 files, 462 lines deleted): /game, /game/practice, /game/ranked, /game/friend/[roomId]
   — All 404. Single battle entry: `/app/battle`
