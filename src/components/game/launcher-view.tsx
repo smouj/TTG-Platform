@@ -1980,11 +1980,14 @@ export default function LauncherView() {
     }
   }, [router])
 
-  const handlePlay = useCallback(() => setShowSplash(true), [])
+  const handlePlay = useCallback(() => {
+    // Direct to game hub — guests can play Practice without login
+    window.location.href = "/game"
+  }, [])
   const handleSplashDone = useCallback(() => {
     setShowSplash(false)
-    window.location.href = user ? "/app/collection" : "/login"
-  }, [user])
+    window.location.href = "/game"
+  }, [])
 
   const isHome = currentPage === "home"
 
