@@ -749,7 +749,7 @@ function BattlePreviewHome() {
 
 function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   const [seriesTazos, setSeriesTazos] = useState<Record<string, any[]>>({})
-  const [stats, setStats] = useState<{totalTazos: number; byFranchise: Record<string,number>} | null>(null)
+  const [stats, setStats] = useState<{totalTazos: number; bySeries: Record<string,number>} | null>(null)
 
   useEffect(() => {
     // Fetch stats for accurate counts
@@ -767,18 +767,18 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
           .catch(() => ({ franchise: f, tazos: [] }))
       )
     ).then(results => {
-      const byFranchise: Record<string, any[]> = {}
+      const bySeries: Record<string, any[]> = {}
       for (const r of results) {
-        byFranchise[r.franchise] = r.tazos
+        bySeries[r.franchise] = r.tazos
       }
-      setSeriesTazos(byFranchise)
+      setSeriesTazos(bySeries)
     }).catch(() => {})
   }, [])
 
   const series = [
-    { name: "Minimon", slug: "minimon", count: stats?.byFranchise?.Minimon ?? 50, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2026, color: "#FFCC00", desc: "Natural creatures born from Life Sparks in Luminara. Pathfinders form Bond Marks with them, and each one grows through Blooming." },
-    { name: "Dracobell", slug: "dracobell", count: stats?.byFranchise?.Dracobell ?? 50, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 2026, color: "#FF6B00", desc: "Martial fighters from Bellora. Roar Aura, clan discipline, Bell Shards, and Dragon Bell mastery." },
-    { name: "Cybermon", slug: "cybermon", count: stats?.byFranchise?.Cybermon ?? 49, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2026, color: "#00B4D8", desc: "Living digital monsters from the Neon Grid. Soul Protocols shift through patches, surges, cores, and prime forms." },
+    { name: "Minimon", slug: "minimon", count: stats?.bySeries?.Minimon ?? 50, planned: FRANCHISE_BY_SLUG.minimon.total, year: 2026, color: "#FFCC00", desc: "Natural creatures born from Life Sparks in Luminara. Pathfinders form Bond Marks with them, and each one grows through Blooming." },
+    { name: "Dracobell", slug: "dracobell", count: stats?.bySeries?.Dracobell ?? 50, planned: FRANCHISE_BY_SLUG.dracobell.total, year: 2026, color: "#FF6B00", desc: "Martial fighters from Bellora. Roar Aura, clan discipline, Bell Shards, and Dragon Bell mastery." },
+    { name: "Cybermon", slug: "cybermon", count: stats?.bySeries?.Cybermon ?? 50, planned: FRANCHISE_BY_SLUG.cybermon.total, year: 2026, color: "#00B4D8", desc: "Living digital monsters from the Neon Grid. Soul Protocols shift through patches, surges, cores, and prime forms." },
   ]
 
   return (
@@ -948,15 +948,15 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
       fetch("/api/tazos?franchise=minimon&publishStatus=published&limit=4").then(r => r.json()),
     ])
       .then(results => {
-        const byFranchise: Record<string, any[]> = {}
+        const bySeries: Record<string, any[]> = {}
         for (const d of results) {
           for (const t of (d.tazos || [])) {
             const f = t.franchise || t.franchiseSlug || "minimon"
-            if (!byFranchise[f]) byFranchise[f] = []
-            if (byFranchise[f].length < 4) byFranchise[f].push(t)
+            if (!bySeries[f]) bySeries[f] = []
+            if (bySeries[f].length < 4) bySeries[f].push(t)
           }
         }
-        setShowcaseTazos(byFranchise)
+        setShowcaseTazos(bySeries)
       })
       .catch(() => {})
   }, [])

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const [totalTazos, ownedTazos, totalFranchises, totalCollections, tazos] =
+    const [totalTazos, ownedTazos, totalSeries, totalCollections, tazos] =
       await Promise.all([
         db.tazo.count({ where: { publishStatus: "published" } }),
         db.userTazo.groupBy({ by: ["tazoId"] }).then(r => r.length),
@@ -33,20 +33,20 @@ export async function GET() {
     }
 
     // Group by franchise
-    const byFranchise: Record<string, number> = {}
+    const bySeries: Record<string, number> = {}
     for (const t of tazos) {
       const name = t.franchise.name
-      byFranchise[name] = (byFranchise[name] || 0) + 1
+      bySeries[name] = (bySeries[name] || 0) + 1
     }
 
     return NextResponse.json({
       totalTazos,
       ownedTazos,
-      totalFranchises,
+      totalSeries,
       totalCollections,
       byRarity,
       byCondition,
-      byFranchise,
+      bySeries,
     })
   } catch (error) {
     console.error('Error fetching stats:', error)

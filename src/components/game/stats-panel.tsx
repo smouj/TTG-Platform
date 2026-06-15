@@ -7,11 +7,11 @@ import { Trophy, Swords, Shield, Wind, Weight, Target, Star, TrendingUp, Package
 interface StatsData {
   totalTazos: number
   ownedTazos: number
-  totalFranchises: number
+  totalSeries: number
   totalCollections: number
   byRarity: Record<string, number>
   byCondition: Record<string, number>
-  byFranchise: Record<string, number>
+  bySeries: Record<string, number>
 }
 
 interface StatsPanelProps {
@@ -117,7 +117,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
   const completionPct = stats.totalTazos > 0 ? Math.round((stats.ownedTazos / stats.totalTazos) * 100) : 0
 
   // Compute max values for bar scaling
-  const maxFranchise = Math.max(...Object.values(stats.byFranchise), 1)
+  const maxSeries = Math.max(...Object.values(stats.bySeries), 1)
   const maxRarity = Math.max(...Object.values(stats.byRarity), 1)
   const maxCondition = Math.max(...Object.values(stats.byCondition), 1)
 
@@ -223,10 +223,10 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
             </h3>
           </div>
           <div className="p-4 space-y-3 mag-dots">
-            {Object.entries(stats.byFranchise).map(([name, count]) => {
+            {Object.entries(stats.bySeries).map(([name, count]) => {
               const color = FRANCHISE_COLORS[name] || '#9CA3AF'
               const pct = stats.totalTazos > 0 ? Math.round((count / stats.totalTazos) * 100) : 0
-              const barWidth = maxFranchise > 0 ? Math.round((count / maxFranchise) * 100) : 0
+              const barWidth = maxSeries > 0 ? Math.round((count / maxSeries) * 100) : 0
               return (
                 <div key={name}>
                   <div className="flex items-center justify-between mb-1">
