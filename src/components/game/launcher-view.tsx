@@ -227,7 +227,7 @@ function SignUpPreview() {
           <div className="w-12 h-12 rounded-full border-3 border-[#22C55E] bg-[#22C55E]/10 flex items-center justify-center">
             <Gift className="w-5 h-5 text-[#22C55E]" />
           </div>
-          <span className="text-[8px] font-black text-[#22C55E] uppercase">10 Free Bags!</span>
+          <span className="text-[8px] font-black text-[#22C55E] uppercase">30 Free Bags!</span>
           <span className="text-[7px] font-bold text-[#1a1a1a]/30">+100 credits</span>
         </div>
       </div>
@@ -692,7 +692,7 @@ function HowItWorksHome() {
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
         {[
-          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different series. Start with 30 welcome bags + 100 credits (1 free bag!) and earn more by winning battles.", color: "#FF6B00" },
+          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different series. Start with 30 welcome bags + 100 credits and earn more by winning battles.", color: "#FF6B00" },
           { step: "2", icon: Layers, title: "Build Your Deck", desc: "Choose 5 tazos with 9 combat stats each. Balance attack, defense, and speed for the best results.", color: "#3B4CCA" },
           { step: "3", icon: Swords, title: "Enter the Arena", desc: "Bet one tazo at center, then slam from above. Flip opponent discs to capture them — eliminate their entire deck to win!", color: "#E3350D" },
         ].map(({ step, icon: Icon, title, desc, color }) => (
@@ -1342,7 +1342,7 @@ function ShopContent() {
               {/* Franchise + example tazos */}
               <div className="px-4 sm:px-5 py-3 space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[8px] font-black text-[#1a1a1a]/30 uppercase tracking-wider">Franchise</span>
+                  <span className="text-[8px] font-black text-[#1a1a1a]/30 uppercase tracking-wider">Series</span>
                   <span className="text-[10px] font-black uppercase px-2 py-0.5 border border-[#1a1a1a]/20" style={{ backgroundColor: bag.bg, color: bag.border }}>{bag.franchiseName}</span>
                 </div>
                 {examples.length > 0 && (
