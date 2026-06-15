@@ -1,4 +1,21 @@
 # Changelog
+
+## v0.7.2 — Data Safety & Stability (2026-06-15)
+
+### 🔴 Critical Fixes
+- **DB preservation**: Live database moved to `data/dev.db` (outside `.next/standalone/`)
+  — `next build` no longer wipes user data on deploy
+- **Bag open crash**: API `/api/bags/open` now validates bag IDs defensively
+  — fixes 110 PM2 restarts caused by `id: undefined` reaching Prisma
+- **Deploy script v3**: Always backs up + syncs live DB → standalone after build
+
+### 🛡️ Improvements
+- **Bulk open sequencer**: Rewritten without `fetch` inside React `setState` (anti-pattern)
+  — handles corrupt `sessionStorage`, invalid IDs gracefully
+- **ID validation**: Both client (`shop/page.tsx`) and server validate bag IDs
+  — rejects `undefined`, `null`, `""`, `"undefined"`, `"null"`
+- **Terminology**: "franchises" → "series" across UI, meta tags, FAQ, and legal pages
+
 ## v0.7.1 — Data Persistence & UX Polish (2026-06-15)
 
 ### 🛒 Shop & Bag System
