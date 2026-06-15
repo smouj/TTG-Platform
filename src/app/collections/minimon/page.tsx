@@ -1,3 +1,4 @@
+import { ServerPageContent } from "@/components/game/server-page-content"
 import type { Metadata } from "next"
 import PublicPageShell from "@/components/layout/public-page-shell"
 import Link from "next/link"
@@ -5,7 +6,7 @@ import { FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
 import { TazoCollectionShowcase } from "../_tazo-showcase"
 
 export const metadata: Metadata = {
-  title: "Minimon Collection",
+  title: "Minimon Collection 2014 Original Series | Trading Tazos Game",
   description: "Explore the Minimon tazo collection — creature companions from Luminara, a world of elemental energy and natural evolution. 50 tazos with balanced combat stats.",
   openGraph: { title: "Minimon Collection — Creature Companions | Trading Tazos Game", description: "50 Minimon tazos from the world of Luminara. Classic creature designs with balanced combat stats." },
 }
@@ -178,6 +179,8 @@ export default function MinimonCollectionPage() {
           — and a world full of forms waiting to be found.
         </p>
       </div>
+            {/* ── SEO: Server-rendered content for search crawlers ── */}
+        <ServerPageContent page="collections-minimon" />
     </PublicPageShell>
   )
 }
