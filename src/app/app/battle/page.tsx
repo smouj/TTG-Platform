@@ -4,7 +4,7 @@
 // Trading Tazos Game — Battle Lobby v3
 // Magazine-themed lobby at /app/battle
 // Shows tube visual + mode selection + stats + start button.
-// Navigates to /game/practice for actual gameplay.
+// Navigates to /app/battle/play for actual gameplay.
 // ============================================================
 
 import { useState, useEffect, useMemo } from "react"

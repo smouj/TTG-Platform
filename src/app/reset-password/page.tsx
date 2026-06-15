@@ -216,7 +216,7 @@ export default function ResetPasswordPage() {
           </Link>
           <div className="flex items-center gap-3">
             <img
-              src="/logo/logo-icon-black.webp"
+              src="/logo/logo-tg-yellow.png"
               alt="TTG"
               className="w-10 h-10 drop-shadow-[3px_3px_0px_rgba(26,26,26,0.3)]"
             />
@@ -262,7 +262,7 @@ export default function ResetPasswordPage() {
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              Back to Arena
+              Back to Home
             </Link>
           </div>
         </div>

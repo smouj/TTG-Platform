@@ -346,7 +346,7 @@ export default function RegisterPage() {
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/35 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider no-underline"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              {t.common_back || "Back to Arena"}
+              {t.common_back || "Back to Home"}
             </Link>
           </div>
         </div>

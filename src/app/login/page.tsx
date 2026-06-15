@@ -282,7 +282,7 @@ function LoginForm() {
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1a1a1a]/35 hover:text-[#1a1a1a] transition-colors uppercase tracking-wider no-underline"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              {t.common_back || "Back to Arena"}
+              {t.common_back || "Back to Home"}
             </Link>
           </div>
         </div>
@@ -303,7 +303,7 @@ export default function LoginPage() {
           <main className="flex-1 flex items-center justify-center px-4 py-12 relative">
             <div className="mag-halftone absolute inset-0 opacity-25 pointer-events-none" />
             <div className="relative z-10 flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full border-4 border-[#FFCC00] border-t-transparent animate-spin" />
+              <img src="/logo/logo-tg-yellow.png" alt="TTG" className="w-12 h-12 animate-pulse" />
               <p className="text-xs font-black text-[#1a1a1a]/30 uppercase tracking-[0.3em]">Loading&hellip;</p>
             </div>
           </main>
