@@ -3,6 +3,7 @@
 //
 // Player's 5-tazo hand at bottom of arena.
 // Magazine editorial card treatment with consistent typography.
+// Only renders during betting phase.
 // ============================================================
 "use client"
 
@@ -26,15 +27,16 @@ function fColor(f: string) {
 export default function BattleHand({ hand, phase, selectedId, airborneId, onSelect }: Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
+  // Don't render at all when not in betting/locked/revealed phase
   if (!hand.length) return null
+  if (phase === "idle") return null
 
   const tazos = hand.slice(0, 5)
   const isBetting = phase === "betting"
   const isLocked = phase === "bet_locked" || phase === "revealed"
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-30 pb-3 pointer-events-none"
-      style={{ opacity: isBetting ? 1 : isLocked ? 0.85 : 0 }}>
+    <div className="absolute bottom-0 left-0 right-0 z-30 pb-3 pointer-events-none">
       {/* Editorial label */}
       <div className="flex justify-center mb-1.5">
         <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.3em] bg-black/50 backdrop-blur-sm px-4 py-1 rounded-full border border-white/4">

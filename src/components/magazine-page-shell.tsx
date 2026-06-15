@@ -161,11 +161,11 @@ export default function MagazinePageShell({
         )}
       </main>
 
-      {/* ═══ GAME HUD (bottom status bar) ═══ */}
-      <GameHUD credits={credits} tazoCount={user?.tazoCount} />
+      {/* ═══ GAME HUD (bottom status bar) — hidden during battle ═══ */}
+      {!isBattlePlay && <GameHUD credits={credits} tazoCount={user?.tazoCount} />}
 
       {/* ═══ MAGAZINE FOOTER — hidden on battle ═══ */}
-      {showFooter && (
+      {showFooter && !isBattlePlay && (
         <>
           <div className="relative z-10 h-2 mag-stripes opacity-30 pointer-events-none" />
           <MagazineFooter />

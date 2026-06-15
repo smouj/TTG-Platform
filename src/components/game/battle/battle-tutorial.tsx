@@ -98,26 +98,26 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={handleSkip} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]" onClick={handleSkip} />
 
       {/* Spot glow for highlight area */}
       {current.highlight === "battle-arena" && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[60vw] h-[50vh] rounded-2xl ring-4 ring-[#FFCC00]/50 animate-pulse" />
+          <div className="w-[60vw] h-[50vh] rounded-2xl ring-4 ring-[#FFCC00]/70 animate-pulse shadow-[0_0_60px_rgba(255,204,0,0.3)]" />
         </div>
       )}
       {current.highlight === "battle-hand" && (
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-[#FFCC00]/10 border-t-2 border-[#FFCC00]/40 pointer-events-none animate-pulse" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-[#FFCC00]/15 border-t-3 border-[#FFCC00]/60 pointer-events-none animate-pulse shadow-[0_-10px_40px_rgba(255,204,0,0.15)]" />
       )}
       {current.highlight === "battle-hud" && (
-        <div className="absolute top-0 left-0 right-0 h-24 bg-[#FFCC00]/10 border-b-2 border-[#FFCC00]/40 pointer-events-none animate-pulse" />
+        <div className="absolute top-0 left-0 right-0 h-24 bg-[#FFCC00]/15 border-b-3 border-[#FFCC00]/60 pointer-events-none animate-pulse shadow-[0_10px_40px_rgba(255,204,0,0.15)]" />
       )}
 
       {/* Card */}
       <div className={`relative z-10 ${posClasses} ${current.position === "center" ? "absolute" : "absolute left-1/2 -translate-x-1/2"}`}>
         <div className="rounded-3xl p-6 max-w-sm mx-auto backdrop-blur-2xl relative overflow-hidden"
           style={{
-            background: "linear-gradient(135deg, rgba(10,10,10,0.95), rgba(20,20,20,0.9))",
+            background: "linear-gradient(135deg, rgba(10,10,10,0.92), rgba(20,20,20,0.85))",
             border: "1px solid rgba(255,204,0,0.12)",
             boxShadow: "0 32px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,204,0,0.04), 0 0 60px rgba(255,204,0,0.06)",
           }}>
