@@ -222,7 +222,7 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
           <div className="flex items-center gap-2">
             <Layers className="w-4 h-4 text-[#1a1a1a]" />
             <h3 className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]">
-              {selectedDeck ? `Selected: ${selectedDeck.name}` : "Select a Battle Tube"}
+              {selectedDeck ? `Selected: ${selectedDeck.name}` : "Select a Deck"}
             </h3>
           </div>
           {selectedDeck && (
@@ -306,7 +306,7 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
           {isLoading ? (
             <span className="flex items-center gap-2"><Loader2Like className="w-5 h-5" /> Loading...</span>
           ) : !selectedDeckId ? (
-            <span className="flex items-center gap-2">Select a Battle Tube <ChevronRight className="w-5 h-5" /></span>
+            <span className="flex items-center gap-2">Select a Deck <ChevronRight className="w-5 h-5" /></span>
           ) : mode === "practice" ? (
             <span className="flex items-center gap-2">
               <Swords className="w-5 h-5" />
