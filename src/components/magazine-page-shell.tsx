@@ -7,6 +7,7 @@
 //
 // fullBleed: removes max-w/padding on main content area so
 // full-screen components (BattleView) fill the available space.
+// Hides halftone overlay + changes background to dark in battle.
 // ============================================================
 "use client"
 
@@ -86,31 +87,48 @@ export default function MagazinePageShell({
       .catch(() => {})
   }, [user])
 
-  // Unlock audio context on first interaction
   useEffect(() => {
     sfxEnsureUnlocked()
   }, [])
 
-  // Detect if we're on a battle play route so the Battle tab stays highlighted
   const isBattlePlay = pathname?.startsWith("/app/battle/play")
 
-  return (
-    <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
-      {/* Halftone overlay — magazine texture, matches launcher */}
-      <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
+  // During battle: dark background that matches the arena
+  // Normal pages: cream paper magazine aesthetic
+  const shellBg = isBattlePlay ? "#1a1a1a" : "#FFF9E6"
+  const tabBg = isBattlePlay ? "#2a2a2a" : "bg-white"
+  const tabText = isBattlePlay ? "text-white/50 hover:text-white/80" : "text-[#1a1a1a]/35 hover:text-[#1a1a1a]/70"
+  const tabActive = isBattlePlay
+    ? "bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#FFCC00]"
+    : "bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#1a1a1a]"
+  const tabHover = isBattlePlay
+    ? "border-transparent hover:text-white/80 hover:border-white/15 hover:bg-white/5"
+    : "border-transparent hover:text-[#1a1a1a]/70 hover:border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/3"
 
-      {/* ═══ MASTHEAD — MagazineHeader without landing nav (variant="app") ═══ */}
+  return (
+    <div
+      className="min-h-screen flex flex-col relative"
+      style={{ background: shellBg }}
+    >
+      {/* Halftone overlay — hidden during battle for clean arena view */}
+      {!isBattlePlay && (
+        <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
+      )}
+
+      {/* ═══ MASTHEAD ═══ */}
       <MagazineHeader variant="app" />
 
-      {/* Magazine decorative stripe — masthead/content separator, matches launcher */}
-      <div className="relative z-10 h-2 mag-stripes opacity-30 pointer-events-none" />
+      {/* Magazine decorative stripe — hidden in battle */}
+      {!isBattlePlay && (
+        <div className="relative z-10 h-2 mag-stripes opacity-30 pointer-events-none" />
+      )}
 
-      {/* ═══ APP TAB STRIP — magazine-style square tabs ═══ */}
+      {/* ═══ APP TAB STRIP ═══ */}
       <nav
-        className="relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5
+        className={`relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5
           overflow-x-auto
           [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]
-          border-b-[3px] border-[#1a1a1a] bg-white"
+          border-b-[3px] border-[#1a1a1a] ${tabBg}`}
         role="navigation"
         aria-label="App navigation"
       >
@@ -121,9 +139,7 @@ export default function MagazinePageShell({
               key={id}
               href={href}
               className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all whitespace-nowrap ${
-                isActive
-                  ? "bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#1a1a1a]"
-                  : "bg-white text-[#1a1a1a]/35 border-2 border-transparent hover:text-[#1a1a1a]/70 hover:border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/3"
+                isActive ? tabActive : `${tabText} ${tabHover} border-2`
               }`}
               style={isActive ? { boxShadow: "3px 3px 0 #1a1a1a" } : undefined}
             >
@@ -135,7 +151,12 @@ export default function MagazinePageShell({
       </nav>
 
       {/* ═══ PAGE CONTENT ═══ */}
-      <main className="relative z-10 flex-1 w-full" id="main-content" role="main" aria-label="Page content">
+      <main
+        className="relative z-10 flex-1 w-full min-h-0 overflow-hidden"
+        id="main-content"
+        role="main"
+        aria-label="Page content"
+      >
         {fullBleed ? (
           children
         ) : (
