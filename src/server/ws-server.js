@@ -284,16 +284,22 @@ wss.on("connection", (ws, req) => {
 const http = require("http")
 let statusServer
 try {
-  statusServer = http.createServer((_req, res) => {
-    res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" })
-    res.end(JSON.stringify({
-      activeRooms: rooms.size,
-      queueLength: queue.length,
-      connectedClients: connections.size,
-      uptime: Math.round(process.uptime()),
-      memoryMB: Math.round(process.memoryUsage().rss / 1024 / 1024),
-      status: "healthy",
-    }))
+  statusServer = http.createServer((req, res) => {
+    // Health status on / or /status or /health
+    if (req.url === '/' || req.url === '/status' || req.url === '/health') {
+      res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" })
+      res.end(JSON.stringify({
+        activeRooms: rooms.size,
+        queueLength: queue.length,
+        connectedClients: connections.size,
+        uptime: Math.round(process.uptime()),
+        memoryMB: Math.round(process.memoryUsage().rss / 1024 / 1024),
+        status: "healthy",
+      }))
+      return
+    }
+    res.writeHead(404, { "Content-Type": "application/json" })
+    res.end(JSON.stringify({ error: "not found" }))
   })
   statusServer.listen(PORT + 1)
   log(`[WS] Status HTTP on port ${PORT + 1}`)
