@@ -352,9 +352,9 @@ Desktop installers for all platforms are available on the [v0.6.3 Releases page]
 
 | Platform | Format | Version |
 |----------|--------|---------|
-| Linux | AppImage, .deb | desktop v0.7.0 |
-| Windows | .exe (NSIS) | desktop v0.7.0 |
-| macOS | .dmg, .zip | desktop v0.7.0 |
+| Linux | AppImage, .deb | desktop v0.7.2 |
+| Windows | .exe (NSIS) | desktop v0.7.2 |
+| macOS | .dmg, .zip | desktop v0.7.2 |
 
 ---
 

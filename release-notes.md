@@ -1,38 +1,33 @@
 ## v0.7.2 — Data Safety & Stability (2026-06-15)
 
 ### 🔴 Critical Fixes
-- **DB preservation**: Live database moved to `data/dev.db` — `next build` no longer wipes user data
-- **Bag open crash**: API validates bag IDs defensively — fixes 110 PM2 restarts from `id: undefined`
-- **Deploy script v3.3**: Never overwrites live DB. Data restored from backup (58 UserTazos, 28 Instances)
+- **DB preservation**: Live database moved to `data/dev.db` (outside `.next/standalone/`)
+  — `next build` no longer wipes user data on deploy
+- **Bag open crash**: API `/api/bags/open` now validates bag IDs defensively
+  — fixes 110 PM2 restarts caused by `id: undefined` reaching Prisma
+- **Deploy script v3.3**: Never overwrites live DB — removed seed DB copy. Only runs `prisma db push`.
+  — Data restored from backup after discovery of deploy bug (58 UserTazos, 28 Instances)
 
 ### 🗺️ Clean Route Schema
-- **Removed ALL /game routes** (7 files, 462 lines): single battle entry at `/app/battle`
-- **Auth hardened**: ALL `/app` routes redirect to `/login` — no guest bypass
-- **Battle embedded**: `/app/battle/play` inside MagazinePageShell (dark theme, fullBleed)
+- **Removed ALL /game routes** (7 files, 462 lines deleted): /game, /game/practice, /game/ranked, /game/friend/[roomId]
+  — All 404. Single battle entry: `/app/battle`
+- **Auth hardened**: ALL /app routes redirect to /login — removed /app/battle/play guest bypass
+  — Proxy 307 + API getAuthUser DB verification + AuthProvider localStorage clear
+- **Battle embedded**: `/app/battle/play` renders inside MagazinePageShell (GDD §4.1)
+  — Dark shell theme, no halftone, no stripes, dark tabs, fullBleed
 
-### 🎨 Visual
-- **Battle shell dark theme**: Seamless dark arena integration (no halftone, no stripes, dark tabs)
-- **Landing page**: Magazine hero palette, sections, download strip, mobile nav improvements
+### 🎨 Visual Improvements
+- **Battle shell dark theme**: Background #1a1a1a matching arena gradient — seamless visual
+- **Landing page redesign**: Hero with magazine palette (red/gold/black), sections, download strip, mobile nav touch targets
 
 ### 🏷️ Naming Unified
-- Tubes → Decks | Bags → Shop | Album → Collection | Battle → How to Play | Franchise → Series
-- Title template fix | Footer dynamic year
+- Tubes → Decks (app tab, battle page, deck builder)
+- Bags → Shop (landing quick actions)
+- Album → Collection (landing quick action)
+- Battle → How to Play (footer)
+- Ranks → Rankings (landing + nav)
+- Franchise → Series (0 user-facing appearances)
+- Title template fix (no more "Login — TTG | TTG" duplication)
+- Footer copyright: dynamic year (getFullYear())
 
-### 🧪 Testing
-- 16/16 gameplay tests (defense stats, AI precision, checkMatchEnd, AI mutation)
-- TypeScript: 0 errors, 0 warnings
-
-### 🤖 AI Improvements
-- Contextual targeting (master → edge, skilled → center)
-- Adaptive aggression (±20% force based on score gap)
-- Strategic tazo selection (master considers score, skilled avoids worn tazos)
-
-### 🛡️ PvP Anti-Cheat
-- Server-side `validateSlam()` clamps 8 parameters to valid ranges
-
-### 🛠️ Infrastructure
-- CI auto-sync version → electron/package.json
-- Public file sync in deploy (manifest, favicons, PWA assets)
-- Static assets via symlink (no copy overhead)
-- PWA manifest: shortcuts updated to match clean schema
-- WS server: JWT_SECRET fix, both PM2 processes healthy
+### 🛡️ Improvements
