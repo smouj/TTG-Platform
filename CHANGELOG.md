@@ -1,4 +1,33 @@
 # Changelog
+## v0.7.1 — Data Persistence & UX Polish (2026-06-15)
+
+### 🛒 Shop & Bag System
+- **Bulk bag purchase**: Buy x1, x5, or x20 bags with one click
+- **Sequential bulk opening**: Auto-open bags with progress bar + carousel reveal
+- **Bulk reveal grid**: All opened tazos shown in responsive grid with rarity badges
+- **Bulk open API**: `POST /api/bags/open` accepts `bagIds[]` array for batch operations
+- **Bulk buy API**: `POST /api/bags/buy` accepts `quantity` parameter (1-20)
+- All bag prices: 100 credits (admin-configurable)
+
+### 💾 Data Persistence
+- **DB survives deploys**: Standalone DB preserved across rebuilds (no more data wipes)
+- **Deploy script v2**: `scripts/deploy-ttg.sh` — auto-backup, WAL checkpoint, preserves live DB
+- **Backup script**: `scripts/db-backup.sh` — timestamped .backup, keeps last 20
+- **Seed script**: `scripts/seed-database.mjs` — idempotent seeder for BagModel, CreditPackage, etc.
+
+### 🎨 UI Polish
+- **MagazinePageShell unified**: All `/app` pages share cream paper + halftone + HUD strip
+- **Footer visible on all pages**: Sticky gold border, platform badges, social icons with brand colors
+- **Battle lobby redesign**: Two-column magazine layout with 3D tube preview + deck selector
+- **Auto-start from lobby**: sessionStorage side-channel eliminates double-lobby when entering game
+
+### 🐛 Bug Fixes
+- Fix React #310: useEffect moved from conditional block to top level in shop
+- Fix collection API `totalOwned` counter (missing in legacy response path)
+- Fix promo code CreditTransaction audit trail (now creates transaction for ALL reward types)
+- Fix bulk open crash with single-element `bagIds` array (used undefined `bagId`)
+- Fix demo password hash type (BLOB → TEXT) preventing login
+- Clean orphaned DB records (TazoInstances, DeckTazos, BagPurchases)
 
 ## v0.7.0 — Battle Arena 2.0: AA-Grade Combat (2026-06-14)
 
