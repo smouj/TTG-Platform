@@ -632,7 +632,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
               {/* Quick Actions — magazine navigation cards */}
               <div className="grid grid-cols-4 gap-2">
                 {[
-                  { icon: PackageOpen, label: "Bags", color: "#FF6B00", href: "/app/shop" },
+                  { icon: ShoppingBag, label: "Shop", color: "#FF6B00", href: "/app/shop" },
                   { icon: Swords, label: "Battle", color: "#E3350D", href: "/app/battle" },
                   { icon: Disc3, label: "Collection", color: "#00A1E9", href: "/app/collection" },
                   { icon: Medal, label: "Rankings", color: "#22C55E", href: "/?page=leaderboard" },

@@ -16,7 +16,7 @@ import { SITE_CONFIG } from "@/lib/site-config"
 const FOOTER_LINKS: [string, string][] = [
   ["tazos", "Tazos"],
   ["shop", "Shop"],
-  ["how-to-play", "Battle"],
+  ["how-to-play", "How to Play"],
   ["faq", "FAQ"],
   ["privacy", "Privacy"],
   ["terms", "Terms"],
@@ -111,7 +111,7 @@ export default function MagazineFooter() {
           </span>
           <span className="text-white/10">|</span>
           <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em] whitespace-nowrap">
-            © 2026 {SITE_CONFIG.name} · v{SITE_CONFIG.version}
+            © {new Date().getFullYear()} {SITE_CONFIG.name} · v{SITE_CONFIG.version}
           </span>
         </div>
       </div>

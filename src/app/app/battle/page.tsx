@@ -143,7 +143,7 @@ export default function BattlePage() {
         <span className="text-xs sm:text-sm font-black text-[#FFCC00]">
           {selectedDeck
             ? `${selectedDeck.name} · ${deckStats.count} tazos`
-            : `${decks.length} TUBES AVAILABLE`}
+            : `${decks.length} DECKS AVAILABLE`}
         </span>
       </div>
 
@@ -167,17 +167,17 @@ export default function BattlePage() {
             </div>
           </div>
           <h2 className="text-xl font-black text-[#E3350D] mb-2 uppercase tracking-wider">
-            No Battle Tubes Yet
+            No Decks Yet
           </h2>
           <p className="text-xs font-bold text-[#1a1a1a]/40 max-w-xs mx-auto mb-5 leading-relaxed">
-            You need a Battle Tube to enter the arena. Build one with your best tazos in the Tubes section, then come back here.
+            You need a Deck to enter the arena. Build one with your best tazos in the Decks section, then come back here.
           </p>
           <a
             href="/app/decks"
             className="inline-block py-3 px-8 mag-btn bg-[#3B4CCA] text-white text-sm font-black uppercase tracking-widest border-[3px] border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_#1a1a1a] transition-all no-underline"
           >
             <Layers className="w-4 h-4 inline mr-1.5" />
-            Go to Tubes
+            Go to Decks
           </a>
         </div>
       )}
@@ -197,7 +197,7 @@ export default function BattlePage() {
               <div className="bg-[#1a1a1a] px-4 py-2 flex items-center gap-2">
                 <Layers className="w-3.5 h-3.5 text-[#FFCC00]" />
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-[#FFCC00]">
-                  Select Battle Tube
+                  Select Deck
                 </h3>
               </div>
 
@@ -288,7 +288,7 @@ export default function BattlePage() {
                 <div className="bg-[#FFCC00] px-4 py-2 flex items-center gap-2 border-b-[3px] border-[#1a1a1a]">
                   <Zap className="w-4 h-4 text-[#1a1a1a]" />
                   <h3 className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]">
-                    Tube Stats
+                    Deck Stats
                   </h3>
                 </div>
                 <div className="p-4">
@@ -462,7 +462,7 @@ export default function BattlePage() {
                   </span>
                 ) : !selectedDeckId ? (
                   <span className="flex items-center justify-center gap-2">
-                    Select a Battle Tube <ChevronRight className="w-5 h-5" />
+                    Select a Deck <ChevronRight className="w-5 h-5" />
                   </span>
                 ) : mode === "practice" ? (
                   <span className="flex items-center justify-center gap-2">
