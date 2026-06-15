@@ -348,7 +348,7 @@ The game uses a **90s collectible game magazine** aesthetic specified in [`THEME
 
 ## Desktop App
 
-Desktop installers for all platforms are available on the [v0.6.3 Releases page](https://github.com/smouj/Trading-Tazos-Game/releases/latest).
+Desktop installers for all platforms are available on the [v0.7.2 Releases page](https://github.com/smouj/Trading-Tazos-Game/releases/latest).
 
 | Platform | Format | Version |
 |----------|--------|---------|
