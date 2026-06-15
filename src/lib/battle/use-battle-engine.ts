@@ -60,6 +60,7 @@ export interface BattleEngine {
   showResult: () => void
   nextRound: () => void
   forfeit: (who: "player" | "opponent") => void
+  send: (event: any) => boolean
 
   // Input setters
   setReticleX: (x: number) => void
@@ -306,6 +307,7 @@ export function useBattleEngine(): BattleEngine {
     ui: { ctx: ctx ? { ...ctx } : null, ...uiState },
     startMatch, introDone, startBetting, placeBets, revealStakes, doCoinFlip,
     lockAim, lockCharge, releaseSlam, resolveImpact, showResult, nextRound, forfeit,
+    send,
     setReticleX, setReticleZ, setCharge, setTiltDeg, setTiltIntensity, setSpinIntensity,
     setSlamPhase, setImpactMsg, setShowImpact, setBusy,
     saveBattle, resetToLobby,

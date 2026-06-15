@@ -635,6 +635,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       else tiltDir = "backward"
     }
 
+    // Drive FSM: player_tilt → slamming
+    engine.releaseSlam()
+
     const slam: SlamParams = {
       tazoId: t.id,
       impactX: reticleX,
@@ -725,6 +728,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
             // Show AI tazo in arena
             setAirborne(aiAirborne)
+            // Drive FSM: opponent_aim → opponent_slam
+            engine.send({ type: "OPPONENT_SLAM_DONE" } as any)
             playSfx("aim_tick", 0.2)
 
             // Phase: opponent aims
@@ -915,6 +920,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         charge, targetX: reticleX, targetZ: reticleZ,
       })
     }
+
+    // Drive FSM: player_tilt → slamming
+    engine.releaseSlam()
 
     // Send to opponent via WebSocket
     pvp.sendTurnAction({

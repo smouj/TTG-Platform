@@ -266,18 +266,21 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     },
   },
 
-  // ─── SLAMMING → IMPACT ──────────────────────
+  // ─── SLAMMING → IMPACT (after physics resolve) ──
   {
     from: "slamming",
     to: "impact",
-    event: "SLAM_RELEASED",
+    event: "IMPACT_RESOLVED",
+    action(ctx) {
+      return { ...ctx, state: "impact" }
+    },
   },
 
-  // ─── IMPACT → RESOLVE_IMPACT ─────────────────
+  // ─── IMPACT → RESOLVE_IMPACT (after showing result) ──
   {
     from: "impact",
     to: "resolve_impact",
-    event: "IMPACT_RESOLVED",
+    event: "RESULT_SHOWN",
     action(ctx, event) {
       const e = event as Extract<BattleEvent, { type: "IMPACT_RESOLVED" }>
       const thrower = ctx.currentThrower || "player"
@@ -303,25 +306,39 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     },
   },
 
-  // ─── RESOLVE_IMPACT → OPPONENT / TURN_TRANSITION / MATCH_END ──
+  // ─── RESOLVE_IMPACT → MATCH_END / OPPONENT / NEXT ──
+  {
+    from: "resolve_impact",
+    to: "match_end",
+    event: "RESULT_SHOWN",
+    guard(ctx) {
+      const result = checkMatchEnd(
+        ctx.player.score, ctx.opponent.score,
+        ctx.playerRemaining, ctx.opponentRemaining
+      )
+      return result !== null
+    },
+    action(ctx) {
+      const result = checkMatchEnd(
+        ctx.player.score, ctx.opponent.score,
+        ctx.playerRemaining, ctx.opponentRemaining
+      )
+      return { ...ctx, state: "match_end", matchResult: result!,
+        roundHistory: result?.rounds ? result.rounds : ctx.roundHistory }
+    },
+  },
   {
     from: "resolve_impact",
     to: "opponent_aim",
     event: "RESULT_SHOWN",
     guard(ctx) {
-      // If player slammed and opponent hasn't yet, opponent's turn
       return ctx.currentThrower === "player" && ctx.roundTurns === 0
     },
     action(ctx) {
       if (!ctx.opponentBetTazo) return ctx
       const airborne = createAirborneTazo(ctx.opponentBetTazo, "opponent", ctx.config.arena)
-      return {
-        ...ctx,
-        state: "opponent_aim",
-        airborneTazo: airborne,
-        currentThrower: "opponent",
-        roundTurns: 1,
-      }
+      return { ...ctx, state: "opponent_aim", airborneTazo: airborne,
+        currentThrower: "opponent", roundTurns: 1 }
     },
   },
   {
@@ -329,36 +346,7 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     to: "turn_transition",
     event: "RESULT_SHOWN",
     guard(ctx) {
-      // Both have slammed this round
       return ctx.roundTurns >= 1 || ctx.currentThrower === "opponent"
-    },
-  },
-  {
-    from: "resolve_impact",
-    to: "match_end",
-    event: "RESULT_SHOWN",
-    guard(ctx) {
-      const result = checkMatchEnd(
-        ctx.player.score,
-        ctx.opponent.score,
-        ctx.playerRemaining,
-        ctx.opponentRemaining
-      )
-      return result !== null && (ctx.roundTurns >= 1 || ctx.currentThrower === "opponent")
-    },
-    action(ctx) {
-      const result = checkMatchEnd(
-        ctx.player.score,
-        ctx.opponent.score,
-        ctx.playerRemaining,
-        ctx.opponentRemaining
-      )
-      return {
-        ...ctx,
-        state: "match_end",
-        matchResult: result!,
-        roundHistory: result?.rounds ? result.rounds : ctx.roundHistory,
-      }
     },
   },
 
@@ -374,6 +362,39 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     from: "opponent_slam",
     to: "slamming",
     event: "SLAM_RELEASED",
+  },
+
+  // ─── RESOLVE_IMPACT → BETTING (direct next round) ──
+  {
+    from: "resolve_impact",
+    to: "betting",
+    event: "HAND_DRAWN",
+    guard(ctx) {
+      return ctx.playerRemaining > 0 || ctx.opponentRemaining > 0
+    },
+    action(ctx) {
+      const { hand: pHand, remaining: pRem } = drawHand(ctx.player.deck, 5)
+      const { hand: oHand, remaining: oRem } = drawHand(ctx.opponent.deck, 5)
+      return {
+        ...ctx, state: "betting",
+        playerHand: pHand, opponentHand: oHand,
+        playerRemaining: pHand.length, opponentRemaining: oHand.length,
+        playerBetTazo: null, opponentBetTazo: null,
+        stakedTazos: [], airborneTazo: null,
+        roundTurns: 0, coinWinner: null, currentThrower: null,
+        currentRound: ctx.currentRound + 1,
+        roundHistory: [...ctx.roundHistory, {
+          roundNumber: ctx.currentRound,
+          throwerId: ctx.currentThrower || "player",
+          throwerWonCoinFlip: ctx.coinWinner === ctx.currentThrower,
+          impact: ctx.lastImpact!,
+          playerScore: ctx.player.score,
+          opponentScore: ctx.opponent.score,
+          playerTazosLeft: ctx.playerRemaining,
+          opponentTazosLeft: ctx.opponentRemaining,
+        }],
+      }
+    },
   },
 
   // ─── TURN_TRANSITION → BETTING / MATCH_END ───
