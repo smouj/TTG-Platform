@@ -50,6 +50,8 @@ function makeContext(): BattleContext {
   return {
     state: 'betting' as any, prevState: null, airborneTazo: null,
     coinWinner: null, lastImpact: null,
+    chargeLevel: 0, aimPosition: { x: 0, z: 0 }, roundTurns: 0,
+    playerBetTazo: null, opponentBetTazo: null,
     config: { playerDeck: pd, opponentDeck: od, aiDifficulty: 'skilled',
       arena: ARENA, scoreToWin: 5 } as any,
     player: { score: 0, tazosRemaining: 20, maxScore: 5 } as any,

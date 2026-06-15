@@ -343,12 +343,28 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
         currentThrower: "opponent", roundTurns: 1 }
     },
   },
+  // When opponent threw first (coin winner), player gets their turn
+  {
+    from: "resolve_impact",
+    to: "player_aim",
+    event: "RESULT_SHOWN",
+    guard(ctx) {
+      return ctx.currentThrower === "opponent" && ctx.roundTurns === 0
+    },
+    action(ctx) {
+      if (!ctx.playerBetTazo) return ctx
+      const airborne = createAirborneTazo(ctx.playerBetTazo, "player", ctx.config.arena)
+      return { ...ctx, state: "player_aim", airborneTazo: airborne,
+        currentThrower: "player", roundTurns: 1 }
+    },
+  },
+  // When both have thrown (roundTurns >= 1), advance to next round
   {
     from: "resolve_impact",
     to: "turn_transition",
     event: "RESULT_SHOWN",
     guard(ctx) {
-      return ctx.roundTurns >= 1 || ctx.currentThrower === "opponent"
+      return ctx.roundTurns >= 1
     },
   },
 
@@ -399,7 +415,35 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     },
   },
 
-  // ─── TURN_TRANSITION → BETTING / MATCH_END ───
+  // ─── TURN_TRANSITION → MATCH_END / BETTING ───
+  // Safety net: both players eliminated simultaneously
+  {
+    from: "turn_transition",
+    to: "match_end",
+    event: "HAND_DRAWN",
+    guard(ctx) {
+      return ctx.playerRemaining <= 0 && ctx.opponentRemaining <= 0
+    },
+    action(ctx) {
+      return {
+        ...ctx, state: "match_end",
+        matchResult: {
+          winner: ctx.player.score >= ctx.opponent.score ? "player" : "opponent",
+          victoryType: "elimination",
+          playerScore: ctx.player.score,
+          opponentScore: ctx.opponent.score,
+          playerRemaining: 0,
+          opponentRemaining: 0,
+          rounds: ctx.roundHistory,
+          totalTurns: ctx.turnNumber,
+          playerCaptures: ctx.player.score,
+          opponentCaptures: ctx.opponent.score,
+          xpEarned: 10,
+          summary: `Both eliminated! ${ctx.player.score >= ctx.opponent.score ? "You won" : "Opponent won"} on score tiebreaker.`,
+        },
+      }
+    },
+  },
   {
     from: "turn_transition",
     to: "betting",
