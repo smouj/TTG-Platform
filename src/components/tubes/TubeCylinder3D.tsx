@@ -22,7 +22,7 @@ interface TubeCylinderProps {
   tazoImageUrls?: string[]
 }
 
-function TubeModel({ textureUrl, color, rotationSpeed = 0.15, showTazos = false, tazoImageUrls = [] }: TubeCylinderProps) {
+function TubeCylinderVisual({ textureUrl, color, rotationSpeed = 0.15, showTazos = false, tazoImageUrls = [] }: TubeCylinderProps) {
   const groupRef = useRef<THREE.Group>(null!)
   const loadedTexture = useLoader(THREE.TextureLoader, textureUrl)
   const texture = useMemo(() => {
@@ -116,7 +116,7 @@ export default function TubeCylinder3D({ className = "", style, ...props }: Tube
         <directionalLight position={[-2, 1, -2]} intensity={0.4} color="#aaccff" />
         <pointLight position={[0, TUBE_HEIGHT / 2, 1.5]} intensity={0.6} color="#ffffff" />
         <Suspense fallback={null}>
-          <TubeModel {...props} />
+          <TubeCylinderVisual {...props} />
         </Suspense>
         <OrbitControls
           enableZoom={false}
@@ -144,7 +144,7 @@ export function TubeCylinder3DStatic({ className = "", style, ...props }: TubeCy
         <directionalLight position={[-2, 1, -2]} intensity={0.4} color="#aaccff" />
         <pointLight position={[0, TUBE_HEIGHT / 2, 1.5]} intensity={0.6} color="#ffffff" />
         <Suspense fallback={null}>
-          <TubeModel {...props} rotationSpeed={0.25} />
+          <TubeCylinderVisual {...props} rotationSpeed={0.25} />
         </Suspense>
       </Canvas>
     </div>

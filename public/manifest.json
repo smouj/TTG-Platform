@@ -53,30 +53,30 @@
   ],
   "shortcuts": [
     {
-      "name": "Play",
-      "short_name": "Play",
-      "url": "/app/battle"
-    },
-    {
       "name": "Battle",
       "short_name": "Battle",
       "url": "/app/battle"
     },
     {
-      "name": "Album",
-      "short_name": "Album",
+      "name": "Collection",
+      "short_name": "Collection",
       "url": "/app/collection"
     },
     {
       "name": "Shop",
       "short_name": "Shop",
       "url": "/app/shop"
+    },
+    {
+      "name": "Decks",
+      "short_name": "Decks",
+      "url": "/app/decks"
     }
   ],
   "related_applications": [
     {
       "platform": "linux",
-      "url": "https://github.com/smouj/Trading-Tazos-Game/releases/download/v0.7.2/trading-tazos-game-0.7.0-linux-x86_64.AppImage",
+      "url": "https://github.com/smouj/Trading-Tazos-Game/releases/download/v0.7.2/trading-tazos-game-0.7.2-linux-x86_64.AppImage",
       "id": "com.tradingtazosgame.ttg.linux"
     }
   ]

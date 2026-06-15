@@ -365,7 +365,7 @@ model TubeModel {
   id          String   @id @default(cuid())
   name        String
   textureUrl  String
-  franchise   String   // minimon, cybermon, dracobell
+  franchise   String   // series slug (minimon/cybermon/dracobell) — field kept as "franchise" for DB compat
   sortOrder   Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -377,7 +377,7 @@ model BagModel {
   name        String
   frontUrl    String
   backUrl     String
-  franchise   String   // minimon, cybermon, dracobell
+  franchise   String   // series slug (minimon/cybermon/dracobell) — field kept as "franchise" for DB compat
   cost        Int      @default(10)
   bonusChance Int      @default(15)
   rareBoost   Int      @default(2)

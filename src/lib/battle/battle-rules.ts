@@ -184,7 +184,7 @@ export function applyFlip(physics: TazoPhysicsState): TazoPhysicsState {
   }
 }
 
-export function applyPhysicsStep(
+function applyPhysicsStep(
   physics: TazoPhysicsState,
   arena: ArenaConfig,
   dt: number
@@ -271,9 +271,10 @@ export function determineImpactPoint(
 
 // ---- Simulation Runner ----
 
-export interface SimulationStep {
+
+interface SimulationStep {
   time: number
-  physics: TazoPhysicsState[]
+  physics: any[]  // flat physics state objects used internally by runPhysicsSimulation
   collisions: CollisionEvent[]
 }
 

@@ -440,15 +440,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   //  START MATCH — wiring to FSM
   // ═══════════════════════════════════════════════
   const start = useCallback((mode: "practice" | "pvp_ranked" | "pvp_friend", diff: any, d: TazoCard[]) => {
-    // Route PvP modes to their respective pages
-    if (mode === "pvp_friend") {
-      router.push("/game/friend/new")
-      return
-    }
-    if (mode === "pvp_ranked") {
-      // TODO: join matchmaking queue via WebSocket
-      router.push("/game/friend/ranked")
-      return
+    // PvP modes: show Coming Soon in lobby UI — practice is the active mode.
+    // WebSocket matchmaking (join_queue/leave_queue) is implemented in:
+    //   src/lib/multiplayer.ts (useMultiplayer hook)
+    //   src/lib/battle/use-pvp-websocket.ts (PvPWebSocket hook)
+    //   src/server/ws-server.ts (queue + matchmaking + turn relay)
+    // Wire these up when PvP is launched.
+    if (mode === "pvp_friend" || mode === "pvp_ranked") {
+      return // PvP not yet enabled — button shows "Coming Soon"
     }
 
     const shuffled = [...d].sort(() => Math.random() - 0.5)
