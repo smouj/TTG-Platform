@@ -4,6 +4,9 @@
 // comic typography, halftone patterns.
 // Uses MagazineHeader (variant="app") + MagazineFooter
 // with app-specific tab strip in magazine style.
+//
+// fullBleed: removes max-w/padding on main content area so
+// full-screen components (BattleView) fill the available space.
 // ============================================================
 "use client"
 
@@ -59,10 +62,12 @@ export default function MagazinePageShell({
   children,
   currentTab,
   showFooter = true,
+  fullBleed = false,
 }: {
   children: React.ReactNode
   currentTab?: TabId
   showFooter?: boolean
+  fullBleed?: boolean
 }) {
   const { user } = useAuth()
   const pathname = usePathname()
@@ -86,6 +91,9 @@ export default function MagazinePageShell({
     sfxEnsureUnlocked()
   }, [])
 
+  // Detect if we're on a battle play route so the Battle tab stays highlighted
+  const isBattlePlay = pathname?.startsWith("/app/battle/play")
+
   return (
     <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
       {/* Halftone overlay — magazine texture, matches launcher */}
@@ -107,7 +115,7 @@ export default function MagazinePageShell({
         aria-label="App navigation"
       >
         {NAV_ITEMS.map(({ id, label, icon: Icon, href }) => {
-          const isActive = currentTab === id || pathname === href
+          const isActive = currentTab === id || pathname === href || (id === "battle" && isBattlePlay)
           return (
             <Link
               key={id}
@@ -127,11 +135,15 @@ export default function MagazinePageShell({
       </nav>
 
       {/* ═══ PAGE CONTENT ═══ */}
-      {<main className="relative z-10 flex-1 w-full" id="main-content" role="main" aria-label="Page content">
+      <main className="relative z-10 flex-1 w-full" id="main-content" role="main" aria-label="Page content">
+        {fullBleed ? (
+          children
+        ) : (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-2 pb-12">
             {children}
           </div>
-        </main>}
+        )}
+      </main>
 
       {/* ═══ GAME HUD (bottom status bar) ═══ */}
       <GameHUD credits={credits} tazoCount={user?.tazoCount} />

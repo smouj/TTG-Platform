@@ -115,7 +115,7 @@ export default function BattlePage() {
       sessionStorage.setItem("battle_mode", "practice")
       sessionStorage.setItem("battle_difficulty", difficulty)
       sessionStorage.setItem("battle_deckId", selectedDeckId)
-      router.push("/game/practice")
+      router.push("/app/battle/play")
     }
   }
 

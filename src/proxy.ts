@@ -38,6 +38,10 @@ export function proxy(req: NextRequest) {
   }
 
   if (pathname.startsWith("/app/")) {
+    // Battle play routes are accessible to guests (practice mode)
+    if (pathname.startsWith("/app/battle/play")) {
+      return NextResponse.next()
+    }
     if (!token || isJwtExpired(token)) {
       const loginUrl = new URL("/login", req.url)
       loginUrl.searchParams.set("redirect", pathname)

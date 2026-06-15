@@ -31,7 +31,7 @@ const MODES: HubMode[] = [
   {
     id: "practice", icon: Bot, title: "Practice", guestOk: true,
     desc: "Train against AI — no stakes, no pressure. Adjustable difficulty.",
-    color: "#22C55E", badge: "FREE PLAY", href: "/game/practice",
+    color: "#22C55E", badge: "FREE PLAY", href: "/app/battle/play",
   },
   {
     id: "ranked", icon: Trophy, title: "Ranked", guestOk: false,
