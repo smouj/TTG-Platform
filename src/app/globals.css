@@ -1313,3 +1313,18 @@
     display: none;
   }
 }
+
+
+/* ── Battle fullscreen mode ── */
+:fullscreen {
+  background: #0a0a0a !important;
+  overflow: hidden !important;
+}
+:-webkit-full-screen {
+  background: #0a0a0a !important;
+  overflow: hidden !important;
+}
+:-moz-full-screen {
+  background: #0a0a0a !important;
+  overflow: hidden !important;
+}

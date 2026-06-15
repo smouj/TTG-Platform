@@ -143,16 +143,16 @@ export default function TazoDiscImage({
             onError={() => setImgError(true)}
           />
         ) : (
-          /* Fallback — franchise-colored disc with "?" */
+          /* Fallback — franchise-colored disc with name abbreviation */
           <div
             className="w-full h-full rounded-full flex items-center justify-center"
             style={{ background: fallbackBg }}
           >
             <span
-              className="text-[48px] font-black leading-none"
-              style={{ color: fallbackText, opacity: 0.4 }}
+              className="text-[28px] font-black leading-none"
+              style={{ color: fallbackText, opacity: 0.5 }}
             >
-              ?
+              {alt ? alt.slice(0, 2).toUpperCase() : "?"}
             </span>
             {number && (
               <span

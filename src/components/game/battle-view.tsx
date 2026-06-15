@@ -399,11 +399,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     setAirborne(prev => prev ? { ...prev, position: [engine.ui.reticleX * 0.3, h, engine.ui.reticleZ * 0.3] } : prev)
   }, [engine.ui.reticleX, engine.ui.reticleZ, engine.ui.charge, phase])
 
-  // ── Fullscreen ──
+  // ── Fullscreen ── (requests on document.documentElement for true browser fullscreen)
   const toggleFullscreen = useCallback(() => {
-    const el = containerRef.current; if (!el) return
     if (!document.fullscreenElement) {
-      el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {})
+      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {
+        // Fallback: try container-level fullscreen
+        const el = containerRef.current
+        if (el) el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {})
+      })
     } else {
       document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {})
     }
@@ -1053,7 +1056,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
   return (
     <BattleErrorBoundary>
-    <div ref={containerRef} className={`w-full ${isFullscreen ? "fixed inset-0 z-50" : "absolute inset-0"}`}>
+    <div ref={containerRef} className={`w-full h-full ${isFullscreen ? "fixed inset-0 z-[9999]" : "absolute inset-0"}`} style={isFullscreen ? { background: "#0a0a0a" } : undefined}>
       {/* Tutorial */}
       {showTutorial && <BattleTutorial onClose={() => setShowTutorial(false)} />}
       
@@ -1149,16 +1152,22 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
                 {phase === "intro" ? (
                   <>
                     {introCountdown !== null ? (
-                      <span className="text-5xl sm:text-7xl font-black text-[#FFCC00] animate-[popUp_0.4s_ease-out]"
-                        style={{ textShadow: "0 0 40px #FFCC00, 0 0 80px #FFCC0060" }}
-                        key={introCountdown}>
-                        {introCountdown}
-                      </span>
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-[7px] font-black text-white/15 uppercase tracking-[0.4em] animate-[fadeInLeft_0.3s_ease-out]">get ready</span>
+                        <span className="text-6xl sm:text-8xl font-black text-[#FFCC00] animate-[popUp_0.4s_ease-out]"
+                          style={{ textShadow: "0 0 60px #FFCC00, 0 0 120px #FFCC0040" }}
+                          key={introCountdown}>
+                          {introCountdown}
+                        </span>
+                      </div>
                     ) : (
-                      <span className="text-2xl sm:text-3xl font-black text-[#FFCC00] animate-[popUp_0.3s_ease-out]"
-                        style={{ textShadow: "0 0 30px #FFCC00" }}>
-                        ⚡ FIGHT!
-                      </span>
+                      <div className="flex flex-col items-center gap-2 animate-[popUp_0.3s_ease-out]">
+                        <span className="text-3xl sm:text-4xl font-black text-[#FFCC00]"
+                          style={{ textShadow: "0 0 40px #FFCC00, 0 0 80px #FFCC0060" }}>
+                          ⚡ BATTLE!
+                        </span>
+                        <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.4em]">let's go</span>
+                      </div>
                     )}
                   </>
                 ) : (

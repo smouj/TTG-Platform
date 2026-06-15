@@ -154,7 +154,7 @@ export default function SlamControls(props: SlamControlsProps) {
     const precColor = tazoPrecision >= 70 ? "#22C55E" : tazoPrecision >= 40 ? "#FFCC00" : "#FF8800"
 
     return (
-      <>
+      <div className="animate-[fadeInLeft_0.25s_ease-out]">
         {/* Reticle pad — magazine-issue frame */}
         <div className="absolute inset-0 z-20 pointer-events-none flex flex-col">
           <div className="flex-1 flex items-center justify-center p-8 pb-32">
@@ -253,7 +253,7 @@ export default function SlamControls(props: SlamControlsProps) {
             {aimLocked ? <><Lock className="w-3 h-3 inline mr-1" />CHARGE</> : <><Crosshair className="w-3 h-3 inline mr-1" />LOCK AIM</>}
           </button>
         </div>
-      </>
+      </div>
     )
   }
 
@@ -261,13 +261,13 @@ export default function SlamControls(props: SlamControlsProps) {
   // CHARGE — meter + release button
   // ═════════════════════════════════════
   if (phase === "charge") return (
-    <div className="absolute bottom-0 left-0 right-0 z-20 p-4 pointer-events-none">
+    <div className="animate-[fadeInLeft_0.25s_ease-out] absolute bottom-0 left-0 right-0 z-20 p-4 pointer-events-none">
       <div className="max-w-md mx-auto space-y-3">
         {/* Editorial header */}
         <div className="flex items-center justify-between px-1">
           <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em]">Force</span>
           <span className="text-[13px] font-black tracking-wider" style={{ color: barColor, textShadow: `0 0 16px ${barColor}40` }}>
-            {isPerfect ? <span className="inline-flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" />PERFECT</span> : Math.round(charge * 100) + "%"}
+            {isPerfect ? <span className="inline-flex items-center gap-1.5 animate-pulse"><Zap className="w-3.5 h-3.5" />PERFECT</span> : Math.round(charge * 100) + "%"}
           </span>
         </div>
         {/* Magazine-rule progress bar */}
@@ -288,8 +288,12 @@ export default function SlamControls(props: SlamControlsProps) {
         <div className="flex items-center gap-3">
           <span className="flex-1 text-center text-[7px] font-black text-white/12 tracking-[0.15em] uppercase">Auto-charging…</span>
           <button onClick={() => { stopSfx(chargeHumRef.current); chargeHumRef.current = null; playSfx("slam_launch", 0.4); onRelease() }}
-            className="px-5 py-2 bg-[#FFCC00] hover:bg-[#FFD633] text-[#0a0a0a] font-black text-[10px] uppercase rounded-full tracking-wider shadow-[0_0_16px_rgba(255,204,0,0.3)] active:scale-95 pointer-events-auto transition-all">
-            RELEASE
+            className={`px-5 py-2 font-black text-[10px] uppercase rounded-full tracking-wider active:scale-95 pointer-events-auto transition-all ${
+              isPerfect
+                ? "bg-[#22C55E] hover:bg-[#22C55E]/90 text-[#0a0a0a] shadow-[0_0_32px_rgba(34,197,94,0.6)] animate-pulse"
+                : "bg-[#FFCC00] hover:bg-[#FFD633] text-[#0a0a0a] shadow-[0_0_16px_rgba(255,204,0,0.3)]"
+            }`}>
+            {isPerfect ? <><Zap className="w-3 h-3 inline mr-1" />READY!</> : "RELEASE"}
           </button>
         </div>
       </div>
@@ -300,7 +304,7 @@ export default function SlamControls(props: SlamControlsProps) {
   // TILT — direction + spin + SLAM
   // ═════════════════════════════════════
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-20 p-3 pointer-events-none">
+    <div className="animate-[fadeInLeft_0.25s_ease-out] absolute bottom-0 left-0 right-0 z-20 p-3 pointer-events-none">
       <div className="max-w-md mx-auto flex items-end gap-4">
         {/* Tilt pad — magazine editorial widget */}
         <div className="flex-1 space-y-1.5">
