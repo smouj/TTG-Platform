@@ -18,9 +18,9 @@ echo "════════════════════════�
 echo " TTG Deploy v3 — DB-safe"
 echo "═══════════════════════════════════════"
 
-# 1. Stop PM2
+# 1. Stop PM2 (tolerant — daemon may already be dead)
 echo "▶ Stopping PM2…"
-pm2 stop ttg
+pm2 stop ttg 2>/dev/null || true
 sleep 2
 
 # 2. WAL checkpoint on live DB
@@ -63,9 +63,9 @@ cd "$BACKUP_DIR" && ls -t ttg-*.db 2>/dev/null | tail -n +21 | xargs rm -f 2>/de
 # 8. Sync filesystem
 sync
 
-# 9. Restart PM2
+# 9. Restart PM2 (tolerant — daemon may need fresh start)
 echo "▶ Restarting PM2…"
-pm2 restart ttg
+pm2 restart ttg 2>/dev/null || pm2 start /home/smouj/apps/ttg/ecosystem.config.js
 sleep 5
 
 # 10. Verify
