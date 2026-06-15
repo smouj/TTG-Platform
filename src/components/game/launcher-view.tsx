@@ -1982,11 +1982,11 @@ export default function LauncherView() {
 
   const handlePlay = useCallback(() => {
     // Direct to game hub — guests can play Practice without login
-    window.location.href = "/game"
+    window.location.href = "/app/battle"
   }, [])
   const handleSplashDone = useCallback(() => {
     setShowSplash(false)
-    window.location.href = "/game"
+    window.location.href = "/app/battle"
   }, [])
 
   const isHome = currentPage === "home"

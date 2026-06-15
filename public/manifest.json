@@ -55,7 +55,7 @@
     {
       "name": "Play",
       "short_name": "Play",
-      "url": "/game"
+      "url": "/app/battle"
     },
     {
       "name": "Battle",
