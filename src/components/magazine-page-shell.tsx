@@ -118,17 +118,12 @@ export default function MagazinePageShell({
       {/* ═══ MASTHEAD ═══ */}
       <MagazineHeader variant="app" />
 
-      {/* Magazine decorative stripe — hidden in battle */}
-      {!isBattlePlay && (
-        <div className="relative z-10 h-2 mag-stripes opacity-30 pointer-events-none" />
-      )}
-
-      {/* ═══ APP TAB STRIP ═══ */}
+      {/* ═══ APP TAB STRIP ═══ (flush to header, no gap) */}
       <nav
         className={`relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5
           overflow-x-auto
           [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]
-          border-b-[3px] border-[#1a1a1a] ${tabBg}`}
+          border-b-[3px] border-[#1a1a1a] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] ${tabBg}`}
         role="navigation"
         aria-label="App navigation"
       >
