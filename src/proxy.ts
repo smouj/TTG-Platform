@@ -37,7 +37,7 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL(LEGACY_PAGES[pathname], req.url), 308)
   }
 
-  if (pathname.startsWith("/app/")) {
+  if (pathname === "/app" || pathname.startsWith("/app/")) {
     if (!token || isJwtExpired(token)) {
       const loginUrl = new URL("/login", req.url)
       loginUrl.searchParams.set("redirect", pathname)
