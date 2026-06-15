@@ -2079,7 +2079,7 @@ export default function LauncherView() {
           <div className="flex items-center justify-between px-4 sm:px-6 py-2.5">
             <div className="flex items-center gap-2.5">
               <button onClick={() => navigate("home")} className="cursor-pointer">
-                <img src="/favicon-192.png" alt="TTG" className="w-7 h-7 sm:w-8 sm:h-8" />
+                <img src="/logo/logo-tg-yellow.png" alt="TTG" className="w-7 h-7 sm:w-8 sm:h-8" />
               </button>
               <div>
                 <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-[0.08em] leading-none">
