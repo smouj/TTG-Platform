@@ -6,7 +6,7 @@ import { FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
 import { TazoCollectionShowcase } from "../_tazo-showcase"
 
 export const metadata: Metadata = {
-  title: "Cybermon Collection 2014 Original Series | Trading Tazos Game",
+  title: "Cybermon Collection — Original Series | Trading Tazos Game",
   description: "Browse the Cybermon tazo collection — digital companions from the Neon Grid with complex evolution through Shifts. 50 tazos with high precision combat stats.",
   openGraph: { title: "Cybermon Collection — Digital Companions | Trading Tazos Game", description: "50 Cybermon tazos from the Neon Grid. Living code, emotional links, and shifting forms." },
 }

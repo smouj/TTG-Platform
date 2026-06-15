@@ -6,7 +6,7 @@ import { FRANCHISE_BY_SLUG } from "@/lib/franchise-config"
 import { TazoCollectionShowcase } from "../_tazo-showcase"
 
 export const metadata: Metadata = {
-  title: "Dracobell Collection 2014 Original Series | Trading Tazos Game",
+  title: "Dracobell Collection — Original Series | Trading Tazos Game",
   description: "Discover the Dracobell tazo collection — martial arts warriors from the world of Bellora across 6 unique categories. 50 tazos with rare Holo 3D variants.",
   openGraph: { title: "Dracobell Collection — Legendary Warriors | Trading Tazos Game", description: "50 Dracobell tazos across 6 categories. Clans, tournaments, dragon energy, and legendary Bell Shards." },
 }
