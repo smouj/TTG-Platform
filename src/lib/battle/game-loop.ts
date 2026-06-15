@@ -1,4 +1,5 @@
 // ============================================================
+import { getWearStatPenalty } from "./wear-system"
 // Trading Tazos Game — Battle Game Loop v4
 // Betting Slam — high-stakes elimination mechanic.
 //
@@ -376,7 +377,8 @@ export function simulateSlam(
   slam: SlamParams,
   staked: StakedTazo[],
   arena: Arena3DConfig,
-  thrower: "player" | "opponent"
+  thrower: "player" | "opponent",
+  defenders?: Map<string, TazoCard>
 ): { staked: StakedTazo[]; result: ImpactResult } {
   const {
     impactX, impactZ, verticalForce,
@@ -453,11 +455,33 @@ export function simulateSlam(
     const attackFactor = launcher.attack / 100  // 0-1
     const weightFactor = launcher.weight / 100   // 0-1
 
-    // Defender stats — own tazos are easier to flip
+    // Defender stats — use actual tazo stats + wear
     const ownTazo = st.owner === thrower
-    const defenseFactor = ownTazo ? 0.65 : (1 - 20 / 100)
-    const resistFactor = 1 - 15 / 100
-    const stabilityFactor = 1 - 60 / 100
+    const defender = defenders?.get(st.id)
+    let defenseFactor: number
+    let resistFactor: number
+    let stabilityFactor: number
+    let weightPenaltyFactor: number
+
+    if (defender) {
+      // Apply wear to defender stats
+      const defenderWear = getWearStatPenalty(defender.wear || 0)
+      const defDefense = (defender.defense || 50) * (1 - defenderWear.defense)
+      const defResist = (defender.resistance || 50) * (1 - defenderWear.resistance)
+      const defStability = (defender.stability || 50) * (1 - defenderWear.stability)
+      const defWeight = (defender.weight || 50) / 100
+
+      defenseFactor = ownTazo ? 0.65 : (1 - defDefense / 100)
+      resistFactor = 1 - defResist / 100
+      stabilityFactor = 1 - defStability / 100
+      weightPenaltyFactor = defWeight * 0.05  // Heavier = harder to flip (0-0.05)
+    } else {
+      // Fallback: balanced defaults when defender stats unavailable
+      defenseFactor = ownTazo ? 0.65 : 0.80
+      resistFactor = 0.85
+      stabilityFactor = 0.40
+      weightPenaltyFactor = 0
+    }
 
     const flipScore =
       (slamPower * 0.35) +
@@ -468,7 +492,8 @@ export function simulateSlam(
       (spinBonus * 0.10) -
       (defenseFactor * 0.08) -
       (resistFactor * 0.06) -
-      (stabilityFactor * 0.06)
+      (stabilityFactor * 0.06) -
+      weightPenaltyFactor  // Heavier defenders resist flips slightly more
 
     // ── Bounce check (knock out of circle) ──
     const bounceChance = launcher.bounce / 120 + slamPower * 0.15
@@ -591,8 +616,11 @@ export function generateAISlam(
     impactX = target.position[0] + (rng() - 0.5) * 0.2
     impactZ = target.position[2] + (rng() - 0.5) * 0.2
 
+    // Base precision from tazo stat (0.2-1.0), scaled by difficulty
+    const tazoBasePrecision = Math.max(0.2, (aiTazo.precision || 50) / 100)
+
     if (difficulty === "master") {
-      aimPrecision = 0.85 + rng() * 0.15
+      aimPrecision = Math.min(1.0, tazoBasePrecision * 0.55 + 0.35 + rng() * 0.10)
       timingAccuracy = 0.8 + rng() * 0.2
       verticalForce = 0.55 + rng() * 0.35
       // Smart tilt: edge attack mostly
@@ -600,7 +628,7 @@ export function generateAISlam(
       tiltIntensity = 0.4 + rng() * 0.4
       spinIntensity = 0.2 + rng() * 0.3
     } else if (difficulty === "skilled") {
-      aimPrecision = 0.6 + rng() * 0.25
+      aimPrecision = Math.min(1.0, tazoBasePrecision * 0.50 + 0.20 + rng() * 0.15)
       timingAccuracy = 0.55 + rng() * 0.3
       verticalForce = 0.45 + rng() * 0.35
       tilt = rng() > 0.5 ? "forward" : "flat"
@@ -608,7 +636,7 @@ export function generateAISlam(
       spinIntensity = rng() * 0.25
     } else {
       // Novice: mostly random, flat
-      aimPrecision = 0.35 + rng() * 0.35
+      aimPrecision = Math.min(1.0, tazoBasePrecision * 0.35 + 0.05 + rng() * 0.15)
       timingAccuracy = 0.3 + rng() * 0.4
       verticalForce = 0.25 + rng() * 0.5
       tiltIntensity = rng() * 0.3
@@ -693,9 +721,46 @@ export function checkMatchEnd(
   playerScore: number,
   opponentScore: number,
   playerRemaining: number,
-  opponentRemaining: number
+  opponentRemaining: number,
+  scoreToWin?: number
 ): MatchResult | null {
-  // Win by elimination: opponent has no tazos left
+  // 1. Win by TKO (score limit reached) — checked first
+  if (scoreToWin && scoreToWin > 0) {
+    if (playerScore >= scoreToWin) {
+      return {
+        winner: "player",
+        victoryType: "tko",
+        playerScore,
+        opponentScore,
+        playerRemaining,
+        opponentRemaining,
+        rounds: [],
+        totalTurns: 0,
+        playerCaptures: playerScore,
+        opponentCaptures: opponentScore,
+        xpEarned: 15 + playerScore * 3,
+        summary: `Victory! You won ${playerScore}-${opponentScore}!`,
+      }
+    }
+    if (opponentScore >= scoreToWin) {
+      return {
+        winner: "opponent",
+        victoryType: "tko",
+        playerScore,
+        opponentScore,
+        playerRemaining,
+        opponentRemaining,
+        rounds: [],
+        totalTurns: 0,
+        playerCaptures: playerScore,
+        opponentCaptures: opponentScore,
+        xpEarned: 2,
+        summary: `${opponentScore}-${playerScore} — better luck next time!`,
+      }
+    }
+  }
+
+  // 2. Win by elimination: opponent has no tazos left
   if (opponentRemaining <= 0) {
     return {
       winner: "player",

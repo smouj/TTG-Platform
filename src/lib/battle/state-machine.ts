@@ -314,14 +314,16 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     guard(ctx) {
       const result = checkMatchEnd(
         ctx.player.score, ctx.opponent.score,
-        ctx.playerRemaining, ctx.opponentRemaining
+        ctx.playerRemaining, ctx.opponentRemaining,
+        ctx.config.scoreToWin
       )
       return result !== null
     },
     action(ctx) {
       const result = checkMatchEnd(
         ctx.player.score, ctx.opponent.score,
-        ctx.playerRemaining, ctx.opponentRemaining
+        ctx.playerRemaining, ctx.opponentRemaining,
+        ctx.config.scoreToWin
       )
       return { ...ctx, state: "match_end", matchResult: result!,
         roundHistory: result?.rounds ? result.rounds : ctx.roundHistory }
@@ -552,15 +554,18 @@ export function generateOpponentSlam(ctx: BattleContext): SlamParams | null {
 
 export function autoSelectOpponentBet(ctx: BattleContext): TazoCard | null {
   if (ctx.opponentHand.length === 0) return null
-  // AI picks based on difficulty
+  // AI picks based on difficulty — sorted copy to avoid mutation
+  const sorted = [...ctx.opponentHand]
   if (ctx.config.aiDifficulty === "master") {
-    return ctx.opponentHand.sort((a, b) => b.attack - a.attack)[0]
+    sorted.sort((a, b) => b.attack - a.attack)
+  } else if (ctx.config.aiDifficulty === "skilled") {
+    sorted.sort((a, b) => (b.attack + b.defense) - (a.attack + a.defense))
+    return sorted[0]
   }
-  if (ctx.config.aiDifficulty === "skilled") {
-    return ctx.opponentHand.sort((a, b) => (b.attack + b.defense) - (a.attack + a.defense))[0]
-  }
-  // Novice: random
-  return ctx.opponentHand[Math.floor(Math.random() * ctx.opponentHand.length)]
+  // Novice: random (or first from sorted for skilled/master)
+  return ctx.config.aiDifficulty === "novice"
+    ? ctx.opponentHand[Math.floor(Math.random() * ctx.opponentHand.length)]
+    : sorted[0]
 }
 
 // ────────────────────────────────────────
@@ -597,47 +602,23 @@ export function applyScoring(
 export function buildMatchResult(ctx: BattleContext): MatchResult {
   if (ctx.matchResult) return ctx.matchResult
 
+  // Single unified check — handles elimination, TKO, score limit
   const result = checkMatchEnd(
     ctx.player.score,
     ctx.opponent.score,
     ctx.playerRemaining,
-    ctx.opponentRemaining
+    ctx.opponentRemaining,
+    ctx.config.scoreToWin
   )
 
-  if (result) return result
-
-  // Score-based (legacy TKO)
-  if (ctx.player.score >= ctx.config.scoreToWin) {
+  if (result) {
+    // Enrich with round history + turn count
     return {
-      winner: "player",
-      victoryType: "tko",
-      playerScore: ctx.player.score,
-      opponentScore: ctx.opponent.score,
-      playerRemaining: ctx.playerRemaining,
-      opponentRemaining: ctx.opponentRemaining,
+      ...result,
       rounds: ctx.roundHistory,
       totalTurns: ctx.turnNumber,
       playerCaptures: ctx.player.score,
       opponentCaptures: ctx.opponent.score,
-      xpEarned: 15 + ctx.player.score * 3,
-      summary: `Victory! You won ${ctx.player.score}-${ctx.opponent.score}!`,
-    }
-  }
-
-  if (ctx.opponent.score >= ctx.config.scoreToWin) {
-    return {
-      winner: "opponent",
-      victoryType: "tko",
-      playerScore: ctx.player.score,
-      opponentScore: ctx.opponent.score,
-      playerRemaining: ctx.playerRemaining,
-      opponentRemaining: ctx.opponentRemaining,
-      rounds: ctx.roundHistory,
-      totalTurns: ctx.turnNumber,
-      playerCaptures: ctx.player.score,
-      opponentCaptures: ctx.opponent.score,
-      xpEarned: 2,
-      summary: `${ctx.opponent.score}-${ctx.player.score} — better luck next time!`,
     }
   }
 

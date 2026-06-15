@@ -1,3 +1,4 @@
+import React, { useState, useCallback, useMemo } from "react"
 // ============================================================
 // Trading Tazos Game — Battle View v4 (FSM-powered)
 //
@@ -8,7 +9,7 @@
 // ============================================================
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import {
@@ -232,6 +233,16 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const { user, token } = useAuth()
   const router = useRouter()
   const engine = useBattleEngine()
+  const ctxDefenders = React.useMemo(() => {
+    const m = new Map<string, any>()
+    const cfg = engine.ctx?.config
+    if (cfg) {
+      for (const t of [...(cfg.playerDeck || []), ...(cfg.opponentDeck || [])]) {
+        if (t) m.set(t.id, t)
+      }
+    }
+    return m
+  }, [engine.ctx?.config?.playerDeck, engine.ctx?.config?.opponentDeck])
   const { ctx } = engine
 
   const [loading, setLoading] = useState(true)
@@ -558,7 +569,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
               setTimeout(() => {
                 if (!engine.ctx || !cfg) return
                 playSfx("slam_impact", 0.6)
-                const { result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent")
+                const { result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent", ctxDefenders)
                 const aiScoring = scoreBettingImpact(aiImpact, "opponent")
                 
                 engine.resolveImpact(aiImpact, "opponent")
@@ -678,7 +689,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
       playSfx("slam_impact", 0.6)
 
-      const { staked: newStaked, result: impact } = simulateSlam(t, slam, currentCtx.stakedTazos, cfg.arena, "player")
+      const { staked: newStaked, result: impact } = simulateSlam(t, slam, currentCtx.stakedTazos, cfg.arena, "player", ctxDefenders)
       const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "player")
 
       // Resolve through FSM
@@ -749,7 +760,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
                 // Animate airborne falling to impact
                 setAirborne(prev => prev ? { ...prev, state: "falling", position: [aiSlam.impactX * 0.3, 0.05, aiSlam.impactZ * 0.3] } : prev)
 
-                const { staked: newStakedAI, result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent")
+                const { staked: newStakedAI, result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent", ctxDefenders)
                 const aiScoring = scoreBettingImpact(aiImpact, "opponent")
 
                 engine.resolveImpact(aiImpact, "opponent")
@@ -839,7 +850,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       setTimeout(() => {
         if (!engine.ctx || !cfg) { engine.setBusy(false); return }
         playSfx("slam_impact", 0.5)
-        const { result: impact } = simulateSlam(oppTazo, slam, engine.ctx.stakedTazos, cfg.arena, "opponent")
+        const { result: impact } = simulateSlam(oppTazo, slam, engine.ctx.stakedTazos, cfg.arena, "opponent", ctxDefenders)
         const scoring = scoreBettingImpact(impact, "opponent")
         engine.resolveImpact(impact, "opponent")
         engine.setImpactMsg(impact.description)
@@ -946,7 +957,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         timingAccuracy: charge > 0.6 && charge < 0.82 ? 0.95 : 0.6,
         tilt: tiltDir, tiltIntensity, spinIntensity,
         aimPrecision: Math.max(0.2, (t.precision || 50) / 100) }
-      const { result: impact } = simulateSlam(t, slam, engine.ctx.stakedTazos, cfg.arena, "player")
+      const { result: impact } = simulateSlam(t, slam, engine.ctx.stakedTazos, cfg.arena, "player", ctxDefenders)
       const scoring = scoreBettingImpact(impact, "player")
       engine.resolveImpact(impact, "player")
       setAirborne(null)

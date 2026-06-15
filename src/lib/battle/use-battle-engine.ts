@@ -287,7 +287,9 @@ export function useBattleEngine(): BattleEngine {
           const c4 = ctxRef.current
           if (!c4) { onDone(); return }
 
-          const { result: impact } = simulateSlam(aiTazo, slam, c4.stakedTazos, c4.config.arena, "opponent")
+          const defendersMap = new Map<string, TazoCard>()
+          for (const dt of [...c4.config.playerDeck, ...c4.config.opponentDeck]) { defendersMap.set(dt.id, dt) }
+          const { result: impact } = simulateSlam(aiTazo, slam, c4.stakedTazos, c4.config.arena, "opponent", defendersMap)
           const scoring = scoreBettingImpact(impact, "opponent")
           const scored = applyScoring(c4, impact, "opponent")
 
