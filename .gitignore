@@ -121,3 +121,7 @@ public/tazos-generated/
 public/tazos-artgen/
 public/tazos-tubes/
 backups/
+
+# Runtime data (never committed)
+data/
+public/uploads/
