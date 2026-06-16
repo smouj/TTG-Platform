@@ -1,43 +1,59 @@
 // ============================================================
 // Trading Tazos Game — App-level Loading UI
-// Shown instantly during route transitions (Suspense boundary)
-// Matches the magazine-style brand aesthetic
+// Magazine-themed splash with branded logo + skeleton grid
 // ============================================================
-import { Zap } from "lucide-react"
 
 export default function AppLoading() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6 p-8">
-      {/* Brand spinner */}
-      <div className="relative w-16 h-16">
-        <div className="absolute inset-0 rounded-full border-4 border-[#1a1a1a]/10 animate-ping" />
-        <div className="absolute inset-0 rounded-full border-4 border-t-[#3B4CCA] border-r-[#FF3E3E] border-b-[#FFD700] border-l-[#1a1a1a] animate-spin" />
-        <div className="absolute inset-1 rounded-full bg-white" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Zap className="w-5 h-5 text-[#1a1a1a]" />
+    <div className="min-h-screen flex flex-col items-center justify-center gap-8 p-8" style={{ background: "#FFF9E6" }}>
+      {/* Halftone */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle, #1a1a1a 1px, transparent 1px)", backgroundSize: "6px 6px" }} />
+      
+      {/* Brand logo spacer */}
+      <div className="relative z-10 flex flex-col items-center gap-4">
+        <div className="relative w-14 h-14">
+          <div className="absolute inset-0 rounded-full bg-[#FFCC00]/15 animate-ping" />
+          <img src="/logo/logo-tg-yellow.png" alt="" className="relative w-14 h-14" style={{ animation: "mag-entry-hero 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" }} />
         </div>
+        <p className="text-sm font-black text-[#1a1a1a]/25 uppercase tracking-[0.2em]" style={{ animation: "mag-entry-fade-in 0.5s 0.2s ease-out both" }}>
+          Loading Arena
+        </p>
       </div>
-      <p className="text-sm font-bold text-[#1a1a1a]/40 uppercase tracking-widest animate-pulse">
-        Loading
-      </p>
 
-      {/* Skeleton cards — magazine grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 w-full max-w-3xl">
-        {Array.from({ length: 4 }).map((_, i) => (
+      {/* Skeleton grid — staggered entry */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 w-full max-w-3xl relative z-10">
+        {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={i}
-            className="aspect-square rounded-xl bg-[#f5f5f5] border-2 border-[#1a1a1a]/10 animate-pulse flex items-center justify-center"
-            style={{ animationDelay: `${i * 120}ms` }}
+            className="aspect-square rounded-xl border-2 border-[#1a1a1a]/10 bg-white overflow-hidden"
+            style={{
+              animation: `mag-entry-fade-up 0.5s ${0.1 + i * 0.08}s cubic-bezier(0.16, 1, 0.3, 1) both`,
+            }}
           >
-            <div className="w-2/3 h-2/3 rounded-full bg-[#00000008]" />
+            <div className="w-full h-full flex items-center justify-center bg-[#fafaf5]">
+              <div className="w-2/3 h-2/3 rounded-full" style={{
+                background: "#1a1a1a06",
+                animation: "mag-skeleton-shimmer 1.5s ease-in-out infinite",
+                animationDelay: `${i * 0.15}s`,
+              }} />
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Subtitle hits */}
-      <div className="flex flex-col items-center gap-1.5 w-full max-w-md">
-        <div className="h-3 w-48 rounded bg-[#f0f0f0] animate-pulse" style={{ animationDelay: "100ms" }} />
-        <div className="h-3 w-32 rounded bg-[#f0f0f0] animate-pulse" style={{ animationDelay: "200ms" }} />
+      {/* Bottom loading bar */}
+      <div className="relative z-10 w-full max-w-xs mt-2">
+        <div className="h-1 w-full bg-[#1a1a1a]/5 rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: "40%",
+              background: "linear-gradient(90deg, #FFCC00, #E3350D, #FFCC00)",
+              backgroundSize: "200% 100%",
+              animation: "mag-skeleton-shimmer 2s ease-in-out infinite",
+            }}
+          />
+        </div>
       </div>
     </div>
   )

@@ -8,7 +8,19 @@ import { useSearchParams } from "next/navigation"
 import StatsPanel from "@/components/game/stats-panel"
 import BattleHistory from "@/components/game/battle-history"
 import { BarChart3 } from "lucide-react"
+import { StatsPanelSkeleton, BattleHistorySkeleton } from "@/components/ui/loading-skeletons"
 import { TOTAL_PLANNED } from "@/lib/franchise-config"
+
+function StatsSkeleton() {
+  return (
+    <div className="max-w-7xl mx-auto w-full py-4 sm:py-6 space-y-4 px-4">
+      {/* Banner skeleton */}
+      <div className="h-14 rounded bg-[#1a1a1a]/[0.04] animate-pulse" />
+      <StatsPanelSkeleton />
+      <BattleHistorySkeleton rows={4} />
+    </div>
+  )
+}
 
 function StatsContent() {
   const searchParams = useSearchParams()
@@ -40,7 +52,9 @@ function StatsContent() {
 
 export default function StatsPage() {
   return (
-    <Suspense fallback={<div className="max-w-7xl mx-auto w-full py-4 sm:py-6 animate-pulse"><div className="h-64 bg-[#fffef0] border-3 border-[#1a1a1a]" /></div>}>
+    <Suspense fallback={
+      <StatsSkeleton />
+    }>
       <StatsContent />
     </Suspense>
   )

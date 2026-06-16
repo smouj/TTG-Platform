@@ -7,6 +7,8 @@
 type SFXName = 'click' | 'bag_open' | 'bag_tear' | 'reveal' | 'battle_hit'
   | 'battle_victory' | 'battle_defeat' | 'nav' | 'equip' | 'error'
   | 'tick' | 'woosh' | 'coin' | 'unlock'
+  | 'page_turn' | 'deck_shuffle' | 'tazo_collect' | 'shop_purchase'
+  | 'level_up' | 'hover'
 
 interface SFXOptions {
   volume?: number   // 0-1, default 0.3
@@ -408,6 +410,159 @@ export function playSFX(name: SFXName, opts: SFXOptions = {}) {
       })
       break
     }
+    case 'page_turn': {
+      // Magazine page flip — low brrrrrp
+      const dur = 0.15
+      const osc = ctx.createOscillator()
+      osc.type = 'sawtooth'
+      osc.frequency.setValueAtTime(120 * pitch, now)
+      osc.frequency.exponentialRampToValueAtTime(60 * pitch, now + dur)
+      const gain = ctx.createGain()
+      gain.gain.setValueAtTime(vol * 0.12, now)
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur)
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'lowpass'
+      filter.frequency.setValueAtTime(400, now)
+      osc.connect(filter).connect(gain).connect(ctx.destination)
+      osc.start(now)
+      osc.stop(now + dur)
+      break
+    }
+
+    case 'deck_shuffle': {
+      // Card shuffling — rapid filtered noise bursts
+      for (let i = 0; i < 4; i++) {
+        const t = now + i * 0.07
+        const dur = 0.05
+        const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate)
+        const d = buf.getChannelData(0)
+        for (let j = 0; j < d.length; j++) {
+          d[j] = (Math.random() * 2 - 1) * Math.exp(-j / (d.length * 0.2))
+        }
+        const src = ctx.createBufferSource()
+        src.buffer = buf
+        const g2 = ctx.createGain()
+        g2.gain.setValueAtTime(vol * 0.15, t)
+        g2.gain.exponentialRampToValueAtTime(0.001, t + dur)
+        const filter = ctx.createBiquadFilter()
+        filter.type = 'bandpass'
+        filter.frequency.setValueAtTime(600 + Math.random() * 800, t)
+        src.connect(filter).connect(g2).connect(ctx.destination)
+        src.start(t)
+        src.stop(t + dur)
+      }
+      // Final crisp snap
+      const snapOsc = ctx.createOscillator()
+      snapOsc.type = 'square'
+      snapOsc.frequency.setValueAtTime(200 * pitch, now + 0.28)
+      const snapGain = ctx.createGain()
+      snapGain.gain.setValueAtTime(vol * 0.2, now + 0.28)
+      snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35)
+      snapOsc.connect(snapGain).connect(ctx.destination)
+      snapOsc.start(now + 0.28)
+      snapOsc.stop(now + 0.35)
+      break
+    }
+
+    case 'tazo_collect': {
+      // Collecting a tazo — sparkly ascending notes
+      const notes = [523, 659, 784, 1047]
+      notes.forEach((freq, i) => {
+        const t = now + i * 0.06
+        const osc = ctx.createOscillator()
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(freq * pitch, t)
+        const g2 = ctx.createGain()
+        g2.gain.setValueAtTime(0, t)
+        g2.gain.linearRampToValueAtTime(vol * 0.25, t + 0.02)
+        g2.gain.exponentialRampToValueAtTime(0.001, t + 0.2)
+        osc.connect(g2).connect(ctx.destination)
+        osc.start(t)
+        osc.stop(t + 0.2)
+      })
+      // Sparkle overlay
+      setTimeout(() => {
+        const osc2 = ctx.createOscillator()
+        osc2.type = 'triangle'
+        osc2.frequency.setValueAtTime(2093 * pitch, ctx.currentTime)
+        const g3 = ctx.createGain()
+        g3.gain.setValueAtTime(vol * 0.1, ctx.currentTime)
+        g3.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4)
+        osc2.connect(g3).connect(ctx.destination)
+        osc2.start(ctx.currentTime)
+        osc2.stop(ctx.currentTime + 0.4)
+      }, 240)
+      break
+    }
+
+    case 'shop_purchase': {
+      // Ka-ching! — cash register
+      const osc1 = ctx.createOscillator()
+      osc1.type = 'triangle'
+      osc1.frequency.setValueAtTime(880 * pitch, now)
+      osc1.frequency.setValueAtTime(1100 * pitch, now + 0.05)
+      const gain1 = ctx.createGain()
+      gain1.gain.setValueAtTime(vol * 0.3, now)
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.2)
+      osc1.connect(gain1).connect(ctx.destination)
+      osc1.start(now)
+      osc1.stop(now + 0.2)
+
+      const osc2 = ctx.createOscillator()
+      osc2.type = 'sine'
+      osc2.frequency.setValueAtTime(1320 * pitch, now + 0.08)
+      const gain2 = ctx.createGain()
+      gain2.gain.setValueAtTime(vol * 0.2, now + 0.08)
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.3)
+      osc2.connect(gain2).connect(ctx.destination)
+      osc2.start(now + 0.08)
+      osc2.stop(now + 0.3)
+      break
+    }
+
+    case 'level_up': {
+      // Level-up fanfare — triumphant ascending arpeggio
+      const melody = [523, 659, 784, 1047, 1319, 1568]
+      melody.forEach((freq, i) => {
+        const t = now + i * 0.08
+        const osc = ctx.createOscillator()
+        osc.type = 'triangle'
+        osc.frequency.setValueAtTime(freq * pitch, t)
+        const g2 = ctx.createGain()
+        g2.gain.setValueAtTime(0, t)
+        g2.gain.linearRampToValueAtTime(vol * 0.3, t + 0.03)
+        g2.gain.exponentialRampToValueAtTime(0.001, t + 0.35)
+        osc.connect(g2).connect(ctx.destination)
+        osc.start(t)
+        osc.stop(t + 0.35)
+      })
+      // Bass pad underneath
+      const bass = ctx.createOscillator()
+      bass.type = 'sine'
+      bass.frequency.setValueAtTime(130 * pitch, now)
+      const bassGain = ctx.createGain()
+      bassGain.gain.setValueAtTime(vol * 0.15, now)
+      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6)
+      bass.connect(bassGain).connect(ctx.destination)
+      bass.start(now)
+      bass.stop(now + 0.6)
+      break
+    }
+
+    case 'hover': {
+      // Subtle UI hover — barely audible tick
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.setValueAtTime(1600 * pitch, now)
+      const g2 = ctx.createGain()
+      g2.gain.setValueAtTime(vol * 0.04, now)
+      g2.gain.exponentialRampToValueAtTime(0.001, now + 0.04)
+      osc.connect(g2).connect(ctx.destination)
+      osc.start(now)
+      osc.stop(now + 0.04)
+      break
+    }
+
   }
 }
 
