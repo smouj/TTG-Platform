@@ -96,6 +96,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="overflow-x-hidden" suppressHydrationWarning>
       <head>
+        <meta name="app-version" content={VERSION} />
         {/* JSON-LD structured data for VideoGame */}
         <script
           type="application/ld+json"

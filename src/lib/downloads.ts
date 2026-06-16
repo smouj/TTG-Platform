@@ -18,8 +18,8 @@ export type DownloadPlatform = {
   }[]
 }
 
-const RELEASE_TAG = "v0.7.2"
-const DESKTOP_VERSION = "0.7.2"
+const RELEASE_TAG = "v0.8.0"
+const DESKTOP_VERSION = "0.8.0"
 const RELEASE_BASE = `${SITE_CONFIG.social.github}/releases/download/${RELEASE_TAG}`
 
 export const DOWNLOAD_RELEASE = {
@@ -38,7 +38,7 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
     primary: {
       label: "Download .exe",
       url: `${RELEASE_BASE}/trading-tazos-game-${DESKTOP_VERSION}-win-x64.exe`,
-      size: "257 MB",
+      size: "254 MB",
     },
   },
   {
@@ -50,13 +50,13 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
     primary: {
       label: "Apple Silicon .dmg",
       url: `${RELEASE_BASE}/trading-tazos-game-${DESKTOP_VERSION}-mac-arm64.dmg`,
-      size: "329 MB",
+      size: "339 MB",
     },
     secondary: [
       {
         label: "Intel .dmg",
         url: `${RELEASE_BASE}/trading-tazos-game-${DESKTOP_VERSION}-mac-x64.dmg`,
-        size: "333 MB",
+        size: "343 MB",
       },
     ],
   },
@@ -69,13 +69,13 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
     primary: {
       label: "Download AppImage",
       url: `${RELEASE_BASE}/trading-tazos-game-${DESKTOP_VERSION}-linux-x86_64.AppImage`,
-      size: "395 MB",
+      size: "400 MB",
     },
     secondary: [
       {
         label: "Download .deb",
         url: `${RELEASE_BASE}/trading-tazos-game-${DESKTOP_VERSION}-linux-amd64.deb`,
-        size: "277 MB",
+        size: "279 MB",
       },
     ],
   },

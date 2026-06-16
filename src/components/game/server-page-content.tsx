@@ -164,7 +164,7 @@ function ServerFAQ() {
       <h2>How do battles work?</h2>
       <p>Build a deck of 5, drop tazos from above into the arena, impact the stack, and flip opponent discs to capture them. It is a physics-based skill battle, not turn-based cards.</p>
       <h2>Can I play as a guest?</h2>
-      <p>You can browse the site as a guest, but to open bags, battle, and collect tazos, you need to create a free account.</p>
+      <p>Try the practice arena instantly — no account needed. Battle against the AI, test different decks, and experience the slam mechanics. Create a free account to open bags, build your collection, earn credits, and compete on the leaderboard.</p>
       <h2>What are the tazo stats?</h2>
       <p>Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision.</p>
       <h2>What is a deck?</h2>
