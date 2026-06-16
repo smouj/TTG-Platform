@@ -137,6 +137,38 @@ function CreateQuickDeckButton({ onCreated }: { onCreated: (deckId: string) => v
   )
 }
 
+
+// ── Launch Overlay Component ──
+function LaunchOverlay({ fading }: { fading: boolean }) {
+  const [opacity, setOpacity] = useState(fading ? 1 : 1)
+  
+  useEffect(() => {
+    if (fading) {
+      // Fade out over 600ms after a brief hold
+      const fadeTimer = setTimeout(() => setOpacity(0), 300)
+      return () => clearTimeout(fadeTimer)
+    }
+  }, [fading])
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 10000,
+      background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)",
+      opacity, transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+      pointerEvents: opacity < 0.1 ? "none" : "auto",
+    }}>
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)" }} />
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.08, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,204,0,0.3) 8px, rgba(255,204,0,0.3) 10px)" }} />
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2rem" }}>
+        <div style={{ width: 72, height: 72, borderRadius: "50%", border: "3px solid rgba(255,204,0,0.12)", borderTopColor: "#FFCC00", animation: "spin 0.8s linear infinite", boxShadow: "0 0 32px rgba(255,204,0,0.15)" }} />
+        <p style={{ fontSize: 14, fontWeight: 900, color: "rgba(255,255,255,0.8)", textTransform: "uppercase", letterSpacing: "0.25em" }}>
+          {fading ? "Arena Ready" : "Entering Arena…"}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function BattlePage() {
   const { user } = useAuth()
 
@@ -235,10 +267,11 @@ export default function BattlePage() {
       document.body.classList.remove("ttg-battle-active")
     }
 
-    // Render BattleView inline over the lobby — no navigation, no shell flash
+    // Smooth launch sequence: keep launch overlay for dramatic effect,
+    // then reveal BattleView with a short fade window
     setTimeout(() => {
       setBattleActive(true)
-    }, 100)
+    }, 1200)
   }
 
   const canStart = selectedDeckId && deckStats.count >= 1 && mode === "practice" && !launching
@@ -247,25 +280,22 @@ export default function BattlePage() {
   // ═══ BATTLE ACTIVE — render BattleView in fullscreen overlay ═══
   if (battleActive) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#0a0a0a" }}>
-        <BattleView />
-      </div>
+      <>
+        {/* BattleView — fullscreen, slots in under the fading launch overlay */}
+        <div style={{ position: "fixed", inset: 0, zIndex: 9998, background: "#0a0a0a" }}>
+          <BattleView />
+        </div>
+
+        {/* Launch overlay fades out over BattleView — smooth transition */}
+        <LaunchOverlay fading={true} />
+      </>
     )
   }
 
   return (
     <div className="w-full py-4 sm:py-6 space-y-6">
       {/* Launch overlay — dark fullscreen while BattleView loads */}
-      {launching && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9998, background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)" }}>
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)" }} />
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.08, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,204,0,0.3) 8px, rgba(255,204,0,0.3) 10px)" }} />
-          <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2rem" }}>
-            <div style={{ width: 72, height: 72, borderRadius: "50%", border: "3px solid rgba(255,204,0,0.12)", borderTopColor: "#FFCC00", animation: "spin 0.8s linear infinite", boxShadow: "0 0 32px rgba(255,204,0,0.15)" }} />
-            <p style={{ fontSize: 12, fontWeight: 900, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.25em" }}>Entering Arena…</p>
-          </div>
-        </div>
-      )}
+      {launching && <LaunchOverlay fading={false} />}
 
 
 

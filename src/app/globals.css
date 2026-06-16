@@ -1337,6 +1337,22 @@ body.ttg-battle-active [data-ttg-hide-on-battle] {
 }
 
 /* also lock body scroll during battle */
+/* Full viewport lock during battle — no scroll, no gaps */
 body.ttg-battle-active {
-  overflow: hidden;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  width: 100vw;
+  height: 100dvh;
+}
+body.ttg-battle-active #main-content {
+  overflow: visible;
+  min-height: 0;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* TUTORIAL SPOTLIGHT ANIMATION                            */
+/* ═══════════════════════════════════════════════════════ */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 9999px rgba(0,0,0,0.65), inset 0 0 0 3px rgba(255,204,0,0.4); }
+  50% { box-shadow: 0 0 0 9999px rgba(0,0,0,0.55), inset 0 0 0 3px rgba(255,204,0,0.8); }
 }

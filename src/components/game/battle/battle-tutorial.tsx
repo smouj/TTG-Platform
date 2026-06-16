@@ -98,19 +98,37 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]" onClick={handleSkip} />
+      <div className="absolute inset-0 bg-black/70" onClick={handleSkip} />
 
       {/* Spot glow for highlight area */}
       {current.highlight === "battle-arena" && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[60vw] h-[50vh] ring-4 ring-[#FFCC00]/70 animate-pulse shadow-[0_0_60px_rgba(255,204,0,0.3)]" />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div className="w-[65vw] h-[55vh]"
+            style={{
+              background: "transparent",
+              boxShadow: "0 0 0 9999px rgba(0,0,0,0.65), inset 0 0 0 3px rgba(255,204,0,0.6)",
+              animation: "pulse-glow 2s ease-in-out infinite",
+            }}
+          />
         </div>
       )}
       {current.highlight === "battle-hand" && (
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-[#FFCC00]/15 border-t-3 border-[#FFCC00]/60 pointer-events-none animate-pulse shadow-[0_-10px_40px_rgba(255,204,0,0.15)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-44 pointer-events-none z-10"
+          style={{
+            background: "transparent",
+            boxShadow: "0 0 0 9999px rgba(0,0,0,0.65), inset 0 3px 0 0 rgba(255,204,0,0.6)",
+            animation: "pulse-glow 2s ease-in-out infinite",
+          }}
+        />
       )}
       {current.highlight === "battle-hud" && (
-        <div className="absolute top-0 left-0 right-0 h-24 bg-[#FFCC00]/15 border-b-3 border-[#FFCC00]/60 pointer-events-none animate-pulse shadow-[0_10px_40px_rgba(255,204,0,0.15)]" />
+        <div className="absolute top-0 left-0 right-0 h-28 pointer-events-none z-10"
+          style={{
+            background: "transparent",
+            boxShadow: "0 0 0 9999px rgba(0,0,0,0.65), inset 0 -3px 0 0 rgba(255,204,0,0.6)",
+            animation: "pulse-glow 2s ease-in-out infinite",
+          }}
+        />
       )}
 
       {/* Card */}
