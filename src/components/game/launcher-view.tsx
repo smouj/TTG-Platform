@@ -856,7 +856,7 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
               </div>
               {/* Tazo grid */}
               {tazos.slice(0, 3).map((t, i) => (
-                  <div key={t.id || i} className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-[3px] border-[#1a1a1a]/40 bg-white group-hover:border-[#1a1a1a]/80 group-hover:scale-110 group-hover:shadow-lg transition-all" style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.18)" }}>
+                  <div key={t.id || i} className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-[3px] border-[#1a1a1a]/40 bg-white group-hover:border-[#1a1a1a]/80 group-hover:scale-110 group-hover:shadow-lg transition-all" style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.18)" }}>
                     {t.imageUrl ? (
                       <TazoDiscImage src={t.imageUrl} alt={t.name || ''} size="100%" borderWidth={0} scale={0.88}
                         franchiseSlug={t.franchiseSlug || (typeof t.franchise === "string" ? t.franchise : "minimon")}
