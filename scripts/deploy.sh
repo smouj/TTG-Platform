@@ -71,6 +71,24 @@ cp -r public/textures/bags .next/standalone/public/textures/ 2>/dev/null || true
 cp -r public/logo/logo-tg-yellow.png public/logo/series-*.png public/logo/*.webp .next/standalone/public/logo/ 2>/dev/null || true
 mkdir -p .next/standalone/public/tazos-tubes
 
+# ── Avatar / Upload persistence ──
+# Uploads (avatars, scanned) must survive deploys — store outside standalone/
+mkdir -p data/uploads/avatars
+mkdir -p data/uploads/scanned
+# Symlink standalone/public/uploads → data/uploads (files persist across deploys)
+rm -rf .next/standalone/public/uploads
+ln -sf /home/smouj/apps/ttg/Trading-Tazos-Game/data/uploads .next/standalone/public/uploads
+
+# Also ensure local uploads dir exists for dev
+mkdir -p public/uploads/avatars
+mkdir -p public/uploads/scanned
+
+# Repo-root uploads symlink → persistent storage
+# The API writes to process.cwd()/public/uploads/ on VPS
+# Symlink repo public/uploads → data/uploads so files persist
+rm -rf public/uploads
+ln -sf /home/smouj/apps/ttg/Trading-Tazos-Game/data/uploads public/uploads
+
 # Fix DATABASE_URL to point to canonical data/dev.db (not standalone copy)
 # CRITICAL: symlink prevents 0-byte DB corruption
 TARGET_DB="file:/home/smouj/apps/ttg/Trading-Tazos-Game/data/dev.db"
