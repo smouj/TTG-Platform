@@ -106,10 +106,6 @@ export default function MagazineFooter() {
 
         {/* Right side: Disclaimer inline + Copyright */}
         <div className="flex items-center gap-3">
-          <span className="text-[7px] font-bold text-white/10 uppercase">
-            Independent fictional digital tazo game. Not affiliated with any third-party brand.
-          </span>
-          <span className="text-white/10">|</span>
           <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em] whitespace-nowrap">
             © {new Date().getFullYear()} {SITE_CONFIG.name} · v{SITE_CONFIG.version}
           </span>

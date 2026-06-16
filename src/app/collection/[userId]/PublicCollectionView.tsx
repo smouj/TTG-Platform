@@ -292,7 +292,7 @@ export default function PublicCollectionView({
             margin: 0,
           }}
         >
-          © 2026 {SITE_CONFIG.name} · v{SITE_CONFIG.version} · Independent fictional digital tazo game
+          © 2026 {SITE_CONFIG.name} · v{SITE_CONFIG.version}
         </p>
       </footer>
     </div>

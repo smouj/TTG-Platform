@@ -2311,10 +2311,6 @@ export default function LauncherView() {
               </a>
             </div>
             <div className="flex items-center gap-3">
-            <span className="text-[8px] font-bold text-white/15 uppercase hidden sm:inline">
-              Independent fictional digital tazo game. Not affiliated with any third-party brand.
-            </span>
-            <span className="text-white/10">|</span>
             <span className="text-[8px] font-black text-white/15 uppercase tracking-[0.3em] whitespace-nowrap">
               © {new Date().getFullYear()} {SITE_CONFIG.name} · v{SITE_CONFIG.version}
             </span>
