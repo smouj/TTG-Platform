@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo } from "react"
 import { useAuth } from "@/lib/auth-context"
 import {
   Search, X, ChevronLeft, ChevronRight,
-  Star, Sword, Shield, Zap, Save, Palette, Filter, CheckCircle, PackageOpen, Loader2,
+  Star, Sword, Shield, Zap, Save, Palette, Filter, CheckCircle, PackageOpen, Loader2, Plus,
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import BattleTubePreview, { TUBE_TEXTURE_OPTIONS } from "@/components/tubes/BattleTubePreview"
@@ -65,13 +65,20 @@ interface DeckBuilderProps {
 
 const STEP_LABELS = ["Name", "Tazos", "Seal"]
 
-function StepIndicator({ step }: { step: number }) {
+function StepIndicator({ step, onStepClick }: { step: number; onStepClick?: (s: number) => void }) {
   return (
     <div className="bg-[#1a1a1a] px-4 py-2 flex items-center gap-3 overflow-x-auto">
       {STEP_LABELS.map((label, idx) => {
         const s = idx + 1
+        const isClickable = onStepClick && s <= step
         return (
-          <div key={s} className="flex items-center gap-1.5 flex-shrink-0">
+          <button
+            key={s}
+            type="button"
+            onClick={() => isClickable && onStepClick(s)}
+            disabled={!isClickable}
+            className={`flex items-center gap-1.5 flex-shrink-0 ${isClickable ? "cursor-pointer hover:opacity-80" : "cursor-default"}`}
+          >
             <div
               className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black border-2 ${
                 s === step ? "bg-[#FFCC00] text-[#1a1a1a] border-[#FFCC00]" :
@@ -87,7 +94,7 @@ function StepIndicator({ step }: { step: number }) {
               {label}
             </span>
             {s < 3 && <span className="text-white/10 font-black text-[9px]">›</span>}
-          </div>
+          </button>
         )
       })}
     </div>
@@ -184,7 +191,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
   if (step === 1) {
     return (
       <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white">
-        <StepIndicator step={1} />
+        <StepIndicator step={1} onStepClick={setStep} />
         <div className="p-4 sm:p-6">
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Left: Form */}
@@ -284,7 +291,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
 
     return (
       <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white">
-        <StepIndicator step={2} />
+        <StepIndicator step={2} onStepClick={setStep} />
         <div className="p-4 sm:p-6">
           <div className="flex flex-col lg:flex-row gap-5">
             {/* Left: Tazo Grid */}
@@ -455,15 +462,22 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
 
     return (
       <div className="border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white">
-        <StepIndicator step={3} />
+        <StepIndicator step={3} onStepClick={setStep} />
         <div className="p-4 sm:p-6">
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left: Tube visual */}
-            <div className="flex-shrink-0 flex flex-col items-center lg:w-52">
-              <h3 className="text-lg font-black uppercase text-[#1a1a1a] tracking-wide mb-4 flex items-center gap-2">
+            {/* Right: Deck Preview (secondary) */}
+            <div className="flex-shrink-0 flex flex-col items-center lg:w-52 order-first lg:order-last">
+              <h3 className="text-lg font-black uppercase text-[#1a1a1a] tracking-wide mb-2 flex items-center gap-2">
                 <PackageOpen className="w-5 h-5 text-[#FFCC00]" />
                 Review & Seal
               </h3>
+              <p className="text-[10px] font-bold text-[#1a1a1a]/40 mb-3">
+                This is your deck preview. Want to change tazos?
+              </p>
+              <button onClick={() => setStep(2)}
+                className="mb-3 text-[9px] font-black uppercase flex items-center gap-1 px-3 py-1.5 border-2 border-[#1a1a1a]/15 bg-[#FFCC00]/10 hover:bg-[#FFCC00]/20 transition-colors">
+                <Plus className="w-3 h-3" /> Add More Tazos
+              </button>
               <BattleTubePreview
                 name={name}
                 color={color}
@@ -475,9 +489,9 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
               />
             </div>
 
-            {/* Right: Stats summary */}
+            {/* Left: Stats summary */}
             <div className="flex-1 space-y-4">
-<p className="text-[10px] font-bold text-[#1a1a1a]/35">Review your deck before sealing</p>
+              <p className="text-[10px] font-bold text-[#1a1a1a]/35">Review your deck before sealing</p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div className="p-3 border-2 border-[#1a1a1a] bg-[#fffef0] text-center">

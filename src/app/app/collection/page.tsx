@@ -12,7 +12,7 @@ import {
   Clock, ChevronRight, BookOpen, Sparkles,
   ShoppingBag, Gift, Camera, Search, Eye, Heart, PlusCircle,
   Disc3,
-} from "lucide-react"
+Loader2 } from "lucide-react"
 import UserIdCard from "@/components/game/user-id-card"
 
 // ── Types ──────────────────────────────────────────────
@@ -158,6 +158,39 @@ export default function CollectionPage() {
   const [flippedItems, setFlippedItems] = useState<Set<string>>(new Set())
   const [listedUserTazoIds, setListedUserTazoIds] = useState<Set<string>>(new Set())
   const [detailItem, setDetailItem] = useState<CollectionTazo | null>(null)
+  const [addingToDeck, setAddingToDeck] = useState<string | null>(null)
+  const [deckAddMsg, setDeckAddMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null)
+
+  // Add tazo to active deck
+  const handleAddToDeck = useCallback(async (tazoId: string) => {
+    setAddingToDeck(tazoId)
+    setDeckAddMsg(null)
+    try {
+      const dr = await fetch("/api/decks", { headers: { Authorization: `Bearer ${token}` } })
+      const dd = await dr.json()
+      const decks = dd.decks || []
+      const activeDeck = decks.find((d: any) => d.isActive) || decks[0]
+      if (!activeDeck) { setDeckAddMsg({ type: "err", text: "Create a deck in Decks first" }); return }
+      if (activeDeck.tazoCount >= 20) { setDeckAddMsg({ type: "err", text: "Deck is full (20/20)" }); return }
+      if (activeDeck.tazos?.some((t: any) => t.id === tazoId)) { setDeckAddMsg({ type: "err", text: "Already in deck" }); return }
+      const newIds = [...activeDeck.tazos.map((t: any) => t.id), tazoId]
+      const res = await fetch(`/api/decks/${activeDeck.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ tazoIds: newIds }),
+      })
+      if (res.ok) {
+        setDeckAddMsg({ type: "ok", text: `Added to ${activeDeck.name}` })
+        if (activeDeck.isActive) {
+          // If this is the active deck, the battle lobby count will update on next load
+        }
+      } else {
+        const err = await res.json()
+        setDeckAddMsg({ type: "err", text: err.error || "Failed" })
+      }
+    } catch { setDeckAddMsg({ type: "err", text: "Network error" }) }
+    finally { setAddingToDeck(null) }
+  }, [token])
 
   // Back art for each franchise
   const FRANCHISE_BACK: Record<string, string> = {
@@ -806,13 +839,18 @@ export default function CollectionPage() {
                               >
                                 <Eye className="w-2.5 h-2.5" /> View
                               </button>
-                              <Link
-                                href="/app/decks"
-                                className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#1a1a1a]/5 transition-colors flex items-center justify-center gap-0.5"
+                              <button
+                                onClick={() => handleAddToDeck(item.tazo?.id || item.id)}
+                                disabled={addingToDeck === (item.tazo?.id || item.id)}
+                                className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#FFCC00]/10 disabled:opacity-50 transition-colors flex items-center justify-center gap-0.5"
                                 title="Add to deck"
                               >
-                                <PlusCircle className="w-2.5 h-2.5" /> Deck
-                              </Link>
+                                {addingToDeck === (item.tazo?.id || item.id) ? (
+                                  <Loader2 className="w-2.5 h-2.5 animate-spin" />
+                                ) : (
+                                  <PlusCircle className="w-2.5 h-2.5" />
+                                )} Deck
+                              </button>
                               <button
                                 className="flex-1 text-[7px] font-black uppercase text-center py-1.5 border border-[#1a1a1a]/20 hover:bg-[#FFCC00]/10 transition-colors flex items-center justify-center gap-0.5"
                                 title={item.isFavorite ? "Favorited" : "Add to favorites"}

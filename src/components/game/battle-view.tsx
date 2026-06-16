@@ -347,7 +347,7 @@ async function fetchTazos(token: string): Promise<{ tazos: TazoCard[]; decks: an
       const dd = await dr.json()
       allDecks = dd.decks || []
       const activeDeck = allDecks.find((d: any) => d.isActive) || allDecks[0]
-      if (activeDeck && activeDeck.tazos?.length >= 5) {
+      if (activeDeck && activeDeck.tazos?.length >= 1) {
         const deckTazos: TazoCard[] = activeDeck.tazos.map((t: any) => ({
           id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
           franchise: (t.franchiseSlug || "minimon") as TazoCard["franchise"],
