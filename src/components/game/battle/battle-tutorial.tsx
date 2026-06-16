@@ -133,7 +133,7 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
 
       {/* Card */}
       <div className={`relative z-10 ${posClasses} ${current.position === "center" ? "absolute" : "absolute left-1/2 -translate-x-1/2"}`}>
-        <div className="rounded-3xl p-6 max-w-sm mx-auto backdrop-blur-2xl relative overflow-hidden"
+        <div className=" p-6 max-w-sm mx-auto backdrop-blur-2xl relative overflow-hidden"
           style={{
             background: "linear-gradient(135deg, rgba(10,10,10,0.92), rgba(20,20,20,0.85))",
             border: "1px solid rgba(255,204,0,0.12)",

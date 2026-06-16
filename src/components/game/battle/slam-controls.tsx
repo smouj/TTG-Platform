@@ -163,7 +163,7 @@ export default function SlamControls(props: SlamControlsProps) {
         {/* Reticle pad — magazine-issue frame */}
         <div className="absolute inset-0 z-20 pointer-events-none flex flex-col">
           <div className="flex-1 flex items-center justify-center p-8 pb-32">
-            <div className="relative w-full max-w-[340px] aspect-square bg-black/40 backdrop-blur-sm rounded-3xl overflow-hidden pointer-events-none"
+            <div className="relative w-full max-w-[340px] aspect-square bg-black/40 backdrop-blur-sm  overflow-hidden pointer-events-none"
               style={{
                 border: "1px solid rgba(255,255,255,0.08)",
                 boxShadow: "inset 0 0 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,204,0,0.04)",

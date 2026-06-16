@@ -227,7 +227,7 @@ function PhaseBadge({ phase, bettingPhase, chargePct, tazoName }: { phase: strin
 function BettingReveal({ playerTazo, opponentTazo }: { playerTazo: TazoCard; opponentTazo: TazoCard }) {
   return (
     <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
-      <div className="flex items-center gap-4 sm:gap-6 bg-black/80 backdrop-blur-xl rounded-3xl border border-[#FFCC00]/20 px-6 py-5 shadow-[0_12px_48px_rgba(255,204,0,0.2)]">
+      <div className="flex items-center gap-4 sm:gap-6 bg-black/80 backdrop-blur-xl  border border-[#FFCC00]/20 px-6 py-5 shadow-[0_12px_48px_rgba(255,204,0,0.2)]">
         {/* Player tazo */}
         <div className="flex flex-col items-center gap-2 animate-[fadeInLeft_0.5s_ease-out]">
           <div className="w-14 h-14 sm:w-16 sm:h-16 border-2 border-[#29ADFF]/40 overflow-hidden bg-[#29ADFF]/5 flex items-center justify-center">
@@ -282,7 +282,7 @@ function CoinFlipOverlay({ show, winner }: { show: boolean; winner: "player" | "
 
   return (
     <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
-      <div className="bg-black/80 backdrop-blur-xl rounded-3xl border border-[#FFCC00]/20 px-8 py-6 shadow-[0_0_80px_rgba(255,204,0,0.2)] flex flex-col items-center gap-4">
+      <div className="bg-black/80 backdrop-blur-xl  border border-[#FFCC00]/20 px-8 py-6 shadow-[0_0_80px_rgba(255,204,0,0.2)] flex flex-col items-center gap-4">
         {/* Coin */}
         <div className={`w-20 h-20 rounded-full flex items-center justify-center border-[3px] transition-all duration-500 ${
           animPhase === "flipping" 

@@ -38,7 +38,7 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
   const accent = isWin ? "#1a1a1a" : "white"
 
   return (
-    <div className="p-6 sm:p-8 text-center max-w-sm mx-auto rounded-3xl relative overflow-hidden"
+    <div className="p-6 sm:p-8 text-center max-w-sm mx-auto  relative overflow-hidden"
       style={{
         background: gradient,
         border: "1px solid rgba(255,255,255,0.1)",
