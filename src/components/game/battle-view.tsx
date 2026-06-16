@@ -1429,13 +1429,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           {/* Score popups */}
           {scorePopups.map(p => (
             <div key={p.id}
-              className={`absolute top-16 ${p.side === "left" ? "left-6" : "right-6"} pointer-events-none`}
+              className="absolute top-1/3 left-1/2 -translate-x-1/2 pointer-events-none z-30"
               style={{
                 color: p.color,
-                fontSize: p.text.length > 2 ? "18px" : "30px",
+                fontSize: p.text.length > 2 ? "20px" : "36px",
                 fontWeight: 900,
-                textShadow: `0 0 20px ${p.color}, 0 3px 10px rgba(0,0,0,0.8)`,
-                animation: "popUp 1.5s ease-out forwards",
+                textShadow: `0 0 24px ${p.color}, 0 0 48px ${p.color}40, 0 4px 12px rgba(0,0,0,0.9)`,
+                animation: "floatingScore 1.8s ease-out forwards",
+                letterSpacing: "0.05em",
               }}
             >{p.text}</div>
           ))}

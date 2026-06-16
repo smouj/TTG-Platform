@@ -480,72 +480,74 @@ function ArenaCamera({ gamePhase }: { gamePhase: string }) {
     }
   }, [gamePhase])
 
-  // Trigger shake on impact
-  useEffect(() => {
-    if (gamePhase === "impact" || gamePhase === "slamming") {
-      shakeRef.current.intensity = 1
-      shakeRef.current.time = 0
-    }
-  }, [gamePhase])
+  // Shake auto-triggered in useFrame during impact/slam phases
 
   useFrame((_, delta) => {
-    // Screen shake
-    const sh = shakeRef.current
-    if (sh.intensity > 0.01) {
-      sh.time += 0.16
-      sh.intensity *= 0.88
-      const sx = Math.sin(sh.time * 31) * sh.intensity * 0.15
-      const sy = Math.cos(sh.time * 37) * sh.intensity * 0.08
-      const sz = Math.sin(sh.time * 29) * sh.intensity * 0.1
-      camera.position.x += sx; camera.position.y += sy; camera.position.z += sz
+    // Auto-lerp only when user hasn't manually moved the camera
+    if (!userInteractedRef.current) {
+      // Cinematic intro orbit (~8s full rotation, gentle vertical wave)
+      if (gamePhase === "intro") {
+        introTimeRef.current += delta
+        const angle = introTimeRef.current * 0.8
+        const radius = 8
+        const height = 5 + Math.sin(angle * 0.7) * 2
+        const target = new THREE.Vector3(0, 1, 0)
+        const pos = new THREE.Vector3(
+          Math.cos(angle) * radius,
+          height,
+          Math.sin(angle) * radius
+        )
+        targetRef.current.lerp(target, 0.03)
+        camera.position.lerp(pos, 0.03)
+        camera.lookAt(targetRef.current)
+      } else if (gamePhase === "player_aim" || gamePhase === "placing_stakes") {
+        // Bird's-eye for aiming — see the full circle
+        const target = new THREE.Vector3(0, 0, 0)
+        const pos = new THREE.Vector3(0, 14, 1)
+        targetRef.current.lerp(target, 0.06)
+        camera.position.lerp(pos, 0.05)
+        camera.lookAt(targetRef.current)
+      } else if (gamePhase === "player_charge" || gamePhase === "player_tilt") {
+        // Angled view showing height + tilt
+        const target = new THREE.Vector3(0, 2, 0)
+        const pos = new THREE.Vector3(7, 8, 7)
+        targetRef.current.lerp(target, 0.06)
+        camera.position.lerp(pos, 0.05)
+        camera.lookAt(targetRef.current)
+      } else if (gamePhase === "slamming" || gamePhase === "impact" || gamePhase === "resolve_impact") {
+        // Low cinematic angle — tight on the action
+        const target = new THREE.Vector3(0, 0.2, 0)
+        const pos = new THREE.Vector3(4, 3, 5)
+        targetRef.current.lerp(target, 0.08)
+        camera.position.lerp(pos, 0.06)
+        camera.lookAt(targetRef.current)
+      } else {
+        // Default: orbit-friendly (round_start, betting, coin_flip, etc.)
+        const target = new THREE.Vector3(0, 0.5, 0)
+        const pos = new THREE.Vector3(4, 8, 5)
+        targetRef.current.lerp(target, 0.03)
+        camera.position.lerp(pos, 0.03)
+        camera.lookAt(targetRef.current)
+      }
     }
 
-    // Auto-lerp only when user hasn't manually moved the camera
-    if (userInteractedRef.current) return
-
-    // Cinematic intro orbit (~8s full rotation, gentle vertical wave)
-    if (gamePhase === "intro") {
-      introTimeRef.current += delta
-      const angle = introTimeRef.current * 0.8
-      const radius = 8
-      const height = 5 + Math.sin(angle * 0.7) * 2
-      const target = new THREE.Vector3(0, 1, 0)
-      const pos = new THREE.Vector3(
-        Math.cos(angle) * radius,
-        height,
-        Math.sin(angle) * radius
-      )
-      targetRef.current.lerp(target, 0.03)
-      camera.position.lerp(pos, 0.03)
-      camera.lookAt(targetRef.current)
-    } else if (gamePhase === "player_aim" || gamePhase === "placing_stakes") {
-      // Bird's-eye for aiming — see the full circle
-      const target = new THREE.Vector3(0, 0, 0)
-      const pos = new THREE.Vector3(0, 14, 1)
-      targetRef.current.lerp(target, 0.06)
-      camera.position.lerp(pos, 0.05)
-      camera.lookAt(targetRef.current)
-    } else if (gamePhase === "player_charge" || gamePhase === "player_tilt") {
-      // Angled view showing height + tilt
-      const target = new THREE.Vector3(0, 2, 0)
-      const pos = new THREE.Vector3(7, 8, 7)
-      targetRef.current.lerp(target, 0.06)
-      camera.position.lerp(pos, 0.05)
-      camera.lookAt(targetRef.current)
-    } else if (gamePhase === "slamming" || gamePhase === "impact" || gamePhase === "resolve_impact") {
-      // Low cinematic angle — tight on the action
-      const target = new THREE.Vector3(0, 0.2, 0)
-      const pos = new THREE.Vector3(4, 3, 5)
-      targetRef.current.lerp(target, 0.08)
-      camera.position.lerp(pos, 0.06)
-      camera.lookAt(targetRef.current)
+    // Screen shake — applied AFTER lerp for dramatic impact during slam
+    if (gamePhase === "impact" || gamePhase === "slamming") {
+      const sh = shakeRef.current
+      if (sh.intensity < 0.1) {
+        sh.intensity = 1.2
+        sh.time = 0
+      }
+      sh.time += 0.16
+      sh.intensity *= 0.86
+      const sx = Math.sin(sh.time * 35) * sh.intensity * 0.28
+      const sy = Math.cos(sh.time * 41) * sh.intensity * 0.14
+      const sz = Math.sin(sh.time * 33) * sh.intensity * 0.20
+      camera.position.x += sx
+      camera.position.y += sy
+      camera.position.z += sz
     } else {
-      // Default: orbit-friendly (round_start, betting, coin_flip, etc.)
-      const target = new THREE.Vector3(0, 0.5, 0)
-      const pos = new THREE.Vector3(4, 8, 5)
-      targetRef.current.lerp(target, 0.03)
-      camera.position.lerp(pos, 0.03)
-      camera.lookAt(targetRef.current)
+      shakeRef.current.intensity = 0
     }
   })
 
