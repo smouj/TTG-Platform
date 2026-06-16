@@ -284,7 +284,7 @@ export default function AdminSiteConfigPage() {
     shop_enabled: { label: "Shop Access", desc: "Enable the credit shop for purchases", type: "toggle" },
     trading_enabled: { label: "Trading System", desc: "Enable player-to-player tazo trading", type: "toggle" },
     registrations_open: { label: "Registrations", desc: "Allow new user registrations", type: "toggle" },
-    max_tazos_per_collection: { label: "Max Tazos/Collection", desc: "Maximum tazos allowed per franchise collection", type: "number" },
+    max_tazos_per_collection: { label: "Max Tazos/Collection", desc: "Maximum tazos allowed per series collection", type: "number" },
   }
 
   if (!isAdmin && !authLoading) return <AdminShell accentColor="#06B6D4"><div className="p-10" /></AdminShell>

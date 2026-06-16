@@ -704,7 +704,7 @@ export default function AdminTazoCreatorPage() {
                   <li className="flex items-center gap-1.5"><Ban className="w-3 h-3 text-[#E3350D]" /> No frames, borders, text, watermarks</li>
                   <li className="flex items-center gap-1.5"><Check className="w-3 h-3 text-[#22C55E]" /> 4-corner alpha transparency validation</li>
                   <li className="flex items-center gap-1.5"><Palette className="w-3 h-3 text-[#3B4CCA]" /> Official tazo-art-studio backgrounds</li>
-                  <li className="flex items-center gap-1.5"><Download className="w-3 h-3 text-[#F59E0B]" /> Back side with franchise design</li>
+                  <li className="flex items-center gap-1.5"><Download className="w-3 h-3 text-[#F59E0B]" /> Back side with series design</li>
                   <li className="flex items-center gap-1.5"><BarChart3 className="w-3 h-3 text-[#06B6D4]" /> Stats: Role + Rarity x multiplier</li>
                   <li className="flex items-center gap-1.5"><Gamepad2 className="w-3 h-3 text-[#22C55E]" /> Skill + Combat Type for gameplay</li>
                 </ul>

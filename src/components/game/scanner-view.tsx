@@ -815,7 +815,7 @@ export function ScannerView() {
                           }}
                         >
                           <SelectTrigger className="h-9 border-3 border-black bg-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
-                            <SelectValue placeholder="Select franchise" />
+                            <SelectValue placeholder="Select series" />
                           </SelectTrigger>
                           <SelectContent className="border-3 border-black">
                             {franchises.map((f) => (

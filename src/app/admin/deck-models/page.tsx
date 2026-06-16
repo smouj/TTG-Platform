@@ -235,7 +235,7 @@ export default function AdminTubeModelsPage() {
                             </div>
                             <div className="grid grid-cols-3 gap-2">
                               <div className="border border-[#1a1a1a]/10 p-2 text-center">
-                                <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Franchise</span>
+                                <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Series</span>
                                 <span className="font-black uppercase" style={{ color: FRANCHISE_COLORS[m.franchise] || "#999" }}>{m.franchise}</span>
                               </div>
                               <div className="border border-[#1a1a1a]/10 p-2 text-center">

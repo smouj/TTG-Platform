@@ -260,10 +260,10 @@ export function AddTazoDialog({ onCreated }: AddTazoDialogProps) {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label className="text-xs">Franchise *</Label>
+                <Label className="text-xs">Series *</Label>
                 <Select value={form.franchiseId} onValueChange={handleFranchiseChange}>
                   <SelectTrigger className="h-9 text-sm">
-                    <SelectValue placeholder="Select franchise" />
+                    <SelectValue placeholder="Select series" />
                   </SelectTrigger>
                   <SelectContent>
                     {franchises.map((f) => (

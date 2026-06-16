@@ -400,7 +400,7 @@ export function TazoEditor({ tazo, onClose, onSave, onDelete }: TazoEditorProps)
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-xs">Franchise</Label>
+                  <Label className="text-xs">Series</Label>
                   <Select value={form.franchiseId} onValueChange={handleFranchiseChange}>
                     <SelectTrigger className="h-8 text-sm">
                       <SelectValue />
