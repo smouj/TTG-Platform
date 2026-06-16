@@ -180,7 +180,7 @@ export default function AdminBagsPage() {
                   </div>
                   <button
                     onClick={() => handleDelete(t.name, t.franchise)}
-                    className="p-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#E3350D] hover:bg-[#E3350D]/10 rounded"
+                    className="p-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#E3350D] hover:bg-[#E3350D]/10"
                     title="Delete"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

@@ -194,7 +194,7 @@ export default function AdminTazoDesignerPage() {
         <div className="flex items-center gap-3 mb-4">
           {/* Tazo navigator */}
           {selectedTazo && (
-            <div className="flex items-center gap-2 bg-white border-2 border-[#1a1a1a] rounded-lg px-3 py-1.5 shadow-[2px_2px_0px_#1a1a1a]">
+            <div className="flex items-center gap-2 bg-white border-2 border-[#1a1a1a] px-3 py-1.5 shadow-[2px_2px_0px_#1a1a1a]">
               <button
                 onClick={() => {
                   const idx = publishedTazos.findIndex((t) => t.slug === selectedTazo.slug);
@@ -223,10 +223,10 @@ export default function AdminTazoDesignerPage() {
           )}
 
           {/* View mode */}
-          <div className="flex bg-white border-2 border-[#1a1a1a] rounded-lg p-0.5 shadow-[2px_2px_0px_#1a1a1a]">
+          <div className="flex bg-white border-2 border-[#1a1a1a] p-0.5 shadow-[2px_2px_0px_#1a1a1a]">
             <button
               onClick={() => setViewMode("editor")}
-              className={`px-3 py-1 text-[9px] font-black uppercase tracking-wider rounded transition-all ${
+              className={`px-3 py-1 text-[9px] font-black uppercase tracking-wider transition-all ${
                 viewMode === "editor" ? "bg-[#A855F7] text-white" : "text-[#1a1a1a]/40 hover:text-[#1a1a1a]"
               }`}
             >
@@ -234,7 +234,7 @@ export default function AdminTazoDesignerPage() {
             </button>
             <button
               onClick={() => setViewMode("grid")}
-              className={`px-3 py-1 text-[9px] font-black uppercase tracking-wider rounded transition-all ${
+              className={`px-3 py-1 text-[9px] font-black uppercase tracking-wider transition-all ${
                 viewMode === "grid" ? "bg-[#A855F7] text-white" : "text-[#1a1a1a]/40 hover:text-[#1a1a1a]"
               }`}
             >
@@ -248,7 +248,7 @@ export default function AdminTazoDesignerPage() {
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setDesignerSide("front")}
-                className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg border-2 transition-all ${
+                className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider border-2 transition-all ${
                   designerSide === "front"
                     ? "bg-[#FFCC00] text-[#1a1a1a] border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]"
                     : "bg-white text-[#1a1a1a]/40 border-[#1a1a1a]/10 hover:border-[#FFCC00]/50"
@@ -258,7 +258,7 @@ export default function AdminTazoDesignerPage() {
               </button>
               <button
                 onClick={() => setDesignerSide("back")}
-                className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg border-2 transition-all ${
+                className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider border-2 transition-all ${
                   designerSide === "back"
                     ? "bg-[#1a1a1a] text-[#FFCC00] border-[#FFCC00] shadow-[2px_2px_0px_#FFCC00]"
                     : "bg-white text-[#1a1a1a]/40 border-[#1a1a1a]/10 hover:border-[#1a1a1a]/30"
@@ -293,7 +293,7 @@ export default function AdminTazoDesignerPage() {
                   <button
                     onClick={handleSaveLayout}
                     disabled={saving}
-                    className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
+                    className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
                   >
                     {saving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
                     Save for {activeFranchise}
@@ -301,7 +301,7 @@ export default function AdminTazoDesignerPage() {
                   <button
                     onClick={handleApplyToAll}
                     disabled={saving}
-                    className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
+                    className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1 disabled:opacity-50"
                   >
                     <Zap className="w-3 h-3" />
                     Apply to all {activeFranchise}
@@ -345,7 +345,7 @@ export default function AdminTazoDesignerPage() {
                           setSelectedTazo(tazo);
                           setViewMode("editor");
                         }}
-                        className="group flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-[#3B4CCA]/5 hover:scale-105 transition-all"
+                        className="group flex flex-col items-center gap-1.5 p-2 hover:bg-[#3B4CCA]/5 hover:scale-105 transition-all"
                       >
                         <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#1a1a1a]/10 group-hover:border-[#3B4CCA]/50 shadow-md bg-[#1a1a1a]/5 relative">
                           <TazoDiscImage
@@ -389,7 +389,7 @@ export default function AdminTazoDesignerPage() {
         )}
 
         {/* Keyboard shortcuts */}
-        <div className="mt-6 p-3 bg-[#1a1a1a]/5 rounded-lg border border-[#1a1a1a]/10 flex items-center gap-4 flex-wrap">
+        <div className="mt-6 p-3 bg-[#1a1a1a]/5 border border-[#1a1a1a]/10 flex items-center gap-4 flex-wrap">
           <span className="text-[9px] font-black uppercase text-[#1a1a1a]/40">Shortcuts:</span>
           <span className="text-[9px] font-mono font-bold text-[#1a1a1a]/30">Click element → drag to move</span>
           <span className="text-[9px] font-mono font-bold text-[#1a1a1a]/30">Arrow keys → nudge 1px</span>

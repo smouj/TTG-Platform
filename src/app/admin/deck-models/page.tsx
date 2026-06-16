@@ -165,7 +165,7 @@ export default function AdminTubeModelsPage() {
                 <div key={m.id} className={`mag-card border-3 shadow-[3px_3px_0px_#1a1a1a] bg-white transition-all ${!m.isActive ? "opacity-50" : ""}`}>
                   <div className="flex items-start gap-4 p-4">
                     {/* Flat preview thumb */}
-                    <div className="w-14 h-24 rounded overflow-hidden border-2 border-[#1a1a1a] flex-shrink-0 bg-[#1a1a1a]/5 flex items-center justify-center">
+                    <div className="w-14 h-24 overflow-hidden border-2 border-[#1a1a1a] flex-shrink-0 bg-[#1a1a1a]/5 flex items-center justify-center">
                       <img src={m.textureUrl} alt={m.name} className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                       {!m.textureUrl && <Package className="w-6 h-6 text-[#1a1a1a]/20" />}
                     </div>
@@ -201,7 +201,7 @@ export default function AdminTubeModelsPage() {
                         </>
                       ) : (
                         <>
-                          <button onClick={() => setPreviewingId(previewingId === m.id ? null : m.id)} className="p-2 hover:bg-[#3B4CCA]/10 rounded" title="3D Preview">
+                          <button onClick={() => setPreviewingId(previewingId === m.id ? null : m.id)} className="p-2 hover:bg-[#3B4CCA]/10" title="3D Preview">
                             <Eye className={`w-4 h-4 ${previewingId === m.id ? "text-[#3B4CCA]" : "text-[#1a1a1a]/30"}`} />
                           </button>
                           <button onClick={() => startEdit(m)} className="p-2 hover:bg-[#FFCC00]/10 transition-colors" title="Edit"><Edit3 className="w-4 h-4 text-[#1a1a1a]/50" /></button>
@@ -220,7 +220,7 @@ export default function AdminTubeModelsPage() {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
                           <h4 className="text-[10px] font-black uppercase text-[#1a1a1a]/40 mb-2">3D Preview</h4>
-                          <div className="h-64 border-2 border-[#1a1a1a]/10 rounded bg-gradient-to-b from-[#1a1a1a]/[0.02] to-[#1a1a1a]/[0.05] overflow-hidden">
+                          <div className="h-64 border-2 border-[#1a1a1a]/10 bg-gradient-to-b from-[#1a1a1a]/[0.02] to-[#1a1a1a]/[0.05] overflow-hidden">
                             <Suspense fallback={<div className="flex items-center justify-center h-full"><Loader2 className="w-6 h-6 animate-spin text-[#FF6B00]" /></div>}>
                               <AdminTubePreview textureUrl={m.textureUrl} />
                             </Suspense>
@@ -229,20 +229,20 @@ export default function AdminTubeModelsPage() {
                         <div>
                           <h4 className="text-[10px] font-black uppercase text-[#1a1a1a]/40 mb-2">Web Configuration</h4>
                           <div className="space-y-2 text-[10px] font-bold">
-                            <div className="border border-[#1a1a1a]/10 p-2 rounded">
+                            <div className="border border-[#1a1a1a]/10 p-2">
                               <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Texture URL (for web)</span>
                               <code className="text-[#1a1a1a]/60 break-all text-[9px]">{m.textureUrl}</code>
                             </div>
                             <div className="grid grid-cols-3 gap-2">
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Franchise</span>
                                 <span className="font-black uppercase" style={{ color: FRANCHISE_COLORS[m.franchise] || "#999" }}>{m.franchise}</span>
                               </div>
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Sort Order</span>
                                 <span className="font-black">#{m.sortOrder}</span>
                               </div>
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Status</span>
                                 <span className={`font-black uppercase ${m.isActive ? "text-[#22C55E]" : "text-[#E3350D]"}`}>{m.isActive ? "Live" : "Offline"}</span>
                               </div>

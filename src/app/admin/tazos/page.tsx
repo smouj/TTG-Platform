@@ -307,7 +307,7 @@ export default function AdminTazoManagerPage() {
         </div>
 
       {/* ── Filter Bar ── */}
-        <div className="flex flex-wrap items-center gap-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] rounded-2xl p-3">
+        <div className="flex flex-wrap items-center gap-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] p-3">
           <div className="flex items-center gap-2 flex-1 min-w-[200px]">
             <Search className="w-4 h-4 text-zinc-400" />
             <input
@@ -319,13 +319,13 @@ export default function AdminTazoManagerPage() {
           </div>
 
           <select value={franchiseFilter} onChange={e => { setFranchiseFilter(e.target.value); setPage(1) }}
-            className="bg-zinc-50 border-2 border-zinc-200 rounded-lg px-3 py-1.5 text-xs font-bold text-[#1a1a1a] outline-none focus:border-[#FFCC00]">
+            className="bg-zinc-50 border-2 border-zinc-200 px-3 py-1.5 text-xs font-bold text-[#1a1a1a] outline-none focus:border-[#FFCC00]">
             <option value="">All Franchises</option>
             {franchises.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
 
           <select value={rarityFilter} onChange={e => { setRarityFilter(e.target.value); setPage(1) }}
-            className="bg-zinc-50 border-2 border-zinc-200 rounded-lg px-3 py-1.5 text-xs font-bold text-[#1a1a1a] outline-none focus:border-[#FFCC00]">
+            className="bg-zinc-50 border-2 border-zinc-200 px-3 py-1.5 text-xs font-bold text-[#1a1a1a] outline-none focus:border-[#FFCC00]">
             <option value="">All Rarities</option>
             {RARITIES.map(r => <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>)}
           </select>
@@ -334,7 +334,7 @@ export default function AdminTazoManagerPage() {
           <div className="flex items-center gap-1">
             <ArrowUpDown className="w-3.5 h-3.5 text-zinc-400" />
             <select value={sortField} onChange={e => setSortField(e.target.value as SortField)}
-              className="bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1.5 text-[10px] font-bold text-[#1a1a1a] outline-none focus:border-[#FFCC00]">
+              className="bg-zinc-50 border-2 border-zinc-200 px-2 py-1.5 text-[10px] font-bold text-[#1a1a1a] outline-none focus:border-[#FFCC00]">
               <option value="default">Default</option>
               <option value="name">Name</option>
               <option value="number">Number</option>
@@ -344,7 +344,7 @@ export default function AdminTazoManagerPage() {
             </select>
             {sortField !== "default" && (
               <button onClick={() => setSortDir(d => d === "asc" ? "desc" : "asc")}
-                className="p-1 rounded border border-zinc-200 text-[10px] font-black text-zinc-500 hover:bg-zinc-50">
+                className="p-1 border border-zinc-200 text-[10px] font-black text-zinc-500 hover:bg-zinc-50">
                 {sortDir === "asc" ? "↑" : "↓"}
               </button>
             )}
@@ -365,16 +365,16 @@ export default function AdminTazoManagerPage() {
 
         {/* Batch edit bar */}
         {selectedIds.size > 0 && (
-          <div className="mt-3 flex items-center gap-2 bg-[#FFCC00]/10 border-2 border-[#FFCC00] rounded-xl p-3">
+          <div className="mt-3 flex items-center gap-2 bg-[#FFCC00]/10 border-2 border-[#FFCC00] p-3">
             {!batchEditMode ? (
               <>
                 <span className="text-sm font-black text-[#1a1a1a]">{selectedIds.size} tazos selected</span>
                 <button onClick={() => setBatchEditMode(true)}
-                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] rounded-lg shadow-[2px_2px_0px_#1a1a1a]">
+                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-[#3B4CCA] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a]">
                   Batch Edit
                 </button>
                 <button onClick={() => setSelectedIds(new Set())}
-                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-white text-[#1a1a1a] border-2 border-[#1a1a1a] rounded-lg">
+                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-white text-[#1a1a1a] border-2 border-[#1a1a1a]">
                   Deselect All
                 </button>
               </>
@@ -382,38 +382,38 @@ export default function AdminTazoManagerPage() {
               <>
                 <span className="text-xs font-black text-[#1a1a1a]">Apply to {selectedIds.size} tazos:</span>
                 <select onChange={e => setBatchEditData(prev => ({ ...prev, rarity: e.target.value }))} value={batchEditData.rarity || ""}
-                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]">
+                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                   <option value="">Rarity —</option>
                   {RARITIES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
                 <select onChange={e => setBatchEditData(prev => ({ ...prev, finish: e.target.value }))} value={batchEditData.finish || ""}
-                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]">
+                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                   <option value="">Finish —</option>
                   {FINISHES.map(f => <option key={f} value={f}>{f.replace("_"," ")}</option>)}
                 </select>
                 <select onChange={e => setBatchEditData(prev => ({ ...prev, combatType: e.target.value }))} value={batchEditData.combatType || ""}
-                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]">
+                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                   <option value="">Combat —</option>
                   {COMBAT_TYPES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
                 <select onChange={e => setBatchEditData(prev => ({ ...prev, role: e.target.value }))} value={batchEditData.role || ""}
-                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]">
+                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                   <option value="">Role —</option>
                   {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
                 <select onChange={e => setBatchEditData(prev => ({ ...prev, publishStatus: e.target.value }))} value={batchEditData.publishStatus || ""}
-                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]">
+                  className="text-[10px] font-bold bg-white border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                   <option value="">Publish —</option>
                   <option value="published">✅ Published</option>
                   <option value="pending_review">⏳ Pending</option>
                   <option value="draft">📝 Draft</option>
                 </select>
                 <button onClick={applyBatchEdit} disabled={batchSaving}
-                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-[#22C55E] text-white border-2 border-[#1a1a1a] rounded-lg shadow-[2px_2px_0px_#1a1a1a] disabled:opacity-50">
+                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-[#22C55E] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] disabled:opacity-50">
                   {batchSaving ? "Saving..." : "Apply"}
                 </button>
                 <button onClick={() => { setBatchEditMode(false); setBatchEditData({}) }}
-                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-white text-[#1a1a1a] border-2 border-[#1a1a1a] rounded-lg">
+                  className="px-3 py-1 text-[10px] font-black uppercase tracking-wider bg-white text-[#1a1a1a] border-2 border-[#1a1a1a]">
                   Cancel
                 </button>
               </>
@@ -441,16 +441,16 @@ export default function AdminTazoManagerPage() {
                 </div>
                 <div className="flex gap-1">
                   <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                    className="p-1.5 rounded-lg border-2 border-zinc-300 bg-white disabled:opacity-30 hover:border-[#FFCC00]"><ChevronLeft className="w-4 h-4" /></button>
+                    className="p-1.5 border-2 border-zinc-300 bg-white disabled:opacity-30 hover:border-[#FFCC00]"><ChevronLeft className="w-4 h-4" /></button>
                   {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                     const start = Math.max(1, Math.min(page - 2, totalPages - 4))
                     const p = start + i
                     if (p > totalPages) return null
                     return <button key={p} onClick={() => setPage(p)}
-                      className={`w-9 h-9 rounded-lg border-2 text-xs font-black ${p === page ? "bg-[#1a1a1a] text-white border-[#1a1a1a]" : "bg-white border-zinc-300 text-zinc-600 hover:border-[#FFCC00]"}`}>{p}</button>
+                      className={`w-9 h-9 border-2 text-xs font-black ${p === page ? "bg-[#1a1a1a] text-white border-[#1a1a1a]" : "bg-white border-zinc-300 text-zinc-600 hover:border-[#FFCC00]"}`}>{p}</button>
                   })}
                   <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                    className="p-1.5 rounded-lg border-2 border-zinc-300 bg-white disabled:opacity-30 hover:border-[#FFCC00]"><ChevronRight className="w-4 h-4" /></button>
+                    className="p-1.5 border-2 border-zinc-300 bg-white disabled:opacity-30 hover:border-[#FFCC00]"><ChevronRight className="w-4 h-4" /></button>
                 </div>
               </div>
             )}
@@ -465,7 +465,7 @@ export default function AdminTazoManagerPage() {
                 return (
                   <div
                     key={tazo.id}
-                    className={`mag-card rounded-xl border-3 transition-all duration-200 ${
+                    className={`mag-card border-3 transition-all duration-200 ${
                       isEditing
                         ? "border-[#FFCC00] shadow-[0_0_20px_rgba(255,204,0,0.2)] ring-2 ring-[#FFCC00]/30 scale-[1.02] z-10"
                         : isSelected
@@ -481,7 +481,7 @@ export default function AdminTazoManagerPage() {
                           {/* Select checkbox */}
                           <button
                             onClick={e => { e.stopPropagation(); toggleSelect(tazo.id) }}
-                            className="absolute top-2 left-2 z-10 p-0.5 rounded bg-white/80 backdrop-blur-sm border border-zinc-300 hover:border-[#3B4CCA] transition-colors"
+                            className="absolute top-2 left-2 z-10 p-0.5 bg-white/80 backdrop-blur-sm border border-zinc-300 hover:border-[#3B4CCA] transition-colors"
                           >
                             {isSelected ? <CheckSquare className="w-4 h-4 text-[#3B4CCA]" /> : <Square className="w-4 h-4 text-zinc-400" />}
                           </button>
@@ -503,7 +503,7 @@ export default function AdminTazoManagerPage() {
                             <ImageIcon className="w-10 h-10 text-zinc-300" />
                           )}
                           <div className="absolute top-0 left-0 right-0 h-1" style={{ background: fColor }} />
-                          <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-[#1a1a1a]/80 backdrop-blur-sm rounded-full px-1.5 py-0.5">
+                          <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-[#1a1a1a]/80 backdrop-blur-sm px-1.5 py-0.5">
                             {Array.from({ length: RARITY_STARS[tazo.rarity] || 1 }, (_, i) => (
                               <Star key={i} className="w-2 h-2" fill={rColor} stroke={rColor} />
                             ))}
@@ -514,13 +514,13 @@ export default function AdminTazoManagerPage() {
                           {/* Delete button */}
                           <button
                             onClick={e => { e.stopPropagation(); setDeletingId(deletingId === tazo.id ? null : tazo.id) }}
-                            className="absolute bottom-2 right-2 p-1 rounded bg-[#E3350D]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#E3350D]"
+                            className="absolute bottom-2 right-2 p-1 bg-[#E3350D]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#E3350D]"
                             title="Delete tazo"
                           ><Trash2 className="w-3.5 h-3.5" /></button>
                           {/* Publish/unpublish quick toggle */}
                           <button
                             onClick={e => { e.stopPropagation(); togglePublish(tazo) }}
-                            className={`absolute bottom-2 left-2 p-1 rounded text-white opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-black uppercase tracking-wider ${
+                            className={`absolute bottom-2 left-2 p-1 text-white opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-black uppercase tracking-wider ${
                               tazo.publishStatus === "published" ? "bg-[#22C55E]/80 hover:bg-[#22C55E]" : "bg-[#3B4CCA]/80 hover:bg-[#3B4CCA]"
                             }`}
                             title="Toggle publish status"
@@ -529,7 +529,7 @@ export default function AdminTazoManagerPage() {
                         {/* Card info bar — shows publish status */}
                         <div className="px-2 py-1 flex items-center justify-between">
                           <p className="text-[9px] font-black text-[#1a1a1a] truncate">{tazo.displayName || tazo.name || tazo.slug}</p>
-                          <span className={`text-[7px] font-black uppercase px-1.5 py-0.5 rounded border ${
+                          <span className={`text-[7px] font-black uppercase px-1.5 py-0.5 border ${
                             tazo.publishStatus === "published"
                               ? "bg-[#22C55E]/10 border-[#22C55E]/30 text-[#22C55E]"
                               : tazo.publishStatus === "pending_review"
@@ -543,9 +543,9 @@ export default function AdminTazoManagerPage() {
                             <p className="text-[9px] font-bold text-[#E3350D]">Delete &quot;{tazo.name || tazo.slug}&quot;?</p>
                             <div className="flex gap-1.5">
                               <button onClick={() => deleteTazo(tazo.id)}
-                                className="flex-1 py-1 text-[8px] font-black uppercase text-white bg-[#E3350D] rounded">Yes, delete</button>
+                                className="flex-1 py-1 text-[8px] font-black uppercase text-white bg-[#E3350D]">Yes, delete</button>
                               <button onClick={() => setDeletingId(null)}
-                                className="flex-1 py-1 text-[8px] font-black uppercase border border-zinc-300 rounded">Cancel</button>
+                                className="flex-1 py-1 text-[8px] font-black uppercase border border-zinc-300">Cancel</button>
                             </div>
                           </div>
                         )}
@@ -561,8 +561,8 @@ export default function AdminTazoManagerPage() {
                           </div>
                           <div className="flex gap-1 pt-0.5">
                             {[{ v: tazo.attack, c: "#E3350D" },{ v: tazo.defense, c: "#3B4CCA" },{ v: tazo.resistance, c: "#22C55E" },{ v: tazo.weight, c: "#F59E0B" },{ v: tazo.stability, c: "#A855F7" }].map(s => (
-                              <div key={s.c} className="flex-1 h-1 rounded-full bg-white/10 overflow-hidden">
-                                <div className="h-full rounded-full" style={{ width: `${s.v}%`, background: s.c }} />
+                              <div key={s.c} className="flex-1 h-1 bg-white/10 overflow-hidden">
+                                <div className="h-full" style={{ width: `${s.v}%`, background: s.c }} />
                               </div>
                             ))}
                           </div>
@@ -571,7 +571,7 @@ export default function AdminTazoManagerPage() {
                     ) : (
                       /* ── EDIT MODE ── */
                       <div className="p-3 space-y-3 max-h-[80vh] overflow-y-auto">
-                        <div className="relative aspect-square bg-zinc-50 rounded-lg flex items-center justify-center overflow-hidden border-2 border-zinc-200">
+                        <div className="relative aspect-square bg-zinc-50 flex items-center justify-center overflow-hidden border-2 border-zinc-200">
                           {editData?.imageUrl ? (
                             <TazoDiscImage
                               src={editData.imageUrl}
@@ -592,16 +592,16 @@ export default function AdminTazoManagerPage() {
                         {/* Name + DisplayName */}
                         <div className="space-y-1.5">
                           <input type="text" value={editData?.name || ""} onChange={e => updateField("name", e.target.value)}
-                            className="w-full text-xs font-black text-[#1a1a1a] bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-[#FFCC00]" placeholder="Name" />
+                            className="w-full text-xs font-black text-[#1a1a1a] bg-zinc-50 border-2 border-zinc-200 px-2.5 py-1.5 outline-none focus:border-[#FFCC00]" placeholder="Name" />
                           <input type="text" value={editData?.displayName || ""} onChange={e => updateField("displayName", e.target.value)}
-                            className="w-full text-[10px] font-bold text-[#1a1a1a]/60 bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2.5 py-1 outline-none focus:border-[#FFCC00]" placeholder="Display Name" />
+                            className="w-full text-[10px] font-bold text-[#1a1a1a]/60 bg-zinc-50 border-2 border-zinc-200 px-2.5 py-1 outline-none focus:border-[#FFCC00]" placeholder="Display Name" />
                           <div className="flex justify-between text-[10px] font-bold text-zinc-500">
                             <span>{tazo.franchise.name}</span><span>#{tazo.number}</span>
                           </div>
                         </div>
 
                         {/* ♻️ Replace Creature Art */}
-                        <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-2.5 space-y-2">
+                        <div className="bg-amber-50 border-2 border-amber-200 p-2.5 space-y-2">
                           <label className="text-[8px] font-black uppercase text-amber-600 tracking-wider block">
                             ♻️ Replace Creature Art
                           </label>
@@ -617,7 +617,7 @@ export default function AdminTazoManagerPage() {
                               if (file) replaceArt(tazo.id, file)
                               e.target.value = ""
                             }}
-                            className="block w-full text-[10px] font-bold text-zinc-600 file:mr-2 file:px-3 file:py-1 file:text-[10px] file:font-black file:uppercase file:tracking-wider file:bg-amber-500 file:text-white file:border-0 file:rounded-lg file:cursor-pointer hover:file:bg-amber-600"
+                            className="block w-full text-[10px] font-bold text-zinc-600 file:mr-2 file:px-3 file:py-1 file:text-[10px] file:font-black file:uppercase file:tracking-wider file:bg-amber-500 file:text-white file:border-0 file:cursor-pointer hover:file:bg-amber-600"
                           />
                           {artStatus !== "idle" && (
                             <div className={`text-[9px] font-bold flex items-center gap-1.5 ${
@@ -642,7 +642,7 @@ export default function AdminTazoManagerPage() {
                           <select
                             value={editData?.publishStatus || "pending_review"}
                             onChange={e => updateField("publishStatus", e.target.value)}
-                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]"
+                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]"
                           >
                             <option value="published">✅ Published (visible everywhere)</option>
                             <option value="pending_review">⏳ Pending Review (hidden)</option>
@@ -654,7 +654,7 @@ export default function AdminTazoManagerPage() {
                         <div>
                           <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Description</label>
                           <textarea value={editData?.description || ""} onChange={e => updateField("description", e.target.value)}
-                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00] resize-none h-12"
+                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00] resize-none h-12"
                             placeholder="Creature description..." />
                         </div>
 
@@ -663,21 +663,21 @@ export default function AdminTazoManagerPage() {
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Rarity</label>
                             <select value={editData?.rarity || "common"} onChange={e => updateField("rarity", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]">
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                               {RARITIES.map(r => <option key={r} value={r}>{r}</option>)}
                             </select>
                           </div>
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Finish</label>
                             <select value={editData?.finish || "normal"} onChange={e => updateField("finish", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]">
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                               {FINISHES.map(f => <option key={f} value={f}>{f.replace("_"," ")}</option>)}
                             </select>
                           </div>
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Category</label>
                             <select value={editData?.category || "creature"} onChange={e => updateField("category", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]">
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
                           </div>
@@ -688,14 +688,14 @@ export default function AdminTazoManagerPage() {
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Role</label>
                             <select value={editData?.role || "balanced"} onChange={e => updateField("role", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]">
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                               {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                             </select>
                           </div>
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Combat</label>
                             <select value={editData?.combatType || ""} onChange={e => updateField("combatType", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]">
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]">
                               <option value="">—</option>
                               {COMBAT_TYPES.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
@@ -711,7 +711,7 @@ export default function AdminTazoManagerPage() {
                               ["WT","weight","#F59E0B"],["STB","stability","#A855F7"],["SPIN","spin","#EC4899"],
                               ["CTRL","control","#06B6D4"],["BNC","bounce","#F97316"],["PREC","precision","#8B5CF6"],
                             ] as const).map(([label, field, color]) => (
-                              <div key={field} className="flex items-center gap-1 bg-zinc-50 rounded-lg px-1.5 py-1 border border-zinc-200">
+                              <div key={field} className="flex items-center gap-1 bg-zinc-50 px-1.5 py-1 border border-zinc-200">
                                 <span className="text-[7px] font-black text-zinc-400 w-8">{label}</span>
                                 <input type="number" min={0} max={100}
                                   value={editData?.[field as keyof TazoData] as number || 0}
@@ -727,12 +727,12 @@ export default function AdminTazoManagerPage() {
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Skill</label>
                             <input type="text" value={editData?.skill || ""} onChange={e => updateField("skill", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]" placeholder="Skill name" />
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]" placeholder="Skill name" />
                           </div>
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Variant</label>
                             <input type="text" value={editData?.creatureVariant || "standard"} onChange={e => updateField("creatureVariant", e.target.value)}
-                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]" />
+                              className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]" />
                           </div>
                         </div>
 
@@ -740,7 +740,7 @@ export default function AdminTazoManagerPage() {
                         <div>
                           <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Description</label>
                           <textarea value={editData?.skillDesc || ""} onChange={e => updateField("skillDesc", e.target.value)}
-                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00] resize-none h-12"
+                            className="w-full text-[10px] font-bold bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00] resize-none h-12"
                             placeholder="Skill description..." />
                         </div>
 
@@ -749,12 +749,12 @@ export default function AdminTazoManagerPage() {
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Image URL</label>
                             <input type="text" value={editData?.imageUrl || ""} onChange={e => updateField("imageUrl", e.target.value)}
-                              className="w-full text-[9px] font-mono bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]" />
+                              className="w-full text-[9px] font-mono bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]" />
                           </div>
                           <div>
                             <label className="text-[8px] font-black uppercase text-zinc-400 tracking-wider mb-0.5 block">Back Image</label>
                             <input type="text" value={editData?.backImageUrl || ""} onChange={e => updateField("backImageUrl", e.target.value)}
-                              className="w-full text-[9px] font-mono bg-zinc-50 border-2 border-zinc-200 rounded-lg px-2 py-1 outline-none focus:border-[#FFCC00]" />
+                              className="w-full text-[9px] font-mono bg-zinc-50 border-2 border-zinc-200 px-2 py-1 outline-none focus:border-[#FFCC00]" />
                           </div>
                         </div>
 
@@ -773,14 +773,14 @@ export default function AdminTazoManagerPage() {
                         {/* Action buttons */}
                         <div className="flex gap-2 pt-1">
                           <button onClick={saveTazo} disabled={saving}
-                            className="flex-1 flex items-center justify-center gap-1.5 bg-[#22C55E] text-white text-[10px] font-black uppercase tracking-wider py-2 rounded-lg border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] active:shadow-none transition-all disabled:opacity-50">
+                            className="flex-1 flex items-center justify-center gap-1.5 bg-[#22C55E] text-white text-[10px] font-black uppercase tracking-wider py-2 border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] active:shadow-none transition-all disabled:opacity-50">
                             {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> :
                               saveStatus === "saved" ? <><Check className="w-3.5 h-3.5" /> Saved!</> :
                               saveStatus === "error" ? <><AlertTriangle className="w-3.5 h-3.5" /> Error</> :
                               <><Save className="w-3.5 h-3.5" /> Save</>}
                           </button>
                           <button onClick={cancelEdit}
-                            className="flex items-center gap-1 bg-zinc-200 text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-3 py-2 rounded-lg border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] active:shadow-none transition-all">
+                            className="flex items-center gap-1 bg-zinc-200 text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-3 py-2 border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] active:shadow-none transition-all">
                             <RotateCcw className="w-3.5 h-3.5" /> Cancel
                           </button>
                         </div>
@@ -798,7 +798,7 @@ export default function AdminTazoManagerPage() {
                   const p = start + i
                   if (p > totalPages) return null
                   return <button key={p} onClick={() => setPage(p)}
-                    className={`w-9 h-9 rounded-lg border-2 text-xs font-black ${p === page ? "bg-[#1a1a1a] text-white border-[#1a1a1a]" : "bg-white border-zinc-300 text-zinc-600 hover:border-[#FFCC00]"}`}>{p}</button>
+                    className={`w-9 h-9 border-2 text-xs font-black ${p === page ? "bg-[#1a1a1a] text-white border-[#1a1a1a]" : "bg-white border-zinc-300 text-zinc-600 hover:border-[#FFCC00]"}`}>{p}</button>
                 })}
               </div>
             )}

@@ -482,7 +482,7 @@ export default function AdminTazoCreatorPage() {
                 </h2>
                 <button
                   onClick={() => setStatsLocked(!statsLocked)}
-                  className={`text-[9px] font-black uppercase tracking-wider flex items-center gap-1 px-2 py-1 border-2 rounded transition-all
+                  className={`text-[9px] font-black uppercase tracking-wider flex items-center gap-1 px-2 py-1 border-2 transition-all
                     ${statsLocked
                       ? 'bg-[#F59E0B] border-[#F59E0B] text-white'
                       : 'bg-white border-[#1a1a1a]/20 text-[#1a1a1a]/40 hover:border-[#1a1a1a]'
@@ -582,16 +582,16 @@ export default function AdminTazoCreatorPage() {
                   <h2 className="text-sm font-black uppercase tracking-wider text-[#22C55E]">Tazo Created!</h2>
                   <div className="flex items-center gap-1.5 ml-auto">
                     {result.provider && (
-                      <span className="text-[8px] font-bold uppercase px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded">{result.provider}</span>
+                      <span className="text-[8px] font-bold uppercase px-1.5 py-0.5 bg-zinc-800 text-zinc-400">{result.provider}</span>
                     )}
                     {result.transparency && (
-                      <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 border rounded ${
+                      <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 border ${
                         result.transparency === 'ok' ? 'bg-green-900/30 text-green-400 border-green-600/30' :
                         result.transparency === 'warning' ? 'bg-amber-900/30 text-amber-400 border-amber-600/30' :
                         'bg-red-900/30 text-red-400 border-red-600/30'
                       }`}>α-{result.transparency}</span>
                     )}
-                    <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 border rounded ${result.hasAI ? 'bg-[#3B4CCA]/10 text-[#3B4CCA] border-[#3B4CCA]/30' : 'bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/30'}`}>
+                    <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 border ${result.hasAI ? 'bg-[#3B4CCA]/10 text-[#3B4CCA] border-[#3B4CCA]/30' : 'bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/30'}`}>
                       {result.hasAI ? 'AI' : 'PH'}
                     </span>
                   </div>
@@ -599,7 +599,7 @@ export default function AdminTazoCreatorPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-2">
-                    <div className="bg-[#1a1a1a] rounded-lg p-3 flex items-center justify-center relative">
+                    <div className="bg-[#1a1a1a] p-3 flex items-center justify-center relative">
                       <span className="text-[7px] font-bold text-zinc-500 absolute top-1 left-2">FRONT</span>
                       <TazoDiscImage
                         src={result.imageUrl}
@@ -612,9 +612,9 @@ export default function AdminTazoCreatorPage() {
                       />
                     </div>
                     {result.backImageUrl && (
-                      <div className="bg-[#1a1a1a] rounded-lg p-3 flex items-center justify-center relative">
+                      <div className="bg-[#1a1a1a] p-3 flex items-center justify-center relative">
                         <span className="text-[7px] font-bold text-zinc-500 absolute top-1 left-2">BACK</span>
-                        <img src={result.backImageUrl} alt="Back side" className="max-w-[110px] rounded-lg" />
+                        <img src={result.backImageUrl} alt="Back side" className="max-w-[110px]" />
                       </div>
                     )}
                   </div>
@@ -667,14 +667,14 @@ export default function AdminTazoCreatorPage() {
               <h3 className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]/50 mb-4 flex items-center gap-2">
                 <ImageIcon className="w-4 h-4" /> Live Preview
               </h3>
-              <div className="bg-[#1a1a1a] rounded-lg p-6 mb-4">
+              <div className="bg-[#1a1a1a] p-6 mb-4">
                 <div className="w-48 h-48 mx-auto">
                   <DiscPreview franchise={franchise} rarity={rarity} />
                 </div>
               </div>
               <div className="space-y-2">
                 <p className="text-[9px] font-black uppercase tracking-wider text-[#1a1a1a]/30">PROMPT PREVIEW</p>
-                <div className="bg-[#1a1a1a]/5 rounded p-3 text-[9px] font-mono text-[#1a1a1a]/50 leading-relaxed max-h-48 overflow-y-auto">
+                <div className="bg-[#1a1a1a]/5 p-3 text-[9px] font-mono text-[#1a1a1a]/50 leading-relaxed max-h-48 overflow-y-auto">
                   {name ? (
                     <>
                       <span className="text-[#3B4CCA]">Transparent character illustration</span> for tazo disc:{' '}
@@ -696,7 +696,7 @@ export default function AdminTazoCreatorPage() {
                   )}
                 </div>
               </div>
-              <div className="mt-4 p-3 border-2 border-[#FFCC00]/30 bg-[#FFCC00]/5 rounded">
+              <div className="mt-4 p-3 border-2 border-[#FFCC00]/30 bg-[#FFCC00]/5">
                 <h4 className="text-[9px] font-black uppercase tracking-wider text-[#FFCC00] mb-2">Generation Rules</h4>
                 <ul className="text-[9px] font-bold text-[#1a1a1a]/50 space-y-1">
                   <li className="flex items-center gap-1.5"><Target className="w-3 h-3 text-[#E3350D]" /> Character only — no backgrounds</li>
@@ -716,7 +716,7 @@ export default function AdminTazoCreatorPage() {
                 <h3 className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]/50 mb-4">Recent Creations</h3>
                 <div className="space-y-2">
                   {recentCreations.slice(0, 6).map((t: any) => (
-                    <div key={t.id} className="flex items-center gap-3 p-2 border-2 border-[#1a1a1a]/10 bg-white rounded">
+                    <div key={t.id} className="flex items-center gap-3 p-2 border-2 border-[#1a1a1a]/10 bg-white">
                       <TazoDiscImage src={t.imageUrl} alt={t.name} size={40} borderWidth={0}
                         franchiseSlug={t.franchise?.slug || "minimon"}
                         finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} />

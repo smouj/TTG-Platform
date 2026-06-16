@@ -196,11 +196,11 @@ export default function AdminBagModelsPage() {
                   <div className="flex items-start gap-4 p-4">
                     {/* Flat preview thumbs */}
                     <div className="flex gap-1 flex-shrink-0">
-                      <div className="w-14 h-20 rounded overflow-hidden border-2 border-[#1a1a1a] bg-[#1a1a1a]/5 flex items-center justify-center">
+                      <div className="w-14 h-20 overflow-hidden border-2 border-[#1a1a1a] bg-[#1a1a1a]/5 flex items-center justify-center">
                         <img src={m.frontUrl} alt={`${m.name} front`} className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                         {!m.frontUrl && <ImageIcon aria-hidden="true" className="w-5 h-5 text-[#1a1a1a]/20" />}
                       </div>
-                      <div className="w-14 h-20 rounded overflow-hidden border-2 border-dashed border-[#1a1a1a]/20 bg-[#1a1a1a]/5 flex items-center justify-center">
+                      <div className="w-14 h-20 overflow-hidden border-2 border-dashed border-[#1a1a1a]/20 bg-[#1a1a1a]/5 flex items-center justify-center">
                         <img src={m.backUrl} alt={`${m.name} back`} className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                         {!m.backUrl && <ImageIcon aria-hidden="true" className="w-5 h-5 text-[#1a1a1a]/20" />}
                       </div>
@@ -247,7 +247,7 @@ export default function AdminBagModelsPage() {
                         </>
                       ) : (
                         <>
-                          <button onClick={() => setPreviewingId(previewingId === m.id ? null : m.id)} className="p-2 hover:bg-[#3B4CCA]/10 rounded" title="3D Preview">
+                          <button onClick={() => setPreviewingId(previewingId === m.id ? null : m.id)} className="p-2 hover:bg-[#3B4CCA]/10" title="3D Preview">
                             <Eye className={`w-4 h-4 ${previewingId === m.id ? "text-[#3B4CCA]" : "text-[#1a1a1a]/30"}`} />
                           </button>
                           <button onClick={() => startEdit(m)} className="p-2 hover:bg-[#FFCC00]/10"><Edit3 className="w-4 h-4 text-[#1a1a1a]/50" /></button>
@@ -266,7 +266,7 @@ export default function AdminBagModelsPage() {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
                           <h4 className="text-[10px] font-black uppercase text-[#1a1a1a]/40 mb-2">3D Preview</h4>
-                          <div className="h-60 border-2 border-[#1a1a1a]/10 rounded bg-[#1a1a1a]/[0.02] overflow-hidden">
+                          <div className="h-60 border-2 border-[#1a1a1a]/10 bg-[#1a1a1a]/[0.02] overflow-hidden">
                             <Suspense fallback={<div className="flex items-center justify-center h-full"><Loader2 className="w-6 h-6 animate-spin text-[#F97316]" /></div>}>
                               <AdminBagPreview frontUrl={m.frontUrl} backUrl={m.backUrl} />
                             </Suspense>
@@ -276,29 +276,29 @@ export default function AdminBagModelsPage() {
                           <h4 className="text-[10px] font-black uppercase text-[#1a1a1a]/40 mb-2">Web Configuration</h4>
                           <div className="space-y-2 text-[10px] font-bold">
                             <div className="grid grid-cols-2 gap-2">
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded">
+                              <div className="border border-[#1a1a1a]/10 p-2">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Front Image</span>
                                 <code className="text-[#1a1a1a]/60 break-all text-[9px]">{m.frontUrl}</code>
                               </div>
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded">
+                              <div className="border border-[#1a1a1a]/10 p-2">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Back Image</span>
                                 <code className="text-[#1a1a1a]/60 break-all text-[9px]">{m.backUrl}</code>
                               </div>
                             </div>
                             <div className="grid grid-cols-4 gap-2">
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Cost</span>
                                 <span className="font-black text-[#FFCC00]">{m.cost}cr</span>
                               </div>
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Bonus</span>
                                 <span className="font-black text-[#22C55E]">{m.bonusChance}%</span>
                               </div>
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Rare</span>
                                 <span className="font-black text-[#F59E0B]">×{m.rareBoost}</span>
                               </div>
-                              <div className="border border-[#1a1a1a]/10 p-2 rounded text-center">
+                              <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Sort</span>
                                 <span className="font-black">#{m.sortOrder}</span>
                               </div>

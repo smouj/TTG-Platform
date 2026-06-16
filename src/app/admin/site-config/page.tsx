@@ -303,12 +303,12 @@ export default function AdminSiteConfigPage() {
         ) : (
           <>
             {/* Tab Switcher */}
-            <div className="flex bg-white border-2 border-[#1a1a1a] rounded-lg p-0.5 shadow-[2px_2px_0px_#1a1a1a] w-fit">
+            <div className="flex bg-white border-2 border-[#1a1a1a] p-0.5 shadow-[2px_2px_0px_#1a1a1a] w-fit">
               {TAB_DEFS.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-md transition-all flex items-center gap-1.5 ${
+                  className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 ${
                     activeTab === tab.id
                       ? "text-white"
                       : "text-[#1a1a1a]/40 hover:text-[#1a1a1a]"
@@ -377,12 +377,12 @@ export default function AdminSiteConfigPage() {
                       <div className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] bg-white">
                         <h2 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] mb-4">Credit Adjustment</h2>
                         <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                          <div className="bg-[#1a1a1a]/5 p-3 rounded-lg border border-[#1a1a1a]/10">
+                          <div className="bg-[#1a1a1a]/5 p-3 border border-[#1a1a1a]/10">
                             <span className="text-[8px] font-black uppercase text-[#1a1a1a]/40">User</span>
                             <p className="text-sm font-black text-[#1a1a1a]">{selectedUser.displayName || selectedUser.name}</p>
                             <p className="text-[9px] font-bold text-[#1a1a1a]/40">{selectedUser.email}</p>
                           </div>
-                          <div className="bg-[#FFCC00]/10 p-3 rounded-lg border border-[#FFCC00]/20">
+                          <div className="bg-[#FFCC00]/10 p-3 border border-[#FFCC00]/20">
                             <span className="text-[8px] font-black uppercase text-[#FFCC00]/60">Current Balance</span>
                             <p className="text-2xl font-black text-[#FFCC00] tabular-nums">{selectedUser.credits} <span className="text-sm">cr</span></p>
                           </div>
@@ -403,7 +403,7 @@ export default function AdminSiteConfigPage() {
                             <div className="flex gap-1">
                               {[50, 100, 500, 1000].map(a => (
                                 <button key={a} onClick={() => setCreditAmount(a)}
-                                  className={`px-2 py-2 text-[9px] font-black border-2 rounded transition-all tabular-nums ${
+                                  className={`px-2 py-2 text-[9px] font-black border-2 transition-all tabular-nums ${
                                     creditAmount === a
                                       ? "bg-[#FFCC00] border-[#1a1a1a] text-[#1a1a1a] shadow-[1px_1px_0px_#1a1a1a]"
                                       : "bg-white border-[#1a1a1a]/20 text-[#1a1a1a]/40 hover:border-[#FFCC00]"
@@ -611,8 +611,8 @@ export default function AdminSiteConfigPage() {
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 flex-wrap">
                                     <h3 className="text-sm font-black text-[#1a1a1a] font-mono tracking-wider">{p.code}</h3>
-                                    <span className="text-[8px] font-black px-1.5 py-0.5 border rounded uppercase" style={{ color: typeColor, borderColor: typeColor + "40" }}>{p.type}</span>
-                                    <span className={`text-[8px] font-black px-1.5 py-0.5 border rounded uppercase ${
+                                    <span className="text-[8px] font-black px-1.5 py-0.5 border uppercase" style={{ color: typeColor, borderColor: typeColor + "40" }}>{p.type}</span>
+                                    <span className={`text-[8px] font-black px-1.5 py-0.5 border uppercase ${
                                       p.isActive && !expired && !exhausted ? "text-[#22C55E] border-[#22C55E]/30" : "text-[#E3350D] border-[#E3350D]/30"
                                     }`}>
                                       {p.isActive ? (expired ? "EXPIRED" : exhausted ? "EXHAUSTED" : "ACTIVE") : "DISABLED"}
@@ -633,26 +633,26 @@ export default function AdminSiteConfigPage() {
                               {isEditing ? (
                                 <>
                                   <button onClick={() => updatePromo(p.id)} disabled={promoSaving}
-                                    className="p-2 hover:bg-[#22C55E]/10 rounded transition-colors" title="Save">
+                                    className="p-2 hover:bg-[#22C55E]/10 transition-colors" title="Save">
                                     <Check className="w-4 h-4 text-[#22C55E]" />
                                   </button>
                                   <button onClick={() => setEditingPromoId(null)}
-                                    className="p-2 hover:bg-[#E3350D]/10 rounded transition-colors" title="Cancel">
+                                    className="p-2 hover:bg-[#E3350D]/10 transition-colors" title="Cancel">
                                     <X className="w-4 h-4 text-[#E3350D]" />
                                   </button>
                                 </>
                               ) : (
                                 <>
                                   <button onClick={() => startEditPromo(p)}
-                                    className="p-2 hover:bg-[#FFCC00]/10 rounded transition-colors" title="Edit">
+                                    className="p-2 hover:bg-[#FFCC00]/10 transition-colors" title="Edit">
                                     <Edit3 className="w-4 h-4 text-[#1a1a1a]/50" />
                                   </button>
                                   <button onClick={() => togglePromo(p)}
-                                    className="p-2 hover:bg-[#FFCC00]/10 rounded transition-colors" title={p.isActive ? "Active — click to disable" : "Disabled — click to activate"}>
-                                    <span className={`text-[9px] font-black px-1 py-0.5 border rounded ${p.isActive ? "text-[#22C55E] border-[#22C55E]/30" : "text-[#E3350D] border-[#E3350D]/30"}`}>{p.isActive ? "ON" : "OFF"}</span>
+                                    className="p-2 hover:bg-[#FFCC00]/10 transition-colors" title={p.isActive ? "Active — click to disable" : "Disabled — click to activate"}>
+                                    <span className={`text-[9px] font-black px-1 py-0.5 border ${p.isActive ? "text-[#22C55E] border-[#22C55E]/30" : "text-[#E3350D] border-[#E3350D]/30"}`}>{p.isActive ? "ON" : "OFF"}</span>
                                   </button>
                                   <button onClick={() => deletePromo(p.id)}
-                                    className="p-2 hover:bg-[#E3350D]/10 rounded transition-colors" title="Delete">
+                                    className="p-2 hover:bg-[#E3350D]/10 transition-colors" title="Delete">
                                     <Trash2 className="w-4 h-4 text-[#E3350D]/50" />
                                   </button>
                                 </>
@@ -694,7 +694,7 @@ export default function AdminSiteConfigPage() {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
                               <h3 className="text-xs font-black uppercase text-[#1a1a1a]">{meta.label}</h3>
-                              {!cfg.isDefault && <span className="text-[7px] font-black bg-[#F59E0B]/10 text-[#F59E0B] px-1.5 py-0.5 rounded uppercase">Custom</span>}
+                              {!cfg.isDefault && <span className="text-[7px] font-black bg-[#F59E0B]/10 text-[#F59E0B] px-1.5 py-0.5 uppercase">Custom</span>}
                             </div>
                             <p className="text-[9px] font-bold text-[#1a1a1a]/30 mt-0.5">{meta.desc}</p>
                             {cfg.updatedAt && !cfg.isDefault && (
@@ -732,7 +732,7 @@ export default function AdminSiteConfigPage() {
                                 <button
                                   onClick={() => saveConfig(cfg.key, cfg.value)}
                                   disabled={isSaving}
-                                  className="p-1.5 hover:bg-[#22C55E]/10 rounded transition-colors"
+                                  className="p-1.5 hover:bg-[#22C55E]/10 transition-colors"
                                   title="Save"
                                 >
                                   {isSaving ? <Loader2 className="w-4 h-4 animate-spin text-[#3B4CCA]" /> : <Save className="w-4 h-4 text-[#22C55E]" />}
@@ -758,7 +758,7 @@ export default function AdminSiteConfigPage() {
                   <div className="flex flex-wrap gap-1.5">
                     {configs.map(c => (
                       <span key={c.key}
-                        className={`text-[8px] font-mono font-bold px-1.5 py-0.5 rounded border ${
+                        className={`text-[8px] font-mono font-bold px-1.5 py-0.5 border ${
                           c.isDefault ? "text-[#1a1a1a]/20 border-[#1a1a1a]/5" : "text-[#3B4CCA] border-[#3B4CCA]/20"
                         }`}>
                         {c.key}
