@@ -296,7 +296,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div key={t.id || i} className="w-12 h-12 rounded-full border-2 border-white/5 bg-transparent overflow-hidden flex-shrink-0 relative"
             style={{ zIndex: 4 - i }}>
             {t.imageUrl ? (
-              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0} scale={0.85}
                 franchiseSlug={t.franchiseSlug || t.franchise?.slug} finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
                 className="w-full h-full" />
             ) : (
@@ -333,7 +333,7 @@ function DeckPreview({ tazos }: { tazos: any[] }) {
           <div key={t.id || i} className="w-14 h-14 rounded-full border-2 border-white/5 bg-transparent overflow-hidden flex-shrink-0"
             style={{ zIndex: 3 - i }}>
             {t.imageUrl ? (
-              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0} scale={0.85}
                 franchiseSlug={t.franchiseSlug || t.franchise?.slug} finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
                 className="w-full h-full" />
             ) : (
@@ -403,7 +403,7 @@ function ArenaPreview({ tazos }: { tazos: any[] }) {
         {tazos.length > 0 && tazos[0].imageUrl ? (
           <div className="absolute top-[10%] left-[50%] w-6 h-6 rounded-full overflow-hidden border border-[#FFCC00]/40 -translate-x-3 animate-bounce"
             style={{ boxShadow: "0 0 8px rgba(255,204,0,0.3)", background: "transparent" }}>
-            <TazoDiscImage src={tazos[0].imageUrl} alt="" size="100%" borderWidth={0}
+            <TazoDiscImage src={tazos[0].imageUrl} alt="" size="100%" borderWidth={0} scale={0.85}
               franchiseSlug={tazos[0].franchiseSlug || tazos[0].franchise?.slug}
               finish={tazos[0].finish} creatureVariant={tazos[0].creatureVariant} shinyImageUrl={tazos[0].shinyImageUrl}
               className="w-full h-full" />
@@ -500,7 +500,7 @@ function FeaturedTazoCard({ tazo, featured }: { tazo: any; featured?: boolean })
         style={{ boxShadow: featured ? "2px 4px 8px rgba(0,0,0,0.12)" : "2px 3px 6px rgba(0,0,0,0.08)" }}>
         {tazo.imageUrl ? (
           <TazoDiscImage
-            src={tazo.imageUrl} alt={tazo.displayName || tazo.name || ""} size="100%" borderWidth={0}
+            src={tazo.imageUrl} alt={tazo.displayName || tazo.name || ""} size="100%" borderWidth={0} scale={0.87}
             franchiseSlug={typeof tazo.franchise === "string" ? tazo.franchise : tazo.franchiseSlug}
             finish={tazo.finish} creatureVariant={tazo.creatureVariant} shinyImageUrl={tazo.shinyImageUrl} lazy />
         ) : (
@@ -858,7 +858,7 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
               {tazos.slice(0, 3).map((t, i) => (
                   <div key={t.id || i} className="w-11 h-11 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#1a1a1a]/30 bg-white group-hover:border-[#1a1a1a]/60 transition-colors" style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.12)" }}>
                     {t.imageUrl ? (
-                      <TazoDiscImage src={t.imageUrl} alt={t.name || ''} size="100%" borderWidth={0}
+                      <TazoDiscImage src={t.imageUrl} alt={t.name || ''} size="100%" borderWidth={0} scale={0.85}
                         franchiseSlug={t.franchiseSlug || (typeof t.franchise === "string" ? t.franchise : "minimon")}
                         finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} lazy />
                     ) : null}
@@ -1086,6 +1086,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
                             alt={t.displayName || t.name || ""}
                             size="100%"
                             borderWidth={0}
+                            scale={0.87}
                             franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
                             finish={t.finish}
                             creatureVariant={t.creatureVariant}
@@ -1275,6 +1276,7 @@ function TazosContent() {
                     alt=""
                     size="100%"
                     borderWidth={0}
+                    scale={0.87}
                     franchiseSlug={typeof t.franchise === "string" ? t.franchise : t.franchiseSlug}
                     finish={t.finish}
                     creatureVariant={t.creatureVariant}
@@ -1449,7 +1451,7 @@ function ShopContent() {
                         {examples.slice(0, 4).map((t: any, idx: number) => (
                           <div key={t.id || idx} className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#1a1a1a]/15 overflow-hidden flex-shrink-0 hover:border-[#FFCC00] hover:scale-110 transition-all bg-white" title={t.displayName || t.name}>
                             <div className="w-full h-full rounded-full overflow-hidden relative">
-                              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+                              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0} scale={0.85}
                                 franchiseSlug={t.franchiseSlug || t.franchise?.slug}
                                 finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} lazy />
                             </div>

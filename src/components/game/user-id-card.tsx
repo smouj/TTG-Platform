@@ -46,7 +46,7 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
 
   if (variant === "mini") {
     return (
-      <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border-2 border-[#1a1a1a]/10 bg-[#1a1a1a]/5">
+      <div className="flex items-center gap-2.5 px-3 py-2 border-2 border-[#1a1a1a]/10 bg-[#1a1a1a]/5">
         <div className="relative w-9 h-9 rounded-full border-2 border-[#FFCC00] bg-[#1a1a1a]/10 overflow-hidden shrink-0">
           {user.avatarUrl && !imgErrorMini ? (
             <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="36px" unoptimized
@@ -67,11 +67,11 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
 
   if (variant === "compact") {
     return (
-      <div className="p-4 rounded-2xl border-3 border-[#1a1a1a] bg-white"
+      <div className="p-4 border-3 border-[#1a1a1a] bg-white"
         style={{ boxShadow: "4px 4px 0px #1a1a1a" }}>
         <div className="flex items-center gap-4">
           {/* Avatar */}
-          <div className="relative w-16 h-16 rounded-xl border-3 border-[#FFCC00] bg-gradient-to-br from-[#FFE566] to-[#FFCC00] overflow-hidden shrink-0"
+          <div className="relative w-16 h-16 rounded-full border-3 border-[#FFCC00] bg-gradient-to-br from-[#FFE566] to-[#FFCC00] overflow-hidden shrink-0"
             style={{ boxShadow: "2px 2px 0px #1a1a1a" }}>
             {user.avatarUrl && !imgErrorCompact ? (
               <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="64px" unoptimized
@@ -95,8 +95,8 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
             <p className="text-[11px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider mb-1.5">{title}</p>
             {/* XP Bar */}
             <div className="flex items-center gap-2">
-              <div className="flex-1 h-2 bg-[#1a1a1a]/5 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#FFCC00] to-[#E3350D] rounded-full transition-all duration-500"
+              <div className="flex-1 h-2 bg-[#1a1a1a]/5 overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#FFCC00] to-[#E3350D] transition-all duration-500"
                   style={{ width: `${levelProgress}%` }} />
               </div>
               <span className="text-[10px] font-black text-[#1a1a1a]/30 tabular-nums whitespace-nowrap">
@@ -111,7 +111,7 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
 
   // ── Full card (Pokémon trainer card style) ──
   return (
-    <div className="relative overflow-hidden rounded-2xl border-3 border-[#1a1a1a] bg-gradient-to-br from-[#FFF9E6] via-white to-[#FFF9E6]"
+    <div className="relative overflow-hidden border-3 border-[#1a1a1a] bg-gradient-to-br from-[#FFF9E6] via-white to-[#FFF9E6]"
       style={{ boxShadow: "5px 5px 0px #1a1a1a" }}>
       
       {/* Magazine halftone overlay */}
@@ -126,7 +126,7 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
         <div className="flex items-start gap-4">
           {/* Avatar with gold border */}
           <div className="relative">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border-3 border-[#FFCC00] bg-gradient-to-br from-[#FFE566] to-[#FFCC00] overflow-hidden"
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-3 border-[#FFCC00] bg-gradient-to-br from-[#FFE566] to-[#FFCC00] overflow-hidden"
               style={{ boxShadow: "3px 3px 0px #1a1a1a" }}>
               {user.avatarUrl && !imgError ? (
                 <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="96px" unoptimized
@@ -165,8 +165,8 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
             {xpInLevel} / {user.xpToNext} XP
           </span>
         </div>
-        <div className="relative h-3 bg-[#1a1a1a]/5 rounded-full overflow-hidden border border-[#1a1a1a]/10">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FFCC00] via-[#FFD700] to-[#E3350D] rounded-full transition-all duration-700"
+        <div className="relative h-3 bg-[#1a1a1a]/5 overflow-hidden border border-[#1a1a1a]/10">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FFCC00] via-[#FFD700] to-[#E3350D] transition-all duration-700"
             style={{ width: `${levelProgress}%` }} />
           {/* Animated shine */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"
@@ -222,7 +222,7 @@ function StatCell({ icon: Icon, label, value, accent }: {
   accent?: boolean
 }) {
   return (
-    <div className={`flex flex-col items-center gap-1 p-2.5 rounded-xl border-2 ${
+    <div className={`flex flex-col items-center gap-1 p-2.5 border-2 ${
       accent ? "border-[#FFCC00]/30 bg-[#FFCC00]/3" : "border-[#1a1a1a]/5 bg-[#1a1a1a]/[0.02]"
     }`}>
       <Icon className={`w-3.5 h-3.5 ${accent ? "text-[#E3350D]/60" : "text-[#1a1a1a]/25"}`} />

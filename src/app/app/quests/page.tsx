@@ -163,7 +163,7 @@ export default function QuestsPage() {
 
         {/* Level Up Celebration */}
         {levelUp && (
-          <div className="animate-mag-enter-fade-up p-4 rounded-2xl border-3 border-[#FFCC00] bg-gradient-to-r from-[#FFCC00]/10 via-[#FFD700]/10 to-[#FFCC00]/10"
+          <div className="animate-mag-enter-fade-up p-4 border-3 border-[#FFCC00] bg-gradient-to-r from-[#FFCC00]/10 via-[#FFD700]/10 to-[#FFCC00]/10"
             style={{ boxShadow: "3px 3px 0px #FFCC00" }}>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-[#FFCC00] border-3 border-[#1a1a1a] flex items-center justify-center animate-bounce"
