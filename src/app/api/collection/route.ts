@@ -350,7 +350,6 @@ async function fetchUserDecks(userId: string) {
     name: d.name,
     isActive: d.isActive,
     color: d.settings ? (JSON.parse(d.settings).color || null) : null,
-    starterIds: d.settings ? (JSON.parse(d.settings).starterIds || []) : [],
     tazos: d.deckTazos.map((dt: any) => ({
       id: dt.tazo.id,
       name: dt.tazo.name,

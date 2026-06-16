@@ -31,7 +31,6 @@ interface BattleTubePreviewProps {
   count?: number
   maxCount?: number
   tazos?: TubeTazo[]
-  starters?: string[]
   size?: "sm" | "md" | "lg"
   showLabel?: boolean
   className?: string
@@ -83,7 +82,7 @@ function TubeLoadingFallback() {
 
 export default function BattleTubePreview({
   name, color = "#E3350D", textureUrl, count = 0, maxCount = 20,
-  tazos = [], starters = [],
+  tazos = [],
   size = "md", showLabel = true,
   className = "",
 }: BattleTubePreviewProps & { textureUrl?: string }) {

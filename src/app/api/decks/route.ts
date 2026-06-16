@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
           color: settingsParsed.color || null,
           textureUrl: settingsParsed.textureUrl || null,
           tubeSlug: settingsParsed.tubeSlug || null,
-          starters: settingsParsed.starterIds || [],
+          
           tazoCount: d.deckTazos.length,
           tazos: d.deckTazos
           .filter((dt) => dt.tazo !== null)
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     const user = await getAuthUser(request)
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const { name, tazoIds, color, starterIds, textureUrl, tubeSlug } = await request.json()
+    const { name, tazoIds, color, textureUrl, tubeSlug, isActive } = await request.json()
     if (!name || !name.trim()) {
       return NextResponse.json({ error: "Deck name is required" }, { status: 400 })
     }
@@ -125,12 +125,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Deactivate other decks if this one is active
+    if (isActive) {
+      await db.deck.updateMany({
+        where: { userId: user.id, isActive: true },
+        data: { isActive: false },
+      })
+    }
+
     // Create deck with tazos
     const deck = await db.deck.create({
       data: {
         userId: user.id,
         name: name.trim(),
-        isActive: false,
+        isActive: isActive || false,
         settings: Object.keys(settings).length > 0 ? JSON.stringify(settings) : null,
         deckTazos: {
           create: finalTazoIds.map((tazoId: string) => ({ tazoId })),
@@ -151,7 +159,6 @@ export async function POST(request: NextRequest) {
       color: settings.color || null,
       textureUrl: settings.textureUrl || null,
       tubeSlug: settings.tubeSlug || null,
-      starters: [],
     })
   } catch (error) {
     if (error instanceof Response) throw error
