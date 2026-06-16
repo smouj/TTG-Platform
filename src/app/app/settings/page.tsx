@@ -108,6 +108,7 @@ export default function SettingsPage() {
   const [bio, setBio] = useState("")
   const [editingBio, setEditingBio] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [imgError, setImgError] = useState(false)
 
   // Password change
   const [showPasswordChange, setShowPasswordChange] = useState(false)
@@ -312,6 +313,31 @@ export default function SettingsPage() {
         <span className="text-xs font-black text-white/30 uppercase tracking-wider ml-auto truncate max-w-[200px]">{user.email}</span>
       </div>
 
+      {/* ═══ User ID Card ═══ */}
+      {user && (
+        <UserIdCard
+          user={{
+            id: user.id,
+            name: user.name || "",
+            displayName: user.displayName || null,
+            avatarUrl: user.avatarUrl || null,
+            bio: user.bio || null,
+            level: (user as any).level || 1,
+            xp: (user as any).xp || 0,
+            xpToNext: (user as any).xpToNext || 100,
+            credits: user.credits || 0,
+            totalBattles: (user as any).totalBattles || 0,
+            totalWins: (user as any).totalWins || 0,
+            totalLosses: (user as any).totalLosses || 0,
+            totalTazosOwned: (user as any).totalTazosOwned || 0,
+            totalBagsOpened: (user as any).totalBagsOpened || 0,
+            totalQuestsDone: (user as any).totalQuestsDone || 0,
+            joinDate: (user as any).joinDate || (user as any).createdAt || new Date().toISOString(),
+          }}
+          variant="compact"
+        />
+      )}
+
       {/* ═══ CONTENT GRID ═══ */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
 
@@ -334,8 +360,9 @@ export default function SettingsPage() {
             <div className="flex items-start gap-4">
               <div className="relative group">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] flex items-center justify-center overflow-hidden">
-                  {avatarUrl ? (
-                    <Image src={avatarUrl} alt="" fill className="object-cover" sizes="96px" unoptimized />
+                  {avatarUrl && !imgError ? (
+                    <Image src={avatarUrl} alt="" fill className="object-cover" sizes="96px" unoptimized
+                      onError={() => setImgError(true)} />
                   ) : (
                     <User className="w-10 h-10 sm:w-12 sm:h-12 text-[#1a1a1a]/40" />
                   )}

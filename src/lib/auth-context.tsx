@@ -12,6 +12,16 @@ interface User {
   credits?: number
   tazoCount?: number
   deckCount?: number
+  level?: number
+  xp?: number
+  xpToNext?: number
+  totalBattles?: number
+  totalWins?: number
+  totalLosses?: number
+  totalTazosOwned?: number
+  totalBagsOpened?: number
+  totalQuestsDone?: number
+  joinDate?: string
 }
 
 interface AuthState {

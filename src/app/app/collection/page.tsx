@@ -149,6 +149,7 @@ export default function CollectionPage() {
   const { t } = useI18n()
   const { user, token, loading } = useAuth()
   const [data, setData] = useState<CollectionData | null>(null)
+  const [userData, setUserData] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<"all" | "deck" | "duplicates" | "recent" | "favorites" | "listed">("all")
   const [franchiseFilter, setFranchiseFilter] = useState<string | null>(null)
@@ -184,6 +185,13 @@ export default function CollectionPage() {
       .then((res) => res.json())
       .then((d) => { if (!cancelled) setData(d) })
       .catch((err) => { if (!cancelled) setError(err.message) })
+      
+    // Load user data for ID Card
+    fetch("/api/user/settings")
+      .then(r => r.json())
+      .then(d => { if (d.user) setUserData(d.user) })
+      .catch(() => {})
+      
     return () => { cancelled = true }
   }, [token])
 
@@ -349,6 +357,15 @@ export default function CollectionPage() {
           </span>
         </div>
       </div>
+
+
+      {/* User ID Card — compact */}
+      {userData && (
+        <UserIdCard
+          user={userData}
+          variant="compact"
+        />
+      )}
 
       {/* ═══════════════════════════════════════════════ */}
       {/* ② PROGRESS BAR                                 */}

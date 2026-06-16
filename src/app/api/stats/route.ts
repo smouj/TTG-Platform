@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const [totalTazos, totalUsers, totalSeries, totalCollections, tazos, userStats] =
+    const [totalTazos, ownedTazos, totalUsers, totalSeries, totalCollections, tazos, userStats] =
       await Promise.all([
         db.tazo.count({ where: { publishStatus: "published" } }),
+        db.userTazo.groupBy({ by: ["tazoId"] }).then(r => r.length),
         db.user.count(),
         db.franchise.count(),
         db.collection.count(),
@@ -51,6 +52,7 @@ export async function GET() {
 
     return NextResponse.json({
       totalTazos,
+      ownedTazos,
       totalUsers,
       totalSeries,
       totalCollections,

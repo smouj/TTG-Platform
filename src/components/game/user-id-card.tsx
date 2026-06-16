@@ -4,6 +4,7 @@
 // Shows avatar, name, level, XP bar, stats, join date, title
 // ============================================================
 
+import { useState } from "react"
 import Image from "next/image"
 import { User, Swords, Package, Star, Calendar, Award, Disc3, Zap, TrendingUp } from "lucide-react"
 import { getTitleForLevel } from "@/lib/leveling"
@@ -31,6 +32,9 @@ interface UserIdCardProps {
 }
 
 export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) {
+  const [imgError, setImgError] = useState(false)
+  const [imgErrorCompact, setImgErrorCompact] = useState(false)
+  const [imgErrorMini, setImgErrorMini] = useState(false)
   const title = getTitleForLevel(user.level)
   const progress = user.xpToNext > 0 ? Math.min(100, Math.round((user.xp / user.xpToNext) * 100) - ((user.level - 1) * 100 / user.xpToNext)) : 100
   
@@ -44,8 +48,9 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
     return (
       <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border-2 border-[#1a1a1a]/10 bg-[#1a1a1a]/5">
         <div className="relative w-9 h-9 rounded-full border-2 border-[#FFCC00] bg-[#1a1a1a]/10 overflow-hidden shrink-0">
-          {user.avatarUrl ? (
-            <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="36px" unoptimized />
+          {user.avatarUrl && !imgErrorMini ? (
+            <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="36px" unoptimized
+              onError={() => setImgErrorMini(true)} />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <User className="w-4 h-4 text-[#1a1a1a]/40" />
@@ -68,8 +73,9 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
           {/* Avatar */}
           <div className="relative w-16 h-16 rounded-xl border-3 border-[#FFCC00] bg-gradient-to-br from-[#FFE566] to-[#FFCC00] overflow-hidden shrink-0"
             style={{ boxShadow: "2px 2px 0px #1a1a1a" }}>
-            {user.avatarUrl ? (
-              <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="64px" unoptimized />
+            {user.avatarUrl && !imgErrorCompact ? (
+              <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="64px" unoptimized
+                onError={() => setImgErrorCompact(true)} />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <User className="w-7 h-7 text-[#1a1a1a]/30" />
@@ -122,8 +128,9 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
           <div className="relative">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border-3 border-[#FFCC00] bg-gradient-to-br from-[#FFE566] to-[#FFCC00] overflow-hidden"
               style={{ boxShadow: "3px 3px 0px #1a1a1a" }}>
-              {user.avatarUrl ? (
-                <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="96px" unoptimized />
+              {user.avatarUrl && !imgError ? (
+                <Image src={user.avatarUrl} alt="" fill className="object-cover" sizes="96px" unoptimized
+                  onError={() => setImgError(true)} />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <User className="w-10 h-10 text-[#1a1a1a]/25" />

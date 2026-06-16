@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    // If auth came from cookie (no Bearer token), generate a fresh token from clean user data
+    // Keep token payload minimal (only fields needed for auth)
     const freshToken = token || generateToken({
       id: user.id,
       email: user.email,
@@ -47,6 +47,17 @@ export async function GET(request: NextRequest) {
         tazoCount: fullUser._count.userTazos,
         deckCount: fullUser._count.decks,
         createdAt: fullUser.createdAt,
+        // Level / XP system
+        level: (fullUser as any).level ?? 1,
+        xp: (fullUser as any).xp ?? 0,
+        xpToNext: (fullUser as any).xpToNext ?? 100,
+        totalBattles: (fullUser as any).totalBattles ?? 0,
+        totalWins: (fullUser as any).totalWins ?? 0,
+        totalLosses: (fullUser as any).totalLosses ?? 0,
+        totalTazosOwned: (fullUser as any).totalTazosOwned ?? 0,
+        totalBagsOpened: (fullUser as any).totalBagsOpened ?? 0,
+        totalQuestsDone: (fullUser as any).totalQuestsDone ?? 0,
+        joinDate: (fullUser as any).joinDate ?? fullUser.createdAt,
       },
     })
 
