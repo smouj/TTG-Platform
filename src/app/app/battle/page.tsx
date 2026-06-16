@@ -9,13 +9,42 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { useAuth } from "@/lib/auth-context"
+import { useI18n } from "@/lib/i18n"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 import BattleTubePreview from "@/components/tubes/BattleTubePreview"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
+import Link from "next/link"
+import dynamic from "next/dynamic"
 import {
   Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star,
   ChevronRight, Layers, Loader2, AlertTriangle, CheckCircle,
 } from "lucide-react"
+
+const BattleView = dynamic(() => import("@/components/game/battle-view"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2rem",
+        background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)",
+      }}
+    >
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)" }} />
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.08,
+        backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,204,0,0.3) 8px, rgba(255,204,0,0.3) 10px)" }} />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ width: 72, height: 72, borderRadius: "50%", border: "3px solid rgba(255,204,0,0.12)", borderTopColor: "#FFCC00", animation: "spin 0.8s linear infinite", boxShadow: "0 0 32px rgba(255,204,0,0.15)" }} />
+        <div style={{ position: "absolute", inset: -6, borderRadius: "50%", border: "2px solid rgba(255,204,0,0.06)", animation: "ping 1.5s ease-out infinite" }} />
+      </div>
+      <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
+        <p style={{ fontSize: 12, fontWeight: 900, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.25em", margin: 0 }}>Entering Arena…</p>
+        <p style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,204,0,0.25)", textTransform: "uppercase", letterSpacing: "0.4em", marginTop: 8 }}>Battle loading</p>
+      </div>
+    </div>
+  ),
+})
 
 // ── Mode definitions ──
 const MODES = [
@@ -116,6 +145,8 @@ export default function BattlePage() {
   const [decks, setDecks] = useState<any[]>([])
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [battleActive, setBattleActive] = useState(false)
+  const [launching, setLaunching] = useState(false)
 
   // Fetch user decks
   useEffect(() => {
@@ -154,25 +185,52 @@ export default function BattlePage() {
   }, [selectedDeck])
 
   const handleStart = () => {
-    if (!selectedDeckId) return
+    if (!selectedDeckId || launching) return
     sfxEnsureUnlocked()
     playSFX("equip")
+    setLaunching(true)
 
     // Set sessionStorage for BattleView to auto-start
     sessionStorage.setItem("battle_mode", "practice")
     sessionStorage.setItem("battle_difficulty", difficulty)
     sessionStorage.setItem("battle_deckId", selectedDeckId)
 
-    // Full page navigation — avoids magazine shell duplication during
-    // client-side layout transition (MagazinePageShell → GameFullscreenShell)
-    window.location.href = "/app/battle/play"
+    // Fade body to dark for seamless transition
+    document.body.style.transition = "background 0.3s"
+    document.body.style.background = "#0a0a0a"
+
+    // Render BattleView inline over the lobby — no navigation, no shell flash
+    setTimeout(() => {
+      setBattleActive(true)
+    }, 100)
   }
 
-  const canStart = selectedDeckId && deckStats.count >= 1 && mode === "practice"
+  const canStart = selectedDeckId && deckStats.count >= 1 && mode === "practice" && !launching
   const noDecks = !loading && decks.length === 0
+
+  // ═══ BATTLE ACTIVE — render BattleView in fullscreen overlay ═══
+  if (battleActive) {
+    return (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#0a0a0a" }}>
+        <BattleView />
+      </div>
+    )
+  }
 
   return (
     <div className="w-full py-4 sm:py-6 space-y-6">
+      {/* Launch overlay — dark fullscreen while BattleView loads */}
+      {launching && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9998, background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)" }}>
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)" }} />
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.08, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,204,0,0.3) 8px, rgba(255,204,0,0.3) 10px)" }} />
+          <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2rem" }}>
+            <div style={{ width: 72, height: 72, borderRadius: "50%", border: "3px solid rgba(255,204,0,0.12)", borderTopColor: "#FFCC00", animation: "spin 0.8s linear infinite", boxShadow: "0 0 32px rgba(255,204,0,0.15)" }} />
+            <p style={{ fontSize: 12, fontWeight: 900, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.25em" }}>Entering Arena…</p>
+          </div>
+        </div>
+      )}
+
 
 
       {/* ═══════════════════════════════════════════ */}
@@ -514,7 +572,7 @@ export default function BattlePage() {
             <div className="text-center pt-2">
               <button
                 onClick={handleStart}
-                disabled={!canStart}
+                disabled={!canStart || launching}
                 className={`w-full sm:w-auto px-12 sm:px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-[3px] border-[#1a1a1a] transition-all ${
                   canStart
                     ? "bg-[#E3350D] text-white hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] hover:shadow-[2px_2px_0_#1a1a1a]"
