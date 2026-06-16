@@ -688,42 +688,108 @@ export default function BagShopPage() {
     const rarityColor = RARITY_GRADIENT[revealedTazo.rarity]
     const rarityLabel = RARITY_LABELS[revealedTazo.rarity] || revealedTazo.rarity
     const rndRarity = revealedTazo.rarity
-    const isHighRarity = rndRarity === "rare" || rndRarity === "ultra-rare" || rndRarity === "legendary"
-    // const franchiseSlug = revealedTazo.franchiseSlug || revealedTazo.franchise || "minimon"
+    const isLegendary = rndRarity === "legendary"
+    const isUltraRare = rndRarity === "ultra-rare"
+    const isRare = rndRarity === "rare"
+    const isHighRarity = isRare || isUltraRare || isLegendary
+    const rarityStars = RARITY_STARS[rndRarity] || 1
+    const franchiseSlug = revealedTazo.franchiseSlug || selectedBag.franchise || "minimon"
 
     return (
-      <div className="max-w-lg mx-auto py-6 sm:py-8 px-4 space-y-6 text-center">
+      <div className="max-w-lg mx-auto py-6 sm:py-8 px-4 space-y-6 text-center relative">
         <ConfettiBurst active />
 
-        {/* Header */}
-        <div className={`inline-block px-4 py-1.5 border-3 text-sm font-black uppercase tracking-wider ${isHighRarity ? "animate-pulse" : ""}`}
+        {/* Legendary golden glow background */}
+        {isLegendary && (
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full opacity-30 blur-3xl animate-pulse"
+              style={{ background: "radial-gradient(circle, #F59E0B, #F59E0B00)" }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full opacity-20 blur-2xl animate-spin"
+              style={{ background: "conic-gradient(from 0deg, #F59E0B, #FFCC00, #F59E0B, transparent)", animationDuration: "4s" }} />
+          </div>
+        )}
+
+        {/* Ultra-rare purple aura */}
+        {isUltraRare && (
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full opacity-25 blur-3xl animate-pulse"
+              style={{ background: "radial-gradient(circle, #A855F7, #A855F700)" }} />
+          </div>
+        )}
+
+        {/* Rare blue shimmer */}
+        {isRare && (
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full opacity-20 blur-3xl animate-pulse"
+              style={{ background: "radial-gradient(circle, #3B82F6, #3B82F600)" }} />
+          </div>
+        )}
+
+        {/* Rarity badge */}
+        <div
+          className={`inline-block px-5 py-2 font-black text-sm uppercase tracking-wider animate-[popUp_0.5s_ease-out] ${
+            isHighRarity ? "animate-pulse" : ""
+          }`}
           style={{
-            borderColor: "#1a1a1a",
-            background: rarityColor || "#9CA3AF",
+            border: `3px solid #1a1a1a`,
+            background: isLegendary
+              ? "linear-gradient(135deg, #F59E0B, #D97706)"
+              : isUltraRare
+              ? "linear-gradient(135deg, #A855F7, #7C3AED)"
+              : isRare
+              ? "linear-gradient(135deg, #3B82F6, #2563EB)"
+              : rarityColor || "#9CA3AF",
             color: "#fff",
-            boxShadow: "3px 3px 0px #1a1a1a",
+            boxShadow: isLegendary
+              ? "4px 4px 0px #1a1a1a, 0 0 30px #F59E0B60, 0 0 60px #F59E0B30"
+              : isUltraRare
+              ? "4px 4px 0px #1a1a1a, 0 0 24px #A855F760, 0 0 48px #A855F730"
+              : isRare
+              ? "4px 4px 0px #1a1a1a, 0 0 18px #3B82F660"
+              : "4px 4px 0px #1a1a1a",
           }}>
-          {Array.from({ length: RARITY_STARS[rndRarity] || 1 }).map((_, i) => (
-            <Star key={i} className="w-2.5 h-2.5 inline fill-current" />
-          ))} {rarityLabel} Tazo!
+          {Array.from({ length: rarityStars }).map((_, i) => (
+            <Star key={i} className={`w-3 h-3 inline fill-current ${isLegendary ? "animate-spin" : ""}`}
+              style={isLegendary ? { animationDuration: "2s" } : {}} />
+          ))}{" "}
+          {rarityLabel}
+          {isLegendary && " ⚡"}
         </div>
 
-        {/* Tazo disc */}
-        <div className="mx-auto w-52 h-52 rounded-full border-4 border-[#1a1a1a] shadow-[6px_6px_0px_#1a1a1a] flex items-center justify-center overflow-hidden"
-          style={{ background: "#1a1a1a" }}>
+        {/* Tazo disc — larger, centered, with entrance animation */}
+        <div className={`mx-auto w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center overflow-hidden animate-[popUp_0.6s_ease-out_0.15s_both] ${
+          isLegendary ? "border-[5px]" : "border-4"
+        }`}
+          style={{
+            borderColor: isLegendary ? "#F59E0B" : "#1a1a1a",
+            background: "#1a1a1a",
+            boxShadow: isLegendary
+              ? "8px 8px 0px #1a1a1a, 0 0 40px #F59E0B50, 0 0 80px #F59E0B30, inset 0 0 40px #F59E0B15"
+              : isUltraRare
+              ? "8px 8px 0px #1a1a1a, 0 0 30px #A855F750, inset 0 0 30px #A855F710"
+              : isRare
+              ? "6px 6px 0px #1a1a1a, 0 0 20px #3B82F640, inset 0 0 20px #3B82F608"
+              : "6px 6px 0px #1a1a1a",
+          }}>
           {revealedTazo.imageUrl ? (
             <TazoDiscImage src={revealedTazo.imageUrl} alt={revealedTazo.name || ""}
               size="100%" borderWidth={0} franchiseSlug={revealedTazo.franchiseSlug}
               finish={revealedTazo.finish} creatureVariant={revealedTazo.creatureVariant} shinyImageUrl={revealedTazo.shinyImageUrl}
               className="w-full h-full" />
           ) : (
-            <div className="text-[#1a1a1a]/20 text-6xl">?</div>
+            <div className="text-[#1a1a1a]/20 text-7xl">?</div>
           )}
         </div>
 
         {/* Name + franchise */}
-        <div className="space-y-0.5">
-          <h3 className="text-xl font-black text-[#1a1a1a] uppercase">
+        <div className="space-y-1 animate-[popUp_0.5s_ease-out_0.25s_both]">
+          <h3 className={`uppercase font-black ${
+            isLegendary ? "text-2xl sm:text-3xl" : isHighRarity ? "text-xl sm:text-2xl" : "text-xl"
+          }`}
+            style={{
+              color: "#1a1a1a",
+              textShadow: isLegendary ? "0 0 20px #F59E0B40" : "none",
+            }}>
             {revealedTazo.displayName || revealedTazo.name}
           </h3>
           <p className="text-xs font-bold text-[#1a1a1a]/35 uppercase tracking-wider">
@@ -731,14 +797,29 @@ export default function BagShopPage() {
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
+        {/* Stats with staggered animation */}
+        <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] animate-[popUp_0.5s_ease-out_0.35s_both]">
           <StatsRow tazo={revealedTazo} />
         </div>
 
+        {/* Legendary special message */}
+        {isLegendary && (
+          <div className="animate-[popUp_0.5s_ease-out_0.45s_both]">
+            <div className="inline-block px-4 py-2 bg-[#FEF3C7] border-2 border-[#F59E0B]"
+              style={{ boxShadow: "0 0 20px #F59E0B30" }}>
+              <p className="text-sm font-black text-[#B45309] uppercase tracking-wider flex items-center gap-2">
+                <Trophy className="w-5 h-5" /> Legendary Find! <Trophy className="w-5 h-5" />
+              </p>
+              <p className="text-[9px] font-bold text-[#B45309]/50 mt-0.5 uppercase tracking-[0.2em]">
+                One of the rarest tazos in the game
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Bonus tazo */}
         {bonusTazo && (
-          <div className="p-4 border-3 animate-bounce-in"
+          <div className="p-4 border-3 animate-[popUp_0.5s_ease-out_0.55s_both]"
             style={{ borderColor: "#F59E0B", background: "linear-gradient(135deg, #FEF3C7, #FFF8E7)", boxShadow: "3px 3px 0px #F59E0B" }}>
             <div className="flex items-center justify-center gap-2 mb-2">
               <Gift className="w-5 h-5 text-[#F59E0B]" />
@@ -764,7 +845,7 @@ export default function BagShopPage() {
         )}
 
         {/* Actions */}
-        <div className="flex flex-wrap gap-3 justify-center">
+        <div className="flex flex-wrap gap-3 justify-center animate-[popUp_0.5s_ease-out_0.6s_both]">
           <button onClick={handleReset}
             className="mag-btn px-6 py-3 font-black text-xs uppercase bg-[#FFCC00] text-[#1a1a1a] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
             <ShoppingBag className="w-4 h-4 inline mr-1" />Open Another
@@ -778,7 +859,7 @@ export default function BagShopPage() {
     )
   }
 
-  // ── BULK REVEAL STAGE ────────────────────────────────────
+  // ── BULK REVEAL  // ── BULK REVEAL STAGE ────────────────────────────────────
   if (stage === "reveal-bulk" && revealedTazos.length > 0) {
     const rarityCounts: Record<string, number> = {}
     let maxRarity = "common"

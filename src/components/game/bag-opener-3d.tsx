@@ -149,11 +149,11 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
     <div ref={containerRef} className="relative w-full select-none touch-none" style={{ height: canvasH }}>
       {/* Flash overlay on open */}
       <div
-        className="absolute inset-0 z-20 pointer-events-none transition-opacity"
+        className="absolute inset-0 z-20 pointer-events-none"
         style={{
           opacity: stage === "opening" ? 1 : 0,
-          transitionDuration: stage === "opening" ? "0ms" : "600ms",
-          background: `radial-gradient(ellipse at 50% 50%, ${franchiseColor}40 0%, ${franchiseColor}10 50%, transparent 75%)`,
+          transition: "opacity 300ms ease-out",
+          background: `radial-gradient(ellipse at 50% 50%, ${franchiseColor}60 0%, ${franchiseColor}20 40%, transparent 70%)`,
         }}
       />
 
@@ -186,14 +186,25 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
       {/* ═══ UI OVERLAY ═══ */}
       <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-3 z-10 px-4">
         {stage === "idle" && (
-          <div className="flex flex-col items-center gap-1.5">
+          <div className="flex flex-col items-center gap-3">
             <div
               className="px-6 py-2 font-black text-[10px] sm:text-xs uppercase tracking-[0.1em] border-[3px] cursor-pointer active:scale-95 transition-transform"
               style={{ backgroundColor: franchiseColor, color: "#1a1a1a", borderColor: "#1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}
             >
               ✂ DRAG ACROSS TO OPEN
             </div>
-            <span className="text-[8px] font-bold text-[#1a1a1a]/20 uppercase tracking-[0.2em]">slide across top seal</span>
+            <button
+              onClick={(e) => { e.stopPropagation(); handleSkip() }}
+              className="px-4 py-1.5 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.1em] border-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
+              style={{
+                background: "#1a1a1a",
+                color: franchiseColor,
+                borderColor: franchiseColor,
+                boxShadow: `0 0 12px ${franchiseColor}40`,
+              }}
+            >
+              ⚡ OPEN NOW
+            </button>
           </div>
         )}
         {stage === "tearing" && (
@@ -212,9 +223,37 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
           </div>
         )}
         {isOpening && (
-          <div className="px-4 py-2 border-[3px] border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] animate-pulse"
-            style={{ backgroundColor: `${franchiseColor}f0` }}>
-            <span className="font-black text-[11px] text-[#1a1a1a] uppercase tracking-[0.15em]">Opening…</span>
+          <div className="flex flex-col items-center gap-2">
+            <div className="px-5 py-2.5 border-[3px] border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] animate-pulse"
+              style={{ backgroundColor: `${franchiseColor}f0` }}>
+              <span className="font-black text-[11px] text-[#1a1a1a] uppercase tracking-[0.15em]">Opening…</span>
+            </div>
+            {/* Particle burst rings */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute inset-0 animate-ping opacity-20"
+                style={{
+                  border: `3px solid ${franchiseColor}`,
+                  borderRadius: "50%",
+                  width: "60%",
+                  height: "40%",
+                  left: "20%",
+                  top: "30%",
+                  animationDuration: "1.5s",
+                }}
+              />
+              <div className="absolute inset-0 animate-ping opacity-15"
+                style={{
+                  border: `2px solid ${franchiseColor}`,
+                  borderRadius: "50%",
+                  width: "40%",
+                  height: "25%",
+                  left: "30%",
+                  top: "37%",
+                  animationDuration: "1s",
+                  animationDelay: "0.3s",
+                }}
+              />
+            </div>
           </div>
         )}
       </div>
