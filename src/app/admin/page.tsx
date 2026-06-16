@@ -60,7 +60,7 @@ export default function AdminPage() {
                   { label: "Users", value: overview.users, icon: Users, color: "#3B4CCA" },
                   { label: "Tazos", value: overview.tazos, icon: Package, color: "#22C55E" },
                   { label: "With Art", value: overview.tazosWithArt, icon: ImageIcon, color: "#A855F7" },
-                  { label: "Franchises", value: overview.franchises, icon: Activity, color: "#F59E0B" },
+                  { label: "Series", value: overview.franchises, icon: Activity, color: "#F59E0B" },
                   { label: "Bags", value: overview.bags, icon: Package, color: "#E3350D" },
                   { label: "Decks", value: overview.decks, icon: Activity, color: "#00A1E9" },
                   { label: "Quests", value: overview.quests, icon: Activity, color: "#14B8A6" },
@@ -119,7 +119,7 @@ export default function AdminPage() {
                 </Link>
 
                 <Link
-                  href="/admin/tubes"
+                  href="/admin/decks"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
                   style={{ background: 'linear-gradient(135deg, #FFCC0010, #FF6B0010)' }}
                 >
@@ -128,49 +128,49 @@ export default function AdminPage() {
                       <Package className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#FF6B00] transition-colors">Tube Textures</h3>
-                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Upload & manage battle tube wraps</p>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#FF6B00] transition-colors">Deck Textures</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Upload & manage deck wraps</p>
                     </div>
                     <span className="ml-auto text-[#FF6B00] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
 
                 <Link
-                  href="/admin/tube-models"
+                  href="/admin/deck-models"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
                   style={{ background: 'linear-gradient(135deg, #FF6B0010, #E3350D10)' }}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#E3350D]">
-                      <Package className="w-5 h-5 text-white" />
+                      <Database className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#E3350D] transition-colors">Tube Models</h3>
-                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Create & manage tube models</p>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#E3350D] transition-colors">Deck Models</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Create & manage 3D deck models</p>
                     </div>
                     <span className="ml-auto text-[#E3350D] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
 
                 <Link
-                  href="/admin/bag-models"
+                  href="/admin/shop-bag-models"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
                   style={{ background: 'linear-gradient(135deg, #F9731610, #FFCC0010)' }}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-[#1a1a1a] bg-[#F97316]">
-                      <ShoppingBag className="w-5 h-5 text-white" />
+                      <Server className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#F97316] transition-colors">Bag Models</h3>
-                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Create potato-chip bag designs</p>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#F97316] transition-colors">Shop Bag Models</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Create 3D shop bag designs</p>
                     </div>
                     <span className="ml-auto text-[#F97316] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
 
                 <Link
-                  href="/admin/bags"
+                  href="/admin/shop-bags"
                   className="mag-card p-5 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] group hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
                   style={{ background: 'linear-gradient(135deg, #8B5CF610, #A855F710)' }}
                 >
@@ -179,8 +179,8 @@ export default function AdminPage() {
                       <ShoppingBag className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#8B5CF6] transition-colors">Bag Textures</h3>
-                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Upload bag material designs</p>
+                      <h3 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] group-hover:text-[#8B5CF6] transition-colors">Shop Bag Textures</h3>
+                      <p className="text-[9px] font-bold text-[#1a1a1a]/40 uppercase tracking-wider">Upload shop bag material designs</p>
                     </div>
                     <span className="ml-auto text-[#8B5CF6] text-lg font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
