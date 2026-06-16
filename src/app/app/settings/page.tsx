@@ -359,7 +359,7 @@ export default function SettingsPage() {
             {/* Avatar row */}
             <div className="flex items-start gap-4">
               <div className="relative group">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] flex items-center justify-center overflow-hidden">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#FFCC00] border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] flex items-center justify-center overflow-hidden">
                   {avatarUrl && !imgError ? (
                     <Image src={avatarUrl} alt="" fill className="object-cover" sizes="96px" unoptimized
                       onError={() => setImgError(true)} />

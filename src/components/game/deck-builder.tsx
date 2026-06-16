@@ -235,7 +235,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
                           ? "border-[#1a1a1a] bg-[#FFCC00]/10 scale-105 shadow-[3px_3px_0px_#1a1a1a]"
                           : "border-[#1a1a1a]/20 bg-white hover:border-[#1a1a1a]/50"
                       }`}>
-                      <div className="w-full aspect-[3/4] overflow-hidden mb-1.5" style={{ background: opt.color + "08" }}>
+                      <div className="relative w-full aspect-[3/4] overflow-hidden mb-1.5" style={{ background: opt.color + "08" }}>
                         <Image src={opt.textureUrl} alt={opt.name} fill className="object-cover" sizes="150px" />
                       </div>
                       <span className="text-[9px] font-black uppercase text-[#1a1a1a] block text-center">{opt.name}</span>
@@ -510,7 +510,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
 
               {/* Texture + Franchise preview */}
               <div className="flex items-center gap-3 p-3 bg-[#fffef0] border-2 border-[#1a1a1a]">
-                <div className="w-32 aspect-[3/4] overflow-hidden border border-[#1a1a1a]/20 flex-shrink-0">
+                <div className="relative w-32 aspect-[3/4] overflow-hidden border border-[#1a1a1a]/20 flex-shrink-0">
                   <Image src={tubeTexture} alt="Tube texture" fill className="object-cover" sizes="300px" />
                 </div>
                 <div>

@@ -230,7 +230,7 @@ function BettingReveal({ playerTazo, opponentTazo }: { playerTazo: TazoCard; opp
       <div className="flex items-center gap-4 sm:gap-6 bg-black/80 backdrop-blur-xl  border border-[#FFCC00]/20 px-6 py-5 shadow-[0_12px_48px_rgba(255,204,0,0.2)]">
         {/* Player tazo */}
         <div className="flex flex-col items-center gap-2 animate-[fadeInLeft_0.5s_ease-out]">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 border-2 border-[#29ADFF]/40 overflow-hidden bg-[#29ADFF]/5 flex items-center justify-center">
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-2 border-[#29ADFF]/40 overflow-hidden bg-[#29ADFF]/5 flex items-center justify-center">
             {playerTazo.imageUrl ? (
               <Image src={playerTazo.imageUrl} alt={playerTazo.name} fill className="object-contain" sizes="200px" />
             ) : (
@@ -249,7 +249,7 @@ function BettingReveal({ playerTazo, opponentTazo }: { playerTazo: TazoCard; opp
 
         {/* Opponent tazo */}
         <div className="flex flex-col items-center gap-2 animate-[fadeInRight_0.5s_ease-out]">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 border-2 border-[#FF004D]/40 overflow-hidden bg-[#FF004D]/5 flex items-center justify-center">
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-2 border-[#FF004D]/40 overflow-hidden bg-[#FF004D]/5 flex items-center justify-center">
             {opponentTazo.imageUrl ? (
               <Image src={opponentTazo.imageUrl} alt={opponentTazo.name} fill className="object-contain" sizes="200px" />
             ) : (
