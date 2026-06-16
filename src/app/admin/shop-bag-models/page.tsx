@@ -225,7 +225,7 @@ export default function AdminBagModelsPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="text-sm font-black text-[#1a1a1a] uppercase">{m.name}</h3>
                           <span className="text-[8px] font-black px-1.5 py-0.5 uppercase border border-[#1a1a1a]/20" style={{ color: FRANCHISE_COLORS[m.franchise] || "#999" }}>{m.franchise}</span>
-                          <span className="text-[10px] font-black tabular-nums text-[#FFCC00]">{m.cost}cr</span>
+                          <span className="text-[10px] font-black tabular-nums text-[#FFCC00]">{m.cost} CREDITS</span>
                           <span className={`text-[8px] font-black px-1.5 py-0.5 border ${m.isActive ? "text-[#22C55E] border-[#22C55E]/20" : "text-[#E3350D] border-[#E3350D]/20"}`}>{m.isActive ? "ACTIVE" : "OFF"}</span>
                         </div>
                         {m.tagline && <p className="text-[10px] font-bold text-[#1a1a1a]/40 mt-0.5">{m.tagline}</p>}
@@ -288,7 +288,7 @@ export default function AdminBagModelsPage() {
                             <div className="grid grid-cols-4 gap-2">
                               <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Cost</span>
-                                <span className="font-black text-[#FFCC00]">{m.cost}cr</span>
+                                <span className="font-black text-[#FFCC00]">{m.cost} CREDITS</span>
                               </div>
                               <div className="border border-[#1a1a1a]/10 p-2 text-center">
                                 <span className="text-[#1a1a1a]/40 block text-[8px] font-black uppercase">Bonus</span>

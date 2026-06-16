@@ -115,7 +115,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
           fontWeight: 600,
           margin: "0 0 10px",
         }}>
-          Watch short ads to earn up to {MAX_REWARDED_ADS_PER_DAY * REWARDED_AD_CREDITS} credits daily
+          Watch short ads to earn up to {MAX_REWARDED_ADS_PER_DAY * REWARDED_AD_CREDITS} CREDITS daily
         </p>
         <a
           href="/login"

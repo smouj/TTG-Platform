@@ -148,7 +148,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   leaderboard: {
     title: "Leaderboard — Top Players & Rankings | Trading Tazos Game",
     description:
-      "See the top-ranked players in Trading Tazos Game. Rankings by battles won, tazos collected, and credits earned. Compete to climb the leaderboard.",
+      "See the top-ranked players in Trading Tazos Game. Rankings by battles won, tazos collected, and CREDITS earned. Compete to climb the leaderboard.",
     canonicalPath: "/?page=leaderboard",
   },
   download: {

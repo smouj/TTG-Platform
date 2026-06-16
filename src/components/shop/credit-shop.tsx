@@ -210,7 +210,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                   letterSpacing: "0.1em",
                   marginBottom: "6px",
                 }}>
-                  credits
+                  CREDITS
                 </div>
 
                 {/* Bonus */}

@@ -199,7 +199,7 @@ export default function UserIdCard({ user, variant = "full" }: UserIdCardProps) 
               <span className="text-[9px] font-black text-[#1a1a1a]">¢</span>
             </div>
             <span className="text-sm font-black text-[#1a1a1a]">{user.credits.toLocaleString()}</span>
-            <span className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase ml-0.5">credits</span>
+            <span className="text-[10px] font-bold text-[#1a1a1a]/30 uppercase ml-0.5">CREDITS</span>
           </div>
           <div className="flex items-center gap-1.5 text-[#1a1a1a]/30">
             <Calendar className="w-3 h-3" />

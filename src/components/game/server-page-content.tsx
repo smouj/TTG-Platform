@@ -130,7 +130,7 @@ function ServerLeaderboard() {
   return (
     <section className="sr-only">
       <h1>Leaderboard — Top Players</h1>
-      <p>See the top-ranked players in Trading Tazos Game. Rankings by battles won, tazos collected, and credits earned. Sign in to compete and climb the leaderboard.</p>
+      <p>See the top-ranked players in Trading Tazos Game. Rankings by battles won, tazos collected, and CREDITS earned. Sign in to compete and climb the leaderboard.</p>
     </section>
   )
 }
@@ -158,13 +158,13 @@ function ServerFAQ() {
     <section className="sr-only">
       <h1>Frequently Asked Questions</h1>
       <h2>Is Trading Tazos Game free?</h2>
-      <p>Yes, completely free. You get 30 welcome bags and 100 credits when you create an account.</p>
+      <p>Yes, completely free. You get 30 welcome bags and 100 CREDITS when you create an account.</p>
       <h2>How many tazos are there?</h2>
       <p>150 tazos across 3 original series: Minimon (50), Dracobell (50), and Cybermon (50).</p>
       <h2>How do battles work?</h2>
       <p>Build a deck of 5, drop tazos from above into the arena, impact the stack, and flip opponent discs to capture them. It is a physics-based skill battle, not turn-based cards.</p>
       <h2>Can I play as a guest?</h2>
-      <p>Try the practice arena instantly — no account needed. Battle against the AI, test different decks, and experience the slam mechanics. Create a free account to open bags, build your collection, earn credits, and compete on the leaderboard.</p>
+      <p>Try the practice arena instantly — no account needed. Battle against the AI, test different decks, and experience the slam mechanics. Create a free account to open bags, build your collection, earn CREDITS, and compete on the leaderboard.</p>
       <h2>What are the tazo stats?</h2>
       <p>Each tazo has 9 stats: Attack, Defense, Resistance, Weight, Stability, Spin, Control, Bounce, and Precision.</p>
       <h2>What is a deck?</h2>
@@ -182,7 +182,7 @@ function ServerShop() {
   return (
     <section className="sr-only">
       <h1>Shop — Tazo Bags</h1>
-      <p>Buy tazo bags to expand your collection. Each bag costs 100 credits and contains random tazos from one of three original series.</p>
+      <p>Buy tazo bags to expand your collection. Each bag costs 100 CREDITS and contains random tazos from one of three original series.</p>
       <h2>Bag Types</h2>
       <ul>
         <li>Classic Bag — Minimon tazos with balanced rarity. 48% Common, 30% Uncommon, 15% Rare, 5% Ultra Rare, 2% Legendary.</li>
@@ -190,7 +190,7 @@ function ServerShop() {
         <li>Mega Bag — Dracobell martial tazos. Same rarity distribution.</li>
       </ul>
       <h2>Getting Started</h2>
-      <p>New players receive 30 welcome bags and 100 credits for free upon account creation. No purchase required.</p>
+      <p>New players receive 30 welcome bags and 100 CREDITS for free upon account creation. No purchase required.</p>
     </section>
   )
 }

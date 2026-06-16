@@ -495,7 +495,7 @@ export default function DeckBuilder({ initialDeck, onSave, onCancel, saving, sav
                   <Image src={tubeTexture} alt="Tube texture" fill className="object-cover" sizes="300px" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black text-[#1a1a1a] block">Tube: {TUBE_TEXTURE_OPTIONS.find(o => o.slug === tubeSlug)?.name || "Custom"}</span>
+                  <span className="text-[10px] font-black text-[#1a1a1a] block">Deck: {TUBE_TEXTURE_OPTIONS.find(o => o.slug === tubeSlug)?.name || "Custom"}</span>
                   <span className="text-[8px] font-bold text-[#1a1a1a]/35">Textured body wrap · {selectedIds.size} tazos loaded</span>
                 </div>
               </div>

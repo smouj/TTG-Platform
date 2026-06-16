@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
 
     const { name, tazoIds, color, starterIds, textureUrl, tubeSlug } = await request.json()
     if (!name || !name.trim()) {
-      return NextResponse.json({ error: "Tube name is required" }, { status: 400 })
+      return NextResponse.json({ error: "Deck name is required" }, { status: 400 })
     }
     // If no tazoIds provided (Quick Deck), auto-populate with user's first 5 owned tazos
     let finalTazoIds = tazoIds
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       finalTazoIds = owned.map((ut) => ut.tazoId)
     }
     if (finalTazoIds.length > 20) {
-      return NextResponse.json({ error: "Maximum 20 tazos per battle tube" }, { status: 400 })
+      return NextResponse.json({ error: "Maximum 20 tazos per battle deck" }, { status: 400 })
     }
 
     // Build settings JSON

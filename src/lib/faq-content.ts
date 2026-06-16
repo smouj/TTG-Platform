@@ -19,7 +19,7 @@ export const FAQ_ENTRIES: FaqEntry[] = [
   },
   {
     q: "Is it free to play?",
-    a: "Yes, completely free. Start with 100 credits and 30 welcome bags. Earn up to 225 credits daily: battles (10 per win, 10 wins/day max), daily bonus (25), and rewarded ads (100). No credit card required.",
+    a: "Yes, completely free. Start with 100 CREDITS and 30 welcome bags. Earn up to 225 CREDITS daily: battles (10 per win, 10 wins/day max), daily bonus (25), and rewarded ads (100). No credit card required.",
   },
   {
     q: "How does the battle system work?",
@@ -35,7 +35,7 @@ export const FAQ_ENTRIES: FaqEntry[] = [
   },
   {
     q: "How do credits work?",
-    a: "Credits buy tazo bags (100 credits each). Earn them through battles (10cr/win, max 10 wins/day), quests, daily bonuses (25cr), and rewarded ads (5×20cr). The Starter credit pack gives you 5 bags — perfect to begin your collection.",
+    a: "CREDITS buy tazo bags (100 CREDITS each). Earn them through battles (10 CREDITS/win, max 10 wins/day), quests, daily bonuses (25 CREDITS), and rewarded ads (5×20 CREDITS). The Starter CREDITS pack gives you 5 bags — perfect to begin your collection.",
   },
   {
     q: "What quests are there?",

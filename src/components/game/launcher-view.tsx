@@ -251,7 +251,7 @@ function SignUpPreview() {
             <Gift className="w-5 h-5 text-[#22C55E]" />
           </div>
           <span className="text-[8px] font-black text-[#22C55E] uppercase">30 Free Bags!</span>
-          <span className="text-[7px] font-bold text-[#1a1a1a]/30">+100 credits</span>
+          <span className="text-[7px] font-bold text-[#1a1a1a]/30">+100 CREDITS</span>
         </div>
       </div>
     </div>
@@ -730,7 +730,7 @@ function HowItWorksHome() {
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
         {[
-          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different series. Start with 30 welcome bags + 100 credits and earn more by winning battles.", color: "#FF6B00" },
+          { step: "1", icon: PackageOpen, title: "Open Bags", desc: "Get random tazos from 3 different series. Start with 30 welcome bags + 100 CREDITS and earn more by winning battles.", color: "#FF6B00" },
           { step: "2", icon: Layers, title: "Build Your Deck", desc: "Choose 5 tazos with 9 combat stats each. Balance attack, defense, and speed for the best results.", color: "#3B4CCA" },
           { step: "3", icon: Swords, title: "Enter the Arena", desc: "Bet one tazo at center, then slam from above. Flip opponent discs to capture them — eliminate their entire deck to win!", color: "#E3350D" },
         ].map(({ step, icon: Icon, title, desc, color }) => (
@@ -935,7 +935,7 @@ function HowToPlayContent() {
     <div className="w-full max-w-3xl mx-auto space-y-6">
       <SectionCard step={1} color="#FFCC00" bgColor="#FFCC00" title="Create Your Account"
         preview={<SignUpPreview />}>
-        <p>Sign up for free — you&apos;ll receive <strong>30 welcome bags + 100 credits</strong> with surprise tazos inside. Open them in the Shop to start your collection. No credit card required — the game is completely free to play.</p>
+        <p>Sign up for free — you&apos;ll receive <strong>30 welcome bags + 100 CREDITS</strong> with surprise tazos inside. Open them in the Shop to start your collection. No credit card required — the game is completely free to play.</p>
       </SectionCard>
 
       <SectionCard step={2} color="#FF6B00" bgColor="#FF6B00" title="Open Bags & Collect Tazos"
@@ -946,7 +946,7 @@ function HowToPlayContent() {
           <li><strong>Premium Bags</strong> — Better odds for rare tazos</li>
           <li><strong>Mega Bags</strong> — Highest chance for ultra rare and legendary</li>
         </ul>
-        <p>Buy more bags with credits earned by winning battles and completing quests.</p>
+        <p>Buy more bags with CREDITS earned by winning battles and completing quests.</p>
       </SectionCard>
 
       <SectionCard step={3} color="#3B4CCA" bgColor="#3B4CCA" title="Build Your Battle Deck"
@@ -979,7 +979,7 @@ function HowToPlayContent() {
 
       <SectionCard step={5} color="#22C55E" bgColor="#22C55E" title="Complete Quests & Climb Ranks"
         preview={<QuestsPreview />}>
-        <p>Earn credits and reputation by completing <strong>17 quests</strong> across 4 categories (Beginner, Daily, Weekly, Special). Unlock <strong>18 achievements</strong> with Bronze → Platinum tiers. Rise through the leaderboard and become the ultimate collector.</p>
+        <p>Earn CREDITS and reputation by completing <strong>17 quests</strong> across 4 categories (Beginner, Daily, Weekly, Special). Unlock <strong>18 achievements</strong> with Bronze → Platinum tiers. Rise through the leaderboard and become the ultimate collector.</p>
       </SectionCard>
     </div>
   )
@@ -1011,9 +1011,11 @@ const COLLECTION_DATA = [
 ]
 
 function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  const [publishedCounts, setPublishedCounts] = useState<Record<string,number> | null>(null)
   const [showcaseTazos, setShowcaseTazos] = useState<Record<string, any[]>>({})
 
   useEffect(() => {
+    fetch("/api/stats").then(r => r.json()).then(d => { if (d.bySeries) setPublishedCounts(d.bySeries) }).catch(() => {})
     // Fetch tazos for all 3 series to populate panels
     Promise.all([
       fetch("/api/tazos?franchise=cybermon&publishStatus=published&limit=4").then(r => r.json()),
@@ -1109,7 +1111,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
                   className="h-5 object-contain" />
               </div>
               <h3 className="text-lg font-black text-[#1a1a1a] uppercase">{c.name}</h3>
-              <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{c.count} of {c.total} tazos · {c.year} · {c.origin}</p>
+              <p className="text-[10px] font-black text-[#1a1a1a]/50 mt-0.5">{publishedCounts?.[c.name] ?? c.count} of {c.total} tazos · {c.year} · {c.origin}</p>
               <p className="text-[11px] font-bold text-[#1a1a1a]/60 mt-2 leading-relaxed">{c.desc}</p>
               <div className="flex flex-wrap gap-1 mt-3">
                 {c.categories.map(cat => (
@@ -1483,7 +1485,7 @@ function ShopContent() {
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 2px, transparent 2px, transparent 12px)" }} />
         <div className="relative z-10 space-y-3">
           <h3 className="text-lg sm:text-2xl font-black text-[#1a1a1a] uppercase tracking-tight">Ready to Start Collecting?</h3>
-          <p className="text-sm text-[#1a1a1a]/50 font-bold max-w-md mx-auto">Sign up free and get starter credits + 30 welcome bags to open. Collect, trade, and battle with 150 tazos across 3 series.</p>
+          <p className="text-sm text-[#1a1a1a]/50 font-bold max-w-md mx-auto">Sign up free and get starter CREDITS + 30 welcome bags to open. Collect, trade, and battle with 150 tazos across 3 series.</p>
           <div className="flex items-center justify-center gap-3 pt-2">
             <a href="/register" className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-xs sm:text-sm font-black uppercase tracking-wider bg-[#E3350D] text-white border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
               Sign Up Free <ArrowRight className="w-4 h-4" />
@@ -2006,6 +2008,11 @@ const COLLECTION_DETAILS: Record<string, {
 }
 
 function CollectionDetailContent({ collection }: { collection: string }) {
+  const [detailCounts, setDetailCounts] = useState<Record<string,number> | null>(null)
+
+  useEffect(() => {
+    fetch("/api/stats").then(r => r.json()).then(d => { if (d.bySeries) setDetailCounts(d.bySeries) }).catch(() => {})
+  }, [])
   const c = COLLECTION_DETAILS[collection]
   if (!c) return null
   return (
@@ -2014,7 +2021,7 @@ function CollectionDetailContent({ collection }: { collection: string }) {
       <div className="border-2 border-[#1a1a1a] bg-white p-5" style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
         <div className="h-2 mb-3" style={{ background: c.color }} />
         <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl font-black text-[#1a1a1a]">{c.count}</span>
+          <span className="text-2xl font-black text-[#1a1a1a]">{detailCounts?.[c.name] ?? c.count}</span>
           <span className="text-[10px] font-bold text-[#1a1a1a]/25 uppercase">of {c.total} planned</span>
           <span className="text-xs font-bold text-[#1a1a1a]/40 uppercase">tazos · {c.origin} {c.year}</span>
         </div>
