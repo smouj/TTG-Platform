@@ -53,8 +53,7 @@ export async function POST(request: NextRequest) {
     const newHash = await migratePasswordIfNeeded(password, user.passwordHash)
     if (newHash) {
       db.user.update({ where: { id: user.id }, data: { passwordHash: newHash } })
-        .then(() => console.log("[LOGIN] migrated password to scrypt"))
-        .catch((e) => console.warn("[LOGIN] migration failed:", e.message))
+        
     }
 
     const token = generateToken({

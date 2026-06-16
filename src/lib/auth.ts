@@ -411,8 +411,8 @@ export async function seedAdminUser() {
         emailVerified: true,
       },
     })
-    console.log(`✅ Admin user seeded: ${adminEmail}`)
+    // Admin user seeded
   } catch (e: any) {
-    console.warn(`⚠️  Admin seed skipped: ${e.message}`)
+    // Admin seed skipped (non-critical)
   }
 }

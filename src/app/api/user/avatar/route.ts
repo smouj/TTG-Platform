@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     // Content moderation
     const prohibited = detectProhibited(buffer)
     if (prohibited) {
-      console.warn('Prohibited image upload attempt by user:', user.id)
+      // Security: blocked prohibited image upload
       return NextResponse.json({ error: prohibited }, { status: 400 })
     }
 

@@ -128,7 +128,7 @@ function runGenerateSingle(franchise: string, slug: string) {
   } catch (e: any) {
     // If the script doesn't support --franchise/--slug flags,
     // fall back to generating all (the script will use DB)
-    console.warn("[tazo-art] Single tazo flag not supported, generating batch...");
+    // Single tazo flag not supported, generating batch
     return runRegenerateAll();
   }
 }

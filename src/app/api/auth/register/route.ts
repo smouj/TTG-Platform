@@ -128,7 +128,7 @@ async function seedWelcomePack(userId: string) {
       })
 
       if (tazos.length === 0) {
-        console.warn(`No published tazos for franchise: ${slug}`)
+        // No published tazos for franchise (non-critical)
         continue
       }
 
@@ -151,7 +151,7 @@ async function seedWelcomePack(userId: string) {
     }
 
     const total = results.reduce((s, r) => s + r.count, 0)
-    console.log(`🎁 Welcome pack seeded for user ${userId}: ${total} bags (${results.map(r => `${r.count} ${r.franchise}`).join(", ")})`)
+    // Welcome pack seeded
   } catch (err) {
     console.error("Welcome pack seed error:", err)
   }
