@@ -268,7 +268,7 @@ export default function QuestsPage() {
                     <p className="text-xs text-zinc-500 font-bold mt-1">{q.description}</p>
                     <div className="flex items-center gap-3 mt-2 text-[10px] font-black">
                       <span className="flex items-center gap-1 text-[#F59E0B]">
-                        <Coins className="w-3.5 h-3.5" /> +{q.rewardCredits} credits
+                        <Coins className="w-3.5 h-3.5" /> +{q.rewardCredits} CREDITS
                       </span>
                       <span className="flex items-center gap-1 text-[#A855F7]">
                         <Zap className="w-3.5 h-3.5" /> +{q.rewardXp || 50} XP

@@ -202,7 +202,7 @@ function SellTazoCard({ ut, onSell, selling }: {
             onChange={(e) => setPrice(Math.max(1, Number(e.target.value)))}
             className="w-20 px-2 py-1 text-xs font-black text-[#1a1a1a] bg-zinc-50 border-2 border-[#1a1a1a]/20 focus:border-[#1a1a1a] outline-none text-center"
           />
-          <span className="text-[8px] font-bold text-[#1a1a1a]/25">cr</span>
+          <span className="text-[8px] font-bold text-[#1a1a1a]/25">CREDITS</span>
           <span className="text-[7px] font-bold text-[#1a1a1a]/15 ml-1">suggested: {suggestedPrice}</span>
         </div>
         <button
@@ -652,7 +652,7 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
       <div className="flex items-center gap-1.5 text-sm">
         <Coins className="w-4 h-4 text-[#FFCC00]" />
         <span className="font-black text-[#1a1a1a]">{credits}</span>
-        <span className="text-[9px] font-bold text-[#1a1a1a]/30">cr available</span>
+        <span className="text-[9px] font-bold text-[#1a1a1a]/30">CREDITS available</span>
       </div>
 
       {/* ── BUY TAB ── */}

@@ -167,7 +167,7 @@ function BagCard({ bag, selected, onSelect, onBuy, buying, credits }: {
                 </div>
               </div>
               <div className="text-center text-[8px] font-bold text-[#1a1a1a]/25">
-                {bag.cost}x1 · {bag.cost * 5}x5 · {bag.cost * 20}x20 cr
+                {bag.cost} · {bag.cost * 5} · {bag.cost * 20} CREDITS
               </div>
             </div>
           ) : (
@@ -597,12 +597,12 @@ export default function BagShopPage() {
               }`}
             >
               {claimingDaily ? <Loader2 className="h-3 w-3 animate-spin" /> : <Calendar className="h-3 w-3" />}
-              {dailyClaimable ? "Claim +25cr Daily" : "Claimed Today"}
+              {dailyClaimable ? "Claim +25 CREDITS Daily" : "Claimed Today"}
             </button>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[9px] font-bold text-[#1a1a1a]/40">
-              <span className="flex items-center gap-1"><Swords className="w-2.5 h-2.5 text-[#E3350D]" />Battles +30cr</span>
-              <span className="flex items-center gap-1"><Calendar className="w-2.5 h-2.5 text-[#3B4CCA]" />Daily +25cr</span>
-              <span className="flex items-center gap-1"><Trophy className="w-2.5 h-2.5 text-[#F59E0B]" />Quests +50-200cr</span>
+              <span className="flex items-center gap-1"><Swords className="w-2.5 h-2.5 text-[#E3350D]" />Battles +30 CREDITS</span>
+              <span className="flex items-center gap-1"><Calendar className="w-2.5 h-2.5 text-[#3B4CCA]" />Daily +25 CREDITS</span>
+              <span className="flex items-center gap-1"><Trophy className="w-2.5 h-2.5 text-[#F59E0B]" />Quests +50-200 CREDITS</span>
             </div>
           </div>
         </div>

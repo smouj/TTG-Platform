@@ -507,7 +507,7 @@ export default function BattlePage() {
                   {selectedDeck.tazos && selectedDeck.tazos.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-[#1a1a1a]/6">
                       <p className="text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-widest mb-2">
-                        {deckStats.count} Tazos in tube
+                        {deckStats.count} Tazos in deck
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {selectedDeck.tazos.slice(0, 15).map((t: any) => (

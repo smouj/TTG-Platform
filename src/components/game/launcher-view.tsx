@@ -268,7 +268,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#9CA3AF] bg-[#9CA3AF]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #9CA3AF30" }}>
             <span className="text-[7px] font-black text-[#9CA3AF] uppercase mt-1">Std</span>
-            <span className="text-[6px] font-bold text-[#9CA3AF]/50">100 cr</span>
+            <span className="text-[6px] font-bold text-[#9CA3AF]/50">100 CREDITS</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#9CA3AF]/10 border-t border-[#9CA3AF]/20" />
           </div>
         </div>
@@ -276,7 +276,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#3B82F6] bg-[#3B82F6]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #3B82F630" }}>
             <span className="text-[7px] font-black text-[#3B82F6] uppercase mt-1">Prem</span>
-            <span className="text-[6px] font-bold text-[#3B82F6]/50">100 cr</span>
+            <span className="text-[6px] font-bold text-[#3B82F6]/50">100 CREDITS</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#3B82F6]/10 border-t border-[#3B82F6]/20" />
           </div>
         </div>
@@ -284,7 +284,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
           <div className="w-14 h-16 border-2 border-[#A855F7] bg-[#A855F7]/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #A855F730" }}>
             <span className="text-[7px] font-black text-[#A855F7] uppercase mt-1">Mega</span>
-            <span className="text-[6px] font-bold text-[#A855F7]/50">100 cr</span>
+            <span className="text-[6px] font-bold text-[#A855F7]/50">100 CREDITS</span>
             <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#A855F7]/10 border-t border-[#A855F7]/20" />
           </div>
         </div>
@@ -1358,7 +1358,7 @@ function ShopContent() {
       <section className="text-center space-y-2">
         <p className="text-sm sm:text-base text-[#1a1a1a]/50 font-bold max-w-lg mx-auto">
           Open bags to discover and collect tazos across 3 series.{" "}
-          <span className="text-[#1a1a1a]/30">Bags 100cr each — earn credits by playing or buy packs.</span>
+          <span className="text-[#1a1a1a]/30">Bags 100 CREDITS each — earn CREDITS by playing or buy packs.</span>
         </p>
         <div className="flex items-center justify-center gap-2 pt-1">
           <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#FFCC00]/10 border border-[#FFCC00]/30 text-[#1a1a1a] uppercase">
@@ -1577,7 +1577,7 @@ function LeaderboardContent() {
                 </div>
                 <span className="flex-1 text-xs font-black text-[#1a1a1a] truncate">{displayName(e)}</span>
                 <span className="text-[11px] font-black text-[#FFCC00]">
-                  {sort === "credits" ? `${(e.credits || 0).toLocaleString()} cr` :
+                  {sort === "credits" ? `${(e.credits || 0).toLocaleString()} CREDITS` :
                    sort === "tazos" ? `${e.tazoCount || e._count?.userTazos || 0} tazos` :
                    `${e.winCount || 0} wins`}
                 </span>
