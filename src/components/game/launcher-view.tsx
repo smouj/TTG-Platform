@@ -636,9 +636,9 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
               {/* Quick Actions — magazine navigation cards */}
               <div className="grid grid-cols-4 gap-2">
                 {[
-                  { icon: ShoppingBag, label: "Shop", color: "#FF6B00", href: "/app/shop" },
-                  { icon: Swords, label: "Battle", color: "#E3350D", href: "/app/battle" },
-                  { icon: Disc3, label: "Collection", color: "#00A1E9", href: "/app/collection" },
+                  { icon: ShoppingBag, label: "Shop", color: "#FF6B00", href: "/?page=shop" },
+                  { icon: Swords, label: "Battle", color: "#E3350D", href: user ? "/app/battle" : "/battle/practice" },
+                  { icon: Disc3, label: "Collection", color: "#00A1E9", href: "/?page=collections" },
                   { icon: Medal, label: "Rankings", color: "#22C55E", href: "/?page=leaderboard" },
                 ].map(({ icon: Icon, label, color, href }) => (
                   <Link key={label} href={href}
@@ -1030,13 +1030,13 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
             style={{ boxShadow: "4px 4px 0 #1a1a1a" }}>
             {/* Series color strip */}
             <div className="h-2" style={{ background: c.color }} />
-            
+
             {/* Tazo + Back art showcase */}
             <div className="p-3 grid grid-cols-2 gap-2 bg-[#fffef0] border-b-2 border-[#1a1a1a]/10">
               {/* Back art of franchise */}
               <div className="rounded-full overflow-hidden aspect-square flex items-center justify-center bg-white border-2 border-[#1a1a1a]/10 shadow-[1px_1px_0px_#1a1a1a10]">
-                <img 
-                  src={backArtUrl} 
+                <img
+                  src={backArtUrl}
                   alt={`${c.name} back art`}
                   className="w-full h-full object-cover"
                   style={{ borderRadius: "50%" }}
@@ -2158,27 +2158,27 @@ export default function LauncherView() {
                 <DownloadStripHome onNavigate={navigate} />
               </>
             )}
-            
+
             {currentPage === "how-to-play" && (
               <div className="w-full max-w-5xl mx-auto"><HowToPlayContent /></div>
             )}
-            
+
             {currentPage === "collections" && (
               <div className="w-full max-w-5xl mx-auto"><CollectionsContent onNavigate={navigate} /></div>
             )}
-            
+
             {currentPage === "tazos" && (
               <div className="w-full max-w-5xl mx-auto"><TazosContent /></div>
             )}
-            
+
             {currentPage === "leaderboard" && (
               <div className="w-full max-w-5xl mx-auto"><LeaderboardContent /></div>
             )}
-            
+
             {currentPage === "download" && (
               <div className="w-full max-w-5xl mx-auto"><DownloadContent /></div>
             )}
-            
+
             {currentPage === "faq" && (
               <div className="w-full max-w-5xl mx-auto"><FAQContent /></div>
             )}
