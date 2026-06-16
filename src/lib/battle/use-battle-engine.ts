@@ -107,6 +107,7 @@ export function useBattleEngine(): BattleEngine {
 
   const ctxRef = useRef(ctx)
   const uiRef = useRef(uiState)
+  const modeRef = useRef<"practice" | "pvp_ranked" | "pvp_friend">("practice")
   useEffect(() => { ctxRef.current = ctx }, [ctx])
   useEffect(() => { uiRef.current = uiState }, [uiState])
 
@@ -133,6 +134,7 @@ export function useBattleEngine(): BattleEngine {
 
   // ── Match lifecycle ──
   const startMatch = useCallback((config: MatchConfig) => {
+    modeRef.current = config.mode
     const newCtx = createBattleContext(config)
     setCtx(newCtx)
     setUIState({ ...initialUI })
@@ -214,7 +216,7 @@ export function useBattleEngine(): BattleEngine {
   const saveBattle = useCallback(async (token: string) => {
     const c = ctxRef.current
     if (!c) return null
-    return await persistBattleResult(c, token, "practice")
+    return await persistBattleResult(c, token, modeRef.current)
   }, [])
 
   // ── Reset ──

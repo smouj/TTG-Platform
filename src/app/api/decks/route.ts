@@ -88,10 +88,20 @@ export async function POST(request: NextRequest) {
     if (!name || !name.trim()) {
       return NextResponse.json({ error: "Tube name is required" }, { status: 400 })
     }
+    // If no tazoIds provided (Quick Deck), auto-populate with user's first 5 owned tazos
+    let finalTazoIds = tazoIds
     if (!tazoIds || !Array.isArray(tazoIds) || tazoIds.length === 0) {
-      return NextResponse.json({ error: "At least one tazo is required" }, { status: 400 })
+      const owned = await db.userTazo.findMany({
+        where: { userId: user.id },
+        take: 5,
+        select: { tazoId: true },
+      })
+      if (owned.length === 0) {
+        return NextResponse.json({ error: "You need tazos first — open your welcome bags!" }, { status: 400 })
+      }
+      finalTazoIds = owned.map((ut) => ut.tazoId)
     }
-    if (tazoIds.length > 20) {
+    if (finalTazoIds.length > 20) {
       return NextResponse.json({ error: "Maximum 20 tazos per battle tube" }, { status: 400 })
     }
 
@@ -106,10 +116,10 @@ export async function POST(request: NextRequest) {
 
     // Verify user owns all tazos
     const userTazos = await db.userTazo.findMany({
-      where: { userId: user.id, tazoId: { in: tazoIds } },
+      where: { userId: user.id, tazoId: { in: finalTazoIds } },
     })
     const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
-    const notOwned = tazoIds.filter((id: string) => !ownedIds.has(id))
+    const notOwned = finalTazoIds.filter((id: string) => !ownedIds.has(id))
     if (notOwned.length > 0) {
       return NextResponse.json(
         { error: `${notOwned.length} tazo(s) not found in your collection` },
@@ -125,7 +135,7 @@ export async function POST(request: NextRequest) {
         isActive: false,
         settings: Object.keys(settings).length > 0 ? JSON.stringify(settings) : null,
         deckTazos: {
-          create: tazoIds.map((tazoId: string) => ({ tazoId })),
+          create: finalTazoIds.map((tazoId: string) => ({ tazoId })),
         },
       },
       include: {
