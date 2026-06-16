@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
       { source: "/download", destination: "/?page=download", permanent: true },
       { source: "/battle-system", destination: "/?page=how-to-play", permanent: true },
 
+      // Legacy admin routes — renamed for clarity
+      { source: "/admin/tubes", destination: "/admin/decks", permanent: true },
+      { source: "/admin/tube-models", destination: "/admin/deck-models", permanent: true },
+      { source: "/admin/bag-models", destination: "/admin/shop-bag-models", permanent: true },
+
       // Legacy RPGClaw routes → redirect home
       { source: "/earth", destination: "/", permanent: true },
       { source: "/status", destination: "/leaderboard", permanent: true },
