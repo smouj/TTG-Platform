@@ -33,6 +33,7 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         WS_PORT: 3001,
+        JWT_SECRET: "NKBSlQtT-dfsTTBEcW2dPt5dJ1vzo609hu7YqVHhutimD-DDYz-0O7N52R5xVju5",
       },
       autorestart: true,
       watch: false,

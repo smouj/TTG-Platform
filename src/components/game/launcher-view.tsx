@@ -33,6 +33,7 @@ import { FAQ_ENTRIES } from "@/lib/faq-content"
 import { DOWNLOAD_PLATFORMS, DOWNLOAD_RELEASE } from "@/lib/downloads"
 import { CreditShop } from "@/components/shop/credit-shop"
 import { RewardedAdButton } from "@/components/shop/rewarded-ad"
+import { Skeleton } from "@/components/ui/loading-skeletons"
 
 // ── Types ──
 
@@ -1311,7 +1312,9 @@ const RC: Record<string, string> = { Common:"#9CA3AF", Uncommon:"#22C55E", Rare:
 
 function ShopContent() {
   const [tazosByF, setTazosByF] = useState<Record<string, any[]>>({})
+  const [tazosLoading, setTazosLoading] = useState(true)
   useEffect(() => {
+    setTazosLoading(true)
     Promise.all([
       fetch("/api/tazos?franchise=cybermon&publishStatus=published&limit=4").then(r => r.json()),
       fetch("/api/tazos?franchise=dracobell&publishStatus=published&limit=4").then(r => r.json()),
@@ -1326,7 +1329,7 @@ function ShopContent() {
         }
       }
       setTazosByF(byF)
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => setTazosLoading(false))
   }, [])
 
   return (
@@ -1364,12 +1367,14 @@ function ShopContent() {
                 <div className="flex items-start justify-between mb-2 mt-3">
                   <div className="flex items-center gap-2">
                     {/* Example tazo from this series */}
-                    {examples.length > 0 && (
+                    {tazosLoading ? (
+                      <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
+                    ) : examples.length > 0 ? (
                       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#1a1a1a]/30 flex-shrink-0 bg-white" style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
                         <img src={examples[0].imageUrl || "/tazos-artgen/backs/minimon-back.png"} alt={examples[0].displayName || examples[0].name}
                           className="w-full h-full object-cover" />
                       </div>
-                    )}
+                    ) : null}
                     <div>
                       <h3 className="text-sm sm:text-base font-black text-[#1a1a1a] uppercase leading-tight">{bag.name}</h3>
                       <p className="text-[9px] sm:text-[10px] font-bold text-[#1a1a1a]/50">{bag.tagline}</p>
@@ -1414,25 +1419,31 @@ function ShopContent() {
                   <span className="text-[10px] font-black uppercase px-2 py-0.5 border border-[#1a1a1a]/20" style={{ backgroundColor: bag.bg, color: bag.border }}>{bag.franchiseName}</span>
                 </div>
                 {/* Example tazo discs */}
-                {examples.length > 0 && (
-                  <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#1a1a1a]/8">
-                    <span className="text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-wider shrink-0">Tazos:</span>
-                    <div className="flex gap-1.5">
-                      {examples.slice(0, 4).map((t: any, idx: number) => (
-                        <div key={t.id || idx} className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#1a1a1a]/15 overflow-hidden flex-shrink-0 hover:border-[#FFCC00] hover:scale-110 transition-all bg-white" title={t.displayName || t.name}>
-                          <div className="w-full h-full rounded-full overflow-hidden relative">
-                            <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
-                              franchiseSlug={t.franchiseSlug || t.franchise?.slug}
-                              finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} lazy />
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#1a1a1a]/8">
+                  <span className="text-[8px] font-black text-[#1a1a1a]/25 uppercase tracking-wider shrink-0">Tazos:</span>
+                  <div className="flex gap-1.5">
+                    {tazosLoading ? (
+                      Array.from({ length: 4 }).map((_, i) => (
+                        <Skeleton key={i} className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex-shrink-0" />
+                      ))
+                    ) : examples.length > 0 ? (
+                      <>
+                        {examples.slice(0, 4).map((t: any, idx: number) => (
+                          <div key={t.id || idx} className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#1a1a1a]/15 overflow-hidden flex-shrink-0 hover:border-[#FFCC00] hover:scale-110 transition-all bg-white" title={t.displayName || t.name}>
+                            <div className="w-full h-full rounded-full overflow-hidden relative">
+                              <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
+                                franchiseSlug={t.franchiseSlug || t.franchise?.slug}
+                                finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl} lazy />
+                            </div>
                           </div>
+                        ))}
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-[#1a1a1a]/10 flex items-center justify-center flex-shrink-0">
+                          <span className="text-[7px] font-black text-[#1a1a1a]/25">+more</span>
                         </div>
-                      ))}
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-[#1a1a1a]/10 flex items-center justify-center flex-shrink-0">
-                        <span className="text-[7px] font-black text-[#1a1a1a]/25">+more</span>
-                      </div>
-                    </div>
+                      </>
+                    ) : null}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           )

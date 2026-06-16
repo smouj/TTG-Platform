@@ -15,6 +15,7 @@ import {
   Flame, Swords, Store,
 } from "lucide-react"
 import ConfettiBurst from "@/components/game/confetti-burst"
+import { Skeleton, ShopBagSkeleton } from "@/components/ui/loading-skeletons"
 import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
@@ -246,6 +247,7 @@ export default function BagShopPage() {
   const [bulkTotal, setBulkTotal] = useState(0)
   const [dailyClaimable, setDailyClaimable] = useState(false)
   const [claimingDaily, setClaimingDaily] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
 
   // Shop tabs: bags | marketplace
   const [shopTab, setShopTab] = useState<"bags" | "marketplace">("bags")
@@ -264,7 +266,7 @@ export default function BagShopPage() {
   useEffect(() => {
     if (!token) return
     fetch("/api/credits", { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json()).then(d => setCredits(d.credits ?? 0)).catch(() => {})
+      .then(r => r.json()).then(d => { setCredits(d.credits ?? 0); setInitialLoading(false) }).catch(() => setInitialLoading(false))
   }, [token])
   useEffect(() => {
     if (!token) return
@@ -547,6 +549,13 @@ export default function BagShopPage() {
         )}
 
         {/* ── BAG CARDS ── */}
+        {initialLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <ShopBagSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {bags.map(bag => (
             <BagCard
@@ -561,6 +570,7 @@ export default function BagShopPage() {
           ))}
         </div>
 
+        )}
         {/* ── How to earn ── */}
         <div className="p-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]">
           <div className="flex flex-wrap items-center gap-3">
