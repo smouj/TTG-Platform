@@ -41,6 +41,11 @@ const nextConfig: NextConfig = {
 
       // Standalone pages → launcher tabs (single source of truth)
       { source: "/collections", destination: "/?page=collections", permanent: true },
+      
+      // Collection series pages → unified launcher (removes old yellow-header pages)
+      { source: "/collections/cybermon", destination: "/?page=collections", permanent: true },
+      { source: "/collections/dracobell", destination: "/?page=collections", permanent: true },
+      { source: "/collections/minimon", destination: "/?page=collections", permanent: true },
       { source: "/tazos", destination: "/?page=tazos", permanent: true },
       { source: "/faq", destination: "/?page=faq", permanent: true },
       { source: "/how-to-play", destination: "/?page=how-to-play", permanent: true },

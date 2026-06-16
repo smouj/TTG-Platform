@@ -59,7 +59,7 @@ async function getUserData() {
 const QUICK_ACTIONS = [
   { href: "/app/battle", label: "Battle", desc: "Challenge the AI", icon: Swords, color: "#E3350D", bg: "#FEF2F2" },
   { href: "/app/shop", label: "Shop", desc: "Buy tazo bags", icon: ShoppingBag, color: "#FFCC00", bg: "#FFFDF5" },
-  { href: "/app/collection", label: "Collection", desc: "View your tazos", icon: Album, color: "#3B82F6", bg: "#EFF6FF" },
+  { href: "/app/collection", label: "My Collection", desc: "View your tazos", icon: Album, color: "#3B82F6", bg: "#EFF6FF" },
   { href: "/app/decks", label: "Decks", desc: "Build battle decks", icon: Blocks, color: "#22C55E", bg: "#F0FDF4" },
   { href: "/app/stats", label: "Stats", desc: "Performance & rankings", icon: BarChart3, color: "#A855F7", bg: "#FAF5FF" },
   { href: "/app/settings", label: "Settings", desc: "Profile & account", icon: Settings, color: "#6B7280", bg: "#F9FAFB" },
@@ -138,7 +138,7 @@ export default async function DashboardPage() {
             {FRANCHISES.map((f) => (
               <Link
                 key={f.slug}
-                href={`/collections/${f.slug}`}
+                href={`/?page=collections`}
                 className="text-center group transition-all hover:-translate-y-0.5"
               >
                 <div className="w-full aspect-square rounded-xl mb-1.5 border-2 border-[#1a1a1a]/10 transition-colors group-hover:border-[#1a1a1a]/30"

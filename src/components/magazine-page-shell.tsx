@@ -28,7 +28,7 @@ import {
 type TabId = "battle" | "stats" | "shop" | "quests" | "collection" | "decks" | "settings"
 
 const NAV_ITEMS: { id: TabId; label: string; icon: typeof BookOpen; href: string }[] = [
-  { id: "collection", label: "Collection", icon: Disc3, href: "/app/collection" },
+  { id: "collection", label: "My Collection", icon: Disc3, href: "/app/collection" },
   { id: "battle", label: "Battle!", icon: Swords, href: "/app/battle" },
   { id: "shop", label: "Shop", icon: ShoppingBag, href: "/app/shop" },
   { id: "decks", label: "Decks", icon: Layers, href: "/app/decks" },
