@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "?page=disclaimer", priority: 0.4, changeFreq: "yearly" as const },
     { path: "login", priority: 0.6, changeFreq: "monthly" as const },
     { path: "register", priority: 0.6, changeFreq: "monthly" as const },
-                      ]
+  ]
 
   const entries: MetadataRoute.Sitemap = staticPages.map(({ path, priority, changeFreq }) => ({
     url: path ? `${baseUrl}/${path}` : baseUrl,
@@ -34,31 +34,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority,
   }))
 
-  // ── Dynamic: collection pages (3 series) ──
-  try {
-    const series = await db.franchise.findMany({
-      where: {},
-      select: { slug: true },
-    })
-    for (const s of series) {
-      entries.push({
-        url: `${baseUrl}/collections/${s.slug}`,
-        lastModified,
-        changeFrequency: "weekly",
-        priority: 0.75,
-      })
-    }
-  } catch {
-    // Fallback: add the 3 known series
-    for (const slug of ["cybermon", "dracobell", "minimon"]) {
-      entries.push({
-        url: `${baseUrl}/collections/${slug}`,
-        lastModified,
-        changeFrequency: "weekly",
-        priority: 0.75,
-      })
-    }
-  }
+  // NOTE: /collections/[slug] series pages currently redirect to /?page=collections.
+  // Once dedicated series pages exist, re-add them here with db.franchise query.
 
   // ── Dynamic: individual tazo pages (up to 150) ──
   try {
