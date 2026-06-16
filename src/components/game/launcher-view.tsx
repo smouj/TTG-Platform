@@ -1392,6 +1392,7 @@ function ShopContent() {
                   <BagCardMini3D
                     frontUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
                     backUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-back-01.png`}
+                    bagColor={bag.color}
                   />
                 </div>
                 <div className="flex items-start justify-between mb-2 mt-3">

@@ -49,10 +49,11 @@ function BagCamera({ interacting, opening }: { interacting: boolean; opening: bo
 // ══════════════════════════════════════════════════════════
 export interface BagData { id: string; bagType?: string; preview?: { franchise?: { slug?: string } } | null }
 
-export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: propBackUrl, onOpen, onSkip }: {
+export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: propBackUrl, bagColor: propBagColor, onOpen, onSkip }: {
   bag: BagData | null
   frontUrl?: string
   backUrl?: string
+  bagColor?: string
   onOpen: () => void
   onSkip: () => void
 }) {
@@ -176,7 +177,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
 
         <Suspense fallback={null}>
           <PotatoChipBag3D
-            frontUrl={frontUrl} backUrl={backUrl} scale={bagScale}
+            frontUrl={frontUrl} backUrl={backUrl} bagColor={propBagColor} scale={bagScale}
             interactive={stage === "idle" || stage === "tearing"} opening={isOpening}
             onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}
           />
