@@ -98,13 +98,16 @@ export default function MagazinePageShell({
       style={{ background: shellBg }}
     >
       {/* Halftone overlay */}
-      <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
+      <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" data-ttg-hide-on-battle />
 
       {/* ═══ MASTHEAD ═══ */}
-      <MagazineHeader variant="app" />
+      <div data-ttg-hide-on-battle>
+        <MagazineHeader variant="app" />
+      </div>
 
       {/* ═══ APP TAB STRIP ═══ (flush to header, no gap) */}
       <nav
+        data-ttg-hide-on-battle
         className={`relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5
           overflow-x-auto
           [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]
@@ -143,13 +146,15 @@ export default function MagazinePageShell({
       </main>
 
       {/* ═══ GAME HUD (bottom status bar) ═══ */}
-      <GameHUD credits={credits} tazoCount={user?.tazoCount} />
+      <div data-ttg-hide-on-battle>
+        <GameHUD credits={credits} tazoCount={user?.tazoCount} />
+      </div>
 
       {/* ═══ MAGAZINE FOOTER ═══ */}
-      <>
+      <div data-ttg-hide-on-battle>
         <div className="relative z-10 h-2 mag-stripes opacity-30 pointer-events-none" />
         <MagazineFooter />
-      </>
+      </div>
     </div>
   )
 }

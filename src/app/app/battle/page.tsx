@@ -151,6 +151,7 @@ export default function BattlePage() {
   // Cleanup battle body state when leaving page
   useEffect(() => {
     return () => {
+      document.body.classList.remove("ttg-battle-active")
       const cleanup = (window as any).__ttg_battle_cleanup
       if (cleanup) { cleanup(); delete (window as any).__ttg_battle_cleanup }
     }
@@ -161,6 +162,7 @@ export default function BattlePage() {
     const handler = () => {
       setBattleActive(false)
       setLaunching(false)
+      document.body.classList.remove("ttg-battle-active")
       const cleanup = (window as any).__ttg_battle_cleanup
       if (cleanup) { cleanup(); delete (window as any).__ttg_battle_cleanup }
     }
@@ -223,12 +225,14 @@ export default function BattlePage() {
     document.body.style.transition = "background 0.3s"
     document.body.style.background = "#0a0a0a"
     document.body.style.overflow = "hidden"
+    document.body.classList.add("ttg-battle-active")
 
     // Store cleanup ref on window for BattleView unmount
     ;(window as any).__ttg_battle_cleanup = () => {
       document.body.style.background = prevBg
       document.body.style.overflow = prevOverflow
       document.body.style.transition = ""
+      document.body.classList.remove("ttg-battle-active")
     }
 
     // Render BattleView inline over the lobby — no navigation, no shell flash

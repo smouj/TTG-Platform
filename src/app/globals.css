@@ -1328,3 +1328,15 @@
   background: #0a0a0a !important;
   overflow: hidden !important;
 }
+
+/* ═══════════════════════════════════════════════════════ */
+/* BATTLE MODE — hide dashboard chrome when battle active  */
+/* ═══════════════════════════════════════════════════════ */
+body.ttg-battle-active [data-ttg-hide-on-battle] {
+  display: none !important;
+}
+
+/* also lock body scroll during battle */
+body.ttg-battle-active {
+  overflow: hidden;
+}
