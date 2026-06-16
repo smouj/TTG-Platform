@@ -1,7 +1,8 @@
 // ============================================================
-// Trading Tazos Game — BagCardMini3D
+// Trading Tazos Game — BagCardMini3D v2
 // Compact 3D rotating bag for shop cards.
-// Auto-rotate, no drag interaction — just a visual preview.
+// Solid bag with side panels — no transparency gaps.
+// Auto-rotate, no drag interaction.
 // ============================================================
 "use client"
 
@@ -14,8 +15,8 @@ const BAG_W_TOP = 0.72
 const BAG_W_BOT = 0.64
 const BAG_H = 1.02
 const BAG_D = 0.22
-const TOP_CRIMP = 0.14
-const BOT_CRIMP = 0.10
+const TOP_CRIMP = 0.09
+const BOT_CRIMP = 0.07
 const BODY_H = BAG_H - TOP_CRIMP - BOT_CRIMP
 const BULGE = 0.09
 
@@ -36,23 +37,48 @@ function makePillowFaceGeo(wTop: number, wBot: number, h: number, bulge: number,
   return geo
 }
 
-function makeCrimpTexture(): THREE.Texture {
+function makeSidePanelGeo(wTop: number, wBot: number, h: number, bulge: number, depth: number, segsH: number): THREE.BufferGeometry {
+  const vertices: number[] = []
+  const indices: number[] = []
+  const halfD = depth / 2
+
+  for (let i = 0; i <= segsH; i++) {
+    const t = i / segsH
+    const y = (t - 0.5) * h
+    const wAtY = lerp(wBot / 2, wTop / 2, t)
+    const yNorm = Math.abs(y) / (h / 2)
+    const zOffset = bulge * 0.15 * (1 - Math.pow(yNorm, 6))
+    vertices.push(wAtY, y, halfD + zOffset)
+    vertices.push(wAtY, y, -halfD - zOffset)
+    vertices.push(-wAtY, y, halfD + zOffset)
+    vertices.push(-wAtY, y, -halfD - zOffset)
+  }
+
+  for (let i = 0; i < segsH; i++) {
+    const a = i * 4, b = a + 1, c = a + 4, d = a + 5
+    indices.push(a, c, b, b, c, d)
+    const la = a + 2, lb = b + 2, lc = c + 2, ld = d + 2
+    indices.push(la, lc, lb, lb, lc, ld)
+  }
+
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3))
+  geo.setIndex(indices)
+  geo.computeVertexNormals()
+  return geo
+}
+
+function makeCleanEdgeTex(): THREE.Texture {
   const c = document.createElement("canvas")
-  c.width = 512; c.height = 80
+  c.width = 128; c.height = 16
   const ctx = c.getContext("2d")!
-  const g = ctx.createLinearGradient(0, 0, 0, 80)
-  g.addColorStop(0.0, "#c8c8c8"); g.addColorStop(0.3, "#e8e8e8")
-  g.addColorStop(0.5, "#f5f5f5"); g.addColorStop(0.7, "#e0e0e0"); g.addColorStop(1.0, "#c0c0c0")
-  ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 80)
-  ctx.strokeStyle = "rgba(0,0,0,0.08)"; ctx.lineWidth = 1.5
-  for (let row = 0; row < 14; row++) {
-    ctx.beginPath()
-    const baseY = 5 + row * 5.2
-    for (let x = 0; x <= 512; x += 7) {
-      const y = baseY + Math.sin(x * 0.14 + row * 0.75) * 1.8
-      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
-    }
-    ctx.stroke()
+  ctx.fillStyle = "#d4d0c8"
+  ctx.fillRect(0, 0, 128, 16)
+  ctx.strokeStyle = "rgba(0,0,0,0.04)"
+  ctx.lineWidth = 0.8
+  for (let i = 0; i < 8; i++) {
+    const y = 1 + i * 1.8 + Math.sin(i * 0.7) * 0.3
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(128, y); ctx.stroke()
   }
   const tex = new THREE.CanvasTexture(c)
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping
@@ -62,10 +88,10 @@ function makeCrimpTexture(): THREE.Texture {
   return tex
 }
 
-let _crimpTex: THREE.Texture | null = null
-function getCrimpTex(): THREE.Texture {
-  if (!_crimpTex) _crimpTex = makeCrimpTexture()
-  return _crimpTex
+let _edgeTex: THREE.Texture | null = null
+function getEdgeTex(): THREE.Texture {
+  if (!_edgeTex) _edgeTex = makeCleanEdgeTex()
+  return _edgeTex
 }
 
 // ── Main 3D bag model (mini, auto-rotate only) ──
@@ -73,8 +99,9 @@ function MiniBagModel({ frontUrl, backUrl }: { frontUrl: string; backUrl: string
   const groupRef = useRef<THREE.Group>(null!)
   const frontTex = useLoader(THREE.TextureLoader, frontUrl)
   const backTex = useLoader(THREE.TextureLoader, backUrl)
-  const crimpTex = useMemo(() => getCrimpTex(), [])
+  const edgeTex = useMemo(() => getEdgeTex(), [])
   const pillowGeo = useMemo(() => makePillowFaceGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, 18), [])
+  const sideGeo = useMemo(() => makeSidePanelGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, BAG_D, 8), [])
 
   useMemo(() => {
     for (const tex of [frontTex, backTex]) {
@@ -96,10 +123,17 @@ function MiniBagModel({ frontUrl, backUrl }: { frontUrl: string; backUrl: string
 
   return (
     <group ref={groupRef} scale={0.9}>
+      {/* Bottom edge */}
       <mesh position={[0, botY, 0]}>
-        <boxGeometry args={[BAG_W_BOT + 0.015, BOT_CRIMP, BAG_D + 0.015]} />
-        <meshStandardMaterial map={crimpTex} roughness={0.5} metalness={0.1} />
+        <boxGeometry args={[BAG_W_BOT + 0.012, BOT_CRIMP, BAG_D + 0.012]} />
+        <meshStandardMaterial map={edgeTex} roughness={0.6} metalness={0.05} />
       </mesh>
+      {/* Side panels */}
+      <group position={[0, bodyY, 0]}>
+        <mesh geometry={sideGeo}>
+          <meshStandardMaterial map={edgeTex} roughness={0.6} metalness={0.05} side={THREE.DoubleSide} />
+        </mesh>
+      </group>
       {/* Front */}
       <mesh position={[0, bodyY, halfD + 0.001]} geometry={pillowGeo}>
         <meshStandardMaterial map={frontTex} roughness={0.25} metalness={0.0} side={THREE.FrontSide} transparent alphaTest={0.01} />
@@ -108,10 +142,10 @@ function MiniBagModel({ frontUrl, backUrl }: { frontUrl: string; backUrl: string
       <mesh position={[0, bodyY, -halfD - 0.001]} geometry={pillowGeo} rotation={[0, Math.PI, 0]}>
         <meshStandardMaterial map={backTex} roughness={0.25} metalness={0.0} side={THREE.FrontSide} transparent alphaTest={0.01} />
       </mesh>
-      {/* Top crimp */}
+      {/* Top edge */}
       <mesh position={[0, topY, 0]}>
-        <boxGeometry args={[BAG_W_TOP + 0.015, TOP_CRIMP, BAG_D + 0.025]} />
-        <meshStandardMaterial map={crimpTex} roughness={0.5} metalness={0.1} />
+        <boxGeometry args={[BAG_W_TOP + 0.012, TOP_CRIMP, BAG_D + 0.02]} />
+        <meshStandardMaterial map={edgeTex} roughness={0.6} metalness={0.05} />
       </mesh>
     </group>
   )

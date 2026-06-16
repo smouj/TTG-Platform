@@ -10,6 +10,7 @@
 // ============================================================
 "use client"
 import Image from "next/image"
+import WikiLauncherContent from "@/components/wiki/WikiLauncherContent"
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
@@ -1365,7 +1366,7 @@ function ShopContent() {
         </p>
         <div className="flex items-center justify-center gap-2 pt-1">
           <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#FFCC00]/10 border border-[#FFCC00]/30 text-[#1a1a1a] uppercase">
-            <Coins className="w-3.5 h-3.5 text-[#D97706]" /> 100 Credits
+            <Coins className="w-3.5 h-3.5 text-[#D97706]" /> 100 CREDITS
           </span>
           <span className="inline-flex items-center gap-1 px-3 py-1.5 text-[10px] font-black bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#1a1a1a] uppercase">
             <Sparkles className="w-3.5 h-3.5 text-[#22C55E]" /> Free to Play
@@ -2090,8 +2091,8 @@ export default function LauncherView() {
     setCurrentPage(page)
     if (page === "home") {
       router.replace("/", { scroll: false })
-    } else if (page === "wiki") {
-      router.push("/wiki")
+    } else if (page === "wiki" || page?.startsWith("wiki-")) {
+      // Wiki renders in-launcher — no redirect needed
     } else {
       router.replace(`/?page=${page}`, { scroll: false })
     }
@@ -2217,6 +2218,9 @@ export default function LauncherView() {
               <div className="w-full max-w-5xl mx-auto"><LeaderboardContent /></div>
             )}
 
+            {currentPage === "wiki" && (
+              <div className="w-full max-w-5xl mx-auto"><WikiLauncherContent /></div>
+            )}
             {currentPage === "download" && (
               <div className="w-full max-w-5xl mx-auto"><DownloadContent /></div>
             )}

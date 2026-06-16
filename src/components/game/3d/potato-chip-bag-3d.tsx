@@ -1,8 +1,8 @@
 // ============================================================
-// Trading Tazos Game — PotatoChipBag3D v6
+// Trading Tazos Game — PotatoChipBag3D v7
 //
-// Cinematic 3D foil bag. No metal props, no clutter.
-// Dynamic opening: pop → seal rip → peel → glow → reveal.
+// Solid 3D foil bag with side panels — no transparent gaps.
+// Clean edges, no metallic crimps — magazine aesthetic.
 // ============================================================
 "use client"
 
@@ -10,13 +10,13 @@ import { useRef, useMemo, useEffect } from "react"
 import { useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
-// ── Bag dimensions ──
+// ── Bag dimensions (same proportions) ──
 export const BAG_W_TOP = 0.72
 export const BAG_W_BOT = 0.64
 export const BAG_H = 1.02
 export const BAG_D = 0.22
-export const TOP_CRIMP = 0.14
-export const BOT_CRIMP = 0.10
+const TOP_CRIMP = 0.09  // Thinner top edge
+const BOT_CRIMP = 0.07  // Thinner bottom edge
 export const BODY_H = BAG_H - TOP_CRIMP - BOT_CRIMP
 const BULGE = 0.09
 
@@ -24,40 +24,7 @@ function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
 function easeOutBack(t: number) { const c1 = 1.70158; const c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2) }
 function easeOutCubic(t: number) { return 1 - Math.pow(1 - t, 3) }
 
-// ── Crimp texture ──
-function makeCrimpTexture(): THREE.Texture {
-  const c = document.createElement("canvas")
-  c.width = 512; c.height = 80
-  const ctx = c.getContext("2d")!
-  const g = ctx.createLinearGradient(0, 0, 0, 80)
-  g.addColorStop(0.0, "#d0d0d0"); g.addColorStop(0.25, "#e8e8e8")
-  g.addColorStop(0.5, "#f5f5f5"); g.addColorStop(0.75, "#e0e0e0"); g.addColorStop(1.0, "#c8c8c8")
-  ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 80)
-  ctx.strokeStyle = "rgba(0,0,0,0.12)"; ctx.lineWidth = 1.5
-  for (let row = 0; row < 14; row++) {
-    ctx.beginPath()
-    const baseY = 5 + row * 5.2
-    for (let x = 0; x <= 512; x += 7) {
-      const y = baseY + Math.sin(x * 0.14 + row * 0.75) * 2.0
-      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
-    }
-    ctx.stroke()
-  }
-  const tex = new THREE.CanvasTexture(c)
-  tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-  tex.colorSpace = THREE.SRGBColorSpace
-  tex.minFilter = THREE.LinearMipmapLinearFilter
-  tex.magFilter = THREE.LinearFilter
-  return tex
-}
-
-let _crimpTex: THREE.Texture | null = null
-function getCrimpTex(): THREE.Texture {
-  if (!_crimpTex) _crimpTex = makeCrimpTexture()
-  return _crimpTex
-}
-
-// ── Trapezoidal pillow face ──
+// ── Pillow face geometry (trapezoidal) ──
 function makePillowFaceGeo(wTop: number, wBot: number, h: number, bulge: number, segs: number): THREE.BufferGeometry {
   const geo = new THREE.PlaneGeometry(wTop, h, segs, Math.round(segs * 1.8))
   const pos = geo.attributes.position
@@ -71,6 +38,79 @@ function makePillowFaceGeo(wTop: number, wBot: number, h: number, bulge: number,
   }
   geo.computeVertexNormals()
   return geo
+}
+
+// ── Side panel geometry (connects front and back edges) ──
+function makeSidePanelGeo(wTop: number, wBot: number, h: number, bulge: number, depth: number, segsH: number): THREE.BufferGeometry {
+  const vertices: number[] = []
+  const indices: number[] = []
+  const halfD = depth / 2
+
+  for (let i = 0; i <= segsH; i++) {
+    const t = i / segsH
+    const y = (t - 0.5) * h
+    const wAtY = lerp(wBot / 2, wTop / 2, t)
+    const yNorm = Math.abs(y) / (h / 2)
+    const zOffset = bulge * (1 - Math.pow(1, 3)) * (1 - Math.pow(yNorm, 6)) * 0.85 // Edge bulge
+    
+    // Right side: front edge + back edge
+    vertices.push(wAtY, y, halfD + zOffset)   // front right
+    vertices.push(wAtY, y, -halfD - zOffset)   // back right
+    // Left side: front edge + back edge  
+    vertices.push(-wAtY, y, halfD + zOffset)   // front left
+    vertices.push(-wAtY, y, -halfD - zOffset)  // back left
+  }
+
+  // Triangles: right side (0,1,2,3 pattern)
+  for (let i = 0; i < segsH; i++) {
+    const a = i * 4, b = a + 1, c = a + 4, d = a + 5
+    // Right side
+    indices.push(a, c, b, b, c, d)
+    // Left side
+    const la = a + 2, lb = b + 2, lc = c + 2, ld = d + 2
+    indices.push(la, lc, lb, lb, lc, ld)
+  }
+
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3))
+  geo.setIndex(indices)
+  geo.computeVertexNormals()
+  return geo
+}
+
+// ── Clean edge texture (replaces metallic crimp) ──
+function makeCleanEdgeTexture(bagColor: string): THREE.Texture {
+  const c = document.createElement("canvas")
+  c.width = 256; c.height = 32
+  const ctx = c.getContext("2d")!
+  
+  // Solid fill matching the bag
+  ctx.fillStyle = bagColor
+  ctx.fillRect(0, 0, 256, 32)
+  
+  // Subtle horizontal lines (like foil crimps, but subtle)
+  ctx.strokeStyle = "rgba(0,0,0,0.06)"
+  ctx.lineWidth = 1
+  for (let i = 0; i < 10; i++) {
+    const y = 2 + i * 2.8 + Math.sin(i * 0.8) * 0.5
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(256, y)
+    ctx.stroke()
+  }
+  
+  const tex = new THREE.CanvasTexture(c)
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.minFilter = THREE.LinearMipmapLinearFilter
+  tex.magFilter = THREE.LinearFilter
+  return tex
+}
+
+let _edgeTex: THREE.Texture | null = null
+function getEdgeTex(): THREE.Texture {
+  if (!_edgeTex) _edgeTex = makeCleanEdgeTexture("#d4d0c8") // Neutral foil color
+  return _edgeTex
 }
 
 interface Props {
@@ -98,8 +138,9 @@ export default function PotatoChipBag3D({
 
   const frontTex = useLoader(THREE.TextureLoader, frontUrl)
   const backTex = useLoader(THREE.TextureLoader, backUrl)
-  const crimpTex = useMemo(() => getCrimpTex(), [])
+  const edgeTex = useMemo(() => getEdgeTex(), [])
   const pillowGeo = useMemo(() => makePillowFaceGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, 24), [])
+  const sideGeo = useMemo(() => makeSidePanelGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, BAG_D, 12), [])
 
   useEffect(() => {
     for (const tex of [frontTex, backTex]) {
@@ -120,29 +161,24 @@ export default function PotatoChipBag3D({
     const g = groupRef.current
     if (!g) return
 
-    // Trigger pop on opening start
     if (opening && !wasOpening.current) popRef.current = 1.0
     wasOpening.current = opening
 
-    // Pop decay — dramatic envelope
     popRef.current = Math.max(0, popRef.current - delta * 5)
-    // Lerp open progress — slower for more dramatic feel
     openRef.current = THREE.MathUtils.lerp(openRef.current, opening ? 1 : 0, 3.0 * delta)
     const p = Math.max(0, Math.min(1, openRef.current))
 
-    // Pop scale — bag swells then settles
     const popEnvelope = Math.sin(popRef.current * Math.PI) * (1 - popRef.current * 0.3)
     g.scale.setScalar(baseScale * (1 + popRef.current * 0.08 * popEnvelope))
 
-    // ── TOP SEAL: rip off dramatically ──
+    // ── TOP SEAL: rip off ──
     if (topSealRef.current) {
-      const t = easeOutBack(Math.min(1, p / 0.25)) // Back easing for snap
+      const t = easeOutBack(Math.min(1, p / 0.25))
       topSealRef.current.position.y = topY + t * 0.7
       topSealRef.current.position.z = t * 0.35
       topSealRef.current.rotation.x = t * -1.6
       topSealRef.current.rotation.z = t * 0.22
       topSealRef.current.rotation.y = t * Math.sin(Date.now() * 0.005) * 0.35
-      // Float away after peeling
       if (p > 0.65) {
         topSealRef.current.position.y += (p - 0.65) * delta * 20
         topSealRef.current.rotation.z += delta * 2
@@ -178,20 +214,26 @@ export default function PotatoChipBag3D({
     if (interiorGlowRef.current) {
       const t = easeOutCubic(Math.min(1, Math.max(0, (p - 0.2) / 0.5)))
       interiorGlowRef.current.intensity = t * 1.2
-      // Pulse the glow
       interiorGlowRef.current.intensity *= 1 + Math.sin(Date.now() * 0.008) * 0.3 * t
     }
   })
 
   return (
     <group ref={groupRef} scale={scale}>
-      {/* BOTTOM CRIMP */}
+      {/* ── BOTTOM EDGE ── */}
       <mesh position={[0, botY, 0]}>
-        <boxGeometry args={[BAG_W_BOT + 0.015, BOT_CRIMP, BAG_D + 0.015]} />
-        <meshStandardMaterial map={crimpTex} roughness={0.5} metalness={0.1} />
+        <boxGeometry args={[BAG_W_BOT + 0.012, BOT_CRIMP, BAG_D + 0.012]} />
+        <meshStandardMaterial map={edgeTex} roughness={0.6} metalness={0.05} />
       </mesh>
 
-      {/* FRONT BODY */}
+      {/* ── SIDE PANELS (connect front and back, eliminate transparency) ── */}
+      <group position={[0, bodyY, 0]}>
+        <mesh geometry={sideGeo}>
+          <meshStandardMaterial map={edgeTex} roughness={0.6} metalness={0.05} side={THREE.DoubleSide} />
+        </mesh>
+      </group>
+
+      {/* ── FRONT BODY ── */}
       <group ref={frontBodyRef} position={[0, bodyY, halfD + 0.001]}>
         <mesh geometry={pillowGeo}
           onPointerDown={interactive ? onPointerDown : undefined}
@@ -201,27 +243,27 @@ export default function PotatoChipBag3D({
         </mesh>
       </group>
 
-      {/* BACK BODY */}
+      {/* ── BACK BODY ── */}
       <group ref={backBodyRef} position={[0, bodyY, -halfD - 0.001]}>
         <mesh geometry={pillowGeo} rotation={[0, Math.PI, 0]}>
           <meshStandardMaterial map={backTex} roughness={0.22} metalness={0.0} side={THREE.FrontSide} transparent alphaTest={0.01} />
         </mesh>
       </group>
 
-      {/* INTERIOR CAVITY */}
+      {/* ── INTERIOR CAVITY (for opening animation) ── */}
       <mesh ref={interiorRef} position={[0, bodyY, 0]}>
         <boxGeometry args={[BAG_W_BOT * 0.7, BODY_H * 0.5, BAG_D * 0.35]} />
         <meshStandardMaterial color="#050302" roughness={0.95} metalness={0} transparent opacity={0} depthWrite />
       </mesh>
 
-      {/* INTERIOR GLOW */}
+      {/* ── INTERIOR GLOW ── */}
       <pointLight ref={interiorGlowRef} position={[0, bodyY, 0]} intensity={0} color="#ffbb33" distance={1.3} decay={2} />
 
-      {/* TOP SEAL */}
+      {/* ── TOP EDGE ── */}
       <group ref={topSealRef} position={[0, topY, 0]}>
         <mesh>
-          <boxGeometry args={[BAG_W_TOP + 0.015, TOP_CRIMP, BAG_D + 0.025]} />
-          <meshStandardMaterial map={crimpTex} roughness={0.5} metalness={0.1} />
+          <boxGeometry args={[BAG_W_TOP + 0.012, TOP_CRIMP, BAG_D + 0.02]} />
+          <meshStandardMaterial map={edgeTex} roughness={0.6} metalness={0.05} />
         </mesh>
       </group>
     </group>

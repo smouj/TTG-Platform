@@ -40,6 +40,7 @@ const nextConfig: NextConfig = {
       { source: "/app/album/:path*", destination: "/app/collection", permanent: true },
 
       // Standalone pages → launcher tabs (single source of truth)
+      { source: "/wiki", destination: "/?page=wiki", permanent: true },
       { source: "/collections", destination: "/?page=collections", permanent: true },
       
       // Collection series pages → unified launcher (removes old yellow-header pages)
