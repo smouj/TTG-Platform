@@ -148,6 +148,26 @@ export default function BattlePage() {
   const [battleActive, setBattleActive] = useState(false)
   const [launching, setLaunching] = useState(false)
 
+  // Cleanup battle body state when leaving page
+  useEffect(() => {
+    return () => {
+      const cleanup = (window as any).__ttg_battle_cleanup
+      if (cleanup) { cleanup(); delete (window as any).__ttg_battle_cleanup }
+    }
+  }, [])
+
+  // Listen for BattleView "Back to Lobby" event
+  useEffect(() => {
+    const handler = () => {
+      setBattleActive(false)
+      setLaunching(false)
+      const cleanup = (window as any).__ttg_battle_cleanup
+      if (cleanup) { cleanup(); delete (window as any).__ttg_battle_cleanup }
+    }
+    window.addEventListener("ttg:battle:exit", handler)
+    return () => window.removeEventListener("ttg:battle:exit", handler)
+  }, [])
+
   // Fetch user decks
   useEffect(() => {
     if (!user) { setLoading(false); return }
@@ -190,14 +210,26 @@ export default function BattlePage() {
     playSFX("equip")
     setLaunching(true)
 
+    // Store original body state for cleanup
+    const prevBg = document.body.style.background
+    const prevOverflow = document.body.style.overflow
+
     // Set sessionStorage for BattleView to auto-start
     sessionStorage.setItem("battle_mode", "practice")
     sessionStorage.setItem("battle_difficulty", difficulty)
     sessionStorage.setItem("battle_deckId", selectedDeckId)
 
-    // Fade body to dark for seamless transition
+    // Lock body + fade to dark for seamless transition
     document.body.style.transition = "background 0.3s"
     document.body.style.background = "#0a0a0a"
+    document.body.style.overflow = "hidden"
+
+    // Store cleanup ref on window for BattleView unmount
+    ;(window as any).__ttg_battle_cleanup = () => {
+      document.body.style.background = prevBg
+      document.body.style.overflow = prevOverflow
+      document.body.style.transition = ""
+    }
 
     // Render BattleView inline over the lobby — no navigation, no shell flash
     setTimeout(() => {

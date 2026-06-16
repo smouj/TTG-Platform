@@ -625,6 +625,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     setSelectedBetId(null); setBettingPhase("idle")
     playerWentFirstRef.current = false
     engine.resetToLobby()
+    // Notify parent page (inline lobby) that user wants to exit battle
+    window.dispatchEvent(new Event("ttg:battle:exit"))
   }
 
   // ═══════════════════════════════════════════════
