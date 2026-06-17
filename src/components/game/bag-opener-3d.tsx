@@ -101,13 +101,12 @@ function ParticleBurst({ color, active }: { color: string; active: boolean }) {
 // ══════════════════════════════════════════════════════════
 export interface BagData { id: string; bagType?: string; preview?: { franchise?: { slug?: string } } | null }
 
-export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: propBackUrl, bagColor: propBagColor, onOpen, onSkip }: {
+export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: propBackUrl, bagColor: propBagColor, onOpen }: {
   bag: BagData | null
   frontUrl?: string
   backUrl?: string
   bagColor?: string
   onOpen: () => void
-  onSkip: () => void
 }) {
   const { frontUrl: variantFront, backUrl: variantBack, franchise } = useMemo(() => {
     const slug = bag?.preview?.franchise?.slug

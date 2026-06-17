@@ -653,7 +653,6 @@ export default function BagShopPage() {
             bag={{ id: bagId!, bagType: selectedBag.type, preview: { franchise: { slug: selectedBag.franchise } } }}
             bagColor={selectedBag.color}
             onOpen={openBag}
-            onSkip={openBag}
           />
         </WebGLGuard>
       </div>
@@ -709,7 +708,6 @@ export default function BagShopPage() {
             bag={{ id: bagId!, bagType: selectedBag.type, preview: { franchise: { slug: selectedBag.franchise } } }}
             bagColor={selectedBag.color}
             onOpen={() => { openNextBulkBag() }}
-            onSkip={() => { openNextBulkBag() }}
           />
         </WebGLGuard>
         {revealedTazos.length > 0 && (
