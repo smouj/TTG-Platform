@@ -110,7 +110,17 @@ export default function BattleTubePreview({
     <div className={`flex flex-col items-center ${className}`}>
       {/* ═══ 3D Tube (only when WebGL available) ═══ */}
       <div style={{ width: s.width, height: s.height }}>
-        {hasWebGL === false ? (
+        {hasWebGL === true ? (
+          <TubeCylinder3DStatic
+            textureUrl={tubeTexture}
+            color={tubeColor}
+            rotationSpeed={0.25}
+            showTazos={count > 0}
+            tazoImageUrls={tazoUrls}
+            style={{ width: "100%", height: "100%" }}
+            className="overflow-hidden"
+          />
+        ) : hasWebGL === false ? (
           <div style={{
             width: "100%", height: "100%",
             background: `linear-gradient(135deg, ${tubeColor}22 0%, ${tubeColor}08 100%)`,
@@ -135,15 +145,7 @@ export default function BattleTubePreview({
             </p>
           </div>
         ) : (
-          <TubeCylinder3DStatic
-            textureUrl={tubeTexture}
-            color={tubeColor}
-            rotationSpeed={0.25}
-            showTazos={count > 0}
-            tazoImageUrls={tazoUrls}
-            style={{ width: "100%", height: "100%" }}
-            className="overflow-hidden"
-          />
+          <TubeLoadingFallback />
         )}
       </div>
 
