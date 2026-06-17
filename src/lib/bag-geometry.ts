@@ -1,43 +1,46 @@
 // ============================================================
-// bag-geometry.ts — Professional chip-bag geometry v2
+// bag-geometry.ts — Professional chip-bag geometry v3
 //
-// Key improvements over v1:
-//   1. Arc-length UV mapping → uniform texture density across 3D surface
-//   2. Face extends slightly into seam area → zero hairline gaps
-//   3. Shared vertex normals computed on full ring → smooth lighting
+// Orientation (critical fix from v2):
+//   Front face = +Z (sinθ > 0) → faces viewer
+//   Back face  = -Z (sinθ < 0) → faces away
+//   Left seam  = -X (near θ=π) → left edge
+//   Right seam = +X (near θ=0) → right edge
 //
-// Architecture:
-//   Full ring → compute normals → split into face/front, face/back, side
-//   + separate seal meshes (top/bottom crimps)
-//   + separate body caps (close the volume)
+// Previously v2 used cosθ filtering which put the front on
+// the RIGHT side and back on the LEFT — making the bag look
+// "split in half" with a seam down the middle from the camera.
+//
+// Arc-length UV ensures uniform texture density across the face.
+// Face extends slightly over side territory for anti-gap padding.
 // ============================================================
 
 import * as THREE from "three"
 
 // ═══ Constants ═══
-const COS_FACE = 0.10    // face arc: cosθ > 0.10 → ~84° half-arc (~168° total)
-const COS_SIDE = 0.18    // side arc: |cosθ| ≤ 0.18 → side visible in the gap
-// Face extends slightly into side territory for overlap (no gaps)
-
-const SUPER_N = 3.5       // superellipse exponent
-const SEGS_AROUND = 72    // angular resolution (higher = smoother)
-const SEGS_H = 24         // vertical resolution
+// Face threshold: sinθ above this value belongs to face.
+// Side threshold: wider than face threshold for anti-gap overlap.
+const FACE_THRESH = 0.10   // ~6° from Z-axis — face covers ~168° arc
+const SIDE_THRESH = 0.18   // ~10° from X-axis — seam/side covers ~20° per side
+const SUPER_N = 3.5        // superellipse exponent
+const SEGS_AROUND = 72     // angular resolution
+const SEGS_H = 24          // vertical resolution
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
 
 // ═══ Dimensions ═══
 export interface BagDims {
-  wTop: number
-  wBot: number
-  h: number
-  d: number
-  sealH: number
+  wTop: number      // body width at top
+  wBot: number      // body width at bottom
+  h: number         // body height
+  d: number         // max bulge depth (Z-axis, facing viewer)
+  sealH: number     // seal/crimp height
 }
 export const BAG_SMALL: BagDims = { wTop: 0.72, wBot: 0.64, h: 0.94, d: 0.16, sealH: 0.055 }
 export const BAG_LARGE: BagDims = { wTop: 0.72, wBot: 0.64, h: 1.02, d: 0.17, sealH: 0.055 }
 
 // ═══ Superellipse radial factor ═══
-// r = 1 / (|cosθ|^n + |sinθ|^n)^(1/n) — unit supercircle
+// r = 1 / (|cosθ|^n + |sinθ|^n)^(1/n)
 function superR(cosA: number, sinA: number): number {
   return Math.pow(
     Math.pow(Math.abs(cosA), SUPER_N) + Math.pow(Math.abs(sinA), SUPER_N),
@@ -45,38 +48,24 @@ function superR(cosA: number, sinA: number): number {
   )
 }
 
-// ═══ Full ring cross-section builder ═══
-// Builds one horizontal ring slice: all vertices around the superellipse.
-// Returns arrays of {x, z, idx} for each vertex in the ring.
-interface RingVertex { x: number; z: number; idx: number; angle: number }
-function buildRingSlice(
-  y: number, halfW: number, halfD: number,
-  positions: number[], uvs: number[],
-): RingVertex[] {
-  const verts: RingVertex[] = []
-  for (let i = 0; i < SEGS_AROUND; i++) {
-    const angle = (i / SEGS_AROUND) * Math.PI * 2
-    const cosA = Math.cos(angle), sinA = Math.sin(angle)
-    const r = superR(cosA, sinA)
-    const x = r * cosA * halfW
-    const z = r * sinA * halfD
-    positions.push(x, y, z)
-    uvs.push(angle / (Math.PI * 2), 0) // placeholder UV (replaced per-face)
-    verts.push({ x, z, idx: positions.length / 3 - 1, angle })
-  }
-  return verts
+// ═══ Depth (bulge) factor for a given Y ═══
+function depthFactor(y: number, h: number): number {
+  return Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
 }
 
-// ═══ buildFaceGeo — arc-length UV mapping ═══
-// Texture u varies by actual 3D arc-length on the superellipse surface.
-// This means texel density is uniform across the face (no edge compression).
+// ═══ buildFaceGeo ═══
+// front=true  → sinθ >  FACE_THRESH  (front face, +Z bulge)
+// front=false → sinθ < -FACE_THRESH  (back face,  -Z bulge)
+//
+// Arc-length UV: u varies by 3D distance along the superellipse
+// cross-section, giving uniform texture density across the face.
 export function buildFaceGeo(
   front: boolean, dims: BagDims,
 ): THREE.BufferGeometry {
   const { wTop, wBot, h, d } = dims
   const vertexFilter = front
-    ? (a: number) => Math.cos(a) > COS_FACE
-    : (a: number) => Math.cos(a) < -COS_FACE
+    ? (angle: number) => Math.sin(angle) > FACE_THRESH
+    : (angle: number) => Math.sin(angle) < -FACE_THRESH
 
   const positions: number[] = []
   const uvs: number[] = []
@@ -86,8 +75,7 @@ export function buildFaceGeo(
     const t = yi / SEGS_H
     const y = (t - 0.5) * h
     const halfW = lerp(wBot / 2, wTop / 2, t)
-    const depthFactor = Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
-    const halfD = d * depthFactor
+    const halfD = d * depthFactor(y, h)
 
     // Step 1: collect filtered vertices for this row
     const rowVerts: { angle: number; cosA: number; sinA: number; r: number }[] = []
@@ -107,18 +95,21 @@ export function buildFaceGeo(
       const prev = rowVerts[i - 1], curr = rowVerts[i]
       const dx = (curr.r * curr.cosA - prev.r * prev.cosA) * halfW
       const dz = (curr.r * curr.sinA - prev.r * prev.sinA) * halfD
-      const ds = Math.sqrt(dx * dx + dz * dz)
-      totalArc += ds
+      totalArc += Math.sqrt(dx * dx + dz * dz)
       arcLens[i] = totalArc
     }
-    for (let i = 0; i < n; i++) arcLens[i] /= totalArc || 1
+    for (let i = 0; i < n; i++) arcLens[i] = totalArc > 0 ? arcLens[i] / totalArc : 0
 
     // Step 3: emit vertices with arc-length UVs
+    // For front face, reverse U so u=0 at left edge, u=1 at right edge
     const row: number[] = []
     for (let i = 0; i < n; i++) {
       const v = rowVerts[i]
-      positions.push(v.r * v.cosA * halfW, y, v.r * v.sinA * halfD)
-      uvs.push(arcLens[i], t)
+      const x = v.r * v.cosA * halfW
+      const z = v.r * v.sinA * halfD
+      positions.push(x, y, z)
+      const u = front ? 1 - arcLens[i] : arcLens[i]
+      uvs.push(Number(u.toFixed(6)), t)
       row.push(positions.length / 3 - 1)
     }
     oldToNew.push(row)
@@ -146,9 +137,10 @@ export function buildFaceGeo(
   return geo
 }
 
-// ═══ buildSideGeo — solid seam connecting front↔back ═══
-// Covers the remaining arc where |cosθ| ≤ COS_SIDE.
-// Since this is solid color, UVs are simple (just for completeness).
+// ═══ buildSideGeo ═══
+// Both left and right seams in one mesh (|sinθ| ≤ SIDE_THRESH).
+// Left seam near θ=π (-X edge), right seam near θ=0 (+X edge).
+// Solid color, wraps from front face to back face on each side.
 export function buildSideGeo(dims: BagDims): THREE.BufferGeometry {
   const { wTop, wBot, h, d } = dims
   const positions: number[] = []
@@ -159,23 +151,26 @@ export function buildSideGeo(dims: BagDims): THREE.BufferGeometry {
     const t = yi / SEGS_H
     const y = (t - 0.5) * h
     const halfW = lerp(wBot / 2, wTop / 2, t)
-    const depthFactor = Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
-    const halfD = d * depthFactor
+    const halfD = d * depthFactor(y, h)
 
     const row: number[] = []
     for (let i = 0; i < SEGS_AROUND; i++) {
       const angle = (i / SEGS_AROUND) * Math.PI * 2
-      if (Math.abs(Math.cos(angle)) <= COS_SIDE) {
+      if (Math.abs(Math.sin(angle)) <= SIDE_THRESH) {
         const cosA = Math.cos(angle), sinA = Math.sin(angle)
         const r = superR(cosA, sinA)
         positions.push(r * cosA * halfW, y, r * sinA * halfD)
         uvs.push(cosA > 0 ? 1 : 0, t)
         row.push(positions.length / 3 - 1)
-      } else { row.push(-1) }
+      } else {
+        row.push(-1)
+      }
     }
     oldToNew.push(row)
   }
 
+  // Triangulate — handles both disconnected arcs (left + right seam) safely
+  // because boundary checks prevent bridging between them
   const indices: number[] = []
   for (let yi = 0; yi < SEGS_H; yi++) {
     const r0 = oldToNew[yi], r1 = oldToNew[yi + 1]
@@ -195,8 +190,6 @@ export function buildSideGeo(dims: BagDims): THREE.BufferGeometry {
 }
 
 // ═══ buildSealGeo — top/bottom crimp slab ═══
-// Flat strip extending above/below the body, with front/back faces + rim caps.
-// Width matches the body trapezoid for seamless visual connection.
 export function buildSealGeo(top: boolean, dims: BagDims, segsW = 40): THREE.BufferGeometry {
   const { wTop, wBot, h, sealH } = dims
   const yBody = top ? h / 2 : -h / 2
@@ -232,24 +225,20 @@ export function buildSealGeo(top: boolean, dims: BagDims, segsW = 40): THREE.Buf
     }
   }
 
-  // Front triangles
   for (let yi = 0; yi < segsV; yi++)
     for (let xi = 0; xi < segsW; xi++) {
       const a = yi * rowLen + xi, b = a + 1, c = a + rowLen, d = c + 1
       indices.push(a, b, c, b, d, c)
     }
-  // Back triangles (reverse winding)
   for (let yi = 0; yi < segsV; yi++)
     for (let xi = 0; xi < segsW; xi++) {
       const a = fc + yi * rowLen + xi, b = a + 1, c = a + rowLen, d = c + 1
       indices.push(a, c, b, b, c, d)
     }
-  // Top rim cap
   for (let xi = 0; xi < segsW; xi++) {
     const ft = segsV * rowLen + xi, bt = fc + segsV * rowLen + xi
     indices.push(ft, bt, ft + 1, ft + 1, bt, bt + 1)
   }
-  // Bottom rim cap (hidden inside body junction)
   for (let xi = 0; xi < segsW; xi++) {
     const fb = xi, bb = fc + xi
     indices.push(fb + 1, bb + 1, fb, fb + 1, bb + 1, bb)
@@ -263,14 +252,12 @@ export function buildSealGeo(top: boolean, dims: BagDims, segsW = 40): THREE.Buf
   return geo
 }
 
-// ═══ buildBodyCapGeo — close the open top/bottom of the ring volume ═══
-// Fan from center vertex to ring perimeter. Solid dark color (bag interior).
+// ═══ buildBodyCapGeo — close the open ring volume ═══
 export function buildBodyCapGeo(top: boolean, dims: BagDims): THREE.BufferGeometry {
   const { wTop, wBot, h, d } = dims
   const y = top ? h / 2 : -h / 2
   const halfW = top ? wTop / 2 : wBot / 2
-  const depthFactor = Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
-  const halfD = d * depthFactor
+  const halfD = d * depthFactor(y, h)
 
   const positions: number[] = []
   const uvs: number[] = []
