@@ -1,24 +1,27 @@
 // ============================================================
-// Trading Tazos Game — PotatoChipBag3D v15
+// Trading Tazos Game — PotatoChipBag3D v16
 //
-// 3 separate meshes (front/back/side). Full UV 0→1 on each face.
-// UV u computed from x-position across the face width (not angle).
-// ClampToEdgeWrapping on all textures.
+// Shared ring-based bag geometry (from bag-geometry.ts).
+// 5 meshes: front, back, side, top seal, bottom seal
+// + 2 body caps (top/bottom, hidden until opening)
+// + opening animation: top seal tears, body expands, glow reveals
 // ============================================================
 "use client"
 
 import { useRef, useMemo, useEffect } from "react"
 import { useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
+import {
+  buildFaceGeo, buildSideGeo, buildSealGeo, buildBodyCapGeo,
+  BAG_LARGE,
+} from "@/lib/bag-geometry"
 
-export const BAG_W_TOP = 0.72
-export const BAG_W_BOT = 0.64
-export const BAG_H = 1.02
-export const BODY_H = BAG_H
-const BULGE = 0.17
+// ═══ Re-exports for consumers ═══
+export const BAG_W_TOP = BAG_LARGE.wTop
+export const BAG_W_BOT = BAG_LARGE.wBot
+export const BAG_H = BAG_LARGE.h
 
-function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
-
+// ═══ Helpers ═══
 function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "")
   return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255]
@@ -28,130 +31,7 @@ function darkenHex(hex: string, factor: number): string {
   return `#${Math.round(Math.max(0, r * factor) * 255).toString(16).padStart(2, "0")}${Math.round(Math.max(0, g * factor) * 255).toString(16).padStart(2, "0")}${Math.round(Math.max(0, b * factor) * 255).toString(16).padStart(2, "0")}`
 }
 
-const COS_THRESH = 0.18  // wide face boundary (≈80° half-arc)
-
-function buildFaceGeo(
-  wTop: number, wBot: number, h: number, bulge: number,
-  segsAround: number, segsH: number,
-  vertexFilter: (angle: number) => boolean,
-): THREE.BufferGeometry {
-  const positions: number[] = []
-  const uvs: number[] = []
-  const oldToNew: number[][] = []
-
-  for (let yi = 0; yi <= segsH; yi++) {
-    const t = yi / segsH
-    const y = (t - 0.5) * h
-    const halfW = lerp(wBot / 2, wTop / 2, t)
-    const hf = Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
-    const halfD = bulge * hf
-
-    // Pass 1: find x-range of filtered vertices at this height
-    let xMin = Infinity, xMax = -Infinity
-    for (let i = 0; i < segsAround; i++) {
-      const angle = (i / segsAround) * Math.PI * 2
-      if (vertexFilter(angle)) {
-        const cosA = Math.cos(angle), sinA = Math.sin(angle)
-        const n = 3.5
-        const r = Math.pow(Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n), -1 / n)
-        const x = r * cosA * halfW
-        if (x < xMin) xMin = x
-        if (x > xMax) xMax = x
-      }
-    }
-    const xRange = xMax - xMin || 1
-
-    // Pass 2: build filtered ring with proper UVs
-    const row: number[] = []
-    for (let i = 0; i < segsAround; i++) {
-      const angle = (i / segsAround) * Math.PI * 2
-      if (vertexFilter(angle)) {
-        const cosA = Math.cos(angle), sinA = Math.sin(angle)
-        const n = 3.5
-        const r = Math.pow(Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n), -1 / n)
-        const x = r * cosA * halfW
-        positions.push(x, y, r * sinA * halfD)
-        // UV u: 0→1 across the face x-range. UV v: 0 at bottom, 1 at top.
-        uvs.push(Number(((x - xMin) / xRange).toFixed(6)), t)
-        row.push(positions.length / 3 - 1)
-      } else {
-        row.push(-1)
-      }
-    }
-    oldToNew.push(row)
-  }
-
-  const indices: number[] = []
-  for (let yi = 0; yi < segsH; yi++) {
-    const r0 = oldToNew[yi], r1 = oldToNew[yi + 1]
-    for (let i = 0; i < segsAround; i++) {
-      const j = (i + 1) % segsAround
-      const a = r0[i], b = r1[i], c = r0[j], d = r1[j]
-      if (a >= 0 && b >= 0 && c >= 0 && d >= 0) indices.push(a, b, c, b, d, c)
-    }
-  }
-
-  const geo = new THREE.BufferGeometry()
-  geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
-  geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2))
-  geo.setIndex(indices)
-  geo.computeVertexNormals()
-  return geo
-}
-
-function buildSideGeo(
-  wTop: number, wBot: number, h: number, bulge: number,
-  segsAround: number, segsH: number,
-): THREE.BufferGeometry {
-  const positions: number[] = []
-  const uvs: number[] = []
-  const oldToNew: number[][] = []
-
-  for (let yi = 0; yi <= segsH; yi++) {
-    const t = yi / segsH
-    const y = (t - 0.5) * h
-    const halfW = lerp(wBot / 2, wTop / 2, t)
-    const hf = Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
-    const halfD = bulge * hf
-
-    const row: number[] = []
-    for (let i = 0; i < segsAround; i++) {
-      const angle = (i / segsAround) * Math.PI * 2
-      if (Math.abs(Math.cos(angle)) <= COS_THRESH) {
-        const cosA = Math.cos(angle), sinA = Math.sin(angle)
-        const n = 3.5
-        const r = Math.pow(Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n), -1 / n)
-        positions.push(r * cosA * halfW, y, r * sinA * halfD)
-        // Simple UV for side — just for consistency (material is solid color)
-        const sideU = sinA > 0 ? 0.0 : 1.0
-        uvs.push(sideU, t)
-        row.push(positions.length / 3 - 1)
-      } else {
-        row.push(-1)
-      }
-    }
-    oldToNew.push(row)
-  }
-
-  const indices: number[] = []
-  for (let yi = 0; yi < segsH; yi++) {
-    const r0 = oldToNew[yi], r1 = oldToNew[yi + 1]
-    for (let i = 0; i < segsAround; i++) {
-      const j = (i + 1) % segsAround
-      const a = r0[i], b = r1[i], c = r0[j], d = r1[j]
-      if (a >= 0 && b >= 0 && c >= 0 && d >= 0) indices.push(a, b, c, b, d, c)
-    }
-  }
-
-  const geo = new THREE.BufferGeometry()
-  geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
-  geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2))
-  geo.setIndex(indices)
-  geo.computeVertexNormals()
-  return geo
-}
-
-// ════════════════════════════════════════════════════════
+// ═══ Props ═══
 interface Props {
   frontUrl: string; backUrl: string; bagColor?: string; scale?: number
   interactive?: boolean
@@ -159,15 +39,18 @@ interface Props {
   onPointerMove?: (e: THREE.Event) => void
   onPointerUp?: (e: THREE.Event) => void
   opening?: boolean
+  tearProgress?: number    // 0→1 tear animation on top seal
 }
 
 export default function PotatoChipBag3D({
   frontUrl, backUrl, bagColor = "#d4d0c8",
   scale = 1, interactive = false,
   onPointerDown, onPointerMove, onPointerUp, opening = false,
+  tearProgress = 0,
 }: Props) {
   const groupRef = useRef<THREE.Group>(null!)
   const bodyRef = useRef<THREE.Group>(null!)
+  const sealRef = useRef<THREE.Group>(null!)
   const interiorRef = useRef<THREE.Mesh>(null!)
   const interiorGlowRef = useRef<THREE.PointLight>(null!)
   const openRef = useRef(0); const popRef = useRef(0); const wasOpening = useRef(false)
@@ -175,21 +58,19 @@ export default function PotatoChipBag3D({
   const frontTex = useLoader(THREE.TextureLoader, frontUrl)
   const backTex = useLoader(THREE.TextureLoader, backUrl)
   const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
+  const sealColorHex = useMemo(() => darkenHex(bagColor, 0.50), [bagColor])
 
-  // ── Geometry ──
-  const frontGeo = useMemo(() => buildFaceGeo(
-    BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 72, 20,
-    (a) => Math.cos(a) > COS_THRESH,
-  ), [])
-  const backGeo = useMemo(() => buildFaceGeo(
-    BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 72, 20,
-    (a) => Math.cos(a) < -COS_THRESH,
-  ), [])
-  const sideGeo = useMemo(() => buildSideGeo(
-    BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 72, 20,
-  ), [])
+  // ── Shared geometry ──
+  const dims = BAG_LARGE
+  const frontGeo = useMemo(() => buildFaceGeo(true, dims), [])
+  const backGeo = useMemo(() => buildFaceGeo(false, dims), [])
+  const sideGeo = useMemo(() => buildSideGeo(dims), [])
+  const topSealGeo = useMemo(() => buildSealGeo(true, dims), [])
+  const bottomSealGeo = useMemo(() => buildSealGeo(false, dims), [])
+  const topCapGeo = useMemo(() => buildBodyCapGeo(true, dims), [])
+  const bottomCapGeo = useMemo(() => buildBodyCapGeo(false, dims), [])
 
-  // ── Materials with ClampToEdgeWrapping ──
+  // ── Materials ──
   const fMat = useMemo(() => new THREE.MeshStandardMaterial({
     map: frontTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide,
   }), [frontTex])
@@ -199,6 +80,12 @@ export default function PotatoChipBag3D({
   const sMat = useMemo(() => new THREE.MeshStandardMaterial({
     color: seamColorHex, roughness: 0.5, metalness: 0.04, side: THREE.FrontSide,
   }), [seamColorHex])
+  const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: sealColorHex, roughness: 0.55, metalness: 0.02, side: THREE.FrontSide,
+  }), [sealColorHex])
+  const capMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: "#1a1512", roughness: 0.8, metalness: 0, side: THREE.FrontSide,
+  }), [])
 
   useEffect(() => {
     for (const tex of [frontTex, backTex]) {
@@ -223,15 +110,31 @@ export default function PotatoChipBag3D({
     popRef.current = Math.max(0, popRef.current - delta * 5)
     openRef.current = THREE.MathUtils.lerp(openRef.current, opening ? 1 : 0, 3.0 * delta)
     const p = Math.max(0, Math.min(1, openRef.current))
+
+    // Pop on open start
     g.scale.setScalar(bs * (1 + popRef.current * 0.06 * Math.sin(popRef.current * Math.PI) * (1 - popRef.current * 0.3)))
+
+    // Body: slight vertical compression during open
     if (bodyRef.current) {
       const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.06) / 0.65)), 3)
       bodyRef.current.scale.y = 1 - t * 0.03
     }
+
+    // Top seal: tear away during opening
+    if (sealRef.current) {
+      const sealAnim = Math.max(tearProgress, p)
+      sealRef.current.position.y = sealAnim * 0.35
+      sealRef.current.rotation.x = sealAnim * -0.55
+      sealRef.current.scale.setScalar(1 - sealAnim * 0.3)
+      sealRef.current.visible = sealAnim < 0.95
+    }
+
+    // Interior glow
     if (interiorRef.current) {
       const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.15) / 0.55)), 3)
       interiorRef.current.scale.setScalar(0.25 + t * 0.75)
-      if (!Array.isArray(interiorRef.current.material)) interiorRef.current.material.opacity = t * 0.85
+      const mat = interiorRef.current.material as THREE.MeshStandardMaterial
+      if (!Array.isArray(mat)) mat.opacity = t * 0.85
     }
     if (interiorGlowRef.current) {
       const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.2) / 0.5)), 3)
@@ -241,6 +144,7 @@ export default function PotatoChipBag3D({
 
   return (
     <group ref={groupRef} scale={scale} rotation={[0, -0.04, 0.02]}>
+      {/* Body group — front/back/side + caps */}
       <group ref={bodyRef}
         onPointerDown={interactive ? onPointerDown : undefined}
         onPointerMove={interactive ? onPointerMove : undefined}
@@ -249,12 +153,26 @@ export default function PotatoChipBag3D({
         <mesh geometry={frontGeo} material={fMat} />
         <mesh geometry={backGeo} material={bMat} />
         <mesh geometry={sideGeo} material={sMat} />
+        <mesh geometry={bottomSealGeo} material={sealMat} />
+        <mesh geometry={bottomCapGeo} material={capMat} />
+        <mesh geometry={topCapGeo} material={capMat} visible={tearProgress > 0.3} />
       </group>
+
+      {/* Top seal — separate group for tear animation */}
+      <group ref={sealRef}
+        onPointerDown={interactive ? onPointerDown : undefined}
+        onPointerMove={interactive ? onPointerMove : undefined}
+        onPointerUp={interactive ? onPointerUp : undefined}
+      >
+        <mesh geometry={topSealGeo} material={sealMat} />
+      </group>
+
+      {/* Interior elements (hidden until opening) */}
       <mesh ref={interiorRef} position={[0, 0, 0]}>
-        <boxGeometry args={[BAG_W_BOT * 0.5, BAG_H * 0.35, 0.02]} />
+        <boxGeometry args={[BAG_LARGE.wBot * 0.5, BAG_LARGE.h * 0.35, 0.02]} />
         <meshStandardMaterial color="#050302" roughness={0.95} metalness={0} transparent opacity={0} depthWrite />
       </mesh>
-      <pointLight ref={interiorGlowRef} position={[0, BAG_H * 0.25, 0]} intensity={0} color="#ffdd55" distance={1.5} decay={2} />
+      <pointLight ref={interiorGlowRef} position={[0, BAG_LARGE.h * 0.25, 0]} intensity={0} color="#ffdd55" distance={1.5} decay={2} />
     </group>
   )
 }

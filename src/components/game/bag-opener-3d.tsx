@@ -1,9 +1,9 @@
 // ============================================================
-// Trading Tazos Game — BagOpener3D v10
+// Trading Tazos Game — BagOpener3D v11
 //
-// Clean bag opening experience.
-// Only the bag model — no extra props, no guide lines, no particles.
-// Reference: same polished look as TubeCylinder3D.
+// Drag-to-tear over the TOP SEAL (not the whole bag).
+// Tear progress passes to PotatoChipBag3D for visual animation.
+// Clean opening experience: tear → glow → reveal.
 // ============================================================
 "use client"
 
@@ -15,7 +15,7 @@ import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX } from "@/lib/audio/sfx-engine"
 
 // ══════════════════════════════════════════════════════════
-// CAMERA — gentle auto-orbit when idle, steady during interaction
+// CAMERA — gentle auto-orbit when idle
 // ══════════════════════════════════════════════════════════
 function BagCamera({ interacting, opening }: { interacting: boolean; opening: boolean }) {
   const { camera } = useThree()
@@ -27,7 +27,6 @@ function BagCamera({ interacting, opening }: { interacting: boolean; opening: bo
     } else if (interacting) {
       targetRef.current = { z: 2.0, y: 0.0 }
     } else {
-      // Gentle auto-rotate when idle
       const t = state.clock.elapsedTime
       targetRef.current = {
         z: 1.85 + Math.sin(t * 0.3) * 0.06,
@@ -92,6 +91,13 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
     return c[franchise] || "#FFCC00"
   }, [franchise])
 
+  // ═══ Tear constraint: only top 25% of bag (the seal area) ═══
+  const isSealArea = useCallback((uv: { x: number; y: number }): boolean => {
+    // UV.y goes from 0 (bottom) to 1 (top) in the BAG_H space
+    // Top seal is approximately the top ~15% of the bag
+    return uv.y > 0.78
+  }, [])
+
   // ── Tear handlers ──
   const handlePointerDown = useCallback(() => {
     if (stage === "opening" || stage === "reveal") return
@@ -103,13 +109,18 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
   const handlePointerMove = useCallback((e: THREE.Event) => {
     if (!tearing.current || stage !== "tearing") return
     const uv = (e as any).uv; if (!uv) return
-    const x = (uv.x - 0.5) * BAG_H, y = (uv.y - 0.5) * BAG_H
+
+    // Only count seal-area movements
+    if (!isSealArea(uv)) return
+
+    const x = (uv.x - 0.5) * BAG_H
+    const y = (uv.y - 0.5) * BAG_H
     tearPaths.current.push({ x, y })
     const pts = tearPaths.current
     if (pts.length >= 4) {
       const xspan = Math.max(...pts.map(p => p.x)) - Math.min(...pts.map(p => p.x))
       const yspan = Math.max(...pts.map(p => p.y)) - Math.min(...pts.map(p => p.y))
-      const p = Math.min(1, xspan * 2.8 + yspan * 0.4)
+      const p = Math.min(1, xspan * 3.0 + yspan * 0.3)
       setTearProgress(p)
       if (p >= 0.92) {
         tearing.current = false; setTearProgress(1)
@@ -117,7 +128,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
         setTimeout(() => setStage("opening"), 150)
       }
     }
-  }, [stage])
+  }, [stage, isSealArea])
 
   const handlePointerUp = useCallback(() => {
     tearing.current = false
@@ -169,7 +180,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
       >
         <BagCamera interacting={stage === "tearing"} opening={isOpening} />
 
-        {/* Soft, clean lighting — same approach as tube */}
+        {/* Soft lighting */}
         <ambientLight intensity={1.0} />
         <spotLight position={[2.5, 3.5, 4]} intensity={3.0} angle={0.35} penumbra={0.4} color="#fffef8" />
         <spotLight position={[-2, 3, -3]} intensity={2.0} angle={0.35} penumbra={0.5} color="#fffef5" />
@@ -179,6 +190,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
           <PotatoChipBag3D
             frontUrl={frontUrl} backUrl={backUrl} bagColor={propBagColor} scale={bagScale}
             interactive={stage === "idle" || stage === "tearing"} opening={isOpening}
+            tearProgress={tearProgress}
             onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}
           />
         </Suspense>
@@ -192,7 +204,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
               className="px-6 py-2 font-black text-[10px] sm:text-xs uppercase tracking-[0.1em] border-[3px] cursor-pointer active:scale-95 transition-transform"
               style={{ backgroundColor: franchiseColor, color: "#1a1a1a", borderColor: "#1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}
             >
-              ✂ DRAG ACROSS TO OPEN
+              ✂ DRAG ACROSS TOP SEAL TO OPEN
             </div>
             <button
               onClick={(e) => { e.stopPropagation(); handleSkip() }}
