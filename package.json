@@ -124,6 +124,7 @@
   "repository": "https://github.com/smouj/Trading-Tazos-Game",
   "homepage": "https://tradingtazosgame.com",
   "overrides": {
-    "postcss": "8.5.15"
+    "postcss": "8.5.15",
+    "js-yaml": "4.2.0"
   }
 }
