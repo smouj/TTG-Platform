@@ -92,6 +92,7 @@ export default function AdminTazoManagerPage() {
 
   // Delete confirmation
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   // Creature art upload
   const [artUploading, setArtUploading] = useState(false)
@@ -240,14 +241,21 @@ export default function AdminTazoManagerPage() {
 
   // ── Delete handler ──
   const deleteTazo = async (id: string) => {
+    setDeleteError(null)
     try {
       const res = await fetch(`/api/admin?id=${id}`, { method: "DELETE", credentials: "include" })
-      if (!res.ok) throw new Error("Delete failed")
+      const data = await res.json()
+      if (!res.ok) {
+        setDeleteError(data.error || "Delete failed")
+        setDeletingId(null)
+        return
+      }
       setTazos(prev => prev.filter(t => t.id !== id))
       setTotal(prev => prev - 1)
       setDeletingId(null)
-    } catch (e) {
-      console.error("Delete failed", e)
+    } catch (e: any) {
+      setDeleteError(e.message || "Connection error")
+      setDeletingId(null)
     }
   }
 
@@ -545,7 +553,13 @@ export default function AdminTazoManagerPage() {
                             <div className="flex gap-1.5">
                               <button onClick={() => deleteTazo(tazo.id)}
                                 className="flex-1 py-1 text-[8px] font-black uppercase text-white bg-[#E3350D]">Yes, delete</button>
-                              <button onClick={() => setDeletingId(null)}
+                              {deleteError && (
+                      <div className="mb-3 p-2 bg-red-50 border-2 border-red-300 text-center">
+                        <p className="text-[9px] font-black text-red-600">{deleteError}</p>
+                        <button onClick={() => setDeleteError(null)} className="text-[7px] underline mt-1">Dismiss</button>
+                      </div>
+                    )}
+                    <button onClick={() => { setDeleteError(null); setDeletingId(null) }}
                                 className="flex-1 py-1 text-[8px] font-black uppercase border border-zinc-300">Cancel</button>
                             </div>
                           </div>

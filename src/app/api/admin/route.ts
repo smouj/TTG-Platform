@@ -157,10 +157,24 @@ export async function DELETE(req: NextRequest) {
     const id = searchParams.get("id")
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 })
 
+    // Pre-check: count how many users own this tazo
+    const ownershipCount = await prisma.userTazo.count({ where: { tazoId: id } })
+    if (ownershipCount > 0) {
+      return NextResponse.json({
+        error: `Cannot delete — owned by ${ownershipCount} user${ownershipCount > 1 ? 's' : ''}`,
+        code: "OWNED",
+        ownershipCount,
+      }, { status: 409 })
+    }
+
     const tazo = await prisma.tazo.delete({ where: { id } })
     return NextResponse.json({ success: true, tazo })
   } catch (err: any) {
     console.error("DELETE /api/admin tazo error:", err.message)
+    // Prisma FK constraint violation (P2003) — should be caught by pre-check, but handle as fallback
+    if (err?.code === 'P2003') {
+      return NextResponse.json({ error: "Cannot delete — this tazo is owned by users", code: "OWNED" }, { status: 409 })
+    }
     return NextResponse.json({ error: err.message || "Delete failed" }, { status: 500 })
   }
 }
