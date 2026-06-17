@@ -230,6 +230,21 @@ function StatsRow({ tazo }: { tazo: any }) {
 }
 
 // ── Main Shop Page ─────────────────────────────────────
+
+// ═══ ErrorBoundary — prevents full blank screen on render crash ═══
+class RevealErrorBoundary extends React.Component<{ children: React.ReactNode; fallback?: React.ReactNode }, { hasError: boolean; error: Error | null }> {
+  constructor(props: any) { super(props); this.state = { hasError: false, error: null } }
+  static getDerivedStateFromError(error: Error) { return { hasError: true, error } }
+  componentDidCatch(error: Error, info: React.ErrorInfo) { console.error('[RevealErrorBoundary] Render crash:', error, info) }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="flex items-center justify-center py-12"><div className="flex flex-col items-center gap-3 p-6 bg-red-50 border-2 border-red-300"><p className="text-sm font-black text-red-600 uppercase">Something went wrong</p><p className="text-[10px] text-red-400">{this.state.error?.message || "Render error"}</p><button onClick={() => this.setState({ hasError: false, error: null })} className="px-4 py-2 font-black text-xs bg-red-600 text-white uppercase border-2 border-red-800">Try Again</button></div></div>)
+    }
+    return this.props.children
+  }
+}
+
 export default function BagShopPage() {
   const { t } = useI18n()
   const { user, token } = useAuth()
