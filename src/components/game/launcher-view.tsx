@@ -31,6 +31,8 @@ import { FRANCHISES, FRANCHISE_BY_SLUG, TOTAL_PLANNED } from "@/lib/franchise-co
 import { SITE_CONFIG } from "@/lib/site-config"
 import { PRIVACY_SECTIONS, TERMS_SECTIONS, COOKIE_SECTIONS } from "@/lib/legal-content"
 import BagCardMini3D from "@/components/game/3d/bag-card-mini-3d"
+import dynamic from "next/dynamic"
+const WebGLGuard = dynamic(() => import("@/components/game/webgl-guard"), { ssr: false })
 import { FAQ_ENTRIES } from "@/lib/faq-content"
 import { DOWNLOAD_PLATFORMS, DOWNLOAD_RELEASE } from "@/lib/downloads"
 import { CreditShop } from "@/components/shop/credit-shop"
@@ -1340,6 +1342,9 @@ const BAGS = [
 ]
 const RC: Record<string, string> = { Common:"#9CA3AF", Uncommon:"#22C55E", Rare:"#3B82F6","Ultra Rare":"#A855F7", Legendary:"#F59E0B" }
 
+// Strip cache-buster query params before passing to Next.js <Image>
+function stripCB(url: string): string { return url.split("?")[0] }
+
 function ShopContent() {
   const [tazosByF, setTazosByF] = useState<Record<string, any[]>>({})
   const [tazosLoading, setTazosLoading] = useState(true)
@@ -1389,12 +1394,21 @@ function ShopContent() {
               <div className="px-4 sm:px-5 py-4 border-b-2 border-[#1a1a1a]/10" style={{ backgroundColor: bag.bg }}>
                 {/* 3D Bag Preview */}
                 <div className="-mx-4 sm:-mx-5 -mt-4 mb-0 overflow-hidden" style={{ background: "linear-gradient(135deg, #2a2520 0%, #1a1815 50%, #0f0d0a 100%)" }}>
-                  <BagCardMini3D
-                    frontUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
-                    backUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-back-01.png`}
-                    bagColor={bag.color}
-                    franchiseSlug={bag.franchise}
-                  />
+                  <WebGLGuard fallback={
+                    <div className="w-full h-[180px] sm:h-[200px] flex items-center justify-center overflow-hidden">
+                      <img src={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
+                        alt={`${bag.name} preview`}
+                        className="w-auto h-full object-contain"
+                        style={{ imageRendering: "auto" }} />
+                    </div>
+                  }>
+                    <BagCardMini3D
+                      frontUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
+                      backUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-back-01.png`}
+                      bagColor={bag.color}
+                      franchiseSlug={bag.franchise}
+                    />
+                  </WebGLGuard>
                 </div>
                 <div className="flex items-start justify-between mb-2 mt-3">
                   <div className="flex items-center gap-2">
@@ -1403,7 +1417,7 @@ function ShopContent() {
                       <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
                     ) : examples.length > 0 ? (
                       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#1a1a1a]/30 flex-shrink-0 bg-white" style={{ boxShadow: "2px 2px 0 #1a1a1a" }}>
-                        <Image src={examples[0].imageUrl || "/tazos-artgen/backs/minimon-back.png"} alt={examples[0].displayName || examples[0].name} width={300} height={300}
+                        <Image src={stripCB(examples[0].imageUrl || "/tazos-artgen/backs/minimon-back.png")} alt={examples[0].displayName || examples[0].name} width={300} height={300}
                           className="w-full h-full object-cover" />
                       </div>
                     ) : null}
