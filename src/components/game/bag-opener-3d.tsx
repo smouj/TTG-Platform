@@ -151,8 +151,8 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
       const t = setTimeout(() => {
         setStage("reveal")
         playSFX('reveal', { volume: 0.6 })
-        setTimeout(() => onOpen(), 500)
-      }, 1200)
+        setTimeout(() => onOpen(), 100)
+      }, 800)
       return () => clearTimeout(t)
     }
   }, [stage, onOpen])

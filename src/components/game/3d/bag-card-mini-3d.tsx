@@ -92,8 +92,10 @@ function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
     if (!groupRef.current) return
     // Smooth sway using accumulated phase (frame-rate independent)
     swayRef.current += delta * 0.45
-    const sway = Math.sin(swayRef.current) * 0.04
+    const sway = Math.sin(swayRef.current) * 0.075
+    const floatY = Math.cos(swayRef.current * 0.7) * 0.018
     groupRef.current.rotation.y = rotY + sway
+    groupRef.current.position.y = floatY
   })
 
   return (

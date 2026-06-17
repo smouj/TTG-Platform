@@ -364,14 +364,15 @@ export default function BagShopPage() {
         body: JSON.stringify({ bagId: currentBagId.trim() }),
       })
       const data = await res.json()
-      if (res.ok) {
-        setTimeout(() => {
-          playSFX('reveal', { volume: 0.5 })
-          setRevealedTazo(data.tazo)
-          setBonusTazo(data.bonusTazo || null)
-          setStage("reveal")
-          
-        }, 400)
+      if (res.ok && data.tazo) {
+        playSFX('reveal', { volume: 0.5 })
+        setRevealedTazo(data.tazo)
+        setBonusTazo(data.bonusTazo || null)
+        // Brief delay for bag reveal animation to complete
+        setTimeout(() => setStage("reveal"), 200)
+      } else if (res.ok) {
+        setError("Bag opened but no tazo found — please try again")
+        setStage("select")
       } else {
         setError(data.error || "Failed to open"); setStage("select")
       }
@@ -676,7 +677,7 @@ export default function BagShopPage() {
           </div>
         }>
           <BagOpener3D
-            key={bagId}
+            key={`${bagId}-${bulkIndex}`}
             bag={{ id: bagId!, bagType: selectedBag.type, preview: { franchise: { slug: selectedBag.franchise } } }}
             bagColor={selectedBag.color}
             onOpen={() => { openNextBulkBag() }}
