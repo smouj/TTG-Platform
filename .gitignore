@@ -123,5 +123,5 @@ public/tazos-tubes/
 backups/
 
 # Runtime data (never committed)
-data/
+/data/
 public/uploads/

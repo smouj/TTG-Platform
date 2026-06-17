@@ -1,0 +1,3586 @@
+[
+  {
+    "id": "CYB001",
+    "slug": "001-bytepup",
+    "name": "Bytepup",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Kai Rivas",
+    "category": "Cybermon companero",
+    "description": "Bytepup — Cybermon companero. Fuego/Data, rareza Comun. Ataque rapido.",
+    "inspirationBase": "Cachorro digital con chip de fuego",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bytepup, Cybermon Cybermon companero, tipo Fuego/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bytepup | Cybermon #001 | TTG Wiki",
+      "description": "Ficha oficial de Bytepup (CYB-001), Cybermon categoría Cybermon companero. Tipo Fuego/Data, rareza Comun. Ataque rapido",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/001-bytepup"
+    }
+  },
+  {
+    "id": "CYB002",
+    "slug": "002-barkode",
+    "name": "Barkode",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Acero"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Kai Rivas",
+    "category": "Cybermon companero",
+    "description": "Barkode — Cybermon companero. Fuego/Acero, rareza Poco comun. Ataque y guardia.",
+    "inspirationBase": "Perro guardian con codigo de barras luminoso",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Barkode, Cybermon Cybermon companero, tipo Fuego/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Barkode | Cybermon #002 | TTG Wiki",
+      "description": "Ficha oficial de Barkode (CYB-002), Cybermon categoría Cybermon companero. Tipo Fuego/Acero, rareza Poco comun. Ataque y guardia",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/002-barkode"
+    }
+  },
+  {
+    "id": "CYB003",
+    "slug": "003-lupixflare",
+    "name": "Lupixflare",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Electrico"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Kai Rivas",
+    "category": "Cybermon companero",
+    "description": "Lupixflare — Cybermon companero. Fuego/Electrico, rareza Raro. Dano explosivo.",
+    "inspirationBase": "Lobo de firewall con melena de chispas",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Lupixflare, Cybermon Cybermon companero, tipo Fuego/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lupixflare | Cybermon #003 | TTG Wiki",
+      "description": "Ficha oficial de Lupixflare (CYB-003), Cybermon categoría Cybermon companero. Tipo Fuego/Electrico, rareza Raro. Dano explosivo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/003-lupixflare"
+    }
+  },
+  {
+    "id": "CYB004",
+    "slug": "004-cobaltrion",
+    "name": "Cobaltrion",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Dragon"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Kai Rivas",
+    "category": "Cybermon companero",
+    "description": "Cobaltrion — Cybermon companero. Fuego/Dragon, rareza Ultra. Final ofensiva.",
+    "inspirationBase": "Lobo-dragon de cobalto y plasma",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cobaltrion, Cybermon Cybermon companero, tipo Fuego/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cobaltrion | Cybermon #004 | TTG Wiki",
+      "description": "Ficha oficial de Cobaltrion (CYB-004), Cybermon categoría Cybermon companero. Tipo Fuego/Dragon, rareza Ultra. Final ofensiva",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/004-cobaltrion"
+    }
+  },
+  {
+    "id": "CYB005",
+    "slug": "005-axolink",
+    "name": "Axolink",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Lira Campos",
+    "category": "Cybermon companero",
+    "description": "Axolink — Cybermon companero. Agua/Data, rareza Comun. Soporte.",
+    "inspirationBase": "Ajolote pequeno con antenas de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Axolink, Cybermon Cybermon companero, tipo Agua/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Axolink | Cybermon #005 | TTG Wiki",
+      "description": "Ficha oficial de Axolink (CYB-005), Cybermon categoría Cybermon companero. Tipo Agua/Data, rareza Comun. Soporte",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/005-axolink"
+    }
+  },
+  {
+    "id": "CYB006",
+    "slug": "006-streamlotl",
+    "name": "Streamlotl",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Electrico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Lira Campos",
+    "category": "Cybermon companero",
+    "description": "Streamlotl — Cybermon companero. Agua/Electrico, rareza Poco comun. Control de flujo.",
+    "inspirationBase": "Ajolote de corriente y cableado liquido",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Streamlotl, Cybermon Cybermon companero, tipo Agua/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Streamlotl | Cybermon #006 | TTG Wiki",
+      "description": "Ficha oficial de Streamlotl (CYB-006), Cybermon categoría Cybermon companero. Tipo Agua/Electrico, rareza Poco comun. Control de flujo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/006-streamlotl"
+    }
+  },
+  {
+    "id": "CYB007",
+    "slug": "007-neurotide",
+    "name": "Neurotide",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Psiquico"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Lira Campos",
+    "category": "Cybermon companero",
+    "description": "Neurotide — Cybermon companero. Agua/Psiquico, rareza Raro. Lectura tactica.",
+    "inspirationBase": "Anfibio neural con patrones de marea",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Neurotide, Cybermon Cybermon companero, tipo Agua/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Neurotide | Cybermon #007 | TTG Wiki",
+      "description": "Ficha oficial de Neurotide (CYB-007), Cybermon categoría Cybermon companero. Tipo Agua/Psiquico, rareza Raro. Lectura tactica",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/007-neurotide"
+    }
+  },
+  {
+    "id": "CYB008",
+    "slug": "008-abyssnode",
+    "name": "Abyssnode",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Lira Campos",
+    "category": "Cybermon companero",
+    "description": "Abyssnode — Cybermon companero. Agua/Psiquico, rareza Ultra. Control y curacion.",
+    "inspirationBase": "Guardian abisal de nodos de memoria",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Abyssnode, Cybermon Cybermon companero, tipo Agua/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Abyssnode | Cybermon #008 | TTG Wiki",
+      "description": "Ficha oficial de Abyssnode (CYB-008), Cybermon categoría Cybermon companero. Tipo Agua/Psiquico, rareza Ultra. Control y curacion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/008-abyssnode"
+    }
+  },
+  {
+    "id": "CYB009",
+    "slug": "009-chirpbit",
+    "name": "Chirpbit",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Electrico"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Nico Senda",
+    "category": "Cybermon companero",
+    "description": "Chirpbit — Cybermon companero. Volador/Electrico, rareza Comun. Exploracion.",
+    "inspirationBase": "Pajaro pequeno de senal",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Chirpbit, Cybermon Cybermon companero, tipo Volador/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Chirpbit | Cybermon #009 | TTG Wiki",
+      "description": "Ficha oficial de Chirpbit (CYB-009), Cybermon categoría Cybermon companero. Tipo Volador/Electrico, rareza Comun. Exploracion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/009-chirpbit"
+    }
+  },
+  {
+    "id": "CYB010",
+    "slug": "010-skybyte",
+    "name": "Skybyte",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Electrico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Nico Senda",
+    "category": "Cybermon companero",
+    "description": "Skybyte — Cybermon companero. Volador/Electrico, rareza Poco comun. Mensajeria y esquiva.",
+    "inspirationBase": "Ave veloz con alas de circuitos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Skybyte, Cybermon Cybermon companero, tipo Volador/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Skybyte | Cybermon #010 | TTG Wiki",
+      "description": "Ficha oficial de Skybyte (CYB-010), Cybermon categoría Cybermon companero. Tipo Volador/Electrico, rareza Poco comun. Mensajeria y esquiva",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/010-skybyte"
+    }
+  },
+  {
+    "id": "CYB011",
+    "slug": "011-tempestalon",
+    "name": "Tempestalon",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Acero"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Nico Senda",
+    "category": "Cybermon companero",
+    "description": "Tempestalon — Cybermon companero. Volador/Acero, rareza Raro. Ataque aereo.",
+    "inspirationBase": "Halcon de tormenta con garras metalicas",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Tempestalon, Cybermon Cybermon companero, tipo Volador/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Tempestalon | Cybermon #011 | TTG Wiki",
+      "description": "Ficha oficial de Tempestalon (CYB-011), Cybermon categoría Cybermon companero. Tipo Volador/Acero, rareza Raro. Ataque aereo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/011-tempestalon"
+    }
+  },
+  {
+    "id": "CYB012",
+    "slug": "012-cloudseraph",
+    "name": "Cloudseraph",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Electrico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Nico Senda",
+    "category": "Cybermon companero",
+    "description": "Cloudseraph — Cybermon companero. Volador/Electrico, rareza Ultra. Movilidad suprema.",
+    "inspirationBase": "Ave angelical de nube y relampago",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cloudseraph, Cybermon Cybermon companero, tipo Volador/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cloudseraph | Cybermon #012 | TTG Wiki",
+      "description": "Ficha oficial de Cloudseraph (CYB-012), Cybermon categoría Cybermon companero. Tipo Volador/Electrico, rareza Ultra. Movilidad suprema",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/012-cloudseraph"
+    }
+  },
+  {
+    "id": "CYB013",
+    "slug": "013-glitchkit",
+    "name": "Glitchkit",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Siniestro",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Vera Nox",
+    "category": "Cybermon companero",
+    "description": "Glitchkit — Cybermon companero. Siniestro/Data, rareza Comun. Sigilo.",
+    "inspirationBase": "Gatito con pixels rotos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Glitchkit, Cybermon Cybermon companero, tipo Siniestro/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Glitchkit | Cybermon #013 | TTG Wiki",
+      "description": "Ficha oficial de Glitchkit (CYB-013), Cybermon categoría Cybermon companero. Tipo Siniestro/Data, rareza Comun. Sigilo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/013-glitchkit"
+    }
+  },
+  {
+    "id": "CYB014",
+    "slug": "014-nocticode",
+    "name": "Nocticode",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Siniestro",
+      "Psiquico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Vera Nox",
+    "category": "Cybermon companero",
+    "description": "Nocticode — Cybermon companero. Siniestro/Psiquico, rareza Poco comun. Confusion y hackeo.",
+    "inspirationBase": "Felino nocturno de codigo corrupto",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nocticode, Cybermon Cybermon companero, tipo Siniestro/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nocticode | Cybermon #014 | TTG Wiki",
+      "description": "Ficha oficial de Nocticode (CYB-014), Cybermon categoría Cybermon companero. Tipo Siniestro/Psiquico, rareza Poco comun. Confusion y hackeo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/014-nocticode"
+    }
+  },
+  {
+    "id": "CYB015",
+    "slug": "015-phantomware",
+    "name": "Phantomware",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Fantasma",
+      "Siniestro"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Vera Nox",
+    "category": "Cybermon companero",
+    "description": "Phantomware — Cybermon companero. Fantasma/Siniestro, rareza Raro. Infiltracion.",
+    "inspirationBase": "Pantera espectral de software fantasma",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Phantomware, Cybermon Cybermon companero, tipo Fantasma/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Phantomware | Cybermon #015 | TTG Wiki",
+      "description": "Ficha oficial de Phantomware (CYB-015), Cybermon categoría Cybermon companero. Tipo Fantasma/Siniestro, rareza Raro. Infiltracion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/015-phantomware"
+    }
+  },
+  {
+    "id": "CYB016",
+    "slug": "016-umbraflux",
+    "name": "Umbraflux",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Fantasma",
+      "Electrico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Vera Nox",
+    "category": "Cybermon companero",
+    "description": "Umbraflux — Cybermon companero. Fantasma/Electrico, rareza Ultra. Control de errores.",
+    "inspirationBase": "Bestia de sombra y energia inestable",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Umbraflux, Cybermon Cybermon companero, tipo Fantasma/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Umbraflux | Cybermon #016 | TTG Wiki",
+      "description": "Ficha oficial de Umbraflux (CYB-016), Cybermon categoría Cybermon companero. Tipo Fantasma/Electrico, rareza Ultra. Control de errores",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/016-umbraflux"
+    }
+  },
+  {
+    "id": "CYB017",
+    "slug": "017-shellcode",
+    "name": "Shellcode",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Bruno Vale",
+    "category": "Cybermon companero",
+    "description": "Shellcode — Cybermon companero. Acero/Data, rareza Comun. Defensa.",
+    "inspirationBase": "Tortuga pequena con caparazon de codigo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Shellcode, Cybermon Cybermon companero, tipo Acero/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Shellcode | Cybermon #017 | TTG Wiki",
+      "description": "Ficha oficial de Shellcode (CYB-017), Cybermon categoría Cybermon companero. Tipo Acero/Data, rareza Comun. Defensa",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/017-shellcode"
+    }
+  },
+  {
+    "id": "CYB018",
+    "slug": "018-guardillo",
+    "name": "Guardillo",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Tierra"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Bruno Vale",
+    "category": "Cybermon companero",
+    "description": "Guardillo — Cybermon companero. Acero/Tierra, rareza Poco comun. Tanque.",
+    "inspirationBase": "Armadillo servidor con placas",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Guardillo, Cybermon Cybermon companero, tipo Acero/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Guardillo | Cybermon #018 | TTG Wiki",
+      "description": "Ficha oficial de Guardillo (CYB-018), Cybermon categoría Cybermon companero. Tipo Acero/Tierra, rareza Poco comun. Tanque",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/018-guardillo"
+    }
+  },
+  {
+    "id": "CYB019",
+    "slug": "019-bastionback",
+    "name": "Bastionback",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Roca"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Bruno Vale",
+    "category": "Cybermon companero",
+    "description": "Bastionback — Cybermon companero. Acero/Roca, rareza Raro. Muralla movil.",
+    "inspirationBase": "Bestia fortaleza con caparazon blindado",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bastionback, Cybermon Cybermon companero, tipo Acero/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bastionback | Cybermon #019 | TTG Wiki",
+      "description": "Ficha oficial de Bastionback (CYB-019), Cybermon categoría Cybermon companero. Tipo Acero/Roca, rareza Raro. Muralla movil",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/019-bastionback"
+    }
+  },
+  {
+    "id": "CYB020",
+    "slug": "020-forticore",
+    "name": "Forticore",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Bruno Vale",
+    "category": "Cybermon companero",
+    "description": "Forticore — Cybermon companero. Acero/Psiquico, rareza Ultra. Defensa total.",
+    "inspirationBase": "Nucleo defensivo con escudo inteligente",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Forticore, Cybermon Cybermon companero, tipo Acero/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Forticore | Cybermon #020 | TTG Wiki",
+      "description": "Ficha oficial de Forticore (CYB-020), Cybermon categoría Cybermon companero. Tipo Acero/Psiquico, rareza Ultra. Defensa total",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/020-forticore"
+    }
+  },
+  {
+    "id": "CYB021",
+    "slug": "021-bloombyte",
+    "name": "Bloombyte",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Hana Sol",
+    "category": "Cybermon companero",
+    "description": "Bloombyte — Cybermon companero. Planta/Data, rareza Comun. Curacion ligera.",
+    "inspirationBase": "Brote digital luminoso",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bloombyte, Cybermon Cybermon companero, tipo Planta/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bloombyte | Cybermon #021 | TTG Wiki",
+      "description": "Ficha oficial de Bloombyte (CYB-021), Cybermon categoría Cybermon companero. Tipo Planta/Data, rareza Comun. Curacion ligera",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/021-bloombyte"
+    }
+  },
+  {
+    "id": "CYB022",
+    "slug": "022-floralink",
+    "name": "Floralink",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Hada"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Hana Sol",
+    "category": "Cybermon companero",
+    "description": "Floralink — Cybermon companero. Planta/Hada, rareza Poco comun. Soporte.",
+    "inspirationBase": "Flor viva conectada por enlaces",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Floralink, Cybermon Cybermon companero, tipo Planta/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Floralink | Cybermon #022 | TTG Wiki",
+      "description": "Ficha oficial de Floralink (CYB-022), Cybermon categoría Cybermon companero. Tipo Planta/Hada, rareza Poco comun. Soporte",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/022-floralink"
+    }
+  },
+  {
+    "id": "CYB023",
+    "slug": "023-rootserver",
+    "name": "Rootserver",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Acero"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Hana Sol",
+    "category": "Cybermon companero",
+    "description": "Rootserver — Cybermon companero. Planta/Acero, rareza Raro. Reparacion y control.",
+    "inspirationBase": "Arbol-servidor con raices de cable",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Rootserver, Cybermon Cybermon companero, tipo Planta/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rootserver | Cybermon #023 | TTG Wiki",
+      "description": "Ficha oficial de Rootserver (CYB-023), Cybermon categoría Cybermon companero. Tipo Planta/Acero, rareza Raro. Reparacion y control",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/023-rootserver"
+    }
+  },
+  {
+    "id": "CYB024",
+    "slug": "024-verdantos",
+    "name": "VerdantOS",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Hana Sol",
+    "category": "Cybermon companero",
+    "description": "VerdantOS — Cybermon companero. Planta/Psiquico, rareza Ultra. Sanacion avanzada.",
+    "inspirationBase": "Sistema operativo vegetal consciente",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de VerdantOS, Cybermon Cybermon companero, tipo Planta/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "VerdantOS | Cybermon #024 | TTG Wiki",
+      "description": "Ficha oficial de VerdantOS (CYB-024), Cybermon categoría Cybermon companero. Tipo Planta/Psiquico, rareza Ultra. Sanacion avanzada",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/024-verdantos"
+    }
+  },
+  {
+    "id": "CYB025",
+    "slug": "025-beetboot",
+    "name": "Beetboot",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Acero"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Milo Aranda",
+    "category": "Cybermon companero",
+    "description": "Beetboot — Cybermon companero. Bicho/Acero, rareza Comun. Construccion.",
+    "inspirationBase": "Escarabajo robot pequeno",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Beetboot, Cybermon Cybermon companero, tipo Bicho/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Beetboot | Cybermon #025 | TTG Wiki",
+      "description": "Ficha oficial de Beetboot (CYB-025), Cybermon categoría Cybermon companero. Tipo Bicho/Acero, rareza Comun. Construccion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/025-beetboot"
+    }
+  },
+  {
+    "id": "CYB026",
+    "slug": "026-scarabyte",
+    "name": "Scarabyte",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Acero"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Milo Aranda",
+    "category": "Cybermon companero",
+    "description": "Scarabyte — Cybermon companero. Bicho/Acero, rareza Poco comun. Tecnica.",
+    "inspirationBase": "Escarabajo de datos con pinzas",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Scarabyte, Cybermon Cybermon companero, tipo Bicho/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Scarabyte | Cybermon #026 | TTG Wiki",
+      "description": "Ficha oficial de Scarabyte (CYB-026), Cybermon categoría Cybermon companero. Tipo Bicho/Acero, rareza Poco comun. Tecnica",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/026-scarabyte"
+    }
+  },
+  {
+    "id": "CYB027",
+    "slug": "027-swarmatrix",
+    "name": "Swarmatrix",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Electrico"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Milo Aranda",
+    "category": "Cybermon companero",
+    "description": "Swarmatrix — Cybermon companero. Bicho/Electrico, rareza Raro. Multiplicacion tactica.",
+    "inspirationBase": "Enjambre coordinado por matriz",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Swarmatrix, Cybermon Cybermon companero, tipo Bicho/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Swarmatrix | Cybermon #027 | TTG Wiki",
+      "description": "Ficha oficial de Swarmatrix (CYB-027), Cybermon categoría Cybermon companero. Tipo Bicho/Electrico, rareza Raro. Multiplicacion tactica",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/027-swarmatrix"
+    }
+  },
+  {
+    "id": "CYB028",
+    "slug": "028-hiveprime",
+    "name": "Hiveprime",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Milo Aranda",
+    "category": "Cybermon companero",
+    "description": "Hiveprime — Cybermon companero. Bicho/Psiquico, rareza Ultra. Control de enjambre.",
+    "inspirationBase": "Reina/centro de colmena digital",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Hiveprime, Cybermon Cybermon companero, tipo Bicho/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hiveprime | Cybermon #028 | TTG Wiki",
+      "description": "Ficha oficial de Hiveprime (CYB-028), Cybermon categoría Cybermon companero. Tipo Bicho/Psiquico, rareza Ultra. Control de enjambre",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/028-hiveprime"
+    }
+  },
+  {
+    "id": "CYB029",
+    "slug": "029-sparkwyrm",
+    "name": "Sparkwyrm",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Dragon",
+      "Electrico"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Dalia Rune",
+    "category": "Cybermon companero",
+    "description": "Sparkwyrm — Cybermon companero. Dragon/Electrico, rareza Comun. Ataque preciso.",
+    "inspirationBase": "Dragon serpentino pequeno de chispa",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Sparkwyrm, Cybermon Cybermon companero, tipo Dragon/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sparkwyrm | Cybermon #029 | TTG Wiki",
+      "description": "Ficha oficial de Sparkwyrm (CYB-029), Cybermon categoría Cybermon companero. Tipo Dragon/Electrico, rareza Comun. Ataque preciso",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/029-sparkwyrm"
+    }
+  },
+  {
+    "id": "CYB030",
+    "slug": "030-coilwyrm",
+    "name": "Coilwyrm",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Dragon",
+      "Electrico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Dalia Rune",
+    "category": "Cybermon companero",
+    "description": "Coilwyrm — Cybermon companero. Dragon/Electrico, rareza Poco comun. Control de energia.",
+    "inspirationBase": "Dragon-cable enrollado",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Coilwyrm, Cybermon Cybermon companero, tipo Dragon/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Coilwyrm | Cybermon #030 | TTG Wiki",
+      "description": "Ficha oficial de Coilwyrm (CYB-030), Cybermon categoría Cybermon companero. Tipo Dragon/Electrico, rareza Poco comun. Control de energia",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/030-coilwyrm"
+    }
+  },
+  {
+    "id": "CYB031",
+    "slug": "031-stormdrake",
+    "name": "Stormdrake",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Dragon",
+      "Volador"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Dalia Rune",
+    "category": "Cybermon companero",
+    "description": "Stormdrake — Cybermon companero. Dragon/Volador, rareza Raro. Ataque de area.",
+    "inspirationBase": "Dragon de tormenta y red",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Stormdrake, Cybermon Cybermon companero, tipo Dragon/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Stormdrake | Cybermon #031 | TTG Wiki",
+      "description": "Ficha oficial de Stormdrake (CYB-031), Cybermon categoría Cybermon companero. Tipo Dragon/Volador, rareza Raro. Ataque de area",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/031-stormdrake"
+    }
+  },
+  {
+    "id": "CYB032",
+    "slug": "032-nexodrake",
+    "name": "Nexodrake",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Dragon",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Nexus",
+    "owner": "Dalia Rune",
+    "category": "Cybermon companero",
+    "description": "Nexodrake — Cybermon companero. Dragon/Psiquico, rareza Ultra. Equilibrio final.",
+    "inspirationBase": "Dragon del nucleo central de Cybernet",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nexodrake, Cybermon Cybermon companero, tipo Dragon/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nexodrake | Cybermon #032 | TTG Wiki",
+      "description": "Ficha oficial de Nexodrake (CYB-032), Cybermon categoría Cybermon companero. Tipo Dragon/Psiquico, rareza Ultra. Equilibrio final",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/032-nexodrake"
+    }
+  },
+  {
+    "id": "CYB033",
+    "slug": "033-kai-rivas",
+    "name": "Kai Rivas",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Bytepup",
+    "category": "Nino Vinculado",
+    "description": "Kai Rivas — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Decision. Aprende que liderar no es correr delante, sino proteger al equipo y decidir con cabeza..",
+    "inspirationBase": "Lider impulsivo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Kai Rivas, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Kai Rivas | Cybermon #033 | TTG Wiki",
+      "description": "Ficha oficial de Kai Rivas (CYB-033), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Decision. Aprende que liderar no es correr delante, sino proteger al equipo y decidir con cabeza.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/033-kai-rivas"
+    }
+  },
+  {
+    "id": "CYB034",
+    "slug": "034-lira-campos",
+    "name": "Lira Campos",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Axolink",
+    "category": "Nino Vinculado",
+    "description": "Lira Campos — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Empatia. Aprende a confiar en su intuicion sin cargar sola con los problemas del grupo..",
+    "inspirationBase": "Estratega empatica",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Lira Campos, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lira Campos | Cybermon #034 | TTG Wiki",
+      "description": "Ficha oficial de Lira Campos (CYB-034), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Empatia. Aprende a confiar en su intuicion sin cargar sola con los problemas del grupo.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/034-lira-campos"
+    }
+  },
+  {
+    "id": "CYB035",
+    "slug": "035-nico-senda",
+    "name": "Nico Senda",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Chirpbit",
+    "category": "Nino Vinculado",
+    "description": "Nico Senda — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Curiosidad. Aprende que descubrir cosas nuevas tambien exige responsabilidad..",
+    "inspirationBase": "Explorador y mensajero",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nico Senda, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nico Senda | Cybermon #035 | TTG Wiki",
+      "description": "Ficha oficial de Nico Senda (CYB-035), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Curiosidad. Aprende que descubrir cosas nuevas tambien exige responsabilidad.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/035-nico-senda"
+    }
+  },
+  {
+    "id": "CYB036",
+    "slug": "036-vera-nox",
+    "name": "Vera Nox",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Glitchkit",
+    "category": "Nino Vinculado",
+    "description": "Vera Nox — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Confianza. Pasa de actuar sola y desconfiar de todos a aceptar vinculos reales..",
+    "inspirationBase": "Rival inicial / aliada compleja",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Vera Nox, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Vera Nox | Cybermon #036 | TTG Wiki",
+      "description": "Ficha oficial de Vera Nox (CYB-036), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Confianza. Pasa de actuar sola y desconfiar de todos a aceptar vinculos reales.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/036-vera-nox"
+    }
+  },
+  {
+    "id": "CYB037",
+    "slug": "037-bruno-vale",
+    "name": "Bruno Vale",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Shellcode",
+    "category": "Nino Vinculado",
+    "description": "Bruno Vale — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Lealtad. Aprende que proteger no significa recibir todos los golpes en silencio..",
+    "inspirationBase": "Defensor del equipo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bruno Vale, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bruno Vale | Cybermon #037 | TTG Wiki",
+      "description": "Ficha oficial de Bruno Vale (CYB-037), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Lealtad. Aprende que proteger no significa recibir todos los golpes en silencio.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/037-bruno-vale"
+    }
+  },
+  {
+    "id": "CYB038",
+    "slug": "038-hana-sol",
+    "name": "Hana Sol",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Bloombyte",
+    "category": "Nino Vinculado",
+    "description": "Hana Sol — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Cuidado. Aprende que cuidar a otros tambien exige cuidarse a si misma..",
+    "inspirationBase": "Sanadora tecnica / soporte",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Hana Sol, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hana Sol | Cybermon #038 | TTG Wiki",
+      "description": "Ficha oficial de Hana Sol (CYB-038), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Cuidado. Aprende que cuidar a otros tambien exige cuidarse a si misma.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/038-hana-sol"
+    }
+  },
+  {
+    "id": "CYB039",
+    "slug": "039-milo-aranda",
+    "name": "Milo Aranda",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Beetboot",
+    "category": "Nino Vinculado",
+    "description": "Milo Aranda — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Ingenio. Aprende que inventar cosas poderosas exige responsabilidad..",
+    "inspirationBase": "Inventor joven",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Milo Aranda, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Milo Aranda | Cybermon #039 | TTG Wiki",
+      "description": "Ficha oficial de Milo Aranda (CYB-039), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Ingenio. Aprende que inventar cosas poderosas exige responsabilidad.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/039-milo-aranda"
+    }
+  },
+  {
+    "id": "CYB040",
+    "slug": "040-dalia-rune",
+    "name": "Dalia Rune",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Personaje",
+    "owner": "Sparkwyrm",
+    "category": "Nino Vinculado",
+    "description": "Dalia Rune — Nino Vinculado. Humano/Enlace, rareza Raro. Virtud: Equilibrio. Deja de cargar sola con el destino de Cybernet y acepta ayuda..",
+    "inspirationBase": "Guardiana del nexo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Dalia Rune, Cybermon Nino Vinculado, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Dalia Rune | Cybermon #040 | TTG Wiki",
+      "description": "Ficha oficial de Dalia Rune (CYB-040), Cybermon categoría Nino Vinculado. Tipo Humano/Enlace, rareza Raro. Virtud: Equilibrio. Deja de cargar sola con el destino de Cybernet y acepta ayuda.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/040-dalia-rune"
+    }
+  },
+  {
+    "id": "CYB041",
+    "slug": "041-virocub",
+    "name": "Virocub",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Siniestro",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Rexon Gray",
+    "category": "Cybermon rival",
+    "description": "Virocub — Cybermon rival. Siniestro/Data, rareza Comun. Ataque agresivo.",
+    "inspirationBase": "Cachorro infectado por virus rojo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Virocub, Cybermon Cybermon rival, tipo Siniestro/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Virocub | Cybermon #041 | TTG Wiki",
+      "description": "Ficha oficial de Virocub (CYB-041), Cybermon categoría Cybermon rival. Tipo Siniestro/Data, rareza Comun. Ataque agresivo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/041-virocub"
+    }
+  },
+  {
+    "id": "CYB042",
+    "slug": "042-malwareon",
+    "name": "Malwareon",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Siniestro",
+      "Acero"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Rexon Gray",
+    "category": "Cybermon rival",
+    "description": "Malwareon — Cybermon rival. Siniestro/Acero, rareza Poco comun. Presion ofensiva.",
+    "inspirationBase": "Bestia viral con armadura corrupta",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Malwareon, Cybermon Cybermon rival, tipo Siniestro/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Malwareon | Cybermon #042 | TTG Wiki",
+      "description": "Ficha oficial de Malwareon (CYB-042), Cybermon categoría Cybermon rival. Tipo Siniestro/Acero, rareza Poco comun. Presion ofensiva",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/042-malwareon"
+    }
+  },
+  {
+    "id": "CYB043",
+    "slug": "043-virulion",
+    "name": "Virulion",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Siniestro",
+      "Fuego"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Rexon Gray",
+    "category": "Cybermon rival",
+    "description": "Virulion — Cybermon rival. Siniestro/Fuego, rareza Raro. Jefe rival.",
+    "inspirationBase": "Leon viral de fuego corrupto",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Virulion, Cybermon Cybermon rival, tipo Siniestro/Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Virulion | Cybermon #043 | TTG Wiki",
+      "description": "Ficha oficial de Virulion (CYB-043), Cybermon categoría Cybermon rival. Tipo Siniestro/Fuego, rareza Raro. Jefe rival",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/043-virulion"
+    }
+  },
+  {
+    "id": "CYB044",
+    "slug": "044-snipbug",
+    "name": "Snipbug",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Bicho",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Sira Byte",
+    "category": "Cybermon rival",
+    "description": "Snipbug — Cybermon rival. Bicho/Data, rareza Comun. Corte tactico.",
+    "inspirationBase": "Insecto cortador de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Snipbug, Cybermon Cybermon rival, tipo Bicho/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Snipbug | Cybermon #044 | TTG Wiki",
+      "description": "Ficha oficial de Snipbug (CYB-044), Cybermon categoría Cybermon rival. Tipo Bicho/Data, rareza Comun. Corte tactico",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/044-snipbug"
+    }
+  },
+  {
+    "id": "CYB045",
+    "slug": "045-cutware",
+    "name": "Cutware",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Bicho",
+      "Acero"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Sira Byte",
+    "category": "Cybermon rival",
+    "description": "Cutware — Cybermon rival. Bicho/Acero, rareza Poco comun. Dano preciso.",
+    "inspirationBase": "Mantis de software cortante",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cutware, Cybermon Cybermon rival, tipo Bicho/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cutware | Cybermon #045 | TTG Wiki",
+      "description": "Ficha oficial de Cutware (CYB-045), Cybermon categoría Cybermon rival. Tipo Bicho/Acero, rareza Poco comun. Dano preciso",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/045-cutware"
+    }
+  },
+  {
+    "id": "CYB046",
+    "slug": "046-scissorhex",
+    "name": "Scissorhex",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Bicho",
+      "Siniestro"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Sira Byte",
+    "category": "Cybermon rival",
+    "description": "Scissorhex — Cybermon rival. Bicho/Siniestro, rareza Raro. Combo de hackeo.",
+    "inspirationBase": "Insecto hexagonal con cuchillas",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Scissorhex, Cybermon Cybermon rival, tipo Bicho/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Scissorhex | Cybermon #046 | TTG Wiki",
+      "description": "Ficha oficial de Scissorhex (CYB-046), Cybermon categoría Cybermon rival. Tipo Bicho/Siniestro, rareza Raro. Combo de hackeo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/046-scissorhex"
+    }
+  },
+  {
+    "id": "CYB047",
+    "slug": "047-voidrop",
+    "name": "Voidrop",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Fantasma",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Tomas Null",
+    "category": "Cybermon rival",
+    "description": "Voidrop — Cybermon rival. Fantasma/Data, rareza Comun. Debilitacion.",
+    "inspirationBase": "Gota de vacio digital",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Voidrop, Cybermon Cybermon rival, tipo Fantasma/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Voidrop | Cybermon #047 | TTG Wiki",
+      "description": "Ficha oficial de Voidrop (CYB-047), Cybermon categoría Cybermon rival. Tipo Fantasma/Data, rareza Comun. Debilitacion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/047-voidrop"
+    }
+  },
+  {
+    "id": "CYB048",
+    "slug": "048-nullmare",
+    "name": "Nullmare",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Fantasma",
+      "Siniestro"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Tomas Null",
+    "category": "Cybermon rival",
+    "description": "Nullmare — Cybermon rival. Fantasma/Siniestro, rareza Poco comun. Terror de red.",
+    "inspirationBase": "Caballo/sombra de datos nulos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nullmare, Cybermon Cybermon rival, tipo Fantasma/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nullmare | Cybermon #048 | TTG Wiki",
+      "description": "Ficha oficial de Nullmare (CYB-048), Cybermon categoría Cybermon rival. Tipo Fantasma/Siniestro, rareza Poco comun. Terror de red",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/048-nullmare"
+    }
+  },
+  {
+    "id": "CYB049",
+    "slug": "049-abysszero",
+    "name": "Abysszero",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Fantasma",
+      "Hielo"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Tomas Null",
+    "category": "Cybermon rival",
+    "description": "Abysszero — Cybermon rival. Fantasma/Hielo, rareza Raro. Congelacion y bloqueo.",
+    "inspirationBase": "Bestia abisal de cero absoluto",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Abysszero, Cybermon Cybermon rival, tipo Fantasma/Hielo",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Abysszero | Cybermon #049 | TTG Wiki",
+      "description": "Ficha oficial de Abysszero (CYB-049), Cybermon categoría Cybermon rival. Tipo Fantasma/Hielo, rareza Raro. Congelacion y bloqueo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/049-abysszero"
+    }
+  },
+  {
+    "id": "CYB050",
+    "slug": "050-looplet",
+    "name": "Looplet",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Psiquico",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Mara Loop",
+    "category": "Cybermon rival",
+    "description": "Looplet — Cybermon rival. Psiquico/Data, rareza Comun. Repeticion de efectos.",
+    "inspirationBase": "Criatura de bucle temporal",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Looplet, Cybermon Cybermon rival, tipo Psiquico/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Looplet | Cybermon #050 | TTG Wiki",
+      "description": "Ficha oficial de Looplet (CYB-050), Cybermon categoría Cybermon rival. Tipo Psiquico/Data, rareza Comun. Repeticion de efectos",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/050-looplet"
+    }
+  },
+  {
+    "id": "CYB051",
+    "slug": "051-chronoloop",
+    "name": "Chronoloop",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Psiquico",
+      "Electrico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Mara Loop",
+    "category": "Cybermon rival",
+    "description": "Chronoloop — Cybermon rival. Psiquico/Electrico, rareza Poco comun. Control de turnos.",
+    "inspirationBase": "Serpiente de reloj digital",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Chronoloop, Cybermon Cybermon rival, tipo Psiquico/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Chronoloop | Cybermon #051 | TTG Wiki",
+      "description": "Ficha oficial de Chronoloop (CYB-051), Cybermon categoría Cybermon rival. Tipo Psiquico/Electrico, rareza Poco comun. Control de turnos",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/051-chronoloop"
+    }
+  },
+  {
+    "id": "CYB052",
+    "slug": "052-timelancer",
+    "name": "Timelancer",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Psiquico",
+      "Acero"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Mara Loop",
+    "category": "Cybermon rival",
+    "description": "Timelancer — Cybermon rival. Psiquico/Acero, rareza Raro. Ataque retardado.",
+    "inspirationBase": "Caballero temporal con lanza de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Timelancer, Cybermon Cybermon rival, tipo Psiquico/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Timelancer | Cybermon #052 | TTG Wiki",
+      "description": "Ficha oficial de Timelancer (CYB-052), Cybermon categoría Cybermon rival. Tipo Psiquico/Acero, rareza Raro. Ataque retardado",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/052-timelancer"
+    }
+  },
+  {
+    "id": "CYB053",
+    "slug": "053-pluglion",
+    "name": "Pluglion",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Electrico",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Eiden Volt",
+    "category": "Cybermon rival",
+    "description": "Pluglion — Cybermon rival. Electrico/Data, rareza Comun. Carga electrica.",
+    "inspirationBase": "Cachorro leon con enchufe",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Pluglion, Cybermon Cybermon rival, tipo Electrico/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pluglion | Cybermon #053 | TTG Wiki",
+      "description": "Ficha oficial de Pluglion (CYB-053), Cybermon categoría Cybermon rival. Tipo Electrico/Data, rareza Comun. Carga electrica",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/053-pluglion"
+    }
+  },
+  {
+    "id": "CYB054",
+    "slug": "054-ampereon",
+    "name": "Ampereon",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Electrico",
+      "Acero"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Eiden Volt",
+    "category": "Cybermon rival",
+    "description": "Ampereon — Cybermon rival. Electrico/Acero, rareza Poco comun. Sobrecarga.",
+    "inspirationBase": "Leon juvenil con melena de cables",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Ampereon, Cybermon Cybermon rival, tipo Electrico/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ampereon | Cybermon #054 | TTG Wiki",
+      "description": "Ficha oficial de Ampereon (CYB-054), Cybermon categoría Cybermon rival. Tipo Electrico/Acero, rareza Poco comun. Sobrecarga",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/054-ampereon"
+    }
+  },
+  {
+    "id": "CYB055",
+    "slug": "055-overvolt",
+    "name": "Overvolt",
+    "series": "cybermon",
+    "entityType": "character",
+    "types": [
+      "Electrico",
+      "Fuego"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Eiden Volt",
+    "category": "Cybermon rival",
+    "description": "Overvolt — Cybermon rival. Electrico/Fuego, rareza Raro. Explosion electrica.",
+    "inspirationBase": "Leon de voltaje extremo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Overvolt, Cybermon Cybermon rival, tipo Electrico/Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Overvolt | Cybermon #055 | TTG Wiki",
+      "description": "Ficha oficial de Overvolt (CYB-055), Cybermon categoría Cybermon rival. Tipo Electrico/Fuego, rareza Raro. Explosion electrica",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/055-overvolt"
+    }
+  },
+  {
+    "id": "CYB056",
+    "slug": "056-profesor-nodo",
+    "name": "Profesor Nodo",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Profesor Nodo — Aliado. Humano/Soporte, rareza Poco comun. Investiga Cybernet y ensena al equipo a leer datos sin danar Cybermons..",
+    "inspirationBase": "Mentor tecnico",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Profesor Nodo, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Profesor Nodo | Cybermon #056 | TTG Wiki",
+      "description": "Ficha oficial de Profesor Nodo (CYB-056), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Investiga Cybernet y ensena al equipo a leer datos sin danar Cybermons.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/056-profesor-nodo"
+    }
+  },
+  {
+    "id": "CYB057",
+    "slug": "057-mina-packet",
+    "name": "Mina Packet",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Mina Packet — Aliado. Humano/Soporte, rareza Poco comun. Documenta incidentes digitales y ayuda a localizar zonas corruptas..",
+    "inspirationBase": "Reportera juvenil",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Mina Packet, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mina Packet | Cybermon #057 | TTG Wiki",
+      "description": "Ficha oficial de Mina Packet (CYB-057), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Documenta incidentes digitales y ayuda a localizar zonas corruptas.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/057-mina-packet"
+    }
+  },
+  {
+    "id": "CYB058",
+    "slug": "058-taro-fix",
+    "name": "Taro Fix",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Taro Fix — Aliado. Humano/Soporte, rareza Poco comun. Repara Llaves de Enlace, cabinas arcade y lectores de tazos..",
+    "inspirationBase": "Mecanico de terminales",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Taro Fix, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Taro Fix | Cybermon #058 | TTG Wiki",
+      "description": "Ficha oficial de Taro Fix (CYB-058), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Repara Llaves de Enlace, cabinas arcade y lectores de tazos.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/058-taro-fix"
+    }
+  },
+  {
+    "id": "CYB059",
+    "slug": "059-iris-vale",
+    "name": "Iris Vale",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Iris Vale — Aliado. Humano/Soporte, rareza Poco comun. No porta Cybermon principal, pero ayuda a proteger refugios de datos..",
+    "inspirationBase": "Hermana de Bruno",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Iris Vale, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Iris Vale | Cybermon #059 | TTG Wiki",
+      "description": "Ficha oficial de Iris Vale (CYB-059), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. No porta Cybermon principal, pero ayuda a proteger refugios de datos.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/059-iris-vale"
+    }
+  },
+  {
+    "id": "CYB060",
+    "slug": "060-comite-link",
+    "name": "Comite Link",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Comite Link — Aliado. Humano/Soporte, rareza Poco comun. Grupo pequeno que conoce Cybernet, pero no puede entrar sin los ninos..",
+    "inspirationBase": "Aliados adultos limitados",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Comite Link, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Comite Link | Cybermon #060 | TTG Wiki",
+      "description": "Ficha oficial de Comite Link (CYB-060), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Grupo pequeno que conoce Cybernet, pero no puede entrar sin los ninos.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/060-comite-link"
+    }
+  },
+  {
+    "id": "CYB061",
+    "slug": "061-leo-bridge",
+    "name": "Leo Bridge",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Leo Bridge — Aliado. Humano/Soporte, rareza Poco comun. Ayuda a cruzar sectores fragmentados de Cybernet..",
+    "inspirationBase": "Guia de puentes de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Leo Bridge, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Leo Bridge | Cybermon #061 | TTG Wiki",
+      "description": "Ficha oficial de Leo Bridge (CYB-061), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Ayuda a cruzar sectores fragmentados de Cybernet.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/061-leo-bridge"
+    }
+  },
+  {
+    "id": "CYB062",
+    "slug": "062-nora-scan",
+    "name": "Nora Scan",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Nora Scan — Aliado. Humano/Soporte, rareza Poco comun. Puede leer patrones de corrupcion en tazos danados..",
+    "inspirationBase": "Analista visual",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nora Scan, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nora Scan | Cybermon #062 | TTG Wiki",
+      "description": "Ficha oficial de Nora Scan (CYB-062), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Puede leer patrones de corrupcion en tazos danados.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/062-nora-scan"
+    }
+  },
+  {
+    "id": "CYB063",
+    "slug": "063-biko-safe",
+    "name": "Biko Safe",
+    "series": "cybermon",
+    "entityType": "ally",
+    "types": [
+      "Humano",
+      "Soporte"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Personaje",
+    "owner": "Equipo Link",
+    "category": "Aliado",
+    "description": "Biko Safe — Aliado. Humano/Soporte, rareza Poco comun. Protege zonas seguras para Cybermons pequenos..",
+    "inspirationBase": "Guardian de refugio",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Biko Safe, Cybermon Aliado, tipo Humano/Soporte",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Biko Safe | Cybermon #063 | TTG Wiki",
+      "description": "Ficha oficial de Biko Safe (CYB-063), Cybermon categoría Aliado. Tipo Humano/Soporte, rareza Poco comun. Protege zonas seguras para Cybermons pequenos.",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/063-biko-safe"
+    }
+  },
+  {
+    "id": "CYB064",
+    "slug": "064-cachebun",
+    "name": "Cachebun",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Cachebun — Cybermon salvaje/soporte. Normal/Data, rareza Comun. Mascota urbana.",
+    "inspirationBase": "Conejo de memoria cache",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cachebun, Cybermon Cybermon salvaje/soporte, tipo Normal/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cachebun | Cybermon #064 | TTG Wiki",
+      "description": "Ficha oficial de Cachebun (CYB-064), Cybermon categoría Cybermon salvaje/soporte. Tipo Normal/Data, rareza Comun. Mascota urbana",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/064-cachebun"
+    }
+  },
+  {
+    "id": "CYB065",
+    "slug": "065-pingfin",
+    "name": "Pingfin",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Electrico"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Pingfin — Cybermon salvaje/soporte. Agua/Electrico, rareza Comun. Comunicaciones.",
+    "inspirationBase": "Pinguino mensajero de paquetes",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Pingfin, Cybermon Cybermon salvaje/soporte, tipo Agua/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pingfin | Cybermon #065 | TTG Wiki",
+      "description": "Ficha oficial de Pingfin (CYB-065), Cybermon categoría Cybermon salvaje/soporte. Tipo Agua/Electrico, rareza Comun. Comunicaciones",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/065-pingfin"
+    }
+  },
+  {
+    "id": "CYB066",
+    "slug": "066-patchmole",
+    "name": "Patchmole",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Tierra",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Patchmole — Cybermon salvaje/soporte. Tierra/Data, rareza Comun. Reparacion.",
+    "inspirationBase": "Topo reparador de bugs",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Patchmole, Cybermon Cybermon salvaje/soporte, tipo Tierra/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Patchmole | Cybermon #066 | TTG Wiki",
+      "description": "Ficha oficial de Patchmole (CYB-066), Cybermon categoría Cybermon salvaje/soporte. Tipo Tierra/Data, rareza Comun. Reparacion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/066-patchmole"
+    }
+  },
+  {
+    "id": "CYB067",
+    "slug": "067-lagbit",
+    "name": "Lagbit",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Fantasma"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Lagbit — Cybermon salvaje/soporte. Normal/Fantasma, rareza Comun. Comedia y caos.",
+    "inspirationBase": "Criatura de retraso temporal",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Lagbit, Cybermon Cybermon salvaje/soporte, tipo Normal/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lagbit | Cybermon #067 | TTG Wiki",
+      "description": "Ficha oficial de Lagbit (CYB-067), Cybermon categoría Cybermon salvaje/soporte. Tipo Normal/Fantasma, rareza Comun. Comedia y caos",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/067-lagbit"
+    }
+  },
+  {
+    "id": "CYB068",
+    "slug": "068-firemoth",
+    "name": "Firemoth",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Fuego"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Firemoth — Cybermon salvaje/soporte. Bicho/Fuego, rareza Comun. Amenaza menor.",
+    "inspirationBase": "Polilla atraida por servidores calientes",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Firemoth, Cybermon Cybermon salvaje/soporte, tipo Bicho/Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Firemoth | Cybermon #068 | TTG Wiki",
+      "description": "Ficha oficial de Firemoth (CYB-068), Cybermon categoría Cybermon salvaje/soporte. Tipo Bicho/Fuego, rareza Comun. Amenaza menor",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/068-firemoth"
+    }
+  },
+  {
+    "id": "CYB069",
+    "slug": "069-datashark",
+    "name": "Datashark",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Siniestro"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Datashark — Cybermon salvaje/soporte. Agua/Siniestro, rareza Poco comun. Depredador de rios digitales.",
+    "inspirationBase": "Tiburon de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Datashark, Cybermon Cybermon salvaje/soporte, tipo Agua/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Datashark | Cybermon #069 | TTG Wiki",
+      "description": "Ficha oficial de Datashark (CYB-069), Cybermon categoría Cybermon salvaje/soporte. Tipo Agua/Siniestro, rareza Poco comun. Depredador de rios digitales",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/069-datashark"
+    }
+  },
+  {
+    "id": "CYB070",
+    "slug": "070-codelamb",
+    "name": "Codelamb",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Hada"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Codelamb — Cybermon salvaje/soporte. Normal/Hada, rareza Comun. Soporte pacifico.",
+    "inspirationBase": "Cordero de codigo limpio",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Codelamb, Cybermon Cybermon salvaje/soporte, tipo Normal/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Codelamb | Cybermon #070 | TTG Wiki",
+      "description": "Ficha oficial de Codelamb (CYB-070), Cybermon categoría Cybermon salvaje/soporte. Tipo Normal/Hada, rareza Comun. Soporte pacifico",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/070-codelamb"
+    }
+  },
+  {
+    "id": "CYB071",
+    "slug": "071-voltcrab",
+    "name": "Voltcrab",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Electrico"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Voltcrab — Cybermon salvaje/soporte. Agua/Electrico, rareza Comun. Carga de energia.",
+    "inspirationBase": "Cangrejo bateria",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Voltcrab, Cybermon Cybermon salvaje/soporte, tipo Agua/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Voltcrab | Cybermon #071 | TTG Wiki",
+      "description": "Ficha oficial de Voltcrab (CYB-071), Cybermon categoría Cybermon salvaje/soporte. Tipo Agua/Electrico, rareza Comun. Carga de energia",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/071-voltcrab"
+    }
+  },
+  {
+    "id": "CYB072",
+    "slug": "072-piximp",
+    "name": "Piximp",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Hada",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Piximp — Cybermon salvaje/soporte. Hada/Data, rareza Comun. Travesuras.",
+    "inspirationBase": "Duende pixelado",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Piximp, Cybermon Cybermon salvaje/soporte, tipo Hada/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Piximp | Cybermon #072 | TTG Wiki",
+      "description": "Ficha oficial de Piximp (CYB-072), Cybermon categoría Cybermon salvaje/soporte. Tipo Hada/Data, rareza Comun. Travesuras",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/072-piximp"
+    }
+  },
+  {
+    "id": "CYB073",
+    "slug": "073-ramster",
+    "name": "Ramster",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Electrico"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Ramster — Cybermon salvaje/soporte. Normal/Electrico, rareza Comun. Velocidad.",
+    "inspirationBase": "Hamster de memoria RAM",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Ramster, Cybermon Cybermon salvaje/soporte, tipo Normal/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ramster | Cybermon #073 | TTG Wiki",
+      "description": "Ficha oficial de Ramster (CYB-073), Cybermon categoría Cybermon salvaje/soporte. Tipo Normal/Electrico, rareza Comun. Velocidad",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/073-ramster"
+    }
+  },
+  {
+    "id": "CYB074",
+    "slug": "074-bitmoth",
+    "name": "Bitmoth",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Bitmoth — Cybermon salvaje/soporte. Bicho/Data, rareza Comun. Exploracion nocturna.",
+    "inspirationBase": "Polilla de bits",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bitmoth, Cybermon Cybermon salvaje/soporte, tipo Bicho/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bitmoth | Cybermon #074 | TTG Wiki",
+      "description": "Ficha oficial de Bitmoth (CYB-074), Cybermon categoría Cybermon salvaje/soporte. Tipo Bicho/Data, rareza Comun. Exploracion nocturna",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/074-bitmoth"
+    }
+  },
+  {
+    "id": "CYB075",
+    "slug": "075-modulark",
+    "name": "Modulark",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Data"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Modulark — Cybermon salvaje/soporte. Acero/Data, rareza Poco comun. Reconfiguracion.",
+    "inspirationBase": "Pajaro modular",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Modulark, Cybermon Cybermon salvaje/soporte, tipo Acero/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Modulark | Cybermon #075 | TTG Wiki",
+      "description": "Ficha oficial de Modulark (CYB-075), Cybermon categoría Cybermon salvaje/soporte. Tipo Acero/Data, rareza Poco comun. Reconfiguracion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/075-modulark"
+    }
+  },
+  {
+    "id": "CYB076",
+    "slug": "076-streamray",
+    "name": "Streamray",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Data"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Streamray — Cybermon salvaje/soporte. Agua/Data, rareza Poco comun. Movimiento acuatico.",
+    "inspirationBase": "Raya de streaming",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Streamray, Cybermon Cybermon salvaje/soporte, tipo Agua/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Streamray | Cybermon #076 | TTG Wiki",
+      "description": "Ficha oficial de Streamray (CYB-076), Cybermon categoría Cybermon salvaje/soporte. Tipo Agua/Data, rareza Poco comun. Movimiento acuatico",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/076-streamray"
+    }
+  },
+  {
+    "id": "CYB077",
+    "slug": "077-cryptowl",
+    "name": "Cryptowl",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Psiquico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Cryptowl — Cybermon salvaje/soporte. Volador/Psiquico, rareza Poco comun. Lectura oculta.",
+    "inspirationBase": "Buho cifrado",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cryptowl, Cybermon Cybermon salvaje/soporte, tipo Volador/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cryptowl | Cybermon #077 | TTG Wiki",
+      "description": "Ficha oficial de Cryptowl (CYB-077), Cybermon categoría Cybermon salvaje/soporte. Tipo Volador/Psiquico, rareza Poco comun. Lectura oculta",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/077-cryptowl"
+    }
+  },
+  {
+    "id": "CYB078",
+    "slug": "078-emojelly",
+    "name": "Emojelly",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hada"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Emojelly — Cybermon salvaje/soporte. Agua/Hada, rareza Comun. Estados alterados.",
+    "inspirationBase": "Medusa emotiva",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Emojelly, Cybermon Cybermon salvaje/soporte, tipo Agua/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Emojelly | Cybermon #078 | TTG Wiki",
+      "description": "Ficha oficial de Emojelly (CYB-078), Cybermon categoría Cybermon salvaje/soporte. Tipo Agua/Hada, rareza Comun. Estados alterados",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/078-emojelly"
+    }
+  },
+  {
+    "id": "CYB079",
+    "slug": "079-zipfox",
+    "name": "Zipfox",
+    "series": "cybermon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Electrico"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Libre",
+    "category": "Cybermon salvaje/soporte",
+    "description": "Zipfox — Cybermon salvaje/soporte. Normal/Electrico, rareza Poco comun. Velocidad y escape.",
+    "inspirationBase": "Zorro comprimido",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Zipfox, Cybermon Cybermon salvaje/soporte, tipo Normal/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Zipfox | Cybermon #079 | TTG Wiki",
+      "description": "Ficha oficial de Zipfox (CYB-079), Cybermon categoría Cybermon salvaje/soporte. Tipo Normal/Electrico, rareza Poco comun. Velocidad y escape",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/079-zipfox"
+    }
+  },
+  {
+    "id": "CYB080",
+    "slug": "080-ransomclaw",
+    "name": "Ransomclaw",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Siniestro",
+      "Acero"
+    ],
+    "rarity": "Ultra",
+    "stage": "Boss",
+    "owner": "Director Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Ransomclaw — Cybermon corrupto/villano. Siniestro/Acero, rareza Ultra. Bloqueo de zonas.",
+    "inspirationBase": "Bestia con garras, candados y cadenas de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Ransomclaw, Cybermon Cybermon corrupto/villano, tipo Siniestro/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ransomclaw | Cybermon #080 | TTG Wiki",
+      "description": "Ficha oficial de Ransomclaw (CYB-080), Cybermon categoría Cybermon corrupto/villano. Tipo Siniestro/Acero, rareza Ultra. Bloqueo de zonas",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/080-ransomclaw"
+    }
+  },
+  {
+    "id": "CYB081",
+    "slug": "081-spamantis",
+    "name": "Spamantis",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Bicho",
+      "Siniestro"
+    ],
+    "rarity": "Raro",
+    "stage": "Boss",
+    "owner": "Nucleo Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Spamantis — Cybermon corrupto/villano. Bicho/Siniestro, rareza Raro. Copias falsas.",
+    "inspirationBase": "Mantis digital multiplicadora",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Spamantis, Cybermon Cybermon corrupto/villano, tipo Bicho/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Spamantis | Cybermon #081 | TTG Wiki",
+      "description": "Ficha oficial de Spamantis (CYB-081), Cybermon categoría Cybermon corrupto/villano. Tipo Bicho/Siniestro, rareza Raro. Copias falsas",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/081-spamantis"
+    }
+  },
+  {
+    "id": "CYB082",
+    "slug": "082-trojanox",
+    "name": "Trojanox",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Siniestro",
+      "Dragon"
+    ],
+    "rarity": "Raro",
+    "stage": "Boss",
+    "owner": "Director Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Trojanox — Cybermon corrupto/villano. Siniestro/Dragon, rareza Raro. Disfraz y traicion.",
+    "inspirationBase": "Caballo-dragon de infiltracion",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Trojanox, Cybermon Cybermon corrupto/villano, tipo Siniestro/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Trojanox | Cybermon #082 | TTG Wiki",
+      "description": "Ficha oficial de Trojanox (CYB-082), Cybermon categoría Cybermon corrupto/villano. Tipo Siniestro/Dragon, rareza Raro. Disfraz y traicion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/082-trojanox"
+    }
+  },
+  {
+    "id": "CYB083",
+    "slug": "083-nullhydra",
+    "name": "Nullhydra",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Fantasma",
+      "Dragon"
+    ],
+    "rarity": "Legendario",
+    "stage": "Boss",
+    "owner": "Nucleo Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Nullhydra — Cybermon corrupto/villano. Fantasma/Dragon, rareza Legendario. Jefe de saga.",
+    "inspirationBase": "Hidra de errores digitales",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nullhydra, Cybermon Cybermon corrupto/villano, tipo Fantasma/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nullhydra | Cybermon #083 | TTG Wiki",
+      "description": "Ficha oficial de Nullhydra (CYB-083), Cybermon categoría Cybermon corrupto/villano. Tipo Fantasma/Dragon, rareza Legendario. Jefe de saga",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/083-nullhydra"
+    }
+  },
+  {
+    "id": "CYB084",
+    "slug": "084-adworm",
+    "name": "Adworm",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Bicho",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Base",
+    "owner": "Corrupcion salvaje",
+    "category": "Cybermon corrupto/villano",
+    "description": "Adworm — Cybermon corrupto/villano. Bicho/Data, rareza Comun. Saturacion.",
+    "inspirationBase": "Gusano de anuncios",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Adworm, Cybermon Cybermon corrupto/villano, tipo Bicho/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Adworm | Cybermon #084 | TTG Wiki",
+      "description": "Ficha oficial de Adworm (CYB-084), Cybermon categoría Cybermon corrupto/villano. Tipo Bicho/Data, rareza Comun. Saturacion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/084-adworm"
+    }
+  },
+  {
+    "id": "CYB085",
+    "slug": "085-spyderlog",
+    "name": "Spyderlog",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Bicho",
+      "Siniestro"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Director Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Spyderlog — Cybermon corrupto/villano. Bicho/Siniestro, rareza Poco comun. Rastreo.",
+    "inspirationBase": "Arana registradora de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Spyderlog, Cybermon Cybermon corrupto/villano, tipo Bicho/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Spyderlog | Cybermon #085 | TTG Wiki",
+      "description": "Ficha oficial de Spyderlog (CYB-085), Cybermon categoría Cybermon corrupto/villano. Tipo Bicho/Siniestro, rareza Poco comun. Rastreo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/085-spyderlog"
+    }
+  },
+  {
+    "id": "CYB086",
+    "slug": "086-phishfin",
+    "name": "Phishfin",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Agua",
+      "Siniestro"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Nucleo Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Phishfin — Cybermon corrupto/villano. Agua/Siniestro, rareza Poco comun. Engano.",
+    "inspirationBase": "Pez anzuelo de fraude",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Phishfin, Cybermon Cybermon corrupto/villano, tipo Agua/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Phishfin | Cybermon #086 | TTG Wiki",
+      "description": "Ficha oficial de Phishfin (CYB-086), Cybermon categoría Cybermon corrupto/villano. Tipo Agua/Siniestro, rareza Poco comun. Engano",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/086-phishfin"
+    }
+  },
+  {
+    "id": "CYB087",
+    "slug": "087-bugbear",
+    "name": "Bugbear",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Normal",
+      "Siniestro"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Corrupcion salvaje",
+    "category": "Cybermon corrupto/villano",
+    "description": "Bugbear — Cybermon corrupto/villano. Normal/Siniestro, rareza Raro. Dano pesado.",
+    "inspirationBase": "Oso de bug critico",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bugbear, Cybermon Cybermon corrupto/villano, tipo Normal/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bugbear | Cybermon #087 | TTG Wiki",
+      "description": "Ficha oficial de Bugbear (CYB-087), Cybermon categoría Cybermon corrupto/villano. Tipo Normal/Siniestro, rareza Raro. Dano pesado",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/087-bugbear"
+    }
+  },
+  {
+    "id": "CYB088",
+    "slug": "088-crashbull",
+    "name": "Crashbull",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Tierra",
+      "Acero"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Nucleo Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Crashbull — Cybermon corrupto/villano. Tierra/Acero, rareza Raro. Interrupcion.",
+    "inspirationBase": "Toro de bloqueo del sistema",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Crashbull, Cybermon Cybermon corrupto/villano, tipo Tierra/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Crashbull | Cybermon #088 | TTG Wiki",
+      "description": "Ficha oficial de Crashbull (CYB-088), Cybermon categoría Cybermon corrupto/villano. Tipo Tierra/Acero, rareza Raro. Interrupcion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/088-crashbull"
+    }
+  },
+  {
+    "id": "CYB089",
+    "slug": "089-erroraven",
+    "name": "Erroraven",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Volador",
+      "Fantasma"
+    ],
+    "rarity": "Poco comun",
+    "stage": "Link",
+    "owner": "Corrupcion salvaje",
+    "category": "Cybermon corrupto/villano",
+    "description": "Erroraven — Cybermon corrupto/villano. Volador/Fantasma, rareza Poco comun. Debilitar senal.",
+    "inspirationBase": "Cuervo de error",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Erroraven, Cybermon Cybermon corrupto/villano, tipo Volador/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Erroraven | Cybermon #089 | TTG Wiki",
+      "description": "Ficha oficial de Erroraven (CYB-089), Cybermon categoría Cybermon corrupto/villano. Tipo Volador/Fantasma, rareza Poco comun. Debilitar senal",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/089-erroraven"
+    }
+  },
+  {
+    "id": "CYB090",
+    "slug": "090-blackcache",
+    "name": "Blackcache",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Siniestro",
+      "Data"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Director Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Blackcache — Cybermon corrupto/villano. Siniestro/Data, rareza Raro. Robo de efectos.",
+    "inspirationBase": "Masa de memoria oscura",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Blackcache, Cybermon Cybermon corrupto/villano, tipo Siniestro/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Blackcache | Cybermon #090 | TTG Wiki",
+      "description": "Ficha oficial de Blackcache (CYB-090), Cybermon categoría Cybermon corrupto/villano. Tipo Siniestro/Data, rareza Raro. Robo de efectos",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/090-blackcache"
+    }
+  },
+  {
+    "id": "CYB091",
+    "slug": "091-glitchmare",
+    "name": "Glitchmare",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Fantasma",
+      "Electrico"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Nucleo Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Glitchmare — Cybermon corrupto/villano. Fantasma/Electrico, rareza Raro. Terror y distorsion.",
+    "inspirationBase": "Caballo glitch",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Glitchmare, Cybermon Cybermon corrupto/villano, tipo Fantasma/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Glitchmare | Cybermon #091 | TTG Wiki",
+      "description": "Ficha oficial de Glitchmare (CYB-091), Cybermon categoría Cybermon corrupto/villano. Tipo Fantasma/Electrico, rareza Raro. Terror y distorsion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/091-glitchmare"
+    }
+  },
+  {
+    "id": "CYB092",
+    "slug": "092-cipherjackal",
+    "name": "Cipherjackal",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Siniestro",
+      "Psiquico"
+    ],
+    "rarity": "Raro",
+    "stage": "Burst",
+    "owner": "Director Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Cipherjackal — Cybermon corrupto/villano. Siniestro/Psiquico, rareza Raro. Lectura enemiga.",
+    "inspirationBase": "Chacal cifrado",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cipherjackal, Cybermon Cybermon corrupto/villano, tipo Siniestro/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cipherjackal | Cybermon #092 | TTG Wiki",
+      "description": "Ficha oficial de Cipherjackal (CYB-092), Cybermon categoría Cybermon corrupto/villano. Tipo Siniestro/Psiquico, rareza Raro. Lectura enemiga",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/092-cipherjackal"
+    }
+  },
+  {
+    "id": "CYB093",
+    "slug": "093-datalich",
+    "name": "Datalich",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Fantasma",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Boss",
+    "owner": "Nucleo Cero",
+    "category": "Cybermon corrupto/villano",
+    "description": "Datalich — Cybermon corrupto/villano. Fantasma/Psiquico, rareza Ultra. Control de cementerio.",
+    "inspirationBase": "Hechicero digital de archivos muertos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Datalich, Cybermon Cybermon corrupto/villano, tipo Fantasma/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Datalich | Cybermon #093 | TTG Wiki",
+      "description": "Ficha oficial de Datalich (CYB-093), Cybermon categoría Cybermon corrupto/villano. Tipo Fantasma/Psiquico, rareza Ultra. Control de cementerio",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/093-datalich"
+    }
+  },
+  {
+    "id": "CYB094",
+    "slug": "094-blackoutitan",
+    "name": "Blackoutitan",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Siniestro",
+      "Electrico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Boss",
+    "owner": "Lord Blackout",
+    "category": "Cybermon corrupto/villano",
+    "description": "Blackoutitan — Cybermon corrupto/villano. Siniestro/Electrico, rareza Ultra. Oscuridad total.",
+    "inspirationBase": "Titan que apaga sectores",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Blackoutitan, Cybermon Cybermon corrupto/villano, tipo Siniestro/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Blackoutitan | Cybermon #094 | TTG Wiki",
+      "description": "Ficha oficial de Blackoutitan (CYB-094), Cybermon categoría Cybermon corrupto/villano. Tipo Siniestro/Electrico, rareza Ultra. Oscuridad total",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/094-blackoutitan"
+    }
+  },
+  {
+    "id": "CYB095",
+    "slug": "095-captchawitch",
+    "name": "Captchawitch",
+    "series": "cybermon",
+    "entityType": "villain",
+    "types": [
+      "Hada",
+      "Siniestro"
+    ],
+    "rarity": "Raro",
+    "stage": "Boss",
+    "owner": "Queen Captcha",
+    "category": "Cybermon corrupto/villano",
+    "description": "Captchawitch — Cybermon corrupto/villano. Hada/Siniestro, rareza Raro. Bloqueo de acciones.",
+    "inspirationBase": "Bruja de laberintos visuales",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Captchawitch, Cybermon Cybermon corrupto/villano, tipo Hada/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Captchawitch | Cybermon #095 | TTG Wiki",
+      "description": "Ficha oficial de Captchawitch (CYB-095), Cybermon categoría Cybermon corrupto/villano. Tipo Hada/Siniestro, rareza Raro. Bloqueo de acciones",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/095-captchawitch"
+    }
+  },
+  {
+    "id": "CYB096",
+    "slug": "096-llave-roja-de-enlace",
+    "name": "Llave Roja de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Kai Rivas",
+    "category": "Objeto/Escenario",
+    "description": "Llave Roja de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Activa evolucion Link.",
+    "inspirationBase": "Llave de sincronizacion roja",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Roja de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Roja de Enlace | Cybermon #096 | TTG Wiki",
+      "description": "Ficha oficial de Llave Roja de Enlace (CYB-096), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Activa evolucion Link",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/096-llave-roja-de-enlace"
+    }
+  },
+  {
+    "id": "CYB097",
+    "slug": "097-llave-azul-de-enlace",
+    "name": "Llave Azul de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Lira Campos",
+    "category": "Objeto/Escenario",
+    "description": "Llave Azul de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Activa lectura de memoria.",
+    "inspirationBase": "Llave de sincronizacion azul",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Azul de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Azul de Enlace | Cybermon #097 | TTG Wiki",
+      "description": "Ficha oficial de Llave Azul de Enlace (CYB-097), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Activa lectura de memoria",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/097-llave-azul-de-enlace"
+    }
+  },
+  {
+    "id": "CYB098",
+    "slug": "098-llave-amarilla-de-enlace",
+    "name": "Llave Amarilla de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Nico Senda",
+    "category": "Objeto/Escenario",
+    "description": "Llave Amarilla de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Activa exploracion de red.",
+    "inspirationBase": "Llave de sincronizacion amarilla",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Amarilla de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Amarilla de Enlace | Cybermon #098 | TTG Wiki",
+      "description": "Ficha oficial de Llave Amarilla de Enlace (CYB-098), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Activa exploracion de red",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/098-llave-amarilla-de-enlace"
+    }
+  },
+  {
+    "id": "CYB099",
+    "slug": "099-llave-violeta-de-enlace",
+    "name": "Llave Violeta de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Vera Nox",
+    "category": "Objeto/Escenario",
+    "description": "Llave Violeta de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Purifica glitch.",
+    "inspirationBase": "Llave de sincronizacion violeta",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Violeta de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Violeta de Enlace | Cybermon #099 | TTG Wiki",
+      "description": "Ficha oficial de Llave Violeta de Enlace (CYB-099), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Purifica glitch",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/099-llave-violeta-de-enlace"
+    }
+  },
+  {
+    "id": "CYB100",
+    "slug": "100-llave-gris-de-enlace",
+    "name": "Llave Gris de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Bruno Vale",
+    "category": "Objeto/Escenario",
+    "description": "Llave Gris de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Refuerza escudos.",
+    "inspirationBase": "Llave defensiva",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Gris de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Gris de Enlace | Cybermon #100 | TTG Wiki",
+      "description": "Ficha oficial de Llave Gris de Enlace (CYB-100), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Refuerza escudos",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/100-llave-gris-de-enlace"
+    }
+  },
+  {
+    "id": "CYB101",
+    "slug": "101-llave-verde-de-enlace",
+    "name": "Llave Verde de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Hana Sol",
+    "category": "Objeto/Escenario",
+    "description": "Llave Verde de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Cura enlaces.",
+    "inspirationBase": "Llave de reparacion",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Verde de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Verde de Enlace | Cybermon #101 | TTG Wiki",
+      "description": "Ficha oficial de Llave Verde de Enlace (CYB-101), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Cura enlaces",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/101-llave-verde-de-enlace"
+    }
+  },
+  {
+    "id": "CYB102",
+    "slug": "102-llave-naranja-de-enlace",
+    "name": "Llave Naranja de Enlace",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "owner": "Milo Aranda",
+    "category": "Objeto/Escenario",
+    "description": "Llave Naranja de Enlace — Objeto/Escenario. Objeto/Enlace, rareza Raro. Invoca drones.",
+    "inspirationBase": "Llave de ensamblaje",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Naranja de Enlace, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Naranja de Enlace | Cybermon #102 | TTG Wiki",
+      "description": "Ficha oficial de Llave Naranja de Enlace (CYB-102), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Raro. Invoca drones",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/102-llave-naranja-de-enlace"
+    }
+  },
+  {
+    "id": "CYB103",
+    "slug": "103-llave-blanca-de-nexo",
+    "name": "Llave Blanca de Nexo",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Objeto",
+    "owner": "Dalia Rune",
+    "category": "Objeto/Escenario",
+    "description": "Llave Blanca de Nexo — Objeto/Escenario. Objeto/Enlace, rareza Ultra. Abre rutas Nexus.",
+    "inspirationBase": "Llave antigua del nucleo",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Llave Blanca de Nexo, Cybermon Objeto/Escenario, tipo Objeto/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Llave Blanca de Nexo | Cybermon #103 | TTG Wiki",
+      "description": "Ficha oficial de Llave Blanca de Nexo (CYB-103), Cybermon categoría Objeto/Escenario. Tipo Objeto/Enlace, rareza Ultra. Abre rutas Nexus",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/103-llave-blanca-de-nexo"
+    }
+  },
+  {
+    "id": "CYB104",
+    "slug": "104-terminal-link",
+    "name": "Terminal Link",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Objeto",
+      "Data"
+    ],
+    "rarity": "Comun",
+    "stage": "Objeto",
+    "owner": "Equipo Link",
+    "category": "Objeto/Escenario",
+    "description": "Terminal Link — Objeto/Escenario. Objeto/Data, rareza Comun. Acceso a Cybernet.",
+    "inspirationBase": "Dispositivo portatil de conexion",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Terminal Link, Cybermon Objeto/Escenario, tipo Objeto/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Terminal Link | Cybermon #104 | TTG Wiki",
+      "description": "Ficha oficial de Terminal Link (CYB-104), Cybermon categoría Objeto/Escenario. Tipo Objeto/Data, rareza Comun. Acceso a Cybernet",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/104-terminal-link"
+    }
+  },
+  {
+    "id": "CYB105",
+    "slug": "105-arcade-gateway",
+    "name": "Arcade Gateway",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Data"
+    ],
+    "rarity": "Raro",
+    "stage": "Escenario",
+    "owner": "Equipo Link",
+    "category": "Objeto/Escenario",
+    "description": "Arcade Gateway — Objeto/Escenario. Lugar/Data, rareza Raro. Entrada a sectores.",
+    "inspirationBase": "Maquina arcade que abre portales",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Arcade Gateway, Cybermon Objeto/Escenario, tipo Lugar/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Arcade Gateway | Cybermon #105 | TTG Wiki",
+      "description": "Ficha oficial de Arcade Gateway (CYB-105), Cybermon categoría Objeto/Escenario. Tipo Lugar/Data, rareza Raro. Entrada a sectores",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/105-arcade-gateway"
+    }
+  },
+  {
+    "id": "CYB106",
+    "slug": "106-bosque-pixel",
+    "name": "Bosque Pixel",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Planta"
+    ],
+    "rarity": "Comun",
+    "stage": "Escenario",
+    "owner": "Cybernet",
+    "category": "Objeto/Escenario",
+    "description": "Bosque Pixel — Objeto/Escenario. Lugar/Planta, rareza Comun. Zona de tutorial.",
+    "inspirationBase": "Sector natural digital",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bosque Pixel, Cybermon Objeto/Escenario, tipo Lugar/Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bosque Pixel | Cybermon #106 | TTG Wiki",
+      "description": "Ficha oficial de Bosque Pixel (CYB-106), Cybermon categoría Objeto/Escenario. Tipo Lugar/Planta, rareza Comun. Zona de tutorial",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/106-bosque-pixel"
+    }
+  },
+  {
+    "id": "CYB107",
+    "slug": "107-rio-stream",
+    "name": "Rio Stream",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Agua"
+    ],
+    "rarity": "Comun",
+    "stage": "Escenario",
+    "owner": "Cybernet",
+    "category": "Objeto/Escenario",
+    "description": "Rio Stream — Objeto/Escenario. Lugar/Agua, rareza Comun. Zona de Axolink.",
+    "inspirationBase": "Rio de paquetes de datos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Rio Stream, Cybermon Objeto/Escenario, tipo Lugar/Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rio Stream | Cybermon #107 | TTG Wiki",
+      "description": "Ficha oficial de Rio Stream (CYB-107), Cybermon categoría Objeto/Escenario. Tipo Lugar/Agua, rareza Comun. Zona de Axolink",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/107-rio-stream"
+    }
+  },
+  {
+    "id": "CYB108",
+    "slug": "108-torre-firewall",
+    "name": "Torre Firewall",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Fuego"
+    ],
+    "rarity": "Raro",
+    "stage": "Escenario",
+    "owner": "Director Cero",
+    "category": "Objeto/Escenario",
+    "description": "Torre Firewall — Objeto/Escenario. Lugar/Fuego, rareza Raro. Mazmorra.",
+    "inspirationBase": "Fortaleza de seguridad ardiente",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Torre Firewall, Cybermon Objeto/Escenario, tipo Lugar/Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Torre Firewall | Cybermon #108 | TTG Wiki",
+      "description": "Ficha oficial de Torre Firewall (CYB-108), Cybermon categoría Objeto/Escenario. Tipo Lugar/Fuego, rareza Raro. Mazmorra",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/108-torre-firewall"
+    }
+  },
+  {
+    "id": "CYB109",
+    "slug": "109-ciudad-cache",
+    "name": "Ciudad Cache",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Normal"
+    ],
+    "rarity": "Comun",
+    "stage": "Escenario",
+    "owner": "Cybernet",
+    "category": "Objeto/Escenario",
+    "description": "Ciudad Cache — Objeto/Escenario. Lugar/Normal, rareza Comun. Exploracion.",
+    "inspirationBase": "Zona urbana de memoria temporal",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Ciudad Cache, Cybermon Objeto/Escenario, tipo Lugar/Normal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ciudad Cache | Cybermon #109 | TTG Wiki",
+      "description": "Ficha oficial de Ciudad Cache (CYB-109), Cybermon categoría Objeto/Escenario. Tipo Lugar/Normal, rareza Comun. Exploracion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/109-ciudad-cache"
+    }
+  },
+  {
+    "id": "CYB110",
+    "slug": "110-nexo-blanco",
+    "name": "Nexo Blanco",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Psiquico"
+    ],
+    "rarity": "Ultra",
+    "stage": "Escenario",
+    "owner": "Dalia Rune",
+    "category": "Objeto/Escenario",
+    "description": "Nexo Blanco — Objeto/Escenario. Lugar/Psiquico, rareza Ultra. Final de saga.",
+    "inspirationBase": "Centro antiguo de Cybernet",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nexo Blanco, Cybermon Objeto/Escenario, tipo Lugar/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nexo Blanco | Cybermon #110 | TTG Wiki",
+      "description": "Ficha oficial de Nexo Blanco (CYB-110), Cybermon categoría Objeto/Escenario. Tipo Lugar/Psiquico, rareza Ultra. Final de saga",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/110-nexo-blanco"
+    }
+  },
+  {
+    "id": "CYB111",
+    "slug": "111-sector-null",
+    "name": "Sector Null",
+    "series": "cybermon",
+    "entityType": "object",
+    "types": [
+      "Lugar",
+      "Fantasma"
+    ],
+    "rarity": "Ultra",
+    "stage": "Escenario",
+    "owner": "Nucleo Cero",
+    "category": "Objeto/Escenario",
+    "description": "Sector Null — Objeto/Escenario. Lugar/Fantasma, rareza Ultra. Climax antagonista.",
+    "inspirationBase": "Zona sin recuerdos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Sector Null, Cybermon Objeto/Escenario, tipo Lugar/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sector Null | Cybermon #111 | TTG Wiki",
+      "description": "Ficha oficial de Sector Null (CYB-111), Cybermon categoría Objeto/Escenario. Tipo Lugar/Fantasma, rareza Ultra. Climax antagonista",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/111-sector-null"
+    }
+  },
+  {
+    "id": "CYB112",
+    "slug": "112-link-burst-kai",
+    "name": "Link Burst Kai",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Kai + Bytepup",
+    "category": "Tazo especial",
+    "description": "Link Burst Kai — Tazo especial. Humano/Enlace, rareza Ultra. Permite Burst ofensivo.",
+    "inspirationBase": "Sincronizacion roja maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Kai, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Kai | Cybermon #112 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Kai (CYB-112), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Permite Burst ofensivo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/112-link-burst-kai"
+    }
+  },
+  {
+    "id": "CYB113",
+    "slug": "113-link-burst-lira",
+    "name": "Link Burst Lira",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Lira + Axolink",
+    "category": "Tazo especial",
+    "description": "Link Burst Lira — Tazo especial. Humano/Enlace, rareza Ultra. Control y curacion.",
+    "inspirationBase": "Sincronizacion azul maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Lira, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Lira | Cybermon #113 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Lira (CYB-113), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Control y curacion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/113-link-burst-lira"
+    }
+  },
+  {
+    "id": "CYB114",
+    "slug": "114-link-burst-nico",
+    "name": "Link Burst Nico",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Nico + Chirpbit",
+    "category": "Tazo especial",
+    "description": "Link Burst Nico — Tazo especial. Humano/Enlace, rareza Ultra. Velocidad suprema.",
+    "inspirationBase": "Sincronizacion amarilla maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Nico, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Nico | Cybermon #114 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Nico (CYB-114), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Velocidad suprema",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/114-link-burst-nico"
+    }
+  },
+  {
+    "id": "CYB115",
+    "slug": "115-link-burst-vera",
+    "name": "Link Burst Vera",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Vera + Glitchkit",
+    "category": "Tazo especial",
+    "description": "Link Burst Vera — Tazo especial. Humano/Enlace, rareza Ultra. Purifica corrupcion.",
+    "inspirationBase": "Sincronizacion violeta maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Vera, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Vera | Cybermon #115 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Vera (CYB-115), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Purifica corrupcion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/115-link-burst-vera"
+    }
+  },
+  {
+    "id": "CYB116",
+    "slug": "116-link-burst-bruno",
+    "name": "Link Burst Bruno",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Bruno + Shellcode",
+    "category": "Tazo especial",
+    "description": "Link Burst Bruno — Tazo especial. Humano/Enlace, rareza Ultra. Escudo total.",
+    "inspirationBase": "Sincronizacion gris maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Bruno, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Bruno | Cybermon #116 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Bruno (CYB-116), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Escudo total",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/116-link-burst-bruno"
+    }
+  },
+  {
+    "id": "CYB117",
+    "slug": "117-link-burst-hana",
+    "name": "Link Burst Hana",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Hana + Bloombyte",
+    "category": "Tazo especial",
+    "description": "Link Burst Hana — Tazo especial. Humano/Enlace, rareza Ultra. Restauracion.",
+    "inspirationBase": "Sincronizacion verde maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Hana, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Hana | Cybermon #117 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Hana (CYB-117), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Restauracion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/117-link-burst-hana"
+    }
+  },
+  {
+    "id": "CYB118",
+    "slug": "118-link-burst-milo",
+    "name": "Link Burst Milo",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Milo + Beetboot",
+    "category": "Tazo especial",
+    "description": "Link Burst Milo — Tazo especial. Humano/Enlace, rareza Ultra. Enjambre tecnico.",
+    "inspirationBase": "Sincronizacion naranja maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Milo, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Milo | Cybermon #118 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Milo (CYB-118), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Enjambre tecnico",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/118-link-burst-milo"
+    }
+  },
+  {
+    "id": "CYB119",
+    "slug": "119-link-burst-dalia",
+    "name": "Link Burst Dalia",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Dalia + Sparkwyrm",
+    "category": "Tazo especial",
+    "description": "Link Burst Dalia — Tazo especial. Humano/Enlace, rareza Ultra. Equilibrio Nexus.",
+    "inspirationBase": "Sincronizacion blanca maxima",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Link Burst Dalia, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Link Burst Dalia | Cybermon #119 | TTG Wiki",
+      "description": "Ficha oficial de Link Burst Dalia (CYB-119), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Ultra. Equilibrio Nexus",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/119-link-burst-dalia"
+    }
+  },
+  {
+    "id": "CYB120",
+    "slug": "120-equipo-link-unido",
+    "name": "Equipo Link Unido",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Humano",
+      "Enlace"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "owner": "Todos",
+    "category": "Tazo especial",
+    "description": "Equipo Link Unido — Tazo especial. Humano/Enlace, rareza Legendario. Carta/tazo de equipo.",
+    "inspirationBase": "Los ocho Ninos Vinculados reunidos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Equipo Link Unido, Cybermon Tazo especial, tipo Humano/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Equipo Link Unido | Cybermon #120 | TTG Wiki",
+      "description": "Ficha oficial de Equipo Link Unido (CYB-120), Cybermon categoría Tazo especial. Tipo Humano/Enlace, rareza Legendario. Carta/tazo de equipo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/120-equipo-link-unido"
+    }
+  },
+  {
+    "id": "CYB121",
+    "slug": "121-cybermons-base-unidos",
+    "name": "Cybermons Base Unidos",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Data",
+      "Enlace"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "owner": "Todos",
+    "category": "Tazo especial",
+    "description": "Cybermons Base Unidos — Tazo especial. Data/Enlace, rareza Legendario. Carta promocional.",
+    "inspirationBase": "Los ocho companeros en forma Base",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cybermons Base Unidos, Cybermon Tazo especial, tipo Data/Enlace",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cybermons Base Unidos | Cybermon #121 | TTG Wiki",
+      "description": "Ficha oficial de Cybermons Base Unidos (CYB-121), Cybermon categoría Tazo especial. Tipo Data/Enlace, rareza Legendario. Carta promocional",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/121-cybermons-base-unidos"
+    }
+  },
+  {
+    "id": "CYB122",
+    "slug": "122-nexus-awakening",
+    "name": "Nexus Awakening",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Data",
+      "Psiquico"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "owner": "Dalia Rune",
+    "category": "Tazo especial",
+    "description": "Nexus Awakening — Tazo especial. Data/Psiquico, rareza Legendario. Evento de saga.",
+    "inspirationBase": "Despertar del Nexo Blanco",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nexus Awakening, Cybermon Tazo especial, tipo Data/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nexus Awakening | Cybermon #122 | TTG Wiki",
+      "description": "Ficha oficial de Nexus Awakening (CYB-122), Cybermon categoría Tazo especial. Tipo Data/Psiquico, rareza Legendario. Evento de saga",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/122-nexus-awakening"
+    }
+  },
+  {
+    "id": "CYB123",
+    "slug": "123-cero-despierta",
+    "name": "Cero Despierta",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Fantasma",
+      "Data"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "owner": "Nucleo Cero",
+    "category": "Tazo especial",
+    "description": "Cero Despierta — Tazo especial. Fantasma/Data, rareza Legendario. Evento villano.",
+    "inspirationBase": "Primer despertar del antagonista central",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cero Despierta, Cybermon Tazo especial, tipo Fantasma/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cero Despierta | Cybermon #123 | TTG Wiki",
+      "description": "Ficha oficial de Cero Despierta (CYB-123), Cybermon categoría Tazo especial. Tipo Fantasma/Data, rareza Legendario. Evento villano",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/123-cero-despierta"
+    }
+  },
+  {
+    "id": "CYB124",
+    "slug": "124-purga-de-glitch",
+    "name": "Purga de Glitch",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Data",
+      "Hada"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "owner": "Vera + Hana",
+    "category": "Tazo especial",
+    "description": "Purga de Glitch — Tazo especial. Data/Hada, rareza Ultra. Soporte especial.",
+    "inspirationBase": "Limpieza de corrupcion digital",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Purga de Glitch, Cybermon Tazo especial, tipo Data/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Purga de Glitch | Cybermon #124 | TTG Wiki",
+      "description": "Ficha oficial de Purga de Glitch (CYB-124), Cybermon categoría Tazo especial. Tipo Data/Hada, rareza Ultra. Soporte especial",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/124-purga-de-glitch"
+    }
+  },
+  {
+    "id": "CYB125",
+    "slug": "125-firewall-rojo",
+    "name": "Firewall Rojo",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Fuego",
+      "Data"
+    ],
+    "rarity": "Raro",
+    "stage": "Especial",
+    "owner": "Kai",
+    "category": "Tazo especial",
+    "description": "Firewall Rojo — Tazo especial. Fuego/Data, rareza Raro. Defensa ofensiva.",
+    "inspirationBase": "Muro de fuego aliado",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Firewall Rojo, Cybermon Tazo especial, tipo Fuego/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Firewall Rojo | Cybermon #125 | TTG Wiki",
+      "description": "Ficha oficial de Firewall Rojo (CYB-125), Cybermon categoría Tazo especial. Tipo Fuego/Data, rareza Raro. Defensa ofensiva",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/125-firewall-rojo"
+    }
+  },
+  {
+    "id": "CYB126",
+    "slug": "126-marea-de-memoria",
+    "name": "Marea de Memoria",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Agua",
+      "Psiquico"
+    ],
+    "rarity": "Raro",
+    "stage": "Especial",
+    "owner": "Lira",
+    "category": "Tazo especial",
+    "description": "Marea de Memoria — Tazo especial. Agua/Psiquico, rareza Raro. Curacion.",
+    "inspirationBase": "Recupera datos perdidos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Marea de Memoria, Cybermon Tazo especial, tipo Agua/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Marea de Memoria | Cybermon #126 | TTG Wiki",
+      "description": "Ficha oficial de Marea de Memoria (CYB-126), Cybermon categoría Tazo especial. Tipo Agua/Psiquico, rareza Raro. Curacion",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/126-marea-de-memoria"
+    }
+  },
+  {
+    "id": "CYB127",
+    "slug": "127-tormenta-de-paquetes",
+    "name": "Tormenta de Paquetes",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Electrico",
+      "Volador"
+    ],
+    "rarity": "Raro",
+    "stage": "Especial",
+    "owner": "Nico",
+    "category": "Tazo especial",
+    "description": "Tormenta de Paquetes — Tazo especial. Electrico/Volador, rareza Raro. Dano rapido.",
+    "inspirationBase": "Ataque aereo de senales",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Tormenta de Paquetes, Cybermon Tazo especial, tipo Electrico/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Tormenta de Paquetes | Cybermon #127 | TTG Wiki",
+      "description": "Ficha oficial de Tormenta de Paquetes (CYB-127), Cybermon categoría Tazo especial. Tipo Electrico/Volador, rareza Raro. Dano rapido",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/127-tormenta-de-paquetes"
+    }
+  },
+  {
+    "id": "CYB128",
+    "slug": "128-amanecer-cybernet",
+    "name": "Amanecer Cybernet",
+    "series": "cybermon",
+    "entityType": "special",
+    "types": [
+      "Hada",
+      "Data"
+    ],
+    "rarity": "Mitico",
+    "stage": "Especial",
+    "owner": "Equipo Link",
+    "category": "Tazo especial",
+    "description": "Amanecer Cybernet — Tazo especial. Hada/Data, rareza Mitico. Final positivo.",
+    "inspirationBase": "Cybernet restaurada con todos los vinculos",
+    "visualStyle": "Estilo anime juvenil de aventura digital, 2D, lineart limpio, cel shading suave, colores vivos.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Amanecer Cybernet, Cybermon Tazo especial, tipo Hada/Data",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Amanecer Cybernet | Cybermon #128 | TTG Wiki",
+      "description": "Ficha oficial de Amanecer Cybernet (CYB-128), Cybermon categoría Tazo especial. Tipo Hada/Data, rareza Mitico. Final positivo",
+      "canonical": "https://tradingtazosgame.com/wiki/cybermon/128-amanecer-cybernet"
+    }
+  }
+]

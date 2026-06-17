@@ -1,0 +1,4329 @@
+[
+  {
+    "id": "001",
+    "slug": "001-brotalix",
+    "name": "Brotalix",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-001",
+    "evolution": "Evo 1/3",
+    "description": "Brotalix es un Minimon de tipo Planta. Evoluciona: Evo 1/3. Inspiración: Cachorro vegetal / perro de bosque con brotes.",
+    "inspirationBase": "Cachorro vegetal / perro de bosque con brotes",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Brotalix, Minimon tipo Planta",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Brotalix | Minimon #001 | TTG Wiki",
+      "description": "Ficha oficial de Brotalix (#001), Minimon tipo Planta. Evo 1/3. Inspiración: Cachorro vegetal / perro de bosque con brotes. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/001-brotalix"
+    }
+  },
+  {
+    "id": "002",
+    "slug": "002-frondalix",
+    "name": "Frondalix",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-001",
+    "evolution": "Evo 2/3",
+    "description": "Frondalix es un Minimon de tipo Planta. Evoluciona: Evo 2/3. Inspiración: Lobo joven forestal con follaje y enredaderas.",
+    "inspirationBase": "Lobo joven forestal con follaje y enredaderas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Frondalix, Minimon tipo Planta",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Frondalix | Minimon #002 | TTG Wiki",
+      "description": "Ficha oficial de Frondalix (#002), Minimon tipo Planta. Evo 2/3. Inspiración: Lobo joven forestal con follaje y enredaderas. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/002-frondalix"
+    }
+  },
+  {
+    "id": "003",
+    "slug": "003-terralix",
+    "name": "Terralix",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-001",
+    "evolution": "Evo 3/3",
+    "description": "Terralix es un Minimon de tipo Planta/Tierra. Evoluciona: Evo 3/3. Inspiración: Gran lobo de naturaleza y tierra con raices, lianas y roca.",
+    "inspirationBase": "Gran lobo de naturaleza y tierra con raices, lianas y roca",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Terralix, Minimon tipo Planta/Tierra",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Terralix | Minimon #003 | TTG Wiki",
+      "description": "Ficha oficial de Terralix (#003), Minimon tipo Planta/Tierra. Evo 3/3. Inspiración: Gran lobo de naturaleza y tierra con raices, lianas y roca. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/003-terralix"
+    }
+  },
+  {
+    "id": "004",
+    "slug": "004-igniscuama",
+    "name": "Igniscuama",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-002",
+    "evolution": "Evo 1/3",
+    "description": "Igniscuama es un Minimon de tipo Fuego. Evoluciona: Evo 1/3. Inspiración: Lagarto pequeño de fuego.",
+    "inspirationBase": "Lagarto pequeño de fuego",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Igniscuama, Minimon tipo Fuego",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Igniscuama | Minimon #004 | TTG Wiki",
+      "description": "Ficha oficial de Igniscuama (#004), Minimon tipo Fuego. Evo 1/3. Inspiración: Lagarto pequeño de fuego. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/004-igniscuama"
+    }
+  },
+  {
+    "id": "005",
+    "slug": "005-bravascua",
+    "name": "Bravascua",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-002",
+    "evolution": "Evo 2/3",
+    "description": "Bravascua es un Minimon de tipo Fuego. Evoluciona: Evo 2/3. Inspiración: Reptil igneo con escamas de brasa.",
+    "inspirationBase": "Reptil igneo con escamas de brasa",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Bravascua, Minimon tipo Fuego",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Bravascua | Minimon #005 | TTG Wiki",
+      "description": "Ficha oficial de Bravascua (#005), Minimon tipo Fuego. Evo 2/3. Inspiración: Reptil igneo con escamas de brasa. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/005-bravascua"
+    }
+  },
+  {
+    "id": "006",
+    "slug": "006-charasku",
+    "name": "Charasku",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Dragon"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-002",
+    "evolution": "Evo 3/3",
+    "description": "Charasku es un Minimon de tipo Fuego/Dragon. Evoluciona: Evo 3/3. Inspiración: Dragon joven / lagarto de fuego evolucionado.",
+    "inspirationBase": "Dragon joven / lagarto de fuego evolucionado",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/dragon, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Charasku, Minimon tipo Fuego/Dragon",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Charasku | Minimon #006 | TTG Wiki",
+      "description": "Ficha oficial de Charasku (#006), Minimon tipo Fuego/Dragon. Evo 3/3. Inspiración: Dragon joven / lagarto de fuego evolucionado. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/006-charasku"
+    }
+  },
+  {
+    "id": "007",
+    "slug": "007-aquolto",
+    "name": "Aquolto",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-003",
+    "evolution": "Evo 1/3",
+    "description": "Aquolto es un Minimon de tipo Agua. Evoluciona: Evo 1/3. Inspiración: Nutria joven.",
+    "inspirationBase": "Nutria joven",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Aquolto, Minimon tipo Agua",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Aquolto | Minimon #007 | TTG Wiki",
+      "description": "Ficha oficial de Aquolto (#007), Minimon tipo Agua. Evo 1/3. Inspiración: Nutria joven. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/007-aquolto"
+    }
+  },
+  {
+    "id": "008",
+    "slug": "008-marelutro",
+    "name": "Marelutro",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-003",
+    "evolution": "Evo 2/3",
+    "description": "Marelutro es un Minimon de tipo Agua. Evoluciona: Evo 2/3. Inspiración: Nutria marina.",
+    "inspirationBase": "Nutria marina",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Marelutro, Minimon tipo Agua",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Marelutro | Minimon #008 | TTG Wiki",
+      "description": "Ficha oficial de Marelutro (#008), Minimon tipo Agua. Evo 2/3. Inspiración: Nutria marina. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/008-marelutro"
+    }
+  },
+  {
+    "id": "009",
+    "slug": "009-ocealutro",
+    "name": "Ocealutro",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hielo"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-003",
+    "evolution": "Evo 3/3",
+    "description": "Ocealutro es un Minimon de tipo Agua/Hielo. Evoluciona: Evo 3/3. Inspiración: Nutria oceanica polar.",
+    "inspirationBase": "Nutria oceanica polar",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/hielo, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Ocealutro, Minimon tipo Agua/Hielo",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Ocealutro | Minimon #009 | TTG Wiki",
+      "description": "Ficha oficial de Ocealutro (#009), Minimon tipo Agua/Hielo. Evo 3/3. Inspiración: Nutria oceanica polar. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/009-ocealutro"
+    }
+  },
+  {
+    "id": "010",
+    "slug": "010-luneko",
+    "name": "Luneko",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-004",
+    "evolution": "Evo 1/2",
+    "description": "Luneko es un Minimon de tipo Normal. Evoluciona: Evo 1/2. Inspiración: Gato lunar.",
+    "inspirationBase": "Gato lunar",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Luneko, Minimon tipo Normal",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Luneko | Minimon #010 | TTG Wiki",
+      "description": "Ficha oficial de Luneko (#010), Minimon tipo Normal. Evo 1/2. Inspiración: Gato lunar. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/010-luneko"
+    }
+  },
+  {
+    "id": "011",
+    "slug": "011-noneko",
+    "name": "Noneko",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Siniestro"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-004",
+    "evolution": "Evo 2/2",
+    "description": "Noneko es un Minimon de tipo Siniestro. Evoluciona: Evo 2/2. Inspiración: Gato nocturno / gato sombrio.",
+    "inspirationBase": "Gato nocturno / gato sombrio",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo siniestro, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Noneko, Minimon tipo Siniestro",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Noneko | Minimon #011 | TTG Wiki",
+      "description": "Ficha oficial de Noneko (#011), Minimon tipo Siniestro. Evo 2/2. Inspiración: Gato nocturno / gato sombrio. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/011-noneko"
+    }
+  },
+  {
+    "id": "012",
+    "slug": "012-plumi",
+    "name": "Plumi",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Acero"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-005",
+    "evolution": "Evo 1/3",
+    "description": "Plumi es un Minimon de tipo Volador/Acero. Evoluciona: Evo 1/3. Inspiración: Ave pequeña con plumas metalicas.",
+    "inspirationBase": "Ave pequeña con plumas metalicas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Plumi, Minimon tipo Volador/Acero",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Plumi | Minimon #012 | TTG Wiki",
+      "description": "Ficha oficial de Plumi (#012), Minimon tipo Volador/Acero. Evo 1/3. Inspiración: Ave pequeña con plumas metalicas. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/012-plumi"
+    }
+  },
+  {
+    "id": "013",
+    "slug": "013-plumeris",
+    "name": "Plumeris",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Acero"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-005",
+    "evolution": "Evo 2/3",
+    "description": "Plumeris es un Minimon de tipo Volador/Acero. Evoluciona: Evo 2/3. Inspiración: Ave rapaz joven con plumaje de acero.",
+    "inspirationBase": "Ave rapaz joven con plumaje de acero",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Plumeris, Minimon tipo Volador/Acero",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Plumeris | Minimon #013 | TTG Wiki",
+      "description": "Ficha oficial de Plumeris (#013), Minimon tipo Volador/Acero. Evo 2/3. Inspiración: Ave rapaz joven con plumaje de acero. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/013-plumeris"
+    }
+  },
+  {
+    "id": "014",
+    "slug": "014-aerocrest",
+    "name": "Aerocrest",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Acero"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-005",
+    "evolution": "Evo 3/3",
+    "description": "Aerocrest es un Minimon de tipo Volador/Acero. Evoluciona: Evo 3/3. Inspiración: Halcon / aguila con cresta metalica.",
+    "inspirationBase": "Halcon / aguila con cresta metalica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Aerocrest, Minimon tipo Volador/Acero",
+      "status": "created"
+    },
+    "seo": {
+      "title": "Aerocrest | Minimon #014 | TTG Wiki",
+      "description": "Ficha oficial de Aerocrest (#014), Minimon tipo Volador/Acero. Evo 3/3. Inspiración: Halcon / aguila con cresta metalica. Estado de arte: creado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/014-aerocrest"
+    }
+  },
+  {
+    "id": "015",
+    "slug": "015-lumibeet",
+    "name": "Lumibeet",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-006",
+    "evolution": "Evo 1/2",
+    "description": "Lumibeet es un Minimon de tipo Bicho. Evoluciona: Evo 1/2. Inspiración: Luciernaga.",
+    "inspirationBase": "Luciernaga",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Lumibeet, Minimon tipo Bicho",
+      "status": "pending"
+    },
+    "seo": {
+      "title": "Lumibeet | Minimon #015 | TTG Wiki",
+      "description": "Ficha oficial de Lumibeet (#015), Minimon tipo Bicho. Evo 1/2. Inspiración: Luciernaga. Estado de arte: pendiente.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/015-lumibeet"
+    }
+  },
+  {
+    "id": "016",
+    "slug": "016-scaraburst",
+    "name": "Scaraburst",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-006",
+    "evolution": "Evo 2/2",
+    "description": "Scaraburst es un Minimon de tipo Bicho. Evoluciona: Evo 2/2. Inspiración: Escarabajo luminoso explosivo.",
+    "inspirationBase": "Escarabajo luminoso explosivo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Scaraburst, Minimon tipo Bicho",
+      "status": "pending"
+    },
+    "seo": {
+      "title": "Scaraburst | Minimon #016 | TTG Wiki",
+      "description": "Ficha oficial de Scaraburst (#016), Minimon tipo Bicho. Evo 2/2. Inspiración: Escarabajo luminoso explosivo. Estado de arte: pendiente.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/016-scaraburst"
+    }
+  },
+  {
+    "id": "017",
+    "slug": "017-larviva",
+    "name": "Larviva",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-007",
+    "evolution": "Evo 1/3",
+    "description": "Larviva es un Minimon de tipo Bicho. Evoluciona: Evo 1/3. Inspiración: Larva de insecto.",
+    "inspirationBase": "Larva de insecto",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Larviva, Minimon tipo Bicho",
+      "status": "pending"
+    },
+    "seo": {
+      "title": "Larviva | Minimon #017 | TTG Wiki",
+      "description": "Ficha oficial de Larviva (#017), Minimon tipo Bicho. Evo 1/3. Inspiración: Larva de insecto. Estado de arte: pendiente.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/017-larviva"
+    }
+  },
+  {
+    "id": "018",
+    "slug": "018-capuluma",
+    "name": "Capuluma",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-007",
+    "evolution": "Evo 2/3",
+    "description": "Capuluma es un Minimon de tipo Bicho. Evoluciona: Evo 2/3. Inspiración: Crisalida / capullo.",
+    "inspirationBase": "Crisalida / capullo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Capuluma, Minimon tipo Bicho",
+      "status": "pending"
+    },
+    "seo": {
+      "title": "Capuluma | Minimon #018 | TTG Wiki",
+      "description": "Ficha oficial de Capuluma (#018), Minimon tipo Bicho. Evo 2/3. Inspiración: Crisalida / capullo. Estado de arte: pendiente.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/018-capuluma"
+    }
+  },
+  {
+    "id": "019",
+    "slug": "019-papilora",
+    "name": "Papilora",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-007",
+    "evolution": "Evo 3/3",
+    "description": "Papilora es un Minimon de tipo Bicho/Hada. Evoluciona: Evo 3/3. Inspiración: Mariposa hada.",
+    "inspirationBase": "Mariposa hada",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Papilora, Minimon tipo Bicho/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Papilora | Minimon #019 | TTG Wiki",
+      "description": "Ficha oficial de Papilora (#019), Minimon tipo Bicho/Hada. Evo 3/3. Inspiración: Mariposa hada. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/019-papilora"
+    }
+  },
+  {
+    "id": "020",
+    "slug": "020-terrabum",
+    "name": "Terrabum",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-008",
+    "evolution": "Evo 1/2",
+    "description": "Terrabum es un Minimon de tipo Tierra. Evoluciona: Evo 1/2. Inspiración: Topo joven.",
+    "inspirationBase": "Topo joven",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Terrabum, Minimon tipo Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Terrabum | Minimon #020 | TTG Wiki",
+      "description": "Ficha oficial de Terrabum (#020), Minimon tipo Tierra. Evo 1/2. Inspiración: Topo joven. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/020-terrabum"
+    }
+  },
+  {
+    "id": "021",
+    "slug": "021-toporrok",
+    "name": "Toporrok",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-008",
+    "evolution": "Evo 2/2",
+    "description": "Toporrok es un Minimon de tipo Tierra/Roca. Evoluciona: Evo 2/2. Inspiración: Topo rocoso acorazado.",
+    "inspirationBase": "Topo rocoso acorazado",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Toporrok, Minimon tipo Tierra/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Toporrok | Minimon #021 | TTG Wiki",
+      "description": "Ficha oficial de Toporrok (#021), Minimon tipo Tierra/Roca. Evo 2/2. Inspiración: Topo rocoso acorazado. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/021-toporrok"
+    }
+  },
+  {
+    "id": "022",
+    "slug": "022-hoppi",
+    "name": "Hoppi",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-009",
+    "evolution": "Evo 1/2",
+    "description": "Hoppi es un Minimon de tipo Normal. Evoluciona: Evo 1/2. Inspiración: Conejo saltador.",
+    "inspirationBase": "Conejo saltador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Hoppi, Minimon tipo Normal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hoppi | Minimon #022 | TTG Wiki",
+      "description": "Ficha oficial de Hoppi (#022), Minimon tipo Normal. Evo 1/2. Inspiración: Conejo saltador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/022-hoppi"
+    }
+  },
+  {
+    "id": "023",
+    "slug": "023-salteron",
+    "name": "Salteron",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-009",
+    "evolution": "Evo 2/2",
+    "description": "Salteron es un Minimon de tipo Normal/Lucha. Evoluciona: Evo 2/2. Inspiración: Liebre luchadora / canguro pequeño.",
+    "inspirationBase": "Liebre luchadora / canguro pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Salteron, Minimon tipo Normal/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Salteron | Minimon #023 | TTG Wiki",
+      "description": "Ficha oficial de Salteron (#023), Minimon tipo Normal/Lucha. Evo 2/2. Inspiración: Liebre luchadora / canguro pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/023-salteron"
+    }
+  },
+  {
+    "id": "024",
+    "slug": "024-mirlit",
+    "name": "Mirlit",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-010",
+    "evolution": "Evo 1/2",
+    "description": "Mirlit es un Minimon de tipo Planta. Evoluciona: Evo 1/2. Inspiración: Brote vegetal / plantula.",
+    "inspirationBase": "Brote vegetal / plantula",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mirlit, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mirlit | Minimon #024 | TTG Wiki",
+      "description": "Ficha oficial de Mirlit (#024), Minimon tipo Planta. Evo 1/2. Inspiración: Brote vegetal / plantula. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/024-mirlit"
+    }
+  },
+  {
+    "id": "025",
+    "slug": "025-arboril",
+    "name": "Arboril",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-010",
+    "evolution": "Evo 2/2",
+    "description": "Arboril es un Minimon de tipo Planta. Evoluciona: Evo 2/2. Inspiración: Arbusto viviente / arbol joven.",
+    "inspirationBase": "Arbusto viviente / arbol joven",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Arboril, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Arboril | Minimon #025 | TTG Wiki",
+      "description": "Ficha oficial de Arboril (#025), Minimon tipo Planta. Evo 2/2. Inspiración: Arbusto viviente / arbol joven. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/025-arboril"
+    }
+  },
+  {
+    "id": "026",
+    "slug": "026-sombrito",
+    "name": "Sombrito",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-011",
+    "evolution": "Evo 1/2",
+    "description": "Sombrito es un Minimon de tipo Fantasma. Evoluciona: Evo 1/2. Inspiración: Sombra fantasmal pequeña.",
+    "inspirationBase": "Sombra fantasmal pequeña",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Sombrito, Minimon tipo Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sombrito | Minimon #026 | TTG Wiki",
+      "description": "Ficha oficial de Sombrito (#026), Minimon tipo Fantasma. Evo 1/2. Inspiración: Sombra fantasmal pequeña. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/026-sombrito"
+    }
+  },
+  {
+    "id": "027",
+    "slug": "027-umbreluz",
+    "name": "Umbreluz",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fantasma",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-011",
+    "evolution": "Evo 2/2",
+    "description": "Umbreluz es un Minimon de tipo Fantasma/Psiquico. Evoluciona: Evo 2/2. Inspiración: Fantasma luminoso con velo sombrio.",
+    "inspirationBase": "Fantasma luminoso con velo sombrio",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fantasma/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Umbreluz, Minimon tipo Fantasma/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Umbreluz | Minimon #027 | TTG Wiki",
+      "description": "Ficha oficial de Umbreluz (#027), Minimon tipo Fantasma/Psiquico. Evo 2/2. Inspiración: Fantasma luminoso con velo sombrio. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/027-umbreluz"
+    }
+  },
+  {
+    "id": "028",
+    "slug": "028-pezlin",
+    "name": "Pezlin",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Pezlin es un Minimon de tipo Agua. No tiene evolución. Inspiración: Pez pequeño.",
+    "inspirationBase": "Pez pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Pezlin, Minimon tipo Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pezlin | Minimon #028 | TTG Wiki",
+      "description": "Ficha oficial de Pezlin (#028), Minimon tipo Agua. Sin evolucion. Inspiración: Pez pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/028-pezlin"
+    }
+  },
+  {
+    "id": "029",
+    "slug": "029-sprigat",
+    "name": "Sprigat",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-013",
+    "evolution": "Evo 1/3",
+    "description": "Sprigat es un Minimon de tipo Planta. Evoluciona: Evo 1/3. Inspiración: Gato vegetal.",
+    "inspirationBase": "Gato vegetal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Sprigat, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sprigat | Minimon #029 | TTG Wiki",
+      "description": "Ficha oficial de Sprigat (#029), Minimon tipo Planta. Evo 1/3. Inspiración: Gato vegetal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/029-sprigat"
+    }
+  },
+  {
+    "id": "030",
+    "slug": "030-folygat",
+    "name": "Folygat",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-013",
+    "evolution": "Evo 2/3",
+    "description": "Folygat es un Minimon de tipo Planta. Evoluciona: Evo 2/3. Inspiración: Gato de hojas.",
+    "inspirationBase": "Gato de hojas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Folygat, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Folygat | Minimon #030 | TTG Wiki",
+      "description": "Ficha oficial de Folygat (#030), Minimon tipo Planta. Evo 2/3. Inspiración: Gato de hojas. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/030-folygat"
+    }
+  },
+  {
+    "id": "031",
+    "slug": "031-silvagar",
+    "name": "Silvagar",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-013",
+    "evolution": "Evo 3/3",
+    "description": "Silvagar es un Minimon de tipo Planta/Roca. Evoluciona: Evo 3/3. Inspiración: Felino de bosque con armadura rocosa.",
+    "inspirationBase": "Felino de bosque con armadura rocosa",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Silvagar, Minimon tipo Planta/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Silvagar | Minimon #031 | TTG Wiki",
+      "description": "Ficha oficial de Silvagar (#031), Minimon tipo Planta/Roca. Evo 3/3. Inspiración: Felino de bosque con armadura rocosa. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/031-silvagar"
+    }
+  },
+  {
+    "id": "032",
+    "slug": "032-cindril",
+    "name": "Cindril",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-014",
+    "evolution": "Evo 1/2",
+    "description": "Cindril es un Minimon de tipo Fuego. Evoluciona: Evo 1/2. Inspiración: Cachorro / lince pequeño de fuego.",
+    "inspirationBase": "Cachorro / lince pequeño de fuego",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Cindril, Minimon tipo Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cindril | Minimon #032 | TTG Wiki",
+      "description": "Ficha oficial de Cindril (#032), Minimon tipo Fuego. Evo 1/2. Inspiración: Cachorro / lince pequeño de fuego. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/032-cindril"
+    }
+  },
+  {
+    "id": "033",
+    "slug": "033-pyrolynx",
+    "name": "Pyrolynx",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-014",
+    "evolution": "Evo 2/2",
+    "description": "Pyrolynx es un Minimon de tipo Fuego. Evoluciona: Evo 2/2. Inspiración: Lince de fuego.",
+    "inspirationBase": "Lince de fuego",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Pyrolynx, Minimon tipo Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pyrolynx | Minimon #033 | TTG Wiki",
+      "description": "Ficha oficial de Pyrolynx (#033), Minimon tipo Fuego. Evo 2/2. Inspiración: Lince de fuego. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/033-pyrolynx"
+    }
+  },
+  {
+    "id": "034",
+    "slug": "034-frospup",
+    "name": "Frospup",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Hielo"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-015",
+    "evolution": "Evo 1/2",
+    "description": "Frospup es un Minimon de tipo Hielo. Evoluciona: Evo 1/2. Inspiración: Cachorro artico.",
+    "inspirationBase": "Cachorro artico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hielo, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Frospup, Minimon tipo Hielo",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Frospup | Minimon #034 | TTG Wiki",
+      "description": "Ficha oficial de Frospup (#034), Minimon tipo Hielo. Evo 1/2. Inspiración: Cachorro artico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/034-frospup"
+    }
+  },
+  {
+    "id": "035",
+    "slug": "035-glacihound",
+    "name": "Glacihound",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Hielo"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-015",
+    "evolution": "Evo 2/2",
+    "description": "Glacihound es un Minimon de tipo Hielo. Evoluciona: Evo 2/2. Inspiración: Perro / lobo glacial.",
+    "inspirationBase": "Perro / lobo glacial",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hielo, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Glacihound, Minimon tipo Hielo",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Glacihound | Minimon #035 | TTG Wiki",
+      "description": "Ficha oficial de Glacihound (#035), Minimon tipo Hielo. Evo 2/2. Inspiración: Perro / lobo glacial. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/035-glacihound"
+    }
+  },
+  {
+    "id": "036",
+    "slug": "036-voltito",
+    "name": "Voltito",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Electrico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-016",
+    "evolution": "Evo 1/3",
+    "description": "Voltito es un Minimon de tipo Electrico. Evoluciona: Evo 1/3. Inspiración: Roedor electrico.",
+    "inspirationBase": "Roedor electrico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo electrico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Voltito, Minimon tipo Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Voltito | Minimon #036 | TTG Wiki",
+      "description": "Ficha oficial de Voltito (#036), Minimon tipo Electrico. Evo 1/3. Inspiración: Roedor electrico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/036-voltito"
+    }
+  },
+  {
+    "id": "037",
+    "slug": "037-rabilux",
+    "name": "Rabilux",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Electrico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-016",
+    "evolution": "Evo 2/3",
+    "description": "Rabilux es un Minimon de tipo Electrico. Evoluciona: Evo 2/3. Inspiración: Liebre electrica.",
+    "inspirationBase": "Liebre electrica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo electrico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Rabilux, Minimon tipo Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rabilux | Minimon #037 | TTG Wiki",
+      "description": "Ficha oficial de Rabilux (#037), Minimon tipo Electrico. Evo 2/3. Inspiración: Liebre electrica. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/037-rabilux"
+    }
+  },
+  {
+    "id": "038",
+    "slug": "038-fulgaro",
+    "name": "Fulgaro",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Electrico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-016",
+    "evolution": "Evo 3/3",
+    "description": "Fulgaro es un Minimon de tipo Electrico. Evoluciona: Evo 3/3. Inspiración: Felino electrico veloz.",
+    "inspirationBase": "Felino electrico veloz",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo electrico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Fulgaro, Minimon tipo Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Fulgaro | Minimon #038 | TTG Wiki",
+      "description": "Ficha oficial de Fulgaro (#038), Minimon tipo Electrico. Evo 3/3. Inspiración: Felino electrico veloz. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/038-fulgaro"
+    }
+  },
+  {
+    "id": "039",
+    "slug": "039-mudlet",
+    "name": "Mudlet",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra",
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-017",
+    "evolution": "Evo 1/2",
+    "description": "Mudlet es un Minimon de tipo Tierra/Agua. Evoluciona: Evo 1/2. Inspiración: Ajolote de barro.",
+    "inspirationBase": "Ajolote de barro",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra/agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mudlet, Minimon tipo Tierra/Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mudlet | Minimon #039 | TTG Wiki",
+      "description": "Ficha oficial de Mudlet (#039), Minimon tipo Tierra/Agua. Evo 1/2. Inspiración: Ajolote de barro. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/039-mudlet"
+    }
+  },
+  {
+    "id": "040",
+    "slug": "040-barrogan",
+    "name": "Barrogan",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra",
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-017",
+    "evolution": "Evo 2/2",
+    "description": "Barrogan es un Minimon de tipo Tierra/Agua. Evoluciona: Evo 2/2. Inspiración: Anfibio de barro robusto.",
+    "inspirationBase": "Anfibio de barro robusto",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra/agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Barrogan, Minimon tipo Tierra/Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Barrogan | Minimon #040 | TTG Wiki",
+      "description": "Ficha oficial de Barrogan (#040), Minimon tipo Tierra/Agua. Evo 2/2. Inspiración: Anfibio de barro robusto. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/040-barrogan"
+    }
+  },
+  {
+    "id": "041",
+    "slug": "041-axibub",
+    "name": "Axibub",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-018",
+    "evolution": "Evo 1/3",
+    "description": "Axibub es un Minimon de tipo Agua. Evoluciona: Evo 1/3. Inspiración: Ajolote bebe.",
+    "inspirationBase": "Ajolote bebe",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Axibub, Minimon tipo Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Axibub | Minimon #041 | TTG Wiki",
+      "description": "Ficha oficial de Axibub (#041), Minimon tipo Agua. Evo 1/3. Inspiración: Ajolote bebe. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/041-axibub"
+    }
+  },
+  {
+    "id": "042",
+    "slug": "042-mirellot",
+    "name": "Mirellot",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Veneno"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-018",
+    "evolution": "Evo 2/3",
+    "description": "Mirellot es un Minimon de tipo Agua/Veneno. Evoluciona: Evo 2/3. Inspiración: Ajolote venenoso.",
+    "inspirationBase": "Ajolote venenoso",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/veneno, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mirellot, Minimon tipo Agua/Veneno",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mirellot | Minimon #042 | TTG Wiki",
+      "description": "Ficha oficial de Mirellot (#042), Minimon tipo Agua/Veneno. Evo 2/3. Inspiración: Ajolote venenoso. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/042-mirellot"
+    }
+  },
+  {
+    "id": "043",
+    "slug": "043-torrentoadra",
+    "name": "Torrentoadra",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-018",
+    "evolution": "Evo 3/3",
+    "description": "Torrentoadra es un Minimon de tipo Agua/Hada. Evoluciona: Evo 3/3. Inspiración: Sapo / ajolote magico de torrente.",
+    "inspirationBase": "Sapo / ajolote magico de torrente",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Torrentoadra, Minimon tipo Agua/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Torrentoadra | Minimon #043 | TTG Wiki",
+      "description": "Ficha oficial de Torrentoadra (#043), Minimon tipo Agua/Hada. Evo 3/3. Inspiración: Sapo / ajolote magico de torrente. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/043-torrentoadra"
+    }
+  },
+  {
+    "id": "044",
+    "slug": "044-croakid",
+    "name": "Croakid",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-019",
+    "evolution": "Evo 1/2",
+    "description": "Croakid es un Minimon de tipo Agua. Evoluciona: Evo 1/2. Inspiración: Rana joven.",
+    "inspirationBase": "Rana joven",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Croakid, Minimon tipo Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Croakid | Minimon #044 | TTG Wiki",
+      "description": "Ficha oficial de Croakid (#044), Minimon tipo Agua. Evo 1/2. Inspiración: Rana joven. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/044-croakid"
+    }
+  },
+  {
+    "id": "045",
+    "slug": "045-raniton",
+    "name": "Raniton",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-019",
+    "evolution": "Evo 2/2",
+    "description": "Raniton es un Minimon de tipo Agua/Lucha. Evoluciona: Evo 2/2. Inspiración: Rana luchadora.",
+    "inspirationBase": "Rana luchadora",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Raniton, Minimon tipo Agua/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Raniton | Minimon #045 | TTG Wiki",
+      "description": "Ficha oficial de Raniton (#045), Minimon tipo Agua/Lucha. Evo 2/2. Inspiración: Rana luchadora. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/045-raniton"
+    }
+  },
+  {
+    "id": "046",
+    "slug": "046-vespercoil",
+    "name": "Vespercoil",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Veneno",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Vespercoil es un Minimon de tipo Veneno/Psiquico. No tiene evolución. Inspiración: Serpiente / anguila venenosa psiquica.",
+    "inspirationBase": "Serpiente / anguila venenosa psiquica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo veneno/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Vespercoil, Minimon tipo Veneno/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Vespercoil | Minimon #046 | TTG Wiki",
+      "description": "Ficha oficial de Vespercoil (#046), Minimon tipo Veneno/Psiquico. Sin evolucion. Inspiración: Serpiente / anguila venenosa psiquica. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/046-vespercoil"
+    }
+  },
+  {
+    "id": "047",
+    "slug": "047-crocubit",
+    "name": "Crocubit",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-021",
+    "evolution": "Evo 1/2",
+    "description": "Crocubit es un Minimon de tipo Tierra. Evoluciona: Evo 1/2. Inspiración: Cria de cocodrilo.",
+    "inspirationBase": "Cria de cocodrilo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Crocubit, Minimon tipo Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Crocubit | Minimon #047 | TTG Wiki",
+      "description": "Ficha oficial de Crocubit (#047), Minimon tipo Tierra. Evo 1/2. Inspiración: Cria de cocodrilo. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/047-crocubit"
+    }
+  },
+  {
+    "id": "048",
+    "slug": "048-dunegator",
+    "name": "Dunegator",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-021",
+    "evolution": "Evo 2/2",
+    "description": "Dunegator es un Minimon de tipo Tierra/Roca. Evoluciona: Evo 2/2. Inspiración: Cocodrilo del desierto.",
+    "inspirationBase": "Cocodrilo del desierto",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Dunegator, Minimon tipo Tierra/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Dunegator | Minimon #048 | TTG Wiki",
+      "description": "Ficha oficial de Dunegator (#048), Minimon tipo Tierra/Roca. Evo 2/2. Inspiración: Cocodrilo del desierto. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/048-dunegator"
+    }
+  },
+  {
+    "id": "049",
+    "slug": "049-shellym",
+    "name": "Shellym",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-022",
+    "evolution": "Evo 1/3",
+    "description": "Shellym es un Minimon de tipo Planta/Roca. Evoluciona: Evo 1/3. Inspiración: Tortuga vegetal pequeña.",
+    "inspirationBase": "Tortuga vegetal pequeña",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Shellym, Minimon tipo Planta/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Shellym | Minimon #049 | TTG Wiki",
+      "description": "Ficha oficial de Shellym (#049), Minimon tipo Planta/Roca. Evo 1/3. Inspiración: Tortuga vegetal pequeña. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/049-shellym"
+    }
+  },
+  {
+    "id": "050",
+    "slug": "050-gemscale",
+    "name": "Gemscale",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-022",
+    "evolution": "Evo 2/3",
+    "description": "Gemscale es un Minimon de tipo Planta/Roca. Evoluciona: Evo 2/3. Inspiración: Tortuga con caparazon mineral.",
+    "inspirationBase": "Tortuga con caparazon mineral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Gemscale, Minimon tipo Planta/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Gemscale | Minimon #050 | TTG Wiki",
+      "description": "Ficha oficial de Gemscale (#050), Minimon tipo Planta/Roca. Evo 2/3. Inspiración: Tortuga con caparazon mineral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/050-gemscale"
+    }
+  },
+  {
+    "id": "051",
+    "slug": "051-terrarbos",
+    "name": "Terrarbos",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-022",
+    "evolution": "Evo 3/3",
+    "description": "Terrarbos es un Minimon de tipo Planta/Roca. Evoluciona: Evo 3/3. Inspiración: Tortuga gigante de bosque y roca.",
+    "inspirationBase": "Tortuga gigante de bosque y roca",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Terrarbos, Minimon tipo Planta/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Terrarbos | Minimon #051 | TTG Wiki",
+      "description": "Ficha oficial de Terrarbos (#051), Minimon tipo Planta/Roca. Evo 3/3. Inspiración: Tortuga gigante de bosque y roca. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/051-terrarbos"
+    }
+  },
+  {
+    "id": "052",
+    "slug": "052-hamseed",
+    "name": "Hamseed",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-023",
+    "evolution": "Evo 1/2",
+    "description": "Hamseed es un Minimon de tipo Normal. Evoluciona: Evo 1/2. Inspiración: Hamster con semilla.",
+    "inspirationBase": "Hamster con semilla",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Hamseed, Minimon tipo Normal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hamseed | Minimon #052 | TTG Wiki",
+      "description": "Ficha oficial de Hamseed (#052), Minimon tipo Normal. Evo 1/2. Inspiración: Hamster con semilla. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/052-hamseed"
+    }
+  },
+  {
+    "id": "053",
+    "slug": "053-hambristle",
+    "name": "Hambristle",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-023",
+    "evolution": "Evo 2/2",
+    "description": "Hambristle es un Minimon de tipo Normal/Planta. Evoluciona: Evo 2/2. Inspiración: Hamster con puas vegetales.",
+    "inspirationBase": "Hamster con puas vegetales",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Hambristle, Minimon tipo Normal/Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hambristle | Minimon #053 | TTG Wiki",
+      "description": "Ficha oficial de Hambristle (#053), Minimon tipo Normal/Planta. Evo 2/2. Inspiración: Hamster con puas vegetales. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/053-hambristle"
+    }
+  },
+  {
+    "id": "054",
+    "slug": "054-koaluma",
+    "name": "Koaluma",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Koaluma es un Minimon de tipo Normal/Planta. No tiene evolución. Inspiración: Koala vegetal.",
+    "inspirationBase": "Koala vegetal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Koaluma, Minimon tipo Normal/Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Koaluma | Minimon #054 | TTG Wiki",
+      "description": "Ficha oficial de Koaluma (#054), Minimon tipo Normal/Planta. Sin evolucion. Inspiración: Koala vegetal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/054-koaluma"
+    }
+  },
+  {
+    "id": "055",
+    "slug": "055-monleaf",
+    "name": "Monleaf",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-025",
+    "evolution": "Evo 1/3",
+    "description": "Monleaf es un Minimon de tipo Planta. Evoluciona: Evo 1/3. Inspiración: Mono hoja.",
+    "inspirationBase": "Mono hoja",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Monleaf, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Monleaf | Minimon #055 | TTG Wiki",
+      "description": "Ficha oficial de Monleaf (#055), Minimon tipo Planta. Evo 1/3. Inspiración: Mono hoja. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/055-monleaf"
+    }
+  },
+  {
+    "id": "056",
+    "slug": "056-vinelang",
+    "name": "Vinelang",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-025",
+    "evolution": "Evo 2/3",
+    "description": "Vinelang es un Minimon de tipo Planta/Lucha. Evoluciona: Evo 2/3. Inspiración: Mono con lianas luchador.",
+    "inspirationBase": "Mono con lianas luchador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Vinelang, Minimon tipo Planta/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Vinelang | Minimon #056 | TTG Wiki",
+      "description": "Ficha oficial de Vinelang (#056), Minimon tipo Planta/Lucha. Evo 2/3. Inspiración: Mono con lianas luchador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/056-vinelang"
+    }
+  },
+  {
+    "id": "057",
+    "slug": "057-kongrove",
+    "name": "Kongrove",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-025",
+    "evolution": "Evo 3/3",
+    "description": "Kongrove es un Minimon de tipo Planta/Lucha. Evoluciona: Evo 3/3. Inspiración: Gran simio de manglar / bosque.",
+    "inspirationBase": "Gran simio de manglar / bosque",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Kongrove, Minimon tipo Planta/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Kongrove | Minimon #057 | TTG Wiki",
+      "description": "Ficha oficial de Kongrove (#057), Minimon tipo Planta/Lucha. Evo 3/3. Inspiración: Gran simio de manglar / bosque. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/057-kongrove"
+    }
+  },
+  {
+    "id": "058",
+    "slug": "058-owlettra",
+    "name": "Owlettra",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-026",
+    "evolution": "Evo 1/2",
+    "description": "Owlettra es un Minimon de tipo Volador/Psiquico. Evoluciona: Evo 1/2. Inspiración: Buho joven psiquico.",
+    "inspirationBase": "Buho joven psiquico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Owlettra, Minimon tipo Volador/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Owlettra | Minimon #058 | TTG Wiki",
+      "description": "Ficha oficial de Owlettra (#058), Minimon tipo Volador/Psiquico. Evo 1/2. Inspiración: Buho joven psiquico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/058-owlettra"
+    }
+  },
+  {
+    "id": "059",
+    "slug": "059-sageowl",
+    "name": "Sageowl",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-026",
+    "evolution": "Evo 2/2",
+    "description": "Sageowl es un Minimon de tipo Volador/Psiquico. Evoluciona: Evo 2/2. Inspiración: Buho sabio.",
+    "inspirationBase": "Buho sabio",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Sageowl, Minimon tipo Volador/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sageowl | Minimon #059 | TTG Wiki",
+      "description": "Ficha oficial de Sageowl (#059), Minimon tipo Volador/Psiquico. Evo 2/2. Inspiración: Buho sabio. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/059-sageowl"
+    }
+  },
+  {
+    "id": "060",
+    "slug": "060-finspry",
+    "name": "Finspry",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Finspry es un Minimon de tipo Agua. No tiene evolución. Inspiración: Pez volador pequeño.",
+    "inspirationBase": "Pez volador pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Finspry, Minimon tipo Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Finspry | Minimon #060 | TTG Wiki",
+      "description": "Ficha oficial de Finspry (#060), Minimon tipo Agua. Sin evolucion. Inspiración: Pez volador pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/060-finspry"
+    }
+  },
+  {
+    "id": "061",
+    "slug": "061-cuberry",
+    "name": "Cuberry",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-028",
+    "evolution": "Evo 1/3",
+    "description": "Cuberry es un Minimon de tipo Normal. Evoluciona: Evo 1/3. Inspiración: Osezno con bayas.",
+    "inspirationBase": "Osezno con bayas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Cuberry, Minimon tipo Normal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cuberry | Minimon #061 | TTG Wiki",
+      "description": "Ficha oficial de Cuberry (#061), Minimon tipo Normal. Evo 1/3. Inspiración: Osezno con bayas. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/061-cuberry"
+    }
+  },
+  {
+    "id": "062",
+    "slug": "062-brunclaw",
+    "name": "Brunclaw",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-028",
+    "evolution": "Evo 2/3",
+    "description": "Brunclaw es un Minimon de tipo Normal/Roca. Evoluciona: Evo 2/3. Inspiración: Oso joven con garras rocosas.",
+    "inspirationBase": "Oso joven con garras rocosas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Brunclaw, Minimon tipo Normal/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Brunclaw | Minimon #062 | TTG Wiki",
+      "description": "Ficha oficial de Brunclaw (#062), Minimon tipo Normal/Roca. Evo 2/3. Inspiración: Oso joven con garras rocosas. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/062-brunclaw"
+    }
+  },
+  {
+    "id": "063",
+    "slug": "063-ursacrux",
+    "name": "Ursacrux",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-028",
+    "evolution": "Evo 3/3",
+    "description": "Ursacrux es un Minimon de tipo Normal/Roca. Evoluciona: Evo 3/3. Inspiración: Oso gigante de roca.",
+    "inspirationBase": "Oso gigante de roca",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Ursacrux, Minimon tipo Normal/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ursacrux | Minimon #063 | TTG Wiki",
+      "description": "Ficha oficial de Ursacrux (#063), Minimon tipo Normal/Roca. Evo 3/3. Inspiración: Oso gigante de roca. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/063-ursacrux"
+    }
+  },
+  {
+    "id": "064",
+    "slug": "064-elemini",
+    "name": "Elemini",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-029",
+    "evolution": "Evo 1/2",
+    "description": "Elemini es un Minimon de tipo Tierra. Evoluciona: Evo 1/2. Inspiración: Elefante bebe.",
+    "inspirationBase": "Elefante bebe",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Elemini, Minimon tipo Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Elemini | Minimon #064 | TTG Wiki",
+      "description": "Ficha oficial de Elemini (#064), Minimon tipo Tierra. Evo 1/2. Inspiración: Elefante bebe. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/064-elemini"
+    }
+  },
+  {
+    "id": "065",
+    "slug": "065-mammolith",
+    "name": "Mammolith",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-029",
+    "evolution": "Evo 2/2",
+    "description": "Mammolith es un Minimon de tipo Tierra/Hada. Evoluciona: Evo 2/2. Inspiración: Mamut / elefante colosal magico.",
+    "inspirationBase": "Mamut / elefante colosal magico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mammolith, Minimon tipo Tierra/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mammolith | Minimon #065 | TTG Wiki",
+      "description": "Ficha oficial de Mammolith (#065), Minimon tipo Tierra/Hada. Evo 2/2. Inspiración: Mamut / elefante colosal magico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/065-mammolith"
+    }
+  },
+  {
+    "id": "066",
+    "slug": "066-giraflare",
+    "name": "Giraflare",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Giraflare es un Minimon de tipo Normal/Psiquico. No tiene evolución. Inspiración: Jirafa psiquica.",
+    "inspirationBase": "Jirafa psiquica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Giraflare, Minimon tipo Normal/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Giraflare | Minimon #066 | TTG Wiki",
+      "description": "Ficha oficial de Giraflare (#066), Minimon tipo Normal/Psiquico. Sin evolucion. Inspiración: Jirafa psiquica. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/066-giraflare"
+    }
+  },
+  {
+    "id": "067",
+    "slug": "067-hippluma",
+    "name": "Hippluma",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-031",
+    "evolution": "Evo 1/2",
+    "description": "Hippluma es un Minimon de tipo Agua. Evoluciona: Evo 1/2. Inspiración: Hipopotamo joven acuatico.",
+    "inspirationBase": "Hipopotamo joven acuatico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Hippluma, Minimon tipo Agua",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hippluma | Minimon #067 | TTG Wiki",
+      "description": "Ficha oficial de Hippluma (#067), Minimon tipo Agua. Evo 1/2. Inspiración: Hipopotamo joven acuatico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/067-hippluma"
+    }
+  },
+  {
+    "id": "068",
+    "slug": "068-hippocrash",
+    "name": "Hippocrash",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-031",
+    "evolution": "Evo 2/2",
+    "description": "Hippocrash es un Minimon de tipo Agua/Roca. Evoluciona: Evo 2/2. Inspiración: Hipopotamo rocoso.",
+    "inspirationBase": "Hipopotamo rocoso",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Hippocrash, Minimon tipo Agua/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Hippocrash | Minimon #068 | TTG Wiki",
+      "description": "Ficha oficial de Hippocrash (#068), Minimon tipo Agua/Roca. Evo 2/2. Inspiración: Hipopotamo rocoso. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/068-hippocrash"
+    }
+  },
+  {
+    "id": "069",
+    "slug": "069-flamigo",
+    "name": "Flamigo",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Volador"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-032",
+    "evolution": "Evo 1/2",
+    "description": "Flamigo es un Minimon de tipo Fuego/Volador. Evoluciona: Evo 1/2. Inspiración: Flamenco de fuego.",
+    "inspirationBase": "Flamenco de fuego",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Flamigo, Minimon tipo Fuego/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Flamigo | Minimon #069 | TTG Wiki",
+      "description": "Ficha oficial de Flamigo (#069), Minimon tipo Fuego/Volador. Evo 1/2. Inspiración: Flamenco de fuego. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/069-flamigo"
+    }
+  },
+  {
+    "id": "070",
+    "slug": "070-flamandor",
+    "name": "Flamandor",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Volador"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-032",
+    "evolution": "Evo 2/2",
+    "description": "Flamandor es un Minimon de tipo Fuego/Volador. Evoluciona: Evo 2/2. Inspiración: Flamenco / ave ignea mayor.",
+    "inspirationBase": "Flamenco / ave ignea mayor",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Flamandor, Minimon tipo Fuego/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Flamandor | Minimon #070 | TTG Wiki",
+      "description": "Ficha oficial de Flamandor (#070), Minimon tipo Fuego/Volador. Evo 2/2. Inspiración: Flamenco / ave ignea mayor. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/070-flamandor"
+    }
+  },
+  {
+    "id": "071",
+    "slug": "071-crablet",
+    "name": "Crablet",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-033",
+    "evolution": "Evo 1/2",
+    "description": "Crablet es un Minimon de tipo Agua/Roca. Evoluciona: Evo 1/2. Inspiración: Cangrejo pequeño.",
+    "inspirationBase": "Cangrejo pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Crablet, Minimon tipo Agua/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Crablet | Minimon #071 | TTG Wiki",
+      "description": "Ficha oficial de Crablet (#071), Minimon tipo Agua/Roca. Evo 1/2. Inspiración: Cangrejo pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/071-crablet"
+    }
+  },
+  {
+    "id": "072",
+    "slug": "072-crabronze",
+    "name": "Crabronze",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Acero"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-033",
+    "evolution": "Evo 2/2",
+    "description": "Crabronze es un Minimon de tipo Agua/Acero. Evoluciona: Evo 2/2. Inspiración: Cangrejo con armadura metalica.",
+    "inspirationBase": "Cangrejo con armadura metalica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Crabronze, Minimon tipo Agua/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Crabronze | Minimon #072 | TTG Wiki",
+      "description": "Ficha oficial de Crabronze (#072), Minimon tipo Agua/Acero. Evo 2/2. Inspiración: Cangrejo con armadura metalica. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/072-crabronze"
+    }
+  },
+  {
+    "id": "073",
+    "slug": "073-mushcap",
+    "name": "Mushcap",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Veneno"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-034",
+    "evolution": "Evo 1/3",
+    "description": "Mushcap es un Minimon de tipo Planta/Veneno. Evoluciona: Evo 1/3. Inspiración: Hongo venenoso pequeño.",
+    "inspirationBase": "Hongo venenoso pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/veneno, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mushcap, Minimon tipo Planta/Veneno",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mushcap | Minimon #073 | TTG Wiki",
+      "description": "Ficha oficial de Mushcap (#073), Minimon tipo Planta/Veneno. Evo 1/3. Inspiración: Hongo venenoso pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/073-mushcap"
+    }
+  },
+  {
+    "id": "074",
+    "slug": "074-mycelune",
+    "name": "Mycelune",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-034",
+    "evolution": "Evo 2/3",
+    "description": "Mycelune es un Minimon de tipo Planta/Fantasma. Evoluciona: Evo 2/3. Inspiración: Hongo lunar fantasmal.",
+    "inspirationBase": "Hongo lunar fantasmal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mycelune, Minimon tipo Planta/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mycelune | Minimon #074 | TTG Wiki",
+      "description": "Ficha oficial de Mycelune (#074), Minimon tipo Planta/Fantasma. Evo 2/3. Inspiración: Hongo lunar fantasmal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/074-mycelune"
+    }
+  },
+  {
+    "id": "075",
+    "slug": "075-sporelord",
+    "name": "Sporelord",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-034",
+    "evolution": "Evo 3/3",
+    "description": "Sporelord es un Minimon de tipo Planta/Fantasma. Evoluciona: Evo 3/3. Inspiración: Gran hongo espectral.",
+    "inspirationBase": "Gran hongo espectral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Sporelord, Minimon tipo Planta/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sporelord | Minimon #075 | TTG Wiki",
+      "description": "Ficha oficial de Sporelord (#075), Minimon tipo Planta/Fantasma. Evo 3/3. Inspiración: Gran hongo espectral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/075-sporelord"
+    }
+  },
+  {
+    "id": "076",
+    "slug": "076-cactini",
+    "name": "Cactini",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-035",
+    "evolution": "Evo 1/2",
+    "description": "Cactini es un Minimon de tipo Planta/Tierra. Evoluciona: Evo 1/2. Inspiración: Cactus pequeño.",
+    "inspirationBase": "Cactus pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Cactini, Minimon tipo Planta/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cactini | Minimon #076 | TTG Wiki",
+      "description": "Ficha oficial de Cactini (#076), Minimon tipo Planta/Tierra. Evo 1/2. Inspiración: Cactus pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/076-cactini"
+    }
+  },
+  {
+    "id": "077",
+    "slug": "077-cactazor",
+    "name": "Cactazor",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-035",
+    "evolution": "Evo 2/2",
+    "description": "Cactazor es un Minimon de tipo Planta/Tierra. Evoluciona: Evo 2/2. Inspiración: Cactus gigante del desierto.",
+    "inspirationBase": "Cactus gigante del desierto",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Cactazor, Minimon tipo Planta/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cactazor | Minimon #077 | TTG Wiki",
+      "description": "Ficha oficial de Cactazor (#077), Minimon tipo Planta/Tierra. Evo 2/2. Inspiración: Cactus gigante del desierto. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/077-cactazor"
+    }
+  },
+  {
+    "id": "078",
+    "slug": "078-noctibun",
+    "name": "Noctibun",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-036",
+    "evolution": "Evo 1/2",
+    "description": "Noctibun es un Minimon de tipo Normal/Fantasma. Evoluciona: Evo 1/2. Inspiración: Conejo nocturno fantasmal.",
+    "inspirationBase": "Conejo nocturno fantasmal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Noctibun, Minimon tipo Normal/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Noctibun | Minimon #078 | TTG Wiki",
+      "description": "Ficha oficial de Noctibun (#078), Minimon tipo Normal/Fantasma. Evo 1/2. Inspiración: Conejo nocturno fantasmal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/078-noctibun"
+    }
+  },
+  {
+    "id": "079",
+    "slug": "079-lunhare",
+    "name": "Lunhare",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-036",
+    "evolution": "Evo 2/2",
+    "description": "Lunhare es un Minimon de tipo Normal/Fantasma. Evoluciona: Evo 2/2. Inspiración: Liebre lunar fantasmal.",
+    "inspirationBase": "Liebre lunar fantasmal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Lunhare, Minimon tipo Normal/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lunhare | Minimon #079 | TTG Wiki",
+      "description": "Ficha oficial de Lunhare (#079), Minimon tipo Normal/Fantasma. Evo 2/2. Inspiración: Liebre lunar fantasmal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/079-lunhare"
+    }
+  },
+  {
+    "id": "080",
+    "slug": "080-shellfin",
+    "name": "Shellfin",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-037",
+    "evolution": "Evo 1/2",
+    "description": "Shellfin es un Minimon de tipo Agua/Roca. Evoluciona: Evo 1/2. Inspiración: Pez con concha.",
+    "inspirationBase": "Pez con concha",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Shellfin, Minimon tipo Agua/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Shellfin | Minimon #080 | TTG Wiki",
+      "description": "Ficha oficial de Shellfin (#080), Minimon tipo Agua/Roca. Evo 1/2. Inspiración: Pez con concha. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/080-shellfin"
+    }
+  },
+  {
+    "id": "081",
+    "slug": "081-coralguard",
+    "name": "Coralguard",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-037",
+    "evolution": "Evo 2/2",
+    "description": "Coralguard es un Minimon de tipo Agua/Roca. Evoluciona: Evo 2/2. Inspiración: Coral protector / pez de arrecife.",
+    "inspirationBase": "Coral protector / pez de arrecife",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Coralguard, Minimon tipo Agua/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Coralguard | Minimon #081 | TTG Wiki",
+      "description": "Ficha oficial de Coralguard (#081), Minimon tipo Agua/Roca. Evo 2/2. Inspiración: Coral protector / pez de arrecife. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/081-coralguard"
+    }
+  },
+  {
+    "id": "082",
+    "slug": "082-glidrake",
+    "name": "Glidrake",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Dragon"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Glidrake es un Minimon de tipo Volador/Dragon. No tiene evolución. Inspiración: Dragon planeador.",
+    "inspirationBase": "Dragon planeador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/dragon, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Glidrake, Minimon tipo Volador/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Glidrake | Minimon #082 | TTG Wiki",
+      "description": "Ficha oficial de Glidrake (#082), Minimon tipo Volador/Dragon. Sin evolucion. Inspiración: Dragon planeador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/082-glidrake"
+    }
+  },
+  {
+    "id": "083",
+    "slug": "083-pebblin",
+    "name": "Pebblin",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-039",
+    "evolution": "Evo 1/3",
+    "description": "Pebblin es un Minimon de tipo Roca. Evoluciona: Evo 1/3. Inspiración: Guijarro viviente.",
+    "inspirationBase": "Guijarro viviente",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Pebblin, Minimon tipo Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pebblin | Minimon #083 | TTG Wiki",
+      "description": "Ficha oficial de Pebblin (#083), Minimon tipo Roca. Evo 1/3. Inspiración: Guijarro viviente. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/083-pebblin"
+    }
+  },
+  {
+    "id": "084",
+    "slug": "084-bouldoro",
+    "name": "Bouldoro",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-039",
+    "evolution": "Evo 2/3",
+    "description": "Bouldoro es un Minimon de tipo Roca. Evoluciona: Evo 2/3. Inspiración: Roca viviente grande.",
+    "inspirationBase": "Roca viviente grande",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Bouldoro, Minimon tipo Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bouldoro | Minimon #084 | TTG Wiki",
+      "description": "Ficha oficial de Bouldoro (#084), Minimon tipo Roca. Evo 2/3. Inspiración: Roca viviente grande. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/084-bouldoro"
+    }
+  },
+  {
+    "id": "085",
+    "slug": "085-golembar",
+    "name": "Golembar",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Roca",
+      "Acero"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-039",
+    "evolution": "Evo 3/3",
+    "description": "Golembar es un Minimon de tipo Roca/Acero. Evoluciona: Evo 3/3. Inspiración: Golem de roca y acero.",
+    "inspirationBase": "Golem de roca y acero",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo roca/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Golembar, Minimon tipo Roca/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Golembar | Minimon #085 | TTG Wiki",
+      "description": "Ficha oficial de Golembar (#085), Minimon tipo Roca/Acero. Evo 3/3. Inspiración: Golem de roca y acero. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/085-golembar"
+    }
+  },
+  {
+    "id": "086",
+    "slug": "086-sparrowl",
+    "name": "Sparrowl",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-040",
+    "evolution": "Evo 1/2",
+    "description": "Sparrowl es un Minimon de tipo Volador. Evoluciona: Evo 1/2. Inspiración: Gorrion.",
+    "inspirationBase": "Gorrion",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Sparrowl, Minimon tipo Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Sparrowl | Minimon #086 | TTG Wiki",
+      "description": "Ficha oficial de Sparrowl (#086), Minimon tipo Volador. Evo 1/2. Inspiración: Gorrion. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/086-sparrowl"
+    }
+  },
+  {
+    "id": "087",
+    "slug": "087-stormwing",
+    "name": "Stormwing",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Electrico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-040",
+    "evolution": "Evo 2/2",
+    "description": "Stormwing es un Minimon de tipo Volador/Electrico. Evoluciona: Evo 2/2. Inspiración: Ave de tormenta.",
+    "inspirationBase": "Ave de tormenta",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/electrico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Stormwing, Minimon tipo Volador/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Stormwing | Minimon #087 | TTG Wiki",
+      "description": "Ficha oficial de Stormwing (#087), Minimon tipo Volador/Electrico. Evo 2/2. Inspiración: Ave de tormenta. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/087-stormwing"
+    }
+  },
+  {
+    "id": "088",
+    "slug": "088-tadspike",
+    "name": "Tadspike",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Veneno"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-041",
+    "evolution": "Evo 1/2",
+    "description": "Tadspike es un Minimon de tipo Agua/Veneno. Evoluciona: Evo 1/2. Inspiración: Renacuajo venenoso.",
+    "inspirationBase": "Renacuajo venenoso",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/veneno, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Tadspike, Minimon tipo Agua/Veneno",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Tadspike | Minimon #088 | TTG Wiki",
+      "description": "Ficha oficial de Tadspike (#088), Minimon tipo Agua/Veneno. Evo 1/2. Inspiración: Renacuajo venenoso. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/088-tadspike"
+    }
+  },
+  {
+    "id": "089",
+    "slug": "089-newtvenom",
+    "name": "Newtvenom",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Veneno"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-041",
+    "evolution": "Evo 2/2",
+    "description": "Newtvenom es un Minimon de tipo Agua/Veneno. Evoluciona: Evo 2/2. Inspiración: Triton venenoso.",
+    "inspirationBase": "Triton venenoso",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/veneno, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Newtvenom, Minimon tipo Agua/Veneno",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Newtvenom | Minimon #089 | TTG Wiki",
+      "description": "Ficha oficial de Newtvenom (#089), Minimon tipo Agua/Veneno. Evo 2/2. Inspiración: Triton venenoso. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/089-newtvenom"
+    }
+  },
+  {
+    "id": "090",
+    "slug": "090-molember",
+    "name": "Molember",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-042",
+    "evolution": "Evo 1/2",
+    "description": "Molember es un Minimon de tipo Fuego/Tierra. Evoluciona: Evo 1/2. Inspiración: Topo de magma.",
+    "inspirationBase": "Topo de magma",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Molember, Minimon tipo Fuego/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Molember | Minimon #090 | TTG Wiki",
+      "description": "Ficha oficial de Molember (#090), Minimon tipo Fuego/Tierra. Evo 1/2. Inspiración: Topo de magma. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/090-molember"
+    }
+  },
+  {
+    "id": "091",
+    "slug": "091-magmole",
+    "name": "Magmole",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-042",
+    "evolution": "Evo 2/2",
+    "description": "Magmole es un Minimon de tipo Fuego/Tierra. Evoluciona: Evo 2/2. Inspiración: Topo volcanico.",
+    "inspirationBase": "Topo volcanico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Magmole, Minimon tipo Fuego/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Magmole | Minimon #091 | TTG Wiki",
+      "description": "Ficha oficial de Magmole (#091), Minimon tipo Fuego/Tierra. Evo 2/2. Inspiración: Topo volcanico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/091-magmole"
+    }
+  },
+  {
+    "id": "092",
+    "slug": "092-lilume",
+    "name": "Lilume",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-043",
+    "evolution": "Evo 1/2",
+    "description": "Lilume es un Minimon de tipo Hada. Evoluciona: Evo 1/2. Inspiración: Hada luminosa pequeña.",
+    "inspirationBase": "Hada luminosa pequeña",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Lilume, Minimon tipo Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lilume | Minimon #092 | TTG Wiki",
+      "description": "Ficha oficial de Lilume (#092), Minimon tipo Hada. Evo 1/2. Inspiración: Hada luminosa pequeña. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/092-lilume"
+    }
+  },
+  {
+    "id": "093",
+    "slug": "093-lumalith",
+    "name": "Lumalith",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Hada",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-043",
+    "evolution": "Evo 2/2",
+    "description": "Lumalith es un Minimon de tipo Hada/Roca. Evoluciona: Evo 2/2. Inspiración: Hada mineral luminosa.",
+    "inspirationBase": "Hada mineral luminosa",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hada/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Lumalith, Minimon tipo Hada/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lumalith | Minimon #093 | TTG Wiki",
+      "description": "Ficha oficial de Lumalith (#093), Minimon tipo Hada/Roca. Evo 2/2. Inspiración: Hada mineral luminosa. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/093-lumalith"
+    }
+  },
+  {
+    "id": "094",
+    "slug": "094-batsy",
+    "name": "Batsy",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Siniestro",
+      "Volador"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-044",
+    "evolution": "Evo 1/2",
+    "description": "Batsy es un Minimon de tipo Siniestro/Volador. Evoluciona: Evo 1/2. Inspiración: Murcielago pequeño.",
+    "inspirationBase": "Murcielago pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo siniestro/volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Batsy, Minimon tipo Siniestro/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Batsy | Minimon #094 | TTG Wiki",
+      "description": "Ficha oficial de Batsy (#094), Minimon tipo Siniestro/Volador. Evo 1/2. Inspiración: Murcielago pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/094-batsy"
+    }
+  },
+  {
+    "id": "095",
+    "slug": "095-vampyro",
+    "name": "Vampyro",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Siniestro",
+      "Volador"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-044",
+    "evolution": "Evo 2/2",
+    "description": "Vampyro es un Minimon de tipo Siniestro/Volador. Evoluciona: Evo 2/2. Inspiración: Murcielago vampirico.",
+    "inspirationBase": "Murcielago vampirico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo siniestro/volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Vampyro, Minimon tipo Siniestro/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Vampyro | Minimon #095 | TTG Wiki",
+      "description": "Ficha oficial de Vampyro (#095), Minimon tipo Siniestro/Volador. Evo 2/2. Inspiración: Murcielago vampirico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/095-vampyro"
+    }
+  },
+  {
+    "id": "096",
+    "slug": "096-antori",
+    "name": "Antori",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-045",
+    "evolution": "Evo 1/3",
+    "description": "Antori es un Minimon de tipo Bicho. Evoluciona: Evo 1/3. Inspiración: Hormiga.",
+    "inspirationBase": "Hormiga",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Antori, Minimon tipo Bicho",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Antori | Minimon #096 | TTG Wiki",
+      "description": "Ficha oficial de Antori (#096), Minimon tipo Bicho. Evo 1/3. Inspiración: Hormiga. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/096-antori"
+    }
+  },
+  {
+    "id": "097",
+    "slug": "097-mandibrax",
+    "name": "Mandibrax",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-045",
+    "evolution": "Evo 2/3",
+    "description": "Mandibrax es un Minimon de tipo Bicho/Lucha. Evoluciona: Evo 2/3. Inspiración: Hormiga soldado con mandibulas.",
+    "inspirationBase": "Hormiga soldado con mandibulas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mandibrax, Minimon tipo Bicho/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mandibrax | Minimon #097 | TTG Wiki",
+      "description": "Ficha oficial de Mandibrax (#097), Minimon tipo Bicho/Lucha. Evo 2/3. Inspiración: Hormiga soldado con mandibulas. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/097-mandibrax"
+    }
+  },
+  {
+    "id": "098",
+    "slug": "098-colonyx",
+    "name": "Colonyx",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-045",
+    "evolution": "Evo 3/3",
+    "description": "Colonyx es un Minimon de tipo Bicho/Lucha. Evoluciona: Evo 3/3. Inspiración: Reina / colonia de hormigas guerreras.",
+    "inspirationBase": "Reina / colonia de hormigas guerreras",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Colonyx, Minimon tipo Bicho/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Colonyx | Minimon #098 | TTG Wiki",
+      "description": "Ficha oficial de Colonyx (#098), Minimon tipo Bicho/Lucha. Evo 3/3. Inspiración: Reina / colonia de hormigas guerreras. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/098-colonyx"
+    }
+  },
+  {
+    "id": "099",
+    "slug": "099-snailite",
+    "name": "Snailite",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-046",
+    "evolution": "Evo 1/2",
+    "description": "Snailite es un Minimon de tipo Bicho/Roca. Evoluciona: Evo 1/2. Inspiración: Caracol mineral.",
+    "inspirationBase": "Caracol mineral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Snailite, Minimon tipo Bicho/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Snailite | Minimon #099 | TTG Wiki",
+      "description": "Ficha oficial de Snailite (#099), Minimon tipo Bicho/Roca. Evo 1/2. Inspiración: Caracol mineral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/099-snailite"
+    }
+  },
+  {
+    "id": "100",
+    "slug": "100-shellorbis",
+    "name": "Shellorbis",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-046",
+    "evolution": "Evo 2/2",
+    "description": "Shellorbis es un Minimon de tipo Bicho/Roca. Evoluciona: Evo 2/2. Inspiración: Caracol con concha rocosa.",
+    "inspirationBase": "Caracol con concha rocosa",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Shellorbis, Minimon tipo Bicho/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Shellorbis | Minimon #100 | TTG Wiki",
+      "description": "Ficha oficial de Shellorbis (#100), Minimon tipo Bicho/Roca. Evo 2/2. Inspiración: Caracol con concha rocosa. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/100-shellorbis"
+    }
+  },
+  {
+    "id": "101",
+    "slug": "101-minnowisp",
+    "name": "Minnowisp",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-047",
+    "evolution": "Evo 1/2",
+    "description": "Minnowisp es un Minimon de tipo Agua/Fantasma. Evoluciona: Evo 1/2. Inspiración: Pez fantasma pequeño.",
+    "inspirationBase": "Pez fantasma pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Minnowisp, Minimon tipo Agua/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Minnowisp | Minimon #101 | TTG Wiki",
+      "description": "Ficha oficial de Minnowisp (#101), Minimon tipo Agua/Fantasma. Evo 1/2. Inspiración: Pez fantasma pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/101-minnowisp"
+    }
+  },
+  {
+    "id": "102",
+    "slug": "102-abyssiren",
+    "name": "Abyssiren",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Fantasma"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-047",
+    "evolution": "Evo 2/2",
+    "description": "Abyssiren es un Minimon de tipo Agua/Fantasma. Evoluciona: Evo 2/2. Inspiración: Pez abisal / sirena espectral.",
+    "inspirationBase": "Pez abisal / sirena espectral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Abyssiren, Minimon tipo Agua/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Abyssiren | Minimon #102 | TTG Wiki",
+      "description": "Ficha oficial de Abyssiren (#102), Minimon tipo Agua/Fantasma. Evo 2/2. Inspiración: Pez abisal / sirena espectral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/102-abyssiren"
+    }
+  },
+  {
+    "id": "103",
+    "slug": "103-pandaroo",
+    "name": "Pandaroo",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Pandaroo es un Minimon de tipo Normal/Lucha. No tiene evolución. Inspiración: Panda con rasgos de canguro luchador.",
+    "inspirationBase": "Panda con rasgos de canguro luchador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Pandaroo, Minimon tipo Normal/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pandaroo | Minimon #103 | TTG Wiki",
+      "description": "Ficha oficial de Pandaroo (#103), Minimon tipo Normal/Lucha. Sin evolucion. Inspiración: Panda con rasgos de canguro luchador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/103-pandaroo"
+    }
+  },
+  {
+    "id": "104",
+    "slug": "104-lambloom",
+    "name": "Lambloom",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-049",
+    "evolution": "Evo 1/2",
+    "description": "Lambloom es un Minimon de tipo Planta. Evoluciona: Evo 1/2. Inspiración: Cordero floral.",
+    "inspirationBase": "Cordero floral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Lambloom, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lambloom | Minimon #104 | TTG Wiki",
+      "description": "Ficha oficial de Lambloom (#104), Minimon tipo Planta. Evo 1/2. Inspiración: Cordero floral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/104-lambloom"
+    }
+  },
+  {
+    "id": "105",
+    "slug": "105-woolgrove",
+    "name": "Woolgrove",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-049",
+    "evolution": "Evo 2/2",
+    "description": "Woolgrove es un Minimon de tipo Planta. Evoluciona: Evo 2/2. Inspiración: Oveja de bosque / lana vegetal.",
+    "inspirationBase": "Oveja de bosque / lana vegetal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Woolgrove, Minimon tipo Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Woolgrove | Minimon #105 | TTG Wiki",
+      "description": "Ficha oficial de Woolgrove (#105), Minimon tipo Planta. Evo 2/2. Inspiración: Oveja de bosque / lana vegetal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/105-woolgrove"
+    }
+  },
+  {
+    "id": "106",
+    "slug": "106-aerofox",
+    "name": "Aerofox",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-050",
+    "evolution": "Evo 1/2",
+    "description": "Aerofox es un Minimon de tipo Volador. Evoluciona: Evo 1/2. Inspiración: Zorro volador.",
+    "inspirationBase": "Zorro volador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Aerofox, Minimon tipo Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Aerofox | Minimon #106 | TTG Wiki",
+      "description": "Ficha oficial de Aerofox (#106), Minimon tipo Volador. Evo 1/2. Inspiración: Zorro volador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/106-aerofox"
+    }
+  },
+  {
+    "id": "107",
+    "slug": "107-skyrune",
+    "name": "Skyrune",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-050",
+    "evolution": "Evo 2/2",
+    "description": "Skyrune es un Minimon de tipo Volador/Psiquico. Evoluciona: Evo 2/2. Inspiración: Zorro mistico del cielo.",
+    "inspirationBase": "Zorro mistico del cielo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Skyrune, Minimon tipo Volador/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Skyrune | Minimon #107 | TTG Wiki",
+      "description": "Ficha oficial de Skyrune (#107), Minimon tipo Volador/Psiquico. Evo 2/2. Inspiración: Zorro mistico del cielo. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/107-skyrune"
+    }
+  },
+  {
+    "id": "108",
+    "slug": "108-tigrill",
+    "name": "Tigrill",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-051",
+    "evolution": "Evo 1/3",
+    "description": "Tigrill es un Minimon de tipo Fuego. Evoluciona: Evo 1/3. Inspiración: Cachorro de tigre de fuego.",
+    "inspirationBase": "Cachorro de tigre de fuego",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Tigrill, Minimon tipo Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Tigrill | Minimon #108 | TTG Wiki",
+      "description": "Ficha oficial de Tigrill (#108), Minimon tipo Fuego. Evo 1/3. Inspiración: Cachorro de tigre de fuego. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/108-tigrill"
+    }
+  },
+  {
+    "id": "109",
+    "slug": "109-blazepard",
+    "name": "Blazepard",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-051",
+    "evolution": "Evo 2/3",
+    "description": "Blazepard es un Minimon de tipo Fuego. Evoluciona: Evo 2/3. Inspiración: Leopardo igneo.",
+    "inspirationBase": "Leopardo igneo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Blazepard, Minimon tipo Fuego",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Blazepard | Minimon #109 | TTG Wiki",
+      "description": "Ficha oficial de Blazepard (#109), Minimon tipo Fuego. Evo 2/3. Inspiración: Leopardo igneo. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/109-blazepard"
+    }
+  },
+  {
+    "id": "110",
+    "slug": "110-inferniger",
+    "name": "Inferniger",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Siniestro"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 3",
+    "familyId": "line-051",
+    "evolution": "Evo 3/3",
+    "description": "Inferniger es un Minimon de tipo Fuego/Siniestro. Evoluciona: Evo 3/3. Inspiración: Tigre infernal sombrio.",
+    "inspirationBase": "Tigre infernal sombrio",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/siniestro, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Inferniger, Minimon tipo Fuego/Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Inferniger | Minimon #110 | TTG Wiki",
+      "description": "Ficha oficial de Inferniger (#110), Minimon tipo Fuego/Siniestro. Evo 3/3. Inspiración: Tigre infernal sombrio. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/110-inferniger"
+    }
+  },
+  {
+    "id": "111",
+    "slug": "111-nimbseal",
+    "name": "Nimbseal",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hielo"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-052",
+    "evolution": "Evo 1/2",
+    "description": "Nimbseal es un Minimon de tipo Agua/Hielo. Evoluciona: Evo 1/2. Inspiración: Foca de nieve / nube.",
+    "inspirationBase": "Foca de nieve / nube",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/hielo, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Nimbseal, Minimon tipo Agua/Hielo",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nimbseal | Minimon #111 | TTG Wiki",
+      "description": "Ficha oficial de Nimbseal (#111), Minimon tipo Agua/Hielo. Evo 1/2. Inspiración: Foca de nieve / nube. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/111-nimbseal"
+    }
+  },
+  {
+    "id": "112",
+    "slug": "112-glaciseal",
+    "name": "Glaciseal",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hielo"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-052",
+    "evolution": "Evo 2/2",
+    "description": "Glaciseal es un Minimon de tipo Agua/Hielo. Evoluciona: Evo 2/2. Inspiración: Foca glacial.",
+    "inspirationBase": "Foca glacial",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/hielo, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Glaciseal, Minimon tipo Agua/Hielo",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Glaciseal | Minimon #112 | TTG Wiki",
+      "description": "Ficha oficial de Glaciseal (#112), Minimon tipo Agua/Hielo. Evo 2/2. Inspiración: Foca glacial. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/112-glaciseal"
+    }
+  },
+  {
+    "id": "113",
+    "slug": "113-jellumo",
+    "name": "Jellumo",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Jellumo es un Minimon de tipo Agua/Hada. No tiene evolución. Inspiración: Medusa luminosa.",
+    "inspirationBase": "Medusa luminosa",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Jellumo, Minimon tipo Agua/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Jellumo | Minimon #113 | TTG Wiki",
+      "description": "Ficha oficial de Jellumo (#113), Minimon tipo Agua/Hada. Sin evolucion. Inspiración: Medusa luminosa. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/113-jellumo"
+    }
+  },
+  {
+    "id": "114",
+    "slug": "114-scorpix",
+    "name": "Scorpix",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Veneno",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-054",
+    "evolution": "Evo 1/2",
+    "description": "Scorpix es un Minimon de tipo Veneno/Tierra. Evoluciona: Evo 1/2. Inspiración: Escorpion pequeño.",
+    "inspirationBase": "Escorpion pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo veneno/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Scorpix, Minimon tipo Veneno/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Scorpix | Minimon #114 | TTG Wiki",
+      "description": "Ficha oficial de Scorpix (#114), Minimon tipo Veneno/Tierra. Evo 1/2. Inspiración: Escorpion pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/114-scorpix"
+    }
+  },
+  {
+    "id": "115",
+    "slug": "115-scorparmor",
+    "name": "Scorparmor",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Veneno",
+      "Acero"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-054",
+    "evolution": "Evo 2/2",
+    "description": "Scorparmor es un Minimon de tipo Veneno/Acero. Evoluciona: Evo 2/2. Inspiración: Escorpion acorazado.",
+    "inspirationBase": "Escorpion acorazado",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo veneno/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Scorparmor, Minimon tipo Veneno/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Scorparmor | Minimon #115 | TTG Wiki",
+      "description": "Ficha oficial de Scorparmor (#115), Minimon tipo Veneno/Acero. Evo 2/2. Inspiración: Escorpion acorazado. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/115-scorparmor"
+    }
+  },
+  {
+    "id": "116",
+    "slug": "116-ferrodillo",
+    "name": "Ferrodillo",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-055",
+    "evolution": "Evo 1/2",
+    "description": "Ferrodillo es un Minimon de tipo Acero/Tierra. Evoluciona: Evo 1/2. Inspiración: Armadillo metalico.",
+    "inspirationBase": "Armadillo metalico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo acero/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Ferrodillo, Minimon tipo Acero/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ferrodillo | Minimon #116 | TTG Wiki",
+      "description": "Ficha oficial de Ferrodillo (#116), Minimon tipo Acero/Tierra. Evo 1/2. Inspiración: Armadillo metalico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/116-ferrodillo"
+    }
+  },
+  {
+    "id": "117",
+    "slug": "117-rollplata",
+    "name": "Rollplata",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Acero",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-055",
+    "evolution": "Evo 2/2",
+    "description": "Rollplata es un Minimon de tipo Acero/Tierra. Evoluciona: Evo 2/2. Inspiración: Armadillo rodante de acero.",
+    "inspirationBase": "Armadillo rodante de acero",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo acero/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Rollplata, Minimon tipo Acero/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rollplata | Minimon #117 | TTG Wiki",
+      "description": "Ficha oficial de Rollplata (#117), Minimon tipo Acero/Tierra. Evo 2/2. Inspiración: Armadillo rodante de acero. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/117-rollplata"
+    }
+  },
+  {
+    "id": "118",
+    "slug": "118-mantisprig",
+    "name": "Mantisprig",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-056",
+    "evolution": "Evo 1/2",
+    "description": "Mantisprig es un Minimon de tipo Bicho/Planta. Evoluciona: Evo 1/2. Inspiración: Mantis vegetal.",
+    "inspirationBase": "Mantis vegetal",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mantisprig, Minimon tipo Bicho/Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mantisprig | Minimon #118 | TTG Wiki",
+      "description": "Ficha oficial de Mantisprig (#118), Minimon tipo Bicho/Planta. Evo 1/2. Inspiración: Mantis vegetal. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/118-mantisprig"
+    }
+  },
+  {
+    "id": "119",
+    "slug": "119-bladeleaf",
+    "name": "Bladeleaf",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Planta"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-056",
+    "evolution": "Evo 2/2",
+    "description": "Bladeleaf es un Minimon de tipo Bicho/Planta. Evoluciona: Evo 2/2. Inspiración: Mantis hoja con cuchillas.",
+    "inspirationBase": "Mantis hoja con cuchillas",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/planta, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Bladeleaf, Minimon tipo Bicho/Planta",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bladeleaf | Minimon #119 | TTG Wiki",
+      "description": "Ficha oficial de Bladeleaf (#119), Minimon tipo Bicho/Planta. Evo 2/2. Inspiración: Mantis hoja con cuchillas. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/119-bladeleaf"
+    }
+  },
+  {
+    "id": "120",
+    "slug": "120-platypuff",
+    "name": "Platypuff",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Electrico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Platypuff es un Minimon de tipo Agua/Electrico. No tiene evolución. Inspiración: Ornitorrinco electrico.",
+    "inspirationBase": "Ornitorrinco electrico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/electrico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Platypuff, Minimon tipo Agua/Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Platypuff | Minimon #120 | TTG Wiki",
+      "description": "Ficha oficial de Platypuff (#120), Minimon tipo Agua/Electrico. Sin evolucion. Inspiración: Ornitorrinco electrico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/120-platypuff"
+    }
+  },
+  {
+    "id": "121",
+    "slug": "121-rhinpeb",
+    "name": "Rhinpeb",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Roca"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-058",
+    "evolution": "Evo 1/2",
+    "description": "Rhinpeb es un Minimon de tipo Roca. Evoluciona: Evo 1/2. Inspiración: Rinoceronte pequeño rocoso.",
+    "inspirationBase": "Rinoceronte pequeño rocoso",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Rhinpeb, Minimon tipo Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rhinpeb | Minimon #121 | TTG Wiki",
+      "description": "Ficha oficial de Rhinpeb (#121), Minimon tipo Roca. Evo 1/2. Inspiración: Rinoceronte pequeño rocoso. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/121-rhinpeb"
+    }
+  },
+  {
+    "id": "122",
+    "slug": "122-rhinterra",
+    "name": "Rhinterra",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Roca",
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-058",
+    "evolution": "Evo 2/2",
+    "description": "Rhinterra es un Minimon de tipo Roca/Tierra. Evoluciona: Evo 2/2. Inspiración: Rinoceronte de tierra y roca.",
+    "inspirationBase": "Rinoceronte de tierra y roca",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo roca/tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Rhinterra, Minimon tipo Roca/Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rhinterra | Minimon #122 | TTG Wiki",
+      "description": "Ficha oficial de Rhinterra (#122), Minimon tipo Roca/Tierra. Evo 2/2. Inspiración: Rinoceronte de tierra y roca. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/122-rhinterra"
+    }
+  },
+  {
+    "id": "123",
+    "slug": "123-dolphinny",
+    "name": "Dolphinny",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-059",
+    "evolution": "Evo 1/2",
+    "description": "Dolphinny es un Minimon de tipo Agua/Psiquico. Evoluciona: Evo 1/2. Inspiración: Delfin joven.",
+    "inspirationBase": "Delfin joven",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Dolphinny, Minimon tipo Agua/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Dolphinny | Minimon #123 | TTG Wiki",
+      "description": "Ficha oficial de Dolphinny (#123), Minimon tipo Agua/Psiquico. Evo 1/2. Inspiración: Delfin joven. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/123-dolphinny"
+    }
+  },
+  {
+    "id": "124",
+    "slug": "124-oracurrent",
+    "name": "Oracurrent",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-059",
+    "evolution": "Evo 2/2",
+    "description": "Oracurrent es un Minimon de tipo Agua/Psiquico. Evoluciona: Evo 2/2. Inspiración: Delfin / orca psiquica.",
+    "inspirationBase": "Delfin / orca psiquica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Oracurrent, Minimon tipo Agua/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Oracurrent | Minimon #124 | TTG Wiki",
+      "description": "Ficha oficial de Oracurrent (#124), Minimon tipo Agua/Psiquico. Evo 2/2. Inspiración: Delfin / orca psiquica. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/124-oracurrent"
+    }
+  },
+  {
+    "id": "125",
+    "slug": "125-grifflet",
+    "name": "Grifflet",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-060",
+    "evolution": "Evo 1/2",
+    "description": "Grifflet es un Minimon de tipo Volador/Lucha. Evoluciona: Evo 1/2. Inspiración: Grifo joven.",
+    "inspirationBase": "Grifo joven",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Grifflet, Minimon tipo Volador/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Grifflet | Minimon #125 | TTG Wiki",
+      "description": "Ficha oficial de Grifflet (#125), Minimon tipo Volador/Lucha. Evo 1/2. Inspiración: Grifo joven. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/125-grifflet"
+    }
+  },
+  {
+    "id": "126",
+    "slug": "126-griffalon",
+    "name": "Griffalon",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Volador",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-060",
+    "evolution": "Evo 2/2",
+    "description": "Griffalon es un Minimon de tipo Volador/Lucha. Evoluciona: Evo 2/2. Inspiración: Grifo adulto luchador.",
+    "inspirationBase": "Grifo adulto luchador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo volador/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Griffalon, Minimon tipo Volador/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Griffalon | Minimon #126 | TTG Wiki",
+      "description": "Ficha oficial de Griffalon (#126), Minimon tipo Volador/Lucha. Evo 2/2. Inspiración: Grifo adulto luchador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/126-griffalon"
+    }
+  },
+  {
+    "id": "127",
+    "slug": "127-dreamouse",
+    "name": "Dreamouse",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Dreamouse es un Minimon de tipo Psiquico. No tiene evolución. Inspiración: Raton de sueños / raton psiquico.",
+    "inspirationBase": "Raton de sueños / raton psiquico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Dreamouse, Minimon tipo Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Dreamouse | Minimon #127 | TTG Wiki",
+      "description": "Ficha oficial de Dreamouse (#127), Minimon tipo Psiquico. Sin evolucion. Inspiración: Raton de sueños / raton psiquico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/127-dreamouse"
+    }
+  },
+  {
+    "id": "128",
+    "slug": "128-veloclaw",
+    "name": "Veloclaw",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-062",
+    "evolution": "Evo 1/2",
+    "description": "Veloclaw es un Minimon de tipo Normal/Lucha. Evoluciona: Evo 1/2. Inspiración: Raptor pequeño.",
+    "inspirationBase": "Raptor pequeño",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Veloclaw, Minimon tipo Normal/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Veloclaw | Minimon #128 | TTG Wiki",
+      "description": "Ficha oficial de Veloclaw (#128), Minimon tipo Normal/Lucha. Evo 1/2. Inspiración: Raptor pequeño. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/128-veloclaw"
+    }
+  },
+  {
+    "id": "129",
+    "slug": "129-raptalon",
+    "name": "Raptalon",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Normal",
+      "Lucha"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-062",
+    "evolution": "Evo 2/2",
+    "description": "Raptalon es un Minimon de tipo Normal/Lucha. Evoluciona: Evo 2/2. Inspiración: Raptor cazador.",
+    "inspirationBase": "Raptor cazador",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo normal/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Raptalon, Minimon tipo Normal/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Raptalon | Minimon #129 | TTG Wiki",
+      "description": "Ficha oficial de Raptalon (#129), Minimon tipo Normal/Lucha. Evo 2/2. Inspiración: Raptor cazador. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/129-raptalon"
+    }
+  },
+  {
+    "id": "130",
+    "slug": "130-spiricat",
+    "name": "Spiricat",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fantasma",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 1",
+    "familyId": "line-063",
+    "evolution": "Evo 1/2",
+    "description": "Spiricat es un Minimon de tipo Fantasma/Hada. Evoluciona: Evo 1/2. Inspiración: Gato espiritual.",
+    "inspirationBase": "Gato espiritual",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fantasma/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Spiricat, Minimon tipo Fantasma/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Spiricat | Minimon #130 | TTG Wiki",
+      "description": "Ficha oficial de Spiricat (#130), Minimon tipo Fantasma/Hada. Evo 1/2. Inspiración: Gato espiritual. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/130-spiricat"
+    }
+  },
+  {
+    "id": "131",
+    "slug": "131-spectraya",
+    "name": "Spectraya",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fantasma",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Etapa 2",
+    "familyId": "line-063",
+    "evolution": "Evo 2/2",
+    "description": "Spectraya es un Minimon de tipo Fantasma/Hada. Evoluciona: Evo 2/2. Inspiración: Felino espectral hada.",
+    "inspirationBase": "Felino espectral hada",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fantasma/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Spectraya, Minimon tipo Fantasma/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Spectraya | Minimon #131 | TTG Wiki",
+      "description": "Ficha oficial de Spectraya (#131), Minimon tipo Fantasma/Hada. Evo 2/2. Inspiración: Felino espectral hada. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/131-spectraya"
+    }
+  },
+  {
+    "id": "132",
+    "slug": "132-pufflame",
+    "name": "Pufflame",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Fuego",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Pufflame es un Minimon de tipo Fuego/Hada. No tiene evolución. Inspiración: Bolita ignea / hada de fuego.",
+    "inspirationBase": "Bolita ignea / hada de fuego",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Pufflame, Minimon tipo Fuego/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pufflame | Minimon #132 | TTG Wiki",
+      "description": "Ficha oficial de Pufflame (#132), Minimon tipo Fuego/Hada. Sin evolucion. Inspiración: Bolita ignea / hada de fuego. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/132-pufflame"
+    }
+  },
+  {
+    "id": "133",
+    "slug": "133-cryoray",
+    "name": "Cryoray",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Agua",
+      "Hielo"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Cryoray es un Minimon de tipo Agua/Hielo. No tiene evolución. Inspiración: Raya marina de hielo.",
+    "inspirationBase": "Raya marina de hielo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/hielo, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Cryoray, Minimon tipo Agua/Hielo",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cryoray | Minimon #133 | TTG Wiki",
+      "description": "Ficha oficial de Cryoray (#133), Minimon tipo Agua/Hielo. Sin evolucion. Inspiración: Raya marina de hielo. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/133-cryoray"
+    }
+  },
+  {
+    "id": "134",
+    "slug": "134-terrabison",
+    "name": "Terrabison",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Tierra"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Terrabison es un Minimon de tipo Tierra. No tiene evolución. Inspiración: Bisonte terrestre.",
+    "inspirationBase": "Bisonte terrestre",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Terrabison, Minimon tipo Tierra",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Terrabison | Minimon #134 | TTG Wiki",
+      "description": "Ficha oficial de Terrabison (#134), Minimon tipo Tierra. Sin evolucion. Inspiración: Bisonte terrestre. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/134-terrabison"
+    }
+  },
+  {
+    "id": "135",
+    "slug": "135-aurorant",
+    "name": "Aurorant",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Hielo",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Aurorant es un Minimon de tipo Hielo/Hada. No tiene evolución. Inspiración: Ciervo / antilope de aurora.",
+    "inspirationBase": "Ciervo / antilope de aurora",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hielo/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Aurorant, Minimon tipo Hielo/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Aurorant | Minimon #135 | TTG Wiki",
+      "description": "Ficha oficial de Aurorant (#135), Minimon tipo Hielo/Hada. Sin evolucion. Inspiración: Ciervo / antilope de aurora. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/135-aurorant"
+    }
+  },
+  {
+    "id": "136",
+    "slug": "136-gravibug",
+    "name": "Gravibug",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Bicho",
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Gravibug es un Minimon de tipo Bicho/Psiquico. No tiene evolución. Inspiración: Insecto gravitatorio.",
+    "inspirationBase": "Insecto gravitatorio",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo bicho/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Gravibug, Minimon tipo Bicho/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Gravibug | Minimon #136 | TTG Wiki",
+      "description": "Ficha oficial de Gravibug (#136), Minimon tipo Bicho/Psiquico. Sin evolucion. Inspiración: Insecto gravitatorio. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/136-gravibug"
+    }
+  },
+  {
+    "id": "137",
+    "slug": "137-voltserp",
+    "name": "Voltserp",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Electrico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Voltserp es un Minimon de tipo Electrico. No tiene evolución. Inspiración: Serpiente electrica.",
+    "inspirationBase": "Serpiente electrica",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo electrico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Voltserp, Minimon tipo Electrico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Voltserp | Minimon #137 | TTG Wiki",
+      "description": "Ficha oficial de Voltserp (#137), Minimon tipo Electrico. Sin evolucion. Inspiración: Serpiente electrica. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/137-voltserp"
+    }
+  },
+  {
+    "id": "138",
+    "slug": "138-floracorn",
+    "name": "Floracorn",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Planta",
+      "Hada"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Floracorn es un Minimon de tipo Planta/Hada. No tiene evolución. Inspiración: Unicornio floral.",
+    "inspirationBase": "Unicornio floral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Floracorn, Minimon tipo Planta/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Floracorn | Minimon #138 | TTG Wiki",
+      "description": "Ficha oficial de Floracorn (#138), Minimon tipo Planta/Hada. Sin evolucion. Inspiración: Unicornio floral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/138-floracorn"
+    }
+  },
+  {
+    "id": "139",
+    "slug": "139-obsidrak",
+    "name": "Obsidrak",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Roca",
+      "Dragon"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Obsidrak es un Minimon de tipo Roca/Dragon. No tiene evolución. Inspiración: Dragon de obsidiana.",
+    "inspirationBase": "Dragon de obsidiana",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo roca/dragon, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Obsidrak, Minimon tipo Roca/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Obsidrak | Minimon #139 | TTG Wiki",
+      "description": "Ficha oficial de Obsidrak (#139), Minimon tipo Roca/Dragon. Sin evolucion. Inspiración: Dragon de obsidiana. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/139-obsidrak"
+    }
+  },
+  {
+    "id": "140",
+    "slug": "140-mirageon",
+    "name": "Mirageon",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Psiquico"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Mirageon es un Minimon de tipo Psiquico. No tiene evolución. Inspiración: Zorro / felino de espejismo.",
+    "inspirationBase": "Zorro / felino de espejismo",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Mirageon, Minimon tipo Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Mirageon | Minimon #140 | TTG Wiki",
+      "description": "Ficha oficial de Mirageon (#140), Minimon tipo Psiquico. Sin evolucion. Inspiración: Zorro / felino de espejismo. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/140-mirageon"
+    }
+  },
+  {
+    "id": "141",
+    "slug": "141-nocthorn",
+    "name": "Nocthorn",
+    "series": "minimon",
+    "entityType": "creature",
+    "types": [
+      "Siniestro"
+    ],
+    "rarity": "Común",
+    "stage": "Independiente",
+    "familyId": null,
+    "evolution": null,
+    "description": "Nocthorn es un Minimon de tipo Siniestro. No tiene evolución. Inspiración: Ciervo / cabra oscura con cuernos.",
+    "inspirationBase": "Ciervo / cabra oscura con cuernos",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo siniestro, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Común",
+    "image": {
+      "alt": "Tazo de Nocthorn, Minimon tipo Siniestro",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nocthorn | Minimon #141 | TTG Wiki",
+      "description": "Ficha oficial de Nocthorn (#141), Minimon tipo Siniestro. Sin evolucion. Inspiración: Ciervo / cabra oscura con cuernos. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/141-nocthorn"
+    }
+  },
+  {
+    "id": "142",
+    "slug": "142-chromalux",
+    "name": "Chromalux",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Hada",
+      "Psiquico"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Chromalux es un Minimon de tipo Hada/Psiquico. Evoluciona: Legendario. Inspiración: Ave / fenix cromatico legendario.",
+    "inspirationBase": "Ave / fenix cromatico legendario",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hada/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Chromalux, Minimon tipo Hada/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Chromalux | Minimon #142 | TTG Wiki",
+      "description": "Ficha oficial de Chromalux (#142), Minimon tipo Hada/Psiquico. Legendario. Inspiración: Ave / fenix cromatico legendario. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/142-chromalux"
+    }
+  },
+  {
+    "id": "143",
+    "slug": "143-pyrelion",
+    "name": "Pyrelion",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Fuego",
+      "Lucha"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Pyrelion es un Minimon de tipo Fuego/Lucha. Evoluciona: Legendario. Inspiración: Leon de fuego legendario.",
+    "inspirationBase": "Leon de fuego legendario",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo fuego/lucha, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Pyrelion, Minimon tipo Fuego/Lucha",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Pyrelion | Minimon #143 | TTG Wiki",
+      "description": "Ficha oficial de Pyrelion (#143), Minimon tipo Fuego/Lucha. Legendario. Inspiración: Leon de fuego legendario. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/143-pyrelion"
+    }
+  },
+  {
+    "id": "144",
+    "slug": "144-aqualith",
+    "name": "Aqualith",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Agua",
+      "Roca"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Aqualith es un Minimon de tipo Agua/Roca. Evoluciona: Legendario. Inspiración: Tortuga / leviatan mineral acuatico.",
+    "inspirationBase": "Tortuga / leviatan mineral acuatico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo agua/roca, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Aqualith, Minimon tipo Agua/Roca",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Aqualith | Minimon #144 | TTG Wiki",
+      "description": "Ficha oficial de Aqualith (#144), Minimon tipo Agua/Roca. Legendario. Inspiración: Tortuga / leviatan mineral acuatico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/144-aqualith"
+    }
+  },
+  {
+    "id": "145",
+    "slug": "145-verdalux",
+    "name": "Verdalux",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Planta",
+      "Hada"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Verdalux es un Minimon de tipo Planta/Hada. Evoluciona: Legendario. Inspiración: Ciervo / espiritu del bosque.",
+    "inspirationBase": "Ciervo / espiritu del bosque",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo planta/hada, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Verdalux, Minimon tipo Planta/Hada",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Verdalux | Minimon #145 | TTG Wiki",
+      "description": "Ficha oficial de Verdalux (#145), Minimon tipo Planta/Hada. Legendario. Inspiración: Ciervo / espiritu del bosque. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/145-verdalux"
+    }
+  },
+  {
+    "id": "146",
+    "slug": "146-umbryx",
+    "name": "Umbryx",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Siniestro",
+      "Fantasma"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Umbryx es un Minimon de tipo Siniestro/Fantasma. Evoluciona: Legendario. Inspiración: Pantera / sombra espectral.",
+    "inspirationBase": "Pantera / sombra espectral",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo siniestro/fantasma, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Umbryx, Minimon tipo Siniestro/Fantasma",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Umbryx | Minimon #146 | TTG Wiki",
+      "description": "Ficha oficial de Umbryx (#146), Minimon tipo Siniestro/Fantasma. Legendario. Inspiración: Pantera / sombra espectral. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/146-umbryx"
+    }
+  },
+  {
+    "id": "147",
+    "slug": "147-thundroar",
+    "name": "Thundroar",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Electrico",
+      "Dragon"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Thundroar es un Minimon de tipo Electrico/Dragon. Evoluciona: Legendario. Inspiración: Dragon-leon electrico.",
+    "inspirationBase": "Dragon-leon electrico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo electrico/dragon, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Thundroar, Minimon tipo Electrico/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Thundroar | Minimon #147 | TTG Wiki",
+      "description": "Ficha oficial de Thundroar (#147), Minimon tipo Electrico/Dragon. Legendario. Inspiración: Dragon-leon electrico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/147-thundroar"
+    }
+  },
+  {
+    "id": "148",
+    "slug": "148-cryomane",
+    "name": "Cryomane",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Hielo",
+      "Psiquico"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Cryomane es un Minimon de tipo Hielo/Psiquico. Evoluciona: Legendario. Inspiración: Leon / lobo glacial psiquico.",
+    "inspirationBase": "Leon / lobo glacial psiquico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hielo/psiquico, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Cryomane, Minimon tipo Hielo/Psiquico",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cryomane | Minimon #148 | TTG Wiki",
+      "description": "Ficha oficial de Cryomane (#148), Minimon tipo Hielo/Psiquico. Legendario. Inspiración: Leon / lobo glacial psiquico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/148-cryomane"
+    }
+  },
+  {
+    "id": "149",
+    "slug": "149-terragant",
+    "name": "Terragant",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Tierra",
+      "Acero"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Terragant es un Minimon de tipo Tierra/Acero. Evoluciona: Legendario. Inspiración: Coloso elefante / golem terrestre.",
+    "inspirationBase": "Coloso elefante / golem terrestre",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo tierra/acero, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Terragant, Minimon tipo Tierra/Acero",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Terragant | Minimon #149 | TTG Wiki",
+      "description": "Ficha oficial de Terragant (#149), Minimon tipo Tierra/Acero. Legendario. Inspiración: Coloso elefante / golem terrestre. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/149-terragant"
+    }
+  },
+  {
+    "id": "150",
+    "slug": "150-celestiva",
+    "name": "Celestiva",
+    "series": "minimon",
+    "entityType": "legendary",
+    "types": [
+      "Hada",
+      "Volador"
+    ],
+    "rarity": "Legendario",
+    "stage": "Legendario",
+    "familyId": null,
+    "evolution": "Legendario",
+    "description": "Celestiva es un Minimon de tipo Hada/Volador. Evoluciona: Legendario. Inspiración: Ave celestial hada.",
+    "inspirationBase": "Ave celestial hada",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo hada/volador, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Legendario",
+    "image": {
+      "alt": "Tazo de Celestiva, Minimon tipo Hada/Volador",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Celestiva | Minimon #150 | TTG Wiki",
+      "description": "Ficha oficial de Celestiva (#150), Minimon tipo Hada/Volador. Legendario. Inspiración: Ave celestial hada. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/150-celestiva"
+    }
+  },
+  {
+    "id": "151",
+    "slug": "151-nexoria",
+    "name": "Nexoria",
+    "series": "minimon",
+    "entityType": "mythic",
+    "types": [
+      "Psiquico",
+      "Dragon"
+    ],
+    "rarity": "Mítico",
+    "stage": "Mitico",
+    "familyId": null,
+    "evolution": "Mitico",
+    "description": "Nexoria es un Minimon de tipo Psiquico/Dragon. Evoluciona: Mitico. Inspiración: Dragon psiquico mitico.",
+    "inspirationBase": "Dragon psiquico mitico",
+    "visualStyle": "Criatura coleccionable anime original, estilo TTG, tipo psiquico/dragon, silueta reconocible, apta para tazo circular.",
+    "relationships": [],
+    "rarity_es": "Mítico",
+    "image": {
+      "alt": "Tazo de Nexoria, Minimon tipo Psiquico/Dragon",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nexoria | Minimon #151 | TTG Wiki",
+      "description": "Ficha oficial de Nexoria (#151), Minimon tipo Psiquico/Dragon. Mitico. Inspiración: Dragon psiquico mitico. Estado de arte: no confirmado.",
+      "canonical": "https://tradingtazosgame.com/wiki/minimon/151-nexoria"
+    }
+  }
+]

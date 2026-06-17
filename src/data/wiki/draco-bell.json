@@ -1,0 +1,1969 @@
+[
+  {
+    "id": "DB001",
+    "slug": "001-raku-tenma",
+    "name": "Raku Tenma",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrano Aural"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Raku Tenma — Personaje principal. Terrano Aural, rareza Raro. Joven luchador impulsivo, noble y hambriento de retos. Su talento natural aparece cuando protege a otros..",
+    "inspirationBase": "Protagonista",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Raku Tenma, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Raku Tenma | Draco Bell #001 | TTG Wiki",
+      "description": "Ficha oficial de Raku Tenma (DB-001), Draco Bell categoría Personaje principal. Tipo Terrano Aural, rareza Raro. Joven luchador impulsivo, noble y hambriento de retos. Su talento natural aparece cuando protege a otros.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/001-raku-tenma"
+    }
+  },
+  {
+    "id": "DB002",
+    "slug": "002-koro-vale",
+    "name": "Koro Vale",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Auralita Errante"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Koro Vale — Personaje principal. Auralita Errante, rareza Raro. Guerrero orgulloso de una estirpe de combatientes astrales. Busca superar a Raku sin admitir que lo respeta..",
+    "inspirationBase": "Rival principal / aliado",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Koro Vale, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Koro Vale | Draco Bell #002 | TTG Wiki",
+      "description": "Ficha oficial de Koro Vale (DB-002), Draco Bell categoría Personaje principal. Tipo Auralita Errante, rareza Raro. Guerrero orgulloso de una estirpe de combatientes astrales. Busca superar a Raku sin admitir que lo respeta.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/002-koro-vale"
+    }
+  },
+  {
+    "id": "DB003",
+    "slug": "003-vela-nari",
+    "name": "Vela Nari",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrana Técnica"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Vela Nari — Personaje principal. Terrana Técnica, rareza Raro. Creadora de rastreadores de aura y cápsulas de entrenamiento. No es la más fuerte, pero sí una de las más decisivas..",
+    "inspirationBase": "Inventora y luchadora técnica",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Vela Nari, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Vela Nari | Draco Bell #003 | TTG Wiki",
+      "description": "Ficha oficial de Vela Nari (DB-003), Draco Bell categoría Personaje principal. Tipo Terrana Técnica, rareza Raro. Creadora de rastreadores de aura y cápsulas de entrenamiento. No es la más fuerte, pero sí una de las más decisivas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/003-vela-nari"
+    }
+  },
+  {
+    "id": "DB004",
+    "slug": "004-maku-rondo",
+    "name": "Maku Rondo",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrano Aural"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Maku Rondo — Personaje principal. Terrano Aural, rareza Raro. Amigo rápido, bromista y competitivo. Su pequeño tamaño le permite esquivar ataques de gigantes..",
+    "inspirationBase": "Aprendiz cómico / luchador veloz",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Maku Rondo, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Maku Rondo | Draco Bell #004 | TTG Wiki",
+      "description": "Ficha oficial de Maku Rondo (DB-004), Draco Bell categoría Personaje principal. Tipo Terrano Aural, rareza Raro. Amigo rápido, bromista y competitivo. Su pequeño tamaño le permite esquivar ataques de gigantes.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/004-maku-rondo"
+    }
+  },
+  {
+    "id": "DB005",
+    "slug": "005-taro-lin",
+    "name": "Taro Lin",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrano Marcial"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Taro Lin — Personaje principal. Terrano Marcial, rareza Raro. Luchador disciplinado con técnica precisa. Observa el campo antes de atacar..",
+    "inspirationBase": "Estratega marcial",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Taro Lin, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Taro Lin | Draco Bell #005 | TTG Wiki",
+      "description": "Ficha oficial de Taro Lin (DB-005), Draco Bell categoría Personaje principal. Tipo Terrano Marcial, rareza Raro. Luchador disciplinado con técnica precisa. Observa el campo antes de atacar.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/005-taro-lin"
+    }
+  },
+  {
+    "id": "DB006",
+    "slug": "006-nira-solen",
+    "name": "Nira Solen",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrana Sensitiva"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Nira Solen — Personaje principal. Terrana Sensitiva, rareza Raro. Detecta heridas de aura y estabiliza transformaciones peligrosas..",
+    "inspirationBase": "Sanadora aural",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nira Solen, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nira Solen | Draco Bell #006 | TTG Wiki",
+      "description": "Ficha oficial de Nira Solen (DB-006), Draco Bell categoría Personaje principal. Tipo Terrana Sensitiva, rareza Raro. Detecta heridas de aura y estabiliza transformaciones peligrosas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/006-nira-solen"
+    }
+  },
+  {
+    "id": "DB007",
+    "slug": "007-boro-kint",
+    "name": "Boro Kint",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrano Coloso"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Boro Kint — Personaje principal. Terrano Coloso, rareza Raro. Fuerte, noble y algo ingenuo. Su defensa puede sostener ataques que romperían montañas..",
+    "inspirationBase": "Tanque del equipo",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Boro Kint, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Boro Kint | Draco Bell #007 | TTG Wiki",
+      "description": "Ficha oficial de Boro Kint (DB-007), Draco Bell categoría Personaje principal. Tipo Terrano Coloso, rareza Raro. Fuerte, noble y algo ingenuo. Su defensa puede sostener ataques que romperían montañas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/007-boro-kint"
+    }
+  },
+  {
+    "id": "DB008",
+    "slug": "008-paku",
+    "name": "Paku",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrano Aural"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Paku — Personaje principal. Terrano Aural, rareza Raro. Pequeño luchador con potencial absurdo. Todavía mezcla juego y combate..",
+    "inspirationBase": "Niño prodigio",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Paku, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Paku | Draco Bell #008 | TTG Wiki",
+      "description": "Ficha oficial de Paku (DB-008), Draco Bell categoría Personaje principal. Tipo Terrano Aural, rareza Raro. Pequeño luchador con potencial absurdo. Todavía mezcla juego y combate.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/008-paku"
+    }
+  },
+  {
+    "id": "DB009",
+    "slug": "009-orin-verde",
+    "name": "Orin Verde",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Verdiano"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Custodios Verdes",
+    "category": "Personaje principal",
+    "description": "Orin Verde — Personaje principal. Verdiano, rareza Poco común. Alienígena místico de piel verde y energía meditativa. Mentor duro, silencioso y protector..",
+    "inspirationBase": "Guerrero místico aliado",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Orin Verde, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Orin Verde | Draco Bell #009 | TTG Wiki",
+      "description": "Ficha oficial de Orin Verde (DB-009), Draco Bell categoría Personaje principal. Tipo Verdiano, rareza Poco común. Alienígena místico de piel verde y energía meditativa. Mentor duro, silencioso y protector.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/009-orin-verde"
+    }
+  },
+  {
+    "id": "DB010",
+    "slug": "010-daran-verde",
+    "name": "Daran Verde",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Verdiano"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Custodios Verdes",
+    "category": "Personaje principal",
+    "description": "Daran Verde — Personaje principal. Verdiano, rareza Poco común. Joven custodio capaz de leer las Campanas Draco. Tierno, sabio y valiente..",
+    "inspirationBase": "Aprendiz verdiano",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Daran Verde, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Daran Verde | Draco Bell #010 | TTG Wiki",
+      "description": "Ficha oficial de Daran Verde (DB-010), Draco Bell categoría Personaje principal. Tipo Verdiano, rareza Poco común. Joven custodio capaz de leer las Campanas Draco. Tierno, sabio y valiente.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/010-daran-verde"
+    }
+  },
+  {
+    "id": "DB011",
+    "slug": "011-maestro-ginro",
+    "name": "Maestro Ginro",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrano Marcial"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Dojo Ginro",
+    "category": "Personaje principal",
+    "description": "Maestro Ginro — Personaje principal. Terrano Marcial, rareza Poco común. Viejo maestro excéntrico que conoce técnicas prohibidas de respiración aural..",
+    "inspirationBase": "Maestro ancestral",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Maestro Ginro, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Maestro Ginro | Draco Bell #011 | TTG Wiki",
+      "description": "Ficha oficial de Maestro Ginro (DB-011), Draco Bell categoría Personaje principal. Tipo Terrano Marcial, rareza Poco común. Viejo maestro excéntrico que conoce técnicas prohibidas de respiración aural.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/011-maestro-ginro"
+    }
+  },
+  {
+    "id": "DB012",
+    "slug": "012-lira-tenma",
+    "name": "Lira Tenma",
+    "series": "draco_bell",
+    "entityType": "character",
+    "types": [
+      "Terrana Técnica"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Equipo Campana",
+    "category": "Personaje principal",
+    "description": "Lira Tenma — Personaje principal. Terrana Técnica, rareza Poco común. Pilota naves pequeñas y ayuda a mover al equipo entre arenas, islas y planetas..",
+    "inspirationBase": "Hermana mayor / piloto",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Lira Tenma, Draco Bell Personaje principal",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lira Tenma | Draco Bell #012 | TTG Wiki",
+      "description": "Ficha oficial de Lira Tenma (DB-012), Draco Bell categoría Personaje principal. Tipo Terrana Técnica, rareza Poco común. Pilota naves pequeñas y ayuda a mover al equipo entre arenas, islas y planetas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/012-lira-tenma"
+    }
+  },
+  {
+    "id": "DB013",
+    "slug": "013-brakka-ohn",
+    "name": "Brakka Ohn",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Auralita Errante"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Invasor rival",
+    "category": "Antagonista/Villano",
+    "description": "Brakka Ohn — Antagonista/Villano. Auralita Errante, rareza Raro. Guerrero orgulloso que llega a la Tierra buscando medir la fuerza de sus habitantes..",
+    "inspirationBase": "Armadura negra y verde, pelo rojo oscuro, cicatriz angular, aura carmesí.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Brakka Ohn, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Brakka Ohn | Draco Bell #013 | TTG Wiki",
+      "description": "Ficha oficial de Brakka Ohn (DB-013), Draco Bell categoría Antagonista/Villano. Tipo Auralita Errante, rareza Raro. Guerrero orgulloso que llega a la Tierra buscando medir la fuerza de sus habitantes.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/013-brakka-ohn"
+    }
+  },
+  {
+    "id": "DB014",
+    "slug": "014-vargan-ohn",
+    "name": "Vargan Ohn",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Auralita Errante"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Conquistador aural",
+    "category": "Antagonista/Villano",
+    "description": "Vargan Ohn — Antagonista/Villano. Auralita Errante, rareza Raro. Hermano mayor de Brakka. Cree que los débiles existen para servir a los fuertes..",
+    "inspirationBase": "Armadura blanca y negra, capa corta, pelo plateado, expresión fría.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Vargan Ohn, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Vargan Ohn | Draco Bell #014 | TTG Wiki",
+      "description": "Ficha oficial de Vargan Ohn (DB-014), Draco Bell categoría Antagonista/Villano. Tipo Auralita Errante, rareza Raro. Hermano mayor de Brakka. Cree que los débiles existen para servir a los fuertes.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/014-vargan-ohn"
+    }
+  },
+  {
+    "id": "DB015",
+    "slug": "015-general-mecanox",
+    "name": "General Mecanox",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Villano científico/militar",
+    "category": "Antagonista/Villano",
+    "description": "General Mecanox — Antagonista/Villano. Tecnoide, rareza Raro. Creador de androides de combate que extraen aura de rivales derrotados..",
+    "inspirationBase": "Cuerpo parcialmente mecánico, bata blindada, visor rojo, manos metálicas.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de General Mecanox, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "General Mecanox | Draco Bell #015 | TTG Wiki",
+      "description": "Ficha oficial de General Mecanox (DB-015), Draco Bell categoría Antagonista/Villano. Tipo Tecnoide, rareza Raro. Creador de androides de combate que extraen aura de rivales derrotados.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/015-general-mecanox"
+    }
+  },
+  {
+    "id": "DB016",
+    "slug": "016-b-12",
+    "name": "B-12",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Androide táctico",
+    "category": "Antagonista/Villano",
+    "description": "B-12 — Antagonista/Villano. Tecnoide, rareza Raro. Calcula patrones de lucha y aprende técnicas tras verlas una vez..",
+    "inspirationBase": "Joven artificial de pelo blanco, chaqueta negra, ojos rojos, guantes metálicos.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de B-12, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "B-12 | Draco Bell #016 | TTG Wiki",
+      "description": "Ficha oficial de B-12 (DB-016), Draco Bell categoría Antagonista/Villano. Tipo Tecnoide, rareza Raro. Calcula patrones de lucha y aprende técnicas tras verlas una vez.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/016-b-12"
+    }
+  },
+  {
+    "id": "DB017",
+    "slug": "017-b-21",
+    "name": "B-21",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Androide veloz",
+    "category": "Antagonista/Villano",
+    "description": "B-21 — Antagonista/Villano. Tecnoide, rareza Raro. Especialista en velocidad, patadas y cortes de aura comprimida..",
+    "inspirationBase": "Androide femenino de pelo violeta, mono azul oscuro, botas altas, expresión desafiante.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de B-21, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "B-21 | Draco Bell #017 | TTG Wiki",
+      "description": "Ficha oficial de B-21 (DB-017), Draco Bell categoría Antagonista/Villano. Tipo Tecnoide, rareza Raro. Especialista en velocidad, patadas y cortes de aura comprimida.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/017-b-21"
+    }
+  },
+  {
+    "id": "DB018",
+    "slug": "018-b-33",
+    "name": "B-33",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Base",
+    "faction": "Bioarma pesada",
+    "category": "Antagonista/Villano",
+    "description": "B-33 — Antagonista/Villano. Tecnoide, rareza Raro. Unidad de absorción construida con núcleos de luchadores antiguos..",
+    "inspirationBase": "Cuerpo enorme, placas orgánicas y mecánicas, mandíbula reforzada, aura verde tóxica.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de B-33, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "B-33 | Draco Bell #018 | TTG Wiki",
+      "description": "Ficha oficial de B-33 (DB-018), Draco Bell categoría Antagonista/Villano. Tipo Tecnoide, rareza Raro. Unidad de absorción construida con núcleos de luchadores antiguos.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/018-b-33"
+    }
+  },
+  {
+    "id": "DB019",
+    "slug": "019-gomorux",
+    "name": "Gomorux",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Onirox"
+    ],
+    "rarity": "Ultra",
+    "stage": "Base",
+    "faction": "Demonio de aura caótica",
+    "category": "Antagonista/Villano",
+    "description": "Gomorux — Antagonista/Villano. Onirox, rareza Ultra. Ser elástico, cruel y burlón que convierte miedo en energía..",
+    "inspirationBase": "Piel magenta oscura, cuernos curvos, capa negra, sonrisa amplia, ojos amarillos.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Gomorux, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Gomorux | Draco Bell #019 | TTG Wiki",
+      "description": "Ficha oficial de Gomorux (DB-019), Draco Bell categoría Antagonista/Villano. Tipo Onirox, rareza Ultra. Ser elástico, cruel y burlón que convierte miedo en energía.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/019-gomorux"
+    }
+  },
+  {
+    "id": "DB020",
+    "slug": "020-lord-umbrax",
+    "name": "Lord Umbrax",
+    "series": "draco_bell",
+    "entityType": "villain",
+    "types": [
+      "Corte Eclipse"
+    ],
+    "rarity": "Ultra",
+    "stage": "Base",
+    "faction": "Villano final",
+    "category": "Antagonista/Villano",
+    "description": "Lord Umbrax — Antagonista/Villano. Corte Eclipse, rareza Ultra. Entidad imperial que busca apagar las Campanas Draco y controlar toda resonancia de aura..",
+    "inspirationBase": "Figura alta, armadura blanca/negra, corona de cuernos, aura eclipse, capa larga.",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Lord Umbrax, Draco Bell Antagonista/Villano",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lord Umbrax | Draco Bell #020 | TTG Wiki",
+      "description": "Ficha oficial de Lord Umbrax (DB-020), Draco Bell categoría Antagonista/Villano. Tipo Corte Eclipse, rareza Ultra. Entidad imperial que busca apagar las Campanas Draco y controlar toda resonancia de aura.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/020-lord-umbrax"
+    }
+  },
+  {
+    "id": "DB021",
+    "slug": "021-reina-auralis",
+    "name": "Reina Auralis",
+    "series": "draco_bell",
+    "entityType": "ally",
+    "types": [
+      "Soporte",
+      "Historia"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Aliados",
+    "category": "Aliado",
+    "description": "Reina Auralis — Aliado. Soporte/Historia, rareza Poco común. Gobernante de una luna aural que conoce la historia de los Auralitas Errantes..",
+    "inspirationBase": "Soberana aliada",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Reina Auralis, Draco Bell Aliado",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Reina Auralis | Draco Bell #021 | TTG Wiki",
+      "description": "Ficha oficial de Reina Auralis (DB-021), Draco Bell categoría Aliado. Tipo Soporte/Historia, rareza Poco común. Gobernante de una luna aural que conoce la historia de los Auralitas Errantes.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/021-reina-auralis"
+    }
+  },
+  {
+    "id": "DB022",
+    "slug": "022-kael-nimbus",
+    "name": "Kael Nimbus",
+    "series": "draco_bell",
+    "entityType": "ally",
+    "types": [
+      "Soporte",
+      "Historia"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Aliados",
+    "category": "Aliado",
+    "description": "Kael Nimbus — Aliado. Soporte/Historia, rareza Poco común. Guía volador que transporta mensajes entre torres de entrenamiento..",
+    "inspirationBase": "Mensajero celeste",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Kael Nimbus, Draco Bell Aliado",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Kael Nimbus | Draco Bell #022 | TTG Wiki",
+      "description": "Ficha oficial de Kael Nimbus (DB-022), Draco Bell categoría Aliado. Tipo Soporte/Historia, rareza Poco común. Guía volador que transporta mensajes entre torres de entrenamiento.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/022-kael-nimbus"
+    }
+  },
+  {
+    "id": "DB023",
+    "slug": "023-chef-panko",
+    "name": "Chef Panko",
+    "series": "draco_bell",
+    "entityType": "ally",
+    "types": [
+      "Soporte",
+      "Historia"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Aliados",
+    "category": "Aliado",
+    "description": "Chef Panko — Aliado. Soporte/Historia, rareza Poco común. Cocinero de torneos que restaura energía con recetas imposibles..",
+    "inspirationBase": "Aliado cómico",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Chef Panko, Draco Bell Aliado",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Chef Panko | Draco Bell #023 | TTG Wiki",
+      "description": "Ficha oficial de Chef Panko (DB-023), Draco Bell categoría Aliado. Tipo Soporte/Historia, rareza Poco común. Cocinero de torneos que restaura energía con recetas imposibles.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/023-chef-panko"
+    }
+  },
+  {
+    "id": "DB024",
+    "slug": "024-doctora-vela-sr",
+    "name": "Doctora Vela Sr.",
+    "series": "draco_bell",
+    "entityType": "ally",
+    "types": [
+      "Soporte",
+      "Historia"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Aliados",
+    "category": "Aliado",
+    "description": "Doctora Vela Sr. — Aliado. Soporte/Historia, rareza Poco común. Madre de Vela y creadora de cámaras de gravedad aural..",
+    "inspirationBase": "Ingeniera de soporte",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Doctora Vela Sr., Draco Bell Aliado",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Doctora Vela Sr. | Draco Bell #024 | TTG Wiki",
+      "description": "Ficha oficial de Doctora Vela Sr. (DB-024), Draco Bell categoría Aliado. Tipo Soporte/Historia, rareza Poco común. Madre de Vela y creadora de cámaras de gravedad aural.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/024-doctora-vela-sr"
+    }
+  },
+  {
+    "id": "DB025",
+    "slug": "025-guardia-rumo",
+    "name": "Guardia Rumo",
+    "series": "draco_bell",
+    "entityType": "ally",
+    "types": [
+      "Soporte",
+      "Historia"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Aliados",
+    "category": "Aliado",
+    "description": "Guardia Rumo — Aliado. Soporte/Historia, rareza Poco común. Vigilante que mantiene a salvo al público durante combates enormes..",
+    "inspirationBase": "Protector de arena",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Guardia Rumo, Draco Bell Aliado",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Guardia Rumo | Draco Bell #025 | TTG Wiki",
+      "description": "Ficha oficial de Guardia Rumo (DB-025), Draco Bell categoría Aliado. Tipo Soporte/Historia, rareza Poco común. Vigilante que mantiene a salvo al público durante combates enormes.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/025-guardia-rumo"
+    }
+  },
+  {
+    "id": "DB026",
+    "slug": "026-monje-haku",
+    "name": "Monje Haku",
+    "series": "draco_bell",
+    "entityType": "ally",
+    "types": [
+      "Soporte",
+      "Historia"
+    ],
+    "rarity": "Poco común",
+    "stage": "Base",
+    "faction": "Aliados",
+    "category": "Aliado",
+    "description": "Monje Haku — Aliado. Soporte/Historia, rareza Poco común. Enseña a controlar la respiración aural sin depender de ira..",
+    "inspirationBase": "Entrenador espiritual",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Monje Haku, Draco Bell Aliado",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Monje Haku | Draco Bell #026 | TTG Wiki",
+      "description": "Ficha oficial de Monje Haku (DB-026), Draco Bell categoría Aliado. Tipo Soporte/Historia, rareza Poco común. Enseña a controlar la respiración aural sin depender de ira.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/026-monje-haku"
+    }
+  },
+  {
+    "id": "DB027",
+    "slug": "027-raku-tenma-aura-clara",
+    "name": "Raku Tenma - Aura Clara",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Aura Clara"
+    ],
+    "rarity": "Raro",
+    "stage": "Forma",
+    "faction": "Equipo Campana",
+    "category": "Transformación",
+    "description": "Raku Tenma - Aura Clara — Transformación. Aura Clara, rareza Raro. Primera forma controlada de Raku..",
+    "inspirationBase": "Raku en control puro",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Raku Tenma - Aura Clara, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Raku Tenma - Aura Clara | Draco Bell #027 | TTG Wiki",
+      "description": "Ficha oficial de Raku Tenma - Aura Clara (DB-027), Draco Bell categoría Transformación. Tipo Aura Clara, rareza Raro. Primera forma controlada de Raku.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/027-raku-tenma-aura-clara"
+    }
+  },
+  {
+    "id": "DB028",
+    "slug": "028-raku-tenma-draco-ascenso",
+    "name": "Raku Tenma - Draco Ascenso",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Draco Ascenso"
+    ],
+    "rarity": "Ultra",
+    "stage": "Forma",
+    "faction": "Equipo Campana",
+    "category": "Transformación",
+    "description": "Raku Tenma - Draco Ascenso — Transformación. Draco Ascenso, rareza Ultra. Forma heroica activada por Campana Draco..",
+    "inspirationBase": "Raku con aura roja/dorada",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Raku Tenma - Draco Ascenso, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Raku Tenma - Draco Ascenso | Draco Bell #028 | TTG Wiki",
+      "description": "Ficha oficial de Raku Tenma - Draco Ascenso (DB-028), Draco Bell categoría Transformación. Tipo Draco Ascenso, rareza Ultra. Forma heroica activada por Campana Draco.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/028-raku-tenma-draco-ascenso"
+    }
+  },
+  {
+    "id": "DB029",
+    "slug": "029-koro-vale-furia-relampago",
+    "name": "Koro Vale - Furia Relámpago",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Furia Relámpago"
+    ],
+    "rarity": "Raro",
+    "stage": "Forma",
+    "faction": "Equipo Campana",
+    "category": "Transformación",
+    "description": "Koro Vale - Furia Relámpago — Transformación. Furia Relámpago, rareza Raro. Forma de rivalidad y potencia..",
+    "inspirationBase": "Koro con aura azul eléctrica",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Koro Vale - Furia Relámpago, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Koro Vale - Furia Relámpago | Draco Bell #029 | TTG Wiki",
+      "description": "Ficha oficial de Koro Vale - Furia Relámpago (DB-029), Draco Bell categoría Transformación. Tipo Furia Relámpago, rareza Raro. Forma de rivalidad y potencia.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/029-koro-vale-furia-relampago"
+    }
+  },
+  {
+    "id": "DB030",
+    "slug": "030-koro-vale-eclipse-fase",
+    "name": "Koro Vale - Eclipse Fase",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Eclipse Fase"
+    ],
+    "rarity": "Ultra",
+    "stage": "Forma",
+    "faction": "Equipo Campana",
+    "category": "Transformación",
+    "description": "Koro Vale - Eclipse Fase — Transformación. Eclipse Fase, rareza Ultra. Forma peligrosa que debe aprender a dominar..",
+    "inspirationBase": "Koro al borde del descontrol",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Koro Vale - Eclipse Fase, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Koro Vale - Eclipse Fase | Draco Bell #030 | TTG Wiki",
+      "description": "Ficha oficial de Koro Vale - Eclipse Fase (DB-030), Draco Bell categoría Transformación. Tipo Eclipse Fase, rareza Ultra. Forma peligrosa que debe aprender a dominar.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/030-koro-vale-eclipse-fase"
+    }
+  },
+  {
+    "id": "DB031",
+    "slug": "031-orin-verde-mente-serena",
+    "name": "Orin Verde - Mente Serena",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Aura Mística"
+    ],
+    "rarity": "Raro",
+    "stage": "Forma",
+    "faction": "Custodios Verdes",
+    "category": "Transformación",
+    "description": "Orin Verde - Mente Serena — Transformación. Aura Mística, rareza Raro. Estado defensivo de precisión..",
+    "inspirationBase": "Guerrero verde meditando en combate",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Orin Verde - Mente Serena, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Orin Verde - Mente Serena | Draco Bell #031 | TTG Wiki",
+      "description": "Ficha oficial de Orin Verde - Mente Serena (DB-031), Draco Bell categoría Transformación. Tipo Aura Mística, rareza Raro. Estado defensivo de precisión.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/031-orin-verde-mente-serena"
+    }
+  },
+  {
+    "id": "DB032",
+    "slug": "032-b-12-modo-calculo",
+    "name": "B-12 - Modo Cálculo",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Forma",
+    "faction": "Tecnoides",
+    "category": "Transformación",
+    "description": "B-12 - Modo Cálculo — Transformación. Tecnoide, rareza Raro. Aprende técnicas enemigas..",
+    "inspirationBase": "Androide analizando patrones",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de B-12 - Modo Cálculo, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "B-12 - Modo Cálculo | Draco Bell #032 | TTG Wiki",
+      "description": "Ficha oficial de B-12 - Modo Cálculo (DB-032), Draco Bell categoría Transformación. Tipo Tecnoide, rareza Raro. Aprende técnicas enemigas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/032-b-12-modo-calculo"
+    }
+  },
+  {
+    "id": "DB033",
+    "slug": "033-b-21-turbo-azul",
+    "name": "B-21 - Turbo Azul",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Forma",
+    "faction": "Tecnoides",
+    "category": "Transformación",
+    "description": "B-21 - Turbo Azul — Transformación. Tecnoide, rareza Raro. Aumenta movimiento y evasión..",
+    "inspirationBase": "Androide de velocidad extrema",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de B-21 - Turbo Azul, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "B-21 - Turbo Azul | Draco Bell #033 | TTG Wiki",
+      "description": "Ficha oficial de B-21 - Turbo Azul (DB-033), Draco Bell categoría Transformación. Tipo Tecnoide, rareza Raro. Aumenta movimiento y evasión.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/033-b-21-turbo-azul"
+    }
+  },
+  {
+    "id": "DB034",
+    "slug": "034-b-33-absorcion-pesada",
+    "name": "B-33 - Absorción Pesada",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Bioarma"
+    ],
+    "rarity": "Ultra",
+    "stage": "Forma",
+    "faction": "Tecnoides",
+    "category": "Transformación",
+    "description": "B-33 - Absorción Pesada — Transformación. Bioarma, rareza Ultra. Forma de amenaza mayor..",
+    "inspirationBase": "Bioarma absorbiendo aura",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de B-33 - Absorción Pesada, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "B-33 - Absorción Pesada | Draco Bell #034 | TTG Wiki",
+      "description": "Ficha oficial de B-33 - Absorción Pesada (DB-034), Draco Bell categoría Transformación. Tipo Bioarma, rareza Ultra. Forma de amenaza mayor.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/034-b-33-absorcion-pesada"
+    }
+  },
+  {
+    "id": "DB035",
+    "slug": "035-gomorux-risa-caotica",
+    "name": "Gomorux - Risa Caótica",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Onirox"
+    ],
+    "rarity": "Raro",
+    "stage": "Forma",
+    "faction": "Onirox",
+    "category": "Transformación",
+    "description": "Gomorux - Risa Caótica — Transformación. Onirox, rareza Raro. Aumenta con emociones negativas..",
+    "inspirationBase": "Demonio alimentado por miedo",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Gomorux - Risa Caótica, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Gomorux - Risa Caótica | Draco Bell #035 | TTG Wiki",
+      "description": "Ficha oficial de Gomorux - Risa Caótica (DB-035), Draco Bell categoría Transformación. Tipo Onirox, rareza Raro. Aumenta con emociones negativas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/035-gomorux-risa-caotica"
+    }
+  },
+  {
+    "id": "DB036",
+    "slug": "036-lord-umbrax-nova-eclipse",
+    "name": "Lord Umbrax - Nova Eclipse",
+    "series": "draco_bell",
+    "entityType": "form",
+    "types": [
+      "Corte Eclipse"
+    ],
+    "rarity": "Legendario",
+    "stage": "Forma final",
+    "faction": "Corte Eclipse",
+    "category": "Transformación",
+    "description": "Lord Umbrax - Nova Eclipse — Transformación. Corte Eclipse, rareza Legendario. Forma de jefe final..",
+    "inspirationBase": "Villano final con aura eclipse",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Lord Umbrax - Nova Eclipse, Draco Bell Transformación",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Lord Umbrax - Nova Eclipse | Draco Bell #036 | TTG Wiki",
+      "description": "Ficha oficial de Lord Umbrax - Nova Eclipse (DB-036), Draco Bell categoría Transformación. Tipo Corte Eclipse, rareza Legendario. Forma de jefe final.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/036-lord-umbrax-nova-eclipse"
+    }
+  },
+  {
+    "id": "DB037",
+    "slug": "037-puno-cometa",
+    "name": "Puño Cometa",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Físico"
+    ],
+    "rarity": "Común",
+    "stage": "Técnica",
+    "faction": "Raku Tenma",
+    "category": "Técnica",
+    "description": "Puño Cometa — Técnica. Aura/Físico, rareza Común. Ataque básico icónico del protagonista..",
+    "inspirationBase": "Golpe con estela roja",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Puño Cometa, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Puño Cometa | Draco Bell #037 | TTG Wiki",
+      "description": "Ficha oficial de Puño Cometa (DB-037), Draco Bell categoría Técnica. Tipo Aura/Físico, rareza Común. Ataque básico icónico del protagonista.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/037-puno-cometa"
+    }
+  },
+  {
+    "id": "DB038",
+    "slug": "038-rafaga-tenma",
+    "name": "Ráfaga Tenma",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Energía"
+    ],
+    "rarity": "Raro",
+    "stage": "Técnica",
+    "faction": "Raku Tenma",
+    "category": "Técnica",
+    "description": "Ráfaga Tenma — Técnica. Aura/Energía, rareza Raro. Disparo principal de Raku..",
+    "inspirationBase": "Onda de aura roja",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Ráfaga Tenma, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Ráfaga Tenma | Draco Bell #038 | TTG Wiki",
+      "description": "Ficha oficial de Ráfaga Tenma (DB-038), Draco Bell categoría Técnica. Tipo Aura/Energía, rareza Raro. Disparo principal de Raku.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/038-rafaga-tenma"
+    }
+  },
+  {
+    "id": "DB039",
+    "slug": "039-rayo-vale",
+    "name": "Rayo Vale",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Energía"
+    ],
+    "rarity": "Raro",
+    "stage": "Técnica",
+    "faction": "Koro Vale",
+    "category": "Técnica",
+    "description": "Rayo Vale — Técnica. Aura/Energía, rareza Raro. Ataque característico de Koro..",
+    "inspirationBase": "Haz azul concentrado",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Rayo Vale, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Rayo Vale | Draco Bell #039 | TTG Wiki",
+      "description": "Ficha oficial de Rayo Vale (DB-039), Draco Bell categoría Técnica. Tipo Aura/Energía, rareza Raro. Ataque característico de Koro.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/039-rayo-vale"
+    }
+  },
+  {
+    "id": "DB040",
+    "slug": "040-corte-nari",
+    "name": "Corte Nari",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Técnico"
+    ],
+    "rarity": "Común",
+    "stage": "Técnica",
+    "faction": "Vela Nari",
+    "category": "Técnica",
+    "description": "Corte Nari — Técnica. Aura/Técnico, rareza Común. Ataque técnico de precisión..",
+    "inspirationBase": "Disco de aura calculado",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Corte Nari, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Corte Nari | Draco Bell #040 | TTG Wiki",
+      "description": "Ficha oficial de Corte Nari (DB-040), Draco Bell categoría Técnica. Tipo Aura/Técnico, rareza Común. Ataque técnico de precisión.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/040-corte-nari"
+    }
+  },
+  {
+    "id": "DB041",
+    "slug": "041-muro-kint",
+    "name": "Muro Kint",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Defensa"
+    ],
+    "rarity": "Común",
+    "stage": "Técnica",
+    "faction": "Boro Kint",
+    "category": "Técnica",
+    "description": "Muro Kint — Técnica. Aura/Defensa, rareza Común. Defensa frontal..",
+    "inspirationBase": "Pantalla de aura pesada",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Muro Kint, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Muro Kint | Draco Bell #041 | TTG Wiki",
+      "description": "Ficha oficial de Muro Kint (DB-041), Draco Bell categoría Técnica. Tipo Aura/Defensa, rareza Común. Defensa frontal.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/041-muro-kint"
+    }
+  },
+  {
+    "id": "DB042",
+    "slug": "042-garra-verde",
+    "name": "Garra Verde",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Mística"
+    ],
+    "rarity": "Raro",
+    "stage": "Técnica",
+    "faction": "Orin Verde",
+    "category": "Técnica",
+    "description": "Garra Verde — Técnica. Aura/Mística, rareza Raro. Ataque místico verdiano..",
+    "inspirationBase": "Proyección de garra espiritual",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Garra Verde, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Garra Verde | Draco Bell #042 | TTG Wiki",
+      "description": "Ficha oficial de Garra Verde (DB-042), Draco Bell categoría Técnica. Tipo Aura/Mística, rareza Raro. Ataque místico verdiano.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/042-garra-verde"
+    }
+  },
+  {
+    "id": "DB043",
+    "slug": "043-campana-rompeonda",
+    "name": "Campana Rompeonda",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Sonido"
+    ],
+    "rarity": "Ultra",
+    "stage": "Técnica",
+    "faction": "Equipo Campana",
+    "category": "Técnica",
+    "description": "Campana Rompeonda — Técnica. Aura/Sonido, rareza Ultra. Técnica cooperativa..",
+    "inspirationBase": "Onda resonante de Campana Draco",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Rompeonda, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Rompeonda | Draco Bell #043 | TTG Wiki",
+      "description": "Ficha oficial de Campana Rompeonda (DB-043), Draco Bell categoría Técnica. Tipo Aura/Sonido, rareza Ultra. Técnica cooperativa.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/043-campana-rompeonda"
+    }
+  },
+  {
+    "id": "DB044",
+    "slug": "044-eclipse-cannon",
+    "name": "Eclipse Cannon",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Oscura"
+    ],
+    "rarity": "Ultra",
+    "stage": "Técnica",
+    "faction": "Lord Umbrax",
+    "category": "Técnica",
+    "description": "Eclipse Cannon — Técnica. Aura/Oscura, rareza Ultra. Ataque villano final..",
+    "inspirationBase": "Cañón de aura negra",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Eclipse Cannon, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Eclipse Cannon | Draco Bell #044 | TTG Wiki",
+      "description": "Ficha oficial de Eclipse Cannon (DB-044), Draco Bell categoría Técnica. Tipo Aura/Oscura, rareza Ultra. Ataque villano final.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/044-eclipse-cannon"
+    }
+  },
+  {
+    "id": "DB045",
+    "slug": "045-doble-impacto-rondo",
+    "name": "Doble Impacto Rondo",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Físico"
+    ],
+    "rarity": "Común",
+    "stage": "Técnica",
+    "faction": "Maku Rondo",
+    "category": "Técnica",
+    "description": "Doble Impacto Rondo — Técnica. Aura/Físico, rareza Común. Combo rápido..",
+    "inspirationBase": "Dos golpes veloces",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Doble Impacto Rondo, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Doble Impacto Rondo | Draco Bell #045 | TTG Wiki",
+      "description": "Ficha oficial de Doble Impacto Rondo (DB-045), Draco Bell categoría Técnica. Tipo Aura/Físico, rareza Común. Combo rápido.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/045-doble-impacto-rondo"
+    }
+  },
+  {
+    "id": "DB046",
+    "slug": "046-luz-de-nira",
+    "name": "Luz de Nira",
+    "series": "draco_bell",
+    "entityType": "technique",
+    "types": [
+      "Aura",
+      "Soporte"
+    ],
+    "rarity": "Poco común",
+    "stage": "Técnica",
+    "faction": "Nira Solen",
+    "category": "Técnica",
+    "description": "Luz de Nira — Técnica. Aura/Soporte, rareza Poco común. Recuperación limitada..",
+    "inspirationBase": "Curación de aura",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Luz de Nira, Draco Bell Técnica",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Luz de Nira | Draco Bell #046 | TTG Wiki",
+      "description": "Ficha oficial de Luz de Nira (DB-046), Draco Bell categoría Técnica. Tipo Aura/Soporte, rareza Poco común. Recuperación limitada.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/046-luz-de-nira"
+    }
+  },
+  {
+    "id": "DB047",
+    "slug": "047-campana-draco-roja",
+    "name": "Campana Draco Roja",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Reliquia",
+      "Aura"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "faction": "Equipo Campana",
+    "category": "Objeto Draco Bell",
+    "description": "Campana Draco Roja — Objeto Draco Bell. Reliquia/Aura, rareza Raro. Resuena con decisión y combate frontal..",
+    "inspirationBase": "Campana de valor",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Draco Roja, Draco Bell Objeto Draco Bell",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Draco Roja | Draco Bell #047 | TTG Wiki",
+      "description": "Ficha oficial de Campana Draco Roja (DB-047), Draco Bell categoría Objeto Draco Bell. Tipo Reliquia/Aura, rareza Raro. Resuena con decisión y combate frontal.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/047-campana-draco-roja"
+    }
+  },
+  {
+    "id": "DB048",
+    "slug": "048-campana-draco-azul",
+    "name": "Campana Draco Azul",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Reliquia",
+      "Aura"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "faction": "Equipo Campana",
+    "category": "Objeto Draco Bell",
+    "description": "Campana Draco Azul — Objeto Draco Bell. Reliquia/Aura, rareza Raro. Resuena con control y estrategia..",
+    "inspirationBase": "Campana de calma",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Draco Azul, Draco Bell Objeto Draco Bell",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Draco Azul | Draco Bell #048 | TTG Wiki",
+      "description": "Ficha oficial de Campana Draco Azul (DB-048), Draco Bell categoría Objeto Draco Bell. Tipo Reliquia/Aura, rareza Raro. Resuena con control y estrategia.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/048-campana-draco-azul"
+    }
+  },
+  {
+    "id": "DB049",
+    "slug": "049-campana-draco-verde",
+    "name": "Campana Draco Verde",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Reliquia",
+      "Aura"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "faction": "Custodios Verdes",
+    "category": "Objeto Draco Bell",
+    "description": "Campana Draco Verde — Objeto Draco Bell. Reliquia/Aura, rareza Raro. Resuena con curación y naturaleza aural..",
+    "inspirationBase": "Campana de vida",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Draco Verde, Draco Bell Objeto Draco Bell",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Draco Verde | Draco Bell #049 | TTG Wiki",
+      "description": "Ficha oficial de Campana Draco Verde (DB-049), Draco Bell categoría Objeto Draco Bell. Tipo Reliquia/Aura, rareza Raro. Resuena con curación y naturaleza aural.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/049-campana-draco-verde"
+    }
+  },
+  {
+    "id": "DB050",
+    "slug": "050-campana-draco-dorada",
+    "name": "Campana Draco Dorada",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Reliquia",
+      "Aura"
+    ],
+    "rarity": "Ultra",
+    "stage": "Objeto",
+    "faction": "Equipo Campana",
+    "category": "Objeto Draco Bell",
+    "description": "Campana Draco Dorada — Objeto Draco Bell. Reliquia/Aura, rareza Ultra. Permite despertar Draco Ascenso..",
+    "inspirationBase": "Campana de ascenso",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Draco Dorada, Draco Bell Objeto Draco Bell",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Draco Dorada | Draco Bell #050 | TTG Wiki",
+      "description": "Ficha oficial de Campana Draco Dorada (DB-050), Draco Bell categoría Objeto Draco Bell. Tipo Reliquia/Aura, rareza Ultra. Permite despertar Draco Ascenso.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/050-campana-draco-dorada"
+    }
+  },
+  {
+    "id": "DB051",
+    "slug": "051-campana-draco-violeta",
+    "name": "Campana Draco Violeta",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Reliquia",
+      "Aura"
+    ],
+    "rarity": "Raro",
+    "stage": "Objeto",
+    "faction": "Koro Vale",
+    "category": "Objeto Draco Bell",
+    "description": "Campana Draco Violeta — Objeto Draco Bell. Reliquia/Aura, rareza Raro. Amplifica rivalidad y autocontrol..",
+    "inspirationBase": "Campana de conflicto",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Draco Violeta, Draco Bell Objeto Draco Bell",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Draco Violeta | Draco Bell #051 | TTG Wiki",
+      "description": "Ficha oficial de Campana Draco Violeta (DB-051), Draco Bell categoría Objeto Draco Bell. Tipo Reliquia/Aura, rareza Raro. Amplifica rivalidad y autocontrol.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/051-campana-draco-violeta"
+    }
+  },
+  {
+    "id": "DB052",
+    "slug": "052-campana-draco-negra",
+    "name": "Campana Draco Negra",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Reliquia",
+      "Oscura"
+    ],
+    "rarity": "Ultra",
+    "stage": "Objeto",
+    "faction": "Corte Eclipse",
+    "category": "Objeto Draco Bell",
+    "description": "Campana Draco Negra — Objeto Draco Bell. Reliquia/Oscura, rareza Ultra. Apaga resonancias cercanas..",
+    "inspirationBase": "Campana de silencio",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Campana Draco Negra, Draco Bell Objeto Draco Bell",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Campana Draco Negra | Draco Bell #052 | TTG Wiki",
+      "description": "Ficha oficial de Campana Draco Negra (DB-052), Draco Bell categoría Objeto Draco Bell. Tipo Reliquia/Oscura, rareza Ultra. Apaga resonancias cercanas.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/052-campana-draco-negra"
+    }
+  },
+  {
+    "id": "DB053",
+    "slug": "053-radar-de-campanas",
+    "name": "Radar de Campanas",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Tecnología"
+    ],
+    "rarity": "Común",
+    "stage": "Objeto",
+    "faction": "Vela Nari",
+    "category": "Objeto",
+    "description": "Radar de Campanas — Objeto. Tecnología, rareza Común. Localiza resonancias Draco Bell..",
+    "inspirationBase": "Dispositivo detector",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Radar de Campanas, Draco Bell Objeto",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Radar de Campanas | Draco Bell #053 | TTG Wiki",
+      "description": "Ficha oficial de Radar de Campanas (DB-053), Draco Bell categoría Objeto. Tipo Tecnología, rareza Común. Localiza resonancias Draco Bell.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/053-radar-de-campanas"
+    }
+  },
+  {
+    "id": "DB054",
+    "slug": "054-camara-de-gravedad-aural",
+    "name": "Cámara de Gravedad Aural",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Entrenamiento"
+    ],
+    "rarity": "Poco común",
+    "stage": "Objeto",
+    "faction": "Doctora Vela Sr.",
+    "category": "Objeto",
+    "description": "Cámara de Gravedad Aural — Objeto. Entrenamiento, rareza Poco común. Multiplica la presión de aura..",
+    "inspirationBase": "Sala de entrenamiento extremo",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cámara de Gravedad Aural, Draco Bell Objeto",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cámara de Gravedad Aural | Draco Bell #054 | TTG Wiki",
+      "description": "Ficha oficial de Cámara de Gravedad Aural (DB-054), Draco Bell categoría Objeto. Tipo Entrenamiento, rareza Poco común. Multiplica la presión de aura.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/054-camara-de-gravedad-aural"
+    }
+  },
+  {
+    "id": "DB055",
+    "slug": "055-baston-ginro",
+    "name": "Bastón Ginro",
+    "series": "draco_bell",
+    "entityType": "object",
+    "types": [
+      "Arma",
+      "Entrenamiento"
+    ],
+    "rarity": "Común",
+    "stage": "Objeto",
+    "faction": "Maestro Ginro",
+    "category": "Objeto",
+    "description": "Bastón Ginro — Objeto. Arma/Entrenamiento, rareza Común. Corrige postura y respiración..",
+    "inspirationBase": "Bastón con campana pequeña",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Bastón Ginro, Draco Bell Objeto",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Bastón Ginro | Draco Bell #055 | TTG Wiki",
+      "description": "Ficha oficial de Bastón Ginro (DB-055), Draco Bell categoría Objeto. Tipo Arma/Entrenamiento, rareza Común. Corrige postura y respiración.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/055-baston-ginro"
+    }
+  },
+  {
+    "id": "DB056",
+    "slug": "056-arena-del-primer-toque",
+    "name": "Arena del Primer Toque",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Torneo"
+    ],
+    "rarity": "Común",
+    "stage": "Lugar",
+    "faction": "Torneo",
+    "category": "Escenario",
+    "description": "Arena del Primer Toque — Escenario. Torneo, rareza Común. Primer gran escenario de combate..",
+    "inspirationBase": "Arena de artes marciales",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Arena del Primer Toque, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Arena del Primer Toque | Draco Bell #056 | TTG Wiki",
+      "description": "Ficha oficial de Arena del Primer Toque (DB-056), Draco Bell categoría Escenario. Tipo Torneo, rareza Común. Primer gran escenario de combate.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/056-arena-del-primer-toque"
+    }
+  },
+  {
+    "id": "DB057",
+    "slug": "057-isla-ginro",
+    "name": "Isla Ginro",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Entrenamiento"
+    ],
+    "rarity": "Común",
+    "stage": "Lugar",
+    "faction": "Dojo Ginro",
+    "category": "Escenario",
+    "description": "Isla Ginro — Escenario. Entrenamiento, rareza Común. Zona de humor y aprendizaje..",
+    "inspirationBase": "Isla tropical de entrenamiento",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Isla Ginro, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Isla Ginro | Draco Bell #057 | TTG Wiki",
+      "description": "Ficha oficial de Isla Ginro (DB-057), Draco Bell categoría Escenario. Tipo Entrenamiento, rareza Común. Zona de humor y aprendizaje.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/057-isla-ginro"
+    }
+  },
+  {
+    "id": "DB058",
+    "slug": "058-templo-verde",
+    "name": "Templo Verde",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Místico"
+    ],
+    "rarity": "Poco común",
+    "stage": "Lugar",
+    "faction": "Custodios Verdes",
+    "category": "Escenario",
+    "description": "Templo Verde — Escenario. Místico, rareza Poco común. Lugar de Orin y Daran..",
+    "inspirationBase": "Templo alienígena de meditación",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Templo Verde, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Templo Verde | Draco Bell #058 | TTG Wiki",
+      "description": "Ficha oficial de Templo Verde (DB-058), Draco Bell categoría Escenario. Tipo Místico, rareza Poco común. Lugar de Orin y Daran.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/058-templo-verde"
+    }
+  },
+  {
+    "id": "DB059",
+    "slug": "059-nave-ohn",
+    "name": "Nave Ohn",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Auralita"
+    ],
+    "rarity": "Raro",
+    "stage": "Lugar",
+    "faction": "Auralitas Errantes",
+    "category": "Escenario",
+    "description": "Nave Ohn — Escenario. Auralita, rareza Raro. Inicio de saga astral..",
+    "inspirationBase": "Nave de invasión",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nave Ohn, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nave Ohn | Draco Bell #059 | TTG Wiki",
+      "description": "Ficha oficial de Nave Ohn (DB-059), Draco Bell categoría Escenario. Tipo Auralita, rareza Raro. Inicio de saga astral.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/059-nave-ohn"
+    }
+  },
+  {
+    "id": "DB060",
+    "slug": "060-laboratorio-mecanox",
+    "name": "Laboratorio Mecanox",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Tecnoide"
+    ],
+    "rarity": "Raro",
+    "stage": "Lugar",
+    "faction": "Tecnoides",
+    "category": "Escenario",
+    "description": "Laboratorio Mecanox — Escenario. Tecnoide, rareza Raro. Centro de creación de B-12, B-21 y B-33..",
+    "inspirationBase": "Fábrica de androides",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Laboratorio Mecanox, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Laboratorio Mecanox | Draco Bell #060 | TTG Wiki",
+      "description": "Ficha oficial de Laboratorio Mecanox (DB-060), Draco Bell categoría Escenario. Tipo Tecnoide, rareza Raro. Centro de creación de B-12, B-21 y B-33.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/060-laboratorio-mecanox"
+    }
+  },
+  {
+    "id": "DB061",
+    "slug": "061-prision-onirox",
+    "name": "Prisión Onirox",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Demoníaco"
+    ],
+    "rarity": "Raro",
+    "stage": "Lugar",
+    "faction": "Onirox",
+    "category": "Escenario",
+    "description": "Prisión Onirox — Escenario. Demoníaco, rareza Raro. Origen de Gomorux..",
+    "inspirationBase": "Sello roto de aura caótica",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Prisión Onirox, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Prisión Onirox | Draco Bell #061 | TTG Wiki",
+      "description": "Ficha oficial de Prisión Onirox (DB-061), Draco Bell categoría Escenario. Tipo Demoníaco, rareza Raro. Origen de Gomorux.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/061-prision-onirox"
+    }
+  },
+  {
+    "id": "DB062",
+    "slug": "062-torre-eclipse",
+    "name": "Torre Eclipse",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Final"
+    ],
+    "rarity": "Ultra",
+    "stage": "Lugar",
+    "faction": "Corte Eclipse",
+    "category": "Escenario",
+    "description": "Torre Eclipse — Escenario. Final, rareza Ultra. Base de Lord Umbrax..",
+    "inspirationBase": "Torre oscura de resonancia",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Torre Eclipse, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Torre Eclipse | Draco Bell #062 | TTG Wiki",
+      "description": "Ficha oficial de Torre Eclipse (DB-062), Draco Bell categoría Escenario. Tipo Final, rareza Ultra. Base de Lord Umbrax.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/062-torre-eclipse"
+    }
+  },
+  {
+    "id": "DB063",
+    "slug": "063-cielo-de-nova-bell",
+    "name": "Cielo de Nova Bell",
+    "series": "draco_bell",
+    "entityType": "scenario",
+    "types": [
+      "Clímax"
+    ],
+    "rarity": "Legendario",
+    "stage": "Lugar",
+    "faction": "Final de saga",
+    "category": "Escenario",
+    "description": "Cielo de Nova Bell — Escenario. Clímax, rareza Legendario. Escenario del desenlace..",
+    "inspirationBase": "Cielo abierto con aura blanca/dorada",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Cielo de Nova Bell, Draco Bell Escenario",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Cielo de Nova Bell | Draco Bell #063 | TTG Wiki",
+      "description": "Ficha oficial de Cielo de Nova Bell (DB-063), Draco Bell categoría Escenario. Tipo Clímax, rareza Legendario. Escenario del desenlace.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/063-cielo-de-nova-bell"
+    }
+  },
+  {
+    "id": "DB064",
+    "slug": "064-equipo-campana-unido",
+    "name": "Equipo Campana Unido",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Equipo"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "faction": "Equipo Campana",
+    "category": "Tazo especial",
+    "description": "Equipo Campana Unido — Tazo especial. Equipo, rareza Legendario. Carta/tazo de grupo heroico..",
+    "inspirationBase": "Todos los héroes principales juntos",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Equipo Campana Unido, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Equipo Campana Unido | Draco Bell #064 | TTG Wiki",
+      "description": "Ficha oficial de Equipo Campana Unido (DB-064), Draco Bell categoría Tazo especial. Tipo Equipo, rareza Legendario. Carta/tazo de grupo heroico.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/064-equipo-campana-unido"
+    }
+  },
+  {
+    "id": "DB065",
+    "slug": "065-auralitas-errantes",
+    "name": "Auralitas Errantes",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Facción"
+    ],
+    "rarity": "Raro",
+    "stage": "Especial",
+    "faction": "Auralitas Errantes",
+    "category": "Tazo especial",
+    "description": "Auralitas Errantes — Tazo especial. Facción, rareza Raro. Tazo de facción rival..",
+    "inspirationBase": "Guerreros astrales reunidos",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Auralitas Errantes, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Auralitas Errantes | Draco Bell #065 | TTG Wiki",
+      "description": "Ficha oficial de Auralitas Errantes (DB-065), Draco Bell categoría Tazo especial. Tipo Facción, rareza Raro. Tazo de facción rival.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/065-auralitas-errantes"
+    }
+  },
+  {
+    "id": "DB066",
+    "slug": "066-custodios-verdes",
+    "name": "Custodios Verdes",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Facción"
+    ],
+    "rarity": "Raro",
+    "stage": "Especial",
+    "faction": "Custodios Verdes",
+    "category": "Tazo especial",
+    "description": "Custodios Verdes — Tazo especial. Facción, rareza Raro. Tazo de facción mística..",
+    "inspirationBase": "Orin y Daran con su templo",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Custodios Verdes, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Custodios Verdes | Draco Bell #066 | TTG Wiki",
+      "description": "Ficha oficial de Custodios Verdes (DB-066), Draco Bell categoría Tazo especial. Tipo Facción, rareza Raro. Tazo de facción mística.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/066-custodios-verdes"
+    }
+  },
+  {
+    "id": "DB067",
+    "slug": "067-tecnoides-despiertan",
+    "name": "Tecnoides Despiertan",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Facción"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "faction": "Tecnoides",
+    "category": "Tazo especial",
+    "description": "Tecnoides Despiertan — Tazo especial. Facción, rareza Ultra. Inicio de saga tecnológica..",
+    "inspirationBase": "B-12, B-21 y B-33 activados",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Tecnoides Despiertan, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Tecnoides Despiertan | Draco Bell #067 | TTG Wiki",
+      "description": "Ficha oficial de Tecnoides Despiertan (DB-067), Draco Bell categoría Tazo especial. Tipo Facción, rareza Ultra. Inicio de saga tecnológica.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/067-tecnoides-despiertan"
+    }
+  },
+  {
+    "id": "DB068",
+    "slug": "068-onirox-desatado",
+    "name": "Onirox Desatado",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Villano"
+    ],
+    "rarity": "Ultra",
+    "stage": "Especial",
+    "faction": "Onirox",
+    "category": "Tazo especial",
+    "description": "Onirox Desatado — Tazo especial. Villano, rareza Ultra. Evento de caos..",
+    "inspirationBase": "Gomorux rompiendo el sello",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Onirox Desatado, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Onirox Desatado | Draco Bell #068 | TTG Wiki",
+      "description": "Ficha oficial de Onirox Desatado (DB-068), Draco Bell categoría Tazo especial. Tipo Villano, rareza Ultra. Evento de caos.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/068-onirox-desatado"
+    }
+  },
+  {
+    "id": "DB069",
+    "slug": "069-draco-ascenso-doble",
+    "name": "Draco Ascenso Doble",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Transformación"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "faction": "Raku + Koro",
+    "category": "Tazo especial",
+    "description": "Draco Ascenso Doble — Tazo especial. Transformación, rareza Legendario. Ataque combinado de rivales..",
+    "inspirationBase": "Dos auras elevadas en paralelo",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Draco Ascenso Doble, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Draco Ascenso Doble | Draco Bell #069 | TTG Wiki",
+      "description": "Ficha oficial de Draco Ascenso Doble (DB-069), Draco Bell categoría Tazo especial. Tipo Transformación, rareza Legendario. Ataque combinado de rivales.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/069-draco-ascenso-doble"
+    }
+  },
+  {
+    "id": "DB070",
+    "slug": "070-nova-bell-final",
+    "name": "Nova Bell Final",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Transformación"
+    ],
+    "rarity": "Mitico",
+    "stage": "Especial",
+    "faction": "Equipo Campana",
+    "category": "Tazo especial",
+    "description": "Nova Bell Final — Tazo especial. Transformación, rareza Mitico. Clímax positivo..",
+    "inspirationBase": "Campana final resonando",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Nova Bell Final, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Nova Bell Final | Draco Bell #070 | TTG Wiki",
+      "description": "Ficha oficial de Nova Bell Final (DB-070), Draco Bell categoría Tazo especial. Tipo Transformación, rareza Mitico. Clímax positivo.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/070-nova-bell-final"
+    }
+  },
+  {
+    "id": "DB071",
+    "slug": "071-eclipse-total",
+    "name": "Eclipse Total",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Villano final"
+    ],
+    "rarity": "Legendario",
+    "stage": "Especial",
+    "faction": "Lord Umbrax",
+    "category": "Tazo especial",
+    "description": "Eclipse Total — Tazo especial. Villano final, rareza Legendario. Clímax negativo..",
+    "inspirationBase": "Todas las campanas silenciadas",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Eclipse Total, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Eclipse Total | Draco Bell #071 | TTG Wiki",
+      "description": "Ficha oficial de Eclipse Total (DB-071), Draco Bell categoría Tazo especial. Tipo Villano final, rareza Legendario. Clímax negativo.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/071-eclipse-total"
+    }
+  },
+  {
+    "id": "DB072",
+    "slug": "072-renacer-de-aura",
+    "name": "Renacer de Aura",
+    "series": "draco_bell",
+    "entityType": "special",
+    "types": [
+      "Final positivo"
+    ],
+    "rarity": "Mitico",
+    "stage": "Especial",
+    "faction": "Equipo Campana",
+    "category": "Tazo especial",
+    "description": "Renacer de Aura — Tazo especial. Final positivo, rareza Mitico. Cierre de saga..",
+    "inspirationBase": "Auras restauradas tras la batalla final",
+    "visualStyle": "Estilo manga/anime shonen de artes marciales, 2D, lineart limpio, cel shading fuerte, colores vibrantes.",
+    "relationships": [],
+    "image": {
+      "alt": "Tazo de Renacer de Aura, Draco Bell Tazo especial",
+      "status": "unconfirmed"
+    },
+    "seo": {
+      "title": "Renacer de Aura | Draco Bell #072 | TTG Wiki",
+      "description": "Ficha oficial de Renacer de Aura (DB-072), Draco Bell categoría Tazo especial. Tipo Final positivo, rareza Mitico. Cierre de saga.",
+      "canonical": "https://tradingtazosgame.com/wiki/draco-bell/072-renacer-de-aura"
+    }
+  }
+]
