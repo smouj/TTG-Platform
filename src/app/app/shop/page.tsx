@@ -4,7 +4,7 @@
 // ============================================================
 "use client"
 
-import { useState, useEffect, useCallback, useRef, useMemo } from "react"
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 import { useI18n } from "@/lib/i18n"
@@ -244,6 +244,8 @@ export default function BagShopPage() {
   const [stage, setStage] = useState<"select" | "opening" | "opening-bulk" | "reveal" | "reveal-bulk">("select")
   const [revealedTazo, setRevealedTazo] = useState<any>(null)
   const [revealedTazos, setRevealedTazos] = useState<any[]>([])
+  const revealedTazoRef = useRef<any>(null)
+  useEffect(() => { if (revealedTazo) revealedTazoRef.current = revealedTazo }, [revealedTazo])
   const [bonusTazo, setBonusTazo] = useState<any>(null)
   const [pendingBags, setPendingBags] = useState<number>(0)
   const [bulkIndex, setBulkIndex] = useState(0)
@@ -354,29 +356,37 @@ export default function BagShopPage() {
   const openBag = useCallback(async () => {
     const currentBagId = bagIdRef.current
     if (!token || !currentBagId || typeof currentBagId !== "string" || !currentBagId.trim()) {
+      console.warn("[openBag] Missing bagId/token", { token: !!token, bagId: currentBagId })
       setStage("select")
       setError("Something went wrong — try again")
       return
     }
     try {
+      console.log("[openBag] Opening bag:", currentBagId.trim())
       const res = await fetch("/api/bags/open", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ bagId: currentBagId.trim() }),
       })
       const data = await res.json()
+      console.log("[openBag] API response:", { ok: res.ok, hasTazo: !!data.tazo, error: data.error })
       if (res.ok && data.tazo) {
         playSFX('reveal', { volume: 0.5 })
+        console.log("[openBag] Setting reveal with tazo:", data.tazo.name)
+        revealedTazoRef.current = data.tazo
         setRevealedTazo(data.tazo)
         setBonusTazo(data.bonusTazo || null)
         setStage("reveal")
       } else if (res.ok) {
+        console.warn("[openBag] OK but no tazo in response")
         setError("Bag opened but no tazo found — please try again")
         setStage("select")
       } else {
+        console.error("[openBag] API error:", data.error)
         setError(data.error || "Failed to open"); setStage("select")
       }
-    } catch {
+    } catch (err) {
+      console.error("[openBag] Connection error:", err)
       setError("Connection error"); setStage("select")
     }
   }, [token])
@@ -709,16 +719,19 @@ export default function BagShopPage() {
 
 
   // ── REVEAL STAGE ───────────────────────────────────────
-  if (stage === "reveal" && revealedTazo) {
-    const rarityColor = RARITY_GRADIENT[revealedTazo.rarity]
-    const rarityLabel = RARITY_LABELS[revealedTazo.rarity] || revealedTazo.rarity
-    const rndRarity = revealedTazo.rarity
+  // revealTazo from state, with ref fallback in case state gets clobbered
+  const effectiveRevealedTazo = revealedTazo || revealedTazoRef.current
+  if (stage === "reveal" && effectiveRevealedTazo) {
+    const _tazo = effectiveRevealedTazo
+    const rarityColor = RARITY_GRADIENT[_tazo.rarity]
+    const rarityLabel = RARITY_LABELS[_tazo.rarity] || _tazo.rarity
+    const rndRarity = _tazo.rarity
     const isLegendary = rndRarity === "legendary"
     const isUltraRare = rndRarity === "ultra-rare"
     const isRare = rndRarity === "rare"
     const isHighRarity = isRare || isUltraRare || isLegendary
     const rarityStars = RARITY_STARS[rndRarity] || 1
-    const franchiseSlug = revealedTazo.franchiseSlug || selectedBag.franchise || "minimon"
+    const franchiseSlug = _tazo.franchiseSlug || selectedBag.franchise || "minimon"
 
     return (
       <div className="max-w-lg mx-auto py-6 sm:py-8 px-4 space-y-6 text-center relative">
@@ -800,15 +813,15 @@ export default function BagShopPage() {
               ? "6px 6px 0px #1a1a1a, 0 0 20px #3B82F640, inset 0 0 20px #3B82F608"
               : "6px 6px 0px #1a1a1a",
           }}>
-          {revealedTazo.imageUrl ? (
-            <TazoDiscImage src={revealedTazo.imageUrl} alt={revealedTazo.name || ""}
-              size="100%" borderWidth={0} franchiseSlug={revealedTazo.franchiseSlug}
-              finish={revealedTazo.finish} creatureVariant={revealedTazo.creatureVariant} shinyImageUrl={revealedTazo.shinyImageUrl}
+          {_tazo.imageUrl ? (
+            <TazoDiscImage src={revealedTazo.imageUrl} alt={_tazo.name || ""}
+              size="100%" borderWidth={0} franchiseSlug={_tazo.franchiseSlug}
+              finish={_tazo.finish} creatureVariant={_tazo.creatureVariant} shinyImageUrl={_tazo.shinyImageUrl}
               className="w-full h-full" />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center" style={{ background: rarityColor || "#9CA3AF" }}>
-              <span className="text-6xl font-black text-white/80">{(revealedTazo.name || "?")[0]}</span>
-              <span className="text-[8px] font-black text-white/40 mt-1 uppercase tracking-wider">{revealedTazo.name || "Unknown Tazo"}</span>
+              <span className="text-6xl font-black text-white/80">{(_tazo.name || "?")[0]}</span>
+              <span className="text-[8px] font-black text-white/40 mt-1 uppercase tracking-wider">{_tazo.name || "Unknown Tazo"}</span>
             </div>
           )}
         </motion.div>
@@ -822,16 +835,16 @@ export default function BagShopPage() {
               color: "#1a1a1a",
               textShadow: isLegendary ? "0 0 20px #F59E0B40" : "none",
             }}>
-            {revealedTazo.displayName || revealedTazo.name}
+            {_tazo.displayName || _tazo.name}
           </h3>
           <p className="text-xs font-bold text-[#1a1a1a]/35 uppercase tracking-wider">
-            #{revealedTazo.number || revealedTazo.id?.slice(-3)} · {revealedTazo.franchiseName || selectedBag.franchise}
+            #{_tazo.number || _tazo.id?.slice(-3)} · {_tazo.franchiseName || selectedBag.franchise}
           </p>
         </div>
 
         {/* Stats with staggered animation */}
         <div className="p-4 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] animate-[popUp_0.5s_ease-out_0.35s_both]">
-          <StatsRow tazo={revealedTazo} />
+          <StatsRow tazo={_tazo} />
         </div>
 
         {/* Legendary special message */}
