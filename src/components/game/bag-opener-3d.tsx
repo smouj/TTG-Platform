@@ -180,11 +180,15 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
       >
         <BagCamera interacting={stage === "tearing"} opening={isOpening} />
 
-        {/* Soft lighting */}
-        <ambientLight intensity={1.0} />
-        <spotLight position={[2.5, 3.5, 4]} intensity={3.0} angle={0.35} penumbra={0.4} color="#fffef8" />
-        <spotLight position={[-2, 3, -3]} intensity={2.0} angle={0.35} penumbra={0.5} color="#fffef5" />
-        <pointLight position={[0, -1.5, 3]} intensity={0.6} color="#ffddbb" />
+        {/* ═══ 3-point lighting ═══ */}
+        {/* Key — main front-upper spot */}
+        <spotLight position={[2.5, 3.5, 4]} intensity={3.2} angle={0.35} penumbra={0.4} color="#fffef8" />
+        {/* Fill — softer lower-front */}
+        <pointLight position={[0, 0.5, 2.5]} intensity={0.5} color="#fff5e8" />
+        {/* Rim — subtle back edge light for depth */}
+        <directionalLight position={[-1.5, 0.5, -3]} intensity={0.35} color="#e8d5c0" />
+        {/* Ambient */}
+        <ambientLight intensity={0.65} color="#fffaf5" />
 
         <Suspense fallback={null}>
           <PotatoChipBag3D

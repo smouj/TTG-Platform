@@ -1,10 +1,12 @@
 // ============================================================
-// Trading Tazos Game — BagCardMini3D v11
+// Trading Tazos Game — BagCardMini3D v12
 //
-// Uses shared ring-based bag geometry (bag-geometry.ts).
-// Same visual as PotatoChipBag3D (the opener) — consistent.
-// 6 meshes: front, back, side, top seal, bottom seal, caps.
-// Franchise-specific static rotation + gentle float animation.
+// Refinements over v11:
+//   - Professional 3-point lighting: key + fill + subtle rim back
+//   - Seam material closer to bag color (factor 0.62 vs 0.55)
+//   - Subtle specular sheen on textured faces (plastic bag look)
+//   - Smoother sway animation (slower, dampened)
+//   - Scale bumped to 0.94 for better canvas fill
 // ============================================================
 "use client"
 
@@ -27,11 +29,11 @@ function darkenHex(hex: string, factor: number): string {
 
 // ═══ Franchise rotations ═══
 const FRANCHISE_ROT_Y: Record<string, number> = {
-  minimon: -0.25,
-  cybermon: 0.15,
-  dracobell: 0.25,
+  minimon: -0.22,
+  cybermon: 0.12,
+  dracobell: 0.22,
 }
-const TILT_X = -0.09
+const TILT_X = -0.07
 
 // ═══ Inner model ═══
 function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
@@ -40,11 +42,12 @@ function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
   const groupRef = useRef<THREE.Group>(null!)
   const frontTex = useLoader(THREE.TextureLoader, frontUrl)
   const backTex = useLoader(THREE.TextureLoader, backUrl)
-  const rotY = FRANCHISE_ROT_Y[franchiseSlug || ""] ?? -0.15
+  const rotY = FRANCHISE_ROT_Y[franchiseSlug || ""] ?? -0.12
+  const swayRef = useRef(0)
 
-  const seamColor = useMemo(() => darkenHex(bagColor, 0.55), [bagColor])
-  const sealColor = useMemo(() => darkenHex(bagColor, 0.42), [bagColor])
-  const capColor = "#1a1512"
+  const seamColor = useMemo(() => darkenHex(bagColor, 0.62), [bagColor])
+  const sealColor = useMemo(() => darkenHex(bagColor, 0.48), [bagColor])
+  const capColor = "#14100e"
 
   const dims = BAG_SMALL
   const frontGeo = useMemo(() => buildFaceGeo(true, dims), [])
@@ -56,19 +59,19 @@ function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
   const bottomCapGeo = useMemo(() => buildBodyCapGeo(false, dims), [])
 
   const fMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: frontTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide,
+    map: frontTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
   }), [frontTex])
   const bMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: backTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide,
+    map: backTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
   }), [backTex])
   const sMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: seamColor, roughness: 0.45, metalness: 0.03, side: THREE.FrontSide,
+    color: seamColor, roughness: 0.50, metalness: 0.04, side: THREE.FrontSide,
   }), [seamColor])
   const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: sealColor, roughness: 0.55, metalness: 0.02, side: THREE.FrontSide,
+    color: sealColor, roughness: 0.55, metalness: 0.03, side: THREE.FrontSide,
   }), [sealColor])
   const capMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: capColor, roughness: 0.8, metalness: 0, side: THREE.FrontSide,
+    color: capColor, roughness: 0.85, metalness: 0, side: THREE.FrontSide,
   }), [])
 
   useEffect(() => {
@@ -85,14 +88,16 @@ function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
     }
   }, [frontTex, backTex])
 
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = rotY + Math.sin(Date.now() * 0.0008) * 0.06
-    }
+  useFrame((_, delta) => {
+    if (!groupRef.current) return
+    // Smooth sway using accumulated phase (frame-rate independent)
+    swayRef.current += delta * 0.45
+    const sway = Math.sin(swayRef.current) * 0.04
+    groupRef.current.rotation.y = rotY + sway
   })
 
   return (
-    <group ref={groupRef} scale={0.92} rotation={[TILT_X, rotY, 0]}>
+    <group ref={groupRef} scale={0.94} rotation={[TILT_X, rotY, 0]}>
       <mesh geometry={frontGeo} material={fMat} />
       <mesh geometry={backGeo} material={bMat} />
       <mesh geometry={sideGeo} material={sMat} />
@@ -109,17 +114,23 @@ export default function BagCardMini3D({ frontUrl, backUrl, bagColor = "#d4d0c8",
   frontUrl: string; backUrl: string; bagColor?: string; franchiseSlug?: string
 }) {
   return (
-    <div className="w-full h-[180px] sm:h-[200px]" style={{ background: "transparent" }}>
+    <div className="w-full h-[190px] sm:h-[210px]" style={{ background: "transparent" }}>
       <Canvas
-        camera={{ position: [0, 0.05, 1.7], fov: 40 }}
+        camera={{ position: [0, 0.03, 1.65], fov: 38 }}
         style={{ background: "transparent" }}
         gl={{ antialias: true, alpha: true, preserveDrawingBuffer: false }}
-        dpr={[1, 1.5]}
+        dpr={[1, 2]}
       >
-        <ambientLight intensity={0.65} />
-        <directionalLight position={[3, 2.5, 4]} intensity={1.6} />
-        <directionalLight position={[-2, 1.5, -2]} intensity={0.5} color="#ffeecc" />
-        <pointLight position={[0, 0.8, 2.5]} intensity={0.4} color="#FFCC00" />
+        {/* ═══ 3-point lighting ═══ */}
+        {/* Key light — main front-upper illumination */}
+        <directionalLight position={[2.5, 3, 4]} intensity={2.2} color="#fffef5" />
+        {/* Fill light — soft ambient from below-front */}
+        <pointLight position={[0, 0.5, 2.5]} intensity={0.45} color="#fff5e8" />
+        {/* Rim/back light — subtle edge glow for depth */}
+        <directionalLight position={[-1.5, 1, -3]} intensity={0.35} color="#e8d5c0" />
+        {/* Ambient — even base illumination */}
+        <ambientLight intensity={0.55} color="#fffaf5" />
+
         <MiniBagModel
           frontUrl={frontUrl}
           backUrl={backUrl}

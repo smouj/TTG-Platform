@@ -1,10 +1,11 @@
 // ============================================================
-// Trading Tazos Game — PotatoChipBag3D v16
+// Trading Tazos Game — PotatoChipBag3D v17
 //
-// Shared ring-based bag geometry (from bag-geometry.ts).
-// 5 meshes: front, back, side, top seal, bottom seal
-// + 2 body caps (top/bottom, hidden until opening)
-// + opening animation: top seal tears, body expands, glow reveals
+// Refinements:
+//   - Seam lighter (0.68 factor, closer to bag color)
+//   - Subtle specular on textured faces (plastic sheen)
+//   - Softer interior glow
+//   - Tear animation preserves seal visibility threshold
 // ============================================================
 "use client"
 
@@ -16,10 +17,11 @@ import {
   BAG_LARGE,
 } from "@/lib/bag-geometry"
 
-// ═══ Re-exports for consumers ═══
+// ═══ Re-exports ═══
 export const BAG_W_TOP = BAG_LARGE.wTop
 export const BAG_W_BOT = BAG_LARGE.wBot
 export const BAG_H = BAG_LARGE.h
+export { BAG_LARGE }
 
 // ═══ Helpers ═══
 function hexToRgb(hex: string): [number, number, number] {
@@ -39,7 +41,7 @@ interface Props {
   onPointerMove?: (e: THREE.Event) => void
   onPointerUp?: (e: THREE.Event) => void
   opening?: boolean
-  tearProgress?: number    // 0→1 tear animation on top seal
+  tearProgress?: number
 }
 
 export default function PotatoChipBag3D({
@@ -57,10 +59,9 @@ export default function PotatoChipBag3D({
 
   const frontTex = useLoader(THREE.TextureLoader, frontUrl)
   const backTex = useLoader(THREE.TextureLoader, backUrl)
-  const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
-  const sealColorHex = useMemo(() => darkenHex(bagColor, 0.50), [bagColor])
+  const seamColorHex = useMemo(() => darkenHex(bagColor, 0.68), [bagColor])
+  const sealColorHex = useMemo(() => darkenHex(bagColor, 0.52), [bagColor])
 
-  // ── Shared geometry ──
   const dims = BAG_LARGE
   const frontGeo = useMemo(() => buildFaceGeo(true, dims), [])
   const backGeo = useMemo(() => buildFaceGeo(false, dims), [])
@@ -70,21 +71,20 @@ export default function PotatoChipBag3D({
   const topCapGeo = useMemo(() => buildBodyCapGeo(true, dims), [])
   const bottomCapGeo = useMemo(() => buildBodyCapGeo(false, dims), [])
 
-  // ── Materials ──
   const fMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: frontTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide,
+    map: frontTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
   }), [frontTex])
   const bMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: backTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide,
+    map: backTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
   }), [backTex])
   const sMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: seamColorHex, roughness: 0.5, metalness: 0.04, side: THREE.FrontSide,
+    color: seamColorHex, roughness: 0.50, metalness: 0.04, side: THREE.FrontSide,
   }), [seamColorHex])
   const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: sealColorHex, roughness: 0.55, metalness: 0.02, side: THREE.FrontSide,
+    color: sealColorHex, roughness: 0.55, metalness: 0.03, side: THREE.FrontSide,
   }), [sealColorHex])
   const capMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: "#1a1512", roughness: 0.8, metalness: 0, side: THREE.FrontSide,
+    color: "#14100e", roughness: 0.85, metalness: 0, side: THREE.FrontSide,
   }), [])
 
   useEffect(() => {
@@ -111,40 +111,35 @@ export default function PotatoChipBag3D({
     openRef.current = THREE.MathUtils.lerp(openRef.current, opening ? 1 : 0, 3.0 * delta)
     const p = Math.max(0, Math.min(1, openRef.current))
 
-    // Pop on open start
     g.scale.setScalar(bs * (1 + popRef.current * 0.06 * Math.sin(popRef.current * Math.PI) * (1 - popRef.current * 0.3)))
 
-    // Body: slight vertical compression during open
     if (bodyRef.current) {
       const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.06) / 0.65)), 3)
-      bodyRef.current.scale.y = 1 - t * 0.03
+      bodyRef.current.scale.y = 1 - t * 0.02
     }
 
-    // Top seal: tear away during opening
     if (sealRef.current) {
       const sealAnim = Math.max(tearProgress, p)
-      sealRef.current.position.y = sealAnim * 0.35
-      sealRef.current.rotation.x = sealAnim * -0.55
-      sealRef.current.scale.setScalar(1 - sealAnim * 0.3)
-      sealRef.current.visible = sealAnim < 0.95
+      sealRef.current.position.y = sealAnim * 0.30
+      sealRef.current.rotation.x = sealAnim * -0.45
+      sealRef.current.scale.setScalar(1 - sealAnim * 0.25)
+      sealRef.current.visible = sealAnim < 0.92
     }
 
-    // Interior glow
     if (interiorRef.current) {
-      const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.15) / 0.55)), 3)
-      interiorRef.current.scale.setScalar(0.25 + t * 0.75)
+      const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.15) / 0.5)), 3)
+      interiorRef.current.scale.setScalar(0.20 + t * 0.80)
       const mat = interiorRef.current.material as THREE.MeshStandardMaterial
-      if (!Array.isArray(mat)) mat.opacity = t * 0.85
+      if (!Array.isArray(mat)) mat.opacity = t * 0.82
     }
     if (interiorGlowRef.current) {
       const t = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - 0.2) / 0.5)), 3)
-      interiorGlowRef.current.intensity = t * 1.4 * (1 + Math.sin(Date.now() * 0.008) * 0.3 * t)
+      interiorGlowRef.current.intensity = t * 1.2 * (1 + Math.sin(Date.now() * 0.006) * 0.25 * t)
     }
   })
 
   return (
-    <group ref={groupRef} scale={scale} rotation={[0, -0.04, 0.02]}>
-      {/* Body group — front/back/side + caps */}
+    <group ref={groupRef} scale={scale} rotation={[0, -0.03, 0.01]}>
       <group ref={bodyRef}
         onPointerDown={interactive ? onPointerDown : undefined}
         onPointerMove={interactive ? onPointerMove : undefined}
@@ -158,7 +153,6 @@ export default function PotatoChipBag3D({
         <mesh geometry={topCapGeo} material={capMat} visible={tearProgress > 0.3} />
       </group>
 
-      {/* Top seal — separate group for tear animation */}
       <group ref={sealRef}
         onPointerDown={interactive ? onPointerDown : undefined}
         onPointerMove={interactive ? onPointerMove : undefined}
@@ -167,12 +161,11 @@ export default function PotatoChipBag3D({
         <mesh geometry={topSealGeo} material={sealMat} />
       </group>
 
-      {/* Interior elements (hidden until opening) */}
       <mesh ref={interiorRef} position={[0, 0, 0]}>
-        <boxGeometry args={[BAG_LARGE.wBot * 0.5, BAG_LARGE.h * 0.35, 0.02]} />
+        <boxGeometry args={[BAG_LARGE.wBot * 0.5, BAG_LARGE.h * 0.32, 0.02]} />
         <meshStandardMaterial color="#050302" roughness={0.95} metalness={0} transparent opacity={0} depthWrite />
       </mesh>
-      <pointLight ref={interiorGlowRef} position={[0, BAG_LARGE.h * 0.25, 0]} intensity={0} color="#ffdd55" distance={1.5} decay={2} />
+      <pointLight ref={interiorGlowRef} position={[0, BAG_LARGE.h * 0.22, 0]} intensity={0} color="#ffdd55" distance={1.4} decay={2} />
     </group>
   )
 }
