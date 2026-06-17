@@ -1,6 +1,6 @@
 // ============================================================
-// Trading Tazos Game — BagCardMini3D v7
-// 3 separate meshes. Narrower faces (cos > |0.4|).
+// Trading Tazos Game — BagCardMini3D v8
+// 3 meshes, wide faces (cos>0.18), UV on central 60%.
 // ============================================================
 "use client"
 
@@ -9,7 +9,7 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
 const BAG_W_TOP = 0.72; const BAG_W_BOT = 0.64; const BAG_H = 1.02; const BULGE = 0.17
-const COS_FRONT = 0.4; const ARC_HALF = Math.acos(COS_FRONT)
+const COS_THRESH = 0.18; const ARC_HALF = Math.acos(COS_THRESH); const UV_SPREAD = 0.6
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
 function hexToRgb(hex: string): [number, number, number] {
@@ -24,8 +24,7 @@ function darkenHex(hex: string, factor: number): string {
 function buildSubGeo(
   wTop: number, wBot: number, h: number, bulge: number,
   segsAround: number, segsH: number,
-  vertexFilter: (i: number, angle: number) => boolean,
-  uvMap: (angle: number) => number,
+  vertexFilter: (angle: number) => boolean, uvMap: (angle: number) => number,
 ): THREE.BufferGeometry {
   const positions: number[] = []; const uvs: number[] = []
   const oldToNew: number[][] = []
@@ -37,7 +36,7 @@ function buildSubGeo(
     const halfD = bulge * hf
     for (let i = 0; i < segsAround; i++) {
       const angle = (i / segsAround) * Math.PI * 2
-      if (vertexFilter(i, angle)) {
+      if (vertexFilter(angle)) {
         const cosA = Math.cos(angle), sinA = Math.sin(angle)
         const r = Math.pow(Math.pow(Math.abs(cosA), 3.5) + Math.pow(Math.abs(sinA), 3.5), -1 / 3.5)
         positions.push(r * cosA * halfW, y, r * sinA * halfD)
@@ -70,16 +69,15 @@ function MiniBagModel({ frontUrl, backUrl, bagColor }: { frontUrl: string; backU
   const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
 
   const frontGeo = useMemo(() => buildSubGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14,
-    (_i, a) => Math.cos(a) > COS_FRONT,
-    (a) => { const aa = a > Math.PI ? a - 2 * Math.PI : a; return Math.max(0, Math.min(1, (aa / ARC_HALF + 1) / 2)) }
+    (a) => Math.cos(a) > COS_THRESH,
+    (a) => { const aa = a > Math.PI ? a - 2 * Math.PI : a; const s = aa / (ARC_HALF * UV_SPREAD); return Math.max(0, Math.min(1, (s + 1) / 2)) }
   ), [])
   const backGeo = useMemo(() => buildSubGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14,
-    (_i, a) => Math.cos(a) < -COS_FRONT,
-    (a) => { const aa = a - Math.PI; return Math.max(0, Math.min(1, (aa / ARC_HALF + 1) / 2)) }
+    (a) => Math.cos(a) < -COS_THRESH,
+    (a) => { const aa = a - Math.PI; const s = aa / (ARC_HALF * UV_SPREAD); return Math.max(0, Math.min(1, (s + 1) / 2)) }
   ), [])
   const sideGeo = useMemo(() => buildSubGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14,
-    (_i, a) => Math.abs(Math.cos(a)) <= COS_FRONT,
-    () => 0.5
+    (a) => Math.abs(Math.cos(a)) <= COS_THRESH, () => 0.5,
   ), [])
 
   const fMat = useMemo(() => new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide }), [frontTex])
