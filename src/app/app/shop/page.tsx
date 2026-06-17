@@ -345,6 +345,8 @@ export default function BagShopPage() {
         setStage("opening-bulk")
       } else {
         setBagId(ids[0])
+        setBulkIndex(0)
+        setBulkTotal(0)
         setBuying(false)
         setStage("opening")
       }
@@ -411,6 +413,7 @@ export default function BagShopPage() {
     setRevealedTazo(null); setRevealedTazos([]); setBonusTazo(null)
     setBulkIndex(0); setBulkTotal(0)
     setError(null)
+    revealedTazoRef.current = null
   }, [])
 
   // ── Bulk open sequencer (top-level hook, guarded internally) ──
@@ -829,7 +832,7 @@ export default function BagShopPage() {
               : "6px 6px 0px #1a1a1a",
           }}>
           {_tazo.imageUrl ? (
-            <TazoDiscImage src={revealedTazo.imageUrl} alt={_tazo.name || ""}
+            <TazoDiscImage src={_tazo.imageUrl} alt={_tazo.name || ""}
               size="100%" borderWidth={0} franchiseSlug={_tazo.franchiseSlug}
               finish={_tazo.finish} creatureVariant={_tazo.creatureVariant} shinyImageUrl={_tazo.shinyImageUrl}
               className="w-full h-full" />
