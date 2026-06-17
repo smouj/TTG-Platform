@@ -1,6 +1,7 @@
 // ============================================================
-// Trading Tazos Game — BagCardMini3D v4
-// Compact rotating bag card. Single closed pillow mesh.
+// Trading Tazos Game — BagCardMini3D v5
+// Compact rotating bag card. Superellipse pillow mesh.
+// Same geometry as PotatoChipBag3D v11, scaled for preview.
 // ============================================================
 "use client"
 
@@ -11,7 +12,7 @@ import * as THREE from "three"
 const BAG_W_TOP = 0.72; const BAG_W_BOT = 0.64
 const BAG_H = 1.02; const TOP_CRIMP = 0.08; const BOT_CRIMP = 0.06
 const BODY_H = BAG_H - TOP_CRIMP - BOT_CRIMP
-const BULGE = 0.17; const SEAM_INSET = 0.012
+const BULGE = 0.17
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
 function hexToRgb(hex: string): [number, number, number] {
@@ -27,62 +28,61 @@ function lightenHex(hex: string, mix: number): string {
   return `#${Math.round(Math.min(255, (r + (1 - r) * mix) * 255)).toString(16).padStart(2, "0")}${Math.round(Math.min(255, (g + (1 - g) * mix) * 255)).toString(16).padStart(2, "0")}${Math.round(Math.min(255, (b + (1 - b) * mix) * 255)).toString(16).padStart(2, "0")}`
 }
 
-function makePillowBodyGeo(wTop: number, wBot: number, h: number, bulge: number, segsFace: number, segsSide: number, segsH: number): THREE.BufferGeometry {
-  const faceVerts = segsFace; const sideVerts = segsSide
-  const vertsPerRing = faceVerts + sideVerts + faceVerts + sideVerts
+function makePillowBodyGeo(
+  wTop: number, wBot: number, h: number, bulge: number,
+  segsAround: number, segsH: number
+): THREE.BufferGeometry {
   const positions: number[] = []; const uvs: number[] = []
+  const vertexZones: ("front" | "back" | "side")[] = []
+  for (let i = 0; i < segsAround; i++) {
+    const cosA = Math.cos((i / segsAround) * Math.PI * 2)
+    if (cosA > 0.18) vertexZones.push("front")
+    else if (cosA < -0.18) vertexZones.push("back")
+    else vertexZones.push("side")
+  }
+  const frontStart = vertexZones.findIndex(z => z === "front")
+  const frontEnd = vertexZones.lastIndexOf("front")
+  const backStart = vertexZones.findIndex(z => z === "back")
+  const backEnd = vertexZones.lastIndexOf("back")
 
   for (let yi = 0; yi <= segsH; yi++) {
     const t = yi / segsH; const y = (t - 0.5) * h
-    const yNorm = Math.abs(y) / (h / 2); const wAtY = lerp(wBot / 2, wTop / 2, t)
+    const halfW = lerp(wBot / 2, wTop / 2, t)
+    const yNorm = Math.abs(y) / (h / 2)
     const hf = Math.pow(1 - Math.pow(yNorm, 5), 2.5)
+    const halfD = bulge * hf
 
-    for (let xi = 0; xi < faceVerts; xi++) {
-      const xNorm = (xi / (faceVerts - 1) - 0.5) * 2
-      const x = wAtY * xNorm
-      const bf = Math.pow(1 - Math.pow(Math.abs(xNorm), 3), 2)
-      positions.push(x, y, bulge * bf * hf)
-      uvs.push((xNorm + 1) / 2, t)
-    }
-    for (let si = 0; si < sideVerts; si++) {
-      const sNorm = (si + 1) / (sideVerts + 1)
-      const frontZ = bulge * hf
-      positions.push(wAtY - SEAM_INSET, y, frontZ * (1 - 2 * sNorm))
-      uvs.push(sNorm, t)
-    }
-    for (let xi = 0; xi < faceVerts; xi++) {
-      const xNorm = (xi / (faceVerts - 1) - 0.5) * 2
-      const xPos = wAtY * (1 - (xi / (faceVerts - 1)) * 2)
-      const bf = Math.pow(1 - Math.pow(Math.abs(xNorm), 3), 2)
-      positions.push(xPos, y, -bulge * bf * hf)
-      uvs.push(xi / (faceVerts - 1), t)
-    }
-    for (let si = 0; si < sideVerts; si++) {
-      const sNorm = (si + 1) / (sideVerts + 1)
-      const zFromBack = -bulge * hf; const zToFront = bulge * hf
-      positions.push(-wAtY + SEAM_INSET, y, zFromBack + (zToFront - zFromBack) * sNorm)
-      uvs.push(sNorm, t)
+    for (let i = 0; i < segsAround; i++) {
+      const angle = (i / segsAround) * Math.PI * 2
+      const cosA = Math.cos(angle); const sinA = Math.sin(angle)
+      const n = 3.5
+      const r = Math.pow(Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n), -1 / n)
+      const x = r * cosA * halfW * 0.92; const z = r * sinA * halfD
+      positions.push(x, y, z)
+      const zone = vertexZones[i]
+      let u = 0.5
+      if (zone === "front" && frontEnd > frontStart) u = (i - frontStart) / (frontEnd - frontStart)
+      else if (zone === "back" && backEnd > backStart) u = (i - backStart) / (backEnd - backStart)
+      uvs.push(u, t)
     }
   }
 
-  const indices: number[] = []; const frontI: number[] = []; const backI: number[] = []; const sideI: number[] = []
+  const allIndices: number[] = []; const frontI: number[] = []; const backI: number[] = []; const sideI: number[] = []
   for (let yi = 0; yi < segsH; yi++) {
-    const r0 = yi * vertsPerRing; const r1 = (yi + 1) * vertsPerRing
-    for (let vi = 0; vi < vertsPerRing; vi++) {
-      const vNext = (vi + 1) % vertsPerRing
-      const a = r0 + vi, b = r1 + vi, c = r0 + vNext, d = r1 + vNext
-      let section: "front" | "back" | "side" = "side"
-      if (vi < faceVerts - 1 && vNext < faceVerts) section = "front"
-      else if (vi >= faceVerts + sideVerts && vi < faceVerts + sideVerts + faceVerts - 1) section = "back"
-      const tgt = section === "front" ? frontI : section === "back" ? backI : sideI
-      indices.push(a, b, c); tgt.push(a, b, c)
-      indices.push(b, d, c); tgt.push(b, d, c)
+    const r0 = yi * segsAround; const r1 = (yi + 1) * segsAround
+    for (let i = 0; i < segsAround; i++) {
+      const iNext = (i + 1) % segsAround
+      const a = r0 + i, b = r1 + i, c = r0 + iNext, d = r1 + iNext
+      const zone = vertexZones[i]
+      const tgt = zone === "front" ? frontI : zone === "back" ? backI : sideI
+      allIndices.push(a, b, c); tgt.push(a, b, c)
+      allIndices.push(b, d, c); tgt.push(b, d, c)
     }
   }
   const geo = new THREE.BufferGeometry()
   geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
   geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2))
-  geo.setIndex(indices)
+  geo.setIndex(allIndices)
   geo.computeVertexNormals()
   geo.clearGroups()
   if (frontI.length > 0) geo.addGroup(0, frontI.length, 0)
@@ -96,10 +96,10 @@ function makeCrimpGeo(w: number, h: number, segsW: number): THREE.BufferGeometry
   const overhang = 0.018; const w2 = w / 2 + overhang
   const rowsW = segsW + 1; const rowsH = 3; const depth = 0.006
   for (let yi = 0; yi < rowsH; yi++) {
-    const y = (yi / (rowsH - 1) - 0.5) * h; const wave = Math.sin(yi * 2.5) * 0.004
+    const yv = (yi / (rowsH - 1) - 0.5) * h; const wave = Math.sin(yi * 2.5) * 0.004
     for (let xi = 0; xi < rowsW; xi++) {
       const x = (xi / (rowsW - 1) - 0.5) * w2 * 2
-      vertices.push(x, y + wave, depth, x, y + wave, -depth)
+      vertices.push(x, yv + wave, depth, x, yv + wave, -depth)
     }
   }
   for (let yi = 0; yi < rowsH - 1; yi++)
@@ -125,8 +125,8 @@ function makeEdgeTex(bagColor: string): THREE.Texture {
   }
   ctx.strokeStyle = crimpColor; ctx.lineWidth = 2.5
   for (let row = 0; row < 2; row++) {
-    const y = 8 + row * 16; ctx.beginPath()
-    for (let x = 0; x < 128; x += 5) { const notch = Math.sin(x * 1.2 + row * 2.1) * 2.5; if (x === 0) ctx.moveTo(x, y + notch); else ctx.lineTo(x, y + notch) }
+    const yv = 8 + row * 16; ctx.beginPath()
+    for (let x = 0; x < 128; x += 5) { const notch = Math.sin(x * 1.2 + row * 2.1) * 2.5; if (x === 0) ctx.moveTo(x, yv + notch); else ctx.lineTo(x, yv + notch) }
     ctx.stroke()
   }
   const tex = new THREE.CanvasTexture(c)
@@ -143,7 +143,8 @@ function MiniBagModel({ frontUrl, backUrl, bagColor }: { frontUrl: string; backU
   const backTex = useLoader(THREE.TextureLoader, backUrl)
   const edgeTex = useMemo(() => getEdgeTex(bagColor), [bagColor])
   const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
-  const bodyGeo = useMemo(() => makePillowBodyGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, 22, 2, 16), [])
+  // 48 verts/ring for mini — lighter but still smooth
+  const bodyGeo = useMemo(() => makePillowBodyGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, 48, 14), [])
   const topCrimpGeo = useMemo(() => makeCrimpGeo(BAG_W_TOP, TOP_CRIMP, 8), [])
   const botCrimpGeo = useMemo(() => makeCrimpGeo(BAG_W_BOT, BOT_CRIMP, 8), [])
 

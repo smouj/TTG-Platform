@@ -1,10 +1,18 @@
 // ============================================================
-// Trading Tazos Game — PotatoChipBag3D v10
+// Trading Tazos Game — PotatoChipBag3D v11
 //
-// SINGLE CLOSED MESH pillow pouch.
-// Body wraps front→right→back→left in one continuous surface.
-// NO gap between faces, NO separate panels, NO box geometry.
-// Top seal is a separate thin mesh for opening animation.
+// TRUE CLOSED PILLOW MESH.
+// Cross-section is a superellipse (rounded rectangle) — NO seams,
+// NO separate sections, NO gaps. One continuous surface from
+// front to back and back to front.
+//
+// Material groups assigned by angle threshold:
+//   0 = front (cos θ > 0.18) → front texture
+//   1 = back  (cos θ < -0.18) → back texture
+//   2 = sides (the rest) → bag color
+//
+// Top/bottom crimp seals are separate thin meshes.
+// Prepared for opening animation (top seal detachable).
 // ============================================================
 "use client"
 
@@ -20,7 +28,6 @@ const TOP_CRIMP = 0.08
 const BOT_CRIMP = 0.06
 export const BODY_H = BAG_H - TOP_CRIMP - BOT_CRIMP
 const BULGE = 0.17
-const SEAM_INSET = 0.012
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
 function easeOutBack(t: number) { const c1 = 1.70158; const c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2) }
@@ -41,131 +48,118 @@ function lightenHex(hex: string, mix: number): string {
 }
 
 // ════════════════════════════════════════════════════════
-// PILLOW BODY — single closed mesh wrapping around
+// SUPER-ELLIPSE PILLOW BODY
 //
-// Cross-section per ring (top-down view, clockwise from front-left):
-//   Front face (segsFace vertices) — inflates +Z
-//   → Right seam (segsSide vertices) — tight curve, Z goes +→−  
-//   → Back face (segsFace vertices) — inflates −Z
-//   → Left seam (segsSide vertices) — tight curve, Z goes −→+
+// Cross-section uses a superellipse shape |x/a|^n + |z/b|^n = 1
+// with n≈3.5 for a rounded rectangle.
+// This creates a single continuous closed curve — NO seams, NO gaps.
 //
-// Material groups:
-//   0 = front face (front texture)
-//   1 = back face (back texture)
-//   2 = side seams (bag color)
+// Material groups (by angle across cross-section):
+//   Front: cos θ > 0.18  → material[0] = front texture
+//   Back:  cos θ < -0.18 → material[1] = back texture
+//   Side:  the rest       → material[2] = bag color
+//
+// segsAround = total vertices per ring (around cross-section)
+// segsH      = vertical subdivisions
 // ════════════════════════════════════════════════════════
 function makePillowBodyGeo(
   wTop: number, wBot: number,
   h: number, bulge: number,
-  segsFace: number, segsSide: number, segsH: number
+  segsAround: number, segsH: number
 ): THREE.BufferGeometry {
-  const faceVerts = segsFace
-  const sideVerts = segsSide
-  const vertsPerRing = faceVerts + sideVerts + faceVerts + sideVerts
-
-  // ── Vertex positions ──
   const positions: number[] = []
   const uvs: number[] = []
+
+  // Precompute: which vertices belong to front/back/side zones
+  const vertexZones: ("front" | "back" | "side")[] = []
+  for (let i = 0; i < segsAround; i++) {
+    const angle = (i / segsAround) * Math.PI * 2
+    const cosA = Math.cos(angle)
+    if (cosA > 0.18) vertexZones.push("front")
+    else if (cosA < -0.18) vertexZones.push("back")
+    else vertexZones.push("side")
+  }
+
+  // Find front/back arc ranges for UV remapping
+  const frontStart = vertexZones.findIndex(z => z === "front")
+  const frontEnd = vertexZones.lastIndexOf("front")
+  const backStart = vertexZones.findIndex(z => z === "back")
+  const backEnd = vertexZones.lastIndexOf("back")
 
   for (let yi = 0; yi <= segsH; yi++) {
     const t = yi / segsH
     const y = (t - 0.5) * h
+    const halfW = lerp(wBot / 2, wTop / 2, t)
     const yNorm = Math.abs(y) / (h / 2)
-    const wAtY = lerp(wBot / 2, wTop / 2, t)
-
-    // Bulge factor at this height (less at top/bottom, max at center)
+    // Height falloff: bag is flatter at top/bottom, fullest at center
     const heightFalloff = Math.pow(1 - Math.pow(yNorm, 5), 2.5)
+    const halfD = bulge * heightFalloff
 
-    // ── Section 1: FRONT FACE (left → right) ──
-    for (let xi = 0; xi < faceVerts; xi++) {
-      const xNorm = (xi / (faceVerts - 1) - 0.5) * 2  // -1 to 1
-      const x = wAtY * xNorm
-      // Pillow bulge
-      const bulgeFalloff = Math.pow(1 - Math.pow(Math.abs(xNorm), 3), 2)
-      const z = bulge * bulgeFalloff * heightFalloff
+    for (let i = 0; i < segsAround; i++) {
+      const angle = (i / segsAround) * Math.PI * 2
+      const cosA = Math.cos(angle)
+      const sinA = Math.sin(angle)
+
+      // Superellipse: |x/a|^n + |z/b|^n = 1
+      const n = 3.5
+      const r = Math.pow(
+        Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n),
+        -1 / n
+      )
+
+      const x = r * cosA * halfW * 0.92 // slightly inset for seal overhang
+      const z = r * sinA * halfD
+
       positions.push(x, y, z)
-      // UV: U from left to right, V from bottom to top
-      uvs.push((xNorm + 1) / 2, t)
-    }
 
-    // ── Section 2: RIGHT SEAM (front → back) ──
-    for (let si = 0; si < sideVerts; si++) {
-      const sNorm = (si + 1) / (sideVerts + 1)  // 0..1, avoids exact endpoints
-      const rx = wAtY - SEAM_INSET
-      // Z smoothly transitions from +bulge to -bulge
-      const frontZ = bulge * heightFalloff  // Z at front edge
-      const z = frontZ * (1 - 2 * sNorm)  // goes from +bulge to -bulge
-      positions.push(rx, y, z)
-      uvs.push(sNorm, t)
-    }
-
-    // ── Section 3: BACK FACE (right → left) ──
-    for (let xi = 0; xi < faceVerts; xi++) {
-      const xNorm = (xi / (faceVerts - 1) - 0.5) * 2
-      const x = wAtY * (1 - 2 * (xi / (faceVerts - 1)) + (xi / (faceVerts - 1)))  // right to left
-      const xPos = wAtY * (1 - (xi / (faceVerts - 1)) * 2)  // from +wAtY to -wAtY
-      const bulgeFalloff = Math.pow(1 - Math.pow(Math.abs(xNorm), 3), 2)
-      const z = -bulge * bulgeFalloff * heightFalloff
-      positions.push(xPos, y, z)
-      // UV: U from 0 to 1 (left to right when viewed from back)
-      uvs.push(xi / (faceVerts - 1), t)
-    }
-
-    // ── Section 4: LEFT SEAM (back → front) ──
-    for (let si = 0; si < sideVerts; si++) {
-      const sNorm = (si + 1) / (sideVerts + 1)
-      const lx = -wAtY + SEAM_INSET
-      const backZ = -bulge * heightFalloff
-      const z = backZ * (1 - 2 * sNorm) + bulge * heightFalloff * 2 * sNorm
-      // Actually: from -bulge to +bulge
-      const zFromBack = -bulge * heightFalloff
-      const zToFront = bulge * heightFalloff
-      const zActual = zFromBack + (zToFront - zFromBack) * sNorm
-      positions.push(lx, y, zActual)
-      uvs.push(sNorm, t)
+      // UV mapping by zone
+      let u: number
+      const zone = vertexZones[i]
+      if (zone === "front" && frontEnd > frontStart) {
+        u = (i - frontStart) / (frontEnd - frontStart)
+      } else if (zone === "back" && backEnd > backStart) {
+        u = (i - backStart) / (backEnd - backStart)
+      } else {
+        u = 0.5 // side zones — solid color, UV irrelevant
+      }
+      uvs.push(u, t)
     }
   }
 
-  // ── Triangle indices ──
-  const indices: number[] = []
+  // ── Indices ──
+  const allIndices: number[] = []
   const frontIndices: number[] = []
   const backIndices: number[] = []
   const sideIndices: number[] = []
 
-  const rings = segsH + 1
   for (let yi = 0; yi < segsH; yi++) {
-    const r0 = yi * vertsPerRing
-    const r1 = (yi + 1) * vertsPerRing
+    const r0 = yi * segsAround
+    const r1 = (yi + 1) * segsAround
 
-    for (let vi = 0; vi < vertsPerRing; vi++) {
-      const vNext = (vi + 1) % vertsPerRing
-      const a = r0 + vi, b = r1 + vi, c = r0 + vNext, d = r1 + vNext
+    for (let i = 0; i < segsAround; i++) {
+      const iNext = (i + 1) % segsAround
+      const a = r0 + i, b = r1 + i, c = r0 + iNext, d = r1 + iNext
 
-      // Determine section for this triangle
-      let section: "front" | "back" | "side" = "side"
-      if (vi < faceVerts - 1 && vNext < faceVerts) {
-        section = "front"
-      } else if (vi >= faceVerts + sideVerts && vi < faceVerts + sideVerts + faceVerts - 1) {
-        section = "back"
-      }
+      // Each quad (two triangles) goes to its zone
+      const zone = vertexZones[i]
+      const target = zone === "front" ? frontIndices : zone === "back" ? backIndices : sideIndices
 
-      const target = section === "front" ? frontIndices : section === "back" ? backIndices : sideIndices
-      indices.push(a, b, c); target.push(a, b, c)
-      indices.push(b, d, c); target.push(b, d, c)
+      allIndices.push(a, b, c); target.push(a, b, c)
+      allIndices.push(b, d, c); target.push(b, d, c)
     }
   }
 
   const geo = new THREE.BufferGeometry()
   geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
   geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2))
-  geo.setIndex(indices)
+  geo.setIndex(allIndices)
   geo.computeVertexNormals()
 
-  // Material groups: front=0, back=1, sides=2
   geo.clearGroups()
   if (frontIndices.length > 0) geo.addGroup(0, frontIndices.length, 0)
   if (backIndices.length > 0) geo.addGroup(frontIndices.length, backIndices.length, 1)
-  if (sideIndices.length > 0) geo.addGroup(frontIndices.length + backIndices.length, sideIndices.length, 2)
+  if (sideIndices.length > 0)
+    geo.addGroup(frontIndices.length + backIndices.length, sideIndices.length, 2)
 
   return geo
 }
@@ -181,7 +175,7 @@ function makeCrimpGeo(w: number, h: number, segsW: number): THREE.BufferGeometry
   const w2 = w / 2 + overhang
   const rowsW = segsW + 1
   const rowsH = 3
-  const depth = 0.006  // Very thin
+  const depth = 0.006
 
   for (let yi = 0; yi < rowsH; yi++) {
     const y = (yi / (rowsH - 1) - 0.5) * h
@@ -289,8 +283,9 @@ export default function PotatoChipBag3D({
   const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
 
   // ═══ GEOMETRIES ═══
+  // 72 vertices per ring gives ~5° per vertex — smooth pill shape
   const bodyGeo = useMemo(
-    () => makePillowBodyGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, 30, 3, 20),
+    () => makePillowBodyGeo(BAG_W_TOP, BAG_W_BOT, BODY_H, BULGE, 72, 20),
     []
   )
   const topCrimpGeo = useMemo(() => makeCrimpGeo(BAG_W_TOP, TOP_CRIMP, 10), [])
@@ -343,10 +338,9 @@ export default function PotatoChipBag3D({
       }
     }
 
-    // Body: slight squish/pulse, then gap at top
+    // Body: slight squish/pulse
     if (bodyRef.current) {
       const t = easeOutCubic(Math.min(1, Math.max(0, (p - 0.06) / 0.65)))
-      // Subtle body response — no splitting needed
       bodyRef.current.scale.y = 1 - t * 0.03
       bodyRef.current.position.y = bodyY - t * 0.015
     }
@@ -355,7 +349,8 @@ export default function PotatoChipBag3D({
     if (interiorRef.current) {
       const t = easeOutCubic(Math.min(1, Math.max(0, (p - 0.15) / 0.55)))
       interiorRef.current.scale.setScalar(0.3 + t * 0.7)
-      if (!Array.isArray(interiorRef.current.material)) interiorRef.current.material.opacity = t * 0.85
+      if (!Array.isArray(interiorRef.current.material))
+        interiorRef.current.material.opacity = t * 0.85
     }
     if (interiorGlowRef.current) {
       const t = easeOutCubic(Math.min(1, Math.max(0, (p - 0.2) / 0.5)))
