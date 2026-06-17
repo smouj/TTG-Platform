@@ -1,7 +1,6 @@
 // ============================================================
-// Trading Tazos Game — BagCardMini3D v6 (fixed)
-// Compact rotating bag card. Superellipse pillow mesh.
-// No crimp seals. Angle-based UV. Indices grouped by zone.
+// Trading Tazos Game — BagCardMini3D v7
+// 3 separate meshes. Narrower faces (cos > |0.4|).
 // ============================================================
 "use client"
 
@@ -10,7 +9,7 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
 const BAG_W_TOP = 0.72; const BAG_W_BOT = 0.64; const BAG_H = 1.02; const BULGE = 0.17
-const COS_THRESHOLD = 0.18; const ARC_HALF_RAD = Math.acos(COS_THRESHOLD)
+const COS_FRONT = 0.4; const ARC_HALF = Math.acos(COS_FRONT)
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
 function hexToRgb(hex: string): [number, number, number] {
@@ -22,69 +21,45 @@ function darkenHex(hex: string, factor: number): string {
   return `#${Math.round(Math.max(0, r * factor) * 255).toString(16).padStart(2, "0")}${Math.round(Math.max(0, g * factor) * 255).toString(16).padStart(2, "0")}${Math.round(Math.max(0, b * factor) * 255).toString(16).padStart(2, "0")}`
 }
 
-function makePillowBodyGeo(
-  wTop: number, wBot: number, h: number,
-  bulge: number, segsAround: number, segsH: number
+function buildSubGeo(
+  wTop: number, wBot: number, h: number, bulge: number,
+  segsAround: number, segsH: number,
+  vertexFilter: (i: number, angle: number) => boolean,
+  uvMap: (angle: number) => number,
 ): THREE.BufferGeometry {
   const positions: number[] = []; const uvs: number[] = []
-  const zones: ("front" | "back" | "side")[] = []
-  for (let i = 0; i < segsAround; i++) {
-    const cosA = Math.cos((i / segsAround) * Math.PI * 2)
-    if (cosA > COS_THRESHOLD) zones.push("front")
-    else if (cosA < -COS_THRESHOLD) zones.push("back")
-    else zones.push("side")
-  }
-
+  const oldToNew: number[][] = []
   for (let yi = 0; yi <= segsH; yi++) {
+    const row: number[] = []
     const t = yi / segsH; const y = (t - 0.5) * h
     const halfW = lerp(wBot / 2, wTop / 2, t)
     const hf = Math.pow(1 - Math.pow(Math.abs(y) / (h / 2), 5), 2.5)
     const halfD = bulge * hf
     for (let i = 0; i < segsAround; i++) {
       const angle = (i / segsAround) * Math.PI * 2
-      const cosA = Math.cos(angle), sinA = Math.sin(angle)
-      const r = Math.pow(Math.pow(Math.abs(cosA), 3.5) + Math.pow(Math.abs(sinA), 3.5), -1 / 3.5)
-      positions.push(r * cosA * halfW, y, r * sinA * halfD)
-      let u = 0.5
-      if (zones[i] === "front") {
-        let a = angle > Math.PI ? angle - 2 * Math.PI : angle
-        u = (a / ARC_HALF_RAD + 1) / 2
-        if (u < 0) u = 0; if (u > 1) u = 1
-      } else if (zones[i] === "back") {
-        let a = angle - Math.PI
-        u = (a / ARC_HALF_RAD + 1) / 2
-        if (u < 0) u = 0; if (u > 1) u = 1
-      }
-      uvs.push(u, t)
+      if (vertexFilter(i, angle)) {
+        const cosA = Math.cos(angle), sinA = Math.sin(angle)
+        const r = Math.pow(Math.pow(Math.abs(cosA), 3.5) + Math.pow(Math.abs(sinA), 3.5), -1 / 3.5)
+        positions.push(r * cosA * halfW, y, r * sinA * halfD)
+        uvs.push(uvMap(angle), t)
+        row.push(positions.length / 3 - 1)
+      } else row.push(-1)
     }
+    oldToNew.push(row)
   }
-
-  // Indices GROUPED: front → back → side (contiguous per group)
-  const frontI: number[] = [], backI: number[] = [], sideI: number[] = []
+  const indices: number[] = []
   for (let yi = 0; yi < segsH; yi++) {
-    const r0 = yi * segsAround, r1 = (yi + 1) * segsAround
+    const r0 = oldToNew[yi], r1 = oldToNew[yi + 1]
     for (let i = 0; i < segsAround; i++) {
       const j = (i + 1) % segsAround
-      const a = r0 + i, b = r1 + i, c = r0 + j, d = r1 + j
-      const tgt = zones[i] === "front" ? frontI : zones[i] === "back" ? backI : sideI
-      tgt.push(a, b, c, b, d, c)
+      const a = r0[i], b = r1[i], c = r0[j], d = r1[j]
+      if (a >= 0 && b >= 0 && c >= 0 && d >= 0) indices.push(a, b, c, b, d, c)
     }
   }
-  const len = frontI.length + backI.length + sideI.length
-  const idx = new Uint32Array(len)
-  idx.set(frontI, 0)
-  idx.set(backI, frontI.length)
-  idx.set(sideI, frontI.length + backI.length)
-
   const geo = new THREE.BufferGeometry()
   geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
   geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2))
-  geo.setIndex(new THREE.BufferAttribute(idx, 1))
-  geo.computeVertexNormals()
-  geo.clearGroups()
-  if (frontI.length) geo.addGroup(0, frontI.length, 0)
-  if (backI.length) geo.addGroup(frontI.length, backI.length, 1)
-  if (sideI.length) geo.addGroup(frontI.length + backI.length, sideI.length, 2)
+  geo.setIndex(indices); geo.computeVertexNormals()
   return geo
 }
 
@@ -93,17 +68,32 @@ function MiniBagModel({ frontUrl, backUrl, bagColor }: { frontUrl: string; backU
   const frontTex = useLoader(THREE.TextureLoader, frontUrl)
   const backTex = useLoader(THREE.TextureLoader, backUrl)
   const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
-  const bodyGeo = useMemo(() => makePillowBodyGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14), [])
-  const materials = useMemo(() => [
-    new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide }),
-    new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide }),
-    new THREE.MeshStandardMaterial({ color: seamColorHex, roughness: 0.5, metalness: 0.04, side: THREE.FrontSide }),
-  ], [frontTex, backTex, seamColorHex])
+
+  const frontGeo = useMemo(() => buildSubGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14,
+    (_i, a) => Math.cos(a) > COS_FRONT,
+    (a) => { const aa = a > Math.PI ? a - 2 * Math.PI : a; return Math.max(0, Math.min(1, (aa / ARC_HALF + 1) / 2)) }
+  ), [])
+  const backGeo = useMemo(() => buildSubGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14,
+    (_i, a) => Math.cos(a) < -COS_FRONT,
+    (a) => { const aa = a - Math.PI; return Math.max(0, Math.min(1, (aa / ARC_HALF + 1) / 2)) }
+  ), [])
+  const sideGeo = useMemo(() => buildSubGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 48, 14,
+    (_i, a) => Math.abs(Math.cos(a)) <= COS_FRONT,
+    () => 0.5
+  ), [])
+
+  const fMat = useMemo(() => new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide }), [frontTex])
+  const bMat = useMemo(() => new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.18, metalness: 0, side: THREE.FrontSide }), [backTex])
+  const sMat = useMemo(() => new THREE.MeshStandardMaterial({ color: seamColorHex, roughness: 0.5, metalness: 0.04, side: THREE.FrontSide }), [seamColorHex])
+
   useMemo(() => { for (const tex of [frontTex, backTex]) { tex.colorSpace = THREE.SRGBColorSpace; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.magFilter = THREE.LinearFilter; tex.generateMipmaps = true } }, [frontTex, backTex])
   useFrame((_, delta) => { if (groupRef.current) groupRef.current.rotation.y += delta * 0.4 })
+
   return (
     <group ref={groupRef} scale={0.9} rotation={[0, -0.04, 0.02]}>
-      <mesh geometry={bodyGeo} material={materials} />
+      <mesh geometry={frontGeo} material={fMat} />
+      <mesh geometry={backGeo} material={bMat} />
+      <mesh geometry={sideGeo} material={sMat} />
     </group>
   )
 }

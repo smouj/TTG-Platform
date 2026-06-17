@@ -1,13 +1,14 @@
 // ============================================================
-// Trading Tazos Game — PotatoChipBag3D v12 (fixed)
+// Trading Tazos Game — PotatoChipBag3D v13
 //
-// Single closed superellipse pillow mesh. Full height body.
-// NO crimp seals, NO gaps. UV by angle from face center.
+// Superellipse pillow mesh. NO crimp seals. NO groups.
+// THREE SEPARATE MESHES — front / back / sides — no ambiguity.
 //
-// Material groups (index buffer ordered: front → back → side):
-//   0 = front (cos > 0.18) → front texture
-//   1 = back  (cos < -0.18) → back texture
-//   2 = sides (the rest) → bag color
+// Front face: cos θ > 0.4  → narrow ~66° flat face
+// Back face:  cos θ < -0.4 → narrow ~66° flat face
+// Sides:      whole rest    → bag color
+//
+// Each mesh has its own geometry with only its vertices/UVs.
 // ============================================================
 "use client"
 
@@ -33,28 +34,26 @@ function darkenHex(hex: string, factor: number): string {
 }
 
 // ════════════════════════════════════════════════════════
-// SUPER-ELLIPSE BODY — full height, no seals
+// Build ONE geometry subset (positions + UVs + indices)
+// for a given vertex filter.
+// Each subset gets its OWN BufferGeometry — no groups.
 // ════════════════════════════════════════════════════════
-const COS_THRESHOLD = 0.18
-const ARC_HALF_RAD = Math.acos(COS_THRESHOLD) // ≈ 1.39 rad ≈ 80°
+const COS_FRONT = 0.4 // narrower face = ~66° arc, flatter
 
-function makePillowBodyGeo(
-  wTop: number, wBot: number, h: number,
-  bulge: number, segsAround: number, segsH: number
+function buildSubGeo(
+  wTop: number, wBot: number, h: number, bulge: number,
+  segsAround: number, segsH: number,
+  vertexFilter: (i: number, angle: number) => boolean,
+  uvMap: (angle: number) => number,
 ): THREE.BufferGeometry {
+  // ── Collect vertex data ──
   const positions: number[] = []
   const uvs: number[] = []
-
-  // Precompute zones
-  const zones: ("front" | "back" | "side")[] = []
-  for (let i = 0; i < segsAround; i++) {
-    const cosA = Math.cos((i / segsAround) * Math.PI * 2)
-    if (cosA > COS_THRESHOLD) zones.push("front")
-    else if (cosA < -COS_THRESHOLD) zones.push("back")
-    else zones.push("side")
-  }
+  // Map original ring-index to new index within this subset
+  const oldToNew: number[][] = [] // [ring][oldI] = newIndex or -1
 
   for (let yi = 0; yi <= segsH; yi++) {
+    const row: number[] = []
     const t = yi / segsH
     const y = (t - 0.5) * h
     const halfW = lerp(wBot / 2, wTop / 2, t)
@@ -63,57 +62,53 @@ function makePillowBodyGeo(
 
     for (let i = 0; i < segsAround; i++) {
       const angle = (i / segsAround) * Math.PI * 2
-      const cosA = Math.cos(angle), sinA = Math.sin(angle)
-      const n = 3.5
-      const r = Math.pow(Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n), -1 / n)
-      positions.push(r * cosA * halfW, y, r * sinA * halfD)
-
-      // Angle-based UV from face center
-      let u = 0.5
-      if (zones[i] === "front") {
-        let a = angle > Math.PI ? angle - 2 * Math.PI : angle
-        u = (a / ARC_HALF_RAD + 1) / 2
-        if (u < 0) u = 0; if (u > 1) u = 1
-      } else if (zones[i] === "back") {
-        let a = angle - Math.PI
-        u = (a / ARC_HALF_RAD + 1) / 2
-        if (u < 0) u = 0; if (u > 1) u = 1
+      if (vertexFilter(i, angle)) {
+        const cosA = Math.cos(angle), sinA = Math.sin(angle)
+        const n = 3.5
+        const r = Math.pow(Math.pow(Math.abs(cosA), n) + Math.pow(Math.abs(sinA), n), -1 / n)
+        positions.push(r * cosA * halfW, y, r * sinA * halfD)
+        uvs.push(uvMap(angle), t)
+        row.push(positions.length / 3 - 1) // new vertex index
+      } else {
+        row.push(-1)
       }
-      uvs.push(u, t)
     }
+    oldToNew.push(row)
   }
 
-  // ── Indices GROUPED by zone (front → back → side) ──
-  // Critical: groups must reference CONTIGUOUS ranges in the index buffer.
-  // Previously interleaved (front/back/side mixed) → wrong material assignment.
-  const frontI: number[] = [], backI: number[] = [], sideI: number[] = []
+  // ── Build indices ──
+  const indices: number[] = []
   for (let yi = 0; yi < segsH; yi++) {
-    const r0 = yi * segsAround, r1 = (yi + 1) * segsAround
+    const r0 = oldToNew[yi], r1 = oldToNew[yi + 1]
     for (let i = 0; i < segsAround; i++) {
       const j = (i + 1) % segsAround
-      const a = r0 + i, b = r1 + i, c = r0 + j, d = r1 + j
-      const tgt = zones[i] === "front" ? frontI : zones[i] === "back" ? backI : sideI
-      tgt.push(a, b, c, b, d, c)
+      const a = r0[i], b = r1[i], c = r0[j], d = r1[j]
+      if (a >= 0 && b >= 0 && c >= 0 && d >= 0) {
+        indices.push(a, b, c, b, d, c)
+      }
     }
   }
-  // Combine: front first, then back, then side — contiguous per group
-  const len = frontI.length + backI.length + sideI.length
-  const idx = new Uint32Array(len)
-  idx.set(frontI, 0)
-  idx.set(backI, frontI.length)
-  idx.set(sideI, frontI.length + backI.length)
 
   const geo = new THREE.BufferGeometry()
   geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
   geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2))
-  geo.setIndex(new THREE.BufferAttribute(idx, 1))
+  geo.setIndex(indices)
   geo.computeVertexNormals()
-
-  geo.clearGroups()
-  if (frontI.length) geo.addGroup(0, frontI.length, 0)
-  if (backI.length) geo.addGroup(frontI.length, backI.length, 1)
-  if (sideI.length) geo.addGroup(frontI.length + backI.length, sideI.length, 2)
   return geo
+}
+
+// UV mapping helpers
+function uvFront(angle: number): number {
+  let a = angle > Math.PI ? angle - 2 * Math.PI : angle
+  const r = Math.acos(COS_FRONT)
+  let u = (a / r + 1) / 2
+  return Math.max(0, Math.min(1, u))
+}
+function uvBack(angle: number): number {
+  let a = angle - Math.PI
+  const r = Math.acos(COS_FRONT)
+  let u = (a / r + 1) / 2
+  return Math.max(0, Math.min(1, u))
 }
 
 // ════════════════════════════════════════════════════════
@@ -134,7 +129,7 @@ export default function PotatoChipBag3D({
   onPointerDown, onPointerMove, onPointerUp, opening = false,
 }: Props) {
   const groupRef = useRef<THREE.Group>(null!)
-  const bodyRef = useRef<THREE.Mesh>(null!)
+  const bodyRef = useRef<THREE.Group>(null!)
   const interiorRef = useRef<THREE.Mesh>(null!)
   const interiorGlowRef = useRef<THREE.PointLight>(null!)
   const openRef = useRef(0)
@@ -145,16 +140,32 @@ export default function PotatoChipBag3D({
   const backTex = useLoader(THREE.TextureLoader, backUrl)
   const seamColorHex = useMemo(() => darkenHex(bagColor, 0.65), [bagColor])
 
-  const bodyGeo = useMemo(
-    () => makePillowBodyGeo(BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 72, 20),
-    []
-  )
+  // THREE separate geometries — each with only its own triangles
+  const frontGeo = useMemo(() => buildSubGeo(
+    BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 72, 20,
+    (_i, angle) => Math.cos(angle) > COS_FRONT,
+    uvFront,
+  ), [])
+  const backGeo = useMemo(() => buildSubGeo(
+    BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 72, 20,
+    (_i, angle) => Math.cos(angle) < -COS_FRONT,
+    uvBack,
+  ), [])
+  const sideGeo = useMemo(() => buildSubGeo(
+    BAG_W_TOP, BAG_W_BOT, BAG_H, BULGE, 76, 20,
+    (_i, angle) => Math.abs(Math.cos(angle)) <= COS_FRONT,
+    () => 0.5,
+  ), [])
 
-  const bodyMaterials = useMemo(() => [
-    new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.18, metalness: 0.0, side: THREE.FrontSide }),
-    new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.18, metalness: 0.0, side: THREE.FrontSide }),
-    new THREE.MeshStandardMaterial({ color: seamColorHex, roughness: 0.5, metalness: 0.04, side: THREE.FrontSide }),
-  ], [frontTex, backTex, seamColorHex])
+  const frontMat = useMemo(() => new THREE.MeshStandardMaterial({
+    map: frontTex, roughness: 0.18, metalness: 0.0, side: THREE.FrontSide,
+  }), [frontTex])
+  const backMat = useMemo(() => new THREE.MeshStandardMaterial({
+    map: backTex, roughness: 0.18, metalness: 0.0, side: THREE.FrontSide,
+  }), [backTex])
+  const sideMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: seamColorHex, roughness: 0.5, metalness: 0.04, side: THREE.FrontSide,
+  }), [seamColorHex])
 
   useEffect(() => {
     for (const tex of [frontTex, backTex]) {
@@ -195,12 +206,16 @@ export default function PotatoChipBag3D({
 
   return (
     <group ref={groupRef} scale={scale} rotation={[0, -0.04, 0.02]}>
-      {/* Single closed body — all 3 materials on one mesh */}
-      <mesh ref={bodyRef} geometry={bodyGeo} material={bodyMaterials}
+      {/* Three separate meshes — no group ambiguity */}
+      <group ref={bodyRef}
         onPointerDown={interactive ? onPointerDown : undefined}
         onPointerMove={interactive ? onPointerMove : undefined}
         onPointerUp={interactive ? onPointerUp : undefined}
-      />
+      >
+        <mesh geometry={frontGeo} material={frontMat} />
+        <mesh geometry={backGeo} material={backMat} />
+        <mesh geometry={sideGeo} material={sideMat} />
+      </group>
 
       {/* Interior glow (only visible during opening) */}
       <mesh ref={interiorRef} position={[0, 0, 0]}>
