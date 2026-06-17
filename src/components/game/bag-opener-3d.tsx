@@ -8,6 +8,7 @@
 "use client"
 
 import { useRef, useState, useMemo, useCallback, useEffect, Suspense } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 import PotatoChipBag3D, { BAG_H } from "./3d/potato-chip-bag-3d"
@@ -19,28 +20,80 @@ import { playSFX } from "@/lib/audio/sfx-engine"
 // ══════════════════════════════════════════════════════════
 function BagCamera({ interacting, opening }: { interacting: boolean; opening: boolean }) {
   const { camera } = useThree()
-  const targetRef = useRef({ z: 1.85, y: 0.0 })
+  const targetRef = useRef({ z: 1.85, y: 0.0, shake: 0 })
+  const shakeRef = useRef(0)
 
   useFrame((state, delta) => {
     if (opening) {
-      targetRef.current = { z: 1.65, y: 0.04 }
+      // Cinematic zoom-in + screen shake during opening
+      shakeRef.current = Math.max(0, shakeRef.current - delta * 4)
+      const s = shakeRef.current * 0.018
+      targetRef.current = { z: 1.48, y: 0.08, shake: 0 }
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, Math.sin(state.clock.elapsedTime * 30) * s, 5 * delta)
     } else if (interacting) {
-      targetRef.current = { z: 2.0, y: 0.0 }
+      targetRef.current = { z: 2.0, y: 0.0, shake: 0 }
     } else {
       const t = state.clock.elapsedTime
       targetRef.current = {
         z: 1.85 + Math.sin(t * 0.3) * 0.06,
         y: Math.cos(t * 0.25) * 0.03,
+        shake: 0,
       }
     }
 
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetRef.current.z, 2.5 * delta)
     camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetRef.current.y, 2.5 * delta)
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, 0, 3 * delta)
+    if (!opening) {
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, 0, 3 * delta)
+    }
     camera.lookAt(0, 0, 0)
   })
 
   return null
+}
+
+
+// ══════════════════════════════════════════════════════════
+// PARTICLE BURST — cinematic opening effect
+// ══════════════════════════════════════════════════════════
+function ParticleBurst({ color, active }: { color: string; active: boolean }) {
+  const particles = useMemo(() => {
+    return Array.from({ length: 28 }, (_, i) => {
+      const angle = (i / 28) * Math.PI * 2
+      const dist = 60 + Math.random() * 120
+      const size = 3 + Math.random() * 5
+      const delay = Math.random() * 0.15
+      return { id: i, angle, dist, size, delay }
+    })
+  }, [])
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-30">
+      <AnimatePresence>
+        {active && particles.map(p => (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full"
+            style={{
+              width: p.size, height: p.size,
+              left: "50%", top: "50%",
+              backgroundColor: `${color}d0`,
+              boxShadow: `0 0 ${p.size * 2}px ${color}80`,
+            }}
+            initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+            animate={{
+              x: Math.cos(p.angle) * p.dist,
+              y: Math.sin(p.angle) * p.dist - 30,
+              opacity: 0,
+              scale: 0.2,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, delay: p.delay, ease: "easeOut" }}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
+  )
 }
 
 // ══════════════════════════════════════════════════════════
@@ -65,6 +118,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
 
   const [stage, setStage] = useState<"idle" | "tearing" | "opening" | "reveal">("idle")
   const [tearProgress, setTearProgress] = useState(0)
+  const [particlesActive, setParticlesActive] = useState(false)
   const tearPaths = useRef<{ x: number; y: number }[]>([])
   const tearing = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -151,6 +205,8 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
     if (stage === "opening") {
       const outer = setTimeout(() => {
         setStage("reveal")
+        setParticlesActive(true)
+        setTimeout(() => setParticlesActive(false), 900)
         playSFX('reveal', { volume: 0.6 })
         innerTimerRef.current = setTimeout(() => {
           innerTimerRef.current = undefined
@@ -179,13 +235,27 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
 
   return (
     <div ref={containerRef} className="relative w-full select-none touch-none" style={{ height: canvasH }}>
+      {/* Particle burst */}
+      <ParticleBurst color={franchiseColor} active={particlesActive} />
+
+      {/* Seal area glow indicator — shows where to drag, fades when interacting */}
+      {stage === 'idle' && (
+        <div className="absolute top-[18%] left-[15%] right-[15%] z-15 pointer-events-none">
+          <div className="h-0.5 rounded-full animate-pulse"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${franchiseColor}60, ${franchiseColor}c0, ${franchiseColor}60, transparent)`,
+              boxShadow: `0 0 12px ${franchiseColor}40`,
+            }} />
+        </div>
+      )}
+
       {/* Flash overlay on open */}
       <div
         className="absolute inset-0 z-20 pointer-events-none"
         style={{
-          opacity: stage === "opening" ? 1 : 0,
-          transition: "opacity 300ms ease-out",
-          background: `radial-gradient(ellipse at 50% 50%, ${franchiseColor}60 0%, ${franchiseColor}20 40%, transparent 70%)`,
+          opacity: stage === "opening" || stage === "reveal" ? 1 : 0,
+          transition: "opacity 400ms ease-out",
+          background: `radial-gradient(ellipse at 50% 45%, ${franchiseColor}80 0%, ${franchiseColor}30 35%, transparent 75%)`,
         }}
       />
 
@@ -202,13 +272,13 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
 
         {/* ═══ 3-point lighting ═══ */}
         {/* Key — main front-upper spot */}
-        <spotLight position={[2.5, 3.5, 4]} intensity={3.2} angle={0.35} penumbra={0.4} color="#fffef8" />
+        <spotLight position={[2.5, 3.5, 4]} intensity={3.5} angle={0.35} penumbra={0.4} color="#fffef8" />
         {/* Fill — softer lower-front */}
-        <pointLight position={[0, 0.5, 2.5]} intensity={0.7} color="#fff5e8" />
+        <pointLight position={[0, 0.5, 2.5]} intensity={0.85} color="#fff5e8" />
         {/* Rim — subtle back edge light for depth */}
-        <directionalLight position={[-1.5, 0.5, -3]} intensity={0.35} color="#e8d5c0" />
+        <directionalLight position={[-1.5, 0.5, -3]} intensity={0.55} color="#e8d5c0" />
         {/* Ambient */}
-        <ambientLight intensity={0.75} color="#fffaf5" />
+        <ambientLight intensity={0.82} color="#fffaf5" />
 
         <Suspense fallback={null}>
           <PotatoChipBag3D

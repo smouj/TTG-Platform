@@ -20,9 +20,9 @@ import * as THREE from "three"
 // ═══ Constants ═══
 // Face threshold: sinθ above this value belongs to face.
 // Side threshold: wider than face threshold for anti-gap overlap.
-const FACE_THRESH = 0.10   // ~6° from Z-axis — face covers ~168° arc
+const FACE_THRESH = 0.07   // ~4° from Z-axis — face covers ~172° arc
 const SIDE_THRESH = 0.18   // ~10° from X-axis — seam/side covers ~20° per side
-const SUPER_N = 3.5        // superellipse exponent
+const SUPER_N = 2.8        // superellipse exponent (lower = rounder)
 const SEGS_AROUND = 72     // angular resolution
 const SEGS_H = 24          // vertical resolution
 
@@ -36,8 +36,8 @@ export interface BagDims {
   d: number         // max bulge depth (Z-axis, facing viewer)
   sealH: number     // seal/crimp height
 }
-export const BAG_SMALL: BagDims = { wTop: 0.72, wBot: 0.64, h: 0.94, d: 0.16, sealH: 0.055 }
-export const BAG_LARGE: BagDims = { wTop: 0.72, wBot: 0.64, h: 1.02, d: 0.17, sealH: 0.055 }
+export const BAG_SMALL: BagDims = { wTop: 0.72, wBot: 0.64, h: 0.94, d: 0.18, sealH: 0.065 }
+export const BAG_LARGE: BagDims = { wTop: 0.72, wBot: 0.64, h: 1.02, d: 0.19, sealH: 0.065 }
 
 // ═══ Superellipse radial factor ═══
 // r = 1 / (|cosθ|^n + |sinθ|^n)^(1/n)
@@ -189,14 +189,18 @@ export function buildSideGeo(dims: BagDims): THREE.BufferGeometry {
   return geo
 }
 
-// ═══ buildSealGeo — top/bottom crimp slab ═══
+// ═══ buildSealGeo — top/bottom crimp slab with serrated edge ═══
+// Adds a subtle zigzag (crimp) pattern to the seal's outer edge,
+// mimicking the distinctive serrated cut of real chip bags.
 export function buildSealGeo(top: boolean, dims: BagDims, segsW = 40): THREE.BufferGeometry {
   const { wTop, wBot, h, sealH } = dims
   const yBody = top ? h / 2 : -h / 2
   const yOuter = top ? h / 2 + sealH : -h / 2 - sealH
   const halfW = top ? wTop / 2 : wBot / 2
-  const dz = 0.01
-  const segsV = 4
+  const dz = 0.012
+  const segsV = 5
+  const crimpTeeth = 14  // number of crimp zigzags across the seal
+  const crimpAmp = 0.004 // subtle zigzag amplitude
 
   const positions: number[] = []
   const uvs: number[] = []
@@ -205,10 +209,15 @@ export function buildSealGeo(top: boolean, dims: BagDims, segsW = 40): THREE.Buf
   // Front face (z=+dz)
   for (let yi = 0; yi <= segsV; yi++) {
     const t = yi / segsV
-    const y = lerp(yBody, yOuter, t)
+    const yBase = lerp(yBody, yOuter, t)
+    // Serrate the top edge (yi=0 is body, yi=segsV is outer edge)
+    const crimpFactor = yi / segsV  // 0 at body, 1 at outer edge
     for (let xi = 0; xi <= segsW; xi++) {
       const u = xi / segsW
-      positions.push(lerp(-halfW, halfW, u), y, dz)
+      const x = lerp(-halfW, halfW, u)
+      // Zigzag at the outer edge fades toward the body
+      const crimp = Math.sin(u * Math.PI * 2 * crimpTeeth) * crimpAmp * crimpFactor
+      positions.push(x, yBase + crimp, dz)
       uvs.push(u, t)
     }
   }
@@ -218,10 +227,13 @@ export function buildSealGeo(top: boolean, dims: BagDims, segsW = 40): THREE.Buf
   // Back face (z=-dz)
   for (let yi = 0; yi <= segsV; yi++) {
     const t = yi / segsV
-    const y = lerp(yBody, yOuter, t)
+    const yBase = lerp(yBody, yOuter, t)
+    const crimpFactor = yi / segsV
     for (let xi = 0; xi <= segsW; xi++) {
-      positions.push(lerp(-halfW, halfW, xi / segsW), y, -dz)
-      uvs.push(t, yi / segsV)
+      const u = xi / segsW
+      const crimp = Math.sin(u * Math.PI * 2 * crimpTeeth) * crimpAmp * crimpFactor
+      positions.push(lerp(-halfW, halfW, u), yBase + crimp, -dz)
+      uvs.push(u, t)
     }
   }
 

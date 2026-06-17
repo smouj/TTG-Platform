@@ -59,16 +59,16 @@ function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
   const bottomCapGeo = useMemo(() => buildBodyCapGeo(false, dims), [])
 
   const fMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: frontTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
+    map: frontTex, roughness: 0.14, metalness: 0.06, side: THREE.FrontSide,
   }), [frontTex])
   const bMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: backTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
+    map: backTex, roughness: 0.14, metalness: 0.06, side: THREE.FrontSide,
   }), [backTex])
   const sMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: seamColor, roughness: 0.50, metalness: 0.04, side: THREE.FrontSide,
+    color: seamColor, roughness: 0.45, metalness: 0.06, side: THREE.FrontSide,
   }), [seamColor])
   const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: sealColor, roughness: 0.55, metalness: 0.03, side: THREE.FrontSide,
+    color: sealColor, roughness: 0.48, metalness: 0.05, side: THREE.FrontSide,
   }), [sealColor])
   const capMat = useMemo(() => new THREE.MeshStandardMaterial({
     color: capColor, roughness: 0.55, metalness: 0, side: THREE.FrontSide,
@@ -88,14 +88,18 @@ function MiniBagModel({ frontUrl, backUrl, bagColor, franchiseSlug }: {
     }
   }, [frontTex, backTex])
 
+  // Premium product-hero idle: breathing + pan + float
+  // Subtle enough not to distract, enough to feel alive
   useFrame((_, delta) => {
     if (!groupRef.current) return
-    // Smooth sway using accumulated phase (frame-rate independent)
-    swayRef.current += delta * 0.45
-    const sway = Math.sin(swayRef.current) * 0.075
-    const floatY = Math.cos(swayRef.current * 0.7) * 0.018
-    groupRef.current.rotation.y = rotY + sway
-    groupRef.current.position.y = floatY
+    const t = groupRef.current
+    swayRef.current += delta * 0.35
+    const breathe = 1 + Math.sin(swayRef.current * 0.8) * 0.022
+    const pan = Math.sin(swayRef.current * 0.45) * 0.06
+    const float = Math.cos(swayRef.current * 0.65) * 0.015
+    t.rotation.y = THREE.MathUtils.lerp(t.rotation.y, rotY + pan, 1.8 * delta)
+    t.position.y = float
+    t.scale.setScalar(THREE.MathUtils.lerp(t.scale.x, breathe, 2 * delta))
   })
 
   return (
@@ -125,13 +129,13 @@ export default function BagCardMini3D({ frontUrl, backUrl, bagColor = "#d4d0c8",
       >
         {/* ═══ 3-point lighting ═══ */}
         {/* Key light — main front-upper illumination */}
-        <directionalLight position={[2.5, 3, 4]} intensity={2.2} color="#fffef5" />
+        <directionalLight position={[2.5, 3, 4]} intensity={2.6} color="#fffef5" />
         {/* Fill light — soft ambient from below-front */}
-        <pointLight position={[0, 0.5, 2.5]} intensity={0.45} color="#fff5e8" />
+        <pointLight position={[0, 0.5, 2.5]} intensity={0.55} color="#fff5e8" />
         {/* Rim/back light — subtle edge glow for depth */}
-        <directionalLight position={[-1.5, 1, -3]} intensity={0.35} color="#e8d5c0" />
+        <directionalLight position={[-1.5, 1, -3]} intensity={0.55} color="#e8d5c0" />
         {/* Ambient — even base illumination */}
-        <ambientLight intensity={0.65} color="#fffaf5" />
+        <ambientLight intensity={0.72} color="#fffaf5" />
 
         <MiniBagModel
           frontUrl={frontUrl}

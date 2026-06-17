@@ -5,6 +5,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react"
+import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 import { useI18n } from "@/lib/i18n"
 import { useAuth } from "@/lib/auth-context"
@@ -366,8 +367,6 @@ export default function BagShopPage() {
       const data = await res.json()
       if (res.ok && data.tazo) {
         playSFX('reveal', { volume: 0.5 })
-        // Set both state values together so they batch into one render
-        // This prevents the gap where revealedTazo is set but stage is still "opening"
         setRevealedTazo(data.tazo)
         setBonusTazo(data.bonusTazo || null)
         setStage("reveal")
@@ -783,11 +782,15 @@ export default function BagShopPage() {
         </div>
 
         {/* Tazo disc — larger, centered, with entrance animation */}
-        <div className={`mx-auto w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center overflow-hidden animate-[popUp_0.6s_ease-out_0.15s_both] ${
+        <motion.div
+          initial={{ rotateY: 180, scale: 0.3, opacity: 0 }}
+          animate={{ rotateY: 0, scale: 1, opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.175, 0.885, 0.32, 1.275], delay: 0.1 }}
+          className={`mx-auto w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center overflow-hidden ${
           isLegendary ? "border-[5px]" : "border-4"
-        }`}
+        } ${isHighRarity ? "animate-pulse" : ""}`}
           style={{
-            borderColor: isLegendary ? "#F59E0B" : "#1a1a1a",
+            borderColor: isLegendary ? "#F59E0B" : isUltraRare ? "#A855F7" : isRare ? "#3B82F6" : "#1a1a1a",
             background: "#1a1a1a",
             boxShadow: isLegendary
               ? "8px 8px 0px #1a1a1a, 0 0 40px #F59E0B50, 0 0 80px #F59E0B30, inset 0 0 40px #F59E0B15"
@@ -808,7 +811,7 @@ export default function BagShopPage() {
               <span className="text-[8px] font-black text-white/40 mt-1 uppercase tracking-wider">{revealedTazo.name || "Unknown Tazo"}</span>
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Name + franchise */}
         <div className="space-y-1 animate-[popUp_0.5s_ease-out_0.25s_both]">
@@ -974,7 +977,7 @@ export default function BagShopPage() {
     )
   }
 
-  // Loading or unknown state — show spinner instead of blank
+  // Loading/unknown state — show spinner, never blank
   return (
     <div className="flex items-center justify-center py-12 animate-fadeIn">
       <div className="flex flex-col items-center gap-3">

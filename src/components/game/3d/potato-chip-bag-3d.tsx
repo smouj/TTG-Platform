@@ -72,19 +72,19 @@ export default function PotatoChipBag3D({
   const bottomCapGeo = useMemo(() => buildBodyCapGeo(false, dims), [])
 
   const fMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: frontTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
+    map: frontTex, roughness: 0.14, metalness: 0.06, side: THREE.FrontSide,
   }), [frontTex])
   const bMat = useMemo(() => new THREE.MeshStandardMaterial({
-    map: backTex, roughness: 0.22, metalness: 0.02, side: THREE.FrontSide,
+    map: backTex, roughness: 0.14, metalness: 0.06, side: THREE.FrontSide,
   }), [backTex])
   const sMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: seamColorHex, roughness: 0.50, metalness: 0.04, side: THREE.FrontSide,
+    color: seamColorHex, roughness: 0.45, metalness: 0.06, side: THREE.FrontSide,
   }), [seamColorHex])
   const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: sealColorHex, roughness: 0.55, metalness: 0.03, side: THREE.FrontSide,
+    color: sealColorHex, roughness: 0.48, metalness: 0.05, side: THREE.FrontSide,
   }), [sealColorHex])
   const capMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: "#3a2f25", roughness: 0.55, metalness: 0, side: THREE.FrontSide,
+    color: "#3a2f25", roughness: 0.42, metalness: 0.03, side: THREE.FrontSide,
   }), [])
 
   useEffect(() => {
