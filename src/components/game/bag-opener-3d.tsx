@@ -10,7 +10,7 @@
 import { useRef, useState, useMemo, useCallback, useEffect, Suspense } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
-import PotatoChipBag3D, { BAG_H, BAG_D } from "./3d/potato-chip-bag-3d"
+import PotatoChipBag3D, { BAG_H } from "./3d/potato-chip-bag-3d"
 import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX } from "@/lib/audio/sfx-engine"
 
