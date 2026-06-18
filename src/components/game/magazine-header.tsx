@@ -27,6 +27,8 @@ const NAV_ITEMS: [string, string][] = [
   ["download", "Download"],
   ["faq", "FAQ"],
   ["shop", "Shop"],
+  ["wiki", "Wiki"],
+  ["contact", "Contact"],
 ]
 
 export default function MagazineHeader({
