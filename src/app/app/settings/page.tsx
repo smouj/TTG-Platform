@@ -493,7 +493,7 @@ export default function SettingsPage() {
           {/* ── SOUND SETTINGS ── */}
           <div className="border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] bg-white overflow-hidden">
             <div className="px-5 sm:px-6 py-3 border-b-3 border-ttg-black flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-yellow)10, var(--ttg-yellow)10 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #ffcc0010, #ffcc0010 4px, transparent 4px, transparent 8px)" }}>
               <Volume2 className="w-4 h-4 text-ttg-black" />
               <h2 className="text-xs font-black text-ttg-black uppercase tracking-[0.2em]">Sound</h2>
             </div>
@@ -510,7 +510,7 @@ export default function SettingsPage() {
           {/* ── VISUAL SETTINGS ── */}
           <div className="border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] bg-white overflow-hidden">
             <div className="px-5 sm:px-6 py-3 border-b-3 border-ttg-black flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-blue)10, var(--ttg-blue)10 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #3b4cca10, #3b4cca10 4px, transparent 4px, transparent 8px)" }}>
               <Monitor className="w-4 h-4 text-ttg-black" />
               <h2 className="text-xs font-black text-ttg-black uppercase tracking-[0.2em]">Visual</h2>
             </div>
@@ -543,7 +543,7 @@ export default function SettingsPage() {
           {/* ── PASSWORD ── */}
           <div className="border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] bg-white overflow-hidden">
             <div className="px-5 sm:px-6 py-3 border-b-3 border-ttg-black flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-warning)10, var(--ttg-warning)10 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #f59e0b10, #f59e0b10 4px, transparent 4px, transparent 8px)" }}>
               <Lock className="w-4 h-4 text-ttg-black" />
               <h2 className="text-xs font-black text-ttg-black uppercase tracking-[0.2em]">Password</h2>
             </div>
@@ -590,7 +590,7 @@ export default function SettingsPage() {
           {/* ── LANGUAGE ── */}
           <div className="border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] bg-white overflow-hidden">
             <div className="px-5 sm:px-6 py-3 border-b-3 border-ttg-black flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-success)10, var(--ttg-success)10 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #22c55e10, #22c55e10 4px, transparent 4px, transparent 8px)" }}>
               <Globe className="w-4 h-4 text-ttg-black" />
               <h2 className="text-xs font-black text-ttg-black uppercase tracking-[0.2em]">Language</h2>
             </div>
@@ -627,7 +627,7 @@ export default function SettingsPage() {
           {/* ── ACCOUNT CONNECTIONS ── */}
           <div className="border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] bg-white overflow-hidden">
             <div className="px-5 py-3 border-b-3 border-ttg-black flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-red)10, var(--ttg-red)10 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #e3350d10, #e3350d10 4px, transparent 4px, transparent 8px)" }}>
               <LinkIcon className="w-4 h-4 text-ttg-black" />
               <h2 className="text-xs font-black text-ttg-black uppercase tracking-[0.2em]">Connections</h2>
             </div>
@@ -679,7 +679,7 @@ export default function SettingsPage() {
           {/* ── REDEEM CODE ── */}
           <div className="border-3 border-ttg-warning bg-white overflow-hidden">
             <div className="px-5 py-3 border-b-3 border-ttg-warning flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-warning)08, var(--ttg-warning)08 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #f59e0b08, #f59e0b08 4px, transparent 4px, transparent 8px)" }}>
               <TicketPercent className="w-4 h-4 text-ttg-warning" />
               <h2 className="text-xs font-black text-ttg-warning uppercase tracking-[0.2em]">Redeem Code</h2>
             </div>
@@ -752,7 +752,7 @@ export default function SettingsPage() {
           {/* ── ACCOUNT ACTIONS ── */}
           <div className="border-3 border-ttg-red bg-white overflow-hidden">
             <div className="px-5 py-3 border-b-3 border-ttg-red flex items-center gap-2"
-              style={{ background: "repeating-linear-gradient(-45deg, var(--ttg-red)08, var(--ttg-red)08 4px, transparent 4px, transparent 8px)" }}>
+              style={{ background: "repeating-linear-gradient(-45deg, #e3350d08, #e3350d08 4px, transparent 4px, transparent 8px)" }}>
               <Shield className="w-4 h-4 text-ttg-red" />
               <h2 className="text-xs font-black text-ttg-red uppercase tracking-[0.2em]">Account</h2>
             </div>

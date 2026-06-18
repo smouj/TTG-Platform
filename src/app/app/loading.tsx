@@ -33,7 +33,7 @@ export default function AppLoading() {
           >
             <div className="w-full h-full flex items-center justify-center bg-ttg-paper">
               <div className="w-2/3 h-2/3 rounded-full" style={{
-                background: "var(--ttg-black)06",
+                background: "#1a1a1a06",
                 animation: "mag-skeleton-shimmer 1.5s ease-in-out infinite",
                 animationDelay: `${i * 0.15}s`,
               }} />

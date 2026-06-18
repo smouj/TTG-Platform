@@ -87,7 +87,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
       <div style={{
         background: "linear-gradient(160deg, #FFFBEB, #FFF7E0)",
         border: "3px solid #FFCC00",
-        boxShadow: "3px 3px 0px var(--ttg-black)15",
+        boxShadow: "3px 3px 0px #1a1a1a15",
         padding: "16px 20px",
         textAlign: "center",
       }}>
@@ -147,7 +147,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
     <div style={{
       background: "linear-gradient(160deg, #FFFBEB, #FFF7E0)",
       border: "3px solid #FFCC00",
-      boxShadow: "3px 3px 0px var(--ttg-black)15",
+      boxShadow: "3px 3px 0px #1a1a1a15",
       padding: "16px 20px",
     }}>
       {/* Header */}

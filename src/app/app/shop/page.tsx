@@ -757,7 +757,7 @@ export default function BagShopPage() {
         {isLegendary && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full opacity-30 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, var(--ttg-warning), var(--ttg-warning)00)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-warning), #f59e0b00)" }} />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full opacity-20 blur-2xl animate-spin"
               style={{ background: "conic-gradient(from 0deg, var(--ttg-warning), var(--ttg-yellow), var(--ttg-warning), transparent)", animationDuration: "4s" }} />
           </div>
@@ -767,7 +767,7 @@ export default function BagShopPage() {
         {isUltraRare && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full opacity-25 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, var(--ttg-purple), var(--ttg-purple)00)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-purple), #a855f700)" }} />
           </div>
         )}
 
@@ -795,9 +795,9 @@ export default function BagShopPage() {
               : rarityColor || "var(--ttg-rarity-common)",
             color: "#fff",
             boxShadow: isLegendary
-              ? "4px 4px 0px var(--ttg-black), 0 0 30px var(--ttg-warning)60, 0 0 60px var(--ttg-warning)30"
+              ? "4px 4px 0px var(--ttg-black), 0 0 30px #f59e0b60, 0 0 60px #f59e0b30"
               : isUltraRare
-              ? "4px 4px 0px var(--ttg-black), 0 0 24px var(--ttg-purple)60, 0 0 48px var(--ttg-purple)30"
+              ? "4px 4px 0px var(--ttg-black), 0 0 24px #a855f760, 0 0 48px #a855f730"
               : isRare
               ? "4px 4px 0px var(--ttg-black), 0 0 18px var(--ttg-rarity-rare)60"
               : "4px 4px 0px var(--ttg-black)",
@@ -822,9 +822,9 @@ export default function BagShopPage() {
             borderColor: isLegendary ? "var(--ttg-warning)" : isUltraRare ? 'var(--ttg-purple)' : isRare ? "var(--ttg-rarity-rare)" : 'var(--ttg-black)',
             background: 'var(--ttg-black)',
             boxShadow: isLegendary
-              ? "8px 8px 0px var(--ttg-black), 0 0 40px var(--ttg-warning)50, 0 0 80px var(--ttg-warning)30, inset 0 0 40px var(--ttg-warning)15"
+              ? "8px 8px 0px var(--ttg-black), 0 0 40px #f59e0b50, 0 0 80px #f59e0b30, inset 0 0 40px #f59e0b15"
               : isUltraRare
-              ? "8px 8px 0px var(--ttg-black), 0 0 30px var(--ttg-purple)50, inset 0 0 30px var(--ttg-purple)10"
+              ? "8px 8px 0px var(--ttg-black), 0 0 30px #a855f750, inset 0 0 30px #a855f710"
               : isRare
               ? "6px 6px 0px var(--ttg-black), 0 0 20px var(--ttg-rarity-rare)40, inset 0 0 20px var(--ttg-rarity-rare)08"
               : "6px 6px 0px var(--ttg-black)",
@@ -849,7 +849,7 @@ export default function BagShopPage() {
           }`}
             style={{
               color: 'var(--ttg-black)',
-              textShadow: isLegendary ? "0 0 20px var(--ttg-warning)40" : "none",
+              textShadow: isLegendary ? "0 0 20px #f59e0b40" : "none",
             }}>
             {_tazo.displayName || _tazo.name}
           </h3>
@@ -867,7 +867,7 @@ export default function BagShopPage() {
         {isLegendary && (
           <div className="animate-[popUp_0.5s_ease-out_0.45s_both]">
             <div className="inline-block px-4 py-2 bg-ttg-yellow/10 border-2 border-ttg-warning"
-              style={{ boxShadow: "0 0 20px var(--ttg-warning)30" }}>
+              style={{ boxShadow: "0 0 20px #f59e0b30" }}>
               <p className="text-sm font-black text-ttg-dracobell uppercase tracking-wider flex items-center gap-2">
                 <Trophy className="w-5 h-5" /> Legendary Find! <Trophy className="w-5 h-5" />
               </p>

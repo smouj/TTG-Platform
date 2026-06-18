@@ -778,7 +778,7 @@ export default function CollectionPage() {
                                 <span
                                   className="text-[7px] font-black uppercase px-1.5 py-0.5 border rounded-full"
                                   style={{
-                                    background: ((item as any).wear <= 15 ? "var(--ttg-success)15" : (item as any).wear <= 40 ? "var(--ttg-yellow)15" : (item as any).wear <= 70 ? "#FF880015" : "#CC000015"),
+                                    background: ((item as any).wear <= 15 ? "#22c55e15" : (item as any).wear <= 40 ? "#ffcc0015" : (item as any).wear <= 70 ? "#FF880015" : "#CC000015"),
                                     color: (item as any).wear <= 15 ? 'var(--ttg-success)' : (item as any).wear <= 40 ? "#CCAA00" : (item as any).wear <= 70 ? "#FF8800" : "#CC0000",
                                     borderColor: ((item as any).wear <= 15 ? 'var(--ttg-success)' : (item as any).wear <= 40 ? "#CCAA00" : (item as any).wear <= 70 ? "#FF8800" : "#CC0000") + "30",
                                   }}

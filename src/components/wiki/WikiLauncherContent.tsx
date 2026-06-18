@@ -95,7 +95,7 @@ export default function WikiLauncherContent() {
 
       {/* ── About Section ── */}
       <section className="mag-card border-3 border-ttg-black bg-white p-6 sm:p-8 space-y-4 relative overflow-hidden"
-        style={{ boxShadow: "6px 6px 0px var(--ttg-black)0d" }}
+        style={{ boxShadow: "6px 6px 0px #1a1a1a0d" }}
       >
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{ backgroundImage: "repeating-linear-gradient(45deg, var(--ttg-black) 0px, var(--ttg-black) 2px, transparent 2px, transparent 12px)" }} />

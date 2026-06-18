@@ -578,7 +578,7 @@ export default function BattlePage() {
                         {opt.badge}
                       </span>
 
-                      <Icon className="w-5 h-5 mb-2.5" style={{ color: active ? opt.color : "var(--ttg-black)18" }} />
+                      <Icon className="w-5 h-5 mb-2.5" style={{ color: active ? opt.color : "#1a1a1a18" }} />
                       <h3 className="font-black text-xs uppercase text-ttg-black mb-1">{opt.title}</h3>
                       <p className="text-[9px] font-bold text-ttg-black/35 leading-relaxed">{opt.desc}</p>
                       {active && (
@@ -620,7 +620,7 @@ export default function BattlePage() {
             {mode !== "practice" && (
               <div
                 className="flex items-start gap-2 p-3 border-2 border-ttg-warning/30 bg-ttg-warning/5"
-                style={{ boxShadow: "2px 2px 0 var(--ttg-warning)20" }}
+                style={{ boxShadow: "2px 2px 0 #f59e0b20" }}
               >
                 <AlertTriangle className="w-4 h-4 text-ttg-warning flex-shrink-0 mt-0.5" />
                 <div>

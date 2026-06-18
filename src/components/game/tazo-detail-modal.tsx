@@ -794,7 +794,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                   className="text-3xl font-black leading-none"
                   style={{
                     color: 'white',
-                    textShadow: '2px 2px 0px var(--ttg-black)40',
+                    textShadow: '2px 2px 0px#1a1a1a40',
                   }}
                 >
                   {tazo.battleWins}
@@ -815,7 +815,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                   className="text-3xl font-black leading-none"
                   style={{
                     color: 'white',
-                    textShadow: '2px 2px 0px var(--ttg-black)40',
+                    textShadow: '2px 2px 0px#1a1a1a40',
                   }}
                 >
                   {tazo.battleLosses}

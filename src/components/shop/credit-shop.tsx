@@ -138,7 +138,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                   border: `3px solid ${highlightColor}`,
                   boxShadow: isPopular
                     ? "4px 4px 0px #FFCC00"
-                    : "3px 3px 0px var(--ttg-black)10",
+                    : "3px 3px 0px #1a1a1a10",
                   padding: "16px",
                   textAlign: "center",
                   position: "relative",
@@ -148,13 +148,13 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                   e.currentTarget.style.transform = "translate(-2px, -2px)"
                   e.currentTarget.style.boxShadow = isPopular
                     ? "6px 6px 0px #FFCC00"
-                    : "5px 5px 0px var(--ttg-black)20"
+                    : "5px 5px 0px #1a1a1a20"
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = ""
                   e.currentTarget.style.boxShadow = isPopular
                     ? "4px 4px 0px #FFCC00"
-                    : "3px 3px 0px var(--ttg-black)10"
+                    : "3px 3px 0px #1a1a1a10"
                 }}
               >
                 {/* Popular Badge */}

@@ -289,7 +289,7 @@ function CoinFlipOverlay({ show, winner }: { show: boolean; winner: "player" | "
         <div className={`w-20 h-20 rounded-full flex items-center justify-center border-[3px] transition-all duration-500 ${
           animPhase === "flipping" 
             ? "animate-[spin3d_1.2s_linear]" 
-            : isPlayerFirst ? "border-ttg-player shadow-[0_0_30px_var(--ttg-player)60]" : "border-ttg-opponent shadow-[0_0_30px_var(--ttg-opponent)60]"
+            : isPlayerFirst ? "border-ttg-player shadow-[0_0_30px_#29adff60]" : "border-ttg-opponent shadow-[0_0_30px_#ff004d60]"
         }`}
           style={{
             background: animPhase === "reveal"
@@ -1586,7 +1586,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             <div className="absolute top-[45%] left-1/2 -translate-x-1/2 pointer-events-none z-30">
               <div className="animate-[popUp_0.3s_ease-out]" key={roundBanner}>
                 <div className="text-[10px] font-black text-ttg-yellow/40 uppercase tracking-[0.3em] text-center mb-1">Round</div>
-                <div className="text-5xl font-black text-ttg-yellow text-center" style={{ textShadow: "0 0 30px var(--ttg-yellow)60" }}>
+                <div className="text-5xl font-black text-ttg-yellow text-center" style={{ textShadow: "0 0 30px #ffcc0060" }}>
                   {roundBanner}
                 </div>
               </div>
