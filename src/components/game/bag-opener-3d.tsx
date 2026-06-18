@@ -140,7 +140,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
   }, [])
 
   const franchiseColor = useMemo(() => {
-    const c: Record<string, string> = { minimon: "var(--ttg-yellow)", cybermon: "var(--ttg-rarity-rare)", dracobell: "#F97316" }
+    const c: Record<string, string> = { minimon: "var(--ttg-yellow)", cybermon: "var(--ttg-rarity-rare)", dracobell: "var(--ttg-dracobell)" }
     return c[franchise] || "var(--ttg-yellow)"
   }, [franchise])
 

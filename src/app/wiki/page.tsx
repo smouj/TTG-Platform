@@ -36,7 +36,7 @@ export default function WikiHomePage() {
             key={key}
             href={`/wiki/${cfg.slug}`}
             className="group block border-2 border-ttg-black bg-white overflow-hidden transition-all hover:-translate-y-1"
-            style={{ boxShadow: "4px 4px 0 #1a1a1a" }}
+            style={{ boxShadow: "4px 4px 0 var(--ttg-black)" }}
           >
             <div className="h-2 w-full" style={{ backgroundColor: cfg.color }} />
             <div className="p-5">
@@ -53,7 +53,7 @@ export default function WikiHomePage() {
                 className="inline-block text-[10px] font-black text-white px-3 py-1 border-2 border-ttg-black"
                 style={{
                   backgroundColor: cfg.color,
-                  boxShadow: "2px 2px 0 #1a1a1a",
+                  boxShadow: "2px 2px 0 var(--ttg-black)",
                 }}
               >
                 {cfg.total} TAZOS →

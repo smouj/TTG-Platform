@@ -51,7 +51,7 @@ const FRANCHISE_COLORS: Record<string, string> = {
 }
 const RARITY_COLORS: Record<string, string> = {
   common: "var(--ttg-rarity-common)", uncommon: 'var(--ttg-success)', rare: "#3B82F6",
-  ultra: 'var(--ttg-purple)', legendary: "#FBBF24", epic: "#EF4444",
+  ultra: 'var(--ttg-purple)', legendary: "var(--ttg-yellow)", epic: "#EF4444",
 }
 const RARITY_STARS: Record<string, number> = {
   common: 1, uncommon: 2, rare: 3, epic: 4, ultra: 4, legendary: 5,
@@ -724,7 +724,7 @@ export default function AdminTazoManagerPage() {
                             {([
                               ["ATK","attack",'var(--ttg-red)'],["DEF","defense",'var(--ttg-blue)'],["RES","resistance",'var(--ttg-success)'],
                               ["WT","weight","var(--ttg-warning)"],["STB","stability",'var(--ttg-purple)'],["SPIN","spin","#EC4899"],
-                              ["CTRL","control","#06B6D4"],["BNC","bounce","#F97316"],["PREC","precision","#8B5CF6"],
+                              ["CTRL","control","var(--ttg-cybermon)"],["BNC","bounce","var(--ttg-dracobell)"],["PREC","precision","var(--ttg-purple)"],
                             ] as const).map(([label, field, color]) => (
                               <div key={field} className="flex items-center gap-1 bg-zinc-50 px-1.5 py-1 border border-zinc-200">
                                 <span className="text-[7px] font-black text-zinc-400 w-8">{label}</span>

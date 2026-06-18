@@ -30,7 +30,7 @@ const MODES = [
     title: "Practice",
     desc: "Train against AI — no pressure, build your skills",
     color: "var(--ttg-success)",
-    gradient: "linear-gradient(135deg, #22C55E, #16A34A)",
+    gradient: "linear-gradient(135deg, var(--ttg-success), var(--ttg-success))",
     badge: "FREE",
     available: true,
   },
@@ -40,7 +40,7 @@ const MODES = [
     title: "Ranked PvP",
     desc: "Competitive matchmaking with leaderboard",
     color: "var(--ttg-red)",
-    gradient: "linear-gradient(135deg, #E3350D, #C62828)",
+    gradient: "linear-gradient(135deg, var(--ttg-red), #C62828)",
     badge: "COMING SOON",
     available: false,
   },
@@ -96,7 +96,7 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
         style={{
           backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
           border: "3px solid var(--ttg-black)",
-          boxShadow: "4px 4px 0px #FFCC00",
+          boxShadow: "4px 4px 0px var(--ttg-yellow)",
         }}
       >
         <Swords className="w-5 h-5 text-ttg-yellow" />

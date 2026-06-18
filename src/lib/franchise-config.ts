@@ -37,7 +37,7 @@ export const FRANCHISES: FranchiseConfig[] = [
     total: 50,
     year: 2026,
     origin: "TazoForge Studios",
-    color: "#FF6B00",
+    color: "var(--ttg-dracobell)",
     categories: ["Tazos", "Megatazos", "Supertazos Octogonales", "Supertazos Voladores", "Mastertazos", "Holo 3D"],
   },
   {

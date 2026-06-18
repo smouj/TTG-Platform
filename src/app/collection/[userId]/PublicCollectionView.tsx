@@ -57,7 +57,7 @@ export default function PublicCollectionView({
       <header
         style={{
           background: "var(--ttg-black)",
-          borderBottom: "4px solid #FFCC00",
+          borderBottom: "4px solid var(--ttg-yellow)",
           padding: "16px 24px",
           display: "flex",
           alignItems: "center",
@@ -83,7 +83,7 @@ export default function PublicCollectionView({
           style={{
             background: "var(--ttg-yellow)",
             color: "var(--ttg-black)",
-            border: "2px solid #1a1a1a",
+            border: "2px solid var(--ttg-black)",
             padding: "6px 14px",
             fontSize: 10,
             fontWeight: 900,
@@ -102,10 +102,10 @@ export default function PublicCollectionView({
       {/* Hero section */}
       <section
         style={{
-          background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
+          background: "linear-gradient(135deg, var(--ttg-black) 0%, #2d2d2d 100%)",
           padding: "40px 24px",
           textAlign: "center",
-          borderBottom: "4px solid #FFCC00",
+          borderBottom: "4px solid var(--ttg-yellow)",
         }}
       >
         <div
@@ -118,7 +118,7 @@ export default function PublicCollectionView({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            border: "3px solid #1a1a1a",
+            border: "3px solid var(--ttg-black)",
           }}
         >
           <span style={{ fontSize: 28, fontWeight: 900, color: "var(--ttg-black)" }}>
@@ -195,8 +195,8 @@ export default function PublicCollectionView({
               style={{
                 display: "block",
                 background: "#fff",
-                border: "3px solid #1a1a1a",
-                boxShadow: "3px 3px 0 #1a1a1a",
+                border: "3px solid var(--ttg-black)",
+                boxShadow: "3px 3px 0 var(--ttg-black)",
                 overflow: "hidden",
                 textDecoration: "none",
                 transition: "transform 0.15s",
@@ -276,7 +276,7 @@ export default function PublicCollectionView({
       <footer
         style={{
           background: "var(--ttg-black)",
-          borderTop: "4px solid #1a1a1a",
+          borderTop: "4px solid var(--ttg-black)",
           padding: "16px 24px",
           textAlign: "center",
           marginTop: 40,

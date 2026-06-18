@@ -110,15 +110,15 @@ function buildHtmlBody(template: EmailTemplateKey, variables: Record<string, any
   }
 
   return `
-    <div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;color:#1a1a1a;">
-      <div style="background:#1a1a1a;padding:16px;text-align:center;">
+    <div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;color:var(--ttg-black);">
+      <div style="background:var(--ttg-black);padding:16px;text-align:center;">
         <h1 style="color:#FFCC00;margin:0;font-size:20px;">${SITE_CONFIG.name}</h1>
         <p style="color:#fff;margin:4px 0 0;font-size:12px;">${SITE_CONFIG.tagline}</p>
       </div>
-      <div style="padding:24px;background:#fff;border:2px solid #1a1a1a;">
+      <div style="padding:24px;background:#fff;border:2px solid var(--ttg-black);">
         ${body}
       </div>
-      <div style="padding:16px;background:#f5f5f5;border:2px solid #1a1a1a;border-top:0;">
+      <div style="padding:16px;background:#f5f5f5;border:2px solid var(--ttg-black);border-top:0;">
         ${sig.html}
       </div>
     </div>

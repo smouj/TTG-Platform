@@ -30,10 +30,10 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
   }, [isWin, isDraw])
 
   const gradient = isWin
-    ? "linear-gradient(135deg, #FFCB05, #FF8C00)"
+    ? "linear-gradient(135deg, var(--ttg-minimon), #FF8C00)"
     : isDraw
     ? "linear-gradient(135deg, #9CA3AF, #6B7280)"
-    : "linear-gradient(135deg, #E3350D, #991B1B)"
+    : "linear-gradient(135deg, var(--ttg-red), #991B1B)"
 
   const accent = isWin ? "var(--ttg-black)" : "white"
 

@@ -151,9 +151,9 @@ export default function PlacementPhase({
                     ? "0 0 20px rgba(255,204,0,0.5), 0 0 6px rgba(255,204,0,0.3)"
                     : "0 0 14px rgba(255,255,255,0.15)",
                 border: placed
-                  ? "2px solid #22C55E"
+                  ? "2px solid var(--ttg-success)"
                   : dragging
-                    ? "2px solid #FFCC00"
+                    ? "2px solid var(--ttg-yellow)"
                     : "2px solid rgba(255,255,255,0.1)",
                 background: tazoImageUrl
                   ? `url(${tazoImageUrl}) center/cover`

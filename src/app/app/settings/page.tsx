@@ -468,8 +468,8 @@ export default function SettingsPage() {
                   <div className="h-full transition-all duration-500"
                     style={{
                       width: `${Math.min(100, ((user.tazoCount ?? 0) / TOTAL_PLANNED) * 100)}%`,
-                      background: "repeating-linear-gradient(-45deg, #E3350D, #E3350D 3px, #CC2200 3px, #CC2200 6px)",
-                      borderRight: (user.tazoCount ?? 0) > 0 && (user.tazoCount ?? 0) < TOTAL_PLANNED ? "2px solid #1a1a1a" : "none",
+                      background: "repeating-linear-gradient(-45deg, var(--ttg-red), var(--ttg-red) 3px, #CC2200 3px, #CC2200 6px)",
+                      borderRight: (user.tazoCount ?? 0) > 0 && (user.tazoCount ?? 0) < TOTAL_PLANNED ? "2px solid var(--ttg-black)" : "none",
                     }} />
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function SettingsPage() {
                     style={{
                       width: `${Math.min(100, (user.deckCount ?? 0) * 20)}%`,
                       background: "repeating-linear-gradient(-45deg, #3B4CCA, #3B4CCA 3px, #2D3AAD 3px, #2D3AAD 6px)",
-                      borderRight: (user.deckCount ?? 0) > 0 ? "2px solid #1a1a1a" : "none",
+                      borderRight: (user.deckCount ?? 0) > 0 ? "2px solid var(--ttg-black)" : "none",
                     }} />
                 </div>
               </div>

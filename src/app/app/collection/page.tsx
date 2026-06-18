@@ -23,9 +23,9 @@ interface CollectionData { items: CollectionTazo[]; total: number; totalUnique: 
 
 // ── Constants ──────────────────────────────────────────
 const FRANCHISE_GRADIENT: Record<string, string> = {
-  minimon: "linear-gradient(135deg, #FFCB05, #FF8C00)",
-  cybermon: "linear-gradient(135deg, #00A1E9, #0057B7)",
-  dracobell: "linear-gradient(135deg, #FF6B00, #CC4400)",
+  minimon: "linear-gradient(135deg, var(--ttg-minimon), #FF8C00)",
+  cybermon: "linear-gradient(135deg, var(--ttg-cybermon), #0057B7)",
+  dracobell: "linear-gradient(135deg, var(--ttg-dracobell), #CC4400)",
 }
 const FRANCHISE_LABEL: Record<string, string> = {
   minimon: "Minimon", cybermon: "Cybermon", dracobell: "Dracobell",
@@ -372,7 +372,7 @@ export default function CollectionPage() {
       >
         <div className="relative z-10 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "linear-gradient(135deg, #FFCB05, #FF6B00)", border: "2px solid var(--ttg-black)" }}>
+            style={{ background: "linear-gradient(135deg, var(--ttg-minimon), var(--ttg-dracobell))", border: "2px solid var(--ttg-black)" }}>
             <Disc3 className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -415,7 +415,7 @@ export default function CollectionPage() {
                 className="h-full transition-all duration-700 ease-out"
                 style={{
                   width: `${Math.min(100, (data.totalUnique / Math.max(totalGlobal, 1)) * 100)}%`,
-                  background: "linear-gradient(90deg, #FFCB05, #FF6B00, #E3350D)",
+                  background: "linear-gradient(90deg, var(--ttg-minimon), var(--ttg-dracobell), var(--ttg-red))",
                 }}
               />
             </div>
@@ -519,7 +519,7 @@ export default function CollectionPage() {
                       <span style={{ color: 'var(--ttg-red)' }}>{dt.attack}</span>
                       <span style={{ color: 'var(--ttg-blue)' }}>{dt.defense}</span>
                       <span className="text-ttg-black/40">·</span>
-                      <span style={{ color: "#06B6D4" }}>{dt.resistance}</span>
+                      <span style={{ color: "var(--ttg-cybermon)" }}>{dt.resistance}</span>
                     </div>
                   </div>
                 </div>
@@ -672,11 +672,11 @@ export default function CollectionPage() {
                       return (
                         <div
                           key={item.id}
-                          className="group border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden hover:shadow-[5px_5px_0px_#1a1a1a] hover:-translate-y-[2px] transition-all bg-white relative"
+                          className="group border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden hover:shadow-[5px_5px_0px_var(--ttg-black)] hover:-translate-y-[2px] transition-all bg-white relative"
                         >
                           {/* NEW badge */}
                           {hasNew && (
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 px-2 py-0.5 bg-ttg-yellow text-ttg-black border-b-2 border-x-2 border-ttg-black text-[8px] font-black shadow-[0_2px_0px_#1a1a1a] animate-pulse">
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 px-2 py-0.5 bg-ttg-yellow text-ttg-black border-b-2 border-x-2 border-ttg-black text-[8px] font-black shadow-[0_2px_0px_var(--ttg-black)] animate-pulse">
                               NEW!
                             </div>
                           )}
@@ -792,9 +792,9 @@ export default function CollectionPage() {
                                 <span
                                   className="text-[7px] font-black uppercase px-1.5 py-0.5 border rounded-full"
                                   style={{
-                                    background: "var(--ttg-rarity-rare)15",
+                                    background: "#A855F715",
                                     color: "var(--ttg-rarity-rare)",
-                                    borderColor: "var(--ttg-rarity-rare)30",
+                                    borderColor: "#A855F730",
                                   }}
                                 >
                                   FOR SALE
@@ -807,7 +807,7 @@ export default function CollectionPage() {
                               {[
                                 { label: "ATK", value: item.tazo.attack, color: 'var(--ttg-red)' },
                                 { label: "DEF", value: item.tazo.defense, color: 'var(--ttg-blue)' },
-                                { label: "SPD", value: Math.round((item.tazo.spin + item.tazo.bounce + item.tazo.precision) / 3), color: "#06B6D4" },
+                                { label: "SPD", value: Math.round((item.tazo.spin + item.tazo.bounce + item.tazo.precision) / 3), color: "var(--ttg-cybermon)" },
                               ].map((stat) => (
                                 <div key={stat.label} className="text-center">
                                   <div className="text-[7px] font-black text-ttg-black/40 uppercase leading-none mb-0.5">{stat.label}</div>
@@ -986,8 +986,8 @@ export default function CollectionPage() {
                     { label: "STA", value: d.tazo.stability, color: "#14B8A6" },
                     { label: "SPN", value: d.tazo.spin, color: "#10B981" },
                     { label: "CTR", value: d.tazo.control, color: "#EC4899" },
-                    { label: "BNC", value: d.tazo.bounce, color: "#F97316" },
-                    { label: "PRC", value: d.tazo.precision, color: "#06B6D4" },
+                    { label: "BNC", value: d.tazo.bounce, color: "var(--ttg-dracobell)" },
+                    { label: "PRC", value: d.tazo.precision, color: "var(--ttg-cybermon)" },
                   ].map(s => (
                     <div key={s.label} className="text-center p-1.5 border-2 border-ttg-black/10 bg-ttg-cream">
                       <div className="text-[7px] font-black text-ttg-black/40 uppercase">{s.label}</div>

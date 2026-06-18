@@ -133,11 +133,11 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                 key={pkg.id}
                 style={{
                   background: isPopular
-                    ? "linear-gradient(160deg, #FFFBEB 0%, #fff 100%)"
+                    ? "linear-gradient(160deg, var(--ttg-cream) 0%, #fff 100%)"
                     : "#fff",
                   border: `3px solid ${highlightColor}`,
                   boxShadow: isPopular
-                    ? "4px 4px 0px #FFCC00"
+                    ? "4px 4px 0px var(--ttg-yellow)"
                     : "3px 3px 0px #1a1a1a10",
                   padding: "16px",
                   textAlign: "center",
@@ -147,13 +147,13 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translate(-2px, -2px)"
                   e.currentTarget.style.boxShadow = isPopular
-                    ? "6px 6px 0px #FFCC00"
+                    ? "6px 6px 0px var(--ttg-yellow)"
                     : "5px 5px 0px #1a1a1a20"
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = ""
                   e.currentTarget.style.boxShadow = isPopular
-                    ? "4px 4px 0px #FFCC00"
+                    ? "4px 4px 0px var(--ttg-yellow)"
                     : "3px 3px 0px #1a1a1a10"
                 }}
               >
@@ -222,7 +222,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                     fontWeight: 900,
                     letterSpacing: "0.05em",
                     padding: "3px 10px",
-                    border: "2px solid #FFCC00",
+                    border: "2px solid var(--ttg-yellow)",
                     display: "inline-block",
                     marginBottom: "10px",
                   }}>

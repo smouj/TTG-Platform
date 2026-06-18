@@ -7,11 +7,11 @@ import { db } from "@/lib/db"
 const DEFAULT_TUBES = [
   { slug: "minimon", name: "Minimon", textureUrl: "/tazos-tubes/tube-minimon.png", franchise: "minimon", color: "var(--ttg-yellow)" },
   { slug: "cybermon", name: "Cybermon", textureUrl: "/tazos-tubes/tube-cybermon.png", franchise: "cybermon", color: "#00B4D8" },
-  { slug: "dracobell", name: "Dracobell", textureUrl: "/tazos-tubes/tube-dracobell.png", franchise: "dracobell", color: "#FF6B00" },
+  { slug: "dracobell", name: "Dracobell", textureUrl: "/tazos-tubes/tube-dracobell.png", franchise: "dracobell", color: "var(--ttg-dracobell)" },
 ]
 
 const FRANCHISE_COLORS: Record<string, string> = {
-  minimon: "var(--ttg-yellow)", cybermon: "#00B4D8", dracobell: "#FF6B00",
+  minimon: "var(--ttg-yellow)", cybermon: "#00B4D8", dracobell: "var(--ttg-dracobell)",
 }
 
 export async function GET() {

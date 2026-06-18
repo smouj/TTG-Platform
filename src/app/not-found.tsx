@@ -30,8 +30,8 @@ export default function NotFoundPage() {
           {/* Tazo disc with "?" */}
           <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full mx-auto mb-6 border-4 border-ttg-black flex items-center justify-center"
             style={{
-              boxShadow: "6px 6px 0px #1a1a1a, inset 0 0 40px rgba(255,204,0,0.15)",
-              background: "linear-gradient(135deg, #FFCC00 0%, #FFE566 50%, #FFCC00 100%)",
+              boxShadow: "6px 6px 0px var(--ttg-black), inset 0 0 40px rgba(255,204,0,0.15)",
+              background: "linear-gradient(135deg, var(--ttg-yellow) 0%, #FFE566 50%, var(--ttg-yellow) 100%)",
             }}>
             <span className="text-5xl sm:text-6xl font-black text-ttg-black mag-stroke-sm">?</span>
           </div>
@@ -51,13 +51,13 @@ export default function NotFoundPage() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/"
               className="inline-flex items-center gap-2 px-6 py-3 border-3 border-ttg-black bg-ttg-yellow text-sm font-black text-ttg-black uppercase tracking-wider hover:bg-ttg-yellow-hover transition-colors"
-              style={{ boxShadow: "3px 3px 0px #1a1a1a" }}>
+              style={{ boxShadow: "3px 3px 0px var(--ttg-black)" }}>
               <Home className="w-4 h-4" />
               Back Home
             </Link>
             <Link href="/?page=tazos"
               className="inline-flex items-center gap-2 px-6 py-3 border-3 border-ttg-black bg-white text-sm font-black text-ttg-black uppercase tracking-wider hover:bg-ttg-yellow/10 transition-colors"
-              style={{ boxShadow: "3px 3px 0px #1a1a1a" }}>
+              style={{ boxShadow: "3px 3px 0px var(--ttg-black)" }}>
               <Search className="w-4 h-4" />
               Browse Tazos
             </Link>

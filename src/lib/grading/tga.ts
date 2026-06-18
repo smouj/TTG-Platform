@@ -183,7 +183,7 @@ export function getTGADisplay(grade: TGAGrade | null | undefined): TGADisplay | 
     rangeEmoji = "🟡"
   } else if (g >= 20) {
     rangeLabel = "PLAYED"
-    rangeColor = "#F97316"
+    rangeColor = "var(--ttg-dracobell)"
     rangeEmoji = "⚡"
   } else {
     rangeLabel = "DAMAGED"

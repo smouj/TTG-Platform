@@ -105,7 +105,7 @@ export function TGASlabLabel({
         <div className="flex gap-0.5 justify-center">
           {[
             { min: 0, max: 20, color: "var(--ttg-red)", label: "DMG" },
-            { min: 20, max: 55, color: "#F97316", label: "PLY" },
+            { min: 20, max: 55, color: "var(--ttg-dracobell)", label: "PLY" },
             { min: 55, max: 85, color: "#84CC16", label: "EXC" },
             { min: 85, max: 95, color: "var(--ttg-success)", label: "MNT" },
             { min: 95, max: 100, color: "#0096FF", label: "GEM" },

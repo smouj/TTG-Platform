@@ -183,7 +183,7 @@ export default function BattleTubePreview({
               style={{
                 width: `${fillPct}%`,
                 background: count >= maxCount
-                  ? `linear-gradient(90deg, #22C55E 0%, #16A34A 100%)`
+                  ? `linear-gradient(90deg, var(--ttg-success) 0%, var(--ttg-success) 100%)`
                   : `linear-gradient(90deg, ${tubeColor} 0%, ${tubeColor}88 100%)`,
               }} />
           </div>

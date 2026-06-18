@@ -38,8 +38,8 @@ export default function ErrorPage({
           {/* Broken tazo disc */}
           <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full mx-auto mb-6 border-4 border-ttg-red flex items-center justify-center relative"
             style={{
-              boxShadow: "6px 6px 0px #1a1a1a, inset 0 0 40px rgba(227,53,13,0.15)",
-              background: "linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 30%, #2a2a2a 60%, #1a1a1a 100%)",
+              boxShadow: "6px 6px 0px var(--ttg-black), inset 0 0 40px rgba(227,53,13,0.15)",
+              background: "linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 30%, #2a2a2a 60%, var(--ttg-black) 100%)",
             }}>
             {/* Crack effect */}
             <div className="absolute inset-0 rounded-full overflow-hidden opacity-40"
@@ -69,13 +69,13 @@ export default function ErrorPage({
           <div className="flex flex-wrap gap-3 justify-center">
             <button onClick={reset}
               className="inline-flex items-center gap-2 px-6 py-3 border-3 border-ttg-black bg-ttg-red text-sm font-black text-white uppercase tracking-wider hover:bg-ttg-red-dark transition-colors"
-              style={{ boxShadow: "3px 3px 0px #1a1a1a" }}>
+              style={{ boxShadow: "3px 3px 0px var(--ttg-black)" }}>
               <RefreshCw className="w-4 h-4" />
               Try Again
             </button>
             <Link href="/"
               className="inline-flex items-center gap-2 px-6 py-3 border-3 border-ttg-black bg-white text-sm font-black text-ttg-black uppercase tracking-wider hover:bg-ttg-yellow/10 transition-colors"
-              style={{ boxShadow: "3px 3px 0px #1a1a1a" }}>
+              style={{ boxShadow: "3px 3px 0px var(--ttg-black)" }}>
               <Home className="w-4 h-4" />
               Back Home
             </Link>

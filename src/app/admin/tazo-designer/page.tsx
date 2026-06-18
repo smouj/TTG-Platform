@@ -364,7 +364,7 @@ export default function AdminTazoDesignerPage() {
                             className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full border border-white/50 shadow"
                             style={{
                               backgroundColor:
-                                tazo.rarity === "legendary" ? "#FBBF24" :
+                                tazo.rarity === "legendary" ? "var(--ttg-yellow)" :
                                 tazo.rarity === "ultra" ? 'var(--ttg-purple)' :
                                 tazo.rarity === "rare" ? "#3B82F6" :
                                 tazo.rarity === "uncommon" ? 'var(--ttg-success)' : "var(--ttg-rarity-common)",

@@ -31,7 +31,7 @@ const RARITIES = [
   { slug: "uncommon", name: "Uncommon", color: 'var(--ttg-success)', stars: 2, desc: "Subtle glow" },
   { slug: "rare", name: "Rare", color: "#3B82F6", stars: 3, desc: "Crystalline accents" },
   { slug: "ultra-rare", name: "Ultra Rare", color: 'var(--ttg-purple)', stars: 4, desc: "Purple aura + metallic" },
-  { slug: "legendary", name: "Legendary", color: "#FBBF24", stars: 5, desc: "Golden aura + godlike" },
+  { slug: "legendary", name: "Legendary", color: "var(--ttg-yellow)", stars: 5, desc: "Golden aura + godlike" },
 ];
 
 const ROLE_ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -123,9 +123,9 @@ const STAT_LABELS: Record<string, [string, string]> = {
   weight: ["WT", "var(--ttg-warning)"],
   stability: ["STB", 'var(--ttg-purple)'],
   spin: ["SPIN", "#EC4899"],
-  control: ["CTRL", "#06B6D4"],
-  bounce: ["BNC", "#F97316"],
-  precision: ["PREC", "#8B5CF6"],
+  control: ["CTRL", "var(--ttg-cybermon)"],
+  bounce: ["BNC", "var(--ttg-dracobell)"],
+  precision: ["PREC", "var(--ttg-purple)"],
 };
 
 // ── Disc Preview SVG ──

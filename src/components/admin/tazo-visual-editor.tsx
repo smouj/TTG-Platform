@@ -93,11 +93,11 @@ const ELEMENT_LABELS: Record<ElementKey, string> = {
 };
 
 const ELEMENT_COLORS: Record<ElementKey, string> = {
-  collection: "#06B6D4",
+  collection: "var(--ttg-cybermon)",
   badge: "var(--ttg-purple)",
   number: "var(--ttg-rarity-rare)",
   name: "var(--ttg-success)",
-  rarity: "#FBBF24",
+  rarity: "var(--ttg-yellow)",
   creature: "var(--ttg-red)",
 };
 
@@ -748,8 +748,8 @@ export default function TazoVisualEditor({
                     }}
                     className="w-full h-2 rounded-full appearance-none cursor-pointer"
                     style={{
-                      background: `linear-gradient(to right, #22C55E ${wearLevel * 0.4}%, #FBBF24 ${wearLevel * 0.7}%, #E3350D ${wearLevel}%)`,
-                      accentColor: wearLevel > 60 ? "var(--ttg-red)" : wearLevel > 30 ? "#FBBF24" : "var(--ttg-success)",
+                      background: `linear-gradient(to right, var(--ttg-success) ${wearLevel * 0.4}%, var(--ttg-yellow) ${wearLevel * 0.7}%, var(--ttg-red) ${wearLevel}%)`,
+                      accentColor: wearLevel > 60 ? "var(--ttg-red)" : wearLevel > 30 ? "var(--ttg-yellow)" : "var(--ttg-success)",
                     }}
                   />
                   <span className="text-[10px] font-black text-ttg-black w-8 text-right tabular-nums">

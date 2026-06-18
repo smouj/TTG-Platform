@@ -18,11 +18,11 @@ const ELEMENT_LABELS: Record<ElementKey, string> = {
 };
 
 const ELEMENT_COLORS: Record<ElementKey, string> = {
-  collection: "#06B6D4",
+  collection: "var(--ttg-cybermon)",
   badge: "var(--ttg-purple)",
   number: "var(--ttg-rarity-rare)",
   name: "var(--ttg-success)",
-  rarity: "#FBBF24",
+  rarity: "var(--ttg-yellow)",
   creature: "var(--ttg-red)",
 };
 

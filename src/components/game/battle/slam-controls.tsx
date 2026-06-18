@@ -331,7 +331,7 @@ export default function SlamControls(props: SlamControlsProps) {
             <div className="absolute top-2 bottom-2 left-1/2 w-px bg-white/3" />
             {/* Tilt indicator needle */}
             <div className="absolute top-1/2 left-1/2 w-1.5 h-8 -mt-4 rounded-full origin-bottom shadow-[0_0_12px_rgba(255,204,0,0.4)]"
-              style={{ background: "linear-gradient(to top, #FFCC00, #FFE066)", transform: `translateX(-50%) rotate(${tiltDeg}deg)` }} />
+              style={{ background: "linear-gradient(to top, var(--ttg-yellow), #FFE066)", transform: `translateX(-50%) rotate(${tiltDeg}deg)` }} />
           </div>
         </div>
         
@@ -352,7 +352,7 @@ export default function SlamControls(props: SlamControlsProps) {
           </div>
           <button onClick={() => { playSfx("slam_launch", 0.4); onRelease() }}
             className="w-full py-3 font-black text-sm uppercase tracking-wider shadow-[0_0_24px_rgba(255,204,0,0.4)] active:scale-95 pointer-events-auto transition-all"
-            style={{ background: "linear-gradient(135deg, #FFCC00, #FFD633)", color: "var(--ttg-arena-bg)" }}>
+            style={{ background: "linear-gradient(135deg, var(--ttg-yellow), #FFD633)", color: "var(--ttg-arena-bg)" }}>
             <Zap className="w-4 h-4 inline mr-1.5" /> SLAM!
           </button>
         </div>

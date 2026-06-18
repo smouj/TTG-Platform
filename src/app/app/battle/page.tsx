@@ -60,7 +60,7 @@ const MODES = [
     title: "Practice",
     desc: "Train against AI — no pressure. Perfect your strategy with adjustable difficulty.",
     color: 'var(--ttg-success)',
-    gradient: "linear-gradient(135deg, #22C55E, #16A34A)",
+    gradient: "linear-gradient(135deg, var(--ttg-success), var(--ttg-success))",
     badge: "AVAILABLE",
     available: true,
   },
@@ -70,7 +70,7 @@ const MODES = [
     title: "Ranked PvP",
     desc: "Competitive matchmaking with global leaderboard and seasonal rewards.",
     color: 'var(--ttg-red)',
-    gradient: "linear-gradient(135deg, #E3350D, #C62828)",
+    gradient: "linear-gradient(135deg, var(--ttg-red), #C62828)",
     badge: "COMING SOON",
     available: false,
   },
@@ -647,7 +647,7 @@ export default function BattlePage() {
                 disabled={!canStart || launching}
                 className={`w-full sm:w-auto px-12 sm:px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-[3px] border-ttg-black transition-all ${
                   canStart
-                    ? "bg-ttg-red text-white hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] hover:shadow-[2px_2px_0_#1a1a1a]"
+                    ? "bg-ttg-red text-white hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] hover:shadow-[2px_2px_0_var(--ttg-black)]"
                     : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
                 }`}
                 style={canStart ? { boxShadow: "4px 4px 0 var(--ttg-black)" } : {}}

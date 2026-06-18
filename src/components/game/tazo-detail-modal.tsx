@@ -26,9 +26,9 @@ interface TazoDetailModalProps {
 }
 
 const FRANCHISE_COLORS: Record<string, { from: string; to: string; text: string; border: string; banner: string }> = {
-  minimon: { from: 'var(--ttg-minimon)', to: 'var(--ttg-minimon-dark)', text: '#92400E', border: 'var(--ttg-minimon)', banner: 'linear-gradient(90deg, #FFCB05, #FF8C00)' },
-  cybermon: { from: 'var(--ttg-cybermon)', to: '#0057B7', text: '#1E3A5F', border: 'var(--ttg-cybermon)', banner: 'linear-gradient(90deg, #00A1E9, #0057B7)' },
-  dracobell: { from: 'var(--ttg-dracobell)', to: 'var(--ttg-dracobell-dark)', text: '#7C2D12', border: 'var(--ttg-dracobell)', banner: 'linear-gradient(90deg, #FF6B00, #CC4400)' },
+  minimon: { from: 'var(--ttg-minimon)', to: 'var(--ttg-minimon-dark)', text: '#92400E', border: 'var(--ttg-minimon)', banner: 'linear-gradient(90deg, var(--ttg-minimon), #FF8C00)' },
+  cybermon: { from: 'var(--ttg-cybermon)', to: '#0057B7', text: '#1E3A5F', border: 'var(--ttg-cybermon)', banner: 'linear-gradient(90deg, var(--ttg-cybermon), #0057B7)' },
+  dracobell: { from: 'var(--ttg-dracobell)', to: 'var(--ttg-dracobell-dark)', text: '#7C2D12', border: 'var(--ttg-dracobell)', banner: 'linear-gradient(90deg, var(--ttg-dracobell), #CC4400)' },
 }
 
 const STAT_CONFIG = [
@@ -39,8 +39,8 @@ const STAT_CONFIG = [
   { key: 'stability' as const, label: 'STABLE', color: '#14B8A6', bgColor: '#14B8A615' },
   { key: 'spin' as const, label: 'SPIN', color: '#78C850', bgColor: '#78C85015' },
   { key: 'control' as const, label: 'CONTROL', color: '#EC4899', bgColor: '#EC489915' },
-  { key: 'bounce' as const, label: 'BOUNCE', color: '#F97316', bgColor: '#F9731615' },
-  { key: 'precision' as const, label: 'PRECISE', color: '#06B6D4', bgColor: '#06B6D415' },
+  { key: 'bounce' as const, label: 'BOUNCE', color: 'var(--ttg-dracobell)', bgColor: '#FF6B0015' },
+  { key: 'precision' as const, label: 'PRECISE', color: 'var(--ttg-cybermon)', bgColor: '#00A1E915' },
 ]
 
 const RARITY_STARS: Record<Rarity, string> = {
@@ -63,8 +63,8 @@ const CONDITION_HEX: Record<TazoCondition, string> = {
   mint: '#10B981',
   good: 'var(--ttg-success)',
   used: '#EAB308',
-  worn: '#F97316',
-  holo: '#06B6D4',
+  worn: 'var(--ttg-dracobell)',
+  holo: 'var(--ttg-cybermon)',
   metallic: '#94A3B8',
 }
 
@@ -221,7 +221,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
             className="relative z-10 text-3xl sm:text-4xl font-black leading-none mag-stroke-white uppercase tracking-tight"
             style={{
               paintOrder: 'stroke fill',
-              WebkitTextStroke: '2.5px #1a1a1a',
+              WebkitTextStroke: '2.5px var(--ttg-black)',
               color: 'white',
             }}
           >
@@ -385,7 +385,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
 
             {/* Speech Bubble with flavor quote */}
             <div className="mt-3 speech-bubble text-center max-w-[260px]">
-              <span className="mag-stroke-sm" style={{ color: franchiseColors.text, WebkitTextStroke: '0.5px #1a1a1a' }}>
+              <span className="mag-stroke-sm" style={{ color: franchiseColors.text, WebkitTextStroke: '0.5px var(--ttg-black)' }}>
                 &ldquo;{getFlavorQuote(franchiseSlug, tazo.displayName || tazo.name || "?")}&rdquo;
               </span>
             </div>
@@ -521,7 +521,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                   className="font-black text-base uppercase tracking-wide mag-stroke"
                   style={{
                     paintOrder: 'stroke fill',
-                    WebkitTextStroke: '1.5px #1a1a1a',
+                    WebkitTextStroke: '1.5px var(--ttg-black)',
                     color: 'var(--ttg-red)',
                   }}
                 >

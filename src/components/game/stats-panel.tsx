@@ -36,8 +36,8 @@ const CONDITION_COLORS: Record<string, string> = {
   mint: '#10B981',
   good: 'var(--ttg-success)',
   used: '#EAB308',
-  worn: '#F97316',
-  holo: '#06B6D4',
+  worn: 'var(--ttg-dracobell)',
+  holo: 'var(--ttg-cybermon)',
   metallic: '#94A3B8',
 }
 
@@ -49,8 +49,8 @@ const STAT_ICONS = [
   { key: 'stability', label: 'Best Stability', icon: Waves, color: '#14B8A6' },
   { key: 'spin', label: 'Top Spin', icon: Wind, color: '#78C850' },
   { key: 'control', label: 'Best Control', icon: Target, color: 'var(--ttg-cybermon)' },
-  { key: 'bounce', label: 'Best Bounce', icon: Zap, color: '#F97316' },
-  { key: 'precision', label: 'Best Precision', icon: Crosshair, color: '#06B6D4' },
+  { key: 'bounce', label: 'Best Bounce', icon: Zap, color: 'var(--ttg-dracobell)' },
+  { key: 'precision', label: 'Best Precision', icon: Crosshair, color: 'var(--ttg-cybermon)' },
 ]
 
 export default function StatsPanel({ refreshKey }: StatsPanelProps) {
@@ -170,8 +170,8 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
                   width: `${completionPct}%`,
                   background: `repeating-linear-gradient(
                     -45deg,
-                    #FFCC00,
-                    #FFCC00 6px,
+                    var(--ttg-yellow),
+                    var(--ttg-yellow) 6px,
                     #FFB800 6px,
                     #FFB800 12px
                   )`,
@@ -183,7 +183,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
             </div>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-3xl font-black text-ttg-black mag-stroke-sm" style={{ WebkitTextStroke: '1px #1a1a1a', color: 'var(--ttg-yellow)' }}>
+            <p className="text-3xl font-black text-ttg-black mag-stroke-sm" style={{ WebkitTextStroke: '1px var(--ttg-black)', color: 'var(--ttg-yellow)' }}>
               {completionPct}%
             </p>
             <p className="text-xs font-black text-ttg-black/60">
@@ -327,7 +327,7 @@ export default function StatsPanel({ refreshKey }: StatsPanelProps) {
         <div className="exclusive-badge">Exclusive!</div>
 
         {/* Header banner */}
-        <div className="px-4 py-3 flex items-center gap-2 border-b-3 border-ttg-black" style={{ background: 'linear-gradient(135deg, var(--ttg-yellow) 0%, #FF6B00 100%)' }}>
+        <div className="px-4 py-3 flex items-center gap-2 border-b-3 border-ttg-black" style={{ background: 'linear-gradient(135deg, var(--ttg-yellow) 0%, var(--ttg-dracobell) 100%)' }}>
           <Trophy className="w-5 h-5 text-ttg-black fill-ttg-black" />
           <h3 className="text-lg font-black uppercase tracking-wider text-ttg-black mag-stroke-sm">
             Power Rankings

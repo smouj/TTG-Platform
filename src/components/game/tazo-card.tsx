@@ -40,8 +40,8 @@ const STAT_CONFIG = [
   { key: 'stability' as const, label: 'STA', color: '#14B8A6' },
   { key: 'spin' as const, label: 'SPN', color: '#10B981' },
   { key: 'control' as const, label: 'CTR', color: '#EC4899' },
-  { key: 'bounce' as const, label: 'BNC', color: '#F97316' },
-  { key: 'precision' as const, label: 'PRC', color: '#06B6D4' },
+  { key: 'bounce' as const, label: 'BNC', color: 'var(--ttg-dracobell)' },
+  { key: 'precision' as const, label: 'PRC', color: 'var(--ttg-cybermon)' },
 ]
 
 const RARITY_ORDER: Record<Rarity, number> = {
@@ -54,7 +54,7 @@ const RARITY_ORDER: Record<Rarity, number> = {
 
 const RARITY_STICKER: Record<string, { bg: string; border: string; text: string }> = {
   common: { bg: 'var(--ttg-rarity-common)', border: 'var(--ttg-rarity-common-border)', text: 'var(--ttg-black)' },
-  uncommon: { bg: '#4ADE80', border: '#16A34A', text: '#052E16' },
+  uncommon: { bg: '#4ADE80', border: 'var(--ttg-success)', text: '#052E16' },
   rare: { bg: 'var(--ttg-rarity-rare)', border: 'var(--ttg-rarity-rare-dark)', text: '#fff' },
   ultra: { bg: 'var(--ttg-rarity-ultra)', border: 'var(--ttg-rarity-ultra-dark)', text: '#fff' },
   legendary: { bg: 'var(--ttg-warning)', border: 'var(--ttg-minimon-dark)', text: 'var(--ttg-black)' },

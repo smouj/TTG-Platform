@@ -53,7 +53,7 @@ export default function BattleHistory() {
   if (loading) {
     return (
       <div className="mag-card animate-pulse mag-dots">
-        <div className="px-4 py-3 flex items-center gap-2 border-b-3 border-ttg-black" style={{ background: 'linear-gradient(135deg, #E3350D 0%, #FF6B00 100%)' }}>
+        <div className="px-4 py-3 flex items-center gap-2 border-b-3 border-ttg-black" style={{ background: 'linear-gradient(135deg, var(--ttg-red) 0%, var(--ttg-dracobell) 100%)' }}>
           <Swords className="w-5 h-5 text-white" />
           <h3 className="text-lg font-black uppercase tracking-wider text-white mag-stroke-sm">Battle History</h3>
         </div>
@@ -90,7 +90,7 @@ export default function BattleHistory() {
       {/* Header banner */}
       <div
         className="px-4 py-3 flex items-center gap-2 border-b-3 border-ttg-black"
-        style={{ background: 'linear-gradient(135deg, #E3350D 0%, #FF6B00 100%)' }}
+        style={{ background: 'linear-gradient(135deg, var(--ttg-red) 0%, var(--ttg-dracobell) 100%)' }}
       >
         <Swords className="w-5 h-5 text-white" />
         <h3 className="text-lg font-black uppercase tracking-wider text-white mag-stroke-sm">

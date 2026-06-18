@@ -23,7 +23,7 @@ export interface TazoDiscImageProps {
   scale?: number
   /** Border width on the circle (default: 3px) */
   borderWidth?: number
-  /** Border color (default: #1a1a1a) */
+  /** Border color (default: var(--ttg-black)) */
   borderColor?: string
   /** Inner background color (shown behind the image) */
   bgColor?: string

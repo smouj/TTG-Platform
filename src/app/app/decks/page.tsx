@@ -177,9 +177,9 @@ export default function DecksPage() {
       <div
         className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-          border: "3px solid #1a1a1a",
-          boxShadow: "4px 4px 0px #FFCC00",
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+          border: "3px solid var(--ttg-black)",
+          boxShadow: "4px 4px 0px var(--ttg-yellow)",
         }}
       >
         <div className="flex items-center gap-1.5">

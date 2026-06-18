@@ -15,7 +15,7 @@ import { pickBagVariant } from "@/lib/bag-variants"
 const FRANCHISE_COLORS: Record<string, { bg: string; border: string; text: string; glow: string }> = {
   minimon: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #332200 50%, var(--ttg-black) 100%)", border: "var(--ttg-yellow)", text: "var(--ttg-yellow)", glow: "#FFCC0040" },
   cybermon: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #001133 50%, var(--ttg-black) 100%)", border: "var(--ttg-rarity-rare)", text: "var(--ttg-rarity-rare)", glow: "#3B82F640" },
-  dracobell: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #331100 50%, var(--ttg-black) 100%)", border: "#F97316", text: "#F97316", glow: "#F9731640" },
+  dracobell: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #331100 50%, var(--ttg-black) 100%)", border: "var(--ttg-dracobell)", text: "var(--ttg-dracobell)", glow: "#FF6B0040" },
 }
 
 export function BagOpener2D({ bagName, franchise, onOpen }: {

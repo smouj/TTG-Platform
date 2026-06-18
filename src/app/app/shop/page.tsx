@@ -56,7 +56,7 @@ const DEFAULT_BAGS: BagConfig[] = [
   },
   {
     type: "mega", name: "Mega Bag", cost: 200,
-    bonusChance: 30, rareBoost: 5, color: "#F97316", bgColor: "#FFF7ED",
+    bonusChance: 30, rareBoost: 5, color: "var(--ttg-dracobell)", bgColor: "#FFF7ED",
     franchise: "dracobell", icon: <Zap className="w-4 h-4" />,
     tagline: "Guaranteed rare or better",
   },
@@ -64,9 +64,9 @@ const DEFAULT_BAGS: BagConfig[] = [
 
 const RARITY_GRADIENT: Record<string, string> = {
   common: "linear-gradient(135deg, #9CA3AF, #6B7280)",
-  uncommon: "linear-gradient(135deg, #22C55E, #16A34A)",
+  uncommon: "linear-gradient(135deg, var(--ttg-success), var(--ttg-success))",
   rare: "linear-gradient(135deg, #3B82F6, #2563EB)",
-  "ultra-rare": "linear-gradient(135deg, #A855F7, #7C3AED)",
+  "ultra-rare": "linear-gradient(135deg, #A855F7, var(--ttg-purple))",
   legendary: "linear-gradient(135deg, #F59E0B, #D97706)",
 }
 const RARITY_LABELS: Record<string, string> = {
@@ -207,7 +207,7 @@ function StatsRow({ tazo }: { tazo: any }) {
     { label: "SPD", value: Math.round((tazo.bounce + tazo.spin + tazo.precision) / 3), color: 'var(--ttg-success)' },
     { label: "WGT", value: tazo.weight, color: "#78716C" },
     { label: "STA", value: tazo.stability, color: "var(--ttg-warning)" },
-    { label: "CTL", value: tazo.control, color: "#06B6D4" },
+    { label: "CTL", value: tazo.control, color: "var(--ttg-cybermon)" },
   ]
   const total = stats.reduce((a, s) => a + s.value, 0)
   return (
@@ -775,7 +775,7 @@ export default function BagShopPage() {
         {isRare && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full opacity-20 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, var(--ttg-rarity-rare), var(--ttg-rarity-rare)00)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-rarity-rare), #A855F700)" }} />
           </div>
         )}
 
@@ -789,7 +789,7 @@ export default function BagShopPage() {
             background: isLegendary
               ? "linear-gradient(135deg, var(--ttg-warning), #D97706)"
               : isUltraRare
-              ? "linear-gradient(135deg, var(--ttg-purple), #7C3AED)"
+              ? "linear-gradient(135deg, var(--ttg-purple), var(--ttg-purple))"
               : isRare
               ? "linear-gradient(135deg, var(--ttg-rarity-rare), #2563EB)"
               : rarityColor || "var(--ttg-rarity-common)",
@@ -799,7 +799,7 @@ export default function BagShopPage() {
               : isUltraRare
               ? "4px 4px 0px var(--ttg-black), 0 0 24px #a855f760, 0 0 48px #a855f730"
               : isRare
-              ? "4px 4px 0px var(--ttg-black), 0 0 18px var(--ttg-rarity-rare)60"
+              ? "4px 4px 0px var(--ttg-black), 0 0 18px #A855F760"
               : "4px 4px 0px var(--ttg-black)",
           }}>
           {Array.from({ length: rarityStars }).map((_, i) => (
@@ -826,7 +826,7 @@ export default function BagShopPage() {
               : isUltraRare
               ? "8px 8px 0px var(--ttg-black), 0 0 30px #a855f750, inset 0 0 30px #a855f710"
               : isRare
-              ? "6px 6px 0px var(--ttg-black), 0 0 20px var(--ttg-rarity-rare)40, inset 0 0 20px var(--ttg-rarity-rare)08"
+              ? "6px 6px 0px var(--ttg-black), 0 0 20px #A855F740, inset 0 0 20px #A855F708"
               : "6px 6px 0px var(--ttg-black)",
           }}>
           {_tazo.imageUrl ? (
@@ -973,7 +973,7 @@ export default function BagShopPage() {
               className="flex flex-col items-center gap-1 p-2 bg-white border-2 border-ttg-black/10 shadow-[2px_2px_0px_var(--ttg-black)]/3 hover:border-ttg-black/30 hover:shadow-[2px_2px_0px_#1a1a1a15] transition-all animate-bounce-in"
               style={{ animationDelay: `${i * 60}ms` }}>
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-ttg-black/20 flex items-center justify-center overflow-hidden"
-                style={{ background: `radial-gradient(circle at 30% 30%, ${RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)"}20, #1a1a1a)` }}>
+                style={{ background: `radial-gradient(circle at 30% 30%, ${RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)"}20, var(--ttg-black))` }}>
                 {t.imageUrl ? (
                   <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" borderWidth={0}
                     franchiseSlug={t.franchiseSlug} finish={t.finish} creatureVariant={t.creatureVariant}

@@ -17,7 +17,7 @@ const DEFAULT_BAGS = [
   },
   {
     type: "mega", name: "Mega Bag", cost: 100,
-    bonusChance: 15, rareBoost: 2, color: "#F97316", bgColor: "#FFF7ED",
+    bonusChance: 15, rareBoost: 2, color: "var(--ttg-dracobell)", bgColor: "#FFF7ED",
     franchise: "dracobell", tagline: "Legendary auras, top rarity",
   },
 ]

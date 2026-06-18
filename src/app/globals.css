@@ -53,7 +53,7 @@
   --color-ttg-yellow-hover: #ffe566;
   --color-ttg-yellow-dark: #e6b800;
   --color-ttg-red: #e3350d;
-  --color-ttg-red-dark: #c9302c;
+  --color-ttg-red-dark: var(--ttg-red-dark);
   --color-ttg-blue: #3b4cca;
   --color-ttg-blue-dark: #2a3aa0;
   --color-ttg-black: #1a1a1a;
@@ -91,71 +91,71 @@
 
 :root {
   --radius: 0px;  /* Sharp corners - magazine aesthetic */
-  --background: #fffbe6;
+  --background: var(--ttg-cream);
   --foreground: #1a1a1a;
   --card: #ffffff;
   --card-foreground: #1a1a1a;
   --popover: #ffffff;
   --popover-foreground: #1a1a1a;
-  --primary: #E3350D;
+  --primary: var(--ttg-red);
   --primary-foreground: #ffffff;
-  --secondary: #FFCC00;
+  --secondary: var(--ttg-yellow);
   --secondary-foreground: #1a1a1a;
   --muted: #f0e6c0;
   --muted-foreground: #6b5c00;
   --accent: #3B4CCA;
   --accent-foreground: #ffffff;
-  --destructive: #E3350D;
+  --destructive: var(--ttg-red);
   --border: #1a1a1a;
   --input: #e0d5a0;
-  --ring: #E3350D;
-  --chart-1: #E3350D;
+  --ring: var(--ttg-red);
+  --chart-1: var(--ttg-red);
   --chart-2: #3B4CCA;
-  --chart-3: #FFCC00;
-  --chart-4: #FF6B00;
-  --chart-5: #00A1E9;
-  --sidebar: #FFCC00;
+  --chart-3: var(--ttg-yellow);
+  --chart-4: var(--ttg-dracobell);
+  --chart-5: var(--ttg-cybermon);
+  --sidebar: var(--ttg-yellow);
   --sidebar-foreground: #1a1a1a;
-  --sidebar-primary: #E3350D;
+  --sidebar-primary: var(--ttg-red);
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #3B4CCA;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #1a1a1a;
-  --sidebar-ring: #E3350D;
+  --sidebar-ring: var(--ttg-red);
 }
 
 .dark {
   --background: #1a1a1a;
-  --foreground: #FFCC00;
+  --foreground: var(--ttg-yellow);
   --card: #2a2a4e;
-  --card-foreground: #FFCC00;
+  --card-foreground: var(--ttg-yellow);
   --popover: #2a2a4e;
-  --popover-foreground: #FFCC00;
-  --primary: #E3350D;
+  --popover-foreground: var(--ttg-yellow);
+  --primary: var(--ttg-red);
   --primary-foreground: #ffffff;
-  --secondary: #FFCC00;
+  --secondary: var(--ttg-yellow);
   --secondary-foreground: #1a1a1a;
   --muted: #3a3a5e;
   --muted-foreground: #c0b060;
   --accent: #3B4CCA;
   --accent-foreground: #ffffff;
-  --destructive: #E3350D;
+  --destructive: var(--ttg-red);
   --border: #FFCC0060;
   --input: #3a3a5e;
-  --ring: #E3350D;
-  --chart-1: #E3350D;
+  --ring: var(--ttg-red);
+  --chart-1: var(--ttg-red);
   --chart-2: #3B4CCA;
-  --chart-3: #FFCC00;
-  --chart-4: #FF6B00;
-  --chart-5: #00A1E9;
+  --chart-3: var(--ttg-yellow);
+  --chart-4: var(--ttg-dracobell);
+  --chart-5: var(--ttg-cybermon);
   --sidebar: #2a2a4e;
-  --sidebar-foreground: #FFCC00;
-  --sidebar-primary: #E3350D;
+  --sidebar-foreground: var(--ttg-yellow);
+  --sidebar-primary: var(--ttg-red);
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #3B4CCA;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #FFCC0060;
-  --sidebar-ring: #E3350D;
+  --sidebar-ring: var(--ttg-red);
 }
 
 @layer base {
@@ -171,14 +171,14 @@
 
 /* Magazine primary colors */
 :root {
-  --mag-yellow: #FFCC00;
-  --mag-red: #E3350D;
+  --mag-yellow: var(--ttg-yellow);
+  --mag-red: var(--ttg-red);
   --mag-blue: #3B4CCA;
   --mag-black: #1a1a1a;
   --mag-white: #fffef0;
-  --mag-cream: #fffbe6;
-  --mag-orange: #FF6B00;
-  --mag-cyan: #00A1E9;
+  --mag-cream: var(--ttg-cream);
+  --mag-orange: var(--ttg-dracobell);
+  --mag-cyan: var(--ttg-cybermon);
   --mag-green: #78C850;
   --mag-purple: #A855F7;
 }
@@ -451,9 +451,9 @@
 }
 
 /* Franchise color utilities */
-.franchise-minimon { background: linear-gradient(135deg, #FFCB05, #FF8C00); }
-.franchise-cybermon { background: linear-gradient(135deg, #00A1E9, #0057B7); }
-.franchise-dracobell { background: linear-gradient(135deg, #FF6B00, #CC4400); }
+.franchise-minimon { background: linear-gradient(135deg, var(--ttg-minimon), #FF8C00); }
+.franchise-cybermon { background: linear-gradient(135deg, var(--ttg-cybermon), #0057B7); }
+.franchise-dracobell { background: linear-gradient(135deg, var(--ttg-dracobell), #CC4400); }
 
 /* Magazine diagonal stripe pattern */
 .mag-stripes {
@@ -1013,22 +1013,22 @@
 }
 
 .ttg-bg-minimon {
-  --ttg-bg-base: #FFF9E6;
-  --ttg-bg-accent: #FFCB05;
+  --ttg-bg-base: var(--ttg-cream);
+  --ttg-bg-accent: var(--ttg-minimon);
   --ttg-bg-secondary: #FFE4B5;
 }
 
 /* Cybermon — Digital, neon, circuit, tech */
 .ttg-bg-cybermon {
   --ttg-bg-base: #0A1628;
-  --ttg-bg-accent: #00A1E9;
+  --ttg-bg-accent: var(--ttg-cybermon);
   --ttg-bg-secondary: #0057B7;
 }
 
 /* Dracobell — Action, combat, fire, dragon, explosive */
 .ttg-bg-dracobell {
   --ttg-bg-base: #1A0A0A;
-  --ttg-bg-accent: #FF6B00;
+  --ttg-bg-accent: var(--ttg-dracobell);
   --ttg-bg-secondary: #CC4400;
 }
 
@@ -1212,7 +1212,7 @@
 .ttg-bg-rarity-legendary .ttg-bg-disc {
   border-width: 4px;
   box-shadow:
-    0 0 0 3px #FFCC00,
+    0 0 0 3px var(--ttg-yellow),
     0 0 16px 6px rgba(255, 204, 0, 0.5),
     0 0 32px 12px rgba(255, 204, 0, 0.25);
 }
@@ -1320,7 +1320,7 @@
   top: -100px;
   left: 8px;
   z-index: 10000;
-  background: #FFCC00;
+  background: var(--ttg-yellow);
   color: #1a1a1a;
   padding: 12px 24px;
   font-family: var(--font-geist-sans);
@@ -1338,7 +1338,7 @@
 
 /* Global focus ring — visible outline for keyboard users */
 *:focus-visible {
-  outline: 3px solid #FFCC00 !important;
+  outline: 3px solid var(--ttg-yellow) !important;
   outline-offset: 2px !important;
   border-radius: 2px;
 }

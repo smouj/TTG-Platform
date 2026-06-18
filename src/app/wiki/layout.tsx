@@ -79,7 +79,7 @@ export default function WikiMagazineLayout({
               }`}
               style={
                 isActive
-                  ? { boxShadow: "3px 3px 0 #1a1a1a" }
+                  ? { boxShadow: "3px 3px 0 var(--ttg-black)" }
                   : isActive
                   ? {}
                   : {}

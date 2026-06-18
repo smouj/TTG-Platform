@@ -155,7 +155,7 @@ export default function AdminPage() {
                 <Link
                   href="/admin/shop-bag-models"
                   className="mag-card p-5 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] group hover:shadow-[2px_2px_0px_var(--ttg-black)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
-                  style={{ background: 'linear-gradient(135deg, #F9731610, #FFCC0010)' }}
+                  style={{ background: 'linear-gradient(135deg, #FF6B0010, #FFCC0010)' }}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-ttg-black bg-ttg-dracobell">
@@ -189,7 +189,7 @@ export default function AdminPage() {
                 <Link
                   href="/admin/site-config"
                   className="mag-card p-5 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] group hover:shadow-[2px_2px_0px_var(--ttg-black)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
-                  style={{ background: 'linear-gradient(135deg, #06B6D410, #22C55E10)' }}
+                  style={{ background: 'linear-gradient(135deg, #00A1E910, #22C55E10)' }}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-ttg-black bg-ttg-cybermon">

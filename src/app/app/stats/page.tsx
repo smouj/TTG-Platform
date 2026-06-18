@@ -30,7 +30,7 @@ interface LeaderboardUser {
 
 // ── Magazine pattern CSS inject ──
 const HALFTONE_BG = {
-  backgroundImage: "radial-gradient(circle, #1a1a1a 0.5px, transparent 0.5px)",
+  backgroundImage: "radial-gradient(circle, var(--ttg-black) 0.5px, transparent 0.5px)",
   backgroundSize: "6px 6px",
   backgroundColor: "#FFFEF5",
 }
@@ -38,14 +38,14 @@ const STRIPES_BG = {
   backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(26,26,26,0.03) 4px, rgba(26,26,26,0.03) 8px)`,
 }
 const BANNER_BG = {
-  backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-  border: "3px solid #1a1a1a",
-  boxShadow: "4px 4px 0px #FFCC00",
+  backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+  border: "3px solid var(--ttg-black)",
+  boxShadow: "4px 4px 0px var(--ttg-yellow)",
 }
-const PANEL_SHADOW = { boxShadow: "4px 4px 0px #1a1a1a" }
+const PANEL_SHADOW = { boxShadow: "4px 4px 0px var(--ttg-black)" }
 const SECTION_TITLE_BG = {
-  backgroundImage: "repeating-linear-gradient(-45deg, #FFCC00, #FFCC00 3px, #FFD700 3px, #FFD700 6px)",
-  borderBottom: "3px solid #1a1a1a",
+  backgroundImage: "repeating-linear-gradient(-45deg, var(--ttg-yellow), var(--ttg-yellow) 3px, #FFD700 3px, #FFD700 6px)",
+  borderBottom: "3px solid var(--ttg-black)",
 }
 
 function StatsSkeleton() {
