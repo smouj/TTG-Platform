@@ -27,7 +27,7 @@ const BattleView = dynamic(() => import("@/components/game/battle-view"), {
       style={{
         position: "fixed", inset: 0, zIndex: 9999,
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2rem",
-        background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)",
+        background: "linear-gradient(135deg, #0a0a0a 0%, var(--ttg-black) 100%)",
       }}
     >
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
@@ -153,7 +153,7 @@ function LaunchOverlay({ fading }: { fading: boolean }) {
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 10000,
-      background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)",
+      background: "linear-gradient(135deg, #0a0a0a 0%, var(--ttg-black) 100%)",
       opacity, transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
       pointerEvents: opacity < 0.1 ? "none" : "auto",
     }}>
@@ -305,9 +305,9 @@ export default function BattlePage() {
       <div
         className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-          border: "3px solid #1a1a1a",
-          boxShadow: "4px 4px 0px #FFCC00",
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+          border: "3px solid var(--ttg-black)",
+          boxShadow: "4px 4px 0px var(--ttg-yellow)",
         }}
       >
         <Swords className="w-5 h-5 text-ttg-yellow" />
@@ -330,7 +330,7 @@ export default function BattlePage() {
           className="text-center py-16 border-[3px] border-ttg-black"
           style={{
             background: 'var(--ttg-cream)',
-            boxShadow: "4px 4px 0px #1a1a1a",
+            boxShadow: "4px 4px 0px var(--ttg-black)",
           }}
         >
           <div className="flex justify-center mb-4">
@@ -382,7 +382,7 @@ export default function BattlePage() {
             {/* Deck selector */}
             <div
               className="bg-white border-[3px] border-ttg-black overflow-hidden"
-              style={{ boxShadow: "3px 3px 0 #1a1a1a" }}
+              style={{ boxShadow: "3px 3px 0 var(--ttg-black)" }}
             >
               <div className="bg-ttg-black px-4 py-2 flex items-center gap-2">
                 <Layers className="w-3.5 h-3.5 text-ttg-yellow" />
@@ -436,7 +436,7 @@ export default function BattlePage() {
                             ? "border-ttg-yellow bg-ttg-minimon/2"
                             : "border-ttg-black/8 hover:border-ttg-black/25"
                         }`}
-                        style={active ? { boxShadow: "2px 2px 0 #FFCC00" } : undefined}
+                        style={active ? { boxShadow: "2px 2px 0 var(--ttg-yellow)" } : undefined}
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 min-w-0">
@@ -473,7 +473,7 @@ export default function BattlePage() {
             {selectedDeck && (
               <div
                 className="bg-white border-[3px] border-ttg-black"
-                style={{ boxShadow: "3px 3px 0 #1a1a1a" }}
+                style={{ boxShadow: "3px 3px 0 var(--ttg-black)" }}
               >
                 <div className="bg-ttg-yellow px-4 py-2 flex items-center gap-2 border-b-[3px] border-ttg-black">
                   <Zap className="w-4 h-4 text-ttg-black" />
@@ -487,7 +487,7 @@ export default function BattlePage() {
                       { icon: Zap, label: "ATK", value: deckStats.atk, color: 'var(--ttg-red)' },
                       { icon: Shield, label: "DEF", value: deckStats.def, color: 'var(--ttg-blue)' },
                       { icon: Crosshair, label: "PRC", value: deckStats.prc, color: 'var(--ttg-purple)' },
-                      { icon: Star, label: "SPD", value: deckStats.spd, color: "#F59E0B" },
+                      { icon: Star, label: "SPD", value: deckStats.spd, color: "var(--ttg-warning)" },
                     ]).map(s => (
                       <div
                         key={s.label}
@@ -565,7 +565,7 @@ export default function BattlePage() {
                           ? "bg-white/70 border-ttg-black/12 hover:border-ttg-black/40 hover:bg-white"
                           : "bg-zinc-50 border-zinc-200 opacity-50 cursor-not-allowed"
                       }`}
-                      style={active ? { boxShadow: "4px 4px 0 #1a1a1a" } : undefined}
+                      style={active ? { boxShadow: "4px 4px 0 var(--ttg-black)" } : undefined}
                     >
                       {/* Badge */}
                       <span className={`absolute -top-2 -right-2 text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 border-2 ${
@@ -578,7 +578,7 @@ export default function BattlePage() {
                         {opt.badge}
                       </span>
 
-                      <Icon className="w-5 h-5 mb-2.5" style={{ color: active ? opt.color : "#1a1a1a18" }} />
+                      <Icon className="w-5 h-5 mb-2.5" style={{ color: active ? opt.color : "var(--ttg-black)18" }} />
                       <h3 className="font-black text-xs uppercase text-ttg-black mb-1">{opt.title}</h3>
                       <p className="text-[9px] font-bold text-ttg-black/35 leading-relaxed">{opt.desc}</p>
                       {active && (
@@ -606,7 +606,7 @@ export default function BattlePage() {
                           ? "border-ttg-yellow bg-ttg-minimon/2"
                           : "border-ttg-black/8 hover:border-ttg-black/25"
                       }`}
-                      style={difficulty === d.id ? { boxShadow: "2px 2px 0 #FFCC00" } : undefined}
+                      style={difficulty === d.id ? { boxShadow: "2px 2px 0 var(--ttg-yellow)" } : undefined}
                     >
                       <div className="font-black text-xs text-ttg-black">{d.label}</div>
                       <div className="text-[9px] font-bold text-ttg-black/25 mt-0.5">{d.desc}</div>
@@ -620,7 +620,7 @@ export default function BattlePage() {
             {mode !== "practice" && (
               <div
                 className="flex items-start gap-2 p-3 border-2 border-ttg-warning/30 bg-ttg-warning/5"
-                style={{ boxShadow: "2px 2px 0 #F59E0B20" }}
+                style={{ boxShadow: "2px 2px 0 var(--ttg-warning)20" }}
               >
                 <AlertTriangle className="w-4 h-4 text-ttg-warning flex-shrink-0 mt-0.5" />
                 <div>
@@ -644,7 +644,7 @@ export default function BattlePage() {
                     ? "bg-ttg-red text-white hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] hover:shadow-[2px_2px_0_#1a1a1a]"
                     : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
                 }`}
-                style={canStart ? { boxShadow: "4px 4px 0 #1a1a1a" } : {}}
+                style={canStart ? { boxShadow: "4px 4px 0 var(--ttg-black)" } : {}}
               >
                 {!selectedDeckId ? (
                   <span className="flex items-center justify-center gap-2">

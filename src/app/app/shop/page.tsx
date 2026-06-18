@@ -206,7 +206,7 @@ function StatsRow({ tazo }: { tazo: any }) {
     { label: "DEF", value: tazo.defense, color: 'var(--ttg-blue)' },
     { label: "SPD", value: Math.round((tazo.bounce + tazo.spin + tazo.precision) / 3), color: 'var(--ttg-success)' },
     { label: "WGT", value: tazo.weight, color: "#78716C" },
-    { label: "STA", value: tazo.stability, color: "#F59E0B" },
+    { label: "STA", value: tazo.stability, color: "var(--ttg-warning)" },
     { label: "CTL", value: tazo.control, color: "#06B6D4" },
   ]
   const total = stats.reduce((a, s) => a + s.value, 0)
@@ -501,10 +501,10 @@ export default function BagShopPage() {
         <div
           className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
           style={{
-            background: "linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)",
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-            border: "3px solid #1a1a1a",
-            boxShadow: "4px 4px 0px #FFCC00",
+            background: "linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)",
+            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+            border: "3px solid var(--ttg-black)",
+            boxShadow: "4px 4px 0px var(--ttg-yellow)",
           }}
         >
           <div className="flex items-center gap-2">
@@ -757,9 +757,9 @@ export default function BagShopPage() {
         {isLegendary && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full opacity-30 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, #F59E0B, #F59E0B00)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-warning), var(--ttg-warning)00)" }} />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full opacity-20 blur-2xl animate-spin"
-              style={{ background: "conic-gradient(from 0deg, #F59E0B, #FFCC00, #F59E0B, transparent)", animationDuration: "4s" }} />
+              style={{ background: "conic-gradient(from 0deg, var(--ttg-warning), var(--ttg-yellow), var(--ttg-warning), transparent)", animationDuration: "4s" }} />
           </div>
         )}
 
@@ -767,7 +767,7 @@ export default function BagShopPage() {
         {isUltraRare && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full opacity-25 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, #A855F7, #A855F700)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-purple), var(--ttg-purple)00)" }} />
           </div>
         )}
 
@@ -775,7 +775,7 @@ export default function BagShopPage() {
         {isRare && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full opacity-20 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, #3B82F6, #3B82F600)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-rarity-rare), var(--ttg-rarity-rare)00)" }} />
           </div>
         )}
 
@@ -785,22 +785,22 @@ export default function BagShopPage() {
             isHighRarity ? "animate-pulse" : ""
           }`}
           style={{
-            border: `3px solid #1a1a1a`,
+            border: `3px solid var(--ttg-black)`,
             background: isLegendary
-              ? "linear-gradient(135deg, #F59E0B, #D97706)"
+              ? "linear-gradient(135deg, var(--ttg-warning), #D97706)"
               : isUltraRare
-              ? "linear-gradient(135deg, #A855F7, #7C3AED)"
+              ? "linear-gradient(135deg, var(--ttg-purple), #7C3AED)"
               : isRare
-              ? "linear-gradient(135deg, #3B82F6, #2563EB)"
-              : rarityColor || "#9CA3AF",
+              ? "linear-gradient(135deg, var(--ttg-rarity-rare), #2563EB)"
+              : rarityColor || "var(--ttg-rarity-common)",
             color: "#fff",
             boxShadow: isLegendary
-              ? "4px 4px 0px #1a1a1a, 0 0 30px #F59E0B60, 0 0 60px #F59E0B30"
+              ? "4px 4px 0px var(--ttg-black), 0 0 30px var(--ttg-warning)60, 0 0 60px var(--ttg-warning)30"
               : isUltraRare
-              ? "4px 4px 0px #1a1a1a, 0 0 24px #A855F760, 0 0 48px #A855F730"
+              ? "4px 4px 0px var(--ttg-black), 0 0 24px var(--ttg-purple)60, 0 0 48px var(--ttg-purple)30"
               : isRare
-              ? "4px 4px 0px #1a1a1a, 0 0 18px #3B82F660"
-              : "4px 4px 0px #1a1a1a",
+              ? "4px 4px 0px var(--ttg-black), 0 0 18px var(--ttg-rarity-rare)60"
+              : "4px 4px 0px var(--ttg-black)",
           }}>
           {Array.from({ length: rarityStars }).map((_, i) => (
             <Star key={i} className={`w-3 h-3 inline fill-current ${isLegendary ? "animate-spin" : ""}`}
@@ -819,15 +819,15 @@ export default function BagShopPage() {
           isLegendary ? "border-[5px]" : "border-4"
         } ${isHighRarity ? "animate-pulse" : ""}`}
           style={{
-            borderColor: isLegendary ? "#F59E0B" : isUltraRare ? 'var(--ttg-purple)' : isRare ? "#3B82F6" : 'var(--ttg-black)',
+            borderColor: isLegendary ? "var(--ttg-warning)" : isUltraRare ? 'var(--ttg-purple)' : isRare ? "var(--ttg-rarity-rare)" : 'var(--ttg-black)',
             background: 'var(--ttg-black)',
             boxShadow: isLegendary
-              ? "8px 8px 0px #1a1a1a, 0 0 40px #F59E0B50, 0 0 80px #F59E0B30, inset 0 0 40px #F59E0B15"
+              ? "8px 8px 0px var(--ttg-black), 0 0 40px var(--ttg-warning)50, 0 0 80px var(--ttg-warning)30, inset 0 0 40px var(--ttg-warning)15"
               : isUltraRare
-              ? "8px 8px 0px #1a1a1a, 0 0 30px #A855F750, inset 0 0 30px #A855F710"
+              ? "8px 8px 0px var(--ttg-black), 0 0 30px var(--ttg-purple)50, inset 0 0 30px var(--ttg-purple)10"
               : isRare
-              ? "6px 6px 0px #1a1a1a, 0 0 20px #3B82F640, inset 0 0 20px #3B82F608"
-              : "6px 6px 0px #1a1a1a",
+              ? "6px 6px 0px var(--ttg-black), 0 0 20px var(--ttg-rarity-rare)40, inset 0 0 20px var(--ttg-rarity-rare)08"
+              : "6px 6px 0px var(--ttg-black)",
           }}>
           {_tazo.imageUrl ? (
             <TazoDiscImage src={_tazo.imageUrl} alt={_tazo.name || ""}
@@ -835,7 +835,7 @@ export default function BagShopPage() {
               finish={_tazo.finish} creatureVariant={_tazo.creatureVariant} shinyImageUrl={_tazo.shinyImageUrl}
               className="w-full h-full" />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center" style={{ background: rarityColor || "#9CA3AF" }}>
+            <div className="w-full h-full flex flex-col items-center justify-center" style={{ background: rarityColor || "var(--ttg-rarity-common)" }}>
               <span className="text-6xl font-black text-white/80">{(_tazo.name || "?")[0]}</span>
               <span className="text-[8px] font-black text-white/40 mt-1 uppercase tracking-wider">{_tazo.name || "Unknown Tazo"}</span>
             </div>
@@ -849,7 +849,7 @@ export default function BagShopPage() {
           }`}
             style={{
               color: 'var(--ttg-black)',
-              textShadow: isLegendary ? "0 0 20px #F59E0B40" : "none",
+              textShadow: isLegendary ? "0 0 20px var(--ttg-warning)40" : "none",
             }}>
             {_tazo.displayName || _tazo.name}
           </h3>
@@ -867,7 +867,7 @@ export default function BagShopPage() {
         {isLegendary && (
           <div className="animate-[popUp_0.5s_ease-out_0.45s_both]">
             <div className="inline-block px-4 py-2 bg-ttg-yellow/10 border-2 border-ttg-warning"
-              style={{ boxShadow: "0 0 20px #F59E0B30" }}>
+              style={{ boxShadow: "0 0 20px var(--ttg-warning)30" }}>
               <p className="text-sm font-black text-ttg-dracobell uppercase tracking-wider flex items-center gap-2">
                 <Trophy className="w-5 h-5" /> Legendary Find! <Trophy className="w-5 h-5" />
               </p>
@@ -881,7 +881,7 @@ export default function BagShopPage() {
         {/* Bonus tazo */}
         {bonusTazo && (
           <div className="p-4 border-3 animate-[popUp_0.5s_ease-out_0.55s_both]"
-            style={{ borderColor: "#F59E0B", background: "linear-gradient(135deg, #FEF3C7, #FFF8E7)", boxShadow: "3px 3px 0px #F59E0B" }}>
+            style={{ borderColor: "var(--ttg-warning)", background: "linear-gradient(135deg, #FEF3C7, #FFF8E7)", boxShadow: "3px 3px 0px var(--ttg-warning)" }}>
             <div className="flex items-center justify-center gap-2 mb-2">
               <Gift className="w-5 h-5 text-ttg-warning" />
               <p className="text-sm font-black uppercase text-ttg-warning">Bonus Tazo!</p>
@@ -897,7 +897,7 @@ export default function BagShopPage() {
               <div className="text-left">
                 <p className="font-black text-sm text-ttg-black">{bonusTazo.displayName || bonusTazo.name}</p>
                 <span className="text-[9px] font-black uppercase px-1.5 py-0.5 border"
-                  style={{ borderColor: RARITY_GRADIENT[bonusTazo.rarity] || "#9CA3AF", color: RARITY_GRADIENT[bonusTazo.rarity] || "#9CA3AF" }}>
+                  style={{ borderColor: RARITY_GRADIENT[bonusTazo.rarity] || "var(--ttg-rarity-common)", color: RARITY_GRADIENT[bonusTazo.rarity] || "var(--ttg-rarity-common)" }}>
                   {RARITY_LABELS[bonusTazo.rarity] || bonusTazo.rarity}
                 </span>
               </div>
@@ -944,9 +944,9 @@ export default function BagShopPage() {
           <div className={`inline-block px-4 py-1.5 border-3 text-sm font-black uppercase tracking-wider ${hasLegendary ? "animate-pulse" : ""}`}
             style={{
               borderColor: 'var(--ttg-black)',
-              background: RARITY_GRADIENT[maxRarity] || "#9CA3AF",
+              background: RARITY_GRADIENT[maxRarity] || "var(--ttg-rarity-common)",
               color: "#fff",
-              boxShadow: "3px 3px 0px #1a1a1a",
+              boxShadow: "3px 3px 0px var(--ttg-black)",
             }}>
             <Gift className="w-4 h-4 inline mr-1" />
             {revealedTazos.length} Tazos Opened!
@@ -960,7 +960,7 @@ export default function BagShopPage() {
         <div className="flex flex-wrap justify-center gap-1.5">
           {Object.entries(rarityCounts).sort((a, b) => (RARITY_ORDER[b[0]] || 0) - (RARITY_ORDER[a[0]] || 0)).map(([r, c]) => (
             <span key={r} className="px-2 py-0.5 border-2 text-[8px] font-black uppercase"
-              style={{ borderColor: RARITY_GRADIENT[r] || "#9CA3AF", color: RARITY_GRADIENT[r] || "#9CA3AF", backgroundColor: `${RARITY_GRADIENT[r]}10` }}>
+              style={{ borderColor: RARITY_GRADIENT[r] || "var(--ttg-rarity-common)", color: RARITY_GRADIENT[r] || "var(--ttg-rarity-common)", backgroundColor: `${RARITY_GRADIENT[r]}10` }}>
               {RARITY_LABELS[r] || r}: {c}
             </span>
           ))}
@@ -973,7 +973,7 @@ export default function BagShopPage() {
               className="flex flex-col items-center gap-1 p-2 bg-white border-2 border-ttg-black/10 shadow-[2px_2px_0px_var(--ttg-black)]/3 hover:border-ttg-black/30 hover:shadow-[2px_2px_0px_#1a1a1a15] transition-all animate-bounce-in"
               style={{ animationDelay: `${i * 60}ms` }}>
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-ttg-black/20 flex items-center justify-center overflow-hidden"
-                style={{ background: `radial-gradient(circle at 30% 30%, ${RARITY_GRADIENT[t.rarity] || "#9CA3AF"}20, #1a1a1a)` }}>
+                style={{ background: `radial-gradient(circle at 30% 30%, ${RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)"}20, #1a1a1a)` }}>
                 {t.imageUrl ? (
                   <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" borderWidth={0}
                     franchiseSlug={t.franchiseSlug} finish={t.finish} creatureVariant={t.creatureVariant}
@@ -984,7 +984,7 @@ export default function BagShopPage() {
               </div>
               <span className="text-[8px] font-black text-ttg-black text-center leading-tight line-clamp-2">{t.name}</span>
               <span className="text-[7px] font-bold uppercase px-1 py-0.5 rounded"
-                style={{ backgroundColor: `${RARITY_GRADIENT[t.rarity] || "#9CA3AF"}15`, color: RARITY_GRADIENT[t.rarity] || "#9CA3AF" }}>
+                style={{ backgroundColor: `${RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)"}15`, color: RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)" }}>
                 {RARITY_LABELS[t.rarity] || t.rarity}
               </span>
             </div>

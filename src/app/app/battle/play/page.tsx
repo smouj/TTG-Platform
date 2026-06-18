@@ -59,7 +59,7 @@ const BattleView = dynamic(() => import("@/components/game/battle-view"), {
             height: 72,
             borderRadius: "50%",
             border: "3px solid rgba(255,204,0,0.12)",
-            borderTopColor: "#FFCC00",
+            borderTopColor: "var(--ttg-yellow)",
             animation: "spin 0.8s linear infinite",
             boxShadow: "0 0 32px rgba(255,204,0,0.15)",
           }}

@@ -367,7 +367,7 @@ export default function AdminTazoDesignerPage() {
                                 tazo.rarity === "legendary" ? "#FBBF24" :
                                 tazo.rarity === "ultra" ? 'var(--ttg-purple)' :
                                 tazo.rarity === "rare" ? "#3B82F6" :
-                                tazo.rarity === "uncommon" ? 'var(--ttg-success)' : "#9CA3AF",
+                                tazo.rarity === "uncommon" ? 'var(--ttg-success)' : "var(--ttg-rarity-common)",
                             }}
                           />
                         </div>

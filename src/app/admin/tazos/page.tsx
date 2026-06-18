@@ -50,7 +50,7 @@ const FRANCHISE_COLORS: Record<string, string> = {
   minimon: "#FFCB05", cybermon: "#00A1E9", dracobell: "#FF6B00", "draco-bell": "#FF6B00",
 }
 const RARITY_COLORS: Record<string, string> = {
-  common: "#9CA3AF", uncommon: 'var(--ttg-success)', rare: "#3B82F6",
+  common: "var(--ttg-rarity-common)", uncommon: 'var(--ttg-success)', rare: "#3B82F6",
   ultra: 'var(--ttg-purple)', legendary: "#FBBF24", epic: "#EF4444",
 }
 const RARITY_STARS: Record<string, number> = {
@@ -307,7 +307,7 @@ export default function AdminTazoManagerPage() {
 
   // ── Render ──
   return (
-    <AdminShell accentColor="#F59E0B">
+    <AdminShell accentColor="var(--ttg-warning)">
       <div className="max-w-[1600px] mx-auto px-4 py-4">
         <div className="flex items-center gap-3 mb-4">
           <Grid3X3 className="w-5 h-5 text-ttg-warning" />
@@ -575,7 +575,7 @@ export default function AdminTazoManagerPage() {
                             {tazo.role && <><span>·</span><span>{ROLE_SHORT[tazo.role as keyof typeof ROLE_SHORT] ?? tazo.role}</span></>}
                           </div>
                           <div className="flex gap-1 pt-0.5">
-                            {[{ v: tazo.attack, c: 'var(--ttg-red)' },{ v: tazo.defense, c: 'var(--ttg-blue)' },{ v: tazo.resistance, c: 'var(--ttg-success)' },{ v: tazo.weight, c: "#F59E0B" },{ v: tazo.stability, c: 'var(--ttg-purple)' }].map(s => (
+                            {[{ v: tazo.attack, c: 'var(--ttg-red)' },{ v: tazo.defense, c: 'var(--ttg-blue)' },{ v: tazo.resistance, c: 'var(--ttg-success)' },{ v: tazo.weight, c: "var(--ttg-warning)" },{ v: tazo.stability, c: 'var(--ttg-purple)' }].map(s => (
                               <div key={s.c} className="flex-1 h-1 bg-white/10 overflow-hidden">
                                 <div className="h-full" style={{ width: `${s.v}%`, background: s.c }} />
                               </div>
@@ -723,7 +723,7 @@ export default function AdminTazoManagerPage() {
                           <div className="grid grid-cols-3 gap-1">
                             {([
                               ["ATK","attack",'var(--ttg-red)'],["DEF","defense",'var(--ttg-blue)'],["RES","resistance",'var(--ttg-success)'],
-                              ["WT","weight","#F59E0B"],["STB","stability",'var(--ttg-purple)'],["SPIN","spin","#EC4899"],
+                              ["WT","weight","var(--ttg-warning)"],["STB","stability",'var(--ttg-purple)'],["SPIN","spin","#EC4899"],
                               ["CTRL","control","#06B6D4"],["BNC","bounce","#F97316"],["PREC","precision","#8B5CF6"],
                             ] as const).map(([label, field, color]) => (
                               <div key={field} className="flex items-center gap-1 bg-zinc-50 px-1.5 py-1 border border-zinc-200">

@@ -47,7 +47,7 @@ export default function WikiMagazineLayout({
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ background: "#FFF9E6" }}
+      style={{ background: "var(--ttg-cream)" }}
     >
       {/* ── Halftone overlay ── */}
       <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />

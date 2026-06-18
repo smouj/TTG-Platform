@@ -167,7 +167,7 @@ export function getTGADisplay(grade: TGAGrade | null | undefined): TGADisplay | 
     rangeEmoji = "💠"
   } else if (g >= 85) {
     rangeLabel = "MINT"
-    rangeColor = "#22C55E"
+    rangeColor = "var(--ttg-success)"
     rangeEmoji = "✨"
   } else if (g >= 70) {
     rangeLabel = "EXCELLENT"
@@ -187,7 +187,7 @@ export function getTGADisplay(grade: TGAGrade | null | undefined): TGADisplay | 
     rangeEmoji = "⚡"
   } else {
     rangeLabel = "DAMAGED"
-    rangeColor = "#E3350D"
+    rangeColor = "var(--ttg-red)"
     rangeEmoji = "💀"
   }
 

@@ -28,9 +28,9 @@ interface CollectionData {
 }
 
 const FRANCHISE_COLORS: Record<string, { bg: string; border: string }> = {
-  cybermon: { bg: "#1a1a1a", border: "#E3350D" },
-  dracobell: { bg: "#1a1a1a", border: "#3B4CCA" },
-  minimon: { bg: "#1a1a1a", border: "#22C55E" },
+  cybermon: { bg: "var(--ttg-black)", border: "var(--ttg-red)" },
+  dracobell: { bg: "var(--ttg-black)", border: "#3B4CCA" },
+  minimon: { bg: "var(--ttg-black)", border: "var(--ttg-success)" },
 }
 
 export default function PublicCollectionView({
@@ -56,7 +56,7 @@ export default function PublicCollectionView({
       {/* Header */}
       <header
         style={{
-          background: "#1a1a1a",
+          background: "var(--ttg-black)",
           borderBottom: "4px solid #FFCC00",
           padding: "16px 24px",
           display: "flex",
@@ -81,8 +81,8 @@ export default function PublicCollectionView({
         <button
           onClick={copyShareLink}
           style={{
-            background: "#FFCC00",
-            color: "#1a1a1a",
+            background: "var(--ttg-yellow)",
+            color: "var(--ttg-black)",
             border: "2px solid #1a1a1a",
             padding: "6px 14px",
             fontSize: 10,
@@ -113,7 +113,7 @@ export default function PublicCollectionView({
             width: 64,
             height: 64,
             borderRadius: 16,
-            background: "#FFCC00",
+            background: "var(--ttg-yellow)",
             margin: "0 auto 12px",
             display: "flex",
             alignItems: "center",
@@ -121,7 +121,7 @@ export default function PublicCollectionView({
             border: "3px solid #1a1a1a",
           }}
         >
-          <span style={{ fontSize: 28, fontWeight: 900, color: "#1a1a1a" }}>
+          <span style={{ fontSize: 28, fontWeight: 900, color: "var(--ttg-black)" }}>
             {data.user.name.charAt(0).toUpperCase()}
           </span>
         </div>
@@ -137,7 +137,7 @@ export default function PublicCollectionView({
         >
           {data.user.name}&apos;s Collection
         </h1>
-        <p style={{ fontSize: 11, fontWeight: 700, color: "#FFCC00", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 20px" }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: "var(--ttg-yellow)", textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 20px" }}>
           {data.user.totalTazos} tazos collected
         </p>
 
@@ -219,8 +219,8 @@ export default function PublicCollectionView({
                       position: "absolute",
                       top: 4,
                       right: 4,
-                      background: "#1a1a1a",
-                      color: "#FFCC00",
+                      background: "var(--ttg-black)",
+                      color: "var(--ttg-yellow)",
                       padding: "2px 6px",
                       fontSize: 7,
                       fontWeight: 900,
@@ -236,7 +236,7 @@ export default function PublicCollectionView({
                   style={{
                     fontSize: 10,
                     fontWeight: 900,
-                    color: "#1a1a1a",
+                    color: "var(--ttg-black)",
                     textTransform: "uppercase",
                     letterSpacing: "0.05em",
                     overflow: "hidden",
@@ -275,7 +275,7 @@ export default function PublicCollectionView({
       {/* Footer */}
       <footer
         style={{
-          background: "#1a1a1a",
+          background: "var(--ttg-black)",
           borderTop: "4px solid #1a1a1a",
           padding: "16px 24px",
           textAlign: "center",

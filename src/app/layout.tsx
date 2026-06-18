@@ -207,7 +207,7 @@ export default function RootLayout({
             }),
           }}
         />
-        <meta name="theme-color" content="#FFCC00" />
+        <meta name="theme-color" content="var(--ttg-yellow)" />
         {ADSENSE_ENABLED && (
           <meta name="google-adsense-account" content="ca-pub-4932643710484609" />
         )}

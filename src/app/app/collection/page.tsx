@@ -37,7 +37,7 @@ const RARITY_STARS: Record<string, string> = {
   common: "★", uncommon: "★★", rare: "★★★", ultra: "★★★★", legendary: "★★★★★",
 }
 const RARITY_COLOR: Record<string, string> = {
-  common: "#9CA3AF", uncommon: 'var(--ttg-success)', rare: "#3B82F6", ultra: 'var(--ttg-purple)', legendary: "#F59E0B",
+  common: "var(--ttg-rarity-common)", uncommon: 'var(--ttg-success)', rare: "#3B82F6", ultra: 'var(--ttg-purple)', legendary: "var(--ttg-warning)",
 }
 const OBTAINED_ICON: Record<string, any> = { bag: ShoppingBag, starter: Gift, scanner: Camera }
 const OBTAINED_LABEL: Record<string, string> = { bag: "Bag", starter: "Starter", scan: "Scan" }
@@ -329,7 +329,7 @@ export default function CollectionPage() {
     return (
       <div className="max-w-3xl mx-auto py-20 px-4 text-center space-y-6">
         <div className="relative inline-block">
-          <Package className="w-24 h-24 text-ttg-yellow" style={{ filter: "drop-shadow(4px 4px 0px #1a1a1a)" }} />
+          <Package className="w-24 h-24 text-ttg-yellow" style={{ filter: "drop-shadow(4px 4px 0px var(--ttg-black))" }} />
           <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-ttg-red" />
         </div>
         <h2 className="text-3xl font-black text-ttg-black uppercase tracking-wide mag-stroke-sm">
@@ -365,14 +365,14 @@ export default function CollectionPage() {
       <div
         className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-          border: "3px solid #1a1a1a",
-          boxShadow: "4px 4px 0px #FFCC00",
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+          border: "3px solid var(--ttg-black)",
+          boxShadow: "4px 4px 0px var(--ttg-yellow)",
         }}
       >
         <div className="relative z-10 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "linear-gradient(135deg, #FFCB05, #FF6B00)", border: "2px solid #1a1a1a" }}>
+            style={{ background: "linear-gradient(135deg, #FFCB05, #FF6B00)", border: "2px solid var(--ttg-black)" }}>
             <Disc3 className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -446,9 +446,9 @@ export default function CollectionPage() {
 
         {/* Rarest */}
         <StatsCard
-          icon={<Star className="w-4 h-4" />} iconColor="#F59E0B"
+          icon={<Star className="w-4 h-4" />} iconColor="var(--ttg-warning)"
           label="Rarest" value={rarest ? RARITY_STARS[rarest.tazo.rarity] || "—" : "—"}
-          valueColor={rarest ? (RARITY_COLOR[rarest.tazo.rarity] || "#9CA3AF") : 'var(--ttg-black)'}
+          valueColor={rarest ? (RARITY_COLOR[rarest.tazo.rarity] || "var(--ttg-rarity-common)") : 'var(--ttg-black)'}
           detail={rarest ? `${rarest.tazo.displayName || rarest.tazo.name} · ${rarest.tazo.rarity}` : undefined}
         />
 
@@ -467,7 +467,7 @@ export default function CollectionPage() {
       {activeDeck && activeDeck.tazos.length > 0 && (
         <div
           className="p-4 mag-card-yellow space-y-3"
-          style={{ border: "3px solid #1a1a1a", boxShadow: "4px 4px 0px #1a1a1a" }}
+          style={{ border: "3px solid var(--ttg-black)", boxShadow: "4px 4px 0px var(--ttg-black)" }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -484,7 +484,7 @@ export default function CollectionPage() {
             <Link
               href="/app/battle"
               className="mag-btn px-5 py-2 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
-              style={{ background: 'var(--ttg-red)', color: "white", border: "3px solid #1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}
+              style={{ background: 'var(--ttg-red)', color: "white", border: "3px solid var(--ttg-black)", boxShadow: "3px 3px 0px var(--ttg-black)" }}
             >
               BATTLE <ChevronRight className="w-4 h-4" />
             </Link>
@@ -552,7 +552,7 @@ export default function CollectionPage() {
               style={{
                 background: filter === f.key ? 'var(--ttg-black)' : "white",
                 color: filter === f.key ? 'var(--ttg-yellow)' : 'var(--ttg-black)',
-                boxShadow: filter === f.key ? "2px 2px 0px #FFCC00" : "2px 2px 0px #1a1a1a",
+                boxShadow: filter === f.key ? "2px 2px 0px var(--ttg-yellow)" : "2px 2px 0px var(--ttg-black)",
               }}
             >
               {f.label} <span className="ml-1 opacity-50">({f.count})</span>
@@ -605,7 +605,7 @@ export default function CollectionPage() {
                 style={{
                   background: franchiseFilter === null ? 'var(--ttg-black)' : "white",
                   color: franchiseFilter === null ? 'var(--ttg-yellow)' : 'var(--ttg-black)',
-                  boxShadow: franchiseFilter === null ? "2px 2px 0px #FFCC00" : "2px 2px 0px #1a1a1a",
+                  boxShadow: franchiseFilter === null ? "2px 2px 0px var(--ttg-yellow)" : "2px 2px 0px var(--ttg-black)",
                 }}
               >
                 ALL
@@ -618,7 +618,7 @@ export default function CollectionPage() {
                   style={{
                     background: franchiseFilter === slug ? 'var(--ttg-black)' : FRANCHISE_BG[slug] || "white",
                     color: franchiseFilter === slug ? "white" : 'var(--ttg-black)',
-                    boxShadow: franchiseFilter === slug ? "2px 2px 0px #1a1a1a" : "2px 2px 0px #1a1a1a",
+                    boxShadow: franchiseFilter === slug ? "2px 2px 0px var(--ttg-black)" : "2px 2px 0px var(--ttg-black)",
                   }}
                 >
                   <span className="w-2 h-2 rounded-full border border-current" style={{ background: FRANCHISE_GRADIENT[slug] }} />
@@ -651,7 +651,7 @@ export default function CollectionPage() {
                 <div key={slug}>
                   {/* Franchise section header */}
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="h-8 w-2 shrink-0" style={{ background: gradient, border: "2px solid #1a1a1a" }} />
+                    <div className="h-8 w-2 shrink-0" style={{ background: gradient, border: "2px solid var(--ttg-black)" }} />
                     <h3 className="text-sm font-black text-ttg-black uppercase tracking-wider">
                       {label} <span className="text-ttg-black/30 text-xs">· {items.length} tazos</span>
                     </h3>
@@ -684,7 +684,7 @@ export default function CollectionPage() {
                           {isInDeck && (
                             <div
                               className="absolute top-0 right-0 z-10 w-6 h-6 flex items-center justify-center"
-                              style={{ background: 'var(--ttg-red)', borderBottom: "2px solid #1a1a1a", borderLeft: "2px solid #1a1a1a" }}
+                              style={{ background: 'var(--ttg-red)', borderBottom: "2px solid var(--ttg-black)", borderLeft: "2px solid var(--ttg-black)" }}
                               title={`In deck: ${item.deckName || "Active Deck"}`}
                             >
                               <Swords className="w-3 h-3 text-white" />
@@ -694,7 +694,7 @@ export default function CollectionPage() {
                           {/* Favorite star */}
                           {item.isFavorite && (
                             <div className="absolute top-0 left-0 z-10 w-6 h-6 flex items-center justify-center">
-                              <Star className="w-3.5 h-3.5 text-ttg-yellow fill-ttg-yellow" style={{ filter: "drop-shadow(1px 1px 0px #1a1a1a)" }} />
+                              <Star className="w-3.5 h-3.5 text-ttg-yellow fill-ttg-yellow" style={{ filter: "drop-shadow(1px 1px 0px var(--ttg-black))" }} />
                             </div>
                           )}
 
@@ -759,8 +759,8 @@ export default function CollectionPage() {
                               <span
                                 className="text-[8px] font-black uppercase px-1.5 py-0.5 border border-ttg-black/20"
                                 style={{
-                                  background: (RARITY_COLOR[item.tazo.rarity] || "#9CA3AF") + "15",
-                                  color: RARITY_COLOR[item.tazo.rarity] || "#9CA3AF",
+                                  background: (RARITY_COLOR[item.tazo.rarity] || "var(--ttg-rarity-common)") + "15",
+                                  color: RARITY_COLOR[item.tazo.rarity] || "var(--ttg-rarity-common)",
                                 }}
                               >
                                 {RARITY_STARS[item.tazo.rarity] || ""}
@@ -778,7 +778,7 @@ export default function CollectionPage() {
                                 <span
                                   className="text-[7px] font-black uppercase px-1.5 py-0.5 border rounded-full"
                                   style={{
-                                    background: ((item as any).wear <= 15 ? "#22C55E15" : (item as any).wear <= 40 ? "#FFCC0015" : (item as any).wear <= 70 ? "#FF880015" : "#CC000015"),
+                                    background: ((item as any).wear <= 15 ? "var(--ttg-success)15" : (item as any).wear <= 40 ? "var(--ttg-yellow)15" : (item as any).wear <= 70 ? "#FF880015" : "#CC000015"),
                                     color: (item as any).wear <= 15 ? 'var(--ttg-success)' : (item as any).wear <= 40 ? "#CCAA00" : (item as any).wear <= 70 ? "#FF8800" : "#CC0000",
                                     borderColor: ((item as any).wear <= 15 ? 'var(--ttg-success)' : (item as any).wear <= 40 ? "#CCAA00" : (item as any).wear <= 70 ? "#FF8800" : "#CC0000") + "30",
                                   }}
@@ -792,9 +792,9 @@ export default function CollectionPage() {
                                 <span
                                   className="text-[7px] font-black uppercase px-1.5 py-0.5 border rounded-full"
                                   style={{
-                                    background: "#3B82F615",
-                                    color: "#3B82F6",
-                                    borderColor: "#3B82F630",
+                                    background: "var(--ttg-rarity-rare)15",
+                                    color: "var(--ttg-rarity-rare)",
+                                    borderColor: "var(--ttg-rarity-rare)30",
                                   }}
                                 >
                                   FOR SALE
@@ -900,7 +900,7 @@ export default function CollectionPage() {
             className="border-3 border-ttg-black bg-white shadow-[4px_4px_0px_var(--ttg-black)] overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-3" style={{ background: dGradient, borderBottom: "3px solid #1a1a1a" }}>
+            <div className="flex items-center justify-between p-3" style={{ background: dGradient, borderBottom: "3px solid var(--ttg-black)" }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full border-2 border-ttg-black overflow-hidden bg-white flex items-center justify-center shrink-0">
                   <TazoDiscImage
@@ -924,9 +924,9 @@ export default function CollectionPage() {
                     <span
                       className="text-[9px] font-black uppercase px-1.5 py-0.5 border"
                       style={{
-                        background: (RARITY_COLOR[d.tazo.rarity] || "#9CA3AF") + "20",
-                        color: RARITY_COLOR[d.tazo.rarity] || "#9CA3AF",
-                        borderColor: (RARITY_COLOR[d.tazo.rarity] || "#9CA3AF") + "40",
+                        background: (RARITY_COLOR[d.tazo.rarity] || "var(--ttg-rarity-common)") + "20",
+                        color: RARITY_COLOR[d.tazo.rarity] || "var(--ttg-rarity-common)",
+                        borderColor: (RARITY_COLOR[d.tazo.rarity] || "var(--ttg-rarity-common)") + "40",
                       }}
                     >
                       {d.tazo.rarity}
@@ -982,7 +982,7 @@ export default function CollectionPage() {
                     { label: "ATK", value: d.tazo.attack, color: 'var(--ttg-red)' },
                     { label: "DEF", value: d.tazo.defense, color: 'var(--ttg-blue)' },
                     { label: "RES", value: d.tazo.resistance, color: "#6366F1" },
-                    { label: "WGT", value: d.tazo.weight, color: "#F59E0B" },
+                    { label: "WGT", value: d.tazo.weight, color: "var(--ttg-warning)" },
                     { label: "STA", value: d.tazo.stability, color: "#14B8A6" },
                     { label: "SPN", value: d.tazo.spin, color: "#10B981" },
                     { label: "CTR", value: d.tazo.control, color: "#EC4899" },
@@ -1060,15 +1060,15 @@ export default function CollectionPage() {
       {/* ═══════════════════════════════════════════════ */}
       <div className="flex flex-wrap gap-3 justify-center pt-2">
         <Link href="/tazos" className="mag-btn px-5 py-2.5 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
-          style={{ background: "white", color: 'var(--ttg-black)', border: "3px solid #1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}>
+          style={{ background: "white", color: 'var(--ttg-black)', border: "3px solid var(--ttg-black)", boxShadow: "3px 3px 0px var(--ttg-black)" }}>
           <BookOpen className="w-4 h-4" /> Tazo Catalog
         </Link>
         <Link href="/app/battle" className="mag-btn px-5 py-2.5 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
-          style={{ background: 'var(--ttg-red)', color: "white", border: "3px solid #1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}>
+          style={{ background: 'var(--ttg-red)', color: "white", border: "3px solid var(--ttg-black)", boxShadow: "3px 3px 0px var(--ttg-black)" }}>
           <Swords className="w-4 h-4" /> Battle
         </Link>
         <Link href="/app/shop" className="mag-btn px-5 py-2.5 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
-          style={{ background: 'var(--ttg-yellow)', color: 'var(--ttg-black)', border: "3px solid #1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}>
+          style={{ background: 'var(--ttg-yellow)', color: 'var(--ttg-black)', border: "3px solid var(--ttg-black)", boxShadow: "3px 3px 0px var(--ttg-black)" }}>
           <ShoppingBag className="w-4 h-4" /> Open More Bags
         </Link>
       </div>

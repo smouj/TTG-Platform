@@ -27,7 +27,7 @@ export const FRANCHISES: FranchiseConfig[] = [
     total: 50,
     year: 2026,
     origin: "TazoForge Studios",
-    color: "#FFCC00",
+    color: "var(--ttg-yellow)",
     categories: ["Tazos"],
   },
   {

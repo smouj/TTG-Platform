@@ -5,13 +5,13 @@ import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 
 const DEFAULT_TUBES = [
-  { slug: "minimon", name: "Minimon", textureUrl: "/tazos-tubes/tube-minimon.png", franchise: "minimon", color: "#FFCC00" },
+  { slug: "minimon", name: "Minimon", textureUrl: "/tazos-tubes/tube-minimon.png", franchise: "minimon", color: "var(--ttg-yellow)" },
   { slug: "cybermon", name: "Cybermon", textureUrl: "/tazos-tubes/tube-cybermon.png", franchise: "cybermon", color: "#00B4D8" },
   { slug: "dracobell", name: "Dracobell", textureUrl: "/tazos-tubes/tube-dracobell.png", franchise: "dracobell", color: "#FF6B00" },
 ]
 
 const FRANCHISE_COLORS: Record<string, string> = {
-  minimon: "#FFCC00", cybermon: "#00B4D8", dracobell: "#FF6B00",
+  minimon: "var(--ttg-yellow)", cybermon: "#00B4D8", dracobell: "#FF6B00",
 }
 
 export async function GET() {
@@ -31,7 +31,7 @@ export async function GET() {
         name: m.name,
         textureUrl: m.textureUrl,
         franchise: m.franchise,
-        color: FRANCHISE_COLORS[m.franchise] || "#FFCC00",
+        color: FRANCHISE_COLORS[m.franchise] || "var(--ttg-yellow)",
       })),
     })
   } catch {

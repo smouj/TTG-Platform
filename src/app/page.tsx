@@ -67,7 +67,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 export default async function HomePage({ searchParams }: Props) {
   const { page } = await searchParams
   return (
-    <Suspense fallback={<div className="min-h-screen" style={{ background: "#FFF9E6" }} />}>
+    <Suspense fallback={<div className="min-h-screen" style={{ background: "var(--ttg-cream)" }} />}>
       <ServerPageContent page={page || ""} />
       <LauncherView />
     </Suspense>

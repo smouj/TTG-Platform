@@ -38,7 +38,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   beginner: 'var(--ttg-success)',
   daily: 'var(--ttg-blue)',
   weekly: 'var(--ttg-purple)',
-  special: "#F59E0B",
+  special: "var(--ttg-warning)",
 }
 
 const CATEGORY_NAMES: Record<string, string> = {
@@ -50,7 +50,7 @@ const CATEGORY_NAMES: Record<string, string> = {
 
 const DIFFICULTY_BADGES: Record<string, { color: string; label: string }> = {
   easy: { color: 'var(--ttg-success)', label: "EASY" },
-  medium: { color: "#F59E0B", label: "MEDIUM" },
+  medium: { color: "var(--ttg-warning)", label: "MEDIUM" },
   hard: { color: 'var(--ttg-red)', label: "HARD" },
 }
 
@@ -136,9 +136,9 @@ export default function QuestsPage() {
         <div
           className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
           style={{
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-            border: "3px solid #1a1a1a",
-            boxShadow: "4px 4px 0px #FFCC00",
+            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+            border: "3px solid var(--ttg-black)",
+            boxShadow: "4px 4px 0px var(--ttg-yellow)",
           }}
         >
           <div className="flex items-center gap-1.5">
@@ -164,10 +164,10 @@ export default function QuestsPage() {
         {/* Level Up Celebration */}
         {levelUp && (
           <div className="animate-mag-enter-fade-up p-4 border-3 border-ttg-yellow bg-gradient-to-r from-ttg-yellow/10 via-ttg-yellow/10 to-ttg-yellow/10"
-            style={{ boxShadow: "3px 3px 0px #FFCC00" }}>
+            style={{ boxShadow: "3px 3px 0px var(--ttg-yellow)" }}>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-ttg-yellow border-3 border-ttg-black flex items-center justify-center animate-bounce"
-                style={{ boxShadow: "2px 2px 0px #1a1a1a" }}>
+                style={{ boxShadow: "2px 2px 0px var(--ttg-black)" }}>
                 <TrendingUp className="w-6 h-6 text-ttg-black" />
               </div>
               <div>

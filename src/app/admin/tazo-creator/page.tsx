@@ -27,7 +27,7 @@ const FRANCHISES = [
 ];
 
 const RARITIES = [
-  { slug: "common", name: "Common", color: "#9CA3AF", stars: 1, desc: "Basic design" },
+  { slug: "common", name: "Common", color: "var(--ttg-rarity-common)", stars: 1, desc: "Basic design" },
   { slug: "uncommon", name: "Uncommon", color: 'var(--ttg-success)', stars: 2, desc: "Subtle glow" },
   { slug: "rare", name: "Rare", color: "#3B82F6", stars: 3, desc: "Crystalline accents" },
   { slug: "ultra-rare", name: "Ultra Rare", color: 'var(--ttg-purple)', stars: 4, desc: "Purple aura + metallic" },
@@ -120,7 +120,7 @@ const STAT_LABELS: Record<string, [string, string]> = {
   attack: ["ATK", 'var(--ttg-red)'],
   defense: ["DEF", 'var(--ttg-blue)'],
   resistance: ["RES", 'var(--ttg-success)'],
-  weight: ["WT", "#F59E0B"],
+  weight: ["WT", "var(--ttg-warning)"],
   stability: ["STB", 'var(--ttg-purple)'],
   spin: ["SPIN", "#EC4899"],
   control: ["CTRL", "#06B6D4"],

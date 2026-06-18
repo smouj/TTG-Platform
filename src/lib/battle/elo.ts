@@ -55,7 +55,7 @@ export interface RankInfo {
 const RANK_TIERS: RankInfo[] = [
   { tier: "bronze",      label: "Bronze",       emoji: "🥉", color: "#CD7F32", minElo: 0 },
   { tier: "silver",      label: "Silver",       emoji: "🥈", color: "#C0C0C0", minElo: 1100 },
-  { tier: "gold",        label: "Gold",         emoji: "🥇", color: "#FFCC00", minElo: 1300 },
+  { tier: "gold",        label: "Gold",         emoji: "🥇", color: "var(--ttg-yellow)", minElo: 1300 },
   { tier: "platinum",    label: "Platinum",     emoji: "💎", color: "#E5E4E2", minElo: 1500 },
   { tier: "diamond",     label: "Diamond",      emoji: "💠", color: "#29ADFF", minElo: 1700 },
   { tier: "master",      label: "Master",       emoji: "👑", color: "#A855F7", minElo: 1900 },

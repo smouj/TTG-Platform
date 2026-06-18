@@ -8,10 +8,10 @@ import logoTgYellow from "@/../public/logo/logo-tg-yellow.png"
 
 export default function RootLoading() {
   return (
-    <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center" style={{ background: "#FFF9E6" }}>
+    <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center" style={{ background: "var(--ttg-cream)" }}>
       {/* Magazine halftone overlay */}
       <div className="absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: "radial-gradient(circle, #1a1a1a 1px, transparent 1px)", backgroundSize: "6px 6px" }}
+        style={{ backgroundImage: "radial-gradient(circle, var(--ttg-black) 1px, transparent 1px)", backgroundSize: "6px 6px" }}
       />
       
       {/* Decorative corners */}

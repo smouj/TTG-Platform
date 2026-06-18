@@ -26,7 +26,7 @@ function getPasswordStrength(pw: string): {
   if (/[^A-Za-z0-9]/.test(pw)) score++
 
   if (score <= 1) return { score: 1, label: "Weak", color: 'var(--ttg-red)' }
-  if (score === 2) return { score: 2, label: "Fair", color: "#F59E0B" }
+  if (score === 2) return { score: 2, label: "Fair", color: "var(--ttg-warning)" }
   if (score === 3) return { score: 3, label: "Good", color: "#3B82F6" }
   return { score: 4, label: "Strong", color: 'var(--ttg-success)' }
 }
@@ -81,7 +81,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
+    <div className="min-h-screen flex flex-col relative" style={{ background: "var(--ttg-cream)" }}>
       <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
 
       <MagazineHeader />

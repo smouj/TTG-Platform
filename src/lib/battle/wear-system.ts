@@ -31,7 +31,7 @@ export const WEAR_TIER_LABELS: Record<WearTier, string> = {
 
 /** Wear tier colors (for badges) */
 export const WEAR_TIER_COLORS: Record<WearTier, { bg: string; text: string; border: string }> = {
-  mint:        { bg: "#22C55E15", text: "#22C55E", border: "#22C55E40" },
+  mint:        { bg: "#22C55E15", text: "var(--ttg-success)", border: "#22C55E40" },
   light_play:  { bg: "#FFCC0015", text: "#CCAA00", border: "#FFCC0040" },
   played:      { bg: "#FF880015", text: "#FF8800", border: "#FF880040" },
   heavy_play:  { bg: "#FF440015", text: "#FF4400", border: "#FF440040" },

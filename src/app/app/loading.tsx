@@ -6,9 +6,9 @@ import Image from "next/image"
 
 export default function AppLoading() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-8 p-8" style={{ background: "#FFF9E6" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-8 p-8" style={{ background: "var(--ttg-cream)" }}>
       {/* Halftone */}
-      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle, #1a1a1a 1px, transparent 1px)", backgroundSize: "6px 6px" }} />
+      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle, var(--ttg-black) 1px, transparent 1px)", backgroundSize: "6px 6px" }} />
       
       {/* Brand logo spacer */}
       <div className="relative z-10 flex flex-col items-center gap-4">
@@ -33,7 +33,7 @@ export default function AppLoading() {
           >
             <div className="w-full h-full flex items-center justify-center bg-ttg-paper">
               <div className="w-2/3 h-2/3 rounded-full" style={{
-                background: "#1a1a1a06",
+                background: "var(--ttg-black)06",
                 animation: "mag-skeleton-shimmer 1.5s ease-in-out infinite",
                 animationDelay: `${i * 0.15}s`,
               }} />
@@ -49,7 +49,7 @@ export default function AppLoading() {
             className="h-full rounded-full"
             style={{
               width: "40%",
-              background: "linear-gradient(90deg, #FFCC00, #E3350D, #FFCC00)",
+              background: "linear-gradient(90deg, var(--ttg-yellow), var(--ttg-red), var(--ttg-yellow))",
               backgroundSize: "200% 100%",
               animation: "mag-skeleton-shimmer 2s ease-in-out infinite",
             }}

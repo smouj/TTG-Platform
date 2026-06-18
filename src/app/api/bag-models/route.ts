@@ -7,7 +7,7 @@ import { db } from "@/lib/db"
 const DEFAULT_BAGS = [
   {
     type: "standard", name: "Classic Bag", cost: 100,
-    bonusChance: 15, rareBoost: 2, color: "#FFCC00", bgColor: "#FFF8E7",
+    bonusChance: 15, rareBoost: 2, color: "var(--ttg-yellow)", bgColor: "#FFF8E7",
     franchise: "minimon", tagline: "Original collection tazos",
   },
   {

@@ -101,7 +101,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
+    <div className="min-h-screen flex flex-col relative" style={{ background: "var(--ttg-cream)" }}>
       <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
 
       <MagazineHeader />
@@ -298,7 +298,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col relative" style={{ background: "#FFF9E6" }}>
+        <div className="min-h-screen flex flex-col relative" style={{ background: "var(--ttg-cream)" }}>
           <MagazineHeader />
           <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
           <main className="flex-1 flex items-center justify-center px-4 py-12 relative">

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         cost: cost ?? 100,
         bonusChance: bonusChance ?? 15,
         rareBoost: rareBoost ?? 2,
-        color: color ?? "#FFCC00",
+        color: color ?? "var(--ttg-yellow)",
         bgColor: bgColor ?? "#FFF8E7",
         tagline: tagline ?? "",
         sortOrder: sortOrder ?? 0,

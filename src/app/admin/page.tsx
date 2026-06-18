@@ -60,7 +60,7 @@ export default function AdminPage() {
                   { label: "Users", value: overview.users, icon: Users, color: 'var(--ttg-blue)' },
                   { label: "Tazos", value: overview.tazos, icon: Package, color: 'var(--ttg-success)' },
                   { label: "With Art", value: overview.tazosWithArt, icon: ImageIcon, color: 'var(--ttg-purple)' },
-                  { label: "Series", value: overview.franchises, icon: Activity, color: "#F59E0B" },
+                  { label: "Series", value: overview.franchises, icon: Activity, color: "var(--ttg-warning)" },
                   { label: "Bags", value: overview.bags, icon: Package, color: 'var(--ttg-red)' },
                   { label: "Decks", value: overview.decks, icon: Activity, color: "#00A1E9" },
                   { label: "Quests", value: overview.quests, icon: Activity, color: "#14B8A6" },
