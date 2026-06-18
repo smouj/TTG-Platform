@@ -751,7 +751,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
                   const newPS = (engine.ctx?.player.score ?? 0) + aiScoring.playerDelta
                   const newOS = (engine.ctx?.opponent.score ?? 0) + aiScoring.opponentDelta
                   const endCheckCtx = engine.ctx
-                  const end = checkMatchEnd(newPS, newOS, newPR, endCheckCtx?.opponentRemaining ?? 0)
+                  const end = checkMatchEnd(newPS, newOS, newPR, endCheckCtx?.opponentRemaining ?? 0, cfg?.scoreToWin)
                   
                   if (end) {
                     engine.showResult()
@@ -893,7 +893,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       const newOR = Math.max(0, currentCtx.opponentRemaining - opponentLostTazos)
       const newPScore = currentCtx.player.score + playerDelta
       const newOScore = currentCtx.opponent.score + opponentDelta
-      const end = checkMatchEnd(newPScore, newOScore, newPR, newOR)
+      const end = checkMatchEnd(newPScore, newOScore, newPR, newOR, cfg?.scoreToWin)
       
       // Keep FSM in sync: advance past impact state
       // (FSM requires RESULT_SHOWN to transition impact→resolve_impact)
@@ -965,7 +965,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             const finalOR = Math.max(0, (ctx2?.opponentRemaining ?? newOR) - aiScoring.opponentLostTazos)
             const finalPS = (ctx2?.player.score ?? newPScore) + aiScoring.playerDelta
             const finalOS = (ctx2?.opponent.score ?? newOScore) + aiScoring.opponentDelta
-            const aiEnd = checkMatchEnd(finalPS, finalOS, finalPR, finalOR)
+            const aiEnd = checkMatchEnd(finalPS, finalOS, finalPR, finalOR, cfg?.scoreToWin)
 
             // Keep FSM in sync after AI slam
             setTimeout(() => engine.send({ type: "RESULT_SHOWN", who: "opponent" } as any), 10)
@@ -1060,7 +1060,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           const newOS = (c2?.opponent.score ?? 0) + scoring.opponentDelta
           const end = checkMatchEnd(newPS, newOS,
             Math.max(0, (c2?.playerRemaining ?? 0) - scoring.playerLostTazos),
-            Math.max(0, (c2?.opponentRemaining ?? 0) - scoring.opponentLostTazos))
+            Math.max(0, (c2?.opponentRemaining ?? 0) - scoring.opponentLostTazos),
+            cfg?.scoreToWin)
           if (end) {
             engine.showResult()
           } else {
@@ -1188,7 +1189,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       const newOS = engine.ctx!.opponent.score + scoring.opponentDelta
       const end = checkMatchEnd(newPS, newOS,
         Math.max(0, (engine.ctx?.playerRemaining ?? 0) - scoring.playerLostTazos),
-        Math.max(0, (engine.ctx?.opponentRemaining ?? 0) - scoring.opponentLostTazos))
+        Math.max(0, (engine.ctx?.opponentRemaining ?? 0) - scoring.opponentLostTazos),
+        cfg?.scoreToWin)
 
       setTimeout(() => {
         engine.setShowImpact(false)
