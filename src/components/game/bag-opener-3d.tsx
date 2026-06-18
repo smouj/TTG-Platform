@@ -58,7 +58,7 @@ function BagCamera({ interacting, opening }: { interacting: boolean; opening: bo
 // ══════════════════════════════════════════════════════════
 function ParticleBurst({ color, active }: { color: string; active: boolean }) {
   const particles = useMemo(() => {
-    return Array.from({ length: 28 }, (_, i) => {
+    return Array.from({ length: 42 }, (_, i) => {
       const angle = (i / 28) * Math.PI * 2
       const dist = 60 + Math.random() * 120
       const size = 3 + Math.random() * 5
@@ -242,13 +242,13 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
         </div>
       )}
 
-      {/* Flash overlay on open */}
+      {/* Flash overlay on open — brighter center, fading edges */}
       <div
         className="absolute inset-0 z-20 pointer-events-none"
         style={{
-          opacity: stage === "opening" || stage === "reveal" ? 1 : 0,
-          transition: "opacity 400ms ease-out",
-          background: `radial-gradient(ellipse at 50% 45%, ${franchiseColor}80 0%, ${franchiseColor}30 35%, transparent 75%)`,
+          opacity: stage === "opening" ? 1 : stage === "reveal" ? 0.6 : 0,
+          transition: "opacity 500ms ease-out",
+          background: `radial-gradient(ellipse at 50% 45%, ${franchiseColor}aa 0%, ${franchiseColor}55 25%, ${franchiseColor}15 50%, transparent 75%)`,
         }}
       />
 
@@ -303,7 +303,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
                 boxShadow: `0 0 12px ${franchiseColor}40`,
               }}
             >
-              ⚡ OPEN NOW
+              ⚡ OPEN NOW — SKIP ANIMATION
             </button>
           </div>
         )}
@@ -328,29 +328,44 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
               style={{ backgroundColor: `${franchiseColor}f0` }}>
               <span className="font-black text-[11px] text-ttg-black uppercase tracking-[0.15em]">Opening…</span>
             </div>
-            {/* Particle burst rings */}
+            {/* Particle burst rings — dramatic opening pulse */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute inset-0 animate-ping opacity-25"
+                style={{
+                  border: `4px solid ${franchiseColor}`,
+                  borderRadius: "50%",
+                  width: "65%",
+                  height: "44%",
+                  left: "17.5%",
+                  top: "28%",
+                  animationDuration: "1.2s",
+                  boxShadow: `0 0 30px ${franchiseColor}40`,
+                }}
+              />
               <div className="absolute inset-0 animate-ping opacity-20"
                 style={{
                   border: `3px solid ${franchiseColor}`,
                   borderRadius: "50%",
-                  width: "60%",
-                  height: "40%",
-                  left: "20%",
-                  top: "30%",
-                  animationDuration: "1.5s",
+                  width: "50%",
+                  height: "33%",
+                  left: "25%",
+                  top: "33%",
+                  animationDuration: "0.8s",
+                  animationDelay: "0.2s",
+                  boxShadow: `0 0 20px ${franchiseColor}30`,
                 }}
               />
-              <div className="absolute inset-0 animate-ping opacity-15"
+              <div className="absolute inset-0 animate-ping opacity-12"
                 style={{
                   border: `2px solid ${franchiseColor}`,
                   borderRadius: "50%",
-                  width: "40%",
-                  height: "25%",
-                  left: "30%",
-                  top: "37%",
-                  animationDuration: "1s",
-                  animationDelay: "0.3s",
+                  width: "35%",
+                  height: "22%",
+                  left: "32.5%",
+                  top: "39%",
+                  animationDuration: "0.6s",
+                  animationDelay: "0.4s",
+                  boxShadow: `0 0 12px ${franchiseColor}20`,
                 }}
               />
             </div>

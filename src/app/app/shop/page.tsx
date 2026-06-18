@@ -661,7 +661,7 @@ export default function BagShopPage() {
     if (bulkIndex >= bulkTotal) {
       return (
         <div className="max-w-lg mx-auto py-8 sm:py-12 px-4 text-center space-y-6 animate-fadeIn">
-          <ConfettiBurst active />
+          <ConfettiBurst active={revealedTazos.some(t => t.rarity === "legendary" || t.rarity === "ultra-rare")} />
           <h2 className="text-xl font-black uppercase tracking-wider text-ttg-black">All {bulkTotal} bags opened!</h2>
           <div className="flex flex-wrap justify-center gap-3 min-h-[120px] items-start content-start">
             {revealedTazos.map((t, i) => (
@@ -751,13 +751,24 @@ export default function BagShopPage() {
       <div className="max-w-lg mx-auto py-6 sm:py-8 px-4 space-y-6 text-center relative overflow-visible">
         <ConfettiBurst active />
 
+        {/* Legendary golden flash — dramatic entrance */}
+        {isLegendary && (
+          <div className="absolute inset-0 pointer-events-none z-30 animate-[flashOut_0.8s_ease-out_both]"
+            style={{ background: "radial-gradient(ellipse at 50% 40%, #f59e0baa 0%, #f59e0b40 40%, transparent 75%)" }}>
+            <div className="absolute inset-0 animate-[flashShake_0.5s_ease-out]">
+              <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 rounded-full animate-ping opacity-30"
+                style={{ background: "radial-gradient(circle, #f59e0b, transparent)", animationDuration: "1.2s" }} />
+            </div>
+          </div>
+        )}
+
         {/* Legendary golden glow background */}
         {isLegendary && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full opacity-30 blur-3xl animate-pulse"
-              style={{ background: "radial-gradient(circle, var(--ttg-warning), #f59e0b00)" }} />
+              style={{ background: "radial-gradient(circle, var(--ttg-warning), #f59e0b00)", animationDelay: "0.5s" }} />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full opacity-20 blur-2xl animate-spin"
-              style={{ background: "conic-gradient(from 0deg, var(--ttg-warning), var(--ttg-yellow), var(--ttg-warning), transparent)", animationDuration: "4s" }} />
+              style={{ background: "conic-gradient(from 0deg, var(--ttg-warning), var(--ttg-yellow), var(--ttg-warning), transparent)", animationDuration: "4s", animationDelay: "0.2s" }} />
           </div>
         )}
 
@@ -777,9 +788,9 @@ export default function BagShopPage() {
           </div>
         )}
 
-        {/* Rarity badge */}
+        {/* Rarity badge — staggered entrance */}
         <div
-          className={`inline-block px-5 py-2 font-black text-sm uppercase tracking-wider animate-[popUp_0.5s_ease-out] ${
+          className={`inline-block px-5 py-2 font-black text-sm uppercase tracking-wider animate-[popUp_0.5s_ease-out_both] ${
             isHighRarity ? "animate-pulse" : ""
           }`}
           style={{
@@ -808,11 +819,38 @@ export default function BagShopPage() {
           {isLegendary && " ⚡"}
         </div>
 
-        {/* Tazo disc — larger, centered, with entrance animation */}
+        {/* Tazo disc — larger, centered, with entrance animation tuned per rarity */}
+
+        {/* Dramatic pause text — flash for legendary */}
+        {isLegendary && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="text-center"
+          >
+            <p className="text-[10px] font-black text-ttg-warning uppercase tracking-[0.5em] animate-pulse"
+              style={{ textShadow: "0 0 20px #f59e0b80, 0 0 40px #f59e0b40" }}>
+              ⚡ LEGENDARY PULL ⚡
+            </p>
+          </motion.div>
+        )}
+
+        {/* Pre-reveal shimmer for ultra rare */}
+        {isUltraRare && (
+          <div className="h-2 w-32 mx-auto rounded-full overflow-hidden bg-ttg-black/5">
+            <div className="h-full w-full animate-[shimmer_0.6s_ease-out_both]"
+              style={{ background: "linear-gradient(90deg, transparent, var(--ttg-purple), transparent)" }} />
+          </div>
+        )}
         <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.35, ease: [0.175, 0.885, 0.32, 1.275] }}
+          initial={{ scale: isLegendary ? 0.2 : isUltraRare ? 0.3 : 0.5, opacity: 0, rotate: isLegendary ? -25 : isUltraRare ? -12 : 0 }}
+          animate={{ scale: 1, opacity: 1, rotate: 0 }}
+          transition={{
+            duration: isLegendary ? 0.6 : isUltraRare ? 0.5 : isRare ? 0.35 : 0.25,
+            ease: isLegendary ? [0.16, 0.86, 0.22, 1.05] : [0.175, 0.885, 0.32, 1.275],
+            delay: 0.1,
+          }}
           className={`mx-auto w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center overflow-hidden ${
           isLegendary ? "border-[5px]" : "border-4"
         } ${isHighRarity ? "animate-pulse" : ""}`}
@@ -856,14 +894,15 @@ export default function BagShopPage() {
           </p>
         </div>
 
-        {/* Stats with staggered animation */}
-        <div className="p-4 bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] animate-[popUp_0.5s_ease-out_0.35s_both]">
+        {/* Stats with rarity-tuned staggered animation */}
+        <div className="p-4 bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] animate-[popUp_0.5s_ease-out_both]"
+          style={{ animationDelay: isLegendary ? "0.55s" : isUltraRare ? "0.45s" : isRare ? "0.25s" : "0.15s" }}>
           <StatsRow tazo={_tazo} />
         </div>
 
         {/* Legendary special message */}
         {isLegendary && (
-          <div className="animate-[popUp_0.5s_ease-out_0.45s_both]">
+          <div className="animate-[popUp_0.7s_ease-out_both]" style={{ animationDelay: "0.65s" }}>
             <div className="inline-block px-4 py-2 bg-ttg-yellow/10 border-2 border-ttg-warning"
               style={{ boxShadow: "0 0 20px #f59e0b30" }}>
               <p className="text-sm font-black text-ttg-dracobell uppercase tracking-wider flex items-center gap-2">
@@ -903,8 +942,9 @@ export default function BagShopPage() {
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex flex-wrap gap-3 justify-center animate-[popUp_0.5s_ease-out_0.6s_both]">
+        {/* Actions — delayed entrance for drama */}
+        <div className="flex flex-wrap gap-3 justify-center animate-[popUp_0.5s_ease-out_both]"
+          style={{ animationDelay: isLegendary ? "0.8s" : isHighRarity ? "0.5s" : "0.3s" }}>
           <button onClick={handleReset}
             className="mag-btn px-6 py-3 font-black text-xs uppercase bg-ttg-yellow text-ttg-black border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
             <ShoppingBag className="w-4 h-4 inline mr-1" />Open Another
@@ -913,7 +953,7 @@ export default function BagShopPage() {
             className="mag-btn px-6 py-3 font-black text-xs uppercase bg-ttg-black text-ttg-yellow border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
             <ChevronRight className="w-4 h-4 inline mr-1" />Collection
           </Link>
-          <button onClick={() => { handleReset(); window.location.href = "/app/shop"; }}
+          <button onClick={handleReset}
             className="mag-btn px-6 py-3 font-black text-xs uppercase bg-white text-ttg-black/40 border-2 border-ttg-black/10 active:translate-x-0.5 active:translate-y-0.5 transition-all">
             Close
           </button>
@@ -981,7 +1021,7 @@ export default function BagShopPage() {
                 )}
               </div>
               <span className="text-[8px] font-black text-ttg-black text-center leading-tight line-clamp-2">{t.name}</span>
-              <span className="text-[7px] font-bold uppercase px-1 py-0.5 rounded"
+              <span className="text-[7px] font-bold uppercase px-1 py-0.5"
                 style={{ backgroundColor: `${RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)"}15`, color: RARITY_GRADIENT[t.rarity] || "var(--ttg-rarity-common)" }}>
                 {RARITY_LABELS[t.rarity] || t.rarity}
               </span>
