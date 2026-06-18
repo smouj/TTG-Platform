@@ -57,19 +57,19 @@ const ADMIN_TABS = [
     href: "/admin/shop-bags",
     label: "Shop Bags",
     icon: ShoppingBag,
-    color: "#8B5CF6",
+    color: "var(--ttg-purple)",
   },
   {
     href: "/admin/shop-bag-models",
     label: "Shop Bag Models",
     icon: Server,
-    color: "#F97316",
+    color: "var(--ttg-dracobell)",
   },
   {
     href: "/admin/site-config",
     label: "Site Config",
     icon: Settings,
-    color: "#06B6D4",
+    color: "var(--ttg-cybermon)",
   },
 ];
 

@@ -40,13 +40,13 @@ const TAB_DEFS: { id: TabId; label: string; icon: any; color: string }[] = [
 
 const PROMO_TYPES = [
   { slug: "credits", name: "Credits Bonus", icon: Coins, color: 'var(--ttg-yellow)', desc: "Gives credits to the redeeming user" },
-  { slug: "bag", name: "Free Bag", icon: ShoppingBag, color: "#F97316", desc: "Grants a free bag purchase" },
+  { slug: "bag", name: "Free Bag", icon: ShoppingBag, color: "var(--ttg-dracobell)", desc: "Grants a free bag purchase" },
   { slug: "design", name: "Design Slot", icon: Edit3, color: 'var(--ttg-purple)', desc: "Unlocks a custom tazo design" },
-  { slug: "premium", name: "Premium Access", icon: Shield, color: "#FBBF24", desc: "Grants premium features" },
+  { slug: "premium", name: "Premium Access", icon: Shield, color: "var(--ttg-yellow)", desc: "Grants premium features" },
 ]
 
 const TYPE_COLORS: Record<string, string> = {
-  credits: 'var(--ttg-yellow)', bag: "#F97316", design: 'var(--ttg-purple)', premium: "#FBBF24",
+  credits: 'var(--ttg-yellow)', bag: "var(--ttg-dracobell)", design: 'var(--ttg-purple)', premium: "var(--ttg-yellow)",
 }
 
 // ── Main Component ──
@@ -287,10 +287,10 @@ export default function AdminSiteConfigPage() {
     max_tazos_per_collection: { label: "Max Tazos/Collection", desc: "Maximum tazos allowed per series collection", type: "number" },
   }
 
-  if (!isAdmin && !authLoading) return <AdminShell accentColor="#06B6D4"><div className="p-10" /></AdminShell>
+  if (!isAdmin && !authLoading) return <AdminShell accentColor="var(--ttg-cybermon)"><div className="p-10" /></AdminShell>
 
   return (
-    <AdminShell accentColor="#06B6D4">
+    <AdminShell accentColor="var(--ttg-cybermon)">
       <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
@@ -495,7 +495,7 @@ export default function AdminSiteConfigPage() {
 
                 {/* Create Promo Form */}
                 {showNewPromo && (
-                  <div className="mag-card p-5 border-3 border-ttg-success shadow-[4px_4px_0px_#22C55E] bg-white">
+                  <div className="mag-card p-5 border-3 border-ttg-success shadow-[4px_4px_0px_var(--ttg-success)] bg-white">
                     <h3 className="text-sm font-black uppercase tracking-wider text-ttg-success mb-4 flex items-center gap-2">
                       <Gift className="w-4 h-4" /> New Promo Code
                     </h3>

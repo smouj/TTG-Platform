@@ -21,9 +21,9 @@ import TazoDiscImage from "@/components/game/tazo-disc-image";
 
 // ── Constants ──
 const FRANCHISES = [
-  { slug: "minimon", name: "Minimon", color: "#FFCB05", desc: "Creature companions from the world of Luminara" },
-  { slug: "cybermon", name: "Cybermon", color: "#00A1E9", desc: "Living digital code from the Neon Grid" },
-  { slug: "dracobell", name: "Dracobell", color: "#FF6B00", desc: "Warriors of the Bellora clans" },
+  { slug: "minimon", name: "Minimon", color: "var(--ttg-minimon)", desc: "Creature companions from the world of Luminara" },
+  { slug: "cybermon", name: "Cybermon", color: "var(--ttg-cybermon)", desc: "Living digital code from the Neon Grid" },
+  { slug: "dracobell", name: "Dracobell", color: "var(--ttg-dracobell)", desc: "Warriors of the Bellora clans" },
 ];
 
 const RARITIES = [
@@ -286,7 +286,7 @@ export default function AdminTazoCreatorPage() {
                   type="text" value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="e.g. Lumipuff, Datadrake, Sora Tide..."
-                  className="w-full border-2 border-ttg-black bg-white px-3 py-2.5 text-sm font-bold text-ttg-black placeholder:text-ttg-black/30 outline-none focus:border-ttg-yellow focus:shadow-[3px_3px_0px_#FFCC00] transition-all"
+                  className="w-full border-2 border-ttg-black bg-white px-3 py-2.5 text-sm font-bold text-ttg-black placeholder:text-ttg-black/30 outline-none focus:border-ttg-yellow focus:shadow-[3px_3px_0px_var(--ttg-yellow)] transition-all"
                 />
               </div>
 
@@ -297,7 +297,7 @@ export default function AdminTazoCreatorPage() {
                   onChange={e => setDescription(e.target.value)}
                   placeholder="Describe the creature's appearance, personality, elemental affinity..."
                   rows={3}
-                  className="w-full border-2 border-ttg-black bg-white px-3 py-2.5 text-sm font-bold text-ttg-black placeholder:text-ttg-black/30 outline-none focus:border-ttg-yellow focus:shadow-[3px_3px_0px_#FFCC00] transition-all resize-none"
+                  className="w-full border-2 border-ttg-black bg-white px-3 py-2.5 text-sm font-bold text-ttg-black placeholder:text-ttg-black/30 outline-none focus:border-ttg-yellow focus:shadow-[3px_3px_0px_var(--ttg-yellow)] transition-all resize-none"
                 />
               </div>
             </div>
@@ -576,7 +576,7 @@ export default function AdminTazoCreatorPage() {
 
             {/* Success Result */}
             {result && (
-              <div className="mag-card p-5 border-3 border-ttg-success shadow-[4px_4px_0px_#22C55E] bg-ttg-success/3 space-y-4">
+              <div className="mag-card p-5 border-3 border-ttg-success shadow-[4px_4px_0px_var(--ttg-success)] bg-ttg-success/3 space-y-4">
                 <div className="flex items-center gap-2">
                   <Check className="w-5 h-5 text-ttg-success" />
                   <h2 className="text-sm font-black uppercase tracking-wider text-ttg-success">Tazo Created!</h2>

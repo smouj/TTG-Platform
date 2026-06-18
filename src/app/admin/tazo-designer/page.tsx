@@ -327,7 +327,7 @@ export default function AdminTazoDesignerPage() {
               const tazos = tazosByFranchise[fs] || [];
               if (tazos.length === 0) return null;
               const fName = fs === "minimon" ? "Minimon" : fs === "cybermon" ? "Cybermon" : "Dracobell";
-              const fColor = fs === "minimon" ? "#FFCB05" : fs === "cybermon" ? "#00A1E9" : "#FF6B00";
+              const fColor = fs === "minimon" ? "var(--ttg-minimon)" : fs === "cybermon" ? "var(--ttg-cybermon)" : "var(--ttg-dracobell)";
 
               return (
                 <div key={fs} className="mag-card p-4 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)]">

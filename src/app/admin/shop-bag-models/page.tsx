@@ -34,7 +34,7 @@ const FRANCHISE_COLORS: Record<string, string> = {
   minimon: 'var(--ttg-yellow)', cybermon: "var(--ttg-cybermon)", dracobell: "var(--ttg-dracobell)",
 }
 const FRANCHISE_BG: Record<string, string> = {
-  minimon: "#FFF8E7", cybermon: "#E7F6FF", dracobell: "#FFF3EB",
+  minimon: "var(--ttg-cream)", cybermon: "var(--ttg-cybermon)", dracobell: "var(--ttg-dracobell)",
 }
 
 export default function AdminShopBagModelsPage() {
@@ -56,7 +56,7 @@ export default function AdminShopBagModelsPage() {
   const [newBonusChance, setNewBonusChance] = useState(15)
   const [newRareBoost, setNewRareBoost] = useState(2)
   const [newColor, setNewColor] = useState('var(--ttg-yellow)')
-  const [newBgColor, setNewBgColor] = useState("#FFF8E7")
+  const [newBgColor, setNewBgColor] = useState("var(--ttg-cream)")
   const [newTagline, setNewTagline] = useState("")
   const [newSortOrder, setNewSortOrder] = useState(0)
 
@@ -145,7 +145,7 @@ export default function AdminShopBagModelsPage() {
   }
 
   return (
-    <AdminShell accentColor="#F97316" actions={
+    <AdminShell accentColor="var(--ttg-dracobell)" actions={
       <button onClick={() => setShowAdd(!showAdd)} className="flex items-center gap-1.5 px-3 py-1.5 bg-ttg-dracobell text-white text-[10px] font-black uppercase border-2 border-ttg-black shadow-[2px_2px_0px_var(--ttg-black)] hover:shadow-[1px_1px_0px]">
         <Plus className="w-3.5 h-3.5" /> New Bag
       </button>
@@ -222,7 +222,7 @@ export default function AdminShopBagModelsPage() {
                         <div><label className="text-[8px] font-black text-ttg-black/40 uppercase">Rare Boost</label><input type="number" value={editFields.rareBoost ?? 2} onChange={e => setEditFields(p => ({ ...p, rareBoost: Number(e.target.value) }))} className="w-full p-1.5 border-2 border-ttg-black text-xs font-bold" /></div>
                         <div><label className="text-[8px] font-black text-ttg-black/40 uppercase">Tagline</label><input value={editFields.tagline || ""} onChange={e => setEditFields(p => ({ ...p, tagline: e.target.value }))} className="w-full p-1.5 border-2 border-ttg-black text-xs font-bold" /></div>
                         <div><label className="text-[8px] font-black text-ttg-black/40 uppercase">Color</label><div className="flex gap-1"><input type="color" value={editFields.color || 'var(--ttg-yellow)'} onChange={e => setEditFields(p => ({ ...p, color: e.target.value }))} className="w-8 h-7 border-2 border-ttg-black" /><span className="text-[9px] font-bold self-center">{editFields.color}</span></div></div>
-                        <div><label className="text-[8px] font-black text-ttg-black/40 uppercase">BG Color</label><div className="flex gap-1"><input type="color" value={editFields.bgColor || "#FFF8E7"} onChange={e => setEditFields(p => ({ ...p, bgColor: e.target.value }))} className="w-8 h-7 border-2 border-ttg-black" /><span className="text-[9px] font-bold self-center">{editFields.bgColor}</span></div></div>
+                        <div><label className="text-[8px] font-black text-ttg-black/40 uppercase">BG Color</label><div className="flex gap-1"><input type="color" value={editFields.bgColor || "var(--ttg-cream)"} onChange={e => setEditFields(p => ({ ...p, bgColor: e.target.value }))} className="w-8 h-7 border-2 border-ttg-black" /><span className="text-[9px] font-bold self-center">{editFields.bgColor}</span></div></div>
                         <div><label className="text-[8px] font-black text-ttg-black/40 uppercase">Sort</label><input type="number" value={editFields.sortOrder ?? 0} onChange={e => setEditFields(p => ({ ...p, sortOrder: Number(e.target.value) }))} className="w-full p-1.5 border-2 border-ttg-black text-xs font-bold" /></div>
                       </div>
                     ) : (

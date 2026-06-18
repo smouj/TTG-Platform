@@ -47,7 +47,7 @@ const COMBAT_TYPES = [
 const CATEGORIES = ["creature", "trainer", "equipment", "arena", "special"]
 
 const FRANCHISE_COLORS: Record<string, string> = {
-  minimon: "#FFCB05", cybermon: "#00A1E9", dracobell: "#FF6B00", "draco-bell": "#FF6B00",
+  minimon: "var(--ttg-minimon)", cybermon: "var(--ttg-cybermon)", dracobell: "var(--ttg-dracobell)", "draco-bell": "var(--ttg-dracobell)",
 }
 const RARITY_COLORS: Record<string, string> = {
   common: "var(--ttg-rarity-common)", uncommon: 'var(--ttg-success)', rare: "#3B82F6",

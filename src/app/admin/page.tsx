@@ -62,7 +62,7 @@ export default function AdminPage() {
                   { label: "With Art", value: overview.tazosWithArt, icon: ImageIcon, color: 'var(--ttg-purple)' },
                   { label: "Series", value: overview.franchises, icon: Activity, color: "var(--ttg-warning)" },
                   { label: "Bags", value: overview.bags, icon: Package, color: 'var(--ttg-red)' },
-                  { label: "Decks", value: overview.decks, icon: Activity, color: "#00A1E9" },
+                  { label: "Decks", value: overview.decks, icon: Activity, color: "var(--ttg-cybermon)" },
                   { label: "Quests", value: overview.quests, icon: Activity, color: "#14B8A6" },
                   { label: "Version", value: null, icon: Server, color: "#6B7280", extra: overview.version },
                 ].map((c, i) => (
