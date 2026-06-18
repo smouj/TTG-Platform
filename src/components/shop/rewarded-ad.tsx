@@ -87,7 +87,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
       <div style={{
         background: "linear-gradient(160deg, #FFFBEB, #FFF7E0)",
         border: "3px solid #FFCC00",
-        boxShadow: "3px 3px 0px #1a1a1a15",
+        boxShadow: "3px 3px 0px var(--ttg-black)15",
         padding: "16px 20px",
         textAlign: "center",
       }}>
@@ -102,7 +102,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
           <span style={{
             fontSize: "0.9rem",
             fontWeight: 900,
-            color: "#1a1a1a",
+            color: "var(--ttg-black)",
             textTransform: "uppercase",
             letterSpacing: "0.05em",
           }}>
@@ -122,15 +122,15 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
           style={{
             display: "inline-block",
             padding: "8px 24px",
-            background: "#1a1a1a",
-            color: "#FFCC00",
-            border: "2px solid #1a1a1a",
+            background: "var(--ttg-black)",
+            color: "var(--ttg-yellow)",
+            border: "2px solid var(--ttg-black)",
             fontSize: "0.75rem",
             fontWeight: 900,
             textTransform: "uppercase",
             letterSpacing: "0.05em",
             textDecoration: "none",
-            boxShadow: "3px 3px 0px #1a1a1a",
+            boxShadow: "3px 3px 0px var(--ttg-black)",
           }}
         >
           Sign In to Earn
@@ -147,7 +147,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
     <div style={{
       background: "linear-gradient(160deg, #FFFBEB, #FFF7E0)",
       border: "3px solid #FFCC00",
-      boxShadow: "3px 3px 0px #1a1a1a15",
+      boxShadow: "3px 3px 0px var(--ttg-black)15",
       padding: "16px 20px",
     }}>
       {/* Header */}
@@ -162,7 +162,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
           <div style={{
             fontSize: "0.9rem",
             fontWeight: 900,
-            color: "#1a1a1a",
+            color: "var(--ttg-black)",
             textTransform: "uppercase",
             letterSpacing: "0.05em",
           }}>
@@ -188,7 +188,7 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
         fontSize: "0.8rem",
         fontWeight: 700,
       }}>
-        <span style={{ color: "#E3350D" }}>+{REWARDED_AD_CREDITS} CREDITS</span>
+        <span style={{ color: "var(--ttg-red)" }}>+{REWARDED_AD_CREDITS} CREDITS</span>
         <span style={{ color: "#ccc" }}>·</span>
         <span style={{ color: "#888" }}>
           {status ? `${status.remaining}/${status.dailyLimit} remaining today` : "Loading..."}
@@ -230,26 +230,26 @@ export function RewardedAdButton({ isAuthenticated, onRewardClaimed }: RewardedA
         style={{
           width: "100%",
           padding: "10px",
-          background: canWatch ? "#E3350D" : "#ddd",
+          background: canWatch ? "var(--ttg-red)" : "#ddd",
           color: canWatch ? "#fff" : "#999",
-          border: "3px solid #1a1a1a",
+          border: "3px solid var(--ttg-black)",
           fontSize: "0.8rem",
           fontWeight: 900,
           textTransform: "uppercase",
           letterSpacing: "0.05em",
           cursor: canWatch ? "pointer" : "not-allowed",
-          boxShadow: canWatch ? "3px 3px 0px #1a1a1a" : "none",
+          boxShadow: canWatch ? "3px 3px 0px var(--ttg-black)" : "none",
           transition: "all 0.1s",
         }}
         onMouseEnter={(e) => {
           if (canWatch) {
-            e.currentTarget.style.boxShadow = "1px 1px 0px #1a1a1a"
+            e.currentTarget.style.boxShadow = "1px 1px 0px var(--ttg-black)"
             e.currentTarget.style.transform = "translate(2px, 2px)"
           }
         }}
         onMouseLeave={(e) => {
           if (canWatch) {
-            e.currentTarget.style.boxShadow = "3px 3px 0px #1a1a1a"
+            e.currentTarget.style.boxShadow = "3px 3px 0px var(--ttg-black)"
             e.currentTarget.style.transform = ""
           }
         }}

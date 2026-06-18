@@ -13,9 +13,9 @@ import { playSFX } from "@/lib/audio/sfx-engine"
 import { pickBagVariant } from "@/lib/bag-variants"
 
 const FRANCHISE_COLORS: Record<string, { bg: string; border: string; text: string; glow: string }> = {
-  minimon: { bg: "linear-gradient(135deg, #1a1a1a 0%, #332200 50%, #1a1a1a 100%)", border: "#FFCC00", text: "#FFCC00", glow: "#FFCC0040" },
-  cybermon: { bg: "linear-gradient(135deg, #1a1a1a 0%, #001133 50%, #1a1a1a 100%)", border: "#3B82F6", text: "#3B82F6", glow: "#3B82F640" },
-  dracobell: { bg: "linear-gradient(135deg, #1a1a1a 0%, #331100 50%, #1a1a1a 100%)", border: "#F97316", text: "#F97316", glow: "#F9731640" },
+  minimon: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #332200 50%, var(--ttg-black) 100%)", border: "var(--ttg-yellow)", text: "var(--ttg-yellow)", glow: "#FFCC0040" },
+  cybermon: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #001133 50%, var(--ttg-black) 100%)", border: "var(--ttg-rarity-rare)", text: "var(--ttg-rarity-rare)", glow: "#3B82F640" },
+  dracobell: { bg: "linear-gradient(135deg, var(--ttg-black) 0%, #331100 50%, var(--ttg-black) 100%)", border: "#F97316", text: "#F97316", glow: "#F9731640" },
 }
 
 export function BagOpener2D({ bagName, franchise, onOpen }: {
@@ -55,7 +55,7 @@ export function BagOpener2D({ bagName, franchise, onOpen }: {
               borderColor: opening ? colors.border : `${colors.border}60`,
               boxShadow: opening
                 ? `0 0 30px ${colors.glow}, 0 0 60px ${colors.glow}, inset 0 0 30px ${colors.glow}`
-                : `4px 4px 0px #1a1a1a`,
+                : `4px 4px 0px var(--ttg-black)`,
               transform: opening ? "scale(1.05)" : "scale(1)",
             }}
           >
@@ -97,8 +97,8 @@ export function BagOpener2D({ bagName, franchise, onOpen }: {
           disabled={opening}
           className="px-8 py-3 font-black text-xs sm:text-sm uppercase tracking-[0.15em] border-[3px] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-wait"
           style={{
-            backgroundColor: opening ? colors.border : "#1a1a1a",
-            color: opening ? "#1a1a1a" : colors.text,
+            backgroundColor: opening ? colors.border : "var(--ttg-black)",
+            color: opening ? "var(--ttg-black)" : colors.text,
             borderColor: colors.border,
             boxShadow: opening
               ? `0 0 20px ${colors.glow}`
@@ -116,7 +116,7 @@ export function BagOpener2D({ bagName, franchise, onOpen }: {
           )}
         </button>
 
-        <p className="text-[8px] font-bold text-[#1a1a1a]/20 uppercase tracking-[0.2em]">
+        <p className="text-[8px] font-bold text-ttg-black/20 uppercase tracking-[0.2em]">
           Click to reveal your tazo
         </p>
       </div>

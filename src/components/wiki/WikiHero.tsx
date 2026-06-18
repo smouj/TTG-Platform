@@ -23,17 +23,17 @@ export default function WikiHero({ series, title, subtitle, total }: WikiHeroPro
 
   return (
     <div
-      className="relative overflow-hidden border-2 border-[#1a1a1a] mb-8"
+      className="relative overflow-hidden border-2 border-ttg-black mb-8"
       style={{
-        backgroundColor: cfg?.bgColor || "#FFF9E6",
-        boxShadow: "6px 6px 0 #1a1a1a",
+        backgroundColor: cfg?.bgColor || "var(--ttg-cream)",
+        boxShadow: "6px 6px 0 var(--ttg-black)",
       }}
     >
       {/* ── Wallpaper: Halftone dots ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle, ${cfg?.color || "#1a1a1a"} 1.5px, transparent 1.5px)`,
+          backgroundImage: `radial-gradient(circle, ${cfg?.color || "var(--ttg-black)"} 1.5px, transparent 1.5px)`,
           backgroundSize: "10px 10px",
           opacity: 0.1,
         }}
@@ -51,12 +51,12 @@ export default function WikiHero({ series, title, subtitle, total }: WikiHeroPro
 
       {/* ── Corner accents ── */}
       <div className="absolute top-0 left-0 w-20 h-20 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[3px]" style={{ backgroundColor: cfg?.color || "#1a1a1a" }} />
-        <div className="absolute top-0 left-0 w-[3px] h-full" style={{ backgroundColor: cfg?.color || "#1a1a1a" }} />
+        <div className="absolute top-0 left-0 w-full h-[3px]" style={{ backgroundColor: cfg?.color || "var(--ttg-black)" }} />
+        <div className="absolute top-0 left-0 w-[3px] h-full" style={{ backgroundColor: cfg?.color || "var(--ttg-black)" }} />
       </div>
       <div className="absolute bottom-0 right-0 w-20 h-20 pointer-events-none">
-        <div className="absolute bottom-0 right-0 w-full h-[3px]" style={{ backgroundColor: cfg?.color || "#1a1a1a" }} />
-        <div className="absolute bottom-0 right-0 w-[3px] h-full" style={{ backgroundColor: cfg?.color || "#1a1a1a" }} />
+        <div className="absolute bottom-0 right-0 w-full h-[3px]" style={{ backgroundColor: cfg?.color || "var(--ttg-black)" }} />
+        <div className="absolute bottom-0 right-0 w-[3px] h-full" style={{ backgroundColor: cfg?.color || "var(--ttg-black)" }} />
       </div>
 
       <div className="relative px-6 py-8 sm:px-10 sm:py-12">
@@ -74,21 +74,21 @@ export default function WikiHero({ series, title, subtitle, total }: WikiHeroPro
           </div>
         )}
 
-        <h1 className="text-2xl sm:text-4xl font-black text-[#1a1a1a] uppercase tracking-[0.05em] leading-none">
+        <h1 className="text-2xl sm:text-4xl font-black text-ttg-black uppercase tracking-[0.05em] leading-none">
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-2 text-sm sm:text-base font-bold text-[#1a1a1a]/60 max-w-2xl">
+          <p className="mt-2 text-sm sm:text-base font-bold text-ttg-black/60 max-w-2xl">
             {subtitle}
           </p>
         )}
         {total !== undefined && (
           <div className="mt-4 flex items-center gap-2">
             <span
-              className="text-xs font-black text-white px-3 py-1.5 border-2 border-[#1a1a1a]"
+              className="text-xs font-black text-white px-3 py-1.5 border-2 border-ttg-black"
               style={{
-                backgroundColor: cfg?.color || "#1a1a1a",
-                boxShadow: "3px 3px 0 #1a1a1a",
+                backgroundColor: cfg?.color || "var(--ttg-black)",
+                boxShadow: "3px 3px 0 var(--ttg-black)",
               }}
             >
               {total} TAZOS

@@ -315,7 +315,7 @@ export function TazoEditor({ tazo, onClose, onSave, onDelete }: TazoEditorProps)
         <div className="flex flex-col items-center gap-3 bg-gradient-to-b from-muted/50 to-transparent px-4 py-6">
           <div className="relative">
             <div
-              className={`h-32 w-32 overflow-hidden rounded-full border-4 shadow-[4px_4px_0px_#1a1a1a] ${
+              className={`h-32 w-32 overflow-hidden rounded-full border-4 shadow-[4px_4px_0px_var(--ttg-black)] ${
                 form.condition === 'holo'
                   ? 'border-cyan-400/50 shadow-cyan-400/20'
                   : form.condition === 'metallic'

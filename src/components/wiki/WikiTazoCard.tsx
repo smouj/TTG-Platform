@@ -41,8 +41,8 @@ export default function WikiTazoCard({ entity }: WikiTazoCardProps) {
   return (
     <Link
       href={href}
-      className="group block border-2 border-[#1a1a1a] bg-white overflow-hidden transition-all hover:-translate-y-0.5"
-      style={{ boxShadow: "3px 3px 0 #1a1a1a" }}
+      className="group block border-2 border-ttg-black bg-white overflow-hidden transition-all hover:-translate-y-0.5"
+      style={{ boxShadow: "3px 3px 0 var(--ttg-black)" }}
     >
       {/* Top color bar */}
       <div
@@ -53,7 +53,7 @@ export default function WikiTazoCard({ entity }: WikiTazoCardProps) {
       <div className="p-3">
         {/* Header with ID */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider">
+          <span className="text-[10px] font-black text-ttg-black/40 uppercase tracking-wider">
             #{entity.id}
           </span>
           <div className="flex items-center gap-1">
@@ -67,7 +67,7 @@ export default function WikiTazoCard({ entity }: WikiTazoCardProps) {
         </div>
 
         {/* Name */}
-        <h3 className="text-sm font-black text-[#1a1a1a] leading-tight mb-1.5 group-hover:underline">
+        <h3 className="text-sm font-black text-ttg-black leading-tight mb-1.5 group-hover:underline">
           {entity.name}
         </h3>
 
@@ -95,7 +95,7 @@ export default function WikiTazoCard({ entity }: WikiTazoCardProps) {
           {entity.types.map((t) => (
             <span
               key={t}
-              className="text-[9px] font-bold text-[#1a1a1a]/50 border border-[#1a1a1a]/15 px-1 py-0.5"
+              className="text-[9px] font-bold text-ttg-black/50 border border-ttg-black/15 px-1 py-0.5"
             >
               {t}
             </span>
@@ -103,7 +103,7 @@ export default function WikiTazoCard({ entity }: WikiTazoCardProps) {
         </div>
 
         {/* Description snippet */}
-        <p className="text-[10px] text-[#1a1a1a]/50 mt-2 line-clamp-2 leading-relaxed">
+        <p className="text-[10px] text-ttg-black/50 mt-2 line-clamp-2 leading-relaxed">
           {entity.description}
         </p>
       </div>

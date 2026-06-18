@@ -34,8 +34,8 @@ interface TradeListing {
 }
 
 const RARITY_COLORS: Record<string, string> = {
-  common: "#9CA3AF", uncommon: "#22C55E", rare: "#3B82F6",
-  "ultra-rare": "#A855F7", legendary: "#F59E0B",
+  common: "var(--ttg-rarity-common)", uncommon: "var(--ttg-success)", rare: "var(--ttg-rarity-rare)",
+  "ultra-rare": "var(--ttg-purple)", legendary: "var(--ttg-warning)",
 }
 const RARITY_LABELS: Record<string, string> = {
   common: "Common", uncommon: "Uncommon", rare: "Rare",
@@ -54,7 +54,7 @@ function getWearTier(wear: number) {
   return "damaged"
 }
 const WEAR_COLORS: Record<string, { bg: string; text: string }> = {
-  mint: { bg: "#22C55E15", text: "#22C55E" },
+  mint: { bg: "#22C55E15", text: "var(--ttg-success)" },
   light_play: { bg: "#FFCC0015", text: "#CCAA00" },
   played: { bg: "#FF880015", text: "#FF8800" },
   heavy_play: { bg: "#FF440015", text: "#FF4400" },
@@ -75,41 +75,41 @@ function ListingCard({ listing, onBuy, onCancel, buying, isOwn, credits }: {
 
   const canBuy = !isOwn && credits >= listing.price
   const rarity = t.rarity || "common"
-  const rarityColor = RARITY_COLORS[rarity] || "#9CA3AF"
+  const rarityColor = RARITY_COLORS[rarity] || "var(--ttg-rarity-common)"
   const wearTier = getWearTier(listing.userTazo?.wear || 0)
   const wearColor = WEAR_COLORS[wearTier]
   const totalPower = (t.attack || 0) + (t.defense || 0) + (t.stability || 0) + (t.spin || 0) + (t.control || 0) + (t.precision || 0)
 
   return (
-    <div className="p-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] flex items-center gap-3 group hover:shadow-[4px_4px_0px_#1a1a1a] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
+    <div className="p-3 bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] flex items-center gap-3 group hover:shadow-[4px_4px_0px_var(--ttg-black)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
       {/* Tazo image */}
-      <div className="w-16 h-16 shrink-0 rounded-full border-2 border-[#1a1a1a] overflow-hidden relative"
-        style={{ background: "#1a1a1a" }}>
+      <div className="w-16 h-16 shrink-0 rounded-full border-2 border-ttg-black overflow-hidden relative"
+        style={{ background: "var(--ttg-black)" }}>
         {t.imageUrl ? (
           <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
             franchiseSlug={t.franchise?.slug} finish={t.finish as any} creatureVariant={t.creatureVariant as any} shinyImageUrl={t.shinyImageUrl}
             className="w-full h-full" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[#1a1a1a]/20 text-xl font-black">?</div>
+          <div className="w-full h-full flex items-center justify-center text-ttg-black/20 text-xl font-black">?</div>
         )}
         {/* Wear indicator ring */}
         {wearTier !== "mint" && (
           <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: wearColor.text + "80" }} />
         )}
         {/* Rarity dot */}
-        <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-[#1a1a1a]" style={{ background: rarityColor }} />
+        <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-ttg-black" style={{ background: rarityColor }} />
       </div>
 
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <h3 className="text-xs font-black text-[#1a1a1a] truncate">{t.displayName || t.name}</h3>
+          <h3 className="text-xs font-black text-ttg-black truncate">{t.displayName || t.name}</h3>
           <span className="text-[8px] font-black px-1.5 py-0.5 border rounded-full" style={{ background: wearColor.bg, color: wearColor.text, borderColor: wearColor.text + "30" }}>
             {WEAR_TIER_LABELS[wearTier]}
           </span>
         </div>
-        <p className="text-[8px] font-bold text-[#1a1a1a]/30 uppercase">{t.franchise?.name} · {RARITY_LABELS[rarity]}</p>
-        <div className="flex items-center gap-2 text-[8px] font-black text-[#1a1a1a]/25 mt-0.5">
+        <p className="text-[8px] font-bold text-ttg-black/30 uppercase">{t.franchise?.name} · {RARITY_LABELS[rarity]}</p>
+        <div className="flex items-center gap-2 text-[8px] font-black text-ttg-black/25 mt-0.5">
           <span className="flex items-center gap-0.5"><Swords className="w-2 h-2" />{totalPower}</span>
           <span>·</span>
           <span className="flex items-center gap-0.5"><User className="w-2 h-2" />{listing.seller.displayName || listing.seller.name}</span>
@@ -120,16 +120,16 @@ function ListingCard({ listing, onBuy, onCancel, buying, isOwn, credits }: {
 
       {/* Price + Buy */}
       <div className="shrink-0 flex flex-col items-end gap-1.5">
-        <div className="flex items-center gap-1 text-sm font-black text-[#1a1a1a]">
-          <Coins className="w-3.5 h-3.5 text-[#FFCC00]" />
+        <div className="flex items-center gap-1 text-sm font-black text-ttg-black">
+          <Coins className="w-3.5 h-3.5 text-ttg-yellow" />
           {listing.price}
         </div>
         {isOwn ? (
           <div className="flex flex-col gap-1 items-end">
-            <span className="text-[8px] font-black text-[#1a1a1a]/25 uppercase">Your listing</span>
+            <span className="text-[8px] font-black text-ttg-black/25 uppercase">Your listing</span>
             <button
               onClick={onCancel}
-              className="px-2 py-1 text-[7px] font-black uppercase border border-[#E3350D]/30 text-[#E3350D]/60 hover:bg-[#E3350D]/10 hover:text-[#E3350D] rounded-full transition-colors"
+              className="px-2 py-1 text-[7px] font-black uppercase border border-ttg-red/30 text-ttg-red/60 hover:bg-ttg-red/10 hover:text-ttg-red rounded-full transition-colors"
             >
               Cancel
             </button>
@@ -138,9 +138,9 @@ function ListingCard({ listing, onBuy, onCancel, buying, isOwn, credits }: {
           <button
             onClick={onBuy}
             disabled={!canBuy || buying}
-            className={`px-3 py-1.5 text-[9px] font-black uppercase border-2 border-[#1a1a1a] transition-all ${
+            className={`px-3 py-1.5 text-[9px] font-black uppercase border-2 border-ttg-black transition-all ${
               canBuy && !buying
-                ? "bg-[#22C55E] text-white shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px]"
+                ? "bg-ttg-success text-white shadow-[2px_2px_0px_var(--ttg-black)] hover:shadow-[1px_1px_0px_var(--ttg-black)] hover:translate-x-[1px] hover:translate-y-[1px]"
                 : "bg-zinc-200 text-zinc-400 cursor-not-allowed"
             }`}
           >
@@ -162,7 +162,7 @@ function SellTazoCard({ ut, onSell, selling }: {
   const wearTier = getWearTier(ut.wear || 0)
   const wearColor = WEAR_COLORS[wearTier]
   const rarity = t.rarity || "common"
-  const rarityColor = RARITY_COLORS[rarity] || "#9CA3AF"
+  const rarityColor = RARITY_COLORS[rarity] || "var(--ttg-rarity-common)"
   const totalPower = (t.attack || 0) + (t.defense || 0) + (t.stability || 0) + (t.spin || 0) + (t.control || 0) + (t.precision || 0)
 
   // Suggested price based on rarity + wear
@@ -172,43 +172,43 @@ function SellTazoCard({ ut, onSell, selling }: {
   const [price, setPrice] = useState(suggestedPrice)
 
   return (
-    <div className="p-3 bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] space-y-2">
+    <div className="p-3 bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] space-y-2">
       <div className="flex items-center gap-3">
-        <div className="w-14 h-14 shrink-0 rounded-full border-2 border-[#1a1a1a] overflow-hidden"
-          style={{ background: "#1a1a1a" }}>
+        <div className="w-14 h-14 shrink-0 rounded-full border-2 border-ttg-black overflow-hidden"
+          style={{ background: "var(--ttg-black)" }}>
           {t.imageUrl ? (
             <TazoDiscImage src={t.imageUrl} alt={t.displayName || t.name} size="100%" borderWidth={0}
               franchiseSlug={t.franchise?.slug} finish={t.finish as any} creatureVariant={t.creatureVariant as any} shinyImageUrl={t.shinyImageUrl}
               className="w-full h-full" />
-          ) : <div className="w-full h-full flex items-center justify-center text-[#1a1a1a]/20">?</div>}
+          ) : <div className="w-full h-full flex items-center justify-center text-ttg-black/20">?</div>}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-xs font-black text-[#1a1a1a] truncate">{t.displayName || t.name}</h3>
-          <p className="text-[8px] font-bold text-[#1a1a1a]/30">{t.franchise?.name} · {RARITY_LABELS[rarity]} · {totalPower} power</p>
+          <h3 className="text-xs font-black text-ttg-black truncate">{t.displayName || t.name}</h3>
+          <p className="text-[8px] font-bold text-ttg-black/30">{t.franchise?.name} · {RARITY_LABELS[rarity]} · {totalPower} power</p>
           <div className="flex items-center gap-2 mt-0.5">
             <span className="text-[8px] font-black px-1.5 py-0.5 border rounded-full" style={{ background: wearColor.bg, color: wearColor.text, borderColor: wearColor.text + "30" }}>
               {WEAR_TIER_LABELS[wearTier]} ({ut.wear}%)
             </span>
-            {ut.quantity > 1 && <span className="text-[8px] font-black text-[#1a1a1a]/25">x{ut.quantity}</span>}
+            {ut.quantity > 1 && <span className="text-[8px] font-black text-ttg-black/25">x{ut.quantity}</span>}
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <div className="flex-1 flex items-center gap-1.5">
-          <Coins className="w-3 h-3 text-[#FFCC00]" />
+          <Coins className="w-3 h-3 text-ttg-yellow" />
           <input
             type="number" min={1} max={9999} value={price}
             onChange={(e) => setPrice(Math.max(1, Number(e.target.value)))}
-            className="w-20 px-2 py-1 text-xs font-black text-[#1a1a1a] bg-zinc-50 border-2 border-[#1a1a1a]/20 focus:border-[#1a1a1a] outline-none text-center"
+            className="w-20 px-2 py-1 text-xs font-black text-ttg-black bg-zinc-50 border-2 border-ttg-black/20 focus:border-ttg-black outline-none text-center"
           />
-          <span className="text-[8px] font-bold text-[#1a1a1a]/25">CREDITS</span>
-          <span className="text-[7px] font-bold text-[#1a1a1a]/15 ml-1">suggested: {suggestedPrice}</span>
+          <span className="text-[8px] font-bold text-ttg-black/25">CREDITS</span>
+          <span className="text-[7px] font-bold text-ttg-black/15 ml-1">suggested: {suggestedPrice}</span>
         </div>
         <button
           onClick={() => onSell(ut.id, price)}
           disabled={selling || ut.quantity < 1}
-          className="px-3 py-1.5 text-[9px] font-black uppercase bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] hover:translate-x-[1px] hover:translate-y-[1px] active:shadow-none active:translate-x-0 active:translate-y-0 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="px-3 py-1.5 text-[9px] font-black uppercase bg-ttg-yellow text-ttg-black border-2 border-ttg-black shadow-[2px_2px_0px_var(--ttg-black)] hover:shadow-[1px_1px_0px_var(--ttg-black)] hover:translate-x-[1px] hover:translate-y-[1px] active:shadow-none active:translate-x-0 active:translate-y-0 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {selling ? <Loader2 className="w-3 h-3 animate-spin" /> : "LIST"}
         </button>
@@ -261,15 +261,15 @@ function OffersTab({ token }: { token: string | null }) {
 
   if (loading) return (
     <div className="text-center py-12">
-      <Loader2 className="w-8 h-8 mx-auto text-[#1a1a1a]/8 animate-spin" />
+      <Loader2 className="w-8 h-8 mx-auto text-ttg-black/8 animate-spin" />
     </div>
   )
 
   if (offers.length === 0) return (
     <div className="text-center py-12">
-      <ArrowUpDown className="w-12 h-12 mx-auto text-[#1a1a1a]/8" />
-      <p className="text-sm font-bold text-[#1a1a1a]/20">No open offers</p>
-      <p className="text-[10px] font-bold text-[#1a1a1a]/10">Create one from the Buy tab by selecting a tazo</p>
+      <ArrowUpDown className="w-12 h-12 mx-auto text-ttg-black/8" />
+      <p className="text-sm font-bold text-ttg-black/20">No open offers</p>
+      <p className="text-[10px] font-bold text-ttg-black/10">Create one from the Buy tab by selecting a tazo</p>
     </div>
   )
 
@@ -281,10 +281,10 @@ function OffersTab({ token }: { token: string | null }) {
         </div>
       )}
       {offers.map((o: any) => (
-        <div key={o.id} className="flex items-center gap-3 p-3 bg-white border-2 border-[#1a1a1a]/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
+        <div key={o.id} className="flex items-center gap-3 p-3 bg-white border-2 border-ttg-black/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
           {/* Offered tazo */}
-          <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#22C55E]/30"
-            style={{ background: '#1a1a1a' }}>
+          <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-ttg-success/30"
+            style={{ background: 'var(--ttg-black)' }}>
             {o.offeredTazo?.tazo?.imageUrl && (
               <TazoDiscImage src={o.offeredTazo.tazo.imageUrl} alt="" size="100%" borderWidth={0}
                 franchiseSlug={o.offeredTazo.tazo.franchise?.slug} finish={o.offeredTazo.tazo.finish as any} creatureVariant={o.offeredTazo.tazo.creatureVariant as any}
@@ -293,10 +293,10 @@ function OffersTab({ token }: { token: string | null }) {
             )}
           </div>
           {/* Arrow */}
-          <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-[#1a1a1a]/15" />
+          <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-ttg-black/15" />
           {/* Requested tazo */}
-          <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-[#E3350D]/30"
-            style={{ background: '#1a1a1a' }}>
+          <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-ttg-red/30"
+            style={{ background: 'var(--ttg-black)' }}>
             {o.requestedTazo?.imageUrl && (
               <TazoDiscImage src={o.requestedTazo.imageUrl} alt="" size="100%" borderWidth={0}
                 franchiseSlug={o.requestedTazo.franchise?.slug} finish={o.requestedTazo.finish as any} creatureVariant={o.requestedTazo.creatureVariant as any}
@@ -306,23 +306,23 @@ function OffersTab({ token }: { token: string | null }) {
           </div>
           {/* Info */}
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-black text-[#1a1a1a] truncate">
-              <span className="text-[#22C55E]">{o.offeredTazo?.tazo?.displayName || o.offeredTazo?.tazo?.name || '?'}</span>
+            <p className="text-[10px] font-black text-ttg-black truncate">
+              <span className="text-ttg-success">{o.offeredTazo?.tazo?.displayName || o.offeredTazo?.tazo?.name || '?'}</span>
               {' for '}
-              <span className="text-[#E3350D]">{o.requestedTazo?.displayName || o.requestedTazo?.name || '?'}</span>
+              <span className="text-ttg-red">{o.requestedTazo?.displayName || o.requestedTazo?.name || '?'}</span>
             </p>
-            <p className="text-[8px] font-bold text-[#1a1a1a]/30">
+            <p className="text-[8px] font-bold text-ttg-black/30">
               {o.offerer?.displayName || o.offerer?.name || '?'} · {new Date(o.createdAt).toLocaleDateString()}
             </p>
           </div>
           {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button onClick={() => handleAccept(o.id)} disabled={actionId === o.id}
-              className="px-2.5 py-1 text-[8px] font-black uppercase bg-[#22C55E]/10 text-[#22C55E] border border-[#22C55E]/20 hover:bg-[#22C55E]/20 rounded-full transition-colors disabled:opacity-30">
+              className="px-2.5 py-1 text-[8px] font-black uppercase bg-ttg-success/10 text-ttg-success border border-ttg-success/20 hover:bg-ttg-success/20 rounded-full transition-colors disabled:opacity-30">
               {actionId === o.id ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Accept'}
             </button>
             <button onClick={() => handleDecline(o.id)} disabled={actionId === o.id}
-              className="px-2 py-0.5 text-[8px] font-black uppercase text-[#1a1a1a]/20 hover:text-[#E3350D] hover:bg-[#E3350D]/10 rounded-full transition-colors">
+              className="px-2 py-0.5 text-[8px] font-black uppercase text-ttg-black/20 hover:text-ttg-red hover:bg-ttg-red/10 rounded-full transition-colors">
               <X className="w-3 h-3" />
             </button>
           </div>
@@ -346,15 +346,15 @@ function LeaderboardTab() {
 
   if (loading) return (
     <div className="text-center py-12">
-      <Loader2 className="w-8 h-8 mx-auto text-[#1a1a1a]/8 animate-spin" />
+      <Loader2 className="w-8 h-8 mx-auto text-ttg-black/8 animate-spin" />
     </div>
   )
 
   if (leaders.length === 0) return (
     <div className="text-center py-12">
-      <Trophy className="w-12 h-12 mx-auto text-[#1a1a1a]/8" />
-      <p className="text-sm font-bold text-[#1a1a1a]/20">No sales yet</p>
-      <p className="text-[10px] font-bold text-[#1a1a1a]/10">Be the first seller!</p>
+      <Trophy className="w-12 h-12 mx-auto text-ttg-black/8" />
+      <p className="text-sm font-bold text-ttg-black/20">No sales yet</p>
+      <p className="text-[10px] font-bold text-ttg-black/10">Be the first seller!</p>
     </div>
   )
 
@@ -363,32 +363,32 @@ function LeaderboardTab() {
       {leaders.map((l: any, i: number) => {
         const rank = i + 1
         return (
-          <div key={l.sellerId} className="flex items-center gap-3 p-3 bg-white border-2 border-[#1a1a1a]/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
+          <div key={l.sellerId} className="flex items-center gap-3 p-3 bg-white border-2 border-ttg-black/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
             {/* Rank */}
             <div className="w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-[10px] font-black border-2"
               style={{
-                background: rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : rank === 3 ? '#CD7F32' : '#fff',
+                background: rank === 1 ? 'var(--ttg-yellow)' : rank === 2 ? '#C0C0C0' : rank === 3 ? '#CD7F32' : '#fff',
                 borderColor: rank === 1 ? '#B8860B' : rank === 2 ? '#A0A0A0' : rank === 3 ? '#8B6914' : '#1a1a1a20',
-                color: rank <= 3 ? '#1a1a1a' : '#1a1a1a40',
+                color: rank <= 3 ? 'var(--ttg-black)' : '#1a1a1a40',
               }}
             >
               {rank <= 3 ? (
-                <Medal className="w-4 h-4" style={{ color: rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : '#CD7F32' }} />
+                <Medal className="w-4 h-4" style={{ color: rank === 1 ? 'var(--ttg-yellow)' : rank === 2 ? '#C0C0C0' : '#CD7F32' }} />
               ) : rank}
             </div>
             {/* Name */}
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-black text-[#1a1a1a] truncate">
+              <p className="text-[11px] font-black text-ttg-black truncate">
                 {l.displayName || l.name || 'Unknown'}
               </p>
-              <p className="text-[8px] font-bold text-[#1a1a1a]/30">
+              <p className="text-[8px] font-bold text-ttg-black/30">
                 {l.totalSales} sale{l.totalSales !== 1 ? 's' : ''}
               </p>
             </div>
             {/* Credits */}
             <div className="flex items-center gap-1 flex-shrink-0">
-              <Coins className="w-3 h-3 text-[#FFCC00]" />
-              <span className="text-xs font-black text-[#1a1a1a]">
+              <Coins className="w-3 h-3 text-ttg-yellow" />
+              <span className="text-xs font-black text-ttg-black">
                 {l.totalCredits}
               </span>
             </div>
@@ -414,15 +414,15 @@ function HistoryTab({ token }: { token: string | null }) {
 
   if (loading) return (
     <div className="text-center py-12">
-      <Loader2 className="w-8 h-8 mx-auto text-[#1a1a1a]/8 animate-spin" />
+      <Loader2 className="w-8 h-8 mx-auto text-ttg-black/8 animate-spin" />
     </div>
   )
 
   if (history.length === 0) return (
     <div className="text-center py-12">
-      <Clock className="w-12 h-12 mx-auto text-[#1a1a1a]/8" />
-      <p className="text-sm font-bold text-[#1a1a1a]/20">No transaction history</p>
-      <p className="text-[10px] font-bold text-[#1a1a1a]/10">Buy or sell a tazo to see it here</p>
+      <Clock className="w-12 h-12 mx-auto text-ttg-black/8" />
+      <p className="text-sm font-bold text-ttg-black/20">No transaction history</p>
+      <p className="text-[10px] font-bold text-ttg-black/10">Buy or sell a tazo to see it here</p>
     </div>
   )
 
@@ -432,11 +432,11 @@ function HistoryTab({ token }: { token: string | null }) {
         const isBought = h.type === 'bought'
         const bounty = isBought ? h.buyer : h.seller
         return (
-          <div key={h.id} className="flex items-center gap-3 p-3 bg-white border-2 border-[#1a1a1a]/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
+          <div key={h.id} className="flex items-center gap-3 p-3 bg-white border-2 border-ttg-black/10 shadow-[2px_2px_0px_rgba(26,26,26,0.06)]">
             {/* Tazo image */}
             <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden"
               style={{
-                background: '#1a1a1a',
+                background: 'var(--ttg-black)',
               }}>
               {h.userTazo?.tazo?.imageUrl && (
                 <TazoDiscImage src={h.userTazo.tazo.imageUrl} alt="" size="100%" borderWidth={0}
@@ -449,16 +449,16 @@ function HistoryTab({ token }: { token: string | null }) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
                 <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 border ${
-                  h.status === 'sold' ? 'bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20' :
-                  'bg-zinc-100 text-[#1a1a1a]/30 border-[#1a1a1a]/10'
+                  h.status === 'sold' ? 'bg-ttg-success/10 text-ttg-success border-ttg-success/20' :
+                  'bg-zinc-100 text-ttg-black/30 border-ttg-black/10'
                 }`}>
                   {h.status}
                 </span>
-                <span className="text-[10px] font-black text-[#1a1a1a] truncate">
+                <span className="text-[10px] font-black text-ttg-black truncate">
                   {h.userTazo?.tazo?.displayName || h.userTazo?.tazo?.name || 'Unknown tazo'}
                 </span>
               </div>
-              <p className="text-[8px] font-bold text-[#1a1a1a]/30 mt-0.5">
+              <p className="text-[8px] font-bold text-ttg-black/30 mt-0.5">
                 {isBought ? `Bought from ${bounty?.displayName || bounty?.name || '?'}` :
                  h.status === 'sold' ? `Sold to ${h.buyer?.displayName || h.buyer?.name || '?'}` :
                  `Cancelled listing`}
@@ -467,8 +467,8 @@ function HistoryTab({ token }: { token: string | null }) {
             </div>
             {/* Price */}
             <div className="flex items-center gap-1 flex-shrink-0">
-              <Coins className="w-3 h-3 text-[#FFCC00]" />
-              <span className={`text-xs font-black ${isBought ? 'text-[#E3350D]' : 'text-[#22C55E]'}`}>
+              <Coins className="w-3 h-3 text-ttg-yellow" />
+              <span className={`text-xs font-black ${isBought ? 'text-ttg-red' : 'text-ttg-success'}`}>
                 {isBought ? '-' : '+'}{h.price}
               </span>
             </div>
@@ -601,40 +601,40 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
         <button onClick={() => setTab("buy")}
           className={`flex-1 py-2.5 text-xs font-black uppercase border-3 transition-all ${
             tab === "buy"
-              ? "bg-[#1a1a1a] text-[#FFCC00] border-[#1a1a1a]"
-              : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+              ? "bg-ttg-black text-ttg-yellow border-ttg-black"
+              : "bg-white text-ttg-black/30 border-ttg-black/10 hover:text-ttg-black/50"
           }`}>
           <Store className="w-3.5 h-3.5 inline mr-1" />Buy
         </button>
         <button onClick={() => setTab("sell")}
           className={`flex-1 py-2.5 text-xs font-black uppercase border-3 transition-all ${
             tab === "sell"
-              ? "bg-[#1a1a1a] text-[#22C55E] border-[#1a1a1a]"
-              : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+              ? "bg-ttg-black text-ttg-success border-ttg-black"
+              : "bg-white text-ttg-black/30 border-ttg-black/10 hover:text-ttg-black/50"
           }`}>
           <Tag className="w-3.5 h-3.5 inline mr-1" />Sell
         </button>
         <button onClick={() => setTab("history")}
           className={`py-2.5 text-xs font-black uppercase border-3 transition-all ${
             tab === "history"
-              ? "bg-[#1a1a1a] text-[#3B82F6] border-[#1a1a1a]"
-              : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+              ? "bg-ttg-black text-ttg-rarity-rare border-ttg-black"
+              : "bg-white text-ttg-black/30 border-ttg-black/10 hover:text-ttg-black/50"
           }`}>
           <Clock className="w-3.5 h-3.5 inline mr-1" />History
         </button>
         <button onClick={() => setTab("offers")}
           className={`py-2.5 text-xs font-black uppercase border-3 transition-all ${
             tab === "offers"
-              ? "bg-[#1a1a1a] text-[#A855F7] border-[#1a1a1a]"
-              : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+              ? "bg-ttg-black text-ttg-purple border-ttg-black"
+              : "bg-white text-ttg-black/30 border-ttg-black/10 hover:text-ttg-black/50"
           }`}>
           <ArrowUpDown className="w-3.5 h-3.5 inline mr-1" />Offers
         </button>
         <button onClick={() => setTab("leaderboard")}
           className={`flex-1 py-2.5 text-xs font-black uppercase border-3 transition-all ${
             tab === "leaderboard"
-              ? "bg-[#1a1a1a] text-[#FFD700] border-[#1a1a1a]"
-              : "bg-white text-[#1a1a1a]/30 border-[#1a1a1a]/10 hover:text-[#1a1a1a]/50"
+              ? "bg-ttg-black text-ttg-yellow border-ttg-black"
+              : "bg-white text-ttg-black/30 border-ttg-black/10 hover:text-ttg-black/50"
           }`}>
           <Trophy className="w-3.5 h-3.5 inline mr-1" />Top Sellers
         </button>
@@ -650,9 +650,9 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
 
       {/* Credits */}
       <div className="flex items-center gap-1.5 text-sm">
-        <Coins className="w-4 h-4 text-[#FFCC00]" />
-        <span className="font-black text-[#1a1a1a]">{credits}</span>
-        <span className="text-[9px] font-bold text-[#1a1a1a]/30">CREDITS available</span>
+        <Coins className="w-4 h-4 text-ttg-yellow" />
+        <span className="font-black text-ttg-black">{credits}</span>
+        <span className="text-[9px] font-bold text-ttg-black/30">CREDITS available</span>
       </div>
 
       {/* ── BUY TAB ── */}
@@ -661,15 +661,15 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
           {/* Search + sort */}
           <div className="flex items-center gap-2">
             <div className="flex-1 relative">
-              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#1a1a1a]/20" />
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ttg-black/20" />
               <input
                 value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search marketplace…"
-                className="w-full pl-7 pr-3 py-2 text-xs font-bold bg-white border-2 border-[#1a1a1a]/20 focus:border-[#1a1a1a] outline-none placeholder:text-[#1a1a1a]/15 text-[#1a1a1a]"
+                className="w-full pl-7 pr-3 py-2 text-xs font-bold bg-white border-2 border-ttg-black/20 focus:border-ttg-black outline-none placeholder:text-ttg-black/15 text-ttg-black"
               />
             </div>
             <select value={sort} onChange={e => setSort(e.target.value as any)}
-              className="px-2 py-2 text-[9px] font-bold bg-white border-2 border-[#1a1a1a]/20 text-[#1a1a1a] cursor-pointer">
+              className="px-2 py-2 text-[9px] font-bold bg-white border-2 border-ttg-black/20 text-ttg-black cursor-pointer">
               <option value="newest">Newest</option>
               <option value="cheapest">Cheapest</option>
               <option value="rarity">Rarity</option>
@@ -678,12 +678,12 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
 
           {/* Listings */}
           {loading ? (
-            <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto text-[#1a1a1a]/15" /></div>
+            <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto text-ttg-black/15" /></div>
           ) : sorted.length === 0 ? (
             <div className="text-center py-12 space-y-2">
-              <Store className="w-12 h-12 mx-auto text-[#1a1a1a]/8" />
-              <p className="text-sm font-bold text-[#1a1a1a]/20">No listings yet</p>
-              <p className="text-[10px] font-bold text-[#1a1a1a]/10">Be the first to sell a tazo!</p>
+              <Store className="w-12 h-12 mx-auto text-ttg-black/8" />
+              <p className="text-sm font-bold text-ttg-black/20">No listings yet</p>
+              <p className="text-[10px] font-bold text-ttg-black/10">Be the first to sell a tazo!</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -706,8 +706,8 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
       {/* ── SELL TAB ── */}
       {tab === "sell" && (
         <div className="space-y-4">
-          <div className="p-3 bg-zinc-50 border-2 border-[#1a1a1a]/10">
-            <p className="text-[10px] font-bold text-[#1a1a1a]/40">
+          <div className="p-3 bg-zinc-50 border-2 border-ttg-black/10">
+            <p className="text-[10px] font-bold text-ttg-black/40">
               <Tag className="w-3 h-3 inline mr-1" />
               Select a tazo from your collection to list for sale. Other players can buy it from the marketplace.
               You'll receive credits when someone purchases it.
@@ -716,9 +716,9 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
 
           {collection.length === 0 ? (
             <div className="text-center py-12">
-              <Sparkles className="w-12 h-12 mx-auto text-[#1a1a1a]/8" />
-              <p className="text-sm font-bold text-[#1a1a1a]/20">No tazos to sell</p>
-              <p className="text-[10px] font-bold text-[#1a1a1a]/10">Open some bags first!</p>
+              <Sparkles className="w-12 h-12 mx-auto text-ttg-black/8" />
+              <p className="text-sm font-bold text-ttg-black/20">No tazos to sell</p>
+              <p className="text-[10px] font-bold text-ttg-black/10">Open some bags first!</p>
             </div>
           ) : (
             <div className="space-y-2">

@@ -52,10 +52,10 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
   }
 
   return (
-    <div className="mag-card border-3 border-[#1a1a1a] bg-white overflow-hidden" style={{ boxShadow: "4px 4px 0px #E3350D30" }}>
+    <div className="mag-card border-3 border-ttg-black bg-white overflow-hidden" style={{ boxShadow: "4px 4px 0px #E3350D30" }}>
       {/* Header */}
       <div style={{
-        background: "#1a1a1a",
+        background: "var(--ttg-black)",
         padding: "14px 20px",
         display: "flex",
         alignItems: "center",
@@ -66,7 +66,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <span style={{ fontSize: "1.3rem" }}>💎</span>
           <h3 style={{
-            color: "#FFCC00",
+            color: "var(--ttg-yellow)",
             fontSize: "0.95rem",
             fontWeight: 900,
             textTransform: "uppercase",
@@ -84,7 +84,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
             textTransform: "uppercase",
             letterSpacing: "0.05em",
           }}>
-            Balance: <strong style={{ color: "#FFCC00" }}>{formatCredits(userCredits)}</strong>
+            Balance: <strong style={{ color: "var(--ttg-yellow)" }}>{formatCredits(userCredits)}</strong>
           </span>
         )}
       </div>
@@ -126,7 +126,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
         }}>
           {CREDIT_PACKAGES.map((pkg) => {
             const isPopular = pkg.isPopular
-            const highlightColor = isPopular ? "#FFCC00" : "#1a1a1a"
+            const highlightColor = isPopular ? "var(--ttg-yellow)" : "var(--ttg-black)"
 
             return (
               <div
@@ -138,7 +138,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                   border: `3px solid ${highlightColor}`,
                   boxShadow: isPopular
                     ? "4px 4px 0px #FFCC00"
-                    : "3px 3px 0px #1a1a1a10",
+                    : "3px 3px 0px var(--ttg-black)10",
                   padding: "16px",
                   textAlign: "center",
                   position: "relative",
@@ -148,13 +148,13 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                   e.currentTarget.style.transform = "translate(-2px, -2px)"
                   e.currentTarget.style.boxShadow = isPopular
                     ? "6px 6px 0px #FFCC00"
-                    : "5px 5px 0px #1a1a1a20"
+                    : "5px 5px 0px var(--ttg-black)20"
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = ""
                   e.currentTarget.style.boxShadow = isPopular
                     ? "4px 4px 0px #FFCC00"
-                    : "3px 3px 0px #1a1a1a10"
+                    : "3px 3px 0px var(--ttg-black)10"
                 }}
               >
                 {/* Popular Badge */}
@@ -164,14 +164,14 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                     top: "-11px",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    background: "#FFCC00",
-                    color: "#1a1a1a",
+                    background: "var(--ttg-yellow)",
+                    color: "var(--ttg-black)",
                     fontSize: "0.65rem",
                     fontWeight: 900,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
                     padding: "3px 12px",
-                    border: "2px solid #1a1a1a",
+                    border: "2px solid var(--ttg-black)",
                     whiteSpace: "nowrap",
                   }}>
                     🔥 Most Popular
@@ -182,7 +182,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                 <div style={{
                   fontSize: "0.85rem",
                   fontWeight: 900,
-                  color: "#1a1a1a",
+                  color: "var(--ttg-black)",
                   textTransform: "uppercase",
                   letterSpacing: "0.03em",
                   marginTop: isPopular ? "6px" : "0",
@@ -195,7 +195,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                 <div style={{
                   fontSize: "2.2rem",
                   fontWeight: 900,
-                  color: "#E3350D",
+                  color: "var(--ttg-red)",
                   lineHeight: 1,
                   marginBottom: "2px",
                   fontFamily: "system-ui, sans-serif",
@@ -216,8 +216,8 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                 {/* Bonus */}
                 {pkg.bonusPct > 0 && (
                   <div style={{
-                    background: "#1a1a1a",
-                    color: "#FFCC00",
+                    background: "var(--ttg-black)",
+                    color: "var(--ttg-yellow)",
                     fontSize: "0.7rem",
                     fontWeight: 900,
                     letterSpacing: "0.05em",
@@ -235,7 +235,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                 <div style={{
                   fontSize: "1.4rem",
                   fontWeight: 900,
-                  color: "#1a1a1a",
+                  color: "var(--ttg-black)",
                   marginBottom: "12px",
                 }}>
                   {formatPrice(pkg.priceCents)}
@@ -249,25 +249,25 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                     style={{
                       width: "100%",
                       padding: "10px",
-                      background: loading === pkg.id ? "#555" : "#E3350D",
+                      background: loading === pkg.id ? "#555" : "var(--ttg-red)",
                       color: "#fff",
-                      border: "3px solid #1a1a1a",
+                      border: "3px solid var(--ttg-black)",
                       fontSize: "0.8rem",
                       fontWeight: 900,
                       textTransform: "uppercase",
                       letterSpacing: "0.05em",
                       cursor: loading ? "wait" : "pointer",
-                      boxShadow: "3px 3px 0px #1a1a1a",
+                      boxShadow: "3px 3px 0px var(--ttg-black)",
                       transition: "all 0.1s",
                     }}
                     onMouseEnter={(e) => {
                       if (!loading) {
-                        e.currentTarget.style.boxShadow = "1px 1px 0px #1a1a1a"
+                        e.currentTarget.style.boxShadow = "1px 1px 0px var(--ttg-black)"
                         e.currentTarget.style.transform = "translate(2px, 2px)"
                       }
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "3px 3px 0px #1a1a1a"
+                      e.currentTarget.style.boxShadow = "3px 3px 0px var(--ttg-black)"
                       e.currentTarget.style.transform = ""
                     }}
                   >
@@ -280,9 +280,9 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                       display: "block",
                       width: "100%",
                       padding: "10px",
-                      background: "#1a1a1a",
-                      color: "#FFCC00",
-                      border: "3px solid #1a1a1a",
+                      background: "var(--ttg-black)",
+                      color: "var(--ttg-yellow)",
+                      border: "3px solid var(--ttg-black)",
                       fontSize: "0.8rem",
                       fontWeight: 900,
                       textTransform: "uppercase",
@@ -290,7 +290,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
                       cursor: "pointer",
                       textDecoration: "none",
                       textAlign: "center",
-                      boxShadow: "3px 3px 0px #1a1a1a",
+                      boxShadow: "3px 3px 0px var(--ttg-black)",
                     }}
                   >
                     Sign In to Buy
@@ -323,7 +323,7 @@ export function CreditShop({ userCredits, isAuthenticated, onPurchase }: CreditS
             style={{
               fontSize: "0.7rem",
               fontWeight: 700,
-              color: "#E3350D",
+              color: "var(--ttg-red)",
               textTransform: "uppercase",
               letterSpacing: "0.05em",
             }}

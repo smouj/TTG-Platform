@@ -50,11 +50,11 @@ const BACK_ELEMENT_LABELS: Record<BackElementKey, string> = {
 }
 
 const BACK_ELEMENT_COLORS: Record<BackElementKey, string> = {
-  centerIcon: "#FFCC00",
-  topLabel: "#E3350D",
-  bottomLabel: "#3B4CCA",
-  cornerBadge: "#A855F7",
-  numberBadge: "#22C55E",
+  centerIcon: "var(--ttg-yellow)",
+  topLabel: "var(--ttg-red)",
+  bottomLabel: "var(--ttg-blue)",
+  cornerBadge: "var(--ttg-purple)",
+  numberBadge: "var(--ttg-success)",
 }
 
 const DEFAULT_BACK_LAYOUT: BackLayoutConfig = {
@@ -250,7 +250,7 @@ function CenterIconElement({ franchise, edition }: { franchise: string; edition?
   const isSpecial = edition === "limited" || edition === "legendary"
   return (
     <div
-      className="flex items-center justify-center rounded-full shadow-xl border-[3px] border-[#1a1a1a]"
+      className="flex items-center justify-center rounded-full shadow-xl border-[3px] border-ttg-black"
       style={{
         width: 64, height: 64,
         background: isSpecial
@@ -273,8 +273,8 @@ function BackLabelElement({ text, fontSize = 12 }: { text: string; fontSize?: nu
       style={{
         fontSize: `${fontSize}px`,
         background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-        color: "#1a1a1a",
-        border: "2.5px solid #1a1a1a",
+        color: "var(--ttg-black)",
+        border: "2.5px solid var(--ttg-black)",
         boxShadow: "0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.8)",
       }}
     >
@@ -283,10 +283,10 @@ function BackLabelElement({ text, fontSize = 12 }: { text: string; fontSize?: nu
   )
 }
 
-function CornerBadgeElement({ text, color = "#A855F7" }: { text: string; color?: string }) {
+function CornerBadgeElement({ text, color = "var(--ttg-purple)" }: { text: string; color?: string }) {
   return (
     <div
-      className="flex items-center justify-center rounded-full shadow-lg border-[2.5px] border-[#1a1a1a] font-black text-[10px] w-10 h-10"
+      className="flex items-center justify-center rounded-full shadow-lg border-[2.5px] border-ttg-black font-black text-[10px] w-10 h-10"
       style={{
         background: `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)`,
         color: "#fff",
@@ -304,8 +304,8 @@ function BackNumberBadge({ number }: { number: string }) {
       className="font-black text-[10px] px-2.5 py-1 rounded-full shadow-lg whitespace-nowrap"
       style={{
         background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-        color: "#1a1a1a",
-        border: "2px solid #1a1a1a",
+        color: "var(--ttg-black)",
+        border: "2px solid var(--ttg-black)",
         boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
       }}
     >
@@ -408,8 +408,8 @@ export default function TazoBackEditor({
           className="mag-chip gap-1 disabled:opacity-30" title="Redo (Ctrl+Shift+Z)">
           <Redo2 className="w-3.5 h-3.5" /> Redo
         </button>
-        <div className="w-px h-5 bg-[#1a1a1a]/20" />
-        <span className="text-[9px] font-black text-[#1a1a1a]/40 uppercase tracking-wider">Back Side</span>
+        <div className="w-px h-5 bg-ttg-black/20" />
+        <span className="text-[9px] font-black text-ttg-black/40 uppercase tracking-wider">Back Side</span>
         <div className="flex-1" />
         <button onClick={copyJSON}
           className="mag-chip gap-1">
@@ -422,7 +422,7 @@ export default function TazoBackEditor({
         </button>
         {onSave && (
           <button onClick={onSave}
-            className="mag-chip gap-1 bg-[#FFCC00] text-[#1a1a1a] border-[#1a1a1a] hover:bg-[#FFD700]">
+            className="mag-chip gap-1 bg-ttg-yellow text-ttg-black border-ttg-black hover:bg-ttg-yellow">
             <Save className="w-3.5 h-3.5" /> Save Back Layout
           </button>
         )}
@@ -430,8 +430,8 @@ export default function TazoBackEditor({
 
       {/* Shortcuts cheatsheet */}
       {showShortcuts && (
-        <div className="mag-card bg-[#1a1a1a] text-white p-4 text-[10px] font-bold space-y-2">
-          <h4 className="text-xs font-black uppercase tracking-wider text-[#FFCC00]">Back Editor Shortcuts</h4>
+        <div className="mag-card bg-ttg-black text-white p-4 text-[10px] font-bold space-y-2">
+          <h4 className="text-xs font-black uppercase tracking-wider text-ttg-yellow">Back Editor Shortcuts</h4>
           <div className="grid grid-cols-2 gap-x-4 gap-y-1">
             <div><kbd className="bg-white/10 px-1 rounded">↑↓←→</kbd> Nudge selected</div>
             <div><kbd className="bg-white/10 px-1 rounded">Shift+Drag</kbd> Snap 10px</div>
@@ -446,29 +446,29 @@ export default function TazoBackEditor({
       <div className="flex gap-4 flex-col lg:flex-row">
         {/* Left: Element list */}
         <div className="w-full lg:w-48 space-y-2">
-          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1a1a]/40">Back Elements</h4>
+          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-ttg-black/40">Back Elements</h4>
           {elementKeys.map(key => (
             <div key={key} className="flex items-center gap-1.5">
               <button
                 onClick={() => setActiveElement(key)}
                 className={`flex-1 flex items-center gap-2 px-3 py-2 rounded text-[10px] font-black border transition-all
                   ${activeElement === key
-                    ? "border-[#FFCC00] bg-[#FFCC00]/10 text-[#1a1a1a]"
-                    : "border-[#1a1a1a]/10 hover:border-[#1a1a1a]/30 text-[#1a1a1a]/50"
+                    ? "border-ttg-yellow bg-ttg-yellow/10 text-ttg-black"
+                    : "border-ttg-black/10 hover:border-ttg-black/30 text-ttg-black/50"
                   }`}
               >
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: BACK_ELEMENT_COLORS[key] }} />
                 {BACK_ELEMENT_LABELS[key]}
               </button>
               <button onClick={() => toggleVisibility(key)}
-                className="p-1 rounded hover:bg-[#1a1a1a]/5"
+                className="p-1 rounded hover:bg-ttg-black/5"
                 title={showElements[key] ? "Hide" : "Show"}>
-                {showElements[key] ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3 text-[#1a1a1a]/30" />}
+                {showElements[key] ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3 text-ttg-black/30" />}
               </button>
               <button onClick={() => toggleLock(key)}
-                className={`p-1 rounded hover:bg-[#1a1a1a]/5 ${lockedElements[key] ? "text-[#E3350D]" : ""}`}
+                className={`p-1 rounded hover:bg-ttg-black/5 ${lockedElements[key] ? "text-ttg-red" : ""}`}
                 title={lockedElements[key] ? "Unlock" : "Lock"}>
-                {lockedElements[key] ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3 text-[#1a1a1a]/30" />}
+                {lockedElements[key] ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3 text-ttg-black/30" />}
               </button>
             </div>
           ))}
@@ -476,12 +476,12 @@ export default function TazoBackEditor({
 
         {/* Center: Preview */}
         <div className="flex-1">
-          <div className="mag-card p-4 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
+          <div className="mag-card p-4 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)]">
             <div
               className="flex items-center justify-center relative rounded-lg overflow-hidden"
               style={{
                 minHeight: previewSize + 160,
-                backgroundImage: `url('data:image/svg+xml;base64,${btoa('<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#232323"/><rect width="20" height="20" fill="#1a1a1a"/></svg>')}')`,
+                backgroundImage: `url('data:image/svg+xml;base64,${btoa('<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#232323"/><rect width="20" height="20" fill="var(--ttg-black)"/></svg>')}')`,
               }}
               onClick={() => setActiveElement(null)}
             >
@@ -494,7 +494,7 @@ export default function TazoBackEditor({
                   left: "50%", top: "50%",
                   transform: "translate(-50%, -50%)",
                   background: "#111",
-                  border: "3px solid #1a1a1a",
+                  border: "3px solid var(--ttg-black)",
                   boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
                 }}
               >
@@ -571,7 +571,7 @@ export default function TazoBackEditor({
                       onScaleChange={(d) => handleScaleChange("cornerBadge", d)}
                       onDragStart={() => setIsDragging(true)} onDragEnd={() => setIsDragging(false)}
                     >
-                      <CornerBadgeElement text="LE" color="#A855F7" />
+                      <CornerBadgeElement text="LE" color="var(--ttg-purple)" />
                     </DraggableBackElement>
                   )}
 
@@ -601,7 +601,7 @@ export default function TazoBackEditor({
               </div>
 
               {!activeElement && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#1a1a1a]/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full pointer-events-none">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-ttg-black/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full pointer-events-none">
                   Click an element to position it · Drag to move · Arrow keys to nudge
                 </div>
               )}
@@ -611,13 +611,13 @@ export default function TazoBackEditor({
 
         {/* Right: Properties */}
         <div className="w-full lg:w-44 space-y-3">
-          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1a1a]/40">Properties</h4>
+          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-ttg-black/40">Properties</h4>
           {activeElement && layout[activeElement] ? (
             <div className="space-y-2">
-              <div className="text-[10px] font-black text-[#1a1a1a]">{BACK_ELEMENT_LABELS[activeElement]}</div>
+              <div className="text-[10px] font-black text-ttg-black">{BACK_ELEMENT_LABELS[activeElement]}</div>
               {(["x", "y"] as const).map(prop => (
                 <div key={prop}>
-                  <label className="text-[8px] font-bold text-[#1a1a1a]/40 uppercase">{prop}</label>
+                  <label className="text-[8px] font-bold text-ttg-black/40 uppercase">{prop}</label>
                   <div className="flex items-center gap-1">
                     <input
                       type="number"
@@ -626,14 +626,14 @@ export default function TazoBackEditor({
                         const v = parseFloat(e.target.value) || 0
                         pushLayout({ ...layout, [activeElement]: { ...layout[activeElement], [prop]: v } })
                       }}
-                      className="w-full text-[10px] font-bold bg-zinc-50 border border-zinc-200 rounded px-2 py-1 outline-none focus:border-[#FFCC00]"
+                      className="w-full text-[10px] font-bold bg-zinc-50 border border-zinc-200 rounded px-2 py-1 outline-none focus:border-ttg-yellow"
                       step={1}
                     />
                   </div>
                 </div>
               ))}
               <div>
-                <label className="text-[8px] font-bold text-[#1a1a1a]/40 uppercase">Scale</label>
+                <label className="text-[8px] font-bold text-ttg-black/40 uppercase">Scale</label>
                 <div className="flex items-center gap-1">
                   <button onClick={() => handleScaleChange(activeElement, -0.1)} className="p-1 rounded border hover:bg-zinc-100"><Minus className="w-3 h-3" /></button>
                   <span className="text-[10px] font-black tabular-nums w-8 text-center">{(layout[activeElement].scale || 1).toFixed(1)}</span>
@@ -641,13 +641,13 @@ export default function TazoBackEditor({
                 </div>
               </div>
               <button onClick={() => toggleLock(activeElement)}
-                className={`w-full text-[10px] font-black px-2 py-1 rounded border ${lockedElements[activeElement] ? "bg-[#E3350D]/10 border-[#E3350D] text-[#E3350D]" : "border-zinc-200 text-zinc-500"}`}>
+                className={`w-full text-[10px] font-black px-2 py-1 rounded border ${lockedElements[activeElement] ? "bg-ttg-red/10 border-ttg-red text-ttg-red" : "border-zinc-200 text-zinc-500"}`}>
                 {lockedElements[activeElement] ? <Lock className="w-3 h-3 inline mr-1" /> : <Unlock className="w-3 h-3 inline mr-1" />}
                 {lockedElements[activeElement] ? "Locked" : "Lock"}
               </button>
             </div>
           ) : (
-            <p className="text-[9px] text-[#1a1a1a]/30 font-bold">Select an element to edit its properties</p>
+            <p className="text-[9px] text-ttg-black/30 font-bold">Select an element to edit its properties</p>
           )}
         </div>
       </div>

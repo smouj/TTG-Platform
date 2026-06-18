@@ -64,7 +64,7 @@ function Lights() {
       <ambientLight intensity={0.6} />
       <spotLight position={[3, 2, 4]} intensity={2.5} angle={0.4} penumbra={0.5} color="#fffef5" />
       <spotLight position={[-2, 1.5, -3]} intensity={1.2} angle={0.35} penumbra={0.6} color="#fffef5" />
-      <pointLight position={[0, -1.5, 3]} intensity={0.5} color="#FFCC00" />
+      <pointLight position={[0, -1.5, 3]} intensity={0.5} color="var(--ttg-yellow)" />
     </>
   )
 }
@@ -91,8 +91,8 @@ export default function BagShowcase3D({ frontUrl, backUrl }: Props) {
     <div className="relative w-full h-[320px] sm:h-[380px] select-none touch-none"
       style={{
         background: "radial-gradient(ellipse at 50% 40%, #2a2520 0%, #0f0d0a 100%)",
-        border: "3px solid #1a1a1a",
-        boxShadow: "inset 0 0 60px rgba(0,0,0,0.4), 4px 4px 0px #1a1a1a",
+        border: "3px solid var(--ttg-black)",
+        boxShadow: "inset 0 0 60px rgba(0,0,0,0.4), 4px 4px 0px var(--ttg-black)",
         overflow: "hidden",
       }}
     >

@@ -35,7 +35,7 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
     ? "linear-gradient(135deg, #9CA3AF, #6B7280)"
     : "linear-gradient(135deg, #E3350D, #991B1B)"
 
-  const accent = isWin ? "#1a1a1a" : "white"
+  const accent = isWin ? "var(--ttg-black)" : "white"
 
   return (
     <div className="p-6 sm:p-8 text-center max-w-sm mx-auto  relative overflow-hidden"
@@ -56,12 +56,12 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
       <div className="mb-4">
         <div className="w-18 h-18 sm:w-20 sm:h-20 mx-auto rounded-full flex items-center justify-center border-2 relative"
           style={{
-            background: isWin ? "#FFCB05" : isDraw ? "#D1D5DB" : "#991B1B",
+            background: isWin ? "var(--ttg-minimon)" : isDraw ? "#D1D5DB" : "#991B1B",
             borderColor: `${accent}44`,
             boxShadow: `0 0 32px ${isWin ? "rgba(255,203,5,0.3)" : isDraw ? "rgba(209,213,219,0.2)" : "rgba(153,27,27,0.3)"}`,
           }}>
-          {isWin ? <Award className="w-10 h-10" style={{ color: "#1a1a1a" }} />
-            : isDraw ? <Shield className="w-10 h-10" style={{ color: "#1a1a1a" }} />
+          {isWin ? <Award className="w-10 h-10" style={{ color: "var(--ttg-black)" }} />
+            : isDraw ? <Shield className="w-10 h-10" style={{ color: "var(--ttg-black)" }} />
             : <Swords className="w-10 h-10" style={{ color: "#ffffffcc" }} />}
         </div>
       </div>
@@ -79,8 +79,8 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
       <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
         {[
           { icon: Timer, value: result.totalTurns, label: "Turns", color: accent },
-          { icon: Award, value: result.playerCaptures, label: "Captures", color: "#22C55E" },
-          { icon: Shield, value: result.opponentCaptures, label: "Lost", color: "#E3350D" },
+          { icon: Award, value: result.playerCaptures, label: "Captures", color: "var(--ttg-success)" },
+          { icon: Shield, value: result.opponentCaptures, label: "Lost", color: "var(--ttg-red)" },
         ].map((s, i) => (
           <div key={i} className="py-2.5 px-1"
             style={{
@@ -114,7 +114,7 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
       {creditsEarned != null && creditsEarned > 0 && (
         <div className="mb-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full"
           style={{
-            background: `${isWin ? "#22C55E" : "rgba(255,255,255,0.12)"}`,
+            background: `${isWin ? "var(--ttg-success)" : "rgba(255,255,255,0.12)"}`,
             border: "1px solid rgba(255,255,255,0.15)",
           }}>
           <Zap className="w-4 h-4" style={{ color: isWin ? "white" : accent, fill: isWin ? "white" : "none" }} />
@@ -129,8 +129,8 @@ export default function BattleResultPanel({ result, playerName, opponentName, on
         onClick={onRematch}
         className="w-full py-3 px-6 font-black text-sm uppercase tracking-[0.15em] transition-all active:scale-95 inline-flex items-center justify-center gap-2"
         style={{
-          background: isWin ? "#1a1a1a" : "white",
-          color: isWin ? "white" : "#1a1a1a",
+          background: isWin ? "var(--ttg-black)" : "white",
+          color: isWin ? "white" : "var(--ttg-black)",
           border: `1px solid ${isWin ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)"}`,
           boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
         }}>

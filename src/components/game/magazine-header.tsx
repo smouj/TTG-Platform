@@ -3,7 +3,7 @@ import Image from "next/image"
 
 // ============================================================
 // Magazine Header — shared across all pages.
-// Dark #1a1a1a bar with TRADINGTAZOSGAME logo, "Official TTG
+// Dark var(--ttg-black) bar with TRADINGTAZOSGAME logo, "Official TTG
 // Beta" subtitle, desktop nav tabs, mobile nav strip, and auth.
 //
 // variant="landing" (default) → full landing nav tabs

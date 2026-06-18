@@ -63,7 +63,7 @@ export default function WikiCardGrid({ entities, seriesLabel }: WikiCardGridProp
         <div className="flex flex-wrap gap-4">
           {entityTypes.length > 1 && (
             <div>
-              <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider block mb-1.5">
+              <span className="text-[10px] font-black text-ttg-black/40 uppercase tracking-wider block mb-1.5">
                 Categoría
               </span>
               <WikiFilterBar
@@ -75,7 +75,7 @@ export default function WikiCardGrid({ entities, seriesLabel }: WikiCardGridProp
           )}
           {rarities.length > 1 && (
             <div>
-              <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider block mb-1.5">
+              <span className="text-[10px] font-black text-ttg-black/40 uppercase tracking-wider block mb-1.5">
                 Rareza
               </span>
               <WikiFilterBar
@@ -89,7 +89,7 @@ export default function WikiCardGrid({ entities, seriesLabel }: WikiCardGridProp
       </div>
 
       {/* Results count */}
-      <p className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-wider mb-3">
+      <p className="text-[10px] font-black text-ttg-black/40 uppercase tracking-wider mb-3">
         {filtered.length} de {entities.length} entradas
       </p>
 
@@ -101,8 +101,8 @@ export default function WikiCardGrid({ entities, seriesLabel }: WikiCardGridProp
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 border-2 border-dashed border-[#1a1a1a]/20">
-          <p className="text-sm font-bold text-[#1a1a1a]/40">
+        <div className="text-center py-12 border-2 border-dashed border-ttg-black/20">
+          <p className="text-sm font-bold text-ttg-black/40">
             No se encontraron entradas con estos filtros.
           </p>
         </div>

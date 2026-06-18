@@ -19,11 +19,11 @@ const ELEMENT_LABELS: Record<ElementKey, string> = {
 
 const ELEMENT_COLORS: Record<ElementKey, string> = {
   collection: "#06B6D4",
-  badge: "#A855F7",
-  number: "#3B82F6",
-  name: "#22C55E",
+  badge: "var(--ttg-purple)",
+  number: "var(--ttg-rarity-rare)",
+  name: "var(--ttg-success)",
   rarity: "#FBBF24",
-  creature: "#E3350D",
+  creature: "var(--ttg-red)",
 };
 
 interface Props {
@@ -86,12 +86,12 @@ export default function ElementProperties({
   return (
     <div className="space-y-1.5">
       {/* History + Global */}
-      <div className="mag-card p-3 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
+      <div className="mag-card p-3 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)]">
         <div className="flex items-center gap-1.5 mb-2">
           <button
             onClick={undo}
             disabled={!canUndo}
-            className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/50 disabled:opacity-20 transition-all"
+            className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded bg-ttg-black/5 hover:bg-ttg-black/10 text-ttg-black/50 disabled:opacity-20 transition-all"
             title="Undo (Ctrl+Z)"
           >
             ↩ Undo
@@ -99,14 +99,14 @@ export default function ElementProperties({
           <button
             onClick={redo}
             disabled={!canRedo}
-            className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/50 disabled:opacity-20 transition-all"
+            className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded bg-ttg-black/5 hover:bg-ttg-black/10 text-ttg-black/50 disabled:opacity-20 transition-all"
             title="Redo (Ctrl+Shift+Z)"
           >
             ↪ Redo
           </button>
           <button
             onClick={onReset}
-            className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded bg-[#E3350D]/5 hover:bg-[#E3350D]/10 text-[#E3350D]/50 ml-auto transition-all"
+            className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded bg-ttg-red/5 hover:bg-ttg-red/10 text-ttg-red/50 ml-auto transition-all"
           >
             ↺ Reset All
           </button>
@@ -114,14 +114,14 @@ export default function ElementProperties({
       </div>
 
       {/* Element list */}
-      <div className="mag-card p-3 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
+      <div className="mag-card p-3 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)]">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-[10px] font-black uppercase tracking-wider text-[#1a1a1a] flex items-center gap-1.5">
+          <h3 className="text-[10px] font-black uppercase tracking-wider text-ttg-black flex items-center gap-1.5">
             <SlidersHorizontal className="w-3.5 h-3.5" /> Properties
           </h3>
           <button
             onClick={() => setShowAll(!showAll)}
-            className="text-[7px] font-black uppercase text-[#1a1a1a]/30 hover:text-[#1a1a1a]/60"
+            className="text-[7px] font-black uppercase text-ttg-black/30 hover:text-ttg-black/60"
           >
             {showAll ? "collapse" : "expand all"}
           </button>
@@ -140,8 +140,8 @@ export default function ElementProperties({
                 key={key}
                 className={`rounded border transition-all ${
                   isActive
-                    ? "border-[#FFCC00] bg-[#FFCC00]/5"
-                    : "border-transparent bg-[#1a1a1a]/3 hover:bg-[#1a1a1a]/5"
+                    ? "border-ttg-yellow bg-ttg-yellow/5"
+                    : "border-transparent bg-ttg-black/3 hover:bg-ttg-black/5"
                 }`}
               >
                 {/* Header row */}
@@ -150,7 +150,7 @@ export default function ElementProperties({
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ backgroundColor: ELEMENT_COLORS[key] }}
                   />
-                  <span className="text-[9px] font-bold text-[#1a1a1a] flex-1 truncate">
+                  <span className="text-[9px] font-bold text-ttg-black flex-1 truncate">
                     {ELEMENT_LABELS[key]}
                   </span>
 
@@ -158,8 +158,8 @@ export default function ElementProperties({
                     onClick={() => onToggleVisibility(key)}
                     className={`p-0.5 rounded transition-all ${
                       isVisible
-                        ? "text-[#22C55E] hover:bg-[#22C55E]/10"
-                        : "text-[#1a1a1a]/15 hover:bg-[#1a1a1a]/5"
+                        ? "text-ttg-success hover:bg-ttg-success/10"
+                        : "text-ttg-black/15 hover:bg-ttg-black/5"
                     }`}
                     title={isVisible ? "Hide" : "Show"}
                   >
@@ -170,8 +170,8 @@ export default function ElementProperties({
                     onClick={() => onToggleLock(key)}
                     className={`p-0.5 rounded transition-all ${
                       isLocked
-                        ? "text-[#E3350D] hover:bg-[#E3350D]/10"
-                        : "text-[#1a1a1a]/15 hover:bg-[#1a1a1a]/5"
+                        ? "text-ttg-red hover:bg-ttg-red/10"
+                        : "text-ttg-black/15 hover:bg-ttg-black/5"
                     }`}
                     title={isLocked ? "Unlock" : "Lock"}
                   >
@@ -182,25 +182,25 @@ export default function ElementProperties({
                   <div className="flex gap-0">
                     <button
                       onClick={() => onNudge(key, -5, 0)}
-                      className="p-0.5 text-[#1a1a1a]/20 hover:text-[#1a1a1a]/50 rounded"
+                      className="p-0.5 text-ttg-black/20 hover:text-ttg-black/50 rounded"
                     >
                       <ArrowLeft className="w-2.5 h-2.5" />
                     </button>
                     <button
                       onClick={() => onNudge(key, 0, -5)}
-                      className="p-0.5 text-[#1a1a1a]/20 hover:text-[#1a1a1a]/50 rounded"
+                      className="p-0.5 text-ttg-black/20 hover:text-ttg-black/50 rounded"
                     >
                       <ArrowUp className="w-2.5 h-2.5" />
                     </button>
                     <button
                       onClick={() => onNudge(key, 0, 5)}
-                      className="p-0.5 text-[#1a1a1a]/20 hover:text-[#1a1a1a]/50 rounded"
+                      className="p-0.5 text-ttg-black/20 hover:text-ttg-black/50 rounded"
                     >
                       <ArrowDown className="w-2.5 h-2.5" />
                     </button>
                     <button
                       onClick={() => onNudge(key, 5, 0)}
-                      className="p-0.5 text-[#1a1a1a]/20 hover:text-[#1a1a1a]/50 rounded"
+                      className="p-0.5 text-ttg-black/20 hover:text-ttg-black/50 rounded"
                     >
                       <ArrowRight className="w-2.5 h-2.5" />
                     </button>
@@ -209,10 +209,10 @@ export default function ElementProperties({
 
                 {/* Detail sliders */}
                 {showDetails && !isLocked && (
-                  <div className="px-2 pb-2 space-y-1 border-t border-[#1a1a1a]/5 pt-1.5">
+                  <div className="px-2 pb-2 space-y-1 border-t border-ttg-black/5 pt-1.5">
                     {/* X position */}
                     <div className="flex items-center gap-2">
-                      <span className="text-[7px] font-bold text-[#1a1a1a]/25 w-3">X</span>
+                      <span className="text-[7px] font-bold text-ttg-black/25 w-3">X</span>
                       <input
                         type="range"
                         min="-435"
@@ -227,14 +227,14 @@ export default function ElementProperties({
                         type="number"
                         value={el.x}
                         onChange={(e) => handleSetX(key, Number(e.target.value))}
-                        className="w-12 text-[8px] font-mono font-bold text-[#1a1a1a]/60 bg-transparent border border-[#1a1a1a]/10 rounded px-1 py-0.5 text-center"
+                        className="w-12 text-[8px] font-mono font-bold text-ttg-black/60 bg-transparent border border-ttg-black/10 rounded px-1 py-0.5 text-center"
                         step="1"
                       />
                     </div>
 
                     {/* Y position */}
                     <div className="flex items-center gap-2">
-                      <span className="text-[7px] font-bold text-[#1a1a1a]/25 w-3">Y</span>
+                      <span className="text-[7px] font-bold text-ttg-black/25 w-3">Y</span>
                       <input
                         type="range"
                         min="-435"
@@ -249,14 +249,14 @@ export default function ElementProperties({
                         type="number"
                         value={el.y}
                         onChange={(e) => handleSetY(key, Number(e.target.value))}
-                        className="w-12 text-[8px] font-mono font-bold text-[#1a1a1a]/60 bg-transparent border border-[#1a1a1a]/10 rounded px-1 py-0.5 text-center"
+                        className="w-12 text-[8px] font-mono font-bold text-ttg-black/60 bg-transparent border border-ttg-black/10 rounded px-1 py-0.5 text-center"
                         step="1"
                       />
                     </div>
 
                     {/* Scale */}
                     <div className="flex items-center gap-2">
-                      <span className="text-[7px] font-bold text-[#1a1a1a]/25 w-3">S</span>
+                      <span className="text-[7px] font-bold text-ttg-black/25 w-3">S</span>
                       <input
                         type="range"
                         min="0.1"
@@ -271,7 +271,7 @@ export default function ElementProperties({
                         type="number"
                         value={el.scale}
                         onChange={(e) => handleSetScale(key, Number(e.target.value))}
-                        className="w-14 text-[8px] font-mono font-bold text-[#1a1a1a]/60 bg-transparent border border-[#1a1a1a]/10 rounded px-1 py-0.5 text-center"
+                        className="w-14 text-[8px] font-mono font-bold text-ttg-black/60 bg-transparent border border-ttg-black/10 rounded px-1 py-0.5 text-center"
                         step="0.05"
                         min="0.1"
                         max="5"
@@ -281,7 +281,7 @@ export default function ElementProperties({
                 )}
 
                 {showDetails && isLocked && (
-                  <div className="px-2 pb-2 text-[7px] font-bold text-[#1a1a1a]/15 italic">
+                  <div className="px-2 pb-2 text-[7px] font-bold text-ttg-black/15 italic">
                     🔒 Locked — unlock to edit
                   </div>
                 )}
@@ -291,8 +291,8 @@ export default function ElementProperties({
         </div>
 
         {/* Quick position presets */}
-        <div className="mt-2 pt-2 border-t border-[#1a1a1a]/10">
-          <p className="text-[7px] font-black uppercase text-[#1a1a1a]/20 mb-1">Center</p>
+        <div className="mt-2 pt-2 border-t border-ttg-black/10">
+          <p className="text-[7px] font-black uppercase text-ttg-black/20 mb-1">Center</p>
           <div className="flex gap-1 flex-wrap">
             {[
               { label: "C", x: 0, y: 0 },
@@ -318,8 +318,8 @@ export default function ElementProperties({
                 disabled={!activeElement || lockedElements[activeElement || ""]}
                 className={`text-[8px] font-black px-1.5 py-0.5 rounded border transition-all
                   ${activeElement && !lockedElements[activeElement]
-                    ? "border-[#1a1a1a]/10 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70"
-                    : "border-transparent text-[#1a1a1a]/10 cursor-not-allowed"
+                    ? "border-ttg-black/10 hover:bg-ttg-black/10 text-ttg-black/40 hover:text-ttg-black/70"
+                    : "border-transparent text-ttg-black/10 cursor-not-allowed"
                   }`}
                 title={`Snap to ${p.label} (${p.x}, ${p.y})`}
               >

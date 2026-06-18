@@ -26,16 +26,16 @@ interface TazoDetailModalProps {
 }
 
 const FRANCHISE_COLORS: Record<string, { from: string; to: string; text: string; border: string; banner: string }> = {
-  minimon: { from: '#FFCB05', to: '#FF8C00', text: '#92400E', border: '#FFCB05', banner: 'linear-gradient(90deg, #FFCB05, #FF8C00)' },
-  cybermon: { from: '#00A1E9', to: '#0057B7', text: '#1E3A5F', border: '#00A1E9', banner: 'linear-gradient(90deg, #00A1E9, #0057B7)' },
-  dracobell: { from: '#FF6B00', to: '#CC4400', text: '#7C2D12', border: '#FF6B00', banner: 'linear-gradient(90deg, #FF6B00, #CC4400)' },
+  minimon: { from: 'var(--ttg-minimon)', to: 'var(--ttg-minimon-dark)', text: '#92400E', border: 'var(--ttg-minimon)', banner: 'linear-gradient(90deg, #FFCB05, #FF8C00)' },
+  cybermon: { from: 'var(--ttg-cybermon)', to: '#0057B7', text: '#1E3A5F', border: 'var(--ttg-cybermon)', banner: 'linear-gradient(90deg, #00A1E9, #0057B7)' },
+  dracobell: { from: 'var(--ttg-dracobell)', to: 'var(--ttg-dracobell-dark)', text: '#7C2D12', border: 'var(--ttg-dracobell)', banner: 'linear-gradient(90deg, #FF6B00, #CC4400)' },
 }
 
 const STAT_CONFIG = [
-  { key: 'attack' as const, label: 'ATK', color: '#E3350D', bgColor: '#E3350D15' },
-  { key: 'defense' as const, label: 'DEF', color: '#3B4CCA', bgColor: '#3B4CCA15' },
+  { key: 'attack' as const, label: 'ATK', color: 'var(--ttg-red)', bgColor: '#E3350D15' },
+  { key: 'defense' as const, label: 'DEF', color: 'var(--ttg-blue)', bgColor: '#3B4CCA15' },
   { key: 'resistance' as const, label: 'RESIST', color: '#6366F1', bgColor: '#6366F115' },
-  { key: 'weight' as const, label: 'WEIGHT', color: '#FFCC00', bgColor: '#FFCC0015' },
+  { key: 'weight' as const, label: 'WEIGHT', color: 'var(--ttg-yellow)', bgColor: '#FFCC0015' },
   { key: 'stability' as const, label: 'STABLE', color: '#14B8A6', bgColor: '#14B8A615' },
   { key: 'spin' as const, label: 'SPIN', color: '#78C850', bgColor: '#78C85015' },
   { key: 'control' as const, label: 'CONTROL', color: '#EC4899', bgColor: '#EC489915' },
@@ -52,16 +52,16 @@ const RARITY_STARS: Record<Rarity, string> = {
 }
 
 const RARITY_HEX: Record<Rarity, string> = {
-  common: '#9CA3AF',
-  uncommon: '#22C55E',
-  rare: '#3B82F6',
-  ultra: '#A855F7',
-  legendary: '#F59E0B',
+  common: 'var(--ttg-rarity-common)',
+  uncommon: 'var(--ttg-success)',
+  rare: 'var(--ttg-rarity-rare)',
+  ultra: 'var(--ttg-purple)',
+  legendary: 'var(--ttg-warning)',
 }
 
 const CONDITION_HEX: Record<TazoCondition, string> = {
   mint: '#10B981',
-  good: '#22C55E',
+  good: 'var(--ttg-success)',
   used: '#EAB308',
   worn: '#F97316',
   holo: '#06B6D4',
@@ -139,7 +139,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
     tazo.bounce +
     tazo.precision
 
-  const rarityHex = RARITY_HEX[tazo.rarity as Rarity] || '#9CA3AF'
+  const rarityHex = RARITY_HEX[tazo.rarity as Rarity] || 'var(--ttg-rarity-common)'
   const conditionHex = CONDITION_HEX[tazo.condition as TazoCondition] || '#94A3B8'
 
   return (
@@ -149,8 +149,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
         showCloseButton={false}
         style={{
           background: 'white',
-          border: '4px solid #1a1a1a',
-          boxShadow: '8px 8px 0px #1a1a1a',
+          border: '4px solid var(--ttg-black)',
+          boxShadow: '8px 8px 0px var(--ttg-black)',
           borderRadius: '0',
         }}
       >
@@ -165,7 +165,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
           className="relative px-4 py-3 sm:px-6 sm:py-4"
           style={{
             background: franchiseColors.banner,
-            borderBottom: '4px solid #1a1a1a',
+            borderBottom: '4px solid var(--ttg-black)',
           }}
         >
           {/* Halftone overlay on banner */}
@@ -175,7 +175,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
           <button
             onClick={onClose}
             className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-red-500 hover:text-white transition-colors font-black text-sm"
-            style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
+            style={{ boxShadow: '2px 2px 0px var(--ttg-black)' }}
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -187,8 +187,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               <button
                 onClick={onPrev}
                 disabled={!hasPrev}
-                className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-[#FFCC00] disabled:opacity-25 disabled:cursor-not-allowed transition-colors font-black text-sm"
-                style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
+                className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-ttg-yellow disabled:opacity-25 disabled:cursor-not-allowed transition-colors font-black text-sm"
+                style={{ boxShadow: '2px 2px 0px var(--ttg-black)' }}
                 aria-label="Previous tazo"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -196,8 +196,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               <button
                 onClick={onNext}
                 disabled={!hasNext}
-                className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-[#FFCC00] disabled:opacity-25 disabled:cursor-not-allowed transition-colors font-black text-sm"
-                style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
+                className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-ttg-yellow disabled:opacity-25 disabled:cursor-not-allowed transition-colors font-black text-sm"
+                style={{ boxShadow: '2px 2px 0px var(--ttg-black)' }}
                 aria-label="Next tazo"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -209,7 +209,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
           <div className="relative z-10 mb-1">
             <span
               className="inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-white border-2 border-black"
-              style={{ boxShadow: '2px 2px 0px #1a1a1a' }}
+              style={{ boxShadow: '2px 2px 0px var(--ttg-black)' }}
             >
               {tazo.franchiseName || 'Unknown'}
               {tazo.collectionYear ? ` · ${tazo.collectionYear}` : ''}
@@ -287,11 +287,11 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                     franchiseSlug={franchiseSlug}
                   />
                   {/* Lock badge — top-right corner, not blocking center */}
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#1a1a1a]/85 flex items-center justify-center border-2 border-[#FFCC00]/60 shadow-[0_0_8px_rgba(0,0,0,0.5)]">
-                    <Lock className="w-4 h-4 text-[#FFCC00]" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-ttg-black/85 flex items-center justify-center border-2 border-ttg-yellow/60 shadow-[0_0_8px_rgba(0,0,0,0.5)]">
+                    <Lock className="w-4 h-4 text-ttg-yellow" />
                   </div>
                   {/* "Undiscovered" label */}
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-[#1a1a1a]/80 border border-white/10">
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-ttg-black/80 border border-white/10">
                     <span className="text-[8px] font-black text-white/50 uppercase tracking-wider">Undiscovered</span>
                   </div>
                 </div>
@@ -349,33 +349,33 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               <div className="flex items-center gap-1 mt-2">
                 <button
                   onClick={() => setViewMode('front')}
-                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] transition-colors"
+                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-ttg-black transition-colors"
                   style={{
-                    background: viewMode === 'front' ? '#FFCC00' : 'white',
-                    color: '#1a1a1a',
-                    boxShadow: viewMode === 'front' ? '2px 2px 0px #1a1a1a' : 'none',
+                    background: viewMode === 'front' ? 'var(--ttg-yellow)' : 'white',
+                    color: 'var(--ttg-black)',
+                    boxShadow: viewMode === 'front' ? '2px 2px 0px var(--ttg-black)' : 'none',
                   }}
                 >
                   <View className="w-3 h-3" /> Front
                 </button>
                 <button
                   onClick={() => setViewMode('back')}
-                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] transition-colors"
+                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-ttg-black transition-colors"
                   style={{
-                    background: viewMode === 'back' ? '#FFCC00' : 'white',
-                    color: '#1a1a1a',
-                    boxShadow: viewMode === 'back' ? '2px 2px 0px #1a1a1a' : 'none',
+                    background: viewMode === 'back' ? 'var(--ttg-yellow)' : 'white',
+                    color: 'var(--ttg-black)',
+                    boxShadow: viewMode === 'back' ? '2px 2px 0px var(--ttg-black)' : 'none',
                   }}
                 >
                   <FlipHorizontal className="w-3 h-3" /> Back
                 </button>
                 <button
                   onClick={() => setViewMode('3d')}
-                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-[#1a1a1a] transition-colors"
+                  className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border-2 border-ttg-black transition-colors"
                   style={{
-                    background: viewMode === '3d' ? '#FFCC00' : 'white',
-                    color: '#1a1a1a',
-                    boxShadow: viewMode === '3d' ? '2px 2px 0px #1a1a1a' : 'none',
+                    background: viewMode === '3d' ? 'var(--ttg-yellow)' : 'white',
+                    color: 'var(--ttg-black)',
+                    boxShadow: viewMode === '3d' ? '2px 2px 0px var(--ttg-black)' : 'none',
                   }}
                 >
                   <RotateCw className="w-3 h-3" /> 3D
@@ -394,8 +394,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
           {/* ===== STATS SECTION - Magazine Infographic ===== */}
           <div
             style={{
-              border: '3px solid #1a1a1a',
-              boxShadow: '4px 4px 0px #1a1a1a',
+              border: '3px solid var(--ttg-black)',
+              boxShadow: '4px 4px 0px var(--ttg-black)',
               background: 'white',
             }}
           >
@@ -403,13 +403,13 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
             <div
               className="px-3 py-1.5 text-center font-black text-xs uppercase tracking-widest"
               style={{
-                background: '#1a1a1a',
-                color: '#FFCC00',
-                borderBottom: '3px solid #1a1a1a',
+                background: 'var(--ttg-black)',
+                color: 'var(--ttg-yellow)',
+                borderBottom: '3px solid var(--ttg-black)',
                 letterSpacing: '2px',
               }}
             >
-              <Zap className="w-3.5 h-3.5 inline text-[#FFCC00]" /> Power Stats <Zap className="w-3.5 h-3.5 inline text-[#FFCC00]" />
+              <Zap className="w-3.5 h-3.5 inline text-ttg-yellow" /> Power Stats <Zap className="w-3.5 h-3.5 inline text-ttg-yellow" />
             </div>
 
             <div className="p-3 space-y-2">
@@ -466,15 +466,15 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                 className="flex items-center justify-between mt-1 pt-2"
                 style={{ borderTop: '3px dashed #1a1a1a20' }}
               >
-                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#1a1a1a' }}>
+                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--ttg-black)' }}>
                   <BarChart3 className="w-3.5 h-3.5 inline mr-1" /> Total Power
                 </span>
                 <span
                   className="text-lg font-black px-2 py-0.5 border-2 border-black"
                   style={{
-                    background: '#FFCC00',
-                    color: '#1a1a1a',
-                    boxShadow: '2px 2px 0px #1a1a1a',
+                    background: 'var(--ttg-yellow)',
+                    color: 'var(--ttg-black)',
+                    boxShadow: '2px 2px 0px var(--ttg-black)',
                   }}
                 >
                   {totalStats}
@@ -487,8 +487,8 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
           {tazo.isOwned && (tazo as any).tgaGrade != null && (
             <div className="overflow-hidden"
               style={{
-                border: '3px solid #1a1a1a',
-                boxShadow: '4px 4px 0px #1a1a1a',
+                border: '3px solid var(--ttg-black)',
+                boxShadow: '4px 4px 0px var(--ttg-black)',
               }}
             >
               <TGASlabLabel
@@ -510,19 +510,19 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
             <div
               className="mag-card-yellow p-3"
               style={{
-                background: '#FFCC00',
-                border: '3px solid #1a1a1a',
-                boxShadow: '4px 4px 0px #1a1a1a',
+                background: 'var(--ttg-yellow)',
+                border: '3px solid var(--ttg-black)',
+                boxShadow: '4px 4px 0px var(--ttg-black)',
               }}
             >
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg inline-flex"><Zap className="w-5 h-5" style={{ color: '#E3350D' }} /></span>
+                <span className="text-lg inline-flex"><Zap className="w-5 h-5" style={{ color: 'var(--ttg-red)' }} /></span>
                 <span
                   className="font-black text-base uppercase tracking-wide mag-stroke"
                   style={{
                     paintOrder: 'stroke fill',
                     WebkitTextStroke: '1.5px #1a1a1a',
-                    color: '#E3350D',
+                    color: 'var(--ttg-red)',
                   }}
                 >
                   {tazo.skill}
@@ -545,16 +545,16 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               className="p-3"
               style={{
                 background: 'white',
-                border: '3px solid #1a1a1a',
-                boxShadow: '4px 4px 0px #1a1a1a',
+                border: '3px solid var(--ttg-black)',
+                boxShadow: '4px 4px 0px var(--ttg-black)',
               }}
             >
               <div
                 className="text-center font-black text-[10px] uppercase tracking-widest mb-2 py-1"
                 style={{
-                  background: '#00A1E9',
+                  background: 'var(--ttg-cybermon)',
                   color: 'white',
-                  border: '2px solid #1a1a1a',
+                  border: '2px solid var(--ttg-black)',
                 }}
               >
                 <Flame className="w-4 h-4 inline mr-1" /> DIGIEVOLUTION <Flame className="w-4 h-4 inline mr-1" />
@@ -566,19 +566,19 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                       className="w-14 h-14 rounded-full flex items-center justify-center border-3 border-black text-lg font-black"
                       style={{
                         background: 'linear-gradient(135deg, #00A1E940, #0057B740)',
-                        border: '3px solid #1a1a1a',
+                        border: '3px solid var(--ttg-black)',
                       }}
                     >
                       {tazo.evolutionFrom.charAt(0)}
                     </div>
-                    <span className="text-[9px] font-black uppercase" style={{ color: '#00A1E9' }}>
+                    <span className="text-[9px] font-black uppercase" style={{ color: 'var(--ttg-cybermon)' }}>
                       {tazo.evolutionFrom}
                     </span>
                   </div>
                 )}
                 <div className="flex flex-col items-center">
-                  <ArrowRight className="w-6 h-6" style={{ color: '#1a1a1a' }} />
-                  <span className="text-[8px] font-black uppercase" style={{ color: '#E3350D' }}>POWER UP!</span>
+                  <ArrowRight className="w-6 h-6" style={{ color: 'var(--ttg-black)' }} />
+                  <span className="text-[8px] font-black uppercase" style={{ color: 'var(--ttg-red)' }}>POWER UP!</span>
                 </div>
                 {/* Current tazo silhouette */}
                 <div className="flex flex-col items-center gap-1">
@@ -586,10 +586,10 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                     className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-black star-burst"
                     style={{
                       background: `linear-gradient(135deg, ${franchiseColors.from}, ${franchiseColors.to})`,
-                      border: '3px solid #1a1a1a',
-                      boxShadow: '3px 3px 0px #1a1a1a',
+                      border: '3px solid var(--ttg-black)',
+                      boxShadow: '3px 3px 0px var(--ttg-black)',
                       color: 'white',
-                      textShadow: '1px 1px 0px #1a1a1a',
+                      textShadow: '1px 1px 0px var(--ttg-black)',
                     }}
                   >
                     {tazo.displayName || tazo.name || "?".charAt(0)}
@@ -601,20 +601,20 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                 {tazo.evolutionTo && (
                   <>
                     <div className="flex flex-col items-center">
-                      <ArrowRight className="w-6 h-6" style={{ color: '#1a1a1a' }} />
-                      <span className="text-[8px] font-black uppercase" style={{ color: '#E3350D' }}>POWER UP!</span>
+                      <ArrowRight className="w-6 h-6" style={{ color: 'var(--ttg-black)' }} />
+                      <span className="text-[8px] font-black uppercase" style={{ color: 'var(--ttg-red)' }}>POWER UP!</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                       <div
                         className="w-14 h-14 rounded-full flex items-center justify-center border-3 border-black text-lg font-black"
                         style={{
                           background: 'linear-gradient(135deg, #00A1E940, #0057B740)',
-                          border: '3px solid #1a1a1a',
+                          border: '3px solid var(--ttg-black)',
                         }}
                       >
                         {tazo.evolutionTo.charAt(0)}
                       </div>
-                      <span className="text-[9px] font-black uppercase" style={{ color: '#00A1E9' }}>
+                      <span className="text-[9px] font-black uppercase" style={{ color: 'var(--ttg-cybermon)' }}>
                         {tazo.evolutionTo}
                       </span>
                     </div>
@@ -629,16 +629,16 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               className="p-3"
               style={{
                 background: 'white',
-                border: '3px solid #1a1a1a',
-                boxShadow: '4px 4px 0px #1a1a1a',
+                border: '3px solid var(--ttg-black)',
+                boxShadow: '4px 4px 0px var(--ttg-black)',
               }}
             >
               <div
                 className="text-center font-black text-[10px] uppercase tracking-widest mb-2 py-1"
                 style={{
-                  background: '#FF6B00',
+                  background: 'var(--ttg-dracobell)',
                   color: 'white',
-                  border: '2px solid #1a1a1a',
+                  border: '2px solid var(--ttg-black)',
                 }}
               >
                 <Sparkles className="w-4 h-4 inline mr-1" /> TRANSFORMATION <Sparkles className="w-4 h-4 inline mr-1" />
@@ -651,18 +651,18 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                         className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-black"
                         style={{
                           background: 'linear-gradient(135deg, #FF6B0040, #CC440040)',
-                          border: '3px solid #1a1a1a',
+                          border: '3px solid var(--ttg-black)',
                         }}
                       >
                         {tazo.transformOf.charAt(0)}
                       </div>
-                      <span className="text-[9px] font-black uppercase" style={{ color: '#FF6B00' }}>
+                      <span className="text-[9px] font-black uppercase" style={{ color: 'var(--ttg-dracobell)' }}>
                         {tazo.transformOf}
                       </span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <ArrowRight className="w-6 h-6" style={{ color: '#1a1a1a' }} />
-                      <span className="text-[8px] font-black uppercase" style={{ color: '#E3350D' }}>POWER UP!</span>
+                      <ArrowRight className="w-6 h-6" style={{ color: 'var(--ttg-black)' }} />
+                      <span className="text-[8px] font-black uppercase" style={{ color: 'var(--ttg-red)' }}>POWER UP!</span>
                     </div>
                   </>
                 )}
@@ -671,10 +671,10 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                     className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-black star-burst"
                     style={{
                       background: `linear-gradient(135deg, ${franchiseColors.from}, ${franchiseColors.to})`,
-                      border: '3px solid #1a1a1a',
-                      boxShadow: '3px 3px 0px #1a1a1a',
+                      border: '3px solid var(--ttg-black)',
+                      boxShadow: '3px 3px 0px var(--ttg-black)',
                       color: 'white',
-                      textShadow: '1px 1px 0px #1a1a1a',
+                      textShadow: '1px 1px 0px var(--ttg-black)',
                     }}
                   >
                     {tazo.displayName || tazo.name || "?".charAt(0)}
@@ -682,7 +682,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                   {tazo.transformStage && (
                     <span
                       className="text-[9px] font-black uppercase px-1.5 py-0.5 border border-black"
-                      style={{ background: '#FF6B0030', color: '#FF6B00' }}
+                      style={{ background: '#FF6B0030', color: 'var(--ttg-dracobell)' }}
                     >
                       {tazo.transformStage}
                     </span>
@@ -698,19 +698,19 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               className="p-3"
               style={{
                 background: 'white',
-                border: '3px solid #1a1a1a',
-                boxShadow: '4px 4px 0px #1a1a1a',
+                border: '3px solid var(--ttg-black)',
+                boxShadow: '4px 4px 0px var(--ttg-black)',
               }}
             >
               <div
                 className="text-center font-black text-[10px] uppercase tracking-widest mb-2 py-1"
                 style={{
-                  background: '#FFCB05',
-                  color: '#1a1a1a',
-                  border: '2px solid #1a1a1a',
+                  background: 'var(--ttg-minimon)',
+                  color: 'var(--ttg-black)',
+                  border: '2px solid var(--ttg-black)',
                 }}
               >
-                <Zap className="w-3.5 h-3.5 inline mr-1" style={{ color: '#FFCB05' }} /> TYPE ADVANTAGES <Zap className="w-3.5 h-3.5 inline ml-1" style={{ color: '#FFCB05' }} />
+                <Zap className="w-3.5 h-3.5 inline mr-1" style={{ color: 'var(--ttg-minimon)' }} /> TYPE ADVANTAGES <Zap className="w-3.5 h-3.5 inline ml-1" style={{ color: 'var(--ttg-minimon)' }} />
               </div>
               <div className="flex flex-wrap gap-1.5 justify-center">
                 {(MINIMON_ADVANTAGES[tazo.combatType] || []).length > 0 ? (
@@ -721,14 +721,14 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                       style={{
                         background: '#78C85030',
                         color: '#78C850',
-                        boxShadow: '2px 2px 0px #1a1a1a',
+                        boxShadow: '2px 2px 0px var(--ttg-black)',
                       }}
                     >
                       <ArrowUpCircle className="w-3 h-3" /> vs {type}
                     </span>
                   ))
                 ) : (
-                  <span className="text-[10px] font-bold" style={{ color: '#9CA3AF' }}>
+                  <span className="text-[10px] font-bold" style={{ color: 'var(--ttg-rarity-common)' }}>
                     No type advantages
                   </span>
                 )}
@@ -750,7 +750,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                 <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: conditionHex }}>
                   Condition Effect:
                 </span>
-                <span className="text-xs font-bold" style={{ color: '#1a1a1a' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--ttg-black)' }}>
                   {conditionConfig.effect}
                 </span>
               </div>
@@ -762,16 +762,16 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
             className="p-3"
             style={{
               background: 'white',
-              border: '3px solid #1a1a1a',
-              boxShadow: '4px 4px 0px #1a1a1a',
+              border: '3px solid var(--ttg-black)',
+              boxShadow: '4px 4px 0px var(--ttg-black)',
             }}
           >
             <div
               className="text-center font-black text-[10px] uppercase tracking-widest mb-2 py-1"
               style={{
-                background: '#1a1a1a',
-                color: '#FFCC00',
-                border: '2px solid #1a1a1a',
+                background: 'var(--ttg-black)',
+                color: 'var(--ttg-yellow)',
+                border: '2px solid var(--ttg-black)',
               }}
             >
               <Swords className="w-3 h-3 inline mr-1" />
@@ -784,9 +784,9 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               <div
                 className="flex-1 text-center py-2 px-3"
                 style={{
-                  background: '#22C55E',
-                  border: '3px solid #1a1a1a',
-                  boxShadow: '3px 3px 0px #1a1a1a',
+                  background: 'var(--ttg-success)',
+                  border: '3px solid var(--ttg-black)',
+                  boxShadow: '3px 3px 0px var(--ttg-black)',
                 }}
               >
                 <div className="text-xs font-black uppercase" style={{ color: '#1a1a1a90' }}>Wins</div>
@@ -794,7 +794,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                   className="text-3xl font-black leading-none"
                   style={{
                     color: 'white',
-                    textShadow: '2px 2px 0px #1a1a1a40',
+                    textShadow: '2px 2px 0px var(--ttg-black)40',
                   }}
                 >
                   {tazo.battleWins}
@@ -805,9 +805,9 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               <div
                 className="flex-1 text-center py-2 px-3"
                 style={{
-                  background: '#E3350D',
-                  border: '3px solid #1a1a1a',
-                  boxShadow: '3px 3px 0px #1a1a1a',
+                  background: 'var(--ttg-red)',
+                  border: '3px solid var(--ttg-black)',
+                  boxShadow: '3px 3px 0px var(--ttg-black)',
                 }}
               >
                 <div className="text-xs font-black uppercase" style={{ color: '#ffffff90' }}>Losses</div>
@@ -815,7 +815,7 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
                   className="text-3xl font-black leading-none"
                   style={{
                     color: 'white',
-                    textShadow: '2px 2px 0px #1a1a1a40',
+                    textShadow: '2px 2px 0px var(--ttg-black)40',
                   }}
                 >
                   {tazo.battleLosses}
@@ -826,16 +826,16 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               <div
                 className="flex-1 text-center py-2 px-3 flex flex-col items-center justify-center"
                 style={{
-                  background: '#FFCC00',
-                  border: '3px solid #1a1a1a',
-                  boxShadow: '3px 3px 0px #1a1a1a',
+                  background: 'var(--ttg-yellow)',
+                  border: '3px solid var(--ttg-black)',
+                  boxShadow: '3px 3px 0px var(--ttg-black)',
                 }}
               >
                 <div className="text-xs font-black uppercase" style={{ color: '#1a1a1a90' }}>Win %</div>
                 <div
                   className="text-2xl font-black leading-none"
                   style={{
-                    color: '#1a1a1a',
+                    color: 'var(--ttg-black)',
                   }}
                 >
                   {winRate}%
@@ -850,10 +850,10 @@ export default function TazoDetailModal({ tazo, open, onClose, onToggleOwned, on
               onClick={onClose}
               className="mag-btn py-3 px-10 flex items-center justify-center gap-2 text-sm font-black uppercase tracking-wider"
               style={{
-                background: '#1a1a1a',
-                color: '#FFCC00',
-                border: '3px solid #1a1a1a',
-                boxShadow: '3px 3px 0px #1a1a1a',
+                background: 'var(--ttg-black)',
+                color: 'var(--ttg-yellow)',
+                border: '3px solid var(--ttg-black)',
+                boxShadow: '3px 3px 0px var(--ttg-black)',
               }}
             >
               <X className="w-4 h-4" />

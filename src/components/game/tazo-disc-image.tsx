@@ -78,7 +78,7 @@ export default function TazoDiscImage({
   const [imgLoaded, setImgLoaded] = useState(false)
 
   const sizePx = typeof size === "number" ? `${size}px` : size
-  const fallbackBg = franchiseSlug ? (FRANCHISE_FALLBACK_BG[franchiseSlug] || "#FFCC00") : "#FFCC00"
+  const fallbackBg = franchiseSlug ? (FRANCHISE_FALLBACK_BG[franchiseSlug] || "var(--ttg-yellow)") : "var(--ttg-yellow)"
   const fallbackText = franchiseSlug ? (FRANCHISE_FALLBACK_TEXT[franchiseSlug] || "#7C2D12") : "#7C2D12"
   const innerBg = bgColor || (isBack ? "#fff" : fallbackBg)
   const effectiveFinish = finish || "normal"
@@ -158,9 +158,9 @@ export default function TazoDiscImage({
               <span
                 className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight"
                 style={{
-                  color: "#1a1a1a",
+                  color: "var(--ttg-black)",
                   background: "rgba(255,255,255,0.9)",
-                  border: "1px solid #1a1a1a",
+                  border: "1px solid var(--ttg-black)",
                 }}
               >
                 #{number}
@@ -191,9 +191,9 @@ export default function TazoDiscImage({
         <span
           className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-black px-1.5 rounded-sm leading-tight z-10"
           style={{
-            color: "#1a1a1a",
+            color: "var(--ttg-black)",
             background: "rgba(255,255,255,0.92)",
-            border: "1px solid #1a1a1a",
+            border: "1px solid var(--ttg-black)",
           }}
         >
           #{number}

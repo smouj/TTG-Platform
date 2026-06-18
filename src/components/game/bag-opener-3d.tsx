@@ -140,8 +140,8 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
   }, [])
 
   const franchiseColor = useMemo(() => {
-    const c: Record<string, string> = { minimon: "#FFCC00", cybermon: "#3B82F6", dracobell: "#F97316" }
-    return c[franchise] || "#FFCC00"
+    const c: Record<string, string> = { minimon: "var(--ttg-yellow)", cybermon: "var(--ttg-rarity-rare)", dracobell: "#F97316" }
+    return c[franchise] || "var(--ttg-yellow)"
   }, [franchise])
 
   // ═══ Tear constraint: only top 25% of bag (the seal area) ═══
@@ -289,7 +289,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
           <div className="flex flex-col items-center gap-3">
             <div
               className="px-6 py-2 font-black text-[10px] sm:text-xs uppercase tracking-[0.1em] border-[3px] cursor-pointer active:scale-95 transition-transform"
-              style={{ backgroundColor: franchiseColor, color: "#1a1a1a", borderColor: "#1a1a1a", boxShadow: "3px 3px 0px #1a1a1a" }}
+              style={{ backgroundColor: franchiseColor, color: "var(--ttg-black)", borderColor: "var(--ttg-black)", boxShadow: "3px 3px 0px var(--ttg-black)" }}
             >
               ✂ DRAG ACROSS TOP SEAL TO OPEN
             </div>
@@ -297,7 +297,7 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
               onClick={(e) => { e.stopPropagation(); handleSkip() }}
               className="px-4 py-1.5 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.1em] border-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
               style={{
-                background: "#1a1a1a",
+                background: "var(--ttg-black)",
                 color: franchiseColor,
                 borderColor: franchiseColor,
                 boxShadow: `0 0 12px ${franchiseColor}40`,
@@ -310,23 +310,23 @@ export default function BagOpener3D({ bag, frontUrl: propFrontUrl, backUrl: prop
         {stage === "tearing" && (
           <div className="flex items-center gap-2.5 w-full max-w-[280px]">
             <div className="flex-1">
-              <div className="h-2.5 bg-[#1a1a1a]/8 border border-[#1a1a1a]/8 overflow-hidden rounded-full">
+              <div className="h-2.5 bg-ttg-black/8 border border-ttg-black/8 overflow-hidden rounded-full">
                 <div className="h-full transition-all duration-100 rounded-full"
                   style={{ width: `${Math.round(tearProgress * 100)}%`, background: `linear-gradient(90deg, ${franchiseColor}cc, ${franchiseColor})` }} />
               </div>
             </div>
-            <span className="text-[10px] font-black text-[#1a1a1a]/35 tabular-nums w-7 text-right">{Math.round(tearProgress * 100)}</span>
+            <span className="text-[10px] font-black text-ttg-black/35 tabular-nums w-7 text-right">{Math.round(tearProgress * 100)}</span>
             <button onClick={handleSkip}
-              className="px-2.5 py-1 bg-[#1a1a1a]/5 border border-[#1a1a1a]/10 text-[#1a1a1a]/35 text-[9px] font-black uppercase hover:bg-[#1a1a1a]/10 hover:text-[#1a1a1a]/50 rounded-full transition-all">
+              className="px-2.5 py-1 bg-ttg-black/5 border border-ttg-black/10 text-ttg-black/35 text-[9px] font-black uppercase hover:bg-ttg-black/10 hover:text-ttg-black/50 rounded-full transition-all">
               Skip
             </button>
           </div>
         )}
         {isOpening && (
           <div className="flex flex-col items-center gap-2">
-            <div className="px-5 py-2.5 border-[3px] border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] animate-pulse"
+            <div className="px-5 py-2.5 border-[3px] border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] animate-pulse"
               style={{ backgroundColor: `${franchiseColor}f0` }}>
-              <span className="font-black text-[11px] text-[#1a1a1a] uppercase tracking-[0.15em]">Opening…</span>
+              <span className="font-black text-[11px] text-ttg-black uppercase tracking-[0.15em]">Opening…</span>
             </div>
             {/* Particle burst rings */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">

@@ -23,9 +23,9 @@ const TUBE_TEXTURES: Record<string, string> = {
 }
 
 const FRANCHISE_COLORS: Record<string, string> = {
-  minimon: "#FFCC00",
+  minimon: "var(--ttg-yellow)",
   cybermon: "#00B4D8",
-  dracobell: "#FF6B00",
+  dracobell: "var(--ttg-dracobell)",
 }
 
 // ── Card that flies from tube to hand ──
@@ -114,8 +114,8 @@ export default function BattleDeckTube({
   const groupRef = useRef<THREE.Group>(null!)
   const glowRef = useRef<THREE.Mesh>(null!)
   const textureUrl = TUBE_TEXTURES[franchise] || TUBE_TEXTURES.minimon
-  const tubeColor = FRANCHISE_COLORS[franchise] || "#FFCC00"
-  const color = isPlayer ? tubeColor : "#FF004D"
+  const tubeColor = FRANCHISE_COLORS[franchise] || "var(--ttg-yellow)"
+  const color = isPlayer ? tubeColor : "var(--ttg-opponent)"
 
   const loadedTexture = useLoader(THREE.TextureLoader, textureUrl)
   const texture = useMemo(() => {
@@ -157,7 +157,7 @@ export default function BattleDeckTube({
       const mat = glowRef.current.material as THREE.MeshBasicMaterial
       mat.opacity = 0.12 + Math.sin(Date.now() * 0.003) * 0.05 + (isDrawing ? 0.25 : 0)
       if (isDrawing) {
-        mat.color.set("#FFCC00")
+        mat.color.set("var(--ttg-yellow)")
       } else {
         mat.color.set(color)
       }
@@ -235,7 +235,7 @@ export default function BattleDeckTube({
         <pointLight
           position={[0, TUBE_HEIGHT / 2 + 0.1, 0]}
           intensity={0.8}
-          color="#FFCC00"
+          color="var(--ttg-yellow)"
           distance={4}
         />
       )}
@@ -261,7 +261,7 @@ function CountLabel({ count, total, color, isPlayer, isDrawing }: {
     const c = document.createElement("canvas")
     c.width = 256; c.height = 64
     const ctx = c.getContext("2d")!
-    ctx.fillStyle = isDrawing ? "#FFCC00" : color
+    ctx.fillStyle = isDrawing ? "var(--ttg-yellow)" : color
     ctx.font = "bold 28px monospace"
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"

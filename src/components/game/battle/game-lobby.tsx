@@ -29,7 +29,7 @@ const MODES = [
     icon: Bot,
     title: "Practice",
     desc: "Train against AI — no pressure, build your skills",
-    color: "#22C55E",
+    color: "var(--ttg-success)",
     gradient: "linear-gradient(135deg, #22C55E, #16A34A)",
     badge: "FREE",
     available: true,
@@ -39,7 +39,7 @@ const MODES = [
     icon: Globe,
     title: "Ranked PvP",
     desc: "Competitive matchmaking with leaderboard",
-    color: "#E3350D",
+    color: "var(--ttg-red)",
     gradient: "linear-gradient(135deg, #E3350D, #C62828)",
     badge: "COMING SOON",
     available: false,
@@ -49,7 +49,7 @@ const MODES = [
     icon: Swords,
     title: "Friend Battle",
     desc: "Room code duel with a friend",
-    color: "#3B4CCA",
+    color: "var(--ttg-blue)",
     gradient: "linear-gradient(135deg, #3B4CCA, #283593)",
     badge: "COMING SOON",
     available: false,
@@ -57,7 +57,7 @@ const MODES = [
 ]
 
 function fColor(f: string) {
-  return f === "minimon" ? "#FFCB05" : f === "cybermon" ? "#00A1E9" : "#FF6B00"
+  return f === "minimon" ? "var(--ttg-minimon)" : f === "cybermon" ? "var(--ttg-cybermon)" : "var(--ttg-dracobell)"
 }
 
 export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, onSelectDeck, onStart, isLoading, isAuthenticated }: Props) {
@@ -94,15 +94,15 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
       <div
         className="px-4 py-3 flex flex-wrap items-center gap-3 relative overflow-hidden"
         style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)`,
-          border: "3px solid #1a1a1a",
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.025) 6px, rgba(255,255,255,0.025) 12px), linear-gradient(90deg, var(--ttg-black) 0%, #2a2a2a 100%)`,
+          border: "3px solid var(--ttg-black)",
           boxShadow: "4px 4px 0px #FFCC00",
         }}
       >
-        <Swords className="w-5 h-5 text-[#FFCC00]" />
+        <Swords className="w-5 h-5 text-ttg-yellow" />
         <h1 className="text-sm font-black text-white uppercase tracking-tight">BATTLE ARENA</h1>
         <div className="w-px h-5 bg-white/15" />
-        <span className="text-xs font-black text-[#FFCC00]">
+        <span className="text-xs font-black text-ttg-yellow">
           {selectedDeck ? `${selectedDeck.name} · ${deckTotals.count} tazos` : `${playerTazos.length} TAZOS AVAILABLE`}
         </span>
         <span className="ml-auto text-[9px] font-black text-white/30 uppercase">
@@ -112,10 +112,10 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
 
       {/* ════════════════ DECK SELECTOR ════════════════ */}
       {playerDecks && playerDecks.length > 0 && (
-        <div className="bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] overflow-hidden">
-          <div className="bg-[#1a1a1a] px-4 py-2 flex items-center gap-2">
-            <Layers className="w-3.5 h-3.5 text-[#FFCC00]" />
-            <h3 className="text-[10px] font-black uppercase tracking-widest text-[#FFCC00]">Select Deck</h3>
+        <div className="bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden">
+          <div className="bg-ttg-black px-4 py-2 flex items-center gap-2">
+            <Layers className="w-3.5 h-3.5 text-ttg-yellow" />
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-ttg-yellow">Select Deck</h3>
           </div>
           <div className="p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {playerDecks.map((d) => {
@@ -127,19 +127,19 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
                   onClick={() => onSelectDeck?.(active ? null : d.id)}
                   className={`p-3 border-2 text-left transition-all ${
                     active
-                      ? "border-[#FFCC00] bg-[#FFCB050a] shadow-[2px_2px_0px_#FFCC00]"
-                      : "border-[#1a1a1a]/8 hover:border-[#1a1a1a]/20"
+                      ? "border-ttg-yellow bg-[#FFCB050a] shadow-[2px_2px_0px_var(--ttg-yellow)]"
+                      : "border-ttg-black/8 hover:border-ttg-black/20"
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="font-black text-sm text-[#1a1a1a]">{d.name}</span>
+                    <span className="font-black text-sm text-ttg-black">{d.name}</span>
                     {d.isActive && (
-                      <span className="text-[7px] font-black text-[#FFCC00] border border-[#FFCC00]/30 bg-[#FFCB0508] px-1 py-0.5 uppercase">
+                      <span className="text-[7px] font-black text-ttg-yellow border border-ttg-yellow/30 bg-[#FFCB0508] px-1 py-0.5 uppercase">
                         Active
                       </span>
                     )}
                   </div>
-                  <div className="text-[9px] font-bold text-[#1a1a1a]/30 mt-0.5">
+                  <div className="text-[9px] font-bold text-ttg-black/30 mt-0.5">
                     {count} tazos {count < 5 ? `(need ${5 - count} more)` : "· Battle ready"}
                   </div>
                 </button>
@@ -161,24 +161,24 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
               disabled={!opt.available}
               className={`relative p-4 text-left border-3 transition-all group ${
                 active
-                  ? "bg-white border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] -translate-x-0.5 -translate-y-0.5"
+                  ? "bg-white border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] -translate-x-0.5 -translate-y-0.5"
                   : opt.available
-                  ? "bg-white/70 border-[#1a1a1a]/12 hover:border-[#1a1a1a]/40 hover:bg-white hover:shadow-[2px_2px_0px_#1a1a1a]"
+                  ? "bg-white/70 border-ttg-black/12 hover:border-ttg-black/40 hover:bg-white hover:shadow-[2px_2px_0px_var(--ttg-black)]"
                   : "bg-zinc-50 border-zinc-200 opacity-50 cursor-not-allowed"
               }`}
             >
               {/* Badge */}
               <span className={`absolute -top-2 -right-2 text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 border-2 ${
-                active ? "bg-[#1a1a1a] text-white border-[#1a1a1a]" :
-                opt.available ? "border-[#1a1a1a]/15 text-[#1a1a1a]/25" :
+                active ? "bg-ttg-black text-white border-ttg-black" :
+                opt.available ? "border-ttg-black/15 text-ttg-black/25" :
                 "border-zinc-300 text-zinc-400"
               }`}>
                 {opt.badge}
               </span>
 
               <Icon className="w-5 h-5 mb-2.5" style={{ color: active ? opt.color : "#1a1a1a20" }} />
-              <h3 className="font-black text-xs uppercase text-[#1a1a1a] mb-1">{opt.title}</h3>
-              <p className="text-[9px] font-bold text-[#1a1a1a]/35">{opt.desc}</p>
+              <h3 className="font-black text-xs uppercase text-ttg-black mb-1">{opt.title}</h3>
+              <p className="text-[9px] font-bold text-ttg-black/35">{opt.desc}</p>
 
               {active && (
                 <div className="absolute bottom-0 left-0 right-0 h-1.5" style={{ background: opt.gradient }} />
@@ -190,10 +190,10 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
 
       {/* ════════════════ AI DIFFICULTY ════════════════ */}
       {mode === "practice" && (
-        <div className="bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] overflow-hidden">
-          <div className="bg-[#1a1a1a] px-4 py-2 flex items-center gap-2">
-            <Bot className="w-3.5 h-3.5 text-[#FFCC00]" />
-            <h3 className="text-[10px] font-black uppercase tracking-widest text-[#FFCC00]">AI Difficulty</h3>
+        <div className="bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden">
+          <div className="bg-ttg-black px-4 py-2 flex items-center gap-2">
+            <Bot className="w-3.5 h-3.5 text-ttg-yellow" />
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-ttg-yellow">AI Difficulty</h3>
           </div>
           <div className="p-3 grid grid-cols-3 gap-2">
             {(["novice", "skilled", "master"] as AIDifficulty[]).map(d => (
@@ -202,12 +202,12 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
                 onClick={() => setDifficulty(d)}
                 className={`p-3 border-2 text-center transition-all capitalize ${
                   difficulty === d
-                    ? "border-[#FFCC00] bg-[#FFCB0508] shadow-[2px_2px_0px_#FFCC00]"
-                    : "border-[#1a1a1a]/8 hover:border-[#1a1a1a]/30"
+                    ? "border-ttg-yellow bg-[#FFCB0508] shadow-[2px_2px_0px_var(--ttg-yellow)]"
+                    : "border-ttg-black/8 hover:border-ttg-black/30"
                 }`}
               >
-                <div className="font-black text-sm text-[#1a1a1a]">{d}</div>
-                <div className="text-[9px] font-bold text-[#1a1a1a]/25 mt-0.5">
+                <div className="font-black text-sm text-ttg-black">{d}</div>
+                <div className="text-[9px] font-bold text-ttg-black/25 mt-0.5">
                   {d === "novice" ? "Chill" : d === "skilled" ? "Fair fight" : "Expert"}
                 </div>
               </button>
@@ -217,16 +217,16 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
       )}
 
       {/* ════════════════ SELECTED DECK ════════════════ */}
-      <div className="bg-white border-3 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a] overflow-hidden">
-        <div className="mag-card-yellow px-4 py-2.5 flex items-center justify-between border-b-3 border-[#1a1a1a]">
+      <div className="bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden">
+        <div className="mag-card-yellow px-4 py-2.5 flex items-center justify-between border-b-3 border-ttg-black">
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-[#1a1a1a]" />
-            <h3 className="text-xs font-black uppercase tracking-wider text-[#1a1a1a]">
+            <Layers className="w-4 h-4 text-ttg-black" />
+            <h3 className="text-xs font-black uppercase tracking-wider text-ttg-black">
               {selectedDeck ? `Selected: ${selectedDeck.name}` : "Select a Deck"}
             </h3>
           </div>
           {selectedDeck && (
-            <span className="text-[8px] font-black text-[#22C55E] uppercase">✓ {deckTotals.count} tazos loaded</span>
+            <span className="text-[8px] font-black text-ttg-success uppercase">✓ {deckTotals.count} tazos loaded</span>
           )}
         </div>
 
@@ -236,21 +236,21 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
               {/* Tube stats */}
               <div className="flex flex-wrap items-center gap-1.5">
                 {([
-                  { icon: Zap, label: "ATK", value: deckTotals.atk, color: "#E3350D" },
-                  { icon: Shield, label: "DEF", value: deckTotals.def, color: "#3B4CCA" },
-                  { icon: Crosshair, label: "PRC", value: deckTotals.prc, color: "#A855F7" },
-                  { icon: Star, label: "SPD+SPN", value: deckTotals.spd + deckTotals.spn, color: "#F59E0B" },
+                  { icon: Zap, label: "ATK", value: deckTotals.atk, color: "var(--ttg-red)" },
+                  { icon: Shield, label: "DEF", value: deckTotals.def, color: "var(--ttg-blue)" },
+                  { icon: Crosshair, label: "PRC", value: deckTotals.prc, color: "var(--ttg-purple)" },
+                  { icon: Star, label: "SPD+SPN", value: deckTotals.spd + deckTotals.spn, color: "var(--ttg-warning)" },
                 ]).map(s => (
                   <div key={s.label}
-                    className="flex items-center gap-1 px-2.5 py-1 bg-white border-2 border-[#1a1a1a]/10 text-[10px] font-black shadow-[1px_1px_0px_#1a1a1a08]">
+                    className="flex items-center gap-1 px-2.5 py-1 bg-white border-2 border-ttg-black/10 text-[10px] font-black shadow-[1px_1px_0px_#1a1a1a08]">
                     <span style={{ color: s.color }}>
                       <s.icon className="w-3 h-3" />
                     </span>
-                    <span className="text-[#1a1a1a]/30">{s.label}</span>
-                    <span className="text-[#1a1a1a] text-xs">{s.value}</span>
+                    <span className="text-ttg-black/30">{s.label}</span>
+                    <span className="text-ttg-black text-xs">{s.value}</span>
                   </div>
                 ))}
-                <span className="ml-auto text-[8px] font-black text-[#1a1a1a]/20 uppercase">
+                <span className="ml-auto text-[8px] font-black text-ttg-black/20 uppercase">
                   {deckTotals.count} tazos
                 </span>
               </div>
@@ -258,18 +258,18 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
               {/* Tazo mini chips */}
               <div className="flex gap-1 flex-wrap max-h-[80px] overflow-y-auto">
                 {selectedDeck.tazos?.slice(0, 20).map((t: any) => (
-                  <div key={t.id} className="flex items-center gap-1 p-1 border-2 border-[#1a1a1a]/8 bg-[#fffef0]">
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ background: "#1a1a1a" }}>
+                  <div key={t.id} className="flex items-center gap-1 p-1 border-2 border-ttg-black/8 bg-[#fffef0]">
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ background: "var(--ttg-black)" }}>
                       <TazoDiscImage src={t.imageUrl} alt={t.name} size="100%" borderWidth={0}
                         franchiseSlug={t.franchiseSlug} lazy className="w-full h-full" />
                     </div>
-                    <span className="text-[7px] font-black text-[#1a1a1a] truncate max-w-[60px]">{t.displayName || t.name}</span>
+                    <span className="text-[7px] font-black text-ttg-black truncate max-w-[60px]">{t.displayName || t.name}</span>
                   </div>
                 ))}
               </div>
             </>
           ) : (
-            <p className="text-center text-[11px] font-bold text-[#1a1a1a]/25 py-6">
+            <p className="text-center text-[11px] font-bold text-ttg-black/25 py-6">
               {playerDecks && playerDecks.length > 0
                 ? "Pick a Deck above to see its stats"
                 : "Create a Deck in Decks first!"}
@@ -297,9 +297,9 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
             onStart(mode, difficulty, deckTazos)
           }}
           disabled={!canStart || isLoading}
-          className={`px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-3 border-[#1a1a1a] transition-all ${
+          className={`px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-3 border-ttg-black transition-all ${
             canStart
-              ? "bg-[#E3350D] text-white shadow-[4px_4px_0px_#1a1a1a] hover:shadow-[2px_2px_0px_#1a1a1a] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px]"
+              ? "bg-ttg-red text-white shadow-[4px_4px_0px_var(--ttg-black)] hover:shadow-[2px_2px_0px_var(--ttg-black)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px]"
               : "bg-zinc-300 text-zinc-500 cursor-not-allowed shadow-none"
           }`}
         >
@@ -324,7 +324,7 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
         </button>
 
         {mode !== "practice" && !canStart && (
-          <p className="text-[10px] font-bold text-[#E3350D] mt-2">PvP modes coming in a future update</p>
+          <p className="text-[10px] font-bold text-ttg-red mt-2">PvP modes coming in a future update</p>
         )}
       </div>
     </div>

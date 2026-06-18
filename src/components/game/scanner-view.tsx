@@ -481,7 +481,7 @@ export function ScannerView() {
                   TAZO SCANNER
                 </h2>
                 <p className="text-sm font-bold text-white drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]">
-                  <Zap className="w-4 h-4 inline text-[#FFCC00]" /> SCAN YOUR REAL TAZOS! <Zap className="w-4 h-4 inline text-[#FFCC00]" />
+                  <Zap className="w-4 h-4 inline text-ttg-yellow" /> SCAN YOUR REAL TAZOS! <Zap className="w-4 h-4 inline text-ttg-yellow" />
                 </p>
               </div>
             </div>

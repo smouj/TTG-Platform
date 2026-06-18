@@ -22,7 +22,7 @@ export default function BattleSideStack({
   side, isActive, playerType,
 }: Props) {
   const isPlayer = playerType === "player"
-  const accentColor = isPlayer ? "#29ADFF" : "#FF004D"
+  const accentColor = isPlayer ? "var(--ttg-player)" : "var(--ttg-opponent)"
   const lossCount = totalTazos - remainingTazos - capturedTazos
 
   return (
@@ -95,10 +95,10 @@ export default function BattleSideStack({
         {/* Captured / Lost — editorial footnote */}
         <div className="flex items-center gap-3 text-[7px] font-black">
           {capturedTazos > 0 && (
-            <span className="text-[#22C55E]/40">◈ {capturedTazos}</span>
+            <span className="text-ttg-success/40">◈ {capturedTazos}</span>
           )}
           {lossCount > 0 && (
-            <span className="text-[#FF004D]/30">✕ {lossCount}</span>
+            <span className="text-ttg-opponent/30">✕ {lossCount}</span>
           )}
         </div>
       </div>

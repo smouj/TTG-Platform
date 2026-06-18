@@ -19,14 +19,14 @@ const STEPS: TutorialStep[] = [
     id: "welcome",
     title: "Welcome to the Arena!",
     description: "Two trainers face off. Each round you bet a tazo, then slam it into the arena to knock out your opponent's tazos. Last trainer standing wins!",
-    icon: <Swords className="w-8 h-8 text-[#FFCC00]" />,
+    icon: <Swords className="w-8 h-8 text-ttg-yellow" />,
     position: "center",
   },
   {
     id: "betting",
     title: "Pick your fighter",
     description: "Click a tazo from your hand at the bottom to stake it. Higher stats mean better aim and impact. Choose wisely — you can't use a knocked-out tazo again!",
-    icon: <Hand className="w-8 h-8 text-[#FFCC00]" />,
+    icon: <Hand className="w-8 h-8 text-ttg-yellow" />,
     position: "bottom",
     highlight: "battle-hand",
   },
@@ -34,7 +34,7 @@ const STEPS: TutorialStep[] = [
     id: "aiming",
     title: "Lock your target",
     description: "Move the reticle to aim at the opponent's stack. The closer you are to their tazos, the more damage you'll deal. Precision matters!",
-    icon: <Crosshair className="w-8 h-8 text-[#FFCC00]" />,
+    icon: <Crosshair className="w-8 h-8 text-ttg-yellow" />,
     position: "center",
     highlight: "battle-arena",
   },
@@ -42,7 +42,7 @@ const STEPS: TutorialStep[] = [
     id: "charging",
     title: "Charge your slam",
     description: "Hold and release to build power. The sweet spot is around 60-80% — too weak and you'll miss, too strong and you'll lose control!",
-    icon: <Zap className="w-8 h-8 text-[#FFCC00]" />,
+    icon: <Zap className="w-8 h-8 text-ttg-yellow" />,
     position: "bottom",
     highlight: "battle-hud",
   },
@@ -50,7 +50,7 @@ const STEPS: TutorialStep[] = [
     id: "slamming",
     title: "Release to SLAM!",
     description: "Let go to launch your tazo. Watch it fly across the arena and crash into the opponent's stack. Each impact can score points or knock out tazos!",
-    icon: <ArrowDown className="w-8 h-8 text-[#FFCC00]" />,
+    icon: <ArrowDown className="w-8 h-8 text-ttg-yellow" />,
     position: "center",
     highlight: "battle-arena",
   },
@@ -58,7 +58,7 @@ const STEPS: TutorialStep[] = [
     id: "scoring",
     title: "Score & Survive",
     description: "Deal damage to earn points. Knock out all opponent tazos to win the match instantly! Your score and remaining tazos are shown at the top.",
-    icon: <Target className="w-8 h-8 text-[#FFCC00]" />,
+    icon: <Target className="w-8 h-8 text-ttg-yellow" />,
     position: "top",
     highlight: "battle-hud",
   },
@@ -148,7 +148,7 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
               <div
                 key={i}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === step ? "bg-[#FFCC00] w-4" : i < step ? "bg-[#FFCC00]/50" : "bg-white/20"
+                  i === step ? "bg-ttg-yellow w-4" : i < step ? "bg-ttg-yellow/50" : "bg-white/20"
                 }`}
               />
             ))}
@@ -158,7 +158,7 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
           <div className="flex justify-center mb-3">{current.icon}</div>
 
           {/* Content */}
-          <h3 className="text-lg font-black text-[#FFCC00] text-center mb-2">{current.title}</h3>
+          <h3 className="text-lg font-black text-ttg-yellow text-center mb-2">{current.title}</h3>
           <p className="text-xs text-white/60 text-center leading-relaxed mb-5">{current.description}</p>
 
           {/* Actions */}
@@ -172,7 +172,7 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
             <div className="flex gap-2">
               <button
                 onClick={handleNext}
-                className="px-5 py-2.5 bg-[#FFCC00] text-black text-xs font-black uppercase tracking-wider hover:bg-[#FFD940] transition-colors flex items-center gap-1.5 shadow-lg shadow-[#FFCC00]/20"
+                className="px-5 py-2.5 bg-ttg-yellow text-black text-xs font-black uppercase tracking-wider hover:bg-[#FFD940] transition-colors flex items-center gap-1.5 shadow-lg shadow-[#FFCC00]/20"
               >
                 {isLast ? "Let's Go!" : "Next"} <ChevronRight className="w-3.5 h-3.5" />
               </button>

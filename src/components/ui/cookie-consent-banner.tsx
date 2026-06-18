@@ -52,10 +52,10 @@ export default function CookieConsentBanner() {
   return (
     <div
       className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-4"
-      style={{ background: "#fffef0", borderTop: "4px solid #1a1a1a" }}
+      style={{ background: "#fffef0", borderTop: "4px solid var(--ttg-black)" }}
     >
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-        <p className="flex-1 text-[10px] sm:text-[11px] font-bold text-[#1a1a1a]/70 leading-relaxed">
+        <p className="flex-1 text-[10px] sm:text-[11px] font-bold text-ttg-black/70 leading-relaxed">
           We use essential cookies for login and gameplay.
           {ADSENSE_ENABLED ? (
             <> Ad partners use cookies to show relevant ads and measure performance.</>
@@ -63,13 +63,13 @@ export default function CookieConsentBanner() {
             <> No tracking, no ads, no third-party cookies.</>
           )}
           <br className="hidden sm:block" />
-          <span className="text-[#1a1a1a]/40">
+          <span className="text-ttg-black/40">
             By continuing, you agree to our{" "}
-            <Link href="/?page=privacy" className="underline hover:text-[#E3350D]">Privacy Policy</Link>
+            <Link href="/?page=privacy" className="underline hover:text-ttg-red">Privacy Policy</Link>
             ,{" "}
-            <Link href="/?page=cookies" className="underline hover:text-[#E3350D]">Cookie Policy</Link>
+            <Link href="/?page=cookies" className="underline hover:text-ttg-red">Cookie Policy</Link>
             , and{" "}
-            <Link href="/?page=terms" className="underline hover:text-[#E3350D]">Terms</Link>.
+            <Link href="/?page=terms" className="underline hover:text-ttg-red">Terms</Link>.
           </span>
         </p>
         <div className="flex items-center gap-2 shrink-0">
@@ -77,7 +77,7 @@ export default function CookieConsentBanner() {
             <button
               type="button"
               onClick={() => { grantConsent(false); setShowBanner(false) }}
-              className="px-4 py-2.5 text-xs font-black uppercase tracking-wider border-2 border-[#1a1a1a] text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors cursor-pointer"
+              className="px-4 py-2.5 text-xs font-black uppercase tracking-wider border-2 border-ttg-black text-ttg-black/50 hover:text-ttg-black transition-colors cursor-pointer"
             >
               Essential Only
             </button>
@@ -85,7 +85,7 @@ export default function CookieConsentBanner() {
           <button
             type="button"
             onClick={() => { grantConsent(true); setShowBanner(false) }}
-            className="shrink-0 bg-[#22C55E] text-white px-6 py-2.5 text-xs font-black uppercase tracking-widest border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+            className="shrink-0 bg-ttg-success text-white px-6 py-2.5 text-xs font-black uppercase tracking-widest border-2 border-ttg-black shadow-[2px_2px_0px_var(--ttg-black)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
           >
             {ADSENSE_ENABLED ? "Accept All" : "Got It"}
           </button>

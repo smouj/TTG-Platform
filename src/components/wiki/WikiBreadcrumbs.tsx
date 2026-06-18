@@ -32,19 +32,19 @@ export default function WikiBreadcrumbs({
 
   return (
     <nav aria-label="Breadcrumb" className="mb-4">
-      <ol className="flex flex-wrap items-center gap-1 text-xs font-bold text-[#1a1a1a]/60">
+      <ol className="flex flex-wrap items-center gap-1 text-xs font-bold text-ttg-black/60">
         {crumbs.map((crumb, i) => (
           <li key={crumb.href} className="flex items-center gap-1">
             {i > 0 && <ChevronRight className="w-3 h-3" />}
             {i < crumbs.length - 1 ? (
               <Link
                 href={crumb.href}
-                className="hover:text-[#1a1a1a] hover:underline transition-colors"
+                className="hover:text-ttg-black hover:underline transition-colors"
               >
                 {crumb.label}
               </Link>
             ) : (
-              <span className="text-[#1a1a1a]/90">{crumb.label}</span>
+              <span className="text-ttg-black/90">{crumb.label}</span>
             )}
           </li>
         ))}

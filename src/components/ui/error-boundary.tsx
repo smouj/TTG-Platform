@@ -36,17 +36,17 @@ export default class ErrorBoundary extends React.Component<
 
       return (
         <div className="min-h-[60vh] flex items-center justify-center p-6">
-          <div className="mag-card max-w-md w-full p-8 border-3 border-[#E3350D] shadow-[6px_6px_0px_#E3350D] bg-white">
+          <div className="mag-card max-w-md w-full p-8 border-3 border-ttg-red shadow-[6px_6px_0px_var(--ttg-red)] bg-white">
             <div className="text-center space-y-4">
-              <div className="text-5xl"><AlertTriangle className="w-12 h-12 text-[#E3350D] mx-auto" /></div>
-              <h2 className="text-xl font-black uppercase tracking-wider text-[#1a1a1a]">
+              <div className="text-5xl"><AlertTriangle className="w-12 h-12 text-ttg-red mx-auto" /></div>
+              <h2 className="text-xl font-black uppercase tracking-wider text-ttg-black">
                 Something broke
               </h2>
-              <p className="text-sm text-[#1a1a1a]/60 font-bold">
+              <p className="text-sm text-ttg-black/60 font-bold">
                 An unexpected error occurred while rendering this page.
               </p>
               {this.state.error && (
-                <details className="text-left text-xs bg-red-50 border border-red-200 p-2 text-[#E3350D]">
+                <details className="text-left text-xs bg-red-50 border border-red-200 p-2 text-ttg-red">
                   <summary className="font-bold cursor-pointer">
                     {this.state.error.message}
                   </summary>
@@ -66,7 +66,7 @@ export default class ErrorBoundary extends React.Component<
               </button>
               <button
                 onClick={() => (window.location.href = "/")}
-                className="mag-button w-full text-sm font-black uppercase tracking-wider border-2 border-[#1a1a1a] bg-white text-[#1a1a1a]"
+                className="mag-button w-full text-sm font-black uppercase tracking-wider border-2 border-ttg-black bg-white text-ttg-black"
               >
                 Go Home
               </button>

@@ -144,7 +144,7 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
       }`}>
         <div className="relative w-56 sm:w-72 h-3 border-2 border-ttg-black overflow-hidden"
           style={{
-            background: "repeating-linear-gradient(-45deg, #FFCC00, #FFCC00 6px, #F0A800 6px, #F0A800 12px)",
+            background: "repeating-linear-gradient(-45deg, var(--ttg-yellow), var(--ttg-yellow) 6px, #F0A800 6px, #F0A800 12px)",
           }}>
           <div className="absolute inset-0 bg-ttg-black transition-all duration-75"
             style={{ left: `${Math.min(progress, 100)}%` }} />
@@ -275,19 +275,19 @@ function BagPreview({ tazos }: { tazos: any[] }) {
       <div className="flex items-center gap-3">
         {/* Bag types */}
         <div className="flex flex-col gap-1.5 items-center">
-          <div className="w-14 h-16 border-2 border-[#9CA3AF] bg-ttg-rarity-common/5 flex flex-col items-center justify-center relative overflow-hidden"
+          <div className="w-14 h-16 border-2 border-ttg-rarity-common bg-ttg-rarity-common/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #9CA3AF30" }}>
             <span className="text-[7px] font-black text-ttg-rarity-common uppercase mt-1">Std</span>
             <span className="text-[6px] font-bold text-ttg-rarity-common/50">100 CREDITS</span>
-            <div className="absolute -bottom-1 left-0 right-0 h-3 bg-ttg-rarity-common/10 border-t border-[#9CA3AF]/20" />
+            <div className="absolute -bottom-1 left-0 right-0 h-3 bg-ttg-rarity-common/10 border-t border-ttg-rarity-common/20" />
           </div>
         </div>
         <div className="flex flex-col gap-1.5 items-center">
-          <div className="w-14 h-16 border-2 border-[#3B82F6] bg-ttg-rarity-rare/5 flex flex-col items-center justify-center relative overflow-hidden"
+          <div className="w-14 h-16 border-2 border-ttg-rarity-rare bg-ttg-rarity-rare/5 flex flex-col items-center justify-center relative overflow-hidden"
             style={{ boxShadow: "2px 2px 0 #3B82F630" }}>
             <span className="text-[7px] font-black text-ttg-rarity-rare uppercase mt-1">Prem</span>
             <span className="text-[6px] font-bold text-ttg-rarity-rare/50">100 CREDITS</span>
-            <div className="absolute -bottom-1 left-0 right-0 h-3 bg-ttg-rarity-rare/10 border-t border-[#3B82F6]/20" />
+            <div className="absolute -bottom-1 left-0 right-0 h-3 bg-ttg-rarity-rare/10 border-t border-ttg-rarity-rare/20" />
           </div>
         </div>
         <div className="flex flex-col gap-1.5 items-center">
@@ -506,7 +506,7 @@ function FeaturedTazoCard({ tazo, featured }: { tazo: any; featured?: boolean })
   return (
     <>
       <button onClick={() => setOpen(true)}
-        className={`${size} rounded-full border-2 border-ttg-black/10 bg-black/[0.03] transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:border-ttg-black/30 ${featured ? "ring-1 ring-[#FFCC00]/20" : ""}`}
+        className={`${size} rounded-full border-2 border-ttg-black/10 bg-black/[0.03] transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:border-ttg-black/30 ${featured ? "ring-1 ring-ttg-yellow/20" : ""}`}
         style={{ boxShadow: featured ? "2px 4px 8px rgba(0,0,0,0.12)" : "2px 3px 6px rgba(0,0,0,0.08)" }}>
         {tazo.imageUrl ? (
           <TazoDiscImage
@@ -615,7 +615,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
               <div className="absolute inset-0 translate-x-2 translate-y-2 bg-ttg-black transition-transform group-hover/cta:translate-x-3 group-hover/cta:translate-y-3" />
               {/* Button face */}
               <div className="relative px-12 sm:px-16 py-3.5 sm:py-4 border-[3px] border-ttg-black flex items-center gap-3"
-                style={{ background: hoverPlay ? "linear-gradient(180deg, #FFE566 0%, #FFD700 50%, #FFCC00 100%)" : "linear-gradient(180deg, #FFCC00 0%, #E6B800 100%)" }}>
+                style={{ background: hoverPlay ? "linear-gradient(180deg, #FFE566 0%, #FFD700 50%, var(--ttg-yellow) 100%)" : "linear-gradient(180deg, var(--ttg-yellow) 0%, #E6B800 100%)" }}>
                 <span className="text-lg sm:text-xl font-black text-ttg-black uppercase tracking-[0.12em]">PLAY NOW</span>
                 <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-ttg-black group-hover/cta:animate-pulse" />
               </div>
@@ -1506,7 +1506,7 @@ function ShopContent() {
 
       {/* CTA */}
       <section className="mag-card border-3 border-ttg-black bg-white p-6 sm:p-8 text-center space-y-4 relative overflow-hidden" style={{ boxShadow: "6px 6px 0px #FFCC0040" }}>
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 2px, transparent 2px, transparent 12px)" }} />
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, var(--ttg-black) 0px, var(--ttg-black) 2px, transparent 2px, transparent 12px)" }} />
         <div className="relative z-10 space-y-3">
           <h3 className="text-lg sm:text-2xl font-black text-ttg-black uppercase tracking-tight">Ready to Start Collecting?</h3>
           <p className="text-sm text-ttg-black/50 font-bold max-w-md mx-auto">Sign up free and get starter CREDITS + 30 welcome bags to open. Collect, trade, and battle with 150 tazos across 3 series.</p>
@@ -1581,7 +1581,7 @@ function LeaderboardContent() {
           <button key={s.key} onClick={() => setSort(s.key)}
             className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase border-2 transition-all ${
               sort === s.key
-                ? "bg-ttg-black text-white border-ttg-black shadow-[2px_2px_0px_#FFCC00]"
+                ? "bg-ttg-black text-white border-ttg-black shadow-[2px_2px_0px_var(--ttg-yellow)]"
                 : "bg-white text-ttg-black border-ttg-black/15"
             }`}><s.icon className="w-3.5 h-3.5" /> {s.label}</button>
         ))}

@@ -41,15 +41,15 @@ const TUBE_TEXTURES: Record<string, string> = {
 export { TUBE_TEXTURES }
 
 export const TUBE_TEXTURE_OPTIONS = [
-  { slug: "minimon", name: "Minimon", textureUrl: TUBE_TEXTURES.minimon, color: "#FFCC00" },
+  { slug: "minimon", name: "Minimon", textureUrl: TUBE_TEXTURES.minimon, color: "var(--ttg-yellow)" },
   { slug: "cybermon", name: "Cybermon", textureUrl: TUBE_TEXTURES.cybermon, color: "#00B4D8" },
-  { slug: "dracobell", name: "Dracobell", textureUrl: TUBE_TEXTURES.dracobell, color: "#FF6B00" },
+  { slug: "dracobell", name: "Dracobell", textureUrl: TUBE_TEXTURES.dracobell, color: "var(--ttg-dracobell)" },
 ]
 
 const FRANCHISE_COLORS: Record<string, string> = {
-  minimon: "#FFCC00",
+  minimon: "var(--ttg-yellow)",
   cybermon: "#00B4D8",
-  dracobell: "#E3350D",
+  dracobell: "var(--ttg-red)",
 }
 
 function getTubeTexture(tazos: TubeTazo[]): string {
@@ -66,18 +66,18 @@ function getFranchiseColor(tazos: TubeTazo[]): string {
     const slug = t.franchiseSlug || t.franchise || ""
     if (slug && FRANCHISE_COLORS[slug]) return FRANCHISE_COLORS[slug]
   }
-  return "#FFCC00"
+  return "var(--ttg-yellow)"
 }
 
 function TubeLoadingFallback() {
   return (
-    <div className="bg-[#1a1a1a]/5 animate-pulse"
+    <div className="bg-ttg-black/5 animate-pulse"
       style={{ width: 120, height: 180 }} />
   )
 }
 
 export default function BattleTubePreview({
-  name, color = "#E3350D", textureUrl, count = 0, maxCount = 20,
+  name, color = "var(--ttg-red)", textureUrl, count = 0, maxCount = 20,
   tazos = [],
   size = "md", showLabel = true,
   className = "",
@@ -136,7 +136,7 @@ export default function BattleTubePreview({
                   <div key={i} style={{
                     width: 28, height: 28, borderRadius: "50%",
                     background: `url(${url}) center/cover`,
-                    border: "2px solid #1a1a1a",
+                    border: "2px solid var(--ttg-black)",
                     boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
                   }} />
                 ))}
@@ -154,7 +154,7 @@ export default function BattleTubePreview({
       {/* ═══ LABEL / STICKER ═══ */}
       {showLabel && (
         <div
-          className="relative -mt-1 border-2 border-[#1a1a1a] flex-shrink-0"
+          className="relative -mt-1 border-2 border-ttg-black flex-shrink-0"
           style={{
             width: s.width + 14,
             padding: "4px 6px",
@@ -162,7 +162,7 @@ export default function BattleTubePreview({
               -30deg, transparent, transparent 3px,
               rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 6px
             ), linear-gradient(135deg, ${tubeColor} 0%, ${tubeColor} 100%)`,
-            boxShadow: `2px 2px 0 #1a1a1a`,
+            boxShadow: `2px 2px 0 var(--ttg-black)`,
           }}
         >
           <p className="text-[8px] font-black text-white text-center uppercase tracking-[0.12em] leading-tight truncate"
@@ -178,7 +178,7 @@ export default function BattleTubePreview({
       {/* Fill bar */}
       {maxCount > 0 && (
         <div className="w-full max-w-[80px] mt-1.5">
-          <div className="w-full h-1.5 rounded-full bg-[#1a1a1a]/10 overflow-hidden border border-[#1a1a1a]/10">
+          <div className="w-full h-1.5 rounded-full bg-ttg-black/10 overflow-hidden border border-ttg-black/10">
             <div className="h-full rounded-full transition-all duration-500"
               style={{
                 width: `${fillPct}%`,
@@ -188,7 +188,7 @@ export default function BattleTubePreview({
               }} />
           </div>
           {count >= maxCount && (
-            <p className="text-[7px] font-black text-[#22C55E] text-center uppercase tracking-[0.2em] mt-0.5">Sealed</p>
+            <p className="text-[7px] font-black text-ttg-success text-center uppercase tracking-[0.2em] mt-0.5">Sealed</p>
           )}
         </div>
       )}

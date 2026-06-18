@@ -21,7 +21,7 @@ interface Props {
 }
 
 function fColor(f: string) {
-  return f === "minimon" ? "#FFCB05" : f === "cybermon" ? "#00A1E9" : "#FF6B00"
+  return f === "minimon" ? "var(--ttg-minimon)" : f === "cybermon" ? "var(--ttg-cybermon)" : "var(--ttg-dracobell)"
 }
 
 export default function BattleHand({ hand, phase, selectedId, airborneId, onSelect }: Props) {
@@ -72,7 +72,7 @@ export default function BattleHand({ hand, phase, selectedId, airborneId, onSele
             >
               {/* Selection ring — editorial highlight */}
               {isSelected && (
-                <div className="absolute -inset-1 border-[1.5px] border-[#FFCC00] shadow-[0_0_20px_rgba(255,204,0,0.35)] animate-pulse" />
+                <div className="absolute -inset-1 border-[1.5px] border-ttg-yellow shadow-[0_0_20px_rgba(255,204,0,0.35)] animate-pulse" />
               )}
 
               {/* Hover ring */}
@@ -84,7 +84,7 @@ export default function BattleHand({ hand, phase, selectedId, airborneId, onSele
               <div
                 className="relative w-[56px] h-[56px] sm:w-[64px] sm:h-[64px] overflow-hidden transition-all"
                 style={{
-                  border: `1.5px solid ${isSelected ? "#FFCC00" : isHovered ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)"}`,
+                  border: `1.5px solid ${isSelected ? "var(--ttg-yellow)" : isHovered ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)"}`,
                   background: isSelected
                     ? "linear-gradient(135deg, rgba(255,204,0,0.12), rgba(255,204,0,0.03))"
                     : "linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2))",
@@ -108,7 +108,7 @@ export default function BattleHand({ hand, phase, selectedId, airborneId, onSele
 
                 {/* Selected checkmark — editorial CTA badge */}
                 {isSelected && (
-                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-[#FFCC00] flex items-center justify-center shadow-[0_0_8px_rgba(255,204,0,0.5)]">
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-ttg-yellow flex items-center justify-center shadow-[0_0_8px_rgba(255,204,0,0.5)]">
                     <Check className="w-3 h-3 text-[#0a0a0a]" strokeWidth={4} />
                   </div>
                 )}
@@ -117,7 +117,7 @@ export default function BattleHand({ hand, phase, selectedId, airborneId, onSele
               {/* Card name — editorial caption */}
               <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className={`text-[7px] font-black uppercase tracking-wider transition-colors ${
-                  isSelected ? "text-[#FFCC00]" : isHovered ? "text-white/50" : "text-white/12"
+                  isSelected ? "text-ttg-yellow" : isHovered ? "text-white/50" : "text-white/12"
                 }`}>
                   {tazo.name}
                 </span>
@@ -130,7 +130,7 @@ export default function BattleHand({ hand, phase, selectedId, airborneId, onSele
       {/* CTA prompt — editorial kicker */}
       {isBetting && !selectedId && (
         <div className="flex justify-center mt-2">
-          <span className="text-[8px] font-black text-[#FFCC00]/30 bg-black/40 backdrop-blur-sm px-4 py-1 rounded-full border border-[#FFCC00]/10 animate-pulse tracking-wider uppercase">
+          <span className="text-[8px] font-black text-ttg-yellow/30 bg-black/40 backdrop-blur-sm px-4 py-1 rounded-full border border-ttg-yellow/10 animate-pulse tracking-wider uppercase">
             Choose wisely — higher stats = better slam
           </span>
         </div>

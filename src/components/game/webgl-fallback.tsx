@@ -35,11 +35,11 @@ export default function WebGLFallback({ onRetry, fullPage = false }: WebGLFallba
       <div className="relative z-10 flex flex-col items-center gap-5 max-w-sm text-center">
         {/* Icon */}
         <div className="relative">
-          <div className="w-24 h-24 rounded-full border-[4px] border-[#FFCC00]/20 bg-[#FFCC00]/5 flex items-center justify-center">
-            <Monitor className="w-10 h-10 text-[#FFCC00]/60" />
+          <div className="w-24 h-24 rounded-full border-[4px] border-ttg-yellow/20 bg-ttg-yellow/5 flex items-center justify-center">
+            <Monitor className="w-10 h-10 text-ttg-yellow/60" />
           </div>
           {/* Crosshair ring */}
-          <div className="absolute -inset-2 rounded-full border-[2px] border-[#FFCC00]/10" />
+          <div className="absolute -inset-2 rounded-full border-[2px] border-ttg-yellow/10" />
         </div>
 
         {/* Title */}
@@ -47,7 +47,7 @@ export default function WebGLFallback({ onRetry, fullPage = false }: WebGLFallba
           <h2 className="text-xl font-black text-white uppercase tracking-[0.1em]">
             3D Arena
           </h2>
-          <p className="text-[10px] font-black text-[#FFCC00]/60 uppercase tracking-[0.3em]">
+          <p className="text-[10px] font-black text-ttg-yellow/60 uppercase tracking-[0.3em]">
             WebGL required
           </p>
         </div>
@@ -61,15 +61,15 @@ export default function WebGLFallback({ onRetry, fullPage = false }: WebGLFallba
         {/* Tips */}
         <div className="space-y-2 w-full">
           <div className="flex items-start gap-2 text-[11px] text-white/25">
-            <span className="text-[#FFCC00]/40 mt-px">•</span>
+            <span className="text-ttg-yellow/40 mt-px">•</span>
             <span>Try Chrome, Firefox, or Edge on desktop</span>
           </div>
           <div className="flex items-start gap-2 text-[11px] text-white/25">
-            <span className="text-[#FFCC00]/40 mt-px">•</span>
+            <span className="text-ttg-yellow/40 mt-px">•</span>
             <span>Make sure hardware acceleration is enabled</span>
           </div>
           <div className="flex items-start gap-2 text-[11px] text-white/25">
-            <span className="text-[#FFCC00]/40 mt-px">•</span>
+            <span className="text-ttg-yellow/40 mt-px">•</span>
             <span>Download the desktop app for best performance</span>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function WebGLFallback({ onRetry, fullPage = false }: WebGLFallba
           </Link>
           <Link
             href="/?page=download"
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#FFCC00] text-black text-xs font-black uppercase tracking-wider hover:bg-[#FFD940] transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-ttg-yellow text-black text-xs font-black uppercase tracking-wider hover:bg-[#FFD940] transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             Desktop App

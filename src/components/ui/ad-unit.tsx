@@ -62,7 +62,7 @@ export default function AdUnit({
     <div className={`w-full flex justify-center ${className}`}>
       <div
         ref={containerRef}
-        className="relative w-full max-w-[728px] border-2 border-[#1a1a1a]/5 bg-[#1a1a1a]/[0.02] overflow-hidden"
+        className="relative w-full max-w-[728px] border-2 border-ttg-black/5 bg-ttg-black/[0.02] overflow-hidden"
         style={{
           minHeight: formatStyles[format]?.minHeight || "50px",
           backgroundImage: "repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(26,26,26,0.015) 4px, rgba(26,26,26,0.015) 8px)",

@@ -24,14 +24,14 @@ function StadiumFloor() {
     ctx.fillRect(0, 0, 1024, 1024)
 
     // Outer ring
-    ctx.strokeStyle = "#FFCC00"
+    ctx.strokeStyle = "var(--ttg-yellow)"
     ctx.lineWidth = 24
     ctx.beginPath()
     ctx.arc(512, 512, 460, 0, Math.PI * 2)
     ctx.stroke()
 
     // Black ring
-    ctx.strokeStyle = "#1a1a1a"
+    ctx.strokeStyle = "var(--ttg-black)"
     ctx.lineWidth = 8
     ctx.beginPath()
     ctx.arc(512, 512, 460, 0, Math.PI * 2)
@@ -44,7 +44,7 @@ function StadiumFloor() {
     ctx.fill()
 
     // Battle zone border
-    ctx.strokeStyle = "#FFCC00"
+    ctx.strokeStyle = "var(--ttg-yellow)"
     ctx.lineWidth = 6
     ctx.beginPath()
     ctx.arc(512, 512, 420, 0, Math.PI * 2)
@@ -63,12 +63,12 @@ function StadiumFloor() {
 
     // Score zones
     ctx.setLineDash([])
-    ctx.strokeStyle = "#E3350D"
+    ctx.strokeStyle = "var(--ttg-red)"
     ctx.lineWidth = 2
     ctx.beginPath()
     ctx.arc(512, 512, 210, 0, Math.PI * 2)
     ctx.stroke()
-    ctx.strokeStyle = "#3B4CCA"
+    ctx.strokeStyle = "var(--ttg-blue)"
     ctx.lineWidth = 2
     ctx.beginPath()
     ctx.arc(512, 512, 70, 0, Math.PI * 2)
@@ -123,8 +123,8 @@ function HolographicRing() {
     <mesh ref={ringRef} position={[0, 1.8, 0]} rotation={[Math.PI / 3, 0, 0]}>
       <torusGeometry args={[4.2, 0.06, 32, 128]} />
       <meshStandardMaterial
-        color="#FFCC00"
-        emissive="#FFCC00"
+        color="var(--ttg-yellow)"
+        emissive="var(--ttg-yellow)"
         emissiveIntensity={0.6}
         roughness={0.2}
         metalness={0.9}
@@ -174,7 +174,7 @@ function BattleTazo({
       <mesh position={[0, -0.6, 0]} rotation={[Math.PI / -2, 0, 0]}>
         <circleGeometry args={[0.6, 32]} />
         <meshBasicMaterial
-          color="#1a1a1a"
+          color="var(--ttg-black)"
           transparent
           opacity={0.2}
           depthWrite={false}
@@ -212,7 +212,7 @@ function StatLabel({
       anchorX="center"
       anchorY="middle"
       outlineWidth={0.01}
-      outlineColor="#1a1a1a"
+      outlineColor="var(--ttg-black)"
       font="/fonts/Geist-Bold.ttf"
     >
       {`${label}: ${value}`}
@@ -315,11 +315,11 @@ function BattleScene({
         angle={0.5}
         penumbra={0.5}
         intensity={2}
-        color="#FFCC00"
+        color="var(--ttg-yellow)"
         castShadow
       />
-      <pointLight position={[-4, 2, 3]} intensity={0.4} color="#E3350D" />
-      <pointLight position={[4, 2, -3]} intensity={0.4} color="#3B4CCA" />
+      <pointLight position={[-4, 2, 3]} intensity={0.4} color="var(--ttg-red)" />
+      <pointLight position={[4, 2, -3]} intensity={0.4} color="var(--ttg-blue)" />
 
       {/* Stadium elements */}
       <StadiumFloor />
@@ -344,8 +344,8 @@ function BattleScene({
       )}
 
       {/* HP bars as 3D text */}
-      <StatLabel label="YOU" value={`${playerHP} HP`} position={[0, 0.2, -3.2]} color="#E3350D" />
-      <StatLabel label="OPPONENT" value={`${opponentHP} HP`} position={[0, 0.2, 3.2]} color="#3B4CCA" />
+      <StatLabel label="YOU" value={`${playerHP} HP`} position={[0, 0.2, -3.2]} color="var(--ttg-red)" />
+      <StatLabel label="OPPONENT" value={`${opponentHP} HP`} position={[0, 0.2, 3.2]} color="var(--ttg-blue)" />
 
       <ContactShadows position={[0, -0.05, 0]} opacity={0.3} scale={10} blur={2} />
       <OrbitControls

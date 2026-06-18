@@ -94,36 +94,36 @@ export default function CreatureViewer({
   const displayUrl = previewUrl || creatureUrl;
 
   return (
-    <div className={`mag-card p-3 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] ${className}`}>
+    <div className={`mag-card p-3 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] ${className}`}>
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-[10px] font-black uppercase tracking-wider text-[#1a1a1a] flex items-center gap-1.5">
+        <h3 className="text-[10px] font-black uppercase tracking-wider text-ttg-black flex items-center gap-1.5">
           <Scissors className="w-3.5 h-3.5" /> Creature Art
         </h3>
         <div className="flex items-center gap-1">
           <button
             onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}
-            className="p-1 rounded hover:bg-[#1a1a1a]/5 text-[#1a1a1a]/30"
+            className="p-1 rounded hover:bg-ttg-black/5 text-ttg-black/30"
             disabled={!displayUrl}
           >
             <ZoomOut className="w-3 h-3" />
           </button>
-          <span className="text-[8px] font-bold text-[#1a1a1a]/20 w-8 text-center">{zoom.toFixed(1)}x</span>
+          <span className="text-[8px] font-bold text-ttg-black/20 w-8 text-center">{zoom.toFixed(1)}x</span>
           <button
             onClick={() => setZoom((z) => Math.min(3, z + 0.25))}
-            className="p-1 rounded hover:bg-[#1a1a1a]/5 text-[#1a1a1a]/30"
+            className="p-1 rounded hover:bg-ttg-black/5 text-ttg-black/30"
             disabled={!displayUrl}
           >
             <ZoomIn className="w-3 h-3" />
           </button>
 
-          <div className="w-px h-4 bg-[#1a1a1a]/10 mx-1" />
+          <div className="w-px h-4 bg-ttg-black/10 mx-1" />
 
           <button
             onClick={() => setShowCheckerboard(!showCheckerboard)}
             className={`text-[7px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded transition-all ${
               showCheckerboard
-                ? "bg-[#1a1a1a]/10 text-[#1a1a1a]/50"
-                : "bg-transparent text-[#1a1a1a]/20"
+                ? "bg-ttg-black/10 text-ttg-black/50"
+                : "bg-transparent text-ttg-black/20"
             }`}
           >
             α
@@ -133,11 +133,11 @@ export default function CreatureViewer({
 
       {/* Preview area */}
       <div
-        className="relative rounded-lg overflow-hidden border border-[#1a1a1a]/10 mb-2 flex items-center justify-center min-h-[180px]"
+        className="relative rounded-lg overflow-hidden border border-ttg-black/10 mb-2 flex items-center justify-center min-h-[180px]"
         style={{
           backgroundImage: showCheckerboard
             ? `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='10' height='10' fill='%23e5e5e5'/%3E%3Crect x='10' y='10' width='10' height='10' fill='%23e5e5e5'/%3E%3Crect x='10' width='10' height='10' fill='%23fff'/%3E%3Crect y='10' width='10' height='10' fill='%23fff'/%3E%3C/svg%3E")`
-            : "#1a1a1a",
+            : "var(--ttg-black)",
           backgroundSize: showCheckerboard ? "20px 20px" : undefined,
         }}
       >
@@ -153,7 +153,7 @@ export default function CreatureViewer({
             }}
           />
         ) : (
-          <div className="flex flex-col items-center gap-2 text-[#1a1a1a]/15 py-8">
+          <div className="flex flex-col items-center gap-2 text-ttg-black/15 py-8">
             <ImageIcon className="w-10 h-10" />
             <span className="text-[9px] font-bold uppercase">No creature</span>
           </div>
@@ -161,9 +161,9 @@ export default function CreatureViewer({
 
         {/* Processing overlay */}
         {processing && (
-          <div className="absolute inset-0 bg-[#1a1a1a]/60 backdrop-blur-sm flex items-center justify-center">
+          <div className="absolute inset-0 bg-ttg-black/60 backdrop-blur-sm flex items-center justify-center">
             <div className="flex flex-col items-center gap-2">
-              <Loader2 className="w-8 h-8 animate-spin text-[#FFCC00]" />
+              <Loader2 className="w-8 h-8 animate-spin text-ttg-yellow" />
               <span className="text-[9px] font-black text-white uppercase">Removing background...</span>
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function CreatureViewer({
 
         {/* Success badge */}
         {previewUrl && !processing && (
-          <div className="absolute top-2 right-2 bg-[#22C55E] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-1 border border-[#1a1a1a]/20">
+          <div className="absolute top-2 right-2 bg-ttg-success text-white text-[8px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-1 border border-ttg-black/20">
             <Check className="w-2.5 h-2.5" /> No BG
           </div>
         )}
@@ -179,7 +179,7 @@ export default function CreatureViewer({
 
       {/* Error */}
       {error && (
-        <div className="text-[8px] font-bold text-[#E3350D] px-2 py-1 bg-[#E3350D]/5 rounded mb-2">
+        <div className="text-[8px] font-bold text-ttg-red px-2 py-1 bg-ttg-red/5 rounded mb-2">
           {error}
         </div>
       )}
@@ -189,7 +189,7 @@ export default function CreatureViewer({
         <button
           onClick={handleRemoveBackground}
           disabled={!creatureUrl || processing}
-          className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#E3350D] text-white border-2 border-[#1a1a1a] shadow-[2px_2px_0px_#1a1a1a] hover:shadow-[1px_1px_0px_#1a1a1a] flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-ttg-red text-white border-2 border-ttg-black shadow-[2px_2px_0px_var(--ttg-black)] hover:shadow-[1px_1px_0px_var(--ttg-black)] flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
         >
           {processing ? (
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -202,7 +202,7 @@ export default function CreatureViewer({
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={processing}
-          className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/50 border-2 border-[#1a1a1a]/10 flex items-center gap-1.5 disabled:opacity-40 transition-all"
+          className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-ttg-black/5 hover:bg-ttg-black/10 text-ttg-black/50 border-2 border-ttg-black/10 flex items-center gap-1.5 disabled:opacity-40 transition-all"
         >
           <Upload className="w-3 h-3" />
           Upload
@@ -212,7 +212,7 @@ export default function CreatureViewer({
           <a
             href={previewUrl}
             download={`${slug}-creature.png`}
-            className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-[#22C55E]/10 hover:bg-[#22C55E]/20 text-[#22C55E] border-2 border-transparent flex items-center gap-1.5 transition-all"
+            className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded bg-ttg-success/10 hover:bg-ttg-success/20 text-ttg-success border-2 border-transparent flex items-center gap-1.5 transition-all"
           >
             <Download className="w-3 h-3" />
             Download
@@ -229,7 +229,7 @@ export default function CreatureViewer({
       </div>
 
       {/* Info */}
-      <div className="mt-2 pt-2 border-t border-[#1a1a1a]/10 flex items-center gap-2 text-[7px] font-medium text-[#1a1a1a]/25">
+      <div className="mt-2 pt-2 border-t border-ttg-black/10 flex items-center gap-2 text-[7px] font-medium text-ttg-black/25">
         <span>Slug: {slug || "—"}</span>
         <span>·</span>
         <span>Franchise: {franchise || "—"}</span>

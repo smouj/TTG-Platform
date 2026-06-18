@@ -20,32 +20,32 @@ const ADMIN_TABS = [
     href: "/admin",
     label: "Dashboard",
     icon: Shield,
-    color: "#E3350D",
+    color: "var(--ttg-red)",
     exact: true,
   },
   {
     href: "/admin/tazo-creator",
     label: "Creator",
     icon: Wand2,
-    color: "#22C55E",
+    color: "var(--ttg-success)",
   },
   {
     href: "/admin/tazo-designer",
     label: "Designer",
     icon: LayoutGrid,
-    color: "#A855F7",
+    color: "var(--ttg-purple)",
   },
   {
     href: "/admin/tazos",
     label: "Tazos",
     icon: Grid3X3,
-    color: "#F59E0B",
+    color: "var(--ttg-warning)",
   },
   {
     href: "/admin/decks",
     label: "Decks",
     icon: Package,
-    color: "#FF6B00",
+    color: "var(--ttg-dracobell)",
   },
   {
     href: "/admin/deck-models",
@@ -83,7 +83,7 @@ interface AdminShellProps {
 
 export default function AdminShell({
   children,
-  accentColor = "#E3350D",
+  accentColor = "var(--ttg-red)",
   actions,
 }: AdminShellProps) {
   const { user, loading: authLoading } = useAuth();
@@ -95,7 +95,7 @@ export default function AdminShell({
   if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen mag-bg">
-        <Loader2 className="w-8 h-8 animate-spin text-[#FFCC00]" />
+        <Loader2 className="w-8 h-8 animate-spin text-ttg-yellow" />
       </div>
     );
   }
@@ -105,14 +105,14 @@ export default function AdminShell({
     return (
       <div className="min-h-screen flex items-center justify-center mag-bg">
         <div className="mag-card p-8 text-center max-w-md mx-4 space-y-4">
-          <Shield className="w-16 h-16 mx-auto text-[#E3350D]" />
-          <h1 className="text-xl font-black uppercase text-[#1a1a1a]">Access Denied</h1>
-          <p className="text-sm font-bold text-[#1a1a1a]/50">
+          <Shield className="w-16 h-16 mx-auto text-ttg-red" />
+          <h1 className="text-xl font-black uppercase text-ttg-black">Access Denied</h1>
+          <p className="text-sm font-bold text-ttg-black/50">
             This panel is restricted to the developer account.
           </p>
           <Link
             href="/"
-            className="mag-btn inline-block bg-[#E3350D] text-white px-6 py-3 text-xs font-black uppercase tracking-wider border-2 border-[#1a1a1a] shadow-[3px_3px_0px_#1a1a1a]"
+            className="mag-btn inline-block bg-ttg-red text-white px-6 py-3 text-xs font-black uppercase tracking-wider border-2 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)]"
           >
             Back to Home
           </Link>
@@ -126,7 +126,7 @@ export default function AdminShell({
     <div className="min-h-screen mag-bg flex flex-col">
       {/* === Top Header === */}
       <header
-        className="bg-[#1a1a1a] sticky top-0 z-50"
+        className="bg-ttg-black sticky top-0 z-50"
         style={{ borderBottomWidth: "4px", borderBottomStyle: "solid", borderBottomColor: accentColor }}
       >
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -142,7 +142,7 @@ export default function AdminShell({
             </span>
             <Link
               href="/?page=tazos"
-              className="text-[10px] font-black text-[#FFCC00] hover:text-white uppercase tracking-wider flex items-center gap-1"
+              className="text-[10px] font-black text-ttg-yellow hover:text-white uppercase tracking-wider flex items-center gap-1"
               title="View public catalog"
             >
               <Home className="w-3 h-3" /> Public Site
@@ -193,9 +193,9 @@ export default function AdminShell({
       <main className="flex-1">{children}</main>
 
       {/* === Footer === */}
-      <footer className="border-t-2 border-[#1a1a1a]/10 bg-[#1a1a1a]/[0.02] py-3">
+      <footer className="border-t-2 border-ttg-black/10 bg-ttg-black/[0.02] py-3">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-[9px] font-bold text-[#1a1a1a]/25 uppercase tracking-wider">
+          <p className="text-[9px] font-bold text-ttg-black/25 uppercase tracking-wider">
             {`Admin Panel · Trading Tazos Game v${SITE_CONFIG.version} · ${user?.email}`}
           </p>
         </div>

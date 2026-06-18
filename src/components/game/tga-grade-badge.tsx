@@ -56,14 +56,14 @@ export function TGAGradeBadge({
 
       {/* Sub-grades for larger display */}
       {showSubGrades && !isSm && (
-        <div className="flex gap-1.5 text-[7px] font-bold text-[#1a1a1a]/30 uppercase">
+        <div className="flex gap-1.5 text-[7px] font-bold text-ttg-black/30 uppercase">
           <span>SUR {display.surface.toFixed(1)}</span>
           <span>BDR {display.borders.toFixed(1)}</span>
         </div>
       )}
 
       {/* TGA label */}
-      <span className={`${isSm ? "text-[6px]" : "text-[7px]"} font-black text-[#1a1a1a]/20 uppercase tracking-[0.15em]`}>
+      <span className={`${isSm ? "text-[6px]" : "text-[7px]"} font-black text-ttg-black/20 uppercase tracking-[0.15em]`}>
         TGA
       </span>
     </div>

@@ -503,7 +503,7 @@ export function AddTazoDialog({ onCreated }: AddTazoDialogProps) {
           </div>
 
           {/* Owned Toggle */}
-          <div className="flex items-center justify-between border-2 border-[#1a1a1a] p-3">
+          <div className="flex items-center justify-between border-2 border-ttg-black p-3">
             <div>
               <Label className="text-sm font-medium">Add to Collection</Label>
               <p className="text-xs text-muted-foreground">Mark this tazo as owned</p>

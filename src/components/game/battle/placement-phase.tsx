@@ -32,9 +32,9 @@ export default function PlacementPhase({
   const [localZ, setLocalZ] = useState(stakeZ)
   const [placed, setPlaced] = useState(false)
 
-  const fColor = tazoFranchise === "minimon" ? "#FFCC00"
+  const fColor = tazoFranchise === "minimon" ? "var(--ttg-yellow)"
     : tazoFranchise === "cybermon" ? "#00B4D8"
-    : "#FF6B00"
+    : "var(--ttg-dracobell)"
 
   // Convert normalized coords (-1..1) to pad percentage
   const toPad = useCallback((pad: DOMRect, x: number, z: number) => {
@@ -117,23 +117,23 @@ export default function PlacementPhase({
 
             {/* Arena center crosshair */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-16 h-16 rounded-full border border-[#FFCC00]/10" />
+              <div className="w-16 h-16 rounded-full border border-ttg-yellow/10" />
               <div className="absolute w-1 h-20 bg-white/3" />
               <div className="absolute w-20 h-1 bg-white/3" />
             </div>
 
             {/* Player stake zone hint */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-[20%] w-14 h-14 rounded-full border-2 border-dashed border-[#29ADFF]/20 pointer-events-none"
+            <div className="absolute top-1/2 -translate-y-1/2 left-[20%] w-14 h-14 rounded-full border-2 border-dashed border-ttg-player/20 pointer-events-none"
               style={{ transform: "translate(-50%, -50%)" }}>
-              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[7px] font-black text-[#29ADFF]/25 tracking-[0.2em] uppercase">
+              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[7px] font-black text-ttg-player/25 tracking-[0.2em] uppercase">
                 Your zone
               </span>
             </div>
 
             {/* Opponent zone hint */}
-            <div className="absolute top-1/2 -translate-y-1/2 right-[20%] w-14 h-14 rounded-full border-2 border-dashed border-[#FF004D]/20 pointer-events-none"
+            <div className="absolute top-1/2 -translate-y-1/2 right-[20%] w-14 h-14 rounded-full border-2 border-dashed border-ttg-opponent/20 pointer-events-none"
               style={{ transform: "translate(50%, -50%)" }}>
-              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[7px] font-black text-[#FF004D]/25 tracking-[0.2em] uppercase">
+              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[7px] font-black text-ttg-opponent/25 tracking-[0.2em] uppercase">
                 AI zone
               </span>
             </div>
@@ -170,7 +170,7 @@ export default function PlacementPhase({
             {/* Drag trail hint */}
             {dragging && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="text-[7px] font-black text-[#FFCC00]/25 tracking-[0.25em] uppercase">
+                <span className="text-[7px] font-black text-ttg-yellow/25 tracking-[0.25em] uppercase">
                   Release to set
                 </span>
               </div>
@@ -179,9 +179,9 @@ export default function PlacementPhase({
             {/* Placed confirmation */}
             {placed && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="bg-[#22C55E]/10 backdrop-blur-sm px-6 py-3 border border-[#22C55E]/30">
-                  <Check className="w-6 h-6 text-[#22C55E] mx-auto mb-1" strokeWidth={3} />
-                  <span className="text-[9px] font-black text-[#22C55E] tracking-[0.15em] uppercase">Placed</span>
+                <div className="bg-ttg-success/10 backdrop-blur-sm px-6 py-3 border border-ttg-success/30">
+                  <Check className="w-6 h-6 text-ttg-success mx-auto mb-1" strokeWidth={3} />
+                  <span className="text-[9px] font-black text-ttg-success tracking-[0.15em] uppercase">Placed</span>
                 </div>
               </div>
             )}
@@ -201,7 +201,7 @@ export default function PlacementPhase({
             <span className="text-[10px] font-black text-white/50 tracking-wider">{tazoName}</span>
             <span className="w-2 h-2 rounded-full" style={{ background: fColor, boxShadow: `0 0 6px ${fColor}` }} />
           </div>
-          <span className="text-[7px] font-black text-[#FFCC00]/30 tracking-[0.2em] uppercase">
+          <span className="text-[7px] font-black text-ttg-yellow/30 tracking-[0.2em] uppercase">
             {dragging ? "Dragging..." : placed ? "✓ Position set" : "Drag to place your stake"}
           </span>
         </div>
@@ -211,8 +211,8 @@ export default function PlacementPhase({
           disabled={placed}
           className={`px-5 py-2 font-black text-[10px] uppercase rounded-full tracking-wider pointer-events-auto transition-all active:scale-95 ${
             placed
-              ? "bg-[#22C55E]/30 text-[#22C55E]/50 cursor-not-allowed"
-              : "bg-[#FFCC00] hover:bg-[#FFD633] text-[#0a0a0a] shadow-[0_0_20px_rgba(255,204,0,0.3)] hover:shadow-[0_0_32px_rgba(255,204,0,0.5)]"
+              ? "bg-ttg-success/30 text-ttg-success/50 cursor-not-allowed"
+              : "bg-ttg-yellow hover:bg-[#FFD633] text-[#0a0a0a] shadow-[0_0_20px_rgba(255,204,0,0.3)] hover:shadow-[0_0_32px_rgba(255,204,0,0.5)]"
           }`}>
           {placed ? (
             <><Check className="w-3 h-3 inline mr-1" />Set</>

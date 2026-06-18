@@ -17,9 +17,9 @@ const BACK_ARTS: Record<string, string> = {
 }
 
 const FRANCHISE_COLORS: Record<string, { primary: string; secondary: string; rim: string }> = {
-  minimon: { primary: "#FFCB05", secondary: "#FF8C00", rim: "#D4AF37" },
-  cybermon: { primary: "#00A1E9", secondary: "#0057B7", rim: "#A0C8E0" },
-  dracobell: { primary: "#FF6B00", secondary: "#CC4400", rim: "#D4AF37" },
+  minimon: { primary: "var(--ttg-minimon)", secondary: "var(--ttg-minimon-dark)", rim: "#D4AF37" },
+  cybermon: { primary: "var(--ttg-cybermon)", secondary: "#0057B7", rim: "#A0C8E0" },
+  dracobell: { primary: "var(--ttg-dracobell)", secondary: "var(--ttg-dracobell-dark)", rim: "#D4AF37" },
 }
 
 // ─── Texture cache ───

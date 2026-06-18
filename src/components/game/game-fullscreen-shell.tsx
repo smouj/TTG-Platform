@@ -27,7 +27,7 @@ export default function GameFullscreenShell({ children }: { children: React.Reac
         inset: 0,
         width: "100vw",
         height: "100dvh",
-        background: "#0a0a0a",
+        background: "var(--ttg-arena-bg)",
         overflow: "hidden",
       }}
     >

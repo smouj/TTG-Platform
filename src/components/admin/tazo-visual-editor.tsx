@@ -94,11 +94,11 @@ const ELEMENT_LABELS: Record<ElementKey, string> = {
 
 const ELEMENT_COLORS: Record<ElementKey, string> = {
   collection: "#06B6D4",
-  badge: "#A855F7",
-  number: "#3B82F6",
-  name: "#22C55E",
+  badge: "var(--ttg-purple)",
+  number: "var(--ttg-rarity-rare)",
+  name: "var(--ttg-success)",
   rarity: "#FBBF24",
-  creature: "#E3350D",
+  creature: "var(--ttg-red)",
 };
 
 // ── Props ──
@@ -235,9 +235,9 @@ function DraggableElement({
       className={`absolute select-none transition-shadow
         ${locked ? "cursor-not-allowed opacity-50" : "cursor-grab active:cursor-grabbing"}
         ${active ? "z-50" : "z-10"}
-        ${active ? "ring-2 ring-offset-1 ring-[#FFCC00] rounded" : ""}
+        ${active ? "ring-2 ring-offset-1 ring-ttg-yellow rounded" : ""}
         ${isSnapped ? "ring-[#22C55E]" : ""}
-        ${locked ? "ring-[#E3350D]" : ""}
+        ${locked ? "ring-ttg-red" : ""}
       `}
       style={{
         left: `calc(50% + ${x}px)`,
@@ -249,8 +249,8 @@ function DraggableElement({
       {children}
       {/* Active indicator with coordinates */}
       {active && (
-        <div className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-[#1a1a1a] text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-lg flex items-center gap-1.5">
-          {locked && <Lock className="w-2 h-2 text-[#E3350D]" />}
+        <div className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-ttg-black text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-lg flex items-center gap-1.5">
+          {locked && <Lock className="w-2 h-2 text-ttg-red" />}
           {label}
           <span className="text-[7px] font-mono text-white/50">({Math.round(x)}, {Math.round(y)})</span>
         </div>
@@ -258,7 +258,7 @@ function DraggableElement({
       {/* Hitbox handle */}
       <div
         className="absolute inset-0 rounded-full opacity-0"
-        style={{ border: `1px dashed ${locked ? "#E3350D" : color}` }}
+        style={{ border: `1px dashed ${locked ? "var(--ttg-red)" : color}` }}
       />
     </div>
   );
@@ -280,7 +280,7 @@ function BadgeElement({ combatType }: { combatType?: string }) {
 
   return (
     <div
-      className="flex items-center justify-center rounded-full shadow-lg border-[2.5px] border-[#1a1a1a] font-black text-[12px] w-12 h-12"
+      className="flex items-center justify-center rounded-full shadow-lg border-[2.5px] border-ttg-black font-black text-[12px] w-12 h-12"
       style={{
         background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
         boxShadow: "0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.8)",
@@ -298,8 +298,8 @@ function NumberElement({ number }: { number: string }) {
       className="font-black text-[11px] px-3 py-1 rounded-full shadow-lg whitespace-nowrap"
       style={{
         background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-        color: "#1a1a1a",
-        border: "2.5px solid #1a1a1a",
+        color: "var(--ttg-black)",
+        border: "2.5px solid var(--ttg-black)",
         boxShadow: "0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.8)",
       }}
     >
@@ -315,8 +315,8 @@ function NameElement({ name }: { name: string }) {
       className="font-black text-[10px] px-3 py-1.5 rounded-md shadow-lg whitespace-nowrap tracking-wider uppercase"
       style={{
         background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-        color: "#1a1a1a",
-        border: "2.5px solid #1a1a1a",
+        color: "var(--ttg-black)",
+        border: "2.5px solid var(--ttg-black)",
         boxShadow: "0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.8)",
       }}
     >
@@ -332,8 +332,8 @@ function CollectionElement({ name }: { name: string }) {
       className="text-[8px] font-black uppercase tracking-[0.15em] whitespace-nowrap px-3 py-1 rounded-full"
       style={{
         background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-        color: "#1a1a1a",
-        border: "2px solid #1a1a1a",
+        color: "var(--ttg-black)",
+        border: "2px solid var(--ttg-black)",
         boxShadow: "0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.8)",
       }}
     >
@@ -355,7 +355,7 @@ function RarityElement({ rarity }: { rarity: string }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="w-4 h-4 rounded-full border-[2px] border-[#1a1a1a] shadow-md"
+          className="w-4 h-4 rounded-full border-[2px] border-ttg-black shadow-md"
           style={{
             background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%)",
             boxShadow: "0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5)",
@@ -532,7 +532,7 @@ export default function TazoVisualEditor({
         <button
           onClick={history.undo}
           disabled={!history.canUndo}
-          className="p-1.5 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 disabled:opacity-20 text-[#1a1a1a]/50 transition-all"
+          className="p-1.5 rounded bg-ttg-black/5 hover:bg-ttg-black/10 disabled:opacity-20 text-ttg-black/50 transition-all"
           title="Undo (Ctrl+Z)"
         >
           <Undo2 className="w-3.5 h-3.5" />
@@ -540,16 +540,16 @@ export default function TazoVisualEditor({
         <button
           onClick={history.redo}
           disabled={!history.canRedo}
-          className="p-1.5 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 disabled:opacity-20 text-[#1a1a1a]/50 transition-all"
+          className="p-1.5 rounded bg-ttg-black/5 hover:bg-ttg-black/10 disabled:opacity-20 text-ttg-black/50 transition-all"
           title="Redo (Ctrl+Shift+Z)"
         >
           <Redo2 className="w-3.5 h-3.5" />
         </button>
 
-        <div className="h-6 w-px bg-[#1a1a1a]/10" />
+        <div className="h-6 w-px bg-ttg-black/10" />
 
         {/* Element selectors */}
-        <div className="flex items-center gap-0.5 bg-[#1a1a1a]/5 rounded-lg p-0.5">
+        <div className="flex items-center gap-0.5 bg-ttg-black/5 rounded-lg p-0.5">
           {(Object.keys(ELEMENT_LABELS) as ElementKey[]).map((key) => {
             const isLocked = lockedElements[key];
             return (
@@ -562,7 +562,7 @@ export default function TazoVisualEditor({
                 className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded transition-all flex items-center gap-1
                   ${activeElement === key
                     ? "text-white shadow"
-                    : "text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70"
+                    : "text-ttg-black/40 hover:text-ttg-black/70"
                   }`}
                 style={{
                   backgroundColor: activeElement === key ? ELEMENT_COLORS[key] : undefined,
@@ -576,31 +576,31 @@ export default function TazoVisualEditor({
           })}
         </div>
 
-        <div className="h-6 w-px bg-[#1a1a1a]/10" />
+        <div className="h-6 w-px bg-ttg-black/10" />
 
         {/* Zoom */}
         <div className="flex items-center gap-0.5">
           <button
             onClick={() => setPreviewSize((s) => Math.max(200, s - 40))}
-            className="p-1.5 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/50"
+            className="p-1.5 rounded bg-ttg-black/5 hover:bg-ttg-black/10 text-ttg-black/50"
           >
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
-          <span className="text-[9px] font-bold text-[#1a1a1a]/30 w-10 text-center tabular-nums">{previewSize}</span>
+          <span className="text-[9px] font-bold text-ttg-black/30 w-10 text-center tabular-nums">{previewSize}</span>
           <button
             onClick={() => setPreviewSize((s) => Math.min(800, s + 40))}
-            className="p-1.5 rounded bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/50"
+            className="p-1.5 rounded bg-ttg-black/5 hover:bg-ttg-black/10 text-ttg-black/50"
           >
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="h-6 w-px bg-[#1a1a1a]/10" />
+        <div className="h-6 w-px bg-ttg-black/10" />
 
         {/* Save / Copy / Reset */}
         <button
           onClick={saveLayout}
-          className="text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded bg-[#22C55E]/10 hover:bg-[#22C55E]/20 text-[#22C55E] flex items-center gap-1 transition-all"
+          className="text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded bg-ttg-success/10 hover:bg-ttg-success/20 text-ttg-success flex items-center gap-1 transition-all"
         >
           <Save className="w-3 h-3" /> Save
         </button>
@@ -609,8 +609,8 @@ export default function TazoVisualEditor({
           onClick={copyLayout}
           className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 transition-all ${
             copied
-              ? "bg-[#22C55E]/10 text-[#22C55E]"
-              : "bg-[#1a1a1a]/5 hover:bg-[#1a1a1a]/10 text-[#1a1a1a]/50"
+              ? "bg-ttg-success/10 text-ttg-success"
+              : "bg-ttg-black/5 hover:bg-ttg-black/10 text-ttg-black/50"
           }`}
         >
           {copied ? <ClipboardCheck className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -619,20 +619,20 @@ export default function TazoVisualEditor({
 
         <button
           onClick={resetLayout}
-          className="text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded bg-[#E3350D]/5 hover:bg-[#E3350D]/10 text-[#E3350D]/50 flex items-center gap-1 transition-all"
+          className="text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded bg-ttg-red/5 hover:bg-ttg-red/10 text-ttg-red/50 flex items-center gap-1 transition-all"
         >
           <RefreshCw className="w-3 h-3" /> Reset
         </button>
 
-        <div className="h-6 w-px bg-[#1a1a1a]/10" />
+        <div className="h-6 w-px bg-ttg-black/10" />
 
         {/* Panel toggles */}
         <button
           onClick={() => setShowProperties(!showProperties)}
           className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 transition-all ${
             showProperties
-              ? "bg-[#A855F7] text-white"
-              : "bg-[#1a1a1a]/5 text-[#1a1a1a]/50 hover:bg-[#1a1a1a]/10"
+              ? "bg-ttg-purple text-white"
+              : "bg-ttg-black/5 text-ttg-black/50 hover:bg-ttg-black/10"
           }`}
         >
           <SlidersHorizontal className="w-3 h-3" /> Props
@@ -643,7 +643,7 @@ export default function TazoVisualEditor({
           className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 transition-all ${
             showLayers
               ? "bg-[#6366F1] text-white"
-              : "bg-[#1a1a1a]/5 text-[#1a1a1a]/50 hover:bg-[#1a1a1a]/10"
+              : "bg-ttg-black/5 text-ttg-black/50 hover:bg-ttg-black/10"
           }`}
         >
           <Eye className="w-3 h-3" /> Layers
@@ -653,8 +653,8 @@ export default function TazoVisualEditor({
           onClick={() => setShowBrowser(!showBrowser)}
           className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 transition-all ${
             showBrowser
-              ? "bg-[#3B4CCA] text-white"
-              : "bg-[#1a1a1a]/5 text-[#1a1a1a]/50 hover:bg-[#1a1a1a]/10"
+              ? "bg-ttg-blue text-white"
+              : "bg-ttg-black/5 text-ttg-black/50 hover:bg-ttg-black/10"
           }`}
         >
           <LayoutGrid className="w-3 h-3" /> ({publishedTazos.length})
@@ -664,8 +664,8 @@ export default function TazoVisualEditor({
           onClick={() => setShowCreature(!showCreature)}
           className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 transition-all ${
             showCreature
-              ? "bg-[#E3350D] text-white"
-              : "bg-[#1a1a1a]/5 text-[#1a1a1a]/50 hover:bg-[#1a1a1a]/10"
+              ? "bg-ttg-red text-white"
+              : "bg-ttg-black/5 text-ttg-black/50 hover:bg-ttg-black/10"
           }`}
         >
           <Scissors className="w-3 h-3" /> Creature
@@ -676,8 +676,8 @@ export default function TazoVisualEditor({
           onClick={() => setShowShortcuts(!showShortcuts)}
           className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 transition-all ${
             showShortcuts
-              ? "bg-[#FBBF24] text-[#1a1a1a]"
-              : "bg-[#1a1a1a]/5 text-[#1a1a1a]/50 hover:bg-[#1a1a1a]/10"
+              ? "bg-[#FBBF24] text-ttg-black"
+              : "bg-ttg-black/5 text-ttg-black/50 hover:bg-ttg-black/10"
           }`}
           title="Keyboard shortcuts"
         >
@@ -706,8 +706,8 @@ export default function TazoVisualEditor({
               ["💾 Save", "Persist to server"],
             ].map(([key, desc]) => (
               <div key={key as string} className="flex items-center gap-1.5">
-                <span className="text-[8px] font-black text-[#1a1a1a]">{key}</span>
-                <span className="text-[8px] font-medium text-[#1a1a1a]/40">{desc}</span>
+                <span className="text-[8px] font-black text-ttg-black">{key}</span>
+                <span className="text-[8px] font-medium text-ttg-black/40">{desc}</span>
               </div>
             ))}
           </div>
@@ -731,8 +731,8 @@ export default function TazoVisualEditor({
                 }}
               />
 
-              <div className="mag-card p-3 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
-                <h3 className="text-[10px] font-black uppercase tracking-wider text-[#1a1a1a] flex items-center gap-1.5 mb-2">
+              <div className="mag-card p-3 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)]">
+                <h3 className="text-[10px] font-black uppercase tracking-wider text-ttg-black flex items-center gap-1.5 mb-2">
                   <Gauge className="w-3.5 h-3.5" /> Wear Level
                 </h3>
                 <div className="flex items-center gap-2">
@@ -749,14 +749,14 @@ export default function TazoVisualEditor({
                     className="w-full h-2 rounded-full appearance-none cursor-pointer"
                     style={{
                       background: `linear-gradient(to right, #22C55E ${wearLevel * 0.4}%, #FBBF24 ${wearLevel * 0.7}%, #E3350D ${wearLevel}%)`,
-                      accentColor: wearLevel > 60 ? "#E3350D" : wearLevel > 30 ? "#FBBF24" : "#22C55E",
+                      accentColor: wearLevel > 60 ? "var(--ttg-red)" : wearLevel > 30 ? "#FBBF24" : "var(--ttg-success)",
                     }}
                   />
-                  <span className="text-[10px] font-black text-[#1a1a1a] w-8 text-right tabular-nums">
+                  <span className="text-[10px] font-black text-ttg-black w-8 text-right tabular-nums">
                     {wearLevel}%
                   </span>
                 </div>
-                <div className="flex justify-between text-[7px] font-bold text-[#1a1a1a]/20 mt-1">
+                <div className="flex justify-between text-[7px] font-bold text-ttg-black/20 mt-1">
                   <span>Mint</span>
                   <span>Played</span>
                   <span>Heavy</span>
@@ -769,7 +769,7 @@ export default function TazoVisualEditor({
 
         {/* Main Editor */}
         <div className="flex-1">
-          <div className="mag-card p-4 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a]">
+          <div className="mag-card p-4 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)]">
             {/* Preview area */}
             <div className="flex items-center justify-center min-h-[600px] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiNmOGY4ZjgiLz48cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNmMGYwZjAiLz48L3N2Zz4=')] rounded-lg relative overflow-hidden"
               style={{ height: previewSize + 160 }}
@@ -783,7 +783,7 @@ export default function TazoVisualEditor({
                   left: "50%",
                   top: "50%",
                   transform: "translate(-50%, -50%)",
-                  background: "#1a1a1a",
+                  background: "var(--ttg-black)",
                 }}
               >
               {/* Tazo disc rendered via the canonical TazoDiscImage —
@@ -945,7 +945,7 @@ export default function TazoVisualEditor({
 
               {/* Instructions overlay */}
               {!activeElement && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#1a1a1a]/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full pointer-events-none">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-ttg-black/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full pointer-events-none">
                   Click an element above to start positioning · Drag to move · Arrow keys to nudge · +/- to scale
                 </div>
               )}
@@ -965,9 +965,9 @@ export default function TazoVisualEditor({
                     transform: "translate(-50%, -50%)",
                   }}
                 >
-                  <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#FFCC00]/40" />
-                  <div className="absolute top-1/2 left-0 right-0 h-px bg-[#FFCC00]/40" />
-                  <div className="absolute inset-0 rounded-full border border-[#FFCC00]/20" />
+                  <div className="absolute left-1/2 top-0 bottom-0 w-px bg-ttg-yellow/40" />
+                  <div className="absolute top-1/2 left-0 right-0 h-px bg-ttg-yellow/40" />
+                  <div className="absolute inset-0 rounded-full border border-ttg-yellow/20" />
                 </div>
               </>
             )}
@@ -1005,12 +1005,12 @@ export default function TazoVisualEditor({
         {/* Published tazos browser (sidebar) */}
         {showBrowser && (
           <div className="w-72 flex-shrink-0">
-            <div className="mag-card p-3 border-3 border-[#1a1a1a] shadow-[4px_4px_0px_#1a1a1a] sticky top-24 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <div className="mag-card p-3 border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] sticky top-24 max-h-[calc(100vh-200px)] overflow-y-auto">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-[10px] font-black uppercase tracking-wider text-[#1a1a1a] flex items-center gap-1.5">
+                <h3 className="text-[10px] font-black uppercase tracking-wider text-ttg-black flex items-center gap-1.5">
                   <LayoutGrid className="w-3.5 h-3.5" /> Published Tazos
                 </h3>
-                <span className="text-[9px] font-bold text-[#1a1a1a]/30">{publishedTazos.length} total</span>
+                <span className="text-[9px] font-bold text-ttg-black/30">{publishedTazos.length} total</span>
               </div>
 
               <div className="space-y-1.5">
@@ -1018,9 +1018,9 @@ export default function TazoVisualEditor({
                   <button
                     key={tazo.id || tazo.slug}
                     onClick={() => onSelectTazo?.(tazo)}
-                    className="w-full flex items-center gap-2 p-2 rounded border border-[#1a1a1a]/10 hover:border-[#3B4CCA]/30 hover:bg-[#3B4CCA]/5 transition-all text-left"
+                    className="w-full flex items-center gap-2 p-2 rounded border border-ttg-black/10 hover:border-ttg-blue/30 hover:bg-ttg-blue/5 transition-all text-left"
                   >
-                    <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-[#1a1a1a]/5 border border-[#1a1a1a]/10">
+                    <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-ttg-black/5 border border-ttg-black/10">
                       {tazo.imageUrl ? (
                         <img
                           src={`/tazos-base/${tazo.franchiseSlug || tazo.franchise?.slug || "unknown"}/${tazo.slug}.png`}
@@ -1030,38 +1030,38 @@ export default function TazoVisualEditor({
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <ImageIcon className="w-4 h-4 text-[#1a1a1a]/20" />
+                          <ImageIcon className="w-4 h-4 text-ttg-black/20" />
                         </div>
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] font-black text-[#1a1a1a] truncate">{tazo.displayName || tazo.name}</p>
-                      <p className="text-[8px] font-bold text-[#1a1a1a]/30 uppercase">
+                      <p className="text-[10px] font-black text-ttg-black truncate">{tazo.displayName || tazo.name}</p>
+                      <p className="text-[8px] font-bold text-ttg-black/30 uppercase">
                         {tazo.franchise?.slug || tazo.franchiseSlug || "—"} · {tazo.rarity}
                       </p>
                     </div>
-                    <span className="text-[8px] font-mono text-[#1a1a1a]/20">#{tazo.number}</span>
+                    <span className="text-[8px] font-mono text-ttg-black/20">#{tazo.number}</span>
                   </button>
                 ))}
               </div>
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#1a1a1a]/10">
+                <div className="flex items-center justify-between mt-3 pt-2 border-t border-ttg-black/10">
                   <button
                     onClick={() => setBrowserPage((p) => Math.max(0, p - 1))}
                     disabled={browserPage === 0}
-                    className="p-1 rounded hover:bg-[#1a1a1a]/10 disabled:opacity-20"
+                    className="p-1 rounded hover:bg-ttg-black/10 disabled:opacity-20"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span className="text-[9px] font-bold text-[#1a1a1a]/40">
+                  <span className="text-[9px] font-bold text-ttg-black/40">
                     {browserPage + 1}/{totalPages}
                   </span>
                   <button
                     onClick={() => setBrowserPage((p) => Math.min(totalPages - 1, p + 1))}
                     disabled={browserPage >= totalPages - 1}
-                    className="p-1 rounded hover:bg-[#1a1a1a]/10 disabled:opacity-20"
+                    className="p-1 rounded hover:bg-ttg-black/10 disabled:opacity-20"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>

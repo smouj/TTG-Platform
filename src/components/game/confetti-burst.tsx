@@ -16,8 +16,8 @@ interface Particle {
 }
 
 const COLORS = [
-  "#FFCC00", "#E3350D", "#3B4CCA", "#22C55E", "#F59E0B",
-  "#A855F7", "#EC4899", "#00A4EF", "#1a1a1a",
+  "var(--ttg-yellow)", "var(--ttg-red)", "var(--ttg-blue)", "var(--ttg-success)", "var(--ttg-warning)",
+  "var(--ttg-purple)", "#EC4899", "#00A4EF", "var(--ttg-black)",
 ]
 
 function randomBetween(min: number, max: number) {
