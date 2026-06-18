@@ -379,17 +379,14 @@ export default function BagShopPage() {
       return
     }
     try {
-      console.log("[openBag] Opening bag:", currentBagId.trim())
       const res = await fetch("/api/bags/open", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ bagId: currentBagId.trim() }),
       })
       const data = await res.json()
-      console.log("[openBag] API response:", { ok: res.ok, hasTazo: !!data.tazo, error: data.error })
       if (res.ok && data.tazo) {
         playSFX('reveal', { volume: 0.5 })
-        console.log("[openBag] Setting reveal with tazo:", data.tazo.name)
         revealedTazoRef.current = data.tazo
         setRevealedTazo(data.tazo)
         setBonusTazo(data.bonusTazo || null)

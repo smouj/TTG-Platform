@@ -10,8 +10,8 @@ export const SITE_CONFIG = {
   shortName: "TTG",
   version: "0.10.0",
   canonicalUrl: "https://tradingtazosgame.com",
-  totalTazos: 150,
-  publishedTazos: 150,
+  totalTazos: 139,
+  publishedTazos: 139,
   totalSeries: 3,
   statsCount: 9,
   freeToPlay: true,
@@ -104,9 +104,9 @@ export interface PageMeta {
 
 export const PAGE_META: Record<string, PageMeta> = {
   home: {
-    title: "Collect, Trade & Battle 150 Tazos — Free Online Game",
+    title: "Collect, Trade & Battle 139+ Tazos — Free Online Game",
     description:
-      "Trading Tazos Game is a free browser-based skill game. Collect 150 tazos across Minimon, Dracobell & Cybermon collections, build decks of 5, and battle in a physics-driven 3D arena. No download required.",
+      "Trading Tazos Game is a free browser-based skill game. Collect 139+ tazos across Minimon, Dracobell & Cybermon collections, build decks of 5, and battle in a physics-driven 3D arena. No download required.",
     canonicalPath: "/",
   },
   "how-to-play": {
@@ -134,9 +134,9 @@ export const PAGE_META: Record<string, PageMeta> = {
     canonicalPath: "/collections/cybermon",
   },
   collections: {
-    title: "Collections — 150 Tazos Across 3 Series | Trading Tazos Game",
+    title: "Collections — 139+ Tazos Across 3 Series | Trading Tazos Game",
     description:
-      "Explore all 150 tazos across Minimon (Luminara), Dracobell (Bellora), and Cybermon (Neon Grid). Each series has 50 unique creatures with lore, stats, and finishes.",
+      "Explore all 139+ tazos across Minimon (Luminara), Dracobell (Bellora), and Cybermon (Neon Grid). Each series has up to 50 unique creatures with lore, stats, and finishes.",
     canonicalPath: "/?page=collections",
   },
   tazos: {

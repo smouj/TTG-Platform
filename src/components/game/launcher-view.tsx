@@ -844,7 +844,7 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
         <div className="flex-1 h-0.5 bg-ttg-black/8" />
       </div>
       <div className="text-center mb-6">
-        <h2 className="text-lg sm:text-xl font-black text-ttg-black uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 150} Tazos Published</h2>
+        <h2 className="text-lg sm:text-xl font-black text-ttg-black uppercase tracking-[0.06em]">3 Series · {stats?.totalTazos ?? 139} Tazos Published</h2>
         <p className="text-[10px] font-bold text-ttg-black/30 uppercase tracking-wider">Original TTG lore series</p>
       </div>
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
@@ -1049,7 +1049,7 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
   return (
     <div className="w-full max-w-4xl mx-auto space-y-5">
       <p className="text-xs font-bold text-ttg-black/50 uppercase tracking-wider">
-        3 original series · 150 Season 1 tazos · lore-safe TTG canon
+        3 original series · 139+ Season 1 tazos · lore-safe TTG canon
       </p>
       <div className="grid md:grid-cols-3 gap-4">
         {COLLECTION_DATA.map(c => {
@@ -1509,7 +1509,7 @@ function ShopContent() {
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, var(--ttg-black) 0px, var(--ttg-black) 2px, transparent 2px, transparent 12px)" }} />
         <div className="relative z-10 space-y-3">
           <h3 className="text-lg sm:text-2xl font-black text-ttg-black uppercase tracking-tight">Ready to Start Collecting?</h3>
-          <p className="text-sm text-ttg-black/50 font-bold max-w-md mx-auto">Sign up free and get starter CREDITS + 30 welcome bags to open. Collect, trade, and battle with 150 tazos across 3 series.</p>
+          <p className="text-sm text-ttg-black/50 font-bold max-w-md mx-auto">Sign up free and get starter CREDITS + 30 welcome bags to open. Collect, trade, and battle with 139+ tazos across 3 series.</p>
           <div className="flex items-center justify-center gap-3 pt-2">
             <a href="/register" className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 text-xs sm:text-sm font-black uppercase tracking-wider bg-ttg-red text-white border-3 border-ttg-black shadow-[4px_4px_0px_var(--ttg-black)] hover:shadow-[2px_2px_0px_var(--ttg-black)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
               Sign Up Free <ArrowRight className="w-4 h-4" />
