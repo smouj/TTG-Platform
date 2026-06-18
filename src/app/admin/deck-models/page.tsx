@@ -10,9 +10,9 @@ import { Package, Plus, Trash2, Edit3, Check, X, Loader2, Save, Eye } from "luci
 import AdminShell from "@/components/admin/admin-shell"
 import dynamic from "next/dynamic"
 
-const AdminTubePreview = dynamic(() => import("@/components/admin/admin-tube-preview"), { ssr: false, loading: () => <div className="flex items-center justify-center h-full"><Loader2 className="w-6 h-6 animate-spin text-ttg-dracobell" /></div> })
+const AdminDeckPreview = dynamic(() => import("@/components/admin/admin-deck-preview"), { ssr: false, loading: () => <div className="flex items-center justify-center h-full"><Loader2 className="w-6 h-6 animate-spin text-ttg-dracobell" /></div> })
 
-interface TubeModel {
+interface DeckModel {
   id: string
   name: string
   textureUrl: string
@@ -26,9 +26,9 @@ const FRANCHISE_COLORS: Record<string, string> = {
   minimon: 'var(--ttg-yellow)', cybermon: "#00A1E9", dracobell: "#FF6B00",
 }
 
-export default function AdminTubeModelsPage() {
+export default function AdminDeckModelsPage() {
   const { user, loading: authLoading } = useAuth()
-  const [models, setModels] = useState<TubeModel[]>([])
+  const [models, setModels] = useState<DeckModel[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -103,7 +103,7 @@ export default function AdminTubeModelsPage() {
     await fetchModels()
   }
 
-  const handleToggle = async (model: TubeModel) => {
+  const handleToggle = async (model: DeckModel) => {
     await fetch("/api/admin/tube-models", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -112,7 +112,7 @@ export default function AdminTubeModelsPage() {
     await fetchModels()
   }
 
-  const startEdit = (m: TubeModel) => {
+  const startEdit = (m: DeckModel) => {
     setEditingId(m.id)
     setEditName(m.name)
     setEditTextureUrl(m.textureUrl)
@@ -139,7 +139,7 @@ export default function AdminTubeModelsPage() {
             <h3 className="text-xs font-black uppercase tracking-wider text-ttg-black/50 mb-3">New Deck Model</h3>
             <div className="grid sm:grid-cols-2 gap-3 mb-3">
               <div><label className="text-[9px] font-black uppercase text-ttg-black/40">Name</label><input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Classic Deck" className="w-full p-2 border-2 border-ttg-black text-xs font-bold" /></div>
-              <div><label className="text-[9px] font-black uppercase text-ttg-black/40">Texture URL</label><input value={newTextureUrl} onChange={e => setNewTextureUrl(e.target.value)} placeholder="/tazos-tubes/deck-minimon.png" className="w-full p-2 border-2 border-ttg-black text-xs font-bold" /></div>
+              <div><label className="text-[9px] font-black uppercase text-ttg-black/40">Texture URL</label><input value={newTextureUrl} onChange={e => setNewTextureUrl(e.target.value)} placeholder="/tazos-decks/deck-minimon.png" className="w-full p-2 border-2 border-ttg-black text-xs font-bold" /></div>
               <div><label className="text-[9px] font-black uppercase text-ttg-black/40">Franchise</label><select value={newFranchise} onChange={e => setNewFranchise(e.target.value)} className="w-full p-2 border-2 border-ttg-black text-xs font-bold">{FRANCHISES.map(f => <option key={f} value={f}>{f.toUpperCase()}</option>)}</select></div>
               <div><label className="text-[9px] font-black uppercase text-ttg-black/40">Sort Order</label><input type="number" value={newSortOrder} onChange={e => setNewSortOrder(Number(e.target.value))} className="w-full p-2 border-2 border-ttg-black text-xs font-bold" /></div>
             </div>
@@ -222,7 +222,7 @@ export default function AdminTubeModelsPage() {
                           <h4 className="text-[10px] font-black uppercase text-ttg-black/40 mb-2">3D Preview</h4>
                           <div className="h-64 border-2 border-ttg-black/10 bg-gradient-to-b from-ttg-black/[0.02] to-ttg-black/[0.05] overflow-hidden">
                             <Suspense fallback={<div className="flex items-center justify-center h-full"><Loader2 className="w-6 h-6 animate-spin text-ttg-dracobell" /></div>}>
-                              <AdminTubePreview textureUrl={m.textureUrl} />
+                              <AdminDeckPreview textureUrl={m.textureUrl} />
                             </Suspense>
                           </div>
                         </div>

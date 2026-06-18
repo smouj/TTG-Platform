@@ -16,7 +16,7 @@ interface TextureEntry {
   size?: number
 }
 
-export default function AdminTubesPage() {
+export default function AdminDecksPage() {
   const { user, loading: authLoading } = useAuth()
   const [textures, setTextures] = useState<TextureEntry[]>([])
   const [loading, setLoading] = useState(true)

@@ -1,14 +1,14 @@
 "use client"
 
 // ============================================================
-// Admin 3D Tube Preview — Wraps a texture around a cylinder
+// Admin 3D Deck Preview — Wraps a texture around a cylinder
 // Rotates automatically for a nice preview in admin panels.
 // ============================================================
 import { useRef, useMemo } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 
-function TubeMesh({ textureUrl, height = 2, radius = 0.7 }: { textureUrl: string; height?: number; radius?: number }) {
+function DeckMesh({ textureUrl, height = 2, radius = 0.7 }: { textureUrl: string; height?: number; radius?: number }) {
   const groupRef = useRef<THREE.Group>(null)
 
   const texture = useMemo(() => {
@@ -47,14 +47,14 @@ function TubeMesh({ textureUrl, height = 2, radius = 0.7 }: { textureUrl: string
   )
 }
 
-export default function AdminTubePreview({ textureUrl, height = 2.4, radius = 0.6 }: { textureUrl: string; height?: number; radius?: number }) {
+export default function AdminDeckPreview({ textureUrl, height = 2.4, radius = 0.6 }: { textureUrl: string; height?: number; radius?: number }) {
   return (
     <div className="w-full h-full" style={{ minHeight: 200 }}>
       <Canvas camera={{ position: [0, 0.3, 2.5], fov: 40 }}>
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
         <directionalLight position={[-3, -2, -2]} intensity={0.4} />
-        <TubeMesh textureUrl={textureUrl} height={height} radius={radius} />
+        <DeckMesh textureUrl={textureUrl} height={height} radius={radius} />
       </Canvas>
     </div>
   )

@@ -88,11 +88,13 @@ function EmailVerifier() {
 
 export default function VerifyEmailPage() {
   return (
-    <div className="min-h-screen flex flex-col mag-bg">
+    <div className="min-h-screen flex flex-col relative" style={{ background: "var(--ttg-cream)" }}>
+      <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" />
       <MagazineHeader />
+      <div className="relative z-10 h-1.5 mag-stripes opacity-20 pointer-events-none" />
 
       {/* Card */}
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 py-10 sm:py-14">
         <div className="w-full max-w-md space-y-6">
           <div
             className="space-y-5 border-3 border-ttg-black shadow-[6px_6px_0px_var(--ttg-black)] p-8"
