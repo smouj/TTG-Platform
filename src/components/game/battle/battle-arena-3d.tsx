@@ -16,6 +16,7 @@ import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
 import type { Arena3DConfig, StakedTazo, AirborneTazo } from "@/lib/battle/game-loop"
 import TazoDisc3D from "../3d/tazo-disc-3d"
+import BattleDeckTube from "./battle-deck-tube"
 
 // ─── Impact spark ring (expands on slam) ───
 function ImpactSpark({ trigger, pos }: { trigger: number; pos: [number, number, number] }) {
@@ -579,11 +580,22 @@ interface SceneProps {
   showReticle: boolean
   reticleX: number
   reticleZ: number
+  /** Player tube/deck in arena */
+  playerDeckCount?: number
+  playerDeckTotal?: number
+  playerDeckFranchise?: string
+  playerDeckImages?: string[]
+  isDrawing?: boolean
+  drawTrigger?: number
 }
 
 function Scene({
   config, stakedTazos, airborneTazo,
   gamePhase, showReticle, reticleX, reticleZ,
+  playerDeckCount = 0, playerDeckTotal = 0,
+  playerDeckFranchise = "minimon",
+  playerDeckImages = [],
+  isDrawing = false, drawTrigger = 0,
 }: SceneProps) {
   const [impactCount, setImpactCount] = useState(0)
   const prevPhase = useRef(gamePhase)
@@ -613,6 +625,20 @@ function Scene({
       <Floor config={config} />
       <Pillars config={config} />
 
+
+      {/* ── Player Deck Tube (visible in arena) ── */}
+      {playerDeckTotal > 0 && (
+        <BattleDeckTube
+          position={[config.radius * 1.05, 0, config.radius * 0.3]}
+          franchise={playerDeckFranchise}
+          remainingCount={playerDeckCount}
+          totalCount={playerDeckTotal}
+          isPlayer={true}
+          isDrawing={isDrawing}
+          drawTrigger={drawTrigger}
+          tazoImageUrls={playerDeckImages}
+        />
+      )}
       {/* Player/opponent direction markers */}
       <mesh position={[0, 0.03, config.radius * 0.8]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[1.6, 0.5]} />
@@ -665,12 +691,20 @@ interface Props {
   reticleX?: number
   reticleZ?: number
   children?: React.ReactNode
+  playerDeckCount?: number
+  playerDeckTotal?: number
+  playerDeckFranchise?: string
+  playerDeckImages?: string[]
+  isDrawing?: boolean
+  drawTrigger?: number
 }
 
 export default function BattleArena3D({
   config, stakedTazos, airborneTazo, gamePhase,
   showReticle = false, reticleX = 0, reticleZ = 0,
-  children,
+  children, playerDeckCount, playerDeckTotal,
+  playerDeckFranchise, playerDeckImages,
+  isDrawing, drawTrigger,
 }: Props) {
   return (
     <div className="w-full h-full relative" style={{ background: "radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 55%, #0a0a0a 100%)" }}>
@@ -692,6 +726,12 @@ export default function BattleArena3D({
       >
         <Suspense fallback={null}>
           <Scene
+            playerDeckCount={playerDeckCount}
+            playerDeckTotal={playerDeckTotal}
+            playerDeckFranchise={playerDeckFranchise}
+            playerDeckImages={playerDeckImages}
+            isDrawing={isDrawing}
+            drawTrigger={drawTrigger}
             config={config}
             stakedTazos={stakedTazos}
             airborneTazo={airborneTazo}

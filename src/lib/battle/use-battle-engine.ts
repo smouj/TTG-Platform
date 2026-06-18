@@ -50,7 +50,7 @@ export interface BattleEngine {
   startMatch: (config: MatchConfig) => void
   introDone: () => void
   startBetting: () => void
-  placeBets: (playerTazo: TazoCard, opponentTazo: TazoCard) => void
+  placeBets: (playerTazo: TazoCard, opponentTazo: TazoCard, playerStakeX?: number, playerStakeZ?: number) => void
   revealStakes: () => void
   doCoinFlip: () => "player" | "opponent"
   lockAim: (x: number, z: number) => void
@@ -154,8 +154,8 @@ export function useBattleEngine(): BattleEngine {
     send({ type: "HANDS_DRAWN" })
   }, [send])
 
-  const placeBets = useCallback((playerTazo: TazoCard, opponentTazo: TazoCard) => {
-    send({ type: "BETS_PLACED", playerTazo, opponentTazo })
+  const placeBets = useCallback((playerTazo: TazoCard, opponentTazo: TazoCard, playerStakeX?: number, playerStakeZ?: number) => {
+    send({ type: "BETS_PLACED", playerTazo, opponentTazo, playerStakeX, playerStakeZ })
   }, [send])
 
   const revealStakes = useCallback(() => {

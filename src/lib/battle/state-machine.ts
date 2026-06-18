@@ -30,7 +30,7 @@ export type BattleEvent =
   | { type: "START_MATCH"; config: MatchConfig }
   | { type: "INTRO_DONE" }
   | { type: "HANDS_DRAWN" }
-  | { type: "BETS_PLACED"; playerTazo: TazoCard; opponentTazo: TazoCard }
+  | { type: "BETS_PLACED"; playerTazo: TazoCard; opponentTazo: TazoCard; playerStakeX?: number; playerStakeZ?: number }
   | { type: "STAKES_REVEALED" }
   | { type: "COIN_DECIDED"; winner: "player" | "opponent" }
   | { type: "AIM_LOCKED"; targetX: number; targetZ: number }
@@ -175,6 +175,10 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     action(ctx, event) {
       const e = event as Extract<BattleEvent, { type: "BETS_PLACED" }>
       const staked = placeStakedTazos(e.playerTazo, e.opponentTazo)
+      // Apply custom stake positions if provided
+      if (e.playerStakeX !== undefined && e.playerStakeZ !== undefined) {
+        staked[0].position = [e.playerStakeX, 0.045, e.playerStakeZ]
+      }
       return {
         ...ctx,
         state: "stakes_reveal",
