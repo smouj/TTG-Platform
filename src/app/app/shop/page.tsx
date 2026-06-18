@@ -20,6 +20,7 @@ import { Skeleton, ShopBagSkeleton } from "@/components/ui/loading-skeletons"
 import { pickBagVariant } from "@/lib/bag-variants"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
+import TazoDiscTilt from "@/components/game/tazo-disc-tilt"
 
 const BagOpener3D = dynamic(() => import("@/components/game/bag-opener-3d"), { ssr: false })
 const WebGLGuard = dynamic(() => import("@/components/game/webgl-guard"), { ssr: false })
@@ -852,12 +853,13 @@ export default function BagShopPage() {
             ease: isLegendary ? [0.16, 0.86, 0.22, 1.05] : [0.175, 0.885, 0.32, 1.275],
             delay: 0.1,
           }}
-          className={`mx-auto w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center overflow-hidden ${
+          className={`mx-auto ${
           isLegendary ? "border-[5px]" : "border-4"
         } ${isHighRarity ? "animate-pulse" : ""}`}
           style={{
+            position: "relative" as any,
+            borderRadius: "50%",
             borderColor: isLegendary ? "var(--ttg-warning)" : isUltraRare ? 'var(--ttg-purple)' : isRare ? "var(--ttg-rarity-rare)" : 'var(--ttg-black)',
-            background: 'var(--ttg-black)',
             boxShadow: isLegendary
               ? "8px 8px 0px var(--ttg-black), 0 0 40px #f59e0b50, 0 0 80px #f59e0b30, inset 0 0 40px #f59e0b15"
               : isUltraRare
@@ -865,12 +867,24 @@ export default function BagShopPage() {
               : isRare
               ? "6px 6px 0px var(--ttg-black), 0 0 20px #A855F740, inset 0 0 20px #A855F708"
               : "6px 6px 0px var(--ttg-black)",
+            overflow: "hidden",
+            width: "clamp(12rem, 50vw, 16rem)",
+            height: "clamp(12rem, 50vw, 16rem)",
           }}>
+          {/* Finish badge */}
+          {_tazo.finish && _tazo.finish !== "normal" && _tazo.finish !== "standard" && _tazo.finish !== "matte" && (
+            <div className="absolute top-2 right-2 z-20 bg-ttg-yellow text-ttg-black text-[8px] font-black px-1.5 py-0.5 border-2 border-ttg-black uppercase"
+              style={{ boxShadow: "2px 2px 0px var(--ttg-black)" }}>
+              {_tazo.finish?.replace(/_/g, " ")}
+            </div>
+          )}
           {_tazo.imageUrl ? (
-            <TazoDiscImage src={_tazo.imageUrl} alt={_tazo.name || ""}
-              size="100%" borderWidth={0} franchiseSlug={_tazo.franchiseSlug}
-              finish={_tazo.finish} creatureVariant={_tazo.creatureVariant} shinyImageUrl={_tazo.shinyImageUrl}
-              className="w-full h-full" />
+            <TazoDiscTilt background="var(--ttg-black)">
+              <TazoDiscImage src={_tazo.imageUrl} alt={_tazo.name || ""}
+                size="100%" borderWidth={0} franchiseSlug={_tazo.franchiseSlug}
+                finish={_tazo.finish} creatureVariant={_tazo.creatureVariant} shinyImageUrl={_tazo.shinyImageUrl}
+                className="w-full h-full pointer-events-none" />
+            </TazoDiscTilt>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center" style={{ background: rarityColor || "var(--ttg-rarity-common)" }}>
               <span className="text-6xl font-black text-white/80">{(_tazo.name || "?")[0]}</span>

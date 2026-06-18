@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useI18n } from "@/lib/i18n"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
+import TazoDiscTilt from "@/components/game/tazo-disc-tilt"
 import TazoDetailModal from "@/components/game/tazo-detail-modal"
 import { TGAGradeBadge } from "@/components/game/tga-grade-badge"
 import {
@@ -69,82 +70,6 @@ function timeAgo(iso: string): string {
 }
 
 // ── Tiltable Disc Component ─────────────────────────────
-function TazoDiscTilt({
-  children, isFlipped, wear,
-}: {
-  children: React.ReactNode
-  isFlipped: boolean
-  wear: number
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [angles, setAngles] = useState({ rx: 0, ry: 0, hovering: false, lx: 0.5, ly: 0.3 })
-
-  const onMove = useCallback((e: React.MouseEvent) => {
-    if (!ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    // Normalize to [-1, 1] range with smooth falloff
-    const nx = ((e.clientX - cx) / (rect.width / 2))
-    const ny = ((e.clientY - cy) / (rect.height / 2))
-    const maxDeg = 18
-    setAngles({
-      rx: -ny * maxDeg,
-      ry: nx * maxDeg,
-      hovering: true,
-      lx: (nx + 1) / 2,
-      ly: (ny + 1) / 2,
-    })
-  }, [])
-
-  const onLeave = useCallback(() => {
-    setAngles({ rx: 0, ry: 0, hovering: false, lx: 0.5, ly: 0.3 })
-  }, [])
-
-  const fx = angles.rx.toFixed(2)
-  const fy = angles.ry.toFixed(2)
-  const isTransitioning = !angles.hovering
-
-  // For damaged tazos, reduce tilt — the plastic is warped anyway
-  const tiltDampen = wear >= 70 ? 0.35 : wear >= 40 ? 0.65 : 1.0
-
-  const cssVars = {
-    "--tilt-lx": `${(angles.lx * 100).toFixed(0)}%`,
-    "--tilt-ly": `${(angles.ly * 100).toFixed(0)}%`,
-    "--tilt-intensity": angles.hovering ? "1" : "0",
-  } as React.CSSProperties
-
-  return (
-    <div
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="flex items-center justify-center bg-ttg-cream"
-      style={{
-        aspectRatio: "1",
-        perspective: "700px",
-        cursor: isFlipped ? "pointer" : "grab",
-        ...cssVars,
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          transform: `perspective(700px) rotateX(${fx}deg) rotateY(${fy}deg) scale(${angles.hovering ? 1.04 : 1})`,
-          transition: isTransitioning
-            ? "transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)"
-            : "transform 0.08s ease-out",
-          filter: tiltDampen < 1 ? `brightness(${0.9 + tiltDampen * 0.1})` : undefined,
-        }}
-      >
-        {children}
-      </div>
-    </div>
-  )
-}
-
-// ── Component ──────────────────────────────────────────
 export default function CollectionPage() {
   const { t } = useI18n()
   const { user, token, loading } = useAuth()
