@@ -177,3 +177,42 @@
   --color-cybermon:          var(--ttg-cybermon);
   --color-dracobell:         var(--ttg-dracobell);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   RGB CHANNEL VARIANTS (for Tailwind v4 opacity modifiers)
+   
+   Tailwind v4 requires R G B channel values to support
+   opacity modifiers like bg-ttg-yellow/50, text-ttg-red/70.
+   These are parallel to the hex --ttg-* variables above.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --ttg-yellow-ch:            255 204 0;
+  --ttg-yellow-hover-ch:      255 229 102;
+  --ttg-yellow-dark-ch:       230 184 0;
+  --ttg-red-ch:               227 53 13;
+  --ttg-red-dark-ch:          201 48 44;
+  --ttg-blue-ch:              59 76 202;
+  --ttg-blue-dark-ch:         42 58 160;
+  --ttg-black-ch:             26 26 26;
+  --ttg-cream-ch:             255 249 230;
+  --ttg-cream-dark-ch:        255 243 204;
+  --ttg-arena-bg-ch:          10 10 10;
+  --ttg-arena-surface-ch:     42 42 78;
+  --ttg-minimon-ch:           255 203 5;
+  --ttg-cybermon-ch:          0 161 233;
+  --ttg-dracobell-ch:         255 107 0;
+  --ttg-player-ch:            41 173 255;
+  --ttg-opponent-ch:          255 0 77;
+  --ttg-success-ch:           34 197 94;
+  --ttg-warning-ch:           245 158 11;
+  --ttg-purple-ch:            168 85 247;
+  --ttg-twitter-ch:           38 165 228;
+  --ttg-instagram-ch:         228 64 95;
+  --ttg-discord-ch:           88 101 242;
+  --ttg-reddit-ch:            255 69 0;
+  --ttg-rarity-common-ch:     156 163 175;
+  --ttg-rarity-uncommon-ch:   34 197 94;
+  --ttg-rarity-rare-ch:       59 130 246;
+  --ttg-rarity-ultra-ch:      168 85 247;
+  --ttg-rarity-legendary-ch:  255 204 0;
+}

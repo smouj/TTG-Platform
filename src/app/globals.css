@@ -44,34 +44,34 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-minimon: #FFCB05;
   --color-cybermon: #00A1E9;
-  --color-ttg-yellow: var(--ttg-yellow);
-  --color-ttg-yellow-hover: var(--ttg-yellow-hover);
-  --color-ttg-yellow-dark: var(--ttg-yellow-dark);
-  --color-ttg-red: var(--ttg-red);
-  --color-ttg-red-dark: var(--ttg-red-dark);
-  --color-ttg-blue: var(--ttg-blue);
-  --color-ttg-blue-dark: var(--ttg-blue-dark);
-  --color-ttg-black: var(--ttg-black);
-  --color-ttg-cream: var(--ttg-cream);
-  --color-ttg-cream-dark: var(--ttg-cream-dark);
-  --color-ttg-minimon: var(--ttg-minimon);
-  --color-ttg-cybermon: var(--ttg-cybermon);
-  --color-ttg-dracobell: var(--ttg-dracobell);
-  --color-ttg-player: var(--ttg-player);
-  --color-ttg-opponent: var(--ttg-opponent);
-  --color-ttg-success: var(--ttg-success);
-  --color-ttg-warning: var(--ttg-warning);
-  --color-ttg-purple: var(--ttg-purple);
-  --color-ttg-rarity-common: var(--ttg-rarity-common);
-  --color-ttg-rarity-uncommon: var(--ttg-rarity-uncommon);
-  --color-ttg-rarity-rare: var(--ttg-rarity-rare);
-  --color-ttg-rarity-ultra: var(--ttg-rarity-ultra);
-  --color-ttg-rarity-legendary: var(--ttg-rarity-legendary);
+  --color-ttg-yellow: var(--ttg-yellow-ch);
+  --color-ttg-yellow-hover: var(--ttg-yellow-hover-ch);
+  --color-ttg-yellow-dark: var(--ttg-yellow-dark-ch);
+  --color-ttg-red: var(--ttg-red-ch);
+  --color-ttg-red-dark: var(--ttg-red-dark-ch);
+  --color-ttg-blue: var(--ttg-blue-ch);
+  --color-ttg-blue-dark: var(--ttg-blue-dark-ch);
+  --color-ttg-black: var(--ttg-black-ch);
+  --color-ttg-cream: var(--ttg-cream-ch);
+  --color-ttg-cream-dark: var(--ttg-cream-dark-ch);
+  --color-ttg-minimon: var(--ttg-minimon-ch);
+  --color-ttg-cybermon: var(--ttg-cybermon-ch);
+  --color-ttg-dracobell: var(--ttg-dracobell-ch);
+  --color-ttg-player: var(--ttg-player-ch);
+  --color-ttg-opponent: var(--ttg-opponent-ch);
+  --color-ttg-success: var(--ttg-success-ch);
+  --color-ttg-warning: var(--ttg-warning-ch);
+  --color-ttg-purple: var(--ttg-purple-ch);
+  --color-ttg-rarity-common: var(--ttg-rarity-common-ch);
+  --color-ttg-rarity-uncommon: var(--ttg-rarity-uncommon-ch);
+  --color-ttg-rarity-rare: var(--ttg-rarity-rare-ch);
+  --color-ttg-rarity-ultra: var(--ttg-rarity-ultra-ch);
+  --color-ttg-rarity-legendary: var(--ttg-rarity-legendary-ch);
   --color-dracobell: #FF6B00;
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0px;  /* Sharp corners - magazine aesthetic */
   --background: #fffbe6;
   --foreground: #1a1a1a;
   --card: #ffffff;

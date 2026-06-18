@@ -6,6 +6,8 @@
 // with app-specific tab strip in magazine style.
 //
 // For battle gameplay (fullscreen), see GameFullscreenShell.
+//
+// Design tokens: all colors reference --ttg-* CSS custom properties.
 // ============================================================
 "use client"
 
@@ -40,17 +42,17 @@ function GameHUD({ credits, tazoCount }: { credits?: number; tazoCount?: number 
   const { user } = useAuth()
   if (!user) return null
   return (
-    <div className="sticky bottom-0 z-40 bg-[#FFCC00] border-t-[3px] border-[#1a1a1a]">
-      <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-[#1a1a1a]">
+    <div className="sticky bottom-0 z-40 bg-ttg-yellow border-t-[3px] border-ttg-black">
+      <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-ttg-black">
         <div className="flex items-center gap-3 sm:gap-4">
-          <span className="text-[#1a1a1a]/50">{user.displayName || user.name}</span>
+          <span style={{ color: "var(--ttg-black)", opacity: 0.5 }}>{user.displayName || user.name}</span>
           <span className="flex items-center gap-1">
             <Coins className="w-3 h-3" /> {credits != null ? credits : "—"}
           </span>
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
-          <span className="text-[#1a1a1a]/40">{tazoCount != null ? `${tazoCount}/${TOTAL_PLANNED}` : ""} TAZOS</span>
-          <span className="text-[#1a1a1a]/25 text-[7px] sm:text-[8px] tracking-[0.15em]">v{SITE_CONFIG.version}</span>
+          <span style={{ color: "var(--ttg-black)", opacity: 0.4 }}>{tazoCount != null ? `${tazoCount}/${TOTAL_PLANNED}` : ""} TAZOS</span>
+          <span style={{ color: "var(--ttg-black)", opacity: 0.25, fontSize: "8px", letterSpacing: "0.15em" }}>v{SITE_CONFIG.version}</span>
         </div>
       </div>
     </div>
@@ -85,18 +87,9 @@ export default function MagazinePageShell({
     sfxEnsureUnlocked()
   }, [])
 
-  // Magazine aesthetic — cream paper background
-  const shellBg = "#FFF9E6"
-  const tabBg = "bg-white"
-  const tabText = "text-[#1a1a1a]/35 hover:text-[#1a1a1a]/70"
-  const tabActive = "bg-[#FFCC00] text-[#1a1a1a] border-2 border-[#1a1a1a]"
-  const tabHover = "border-transparent hover:text-[#1a1a1a]/70 hover:border-[#1a1a1a]/15 hover:bg-[#1a1a1a]/3"
-
   return (
-    <div
-      className="min-h-screen flex flex-col relative"
-      style={{ background: shellBg }}
-    >
+    <div className="min-h-screen flex flex-col relative"
+      style={{ background: "var(--ttg-cream)" }}>
       {/* Halftone overlay */}
       <div className="mag-halftone absolute inset-0 opacity-40 pointer-events-none" data-ttg-hide-on-battle />
 
@@ -111,7 +104,7 @@ export default function MagazinePageShell({
         className={`relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5
           overflow-x-auto
           [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]
-          border-b-[3px] border-[#1a1a1a] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] ${tabBg}`}
+          border-b-[3px] border-ttg-black shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] bg-white`}
         role="navigation"
         aria-label="App navigation"
       >
@@ -121,10 +114,12 @@ export default function MagazinePageShell({
             <Link
               key={id}
               href={href}
-              className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all whitespace-nowrap ${
-                isActive ? tabActive : `${tabText} ${tabHover} border-2`
+              className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all whitespace-nowrap border-2 ${
+                isActive
+                  ? "bg-ttg-yellow text-ttg-black border-ttg-black"
+                  : "bg-white text-ttg-black/35 hover:text-ttg-black/70 border-transparent hover:border-ttg-black/15 hover:bg-ttg-black/5"
               }`}
-              style={isActive ? { boxShadow: "3px 3px 0 #1a1a1a" } : undefined}
+              style={isActive ? { boxShadow: "3px 3px 0 var(--ttg-black)" } : undefined}
             >
               <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               {label}
