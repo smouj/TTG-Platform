@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="./docs/screenshots/logo-social.png" alt="Trading Tazos Game" width="280" />
+<img src="logo/social-preview.webp" alt="Trading Tazos Game" width="280" />
 
 ### Collect · Trade · Battle — 139 Original Tazos
 
@@ -32,29 +32,6 @@ The live catalog features **139 published tazos** across 3 original series: Mini
 
 ---
 
-## 📸 Screenshots
-
-<div align="center">
-
-| Landing Page | Tazo Catalog | Collections |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/home.png" width="320" alt="Magazine landing page with 3D bag showcase"> | <img src="docs/screenshots/tazos.png" width="320" alt="139 published tazos — browse, search, filter"> | <img src="docs/screenshots/collections.png" width="320" alt="3 series with lore, backstories, and hero art"> |
-
-| How to Play | Leaderboard | Download |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/how-to-play.png" width="320" alt="Slam mechanics tutorial — aim, charge, throw"> | <img src="docs/screenshots/leaderboard.png" width="320" alt="Global rankings by level and XP"> | <img src="docs/screenshots/download.png" width="320" alt="Desktop installers for Windows, macOS, Linux"> |
-
-| Shop Preview | Login | FAQ |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/shop.png" width="320" alt="Buy and open tazo bags with credits"> | <img src="docs/screenshots/login.png" width="320" alt="Magazine-themed login and registration"> | <img src="docs/screenshots/faq.png" width="320" alt="Frequently asked questions"> |
-
-| Wiki | Practice Battle | Collections Lore |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/wiki.png" width="320" alt="351 Wiki entities across 3 series"> | <img src="docs/screenshots/battle-practice.png" width="320" alt="Free-to-play practice arena — no login required"> | <img src="docs/screenshots/collections.png" width="320" alt="Original TTG lore and featured tazos"> |
-
-</div>
-
----
 
 ## 🎮 How the Game Works
 
@@ -314,7 +291,7 @@ Trading-Tazos-Game/
 │   └── manifest.json           # PWA manifest
 ├── scripts/
 │   └── deploy.sh               # Build → rsync → PM2 restart (VPS)
-├── THEME.md                    # Design system specification
+├── src/styles/tokens.css        # Design system (60+ --ttg-* variables)
 ├── electron-builder.yml        # Desktop app build config
 └── package.json
 ```
@@ -356,9 +333,9 @@ Native desktop installers available on the [Releases page](https://github.com/sm
 
 | Platform | Format | Version |
 |----------|--------|---------|
-| Linux | AppImage · .deb | v0.10.0 |
-| Windows | .exe (NSIS) | v0.10.0 |
-| macOS | .dmg · .zip | v0.10.0 |
+| Linux | AppImage · .deb | v0.10.1 |
+| Windows | .exe (NSIS) | v0.10.1 |
+| macOS | .dmg · .zip | v0.10.1 |
 
 ---
 
@@ -400,7 +377,7 @@ Auto-detected from browser/OS settings, persisted in localStorage.
 
 ## 🎨 Design System
 
-Full specification in [`THEME.md`](./THEME.md). The game uses a **90s gaming magazine** aesthetic:
+The game uses a **90s gaming magazine** aesthetic (full design system in `src/styles/tokens.css`):
 
 - **60+ CSS tokens** in `tokens.css` (`--ttg-yellow`, `--ttg-black`, `--ttg-red`, ...)
 - **Typography**: All `font-black` + `uppercase` — 7-level hierarchy
