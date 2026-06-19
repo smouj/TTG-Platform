@@ -80,6 +80,15 @@ mkdir -p .next/standalone/public/tazos-tubes
 # Uploads (avatars, scanned) must survive deploys — store outside standalone/
 mkdir -p data/uploads/avatars
 mkdir -p data/uploads/scanned
+# Sync public root files to standalone (manifest.json, etc.)
+echo "→ Syncing public files to standalone..."
+cp -f public/manifest.json .next/standalone/public/
+cp -f public/favicon* .next/standalone/public/ 2>/dev/null || true
+cp -f public/apple* .next/standalone/public/ 2>/dev/null || true
+cp -f public/pwa* .next/standalone/public/ 2>/dev/null || true
+cp -f public/robots.txt .next/standalone/public/ 2>/dev/null || true
+cp -f public/logo/*.png public/logo/*.webp .next/standalone/public/logo/ 2>/dev/null || true
+
 # Symlink standalone/public/uploads → data/uploads (files persist across deploys)
 rm -rf .next/standalone/public/uploads
 ln -sf /home/smouj/apps/ttg/Trading-Tazos-Game/data/uploads .next/standalone/public/uploads
