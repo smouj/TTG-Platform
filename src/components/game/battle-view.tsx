@@ -1488,7 +1488,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         {/* ── HUD overlay — Magazine Editorial Style ── */}
         <div className="absolute top-0 left-0 right-0 z-20 pointer-events-none">
           
-          <div className="max-w-3xl mx-auto px-2 sm:px-4 mt-2 pointer-events-auto">
+          <div className="max-w-2xl mx-auto px-1.5 sm:px-3 mt-1 pointer-events-auto">
             <BattleHUD
               playerName={user?.name || user?.email?.split("@")[0] || "You"}
               opponentName={cfg?.mode === "practice" ? `AI ${cfg?.aiDifficulty || "Skilled"}` : "Rival"}
@@ -1505,10 +1505,13 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           </div>
 
           {/* Score popups */}
-          {scorePopups.map(p => (
+          {scorePopups.map((p, i) => (
             <div key={p.id}
-              className="absolute top-[45%] left-1/2 -translate-x-1/2 pointer-events-none z-30"
+              className="absolute pointer-events-none z-30"
               style={{
+                top: `calc(45% - ${i * 38}px)`,
+                left: "50%",
+                transform: "translateX(-50%)",
                 color: p.color,
                 fontSize: p.text.length > 2 ? "20px" : "36px",
                 fontWeight: 900,
@@ -1551,8 +1554,8 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           {/* Impact particles */}
           {(phase === "impact" || engine.ui.showImpact) && (
             <div className="absolute top-1/2 left-1/2 pointer-events-none" style={{ transform: "translate(-50%, -50%)" }}>
-              {[...Array(20)].map((_, i) => {
-                const angle = (i / 20) * Math.PI * 2
+              {[...Array(24)].map((_, i) => {
+                const angle = (i / 24) * Math.PI * 2
                 const dist = 50 + Math.random() * 100
                 const px = Math.cos(angle) * dist
                 const py = Math.sin(angle) * dist
@@ -1587,7 +1590,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
           {/* Round banner */}
           {roundBanner !== null && (
-            <div className="absolute top-[45%] left-1/2 -translate-x-1/2 pointer-events-none z-30">
+            <div className="absolute top-[32%] left-1/2 -translate-x-1/2 pointer-events-none z-30">
               <div className="animate-[popUp_0.3s_ease-out]" key={roundBanner}>
                 <div className="text-[10px] font-black text-ttg-yellow/40 uppercase tracking-[0.3em] text-center mb-1">Round</div>
                 <div className="text-5xl font-black text-ttg-yellow text-center" style={{ textShadow: "0 0 30px #ffcc0060" }}>

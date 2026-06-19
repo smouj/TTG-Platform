@@ -27,7 +27,7 @@ export default function BattleSideStack({
 
   return (
     <div
-      className={`absolute top-1/4 ${side === "left" ? "left-3 sm:left-5" : "right-3 sm:right-5"} z-20 pointer-events-none`}
+      className={`absolute top-[20%] ${side === "left" ? "left-3 sm:left-5" : "right-3 sm:right-5"} z-20 pointer-events-none`}
       style={{ transform: "translateY(-50%)" }}
     >
       <div className="flex flex-col items-center gap-2">
