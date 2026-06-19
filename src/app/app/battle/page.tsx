@@ -9,6 +9,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { useAuth } from "@/lib/auth-context"
+import { canUseWebGL } from "@/lib/browser/webgl-detector"
 import { useI18n } from "@/lib/i18n"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
 import BattleTubePreview from "@/components/tubes/BattleTubePreview"
@@ -196,6 +197,7 @@ export default function BattlePage() {
   const [decks, setDecks] = useState<any[]>([])
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [webglOk, setWebglOk] = useState<boolean | null>(null)
   const [battleActive, setBattleActive] = useState(false)
   const [launching, setLaunching] = useState(false)
 
@@ -207,6 +209,9 @@ export default function BattlePage() {
       if (cleanup) { cleanup(); delete (window as any).__ttg_battle_cleanup }
     }
   }, [])
+
+  // Check WebGL before allowing battle start
+  useEffect(() => { setWebglOk(canUseWebGL()) }, [])
 
   // Listen for BattleView "Back to Lobby" event
   useEffect(() => {
@@ -297,7 +302,7 @@ export default function BattlePage() {
     }, 1200)
   }
 
-  const canStart = selectedDeckId && deckStats.count >= 1 && mode === "practice" && !launching
+  const canStart = selectedDeckId && deckStats.count >= 1 && mode === "practice" && !launching && webglOk !== false
   const noDecks = !loading && decks.length === 0
 
   // ═══ BATTLE ACTIVE — render BattleView in fullscreen overlay ═══
@@ -661,7 +666,7 @@ export default function BattlePage() {
             <div className="text-center pt-2">
               <button
                 onClick={handleStart}
-                disabled={!canStart || launching}
+                disabled={!canStart || launching || webglOk !== true}
                 className={`w-full sm:w-auto px-12 sm:px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-[3px] border-ttg-black transition-all ${
                   canStart
                     ? "bg-ttg-red text-white hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] hover:shadow-[2px_2px_0_var(--ttg-black)]"
