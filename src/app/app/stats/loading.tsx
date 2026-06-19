@@ -1,14 +1,15 @@
-import { Loader2 } from "lucide-react"
-
-export default function StatsLoading() {
+// App route loading skeleton — magazine theme
+export default function AppRouteLoading() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <Loader2 className="w-8 h-8 animate-spin text-ttg-yellow mx-auto" />
-        <p className="text-[10px] font-black text-ttg-black/20 uppercase tracking-[0.3em]">
-          Loading Stats…
-        </p>
+    <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6">
+      <div className="relative w-14 h-14">
+        <div className="absolute inset-0 rounded-full bg-ttg-yellow/10 animate-ping" />
+        <div className="absolute inset-0 rounded-full bg-ttg-yellow/5 animate-pulse" style={{ animationDuration: "2s" }} />
       </div>
+      <div className="w-10 h-10 rounded-full border-[3px] border-ttg-black/10 border-t-ttg-yellow animate-spin" />
+      <p className="text-xs font-black text-ttg-black/20 uppercase tracking-[0.3em] animate-pulse">
+        Loading
+      </p>
     </div>
   )
 }

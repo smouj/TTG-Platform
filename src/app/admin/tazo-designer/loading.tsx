@@ -1,5 +1,5 @@
 // Admin loading skeleton — magazine theme
-export default function AdminTazosLoading() {
+export default function AdminLoading() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6">
       <div className="relative w-14 h-14">
