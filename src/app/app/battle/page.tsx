@@ -224,6 +224,7 @@ export default function BattlePage() {
   // Fetch user decks
   useEffect(() => {
     if (!user) { setLoading(false); return }
+    setLoading(true)
     const token = localStorage.getItem("token")
     fetch("/api/decks", {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -234,8 +235,11 @@ export default function BattlePage() {
         setDecks(list)
         const active = list.find((dk: any) => dk.isActive) || list[0] || null
         if (active) setSelectedDeckId(active.id)
+        if (list.length === 0) console.warn("[battle] No decks found for user")
       })
-      .catch(() => {})
+      .catch((err: any) => {
+        console.error("[battle] Failed to load decks:", err)
+      })
       .finally(() => setLoading(false))
   }, [user])
 
