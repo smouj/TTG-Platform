@@ -170,13 +170,17 @@ function IntroCinematic({ playerName, deckName, deckSize, playerHand, opponentHa
       {/* Bottom: phase hint */}
       <div className="absolute bottom-[12%] left-1/2 -translate-x-1/2 text-center">
         <p style={{
-          fontSize: 10, fontWeight: 900, color: "rgba(255,255,255,0.35)",
+          fontSize: introCinematicPhase === "countdown" ? 48 : 10,
+          fontWeight: 900,
+          color: introCinematicPhase === "countdown" ? "var(--ttg-yellow)" : "rgba(255,255,255,0.35)",
           textTransform: "uppercase", letterSpacing: "0.2em", margin: 0,
-          animation: "pulse 2s ease-in-out infinite",
+          textShadow: introCinematicPhase === "countdown" ? "0 0 40px rgba(255,204,0,0.6)" : "none",
+          animation: introCinematicPhase === "countdown" ? "none" : "pulse 2s ease-in-out infinite",
+          transition: "all 0.3s ease-out",
         }}>
           {introCinematicPhase === "players" ? "Presenting contestants..." :
            introCinematicPhase === "decks" ? "Deck preview..." :
-           introCinematicPhase === "countdown" ? "Get ready..." :
+           introCinematicPhase === "countdown" ? (countdown != null && countdown > 0 ? `${countdown}...` : countdown === 0 ? "GO!" : "Get ready...") :
            "Camera orbits arena · Free orbit with mouse"}
         </p>
       </div>
@@ -1601,6 +1605,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             tazoName={playerHand[0].name}
             tazoFranchise={playerHand[0].franchise}
             tazoImageUrl={playerHand[0].imageUrl}
+            tazoStats={playerHand[0] ? { atk: playerHand[0].attack, def: playerHand[0].defense, spd: playerHand[0].spin, acc: playerHand[0].precision, ctrl: playerHand[0].control, pwr: playerHand[0].attack } : undefined}
             stakeX={playerStakeX}
             stakeZ={playerStakeZ}
             onPlace={(x, z) => handlePlaceStake(x, z)}
@@ -1642,7 +1647,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             }}
             onBack={back}
           />
-        ) : (
+        ) : (!placingStake ? (
           <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-center pb-24 pointer-events-none">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full flex justify-center pointer-events-auto">
             <button onClick={back}
@@ -1656,7 +1661,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             </button>
             </div>
           </div>
-        )}
+        ) : null)}
       </BattleArena3D>
     </div>
     </WebGLGuard>

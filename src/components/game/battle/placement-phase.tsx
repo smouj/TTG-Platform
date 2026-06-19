@@ -8,25 +8,48 @@
 "use client"
 
 import { useCallback, useRef, useState, useEffect } from "react"
-import { Crosshair, Hand, Check, ArrowDown } from "lucide-react"
+import { Crosshair, Hand, Check, ArrowDown, Target, Zap, Shield } from "lucide-react"
 import { playSfx } from "@/lib/battle/sfx"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
+
+interface TazoStats {
+  atk?: number; def?: number; spd?: number
+  acc?: number; ctrl?: number; pwr?: number
+}
 
 interface PlacementPhaseProps {
   tazoName: string
   tazoFranchise: string
   tazoImageUrl: string | null
+  tazoStats?: TazoStats
   stakeX: number
   stakeZ: number
   onPlace: (x: number, z: number) => void
   onBack: () => void
 }
 
+function calcStats(x: number, z: number, stats?: TazoStats) {
+  const distFromCenter = Math.sqrt((x + 0.55)**2 + z**2)  // distance from player stake zone
+  const centerDist = Math.sqrt(x**2 + z**2)  // distance from arena center
+  const baseAtk = stats?.atk ?? 50
+  const baseDef = stats?.def ?? 50
+  const baseSpd = stats?.spd ?? 50
+  const baseAcc = stats?.acc ?? 50
+  
+  const accuracy = Math.round(baseAcc * (1 - centerDist * 0.15))
+  const power = Math.round(baseAtk * (1 + Math.max(0, distFromCenter - 0.15) * 0.4))
+  const defense = Math.round(baseDef * (1 + centerDist * 0.1))
+  const speed = Math.round(baseSpd)
+  
+  return { accuracy: Math.min(99, Math.max(1, accuracy)), power: Math.min(99, Math.max(1, power)), defense: Math.min(99, Math.max(1, defense)), speed: Math.min(99, Math.max(1, speed)) }
+}
+
 export default function PlacementPhase({
-  tazoName, tazoFranchise, tazoImageUrl,
+  tazoName, tazoFranchise, tazoImageUrl, tazoStats,
   stakeX, stakeZ, onPlace, onBack,
 }: PlacementPhaseProps) {
   const padRef = useRef<HTMLDivElement>(null)
+  const [mouseDown, setMouseDown] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [localX, setLocalX] = useState(stakeX)
   const [localZ, setLocalZ] = useState(stakeZ)
@@ -55,8 +78,20 @@ export default function PlacementPhase({
     setLocalZ(0)
   }, [])
 
-  const handlePadInteraction = useCallback((clientX: number, clientY: number) => {
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (placed) return
+    setMouseDown(true)
+    const pad = padRef.current?.getBoundingClientRect()
+    if (!pad) return
+    const px = e.clientX - pad.left
+    const pz = e.clientY - pad.top
+    const { x, z } = fromPad(pad, px, pz)
+    setLocalX(x)
+    setLocalZ(z)
+  }, [placed, fromPad])
+
+  const handlePadInteraction = useCallback((clientX: number, clientY: number) => {
+    if (placed || !mouseDown) return
     const pad = padRef.current?.getBoundingClientRect()
     if (!pad) return
     const px = clientX - pad.left
@@ -66,17 +101,19 @@ export default function PlacementPhase({
     setLocalZ(z)
     if (!dragging) {
       setDragging(true)
-      playSfx("aim_tick", 0.15)
     }
-  }, [placed, dragging, fromPad])
+  }, [placed, mouseDown, dragging, fromPad])
 
   const handleRelease = useCallback(() => {
     if (placed) return
+    setMouseDown(false)
     setDragging(false)
   }, [placed])
 
   const handleConfirm = useCallback(() => {
     setPlaced(true)
+    setMouseDown(false)
+    setDragging(false)
     playSfx("tazo_secure", 0.3)
     onPlace(localX, localZ)
   }, [localX, localZ, onPlace])
@@ -92,21 +129,30 @@ export default function PlacementPhase({
         <div className="flex-1 flex items-center justify-center p-8 pb-40">
           <div
             ref={padRef}
-            className="relative w-full max-w-[360px] aspect-square bg-black/40 backdrop-blur-sm overflow-hidden"
+            className="relative w-full max-w-[400px] sm:max-w-[420px] aspect-square bg-black/40 backdrop-blur-sm overflow-hidden"
             style={{
               border: "1px solid rgba(255,255,255,0.08)",
               boxShadow: "inset 0 0 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,204,0,0.04)",
               cursor: placed ? "default" : "crosshair",
               pointerEvents: "auto",
             }}
+            onMouseDown={(e) => handleMouseDown(e)}
             onMouseMove={(e) => handlePadInteraction(e.clientX, e.clientY)}
             onMouseUp={handleRelease}
             onMouseLeave={handleRelease}
+            onTouchStart={(e) => {
+              e.preventDefault()
+              setMouseDown(true)
+              const pad = padRef.current?.getBoundingClientRect()
+              if (!pad) return
+              const { x, z } = fromPad(pad, e.touches[0].clientX - pad.left, e.touches[0].clientY - pad.top)
+              setLocalX(x); setLocalZ(z)
+            }}
             onTouchMove={(e) => {
               e.preventDefault()
               handlePadInteraction(e.touches[0].clientX, e.touches[0].clientY)
             }}
-            onTouchEnd={handleRelease}
+            onTouchEnd={() => { setMouseDown(false); setDragging(false) }}
           >
             {/* Concentric rings */}
             <div className="absolute inset-4 flex items-center justify-center pointer-events-none">
@@ -189,6 +235,47 @@ export default function PlacementPhase({
         </div>
       </div>
 
+      {/* ── Live stats panel ── */}
+      <div className="absolute top-4 left-4 z-30 pointer-events-none">
+        <div className="bg-black/60 backdrop-blur-sm px-3 py-2 border border-white/6" style={{ minWidth: 140 }}>
+          <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.2em] block mb-2">{placed ? "Final Stats" : "Stats · Live"}</span>
+          {(() => {
+            const s = calcStats(localX, localZ, tazoStats)
+            return (
+              <div className="flex flex-col gap-1.5">
+                {/* Accuracy */}
+                <div className="flex items-center gap-2">
+                  <Target className="w-2.5 h-2.5 text-ttg-yellow/50" />
+                  <span className="text-[7px] font-bold text-white/20 uppercase w-8">ACC</span>
+                  <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-200" style={{ width: `${s.accuracy}%`, background: "var(--ttg-yellow)" }} />
+                  </div>
+                  <span className="text-[8px] font-black text-ttg-yellow tabular-nums w-6 text-right">{s.accuracy}</span>
+                </div>
+                {/* Power */}
+                <div className="flex items-center gap-2">
+                  <Zap className="w-2.5 h-2.5 text-ttg-dracobell/50" />
+                  <span className="text-[7px] font-bold text-white/20 uppercase w-8">PWR</span>
+                  <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-200" style={{ width: `${s.power}%`, background: "var(--ttg-dracobell)" }} />
+                  </div>
+                  <span className="text-[8px] font-black text-ttg-dracobell tabular-nums w-6 text-right">{s.power}</span>
+                </div>
+                {/* Defense */}
+                <div className="flex items-center gap-2">
+                  <Shield className="w-2.5 h-2.5 text-ttg-player/50" />
+                  <span className="text-[7px] font-bold text-white/20 uppercase w-8">DEF</span>
+                  <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-200" style={{ width: `${s.defense}%`, background: "var(--ttg-player)" }} />
+                  </div>
+                  <span className="text-[8px] font-black text-ttg-player tabular-nums w-6 text-right">{s.defense}</span>
+                </div>
+              </div>
+            )
+          })()}
+        </div>
+      </div>
+
       {/* ── Bottom bar ── */}
       <div className="absolute bottom-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 pointer-events-none">
         <button onClick={onBack}
@@ -202,7 +289,7 @@ export default function PlacementPhase({
             <span className="w-2 h-2 rounded-full" style={{ background: fColor, boxShadow: `0 0 6px ${fColor}` }} />
           </div>
           <span className="text-[7px] font-black text-ttg-yellow/30 tracking-[0.2em] uppercase">
-            {dragging ? "Dragging..." : placed ? "✓ Position set" : "Drag to place your stake"}
+            {placed ? "✓ Position set" : dragging ? "Release to confirm" : mouseDown ? "Drag to adjust" : "Click & drag to aim"}
           </span>
         </div>
 

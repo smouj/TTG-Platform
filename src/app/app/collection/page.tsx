@@ -279,7 +279,6 @@ export default function CollectionPage() {
   if (!data) return null
 
   // ── Main View ─────────────────────────────────────────
-  const activeDeck = data.decks?.find(d => d.isActive)
   const totalGlobal = data.totalUnique > 0 ? Math.max(data.totalUnique, 681) : 681
 
   return (
@@ -351,16 +350,7 @@ export default function CollectionPage() {
       {/* ═══════════════════════════════════════════════ */}
       {/* ③ STATS ROW                                    */}
       {/* ═══════════════════════════════════════════════ */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {/* Active Deck */}
-        <StatsCard
-          icon={<Swords className="w-4 h-4" />} iconColor='var(--ttg-red)'
-          label="Active Deck" value={activeDeck ? `${activeDeck.tazos.length}/20` : "0/20"}
-          valueColor='var(--ttg-red)'
-          detail={activeDeck?.name}
-          href={"/app/decks"}
-        />
-
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         {/* Strongest */}
         <StatsCard
           icon={<TrendingUp className="w-4 h-4" />} iconColor='var(--ttg-yellow)'
@@ -387,75 +377,7 @@ export default function CollectionPage() {
       </div>
 
       {/* ═══════════════════════════════════════════════ */}
-      {/* ④ ACTIVE DECK PREVIEW                          */}
-      {/* ═══════════════════════════════════════════════ */}
-      {activeDeck && activeDeck.tazos.length > 0 && (
-        <div
-          className="p-4 mag-card-yellow space-y-3"
-          style={{ border: "3px solid var(--ttg-black)", boxShadow: "4px 4px 0px var(--ttg-black)" }}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Swords className="w-5 h-5 text-ttg-red" />
-              <div>
-                <span className="text-sm font-black text-ttg-black uppercase tracking-wide">
-                  {activeDeck.name}
-                </span>
-                <span className="text-[9px] font-black text-ttg-red ml-2 bg-white px-2 py-0.5 border border-ttg-red uppercase">
-                  ACTIVE DECK
-                </span>
-              </div>
-            </div>
-            <Link
-              href="/app/battle"
-              className="mag-btn px-5 py-2 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5"
-              style={{ background: 'var(--ttg-red)', color: "white", border: "3px solid var(--ttg-black)", boxShadow: "3px 3px 0px var(--ttg-black)" }}
-            >
-              BATTLE <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-            {activeDeck.tazos.map((dt) => {
-              const gradient = FRANCHISE_GRADIENT[dt.franchiseSlug] || 'var(--ttg-black)'
-              return (
-                <div
-                  key={dt.id}
-                  className="flex items-center gap-2 p-2 bg-white border-2 border-ttg-black shadow-[2px_2px_0px_var(--ttg-black)]"
-                >
-                  <div className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-ttg-black"
-                    style={{ background: gradient }}>
-                    <TazoDiscImage
-                      src={dt.imageUrl}
-                      alt={dt.name || ""}
-                      size={36}
-                      borderWidth={0}
-                      finish={(dt as any).finish}
-                      creatureVariant={(dt as any).creatureVariant}
-                      shinyImageUrl={(dt as any).shinyImageUrl}
-                      lazy
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-black text-ttg-black truncate leading-tight">
-                      {dt.name || dt.displayName}
-                    </p>
-                    <div className="flex items-center gap-1.5 text-[8px] font-black">
-                      <span style={{ color: 'var(--ttg-red)' }}>{dt.attack}</span>
-                      <span style={{ color: 'var(--ttg-blue)' }}>{dt.defense}</span>
-                      <span className="text-ttg-black/40">·</span>
-                      <span style={{ color: "var(--ttg-cybermon)" }}>{dt.resistance}</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ═══════════════════════════════════════════════ */}
-      {/* ⑤ TOOLBAR — Filters + Search + Sort            */}
+      {/* ④ TOOLBAR — Filters + Search + Sort            */}
       {/* ═══════════════════════════════════════════════ */}
       <div
         className="p-3 border-3 border-ttg-black bg-white shadow-[3px_3px_0px_var(--ttg-black)] space-y-3"

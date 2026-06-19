@@ -12,8 +12,8 @@ import { useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
 
 // ── Tube dimensions (bigger than lobby tube, visible in arena) ──
-const TUBE_RADIUS = 0.55
-const TUBE_HEIGHT = 1.9
+const TUBE_RADIUS = 0.42
+const TUBE_HEIGHT = 1.35
 
 // ── Franchise textures ──
 const TUBE_TEXTURES: Record<string, string> = {

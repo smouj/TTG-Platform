@@ -262,7 +262,7 @@ function StakedTazoMesh({ staked }: { staked: StakedTazo }) {
         franchise={staked.franchise}
         imageUrl={staked.imageUrl}
         backImageUrl={staked.backImageUrl}
-        size={0.38}
+        size={0.50}
         autoRotate={false}
       />
       {/* Glow ring for secured/captured — at top of tazo disc */}
