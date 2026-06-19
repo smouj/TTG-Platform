@@ -1,10 +1,13 @@
 // ============================================================
-// Trading Tazos Game — Battle Side Stack v2 (Magazine Editorial)
+// Trading Tazos Game — Battle Side Stack v3 (Clean Visual)
 //
-// Shows each player's remaining tazos as a vertical stack
-// on their side of the arena. Magazine editorial aesthetic.
+// Shows each player's remaining tazos as a vertical disc stack
+// on their side of the arena. Pure visual — no text labels
+// (HUD handles all game-state text). Magazine aesthetic.
 // ============================================================
 "use client"
+
+import { useEffect, useState } from "react"
 
 interface Props {
   playerName: string
@@ -23,42 +26,32 @@ export default function BattleSideStack({
 }: Props) {
   const isPlayer = playerType === "player"
   const accentColor = isPlayer ? "var(--ttg-player)" : "var(--ttg-opponent)"
-  const lossCount = totalTazos - remainingTazos - capturedTazos
+  const [animKey, setAnimKey] = useState(0)
+
+  // Animate when remaining changes (tazo lost or captured)
+  useEffect(() => {
+    setAnimKey(k => k + 1)
+  }, [remainingTazos])
 
   return (
     <div
       className={`absolute top-[20%] ${side === "left" ? "left-3 sm:left-5" : "right-3 sm:right-5"} z-20 pointer-events-none`}
       style={{ transform: "translateY(-50%)" }}
     >
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-1.5">
         {/* Active indicator — editorial rule */}
         {isActive && (
-          <div className="w-1 h-10 rounded-full animate-pulse"
-            style={{ background: `linear-gradient(to bottom, ${accentColor}, ${accentColor}15)` }} />
+          <div className="w-1 h-8 rounded-full animate-pulse"
+            style={{ background: `linear-gradient(to bottom, ${accentColor}, ${accentColor}10)` }} />
         )}
 
-        {/* Label — editorial byline pill */}
-        <div
-          className="px-2.5 py-1 rounded-full text-center max-w-[90px] sm:max-w-[110px] truncate"
-          style={{
-            background: `linear-gradient(135deg, ${accentColor}12, ${accentColor}04)`,
-            border: `1px solid ${accentColor}18`,
-            backdropFilter: "blur(8px)",
-          }}
-        >
-          <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.15em] truncate block"
-            style={{ color: accentColor }}>
-            {playerName}
-          </span>
-        </div>
-
-        {/* Tazo disc stack */}
-        <div className="relative">
-          <div className="relative" style={{ width: 38, height: Math.max(14, remainingTazos * 5 + 10) }}>
+        {/* Tazo disc stack — pure visual, no labels */}
+        <div className="relative" key={animKey}>
+          <div className="relative" style={{ width: 38, height: Math.max(14, remainingTazos * 5 + 8) }}>
             {Array.from({ length: Math.min(remainingTazos, 8) }).map((_, i) => (
               <div
                 key={i}
-                className="absolute left-1/2 rounded-full"
+                className="absolute left-1/2 rounded-full transition-all duration-300"
                 style={{
                   width: 32 - i * 1.5,
                   height: 32 - i * 1.5,
@@ -81,25 +74,6 @@ export default function BattleSideStack({
               </div>
             )}
           </div>
-
-          {/* Count — editorial stat display */}
-          <div className="text-center mt-1.5">
-            <span className="text-[12px] font-black tabular-nums"
-              style={{ color: accentColor, textShadow: `0 0 12px ${accentColor}30` }}>
-              {remainingTazos}
-            </span>
-            <span className="text-[7px] font-black text-white/10 ml-0.5 tracking-wider">/ {totalTazos}</span>
-          </div>
-        </div>
-
-        {/* Captured / Lost — editorial footnote */}
-        <div className="flex items-center gap-3 text-[7px] font-black">
-          {capturedTazos > 0 && (
-            <span className="text-ttg-success/40">◈ {capturedTazos}</span>
-          )}
-          {lossCount > 0 && (
-            <span className="text-ttg-opponent/30">✕ {lossCount}</span>
-          )}
         </div>
       </div>
     </div>

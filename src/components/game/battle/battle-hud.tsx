@@ -94,11 +94,11 @@ function ScoreBar({ score, label, color, side }: {
 }
 
 // ── Tazo counter chips ──
-function TazoChips({ active, captured, color }: { active: number; captured: number; color: string }) {
+function TazoChips({ remaining, color }: { remaining: number; color: string }) {
   return (
     <div className="flex items-center gap-1.5">
       <div className="relative w-6 h-6 shrink-0">
-        {Array.from({ length: Math.min(active, 3) }).map((_, i) => (
+        {Array.from({ length: Math.min(remaining, 3) }).map((_, i) => (
           <div
             key={i}
             className="absolute rounded-full border-2 border-ttg-black"
@@ -113,11 +113,8 @@ function TazoChips({ active, captured, color }: { active: number; captured: numb
       </div>
       <span className="text-[13px] font-black text-ttg-black tabular-nums leading-none"
         style={{ textShadow: "0 1px 0 rgba(255,255,255,0.5)" }}>
-        {active}
+        {remaining}
       </span>
-      {captured > 0 && (
-        <span className="text-[9px] font-black text-ttg-red leading-none ml-0.5">+{captured}</span>
-      )}
     </div>
   )
 }
@@ -129,8 +126,8 @@ export default function BattleHUD(props: BattleHUDProps) {
     round, phase, turnPlayer, compact,
   } = props
   const phaseInfo = PHASE_LABELS[phase] || { text: phase, color: "var(--ttg-black)", bg: "var(--ttg-yellow)", emoji: "❓" }
-  const pActive = Math.max(0, playerTazos - playerCaptured)
-  const oActive = Math.max(0, opponentTazos - opponentCaptured)
+  const pRemaining = Math.max(0, playerTazos - playerCaptured)
+  const oRemaining = Math.max(0, opponentTazos - opponentCaptured)
   const isPlayerTurn = turnPlayer === "player"
   const isOpponentTurn = turnPlayer === "opponent"
   const isIntro = phase === "intro"
@@ -244,7 +241,7 @@ export default function BattleHUD(props: BattleHUDProps) {
           </div>
           <ScoreBar score={playerScore} label={playerName} color="var(--ttg-red)" side="left" />
           <div className="flex items-center justify-between mt-2">
-            <TazoChips active={pActive} captured={playerCaptured} color="var(--ttg-red)" />
+            <TazoChips remaining={pRemaining} color="var(--ttg-red)" />
             <div className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-[0.15em]"
               style={{ color: "var(--ttg-black)", opacity: 0.25 }}>
               <Disc3 className="w-2.5 h-2.5" /> DECK
@@ -281,7 +278,7 @@ export default function BattleHUD(props: BattleHUDProps) {
           </div>
           <ScoreBar score={opponentScore} label={opponentName} color="var(--ttg-blue)" side="right" />
           <div className="flex items-center justify-between mt-2 flex-row-reverse">
-            <TazoChips active={oActive} captured={opponentCaptured} color="var(--ttg-blue)" />
+            <TazoChips remaining={oRemaining} color="var(--ttg-blue)" />
             <div className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-[0.15em] flex-row-reverse"
               style={{ color: "var(--ttg-black)", opacity: 0.25 }}>
               <Disc3 className="w-2.5 h-2.5" /> DECK

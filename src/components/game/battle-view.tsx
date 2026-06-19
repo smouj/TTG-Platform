@@ -1352,7 +1352,31 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   )
 
   // ── Lobby ──
-  if (phase === "lobby") return (
+  // When auto-start data exists in sessionStorage, skip GameLobby
+  // and show a brief loading state — the auto-start useEffect
+  // will transition to the intro/battle phase within 500ms.
+  if (phase === "lobby") {
+    const hasAutoStart =
+      typeof window !== "undefined" &&
+      sessionStorage.getItem("battle_mode") &&
+      sessionStorage.getItem("battle_deckId")
+
+    if (hasAutoStart) return (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-16 h-16">
+            <div className="absolute inset-0 rounded-full bg-ttg-yellow/20 animate-ping" />
+            <div className="absolute inset-0 rounded-full bg-ttg-yellow/10 animate-pulse" style={{ animationDuration: "2s" }} />
+          </div>
+          <Disc3 className="w-10 h-10 relative z-10 animate-spin text-ttg-yellow" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 animate-pulse">
+            Entering Arena
+          </span>
+        </div>
+      </div>
+    )
+
+    return (
     <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6">
       <div className="w-full max-w-7xl">
         <GameLobby
@@ -1367,6 +1391,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       </div>
     </div>
   )
+  }
 
   // ── Match End ──
   if (phase === "match_end" && result) return (
