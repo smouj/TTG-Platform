@@ -962,7 +962,7 @@ function HowToPlayContent() {
 
       <SectionCard step={3} color="var(--ttg-blue)" bgColor="var(--ttg-blue)" title="Build Your Battle Deck"
         preview={<DeckPreview tazos={deckPreview} />}>
-        <p>Choose <strong>5 tazos</strong> to form your battle deck. Each tazo has <strong>9 combat stats</strong>:</p>
+        <p>Choose <strong>20 tazos</strong> to form your battle deck. Each tazo has <strong>9 combat stats</strong>:</p>
         <ul className="list-disc pl-5 space-y-0.5">
           <li><strong>Attack</strong> — Impact power on opponent tazos</li>
           <li><strong>Defense</strong> — Resistance to being flipped</li>
