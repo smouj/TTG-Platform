@@ -12,7 +12,7 @@
 import { useState, useCallback, useRef, useEffect } from "react"
 import { ReplayRecorder } from "./replay"
 import { createRNG } from "./rng"
-import type { TazoCard, MatchConfig, SlamParams, ImpactResult } from "./game-loop"
+import type { TazoCard, MatchConfig, SlamParams, ImpactResult, StakedTazo } from "./game-loop"
 import {
   DEFAULT_ARENA_3D, createAirborneTazo, simulateSlam,
   generateAISlam, scoreBettingImpact, checkMatchEnd,
@@ -68,7 +68,7 @@ export interface BattleEngine {
   lockAim: (x: number, z: number) => void
   lockCharge: (level: number) => void
   releaseSlam: () => void
-  physicsDone: (result: ImpactResult) => void
+  physicsDone: (result: ImpactResult, staked: StakedTazo[]) => void
   captureResolved: () => void
   scoreUpdated: () => void
   turnOver: () => void
@@ -199,8 +199,8 @@ export function useBattleEngine(): BattleEngine {
     })
   }, [send])
 
-  const physicsDone = useCallback((result: ImpactResult) => {
-    send({ type: "PHYSICS_DONE", result })
+  const physicsDone = useCallback((result: ImpactResult, staked: StakedTazo[]) => {
+    send({ type: "PHYSICS_DONE", result, staked })
   }, [send])
 
   const captureResolved = useCallback(() => send({ type: "CAPTURE_RESOLVED" }), [send])

@@ -219,6 +219,9 @@ export interface Arena3DConfig {
   impactDamping: number
   /** Ring-out distance from center */
   ringOutThreshold: number
+  name?: string
+  description?: string
+  theme?: "default" | "lava" | "crystal" | "zero-g"
   /** Minimum force to trigger any effect */
   minFlipForce: number
   /** Max launch height (world units) */
@@ -228,6 +231,9 @@ export interface Arena3DConfig {
 }
 
 export const DEFAULT_ARENA_3D: Arena3DConfig = {
+  name: "Standard Arena",
+  description: "Classic TTG arena with balanced physics. Your go-to battlefield.",
+  theme: "default",
   radius: 4.2,
   gravity: 22,
   impactDamping: 0.35,
@@ -1003,3 +1009,53 @@ export function placeStakedTazos(
     },
   ]
 }
+
+// ────────────────────────────────────────
+// Arena Presets — 4 visually & physically distinct battlefields
+// ────────────────────────────────────────
+
+export const LAVA_PIT_ARENA: Arena3DConfig = {
+  name: "Lava Pit",
+  description: "Low gravity + high bounce — tazos fly everywhere! Ring-outs are common.",
+  theme: "lava",
+  radius: 3.8,
+  gravity: 14,
+  impactDamping: 0.22,
+  ringOutThreshold: 3.8,
+  minFlipForce: 0.12,
+  maxLaunchHeight: 8.5,
+  tableFriction: 0.72,
+}
+
+export const CRYSTAL_CAVE_ARENA: Arena3DConfig = {
+  name: "Crystal Cave",
+  description: "High friction + high damping — tazos stick and stack. Precision wins.",
+  theme: "crystal",
+  radius: 4.5,
+  gravity: 28,
+  impactDamping: 0.50,
+  ringOutThreshold: 4.5,
+  minFlipForce: 0.25,
+  maxLaunchHeight: 6,
+  tableFriction: 0.94,
+}
+
+export const ZERO_G_ARENA: Arena3DConfig = {
+  name: "Zero-G Chamber",
+  description: "Near-zero gravity + huge arena — tazos float and drift. Chaos reigns.",
+  theme: "zero-g",
+  radius: 6.0,
+  gravity: 6,
+  impactDamping: 0.10,
+  ringOutThreshold: 6.0,
+  minFlipForce: 0.05,
+  maxLaunchHeight: 12,
+  tableFriction: 0.50,
+}
+
+export const ARENA_PRESETS: Arena3DConfig[] = [
+  DEFAULT_ARENA_3D,
+  LAVA_PIT_ARENA,
+  CRYSTAL_CAVE_ARENA,
+  ZERO_G_ARENA,
+]

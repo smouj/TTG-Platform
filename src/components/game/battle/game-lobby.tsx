@@ -5,7 +5,8 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import type { TazoCard, PlayMode, AIDifficulty } from "@/lib/battle/game-loop"
+import type { TazoCard, PlayMode, AIDifficulty, Arena3DConfig } from "@/lib/battle/game-loop"
+import { DEFAULT_ARENA_3D, ARENA_PRESETS } from "@/lib/battle/game-loop"
 import {
   Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star,
   Sparkles, ChevronRight, Layers,
@@ -18,7 +19,7 @@ interface Props {
   playerDecks?: { id: string; name: string; isActive: boolean; tazos: any[] }[]
   selectedDeckId?: string | null
   onSelectDeck?: (deckId: string | null) => void
-  onStart: (mode: PlayMode, difficulty: AIDifficulty, deck: TazoCard[]) => void
+  onStart: (mode: PlayMode, difficulty: AIDifficulty, deck: TazoCard[], arena?: Arena3DConfig) => void
   isLoading: boolean
   isAuthenticated: boolean
 }
@@ -63,6 +64,7 @@ function fColor(f: string) {
 export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, onSelectDeck, onStart, isLoading, isAuthenticated }: Props) {
   const [mode, setMode] = useState<PlayMode>("practice")
   const [difficulty, setDifficulty] = useState<AIDifficulty>("skilled")
+  const [arena, setArena] = useState<Arena3DConfig>(DEFAULT_ARENA_3D)
   // Deck is selected via deck selector — all tazos included
   const [,setDeckTazos] = useState<TazoCard[]>([])
 
@@ -216,6 +218,37 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
         </div>
       )}
 
+      {/* ════════════════ ARENA SELECTOR ════════════════ */}
+      <div className="bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden">
+        <div className="bg-ttg-black px-4 py-2 flex items-center gap-2">
+          <Layers className="w-3.5 h-3.5 text-ttg-yellow" />
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-ttg-yellow">Arena</h3>
+        </div>
+        <div className="p-3 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {ARENA_PRESETS.map(a => (
+            <button
+              key={a.name}
+              onClick={() => setArena(a)}
+              className={`p-2.5 border-2 text-left transition-all ${
+                arena.name === a.name
+                  ? "border-ttg-yellow shadow-[2px_2px_0px_var(--ttg-yellow)]"
+                  : "border-ttg-black/8 hover:border-ttg-black/30"
+              }`}
+              style={{
+                background: a.theme === "lava" ? "#2a0a00" : a.theme === "crystal" ? "#051020" : a.theme === "zero-g" ? "#0d0520" : "#fffef5",
+              }}
+            >
+              <div className="text-[10px] font-black text-ttg-black mb-0.5" style={{
+                color: a.theme === "default" ? undefined : "#fff"
+              }}>{a.name}</div>
+              <div className="text-[7px] font-bold leading-tight" style={{
+                color: a.theme === "default" ? "#666" : "rgba(255,255,255,0.5)"
+              }}>{a.description}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* ════════════════ SELECTED DECK ════════════════ */}
       <div className="bg-white border-3 border-ttg-black shadow-[3px_3px_0px_var(--ttg-black)] overflow-hidden">
         <div className="mag-card-yellow px-4 py-2.5 flex items-center justify-between border-b-3 border-ttg-black">
@@ -294,7 +327,7 @@ export default function GameLobby({ playerTazos, playerDecks, selectedDeckId, on
               weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
               control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
             })) || []
-            onStart(mode, difficulty, deckTazos)
+            onStart(mode, difficulty, deckTazos, arena)
           }}
           disabled={!canStart || isLoading}
           className={`px-14 py-5 font-black text-lg sm:text-xl uppercase tracking-wider border-3 border-ttg-black transition-all ${

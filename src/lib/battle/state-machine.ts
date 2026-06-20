@@ -45,7 +45,7 @@ export type BattleEvent =
   | { type: "AIM_LOCKED"; targetX: number; targetZ: number }
   | { type: "CHARGE_COMPLETE"; charge: number }
   | { type: "SLAM_RELEASED"; params: SlamParams }
-  | { type: "PHYSICS_DONE"; result: ImpactResult }
+  | { type: "PHYSICS_DONE"; result: ImpactResult; staked: StakedTazo[] }
   | { type: "CAPTURE_RESOLVED" }
   | { type: "SCORE_UPDATED" }
   | { type: "TURN_OVER" }
@@ -316,7 +316,7 @@ export const BATTLE_TRANSITIONS: StateTransition[] = [
     event: "PHYSICS_DONE",
     action(ctx, event) {
       const e = event as Extract<BattleEvent, { type: "PHYSICS_DONE" }>
-      return { ...ctx, state: "capture_check", lastImpact: e.result }
+      return { ...ctx, state: "capture_check", lastImpact: e.result, stakedTazos: e.staked }
     },
   },
 

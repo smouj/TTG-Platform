@@ -57,6 +57,21 @@ export function getAITiming(difficulty: AIDifficulty): AITiming {
 // ────────────────────────────────────────
 
 export function selectAIBet(ctx: BattleContext): TazoCard | null {
+  const hand = ctx.opponentHand
+  if (hand.length === 0) return null
+  const scoreGap = ctx.opponent.score - ctx.player.score
+  const strategy = getStrategy(ctx.config.aiDifficulty, scoreGap)
+
+  // Strategy-based stake selection
+  if (strategy === "aggressive") {
+    // Stake a high-defense tazo — it'll survive being slammed
+    return [...hand].sort((a, b) => (b.defense + b.stability) - (a.defense + a.stability))[0]
+  }
+  if (strategy === "defensive") {
+    // Stake highest defense — turtle up
+    return [...hand].sort((a, b) => (b.defense + b.resistance) - (a.defense + a.resistance))[0]
+  }
+  // Balanced/chaotic: traditional selection
   return autoSelectOpponentBet(ctx)
 }
 
@@ -64,25 +79,60 @@ export function selectAIBet(ctx: BattleContext): TazoCard | null {
 // AI Launcher Selection (for slam)
 // ────────────────────────────────────────
 
+// ────────────────────────────────────────
+// AI Strategy Profiles — personality-based decision making
+// ────────────────────────────────────────
+
+type AIStrategy = "aggressive" | "balanced" | "defensive" | "chaotic"
+
+function getStrategy(diff: AIDifficulty, scoreGap: number): AIStrategy {
+  // Master: adapts strategy based on game state
+  if (diff === "master") {
+    if (scoreGap <= -2) return "defensive"   // Losing → protect staked tazo
+    if (scoreGap >= 2) return "aggressive"    // Winning → press advantage
+    return "balanced"                          // Even → calculated plays
+  }
+  // Skilled: mostly balanced, sometimes aggressive
+  if (diff === "skilled") {
+    return Math.random() < 0.25 ? "aggressive" : "balanced"
+  }
+  // Novice: random / chaotic
+  return Math.random() < 0.4 ? "chaotic" : "defensive"
+}
+
 export function selectAILauncher(ctx: BattleContext): TazoCard | null {
   const hand = ctx.opponentHand
   if (hand.length === 0) return null
 
-  const diff = ctx.config.aiDifficulty
-  // Don't pick the staked tazo (it's on the arena face-down)
   const betId = ctx.opponentBetTazo?.id
   const available = hand.filter(t => t.id !== betId)
+  if (available.length === 0) return hand[0] || null
 
-  if (diff === "master") {
-    // Pick highest attack tazo
-    return available.sort((a, b) => b.attack - a.attack)[0]
+  const scoreGap = ctx.opponent.score - ctx.player.score
+  const strategy = getStrategy(ctx.config.aiDifficulty, scoreGap)
+
+  switch (strategy) {
+    case "aggressive":
+      // Go for max flip power — highest attack + weight
+      return [...available].sort((a, b) =>
+        (b.attack * 0.7 + b.weight * 0.3) - (a.attack * 0.7 + a.weight * 0.3)
+      )[0]
+    case "defensive":
+      // Pick high precision to avoid ring-outs, protect own tazo
+      return [...available].sort((a, b) =>
+        (b.precision * 0.5 + b.control * 0.3 + b.stability * 0.2) -
+        (a.precision * 0.5 + a.control * 0.3 + a.stability * 0.2)
+      )[0]
+    case "balanced":
+      // Good all-rounder — attack + precision balance
+      return [...available].sort((a, b) =>
+        (b.attack * 0.4 + b.precision * 0.3 + b.spin * 0.2 + b.control * 0.1) -
+        (a.attack * 0.4 + a.precision * 0.3 + a.spin * 0.2 + a.control * 0.1)
+      )[0]
+    case "chaotic":
+      // Random pick = unpredictable
+      return available[Math.floor(Math.random() * available.length)]
   }
-  if (diff === "skilled") {
-    // Pick balanced tazo
-    return available.sort((a, b) => (b.attack + b.precision) - (a.attack + a.precision))[0]
-  }
-  // Novice: random
-  return available[Math.floor(Math.random() * available.length)]
 }
 
 // ────────────────────────────────────────

@@ -33,7 +33,7 @@ export {
   createMatch, simulateSlam, createAirborneTazo,
   scoreBettingImpact, checkMatchEnd, generateAISlam,
   placeStakedTazos, coinFlip, drawOne, drawHand,
-  DEFAULT_ARENA_3D,
+  DEFAULT_ARENA_3D, LAVA_PIT_ARENA, CRYSTAL_CAVE_ARENA, ZERO_G_ARENA, ARENA_PRESETS,
 } from "./game-loop"
 export type {
   TazoCard, MatchConfig, MatchResult, StakedTazo,

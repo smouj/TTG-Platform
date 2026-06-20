@@ -675,10 +675,10 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         
         const aiSlamParams = generateAISlam(aiLauncher, ccc.stakedTazos, cfg.arena, cfg.aiDifficulty, ccc.opponent.score - ccc.player.score)
         playSfx("slam_impact", 0.6)
-        const { result: aiImpact } = simulateSlam(aiLauncher, aiSlamParams, ccc.stakedTazos, cfg.arena, "opponent", ctxDefenders)
+        const { staked: aiNewStaked, result: aiImpact } = simulateSlam(aiLauncher, aiSlamParams, ccc.stakedTazos, cfg.arena, "opponent", ctxDefenders)
         const aiScoring = scoreBettingImpact(aiImpact, "opponent")
         
-        engine.physicsDone(aiImpact)
+        engine.physicsDone(aiImpact, aiNewStaked)
         engine.setShowImpact(true)
         
         if (aiScoring.opponentDelta > 0) { spawnPopup("+" + aiScoring.opponentDelta, "var(--ttg-opponent)", "right"); playSfx("score_pop", 0.3) }
@@ -803,7 +803,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   // ═══════════════════════════════════════════════
   //  START MATCH — wiring to FSM
   // ═══════════════════════════════════════════════
-  const start = useCallback((mode: "practice" | "pvp_ranked" | "pvp_friend", diff: any, d: TazoCard[]) => {
+  const start = useCallback((mode: "practice" | "pvp_ranked" | "pvp_friend", diff: any, d: TazoCard[], arenaOverride?: import("@/lib/battle/game-loop").Arena3DConfig) => {
     // PvP modes: show Coming Soon in lobby UI — practice is the active mode.
     // WebSocket matchmaking (join_queue/leave_queue) is implemented in:
     //   src/lib/multiplayer.ts (useMultiplayer hook)
@@ -824,7 +824,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     const oppHand = [...oppFull].sort(() => Math.random() - 0.5).slice(0, 5)
     setOpponentHand(oppHand)
     const config: MatchConfig = {
-      mode, aiDifficulty: diff, arena: DEFAULT_ARENA_3D,
+      mode, aiDifficulty: diff, arena: arenaOverride || DEFAULT_ARENA_3D,
       scoreToWin: 5, playerDeck: d, opponentDeck: oppFull,
     }
 
@@ -1027,7 +1027,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       const { playerDelta, opponentDelta, playerLostTazos, opponentLostTazos } = scoreBettingImpact(impact, "player")
 
       // Resolve through FSM
-      engine.physicsDone(impact)
+      engine.physicsDone(impact, newStaked)
       setAirborne(null)
 
       engine.setImpactMsg(
@@ -1098,9 +1098,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       setTimeout(() => {
         if (!engine.ctx || !cfg) { engine.setBusy(false); return }
         playSfx("slam_impact", 0.5)
-        const { result: impact } = simulateSlam(oppTazo, slam, engine.ctx.stakedTazos, cfg.arena, "opponent", ctxDefenders)
+        const { staked: pvpOppStaked, result: impact } = simulateSlam(oppTazo, slam, engine.ctx.stakedTazos, cfg.arena, "opponent", ctxDefenders)
         const scoring = scoreBettingImpact(impact, "opponent")
-        engine.physicsDone(impact)
+        engine.physicsDone(impact, pvpOppStaked)
         engine.setImpactMsg(impact.description || "")
         engine.setShowImpact(true)
 
@@ -1226,9 +1226,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         : 0.70,
         tilt: tiltDir, tiltIntensity, spinIntensity,
         aimPrecision: Math.max(0.2, (t.precision || 50) / 100) }
-      const { result: impact } = simulateSlam(t, slam, engine.ctx.stakedTazos, cfg.arena, "player", ctxDefenders)
+      const { staked: pvpPlStaked, result: impact } = simulateSlam(t, slam, engine.ctx.stakedTazos, cfg.arena, "player", ctxDefenders)
       const scoring = scoreBettingImpact(impact, "player")
-      engine.physicsDone(impact)
+      engine.physicsDone(impact, pvpPlStaked)
       setAirborne(null)
       engine.setImpactMsg(
                 impact.hitZone && impact.hitZone !== "MISS"

@@ -19,6 +19,45 @@ import type { Arena3DConfig, StakedTazo, AirborneTazo } from "@/lib/battle/game-
 import TazoDisc3D from "../3d/tazo-disc-3d"
 import BattleDeckTube from "./battle-deck-tube"
 
+// ─── Theme colors per arena ───
+const THEME_COLORS: Record<string, {
+  floor: string[]
+  accent: string
+  pillar: string
+  bgGradient: string
+  ringGlow: string
+}> = {
+  default: {
+    floor: ["#fffaf0", "#f5ead0", "#e0d4b8", "#c8b898", "#a09070"],
+    accent: "#FFCC00",
+    pillar: "#b8a888",
+    bgGradient: "radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 55%, #0a0a0a 100%)",
+    ringGlow: "#FFCC00",
+  },
+  lava: {
+    floor: ["#3a1000", "#5a1a00", "#6a2505", "#4a1805", "#2a0a00"],
+    accent: "#FF4400",
+    pillar: "#8B0000",
+    bgGradient: "radial-gradient(ellipse at center, #3a1000 0%, #1a0500 55%, #0a0000 100%)",
+    ringGlow: "#FF6600",
+  },
+  crystal: {
+    floor: ["#e0f0ff", "#c8e0f8", "#a0d0f0", "#80b8e0", "#6090c0"],
+    accent: "#00CCFF",
+    pillar: "#4488CC",
+    bgGradient: "radial-gradient(ellipse at center, #0a1a30 0%, #051020 55%, #020810 100%)",
+    ringGlow: "#00DDFF",
+  },
+  "zero-g": {
+    floor: ["#f0f0ff", "#d8d0f0", "#c0b8e0", "#a098c8", "#7068a0"],
+    accent: "#9944FF",
+    pillar: "#6655AA",
+    bgGradient: "radial-gradient(ellipse at center, #1a0a2e 0%, #0d0520 55%, #050210 100%)",
+    ringGlow: "#AA55FF",
+  },
+}
+
+
 // ─── Impact spark ring (expands on slam) ───
 function ImpactSpark({ trigger, pos }: { trigger: number; pos: [number, number, number] }) {
   const ringRef = useRef<THREE.Mesh>(null!)
@@ -54,15 +93,16 @@ function ImpactSpark({ trigger, pos }: { trigger: number; pos: [number, number, 
 
 // ─── Floor (arena surface with center circle) ───
 function Floor({ config }: { config: Arena3DConfig }) {
+  const theme = THEME_COLORS[config.theme || "default"] || THEME_COLORS.default
   const tex = useMemo(() => {
     const c = document.createElement("canvas")
     c.width = 1024; c.height = 1024
     const ctx = c.getContext("2d")!
     // Fondo de madera cálida con gradiente radial
     const g = ctx.createRadialGradient(512, 512, 20, 512, 512, 550)
-    g.addColorStop(0, "#fffaf0"); g.addColorStop(0.45, "#f5ead0")
-    g.addColorStop(0.75, "#e0d4b8"); g.addColorStop(0.92, "#c8b898")
-    g.addColorStop(1, "#a09070")
+    g.addColorStop(0, theme.floor[0]); g.addColorStop(0.45, theme.floor[1])
+    g.addColorStop(0.75, theme.floor[2]); g.addColorStop(0.92, theme.floor[3])
+    g.addColorStop(1, theme.floor[4])
     ctx.fillStyle = g; ctx.fillRect(0, 0, 1024, 1024)
     // Grain texture
     ctx.fillStyle = "rgba(0,0,0,0.02)"
@@ -70,10 +110,10 @@ function Floor({ config }: { config: Arena3DConfig }) {
       ctx.fillRect(Math.random()*1024, Math.random()*1024, 2, 2)
     }
     // Outer circle (ammonite)
-    ctx.strokeStyle = "#b8a888"; ctx.lineWidth = 20
+    ctx.strokeStyle = theme.pillar; ctx.lineWidth = 20
     ctx.beginPath(); ctx.arc(512, 512, config.radius * 48, 0, Math.PI * 2); ctx.stroke()
     // Inner gold ring
-    ctx.strokeStyle = "#FFCC00"; ctx.lineWidth = 4
+    ctx.strokeStyle = theme.accent; ctx.lineWidth = 4
     ctx.beginPath(); ctx.arc(512, 512, config.radius * 48 - 10, 0, Math.PI * 2); ctx.stroke()
     // Dark outline
     ctx.strokeStyle = "#1a1a1a"; ctx.lineWidth = 2
@@ -84,20 +124,20 @@ function Floor({ config }: { config: Arena3DConfig }) {
       ctx.beginPath(); ctx.arc(512, 512, r, 0, Math.PI * 2); ctx.stroke()
     }
     // Center dot
-    ctx.fillStyle = "rgba(255,204,0,0.40)"; ctx.beginPath()
+    ctx.fillStyle = theme.accent + "66"; ctx.beginPath()
     ctx.arc(512, 512, 18, 0, Math.PI * 2); ctx.fill()
     ctx.fillStyle = "rgba(0,0,0,0.15)"; ctx.beginPath()
     ctx.arc(512, 512, 6, 0, Math.PI * 2); ctx.fill()
     // Stake position marks
-    ctx.fillStyle = "rgba(41,173,255,0.25)"; ctx.beginPath()
+    ctx.fillStyle = theme.accent + "44"; ctx.beginPath()
     ctx.arc(512 - config.radius * 26, 512, 10, 0, Math.PI*2); ctx.fill()
-    ctx.fillStyle = "rgba(255,0,77,0.25)"; ctx.beginPath()
+    ctx.fillStyle = theme.accent + "44"; ctx.beginPath()
     ctx.arc(512 + config.radius * 26, 512, 8, 0, Math.PI*2); ctx.fill()
     const t = new THREE.CanvasTexture(c)
     t.colorSpace = THREE.SRGBColorSpace
     t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter
     return t
-  }, [config.radius])
+  }, [config.radius, config.theme])
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} receiveShadow>
       <planeGeometry args={[config.radius * 2.6, config.radius * 2.6]} />
@@ -113,7 +153,7 @@ function Pillars({ config }: { config: Arena3DConfig }) {
       const a = (i / 8) * Math.PI * 2
       return { x: Math.cos(a) * config.radius * 1.2, z: Math.sin(a) * config.radius * 1.2 }
     })
-  }, [config.radius])
+  }, [config.radius, config.theme])
   return (
     <>
       {pts.map((p, i) => (
@@ -733,7 +773,7 @@ export default function BattleArena3D({
   isDrawing, drawTrigger,
 }: Props) {
   return (
-    <div className="w-full h-full relative" style={{ background: "radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 55%, #0a0a0a 100%)" }}>
+    <div className="w-full h-full relative" style={{ background: THEME_COLORS[config?.theme || "default"]?.bgGradient || "radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 55%, #0a0a0a 100%)" }}>
       {/* Magazine-style decorative frame overlay */}
       <div className="absolute inset-0 pointer-events-none z-10" style={{
         border: "1px solid rgba(255,255,255,0.04)",
