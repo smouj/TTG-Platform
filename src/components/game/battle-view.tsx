@@ -1263,42 +1263,37 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   // Use PvP slam handler when in PvP mode
   const effectiveSlamRelease = pvp ? handleSlamForPvP : handleSlamRelease
 
-  // ── Loading ──
-  if (loading) return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="flex flex-col items-center gap-3">
-        <Disc3 className="w-12 h-12 animate-spin text-ttg-yellow" />
-        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">Loading Arena</span>
-      </div>
-    </div>
-  )
-
-  // ── Lobby ──
-  // When auto-start data exists in sessionStorage, skip GameLobby
-  // and show a brief loading state — the auto-start useEffect
-  // will transition to the intro/battle phase within 500ms.
-  if (phase === "lobby") {
-    const hasAutoStart =
+  // ── Unified Entrance Overlay (loading + auto-start) ──
+  // Single polished full-viewport loading experience with scanlines.
+  // Handles both the initial "loading" state and the auto-start
+  // brief "entering" transition (before GameLobby would appear).
+  {
+    const isEntering = !loading && phase === "lobby" &&
       typeof window !== "undefined" &&
       sessionStorage.getItem("battle_mode") &&
       sessionStorage.getItem("battle_deckId")
-
-    if (hasAutoStart) return (
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative w-16 h-16">
-            <div className="absolute inset-0 rounded-full bg-ttg-yellow/20 animate-ping" />
-            <div className="absolute inset-0 rounded-full bg-ttg-yellow/10 animate-pulse" style={{ animationDuration: "2s" }} />
+    if (loading || isEntering) return (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9990, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #0a0a0a 0%, var(--ttg-black) 100%)" }}>
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px)" }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.06, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,204,0,0.4) 8px, rgba(255,204,0,0.4) 10px)" }} />
+        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+          <div style={{ position: "relative", width: 88, height: 88 }}>
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(255,204,0,0.05)", animation: "ping 1.8s ease-out infinite" }} />
+            <div style={{ position: "absolute", inset: 8, borderRadius: "50%", border: "3px solid rgba(255,204,0,0.12)", borderTopColor: "var(--ttg-yellow)", animation: "spin 0.8s linear infinite", boxShadow: "0 0 40px rgba(255,204,0,0.12)" }} />
           </div>
-          <Disc3 className="w-10 h-10 relative z-10 animate-spin text-ttg-yellow" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 animate-pulse">
-            Entering Arena
-          </span>
+          <p style={{ fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.3em", color: "rgba(255,255,255,0.55)", margin: 0 }}>
+            {loading ? "Loading Arena" : "Entering Arena"}
+          </p>
+          <p style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5em", color: "rgba(255,204,0,0.18)", margin: 0 }}>
+            PREPARING YOUR TAZOS...
+          </p>
         </div>
       </div>
     )
+  }
 
-    return (
+  // ── Lobby ──
+  if (phase === "lobby") return (
     <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6">
       <div className="w-full max-w-7xl">
         <GameLobby
@@ -1313,12 +1308,12 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       </div>
     </div>
   )
-  }
 
   // ── Match End ──
   if (phase === "match_end" && result) return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6">
-      <div className="w-full max-w-lg">
+    <div style={{ position: "fixed", inset: 0, zIndex: 9995, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 16px", background: "linear-gradient(135deg, #0a0a0a 0%, var(--ttg-black) 100%)" }}>
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.04, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,204,0,0.4) 8px, rgba(255,204,0,0.4) 10px)" }} />
+      <div className="w-full max-w-lg" style={{ position: "relative", zIndex: 1 }}>
       <BattleResultPanel result={{
         winner: result.winner,
         victoryType: toPanelVictoryType(result.victoryType),
@@ -1352,7 +1347,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   return (
     <BattleErrorBoundary>
     <WebGLGuard>
-    <div ref={containerRef} className={`w-full h-full ${isFullscreen ? "fixed inset-0 z-[9999]" : "absolute inset-0"}`} style={isFullscreen ? { background: "var(--ttg-arena-bg)" } : undefined}>
+    <div ref={containerRef} className={`w-full h-full ${isFullscreen ? "fixed inset-0 z-[9999]" : "absolute inset-0"}`} style={{ ...(isFullscreen ? { background: "var(--ttg-arena-bg)" } : {}), animation: "battleFadeIn 0.45s ease-out" }}>
+      {/* Battle fade-in keyframe */}
+      <style>{`@keyframes battleFadeIn{from{opacity:0;transform:scale(.995)}to{opacity:1;transform:scale(1)}}`}</style>
       {/* Tutorial */}
       {showTutorial && <BattleTutorial onClose={() => setShowTutorial(false)} />}
       
