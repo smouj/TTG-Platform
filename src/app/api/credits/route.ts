@@ -43,36 +43,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `Invalid source. Must be: ${validSources.join(", ")}` }, { status: 400 })
     }
 
-    // Daily bonus: check cooldown
-    if (source === "daily") {
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      const todayTx = await db.creditTransaction.findFirst({
-        where: {
-          userId: user.id,
-          source: "daily",
-          createdAt: { gte: today },
-        },
-      })
-      if (todayTx) {
-        return NextResponse.json({ error: "Daily bonus already claimed" }, { status: 400 })
+    // Atomic transaction: check daily cooldown + add credits + log transaction
+    const updated = await db.$transaction(async (tx) => {
+      // Daily bonus: check cooldown inside transaction (prevents race condition)
+      if (source === "daily") {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        const todayTx = await tx.creditTransaction.findFirst({
+          where: {
+            userId: user.id,
+            source: "daily",
+            createdAt: { gte: today },
+          },
+        })
+        if (todayTx) {
+          throw new Error("Daily bonus already claimed")
+        }
       }
-    }
 
-    // Add credits
-    await db.user.update({
-      where: { id: user.id },
-      data: { credits: { increment: amount } },
-    })
+      // Add credits
+      await tx.user.update({
+        where: { id: user.id },
+        data: { credits: { increment: amount } },
+      })
 
-    // Create transaction
-    await db.creditTransaction.create({
-      data: { userId: user.id, amount, source, reference },
-    })
+      // Create transaction
+      await tx.creditTransaction.create({
+        data: { userId: user.id, amount, source, reference },
+      })
 
-    const updated = await db.user.findUnique({
-      where: { id: user.id },
-      select: { credits: true },
+      return tx.user.findUnique({
+        where: { id: user.id },
+        select: { credits: true },
+      })
     })
 
     return NextResponse.json({
@@ -81,6 +84,9 @@ export async function POST(request: NextRequest) {
       source,
     })
   } catch (error) {
+    if (error instanceof Error && error.message === "Daily bonus already claimed") {
+      return NextResponse.json({ error: "Daily bonus already claimed" }, { status: 400 })
+    }
     console.error("Credit earn error:", error)
     return NextResponse.json({ error: "Failed to earn credits" }, { status: 500 })
   }

@@ -121,7 +121,48 @@ export async function POST(request: NextRequest) {
               control: instance.control, bounce: instance.bounce, precision: instance.precision },
             ownedBefore: false,
           })
-        } catch (_) { /* skip individual errors */ }
+
+          // Handle bonus tazo (same logic as single-open)
+          if (purchase.bonusTazo) {
+            const bonusTazoData = await db.tazo.findUnique({
+              where: { id: purchase.bonusTazo },
+              include: { franchise: { select: { name: true, slug: true, color: true } } },
+            })
+            if (bonusTazoData) {
+              const bFinish = randomFinish(bonusTazoData.rarity || "common")
+              const bTgaGrade = generateTGAGrade(bonusTazoData.rarity || "common", bFinish)
+              await db.$transaction(async (tx) => {
+                const bUserTazo = await tx.userTazo.upsert({
+                  where: { userId_tazoId: { userId: user.id, tazoId: bonusTazoData.id } },
+                  create: { userId: user.id, tazoId: bonusTazoData.id, quantity: 1, obtainedFrom },
+                  update: { quantity: { increment: 1 } },
+                })
+                await tx.tazoInstance.create({
+                  data: {
+                    userTazoId: bUserTazo.id, userId: user.id, tazoId: bonusTazoData.id,
+                    attack: randomizeStat(bonusTazoData.attack),
+                    defense: randomizeStat(bonusTazoData.defense),
+                    resistance: randomizeStat(bonusTazoData.resistance),
+                    weight: randomizeStat(bonusTazoData.weight),
+                    stability: randomizeStat(bonusTazoData.stability),
+                    spin: randomizeStat(bonusTazoData.spin),
+                    control: randomizeStat(bonusTazoData.control),
+                    bounce: randomizeStat(bonusTazoData.bounce),
+                    precision: randomizeStat(bonusTazoData.precision),
+                    finish: bFinish,
+                    creatureVariant: bonusTazoData.creatureVariant || "standard",
+                    isNew: true,
+                    tgaTier: bTgaGrade.tier, tgaGrade: bTgaGrade.grade,
+                    tgaSurface: bTgaGrade.surface, tgaBorders: bTgaGrade.borders,
+                    tgaCertNumber: bTgaGrade.certNumber,
+                  },
+                })
+              })
+            }
+          }
+        } catch (e) {
+          console.error(`[bags/open] Bulk open failed for bag ${id}:`, e instanceof Error ? e.message : String(e))
+        }
       }
       return NextResponse.json({ success: true, results, totalOpened: results.length })
     }
