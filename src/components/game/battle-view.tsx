@@ -613,6 +613,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   // ── AI Turn Automation ──
   const aiTurnRunning = useRef(false)
   const runAITurn = useCallback(() => {
+    try {
     const c = engine.ctx
     if (!c || !cfg || c.currentThrower !== "opponent") return
     aiTurnRunning.current = true
@@ -674,6 +675,11 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         }, 1000)
       }, timing.aim)
     }, timing.think)
+    } catch (err) {
+      console.error("[runAITurn] AI turn crashed:", err)
+      aiTurnRunning.current = false
+      try { engine.turnOver() } catch {} // Unstuck the game if possible
+    }
   }, [engine, cfg, ctxDefenders, spawnPopup])
 
   // ── AI Turn Trigger ──
@@ -718,6 +724,17 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       return () => clearTimeout(t)
     }
   }, [phase, engine, isDrawing])
+
+  // ── On entering stake_player: draw animation + show PlacementPhase ──
+  useEffect(() => {
+    if (phase === "stake_player") {
+      setIsDrawing(true)
+      setDrawTrigger(c => c + 1)
+      const t = setTimeout(() => setIsDrawing(false), 800)
+      setPlacingStake(true)
+      return () => clearTimeout(t)
+    }
+  }, [phase])
 
   // ── Fullscreen ── (requests on document.documentElement for true browser fullscreen)
   const toggleFullscreen = useCallback(() => {
@@ -796,24 +813,14 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     setPlayerStakeX(-0.55)
     setPlayerStakeZ(0)
 
-    // ── Sequence: intro → draw → placement (placement handles betting internally) ──
+    // ── Sequence: intro cinematic → auto-dispatch handles rest ──
+    // introDone() advances FSM to draw_initial_hand; the auto-dispatch useEffect
+    // waits for cinematic completion (introCinematicPhase===null) before firing
+    // INITIAL_HANDS_DRAWN → stake_player. This ensures the full cinematic plays.
+    // Draw animation + PlacementPhase are triggered by the useEffect for stake_player.
     setTimeout(() => {
       engine.introDone()
-      // After intro → draw_initial_hand, dispatch INITIAL_HANDS_DRAWN → stake_player
-      setTimeout(() => engine.initialHandsDrawn(), 600)
     }, 6800)
-
-    // Draw animation from tube to hand (after intro)
-    setTimeout(() => {
-      setIsDrawing(true)
-      setDrawTrigger(c => c + 1)
-      setTimeout(() => setIsDrawing(false), 800)
-    }, 7200)
-
-    // Placement phase: manual stake placement replaces old betting UI
-    setTimeout(() => {
-      setPlacingStake(true)
-    }, 7600)
   }, [engine])
 
   // ── Auto-start from sessionStorage (set by /app/battle lobby) ──
