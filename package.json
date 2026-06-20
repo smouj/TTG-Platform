@@ -7,7 +7,6 @@
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint .",
-    "canon:guard": "node scripts/check-canon-guard.js",
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/check-canon-guard.js && tsc --noEmit && eslint . && next build",
     "audit": "npm audit --omit=dev --audit-level=moderate",
