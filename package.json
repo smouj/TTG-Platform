@@ -22,7 +22,10 @@
     "electron:build:linux": "electron-builder --linux",
     "electron:build:win": "electron-builder --win",
     "electron:build:mac": "electron-builder --mac",
-    "electron:dist": "electron-builder --win --mac --linux -p always"
+    "electron:dist": "electron-builder --win --mac --linux -p always",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:smoke": "node tests/api.test.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

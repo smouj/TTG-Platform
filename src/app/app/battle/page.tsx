@@ -12,13 +12,14 @@ import { useAuth } from "@/lib/auth-context"
 import { canUseWebGL } from "@/lib/browser/webgl-detector"
 import { useI18n } from "@/lib/i18n"
 import { playSFX, sfxEnsureUnlocked } from "@/lib/audio/sfx-engine"
+import { resetTutorial } from "@/components/game/battle/battle-tutorial"
 import BattleTubePreview from "@/components/tubes/BattleTubePreview"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 import {
   Swords, Bot, Globe, Play, Zap, Shield, Crosshair, Star,
-  ChevronRight, Layers, Loader2, AlertTriangle, CheckCircle,
+  ChevronRight, Layers, Loader2, AlertTriangle, CheckCircle, HelpCircle,
 } from "lucide-react"
 
 // BattleView loading overlay — dark arena entrance with i18n
@@ -348,6 +349,14 @@ export default function BattlePage() {
             ? `${selectedDeck.name} · ${deckStats.count} tazos`
             : `${decks.length} DECKS AVAILABLE`}
         </span>
+        {/* Replay tutorial button */}
+        <button
+          onClick={() => resetTutorial()}
+          className="ml-auto text-[9px] font-black text-white/20 hover:text-ttg-yellow uppercase tracking-wider transition-colors flex items-center gap-1"
+          title="Replay battle tutorial"
+        >
+          <HelpCircle className="w-3 h-3" /> Tutorial
+        </button>
       </div>
 
       {/* ═══════════════════════════════════════════ */}

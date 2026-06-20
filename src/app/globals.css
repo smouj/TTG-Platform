@@ -1430,6 +1430,10 @@ body.ttg-battle-active [data-ttg-hide-on-battle] {
 body.ttg-battle-active {
   overflow: hidden !important;
   overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
   width: 100vw;
   height: 100dvh;
 }

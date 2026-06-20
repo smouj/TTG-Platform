@@ -49,7 +49,7 @@ function makeContext(): BattleContext {
   const od = Array.from({ length: 20 }, () => makeTazo())
   return {
     state: 'betting' as any, prevState: null, airborneTazo: null,
-    coinWinner: null, lastImpact: null,
+    lastImpact: null,
     chargeLevel: 0, aimPosition: { x: 0, z: 0 }, roundTurns: 0,
     playerBetTazo: null, opponentBetTazo: null,
     config: { playerDeck: pd, opponentDeck: od, aiDifficulty: 'skilled',
@@ -60,6 +60,7 @@ function makeContext(): BattleContext {
     stakedTazos: [], roundHistory: [], currentRound: 1, turnNumber: 0,
     playerRemaining: 20, opponentRemaining: 20,
     currentThrower: 'player', matchResult: null,
+    playerRemainingDeck: [], opponentRemainingDeck: [],
   }
 }
 

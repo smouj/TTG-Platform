@@ -18,7 +18,7 @@ const STEPS: TutorialStep[] = [
   {
     id: "welcome",
     title: "Welcome to the Arena!",
-    description: "Two trainers face off. Each round you bet a tazo, then slam it into the arena to knock out your opponent's tazos. Last trainer standing wins!",
+    description: "Two trainers face off. Each round you bet a tazo, then slam it into the arena to knock out your opponent's tazos. Last trainer standing wins!  Press SPACE or ENTER anytime to skip the intro cinematic.",
     icon: <Swords className="w-8 h-8 text-ttg-yellow" />,
     position: "center",
   },
@@ -186,4 +186,8 @@ export default function BattleTutorial({ onClose }: { onClose: () => void }) {
 
 export function isTutorialDone(): boolean {
   return localStorage.getItem(TUTORIAL_KEY) === "1"
+}
+
+export function resetTutorial(): void {
+  localStorage.removeItem(TUTORIAL_KEY)
 }

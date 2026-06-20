@@ -134,11 +134,49 @@ export default function SlamControls(props: SlamControlsProps) {
 
   useEffect(() => { return () => { if (chargeInt.current) clearInterval(chargeInt.current) } }, [])
 
-  const tiltDrag = useCallback((cx: number, cy: number, rect: DOMRect) => {
-    const mx = rect.left + rect.width / 2; const my = rect.top + rect.height / 2
-    const dx = cx - mx; const dy = cy - my
+  // ── Unified pointer system for TILT phase (mouse + touch) ──
+  const tiltPadRef = useRef<HTMLDivElement>(null)
+  const [tilting, setTilting] = useState(false)
+
+  const computeTilt = useCallback((clientX: number, clientY: number) => {
+    const el = tiltPadRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const mx = rect.left + rect.width / 2
+    const my = rect.top + rect.height / 2
+    const dx = clientX - mx
+    const dy = clientY - my
     onTilt(Math.atan2(dy, dx) * (180 / Math.PI), Math.min(1, Math.sqrt(dx * dx + dy * dy) / (rect.width * 0.4)))
   }, [onTilt])
+
+  // Mouse tilt handlers
+  useEffect(() => {
+    if (phase !== "tilt" || !tilting) return
+    const onMove = (e: MouseEvent) => computeTilt(e.clientX, e.clientY)
+    const onUp = () => setTilting(false)
+    window.addEventListener("mousemove", onMove, { passive: true })
+    window.addEventListener("mouseup", onUp)
+    return () => {
+      window.removeEventListener("mousemove", onMove)
+      window.removeEventListener("mouseup", onUp)
+    }
+  }, [phase, tilting, computeTilt])
+
+  // Touch tilt handlers
+  useEffect(() => {
+    if (phase !== "tilt" || !tilting) return
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault()
+      if (e.touches.length > 0) computeTilt(e.touches[0].clientX, e.touches[0].clientY)
+    }
+    const onTouchEnd = () => setTilting(false)
+    window.addEventListener("touchmove", onTouchMove, { passive: false })
+    window.addEventListener("touchend", onTouchEnd)
+    return () => {
+      window.removeEventListener("touchmove", onTouchMove)
+      window.removeEventListener("touchend", onTouchEnd)
+    }
+  }, [phase, tilting, computeTilt])
 
   // Critical timing zones: PERFECT 68-76%, GOOD 60-82%, OVERCHARGE >82%, WEAK <30%
   const timingQuality = charge >= 0.68 && charge <= 0.76 ? "PERFECT" : charge >= 0.60 && charge <= 0.82 ? "GOOD" : charge > 0.82 ? "OVERCHARGE" : charge < 0.30 ? "WEAK" : "OK"
@@ -315,14 +353,16 @@ export default function SlamControls(props: SlamControlsProps) {
         <div className="flex-1 space-y-1.5">
           <span className="block text-center text-[7px] font-black text-white/10 uppercase tracking-[0.3em]">Tilt</span>
           <div
-            className="relative w-full aspect-square max-w-[120px] mx-auto cursor-grab active:cursor-grabbing pointer-events-auto"
+            ref={tiltPadRef}
+            className="relative w-full aspect-square max-w-[120px] mx-auto cursor-grab active:cursor-grabbing pointer-events-auto select-none"
             style={{
               background: "radial-gradient(circle at center, rgba(255,204,0,0.04), transparent)",
               border: "1px solid rgba(255,255,255,0.06)",
               boxShadow: "inset 0 0 40px rgba(0,0,0,0.3)",
+              touchAction: "none",
             }}
-            onMouseMove={(e) => tiltDrag(e.clientX, e.clientY, e.currentTarget.getBoundingClientRect())}
-            onTouchMove={(e) => { e.preventDefault(); tiltDrag(e.touches[0].clientX, e.touches[0].clientY, e.currentTarget.getBoundingClientRect()) }}
+            onMouseDown={() => setTilting(true)}
+            onTouchStart={(e) => { e.preventDefault(); setTilting(true) }}
           >
             <Zap className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-white/4" strokeWidth={1} />
             {/* Crosshair guides */}
