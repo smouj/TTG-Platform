@@ -35,7 +35,6 @@ import BattleHUD from "@/components/game/battle/battle-hud"
 import SlamControls from "./battle/slam-controls"
 import PlacementPhase from "./battle/placement-phase"
 import BattleResultPanel from "./battle/battle-result-panel"
-import BattleHand from "./battle/battle-hand"
 import BattleTutorial, { isTutorialDone } from "./battle/battle-tutorial"
 import BattleSideStack from "./battle/battle-side-stack"
 import CaptureOverlay from "./battle/capture-overlay"
@@ -428,7 +427,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [deckImages, setDeckImages] = useState<string[]>([])
   const [drawTrigger, setDrawTrigger] = useState(0)
   const [isDrawing, setIsDrawing] = useState(false)
-  const playerWentFirstRef = useRef(false)
   const [showTutorial, setShowTutorial] = useState(false)
   const [introCountdown, setIntroCountdown] = useState<number | null>(null)
   const [showCaptureOverlay, setShowCaptureOverlay] = useState(false)
@@ -793,7 +791,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     setPlayerHand(hand)
     setSelectedBetId(null)
     setBettingPhase("idle")
-    playerWentFirstRef.current = false
     const oppFull = [...DEMO_TAZOS, ...DEMO_TAZOS, ...DEMO_TAZOS].slice(0, 20)
     const oppHand = [...oppFull].sort(() => Math.random() - 0.5).slice(0, 5)
     setOpponentHand(oppHand)
@@ -882,129 +879,24 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       playSfx("tazo_flip", 0.3)
       // Player always goes first (no coin flip)
       setTimeout(() => {
-        playerWentFirstRef.current = true
+        // player goes first (default)
         engine.roundStarted()
         setTimeout(() => engine.turnStarted(), 600)
         engine.setBusy(false)
       }, 1200)
     }, 1000)
   }, [ctx, playerHand, opponentHand, engine])
-  const handleBet = useCallback((tazo: TazoCard) => {
-    if (placingStake) return
-    if (bettingPhase !== "betting" || !cfg || engine.ui.busy) return
-    engine.setBusy(true)
-    setSelectedBetId(tazo.id)
-    setBettingPhase("bet_locked")
-    playSfx("ui_click", 0.15)
-
-    // Auto-pick opponent bet
-    const oppPick = opponentHand[Math.floor(Math.random() * opponentHand.length)]
-    setOpponentBetId(oppPick.id)
-
-    // Brief delay for anticipation
-    setTimeout(() => {
-      if (!engine.ctx) { engine.setBusy(false); return }
-      engine.stakePlayer(tazo, playerStakeX, playerStakeZ)
-      setBettingPhase("revealed")
-      
-      setTimeout(() => {
-        engine.revealStakes()
-        playSfx("tazo_flip", 0.3)
-        
-        setTimeout(() => {
-          // doCoinFlip now returns the winner — no stale ctx read needed
-          const cfWinner = "player" as "player" | "opponent"
-          // coin flip removed
-          // coin flip removed
-          playSfx("tazo_flip", 0.3)
-          
-          setTimeout(() => {
-            // coin flip removed
-            
-            if (cfWinner === "player") {
-              playerWentFirstRef.current = true
-              // Player wins coin flip — let them aim
-              const launcher = playerHand.filter(t => t.id !== tazo.id)[0] || playerHand[0]
-              if (!launcher) { engine.setBusy(false); return }
-              const ab = createAirborneTazo(launcher, "player", cfg.arena)
-              setAirborne(ab)
-              setBettingPhase("idle")
-              engine.setBusy(false)
-            } else {
-              playerWentFirstRef.current = false
-              // AI wins coin flip — run opponent turn
-              setBettingPhase("idle")
-              const latestCtx = engine.ctx
-              if (!latestCtx) { engine.setBusy(false); return }
-              // Use the STAKED opponent bet tazo (not random from deck!)
-              const aiTazo = latestCtx.opponentBetTazo
-              if (!aiTazo) { engine.setBusy(false); return }
-              
-              // Show AI tazo airborne
-              const ab = createAirborneTazo(aiTazo, "opponent", cfg.arena)
-              setAirborne(ab)
-              
-              // AI aim, then charge, then slam
-              const aiSlam = generateAISlam(aiTazo, latestCtx.stakedTazos, cfg.arena, cfg.aiDifficulty, latestCtx.opponent.score - latestCtx.player.score)
-              
-              setTimeout(() => {
-                if (!engine.ctx || !cfg) return
-                playSfx("slam_impact", 0.6)
-                const { result: aiImpact } = simulateSlam(aiTazo, aiSlam, engine.ctx.stakedTazos, cfg.arena, "opponent", ctxDefenders)
-                const aiScoring = scoreBettingImpact(aiImpact, "opponent")
-                
-                engine.physicsDone(aiImpact); setTimeout(() => { engine.captureResolved() }, 1000)
-                engine.setImpactMsg(aiImpact.description)
-                engine.setShowImpact(true)
-                
-                if (aiScoring.opponentDelta > 0) { spawnPopup(`+${aiScoring.opponentDelta}`, "var(--ttg-opponent)", "right"); playSfx("score_pop", 0.3) }
-                if (aiScoring.playerDelta > 0) { spawnPopup(`+${aiScoring.playerDelta}`, "var(--ttg-player)", "left"); playSfx("score_pop", 0.3) }
-                if (aiScoring.playerLostTazos > 0) { spawnPopup(`-${aiScoring.playerLostTazos} tazo`, "var(--ttg-opponent)", "left"); playSfx("damage_taken", 0.35) }
-                
-                setTimeout(() => {
-                  if (!engine.ctx) return
-                  engine.setShowImpact(false)
-                  setAirborne(null)
-                  
-                  const newPR = Math.max(0, (engine.ctx?.playerRemaining ?? latestCtx.playerRemaining) - aiScoring.playerLostTazos)
-                  const newOR = Math.max(0, (engine.ctx?.opponentRemaining ?? latestCtx.opponentRemaining) - aiScoring.opponentLostTazos)
-                  const newPS = (engine.ctx?.player.score ?? 0) + aiScoring.playerDelta
-                  const newOS = (engine.ctx?.opponent.score ?? 0) + aiScoring.opponentDelta
-                  const end = checkMatchEnd(newPS, newOS, newPR, newOR, cfg?.scoreToWin)
-                  
-                  if (end) {
-                    engine.turnOver()
-                    engine.setBusy(false)
-                  } else {
-                    // AI went first — now let player slam back
-                    const launcher = playerHand.filter(t => t.id !== tazo.id)[0] || playerHand[0]
-                    if (launcher && cfg) {
-                      const pab = createAirborneTazo(launcher, "player", cfg.arena)
-                      setAirborne(pab)
-                    }
-                    engine.setBusy(false)
-                  }
-                }, 1500)
-              }, 1200)
-            }
-          }, 2000)
-        }, 1000)
-      }, 1000)
-    }, 800)
-  }, [placingStake, bettingPhase, cfg, engine, opponentHand, playerHand])
 
   const rematch = () => {
     setPlacingStake(false); setPlayerStakeX(-0.55); setPlayerStakeZ(0)
     resultSaved.current = false; setCreditsEarned(0)
     setSelectedBetId(null); setBettingPhase("idle")
-    playerWentFirstRef.current = false
     if (cfg) start(cfg.mode, cfg.aiDifficulty, deck)
   }
   const back = () => {
     setPlacingStake(false); setPlayerStakeX(-0.55); setPlayerStakeZ(0)
     resultSaved.current = false; setCreditsEarned(0); setAirborne(null)
     setSelectedBetId(null); setBettingPhase("idle")
-    playerWentFirstRef.current = false
     engine.resetToLobby()
     // Notify parent page (inline lobby) that user wants to exit battle
     window.dispatchEvent(new Event("ttg:battle:exit"))
@@ -1485,15 +1377,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
           franchise={opponentHand[0]?.franchise}
         />
 
-        {/* ── Battle Hand (betting phase) ── */}
-        <BattleHand
-          hand={playerHand}
-          phase={bettingPhase}
-          selectedId={selectedBetId}
-          airborneId={airborne?.id}
-          onSelect={handleBet}
-        />
-
         {phase === "match_intro" || phase === "draw_initial_hand" && <IntroCinematic
           playerName={user?.name || user?.email?.split("@")[0] || "Player"}
           deckName={selectedDeckName}
@@ -1666,7 +1549,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             onSelect={(tazo) => {
               if (phase === "stake_player") {
                 setSelectedBetId(tazo.id)
-                // Don't transition here - handled by handleBet
+                // Handled by PlacementPhase + handlePlaceStake
               } else {
                 setSelectedLauncherId(tazo.id)
                 engine.selectTazo(tazo)

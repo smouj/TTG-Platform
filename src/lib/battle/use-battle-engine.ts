@@ -54,9 +54,6 @@ export interface BattleEngine {
   send: (event: BattleEvent) => boolean
   // Match lifecycle
   startMatch: (config: MatchConfig) => void
-  webglReady: () => void
-  webglFailed: () => void
-  resourcesLoaded: () => void
   introDone: () => void
   initialHandsDrawn: () => void
   // Betting
@@ -149,9 +146,6 @@ export function useBattleEngine(): BattleEngine {
     setUIState({ ...initialUI })
   }, [])
 
-  const webglReady = useCallback(() => send({ type: "WEBGL_READY" }), [send])
-  const webglFailed = useCallback(() => send({ type: "WEBGL_FAILED" }), [send])
-  const resourcesLoaded = useCallback(() => send({ type: "RESOURCES_LOADED" }), [send])
   const introDone = useCallback(() => send({ type: "INTRO_DONE" }), [send])
   const initialHandsDrawn = useCallback(() => send({ type: "INITIAL_HANDS_DRAWN" }), [send])
 
@@ -275,7 +269,7 @@ export function useBattleEngine(): BattleEngine {
     ctx: ctx ? { ...ctx } : null,
     ui: { ctx: ctx ? { ...ctx } : null, ...uiState },
     send: sendWithRecord,
-    startMatch, webglReady, webglFailed, resourcesLoaded, introDone,
+    startMatch, introDone,
     initialHandsDrawn,
     stakePlayer, aiBet, revealStakes, roundStarted, turnStarted, cardDrawn,
     selectTazo, lockAim, lockCharge, releaseSlam, physicsDone,

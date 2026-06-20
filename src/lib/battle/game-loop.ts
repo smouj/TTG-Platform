@@ -895,47 +895,6 @@ export function checkMatchEnd(
   return null // Match continues
 }
 
-export function checkMatchEndLegacy(
-  playerScore: number,
-  opponentScore: number,
-  scoreToWin: number,
-  playerRemaining: number,
-  opponentRemaining: number
-): MatchResult | null {
-  if (playerScore >= scoreToWin) {
-    return {
-      winner: "player",
-      victoryType: "tko",
-      playerScore,
-      opponentScore,
-      playerRemaining,
-      opponentRemaining,
-      rounds: [],
-      totalTurns: 0,
-      playerCaptures: playerScore,
-      opponentCaptures: opponentScore,
-      xpEarned: 15 + playerScore * 3,
-      summary: `Victory! You won ${playerScore}-${opponentScore}!`,
-    }
-  }
-  if (opponentScore >= scoreToWin) {
-    return {
-      winner: "opponent",
-      victoryType: "tko",
-      playerScore,
-      opponentScore,
-      playerRemaining,
-      opponentRemaining,
-      rounds: [],
-      totalTurns: 0,
-      playerCaptures: playerScore,
-      opponentCaptures: opponentScore,
-      xpEarned: 2,
-      summary: `${opponentScore}-${playerScore} — better luck next time!`,
-    }
-  }
-  return null // Match continues
-}
 
 // ────────────────────────────────────────
 // Coin flip utility
