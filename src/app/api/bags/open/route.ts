@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
       const results: any[] = []
       for (const id of ids) {
         try {
+          // Pre-fetch needed data outside transaction
           const purchase = await db.bagPurchase.findUnique({ where: { id } })
           if (!purchase || purchase.userId !== user.id) continue
           if (purchase.opened) continue
@@ -76,32 +77,42 @@ export async function POST(request: NextRequest) {
           })
           if (!tazo) continue
 
+          // Atomic: upsert + instance + mark opened in one transaction
           const obtainedFrom = purchase.bagType === "welcome" ? "starter" : "bag"
-          const userTazo = await db.userTazo.upsert({
-            where: { userId_tazoId: { userId: user.id, tazoId: tazo.id } },
-            create: { userId: user.id, tazoId: tazo.id, quantity: 1, obtainedFrom },
-            update: { quantity: { increment: 1 } },
-          })
-
           const finish = randomFinish(tazo.rarity || "common")
           const tgaGrade = generateTGAGrade(tazo.rarity || "common", finish)
-          const instance = await db.tazoInstance.create({
-            data: {
-              userTazoId: userTazo.id, userId: user.id, tazoId: tazo.id,
-              attack: randomizeStat(tazo.attack), defense: randomizeStat(tazo.defense),
-              resistance: randomizeStat(tazo.resistance), weight: randomizeStat(tazo.weight),
-              stability: randomizeStat(tazo.stability), spin: randomizeStat(tazo.spin),
-              control: randomizeStat(tazo.control), bounce: randomizeStat(tazo.bounce),
-              precision: randomizeStat(tazo.precision),
-              finish, creatureVariant: tazo.creatureVariant || "standard", isNew: true,
-              tgaTier: tgaGrade.tier, tgaGrade: tgaGrade.grade,
-              tgaSurface: tgaGrade.surface, tgaBorders: tgaGrade.borders,
-              tgaCertNumber: tgaGrade.certNumber,
-            },
-          })
 
-          await db.tazo.update({ where: { id: tazo.id }, data: { isOwned: true } })
-          await db.bagPurchase.update({ where: { id }, data: { opened: true } })
+          const [instance] = await db.$transaction(async (tx) => {
+            // Re-check not already opened
+            const fresh = await tx.bagPurchase.findUnique({ where: { id } })
+            if (!fresh || fresh.opened) throw new Error("Bag already opened")
+
+            const userTazo = await tx.userTazo.upsert({
+              where: { userId_tazoId: { userId: user.id, tazoId: tazo.id } },
+              create: { userId: user.id, tazoId: tazo.id, quantity: 1, obtainedFrom },
+              update: { quantity: { increment: 1 } },
+            })
+
+            const inst = await tx.tazoInstance.create({
+              data: {
+                userTazoId: userTazo.id, userId: user.id, tazoId: tazo.id,
+                attack: randomizeStat(tazo.attack), defense: randomizeStat(tazo.defense),
+                resistance: randomizeStat(tazo.resistance), weight: randomizeStat(tazo.weight),
+                stability: randomizeStat(tazo.stability), spin: randomizeStat(tazo.spin),
+                control: randomizeStat(tazo.control), bounce: randomizeStat(tazo.bounce),
+                precision: randomizeStat(tazo.precision),
+                finish, creatureVariant: tazo.creatureVariant || "standard", isNew: true,
+                tgaTier: tgaGrade.tier, tgaGrade: tgaGrade.grade,
+                tgaSurface: tgaGrade.surface, tgaBorders: tgaGrade.borders,
+                tgaCertNumber: tgaGrade.certNumber,
+              },
+            })
+
+            await tx.tazo.update({ where: { id: tazo.id }, data: { isOwned: true } })
+            await tx.bagPurchase.update({ where: { id }, data: { opened: true } })
+
+            return [inst]
+          })
 
           results.push({
             tazo: { ...tazo, instanceId: instance.id, finish: instance.finish, creatureVariant: instance.creatureVariant,
@@ -144,51 +155,41 @@ export async function POST(request: NextRequest) {
     }
 
     // Auto-mark tazo as owned + add to user collection
+    // Atomic open: upsert + instance + mark opened in one transaction
     const obtainedFrom = purchase.bagType === "welcome" ? "starter" : "bag"
-    const userTazo = await db.userTazo.upsert({
-      where: { userId_tazoId: { userId: user.id, tazoId: tazo.id } },
-      create: { userId: user.id, tazoId: tazo.id, quantity: 1, obtainedFrom },
-      update: { quantity: { increment: 1 } },
-    })
-
-    // Create a unique instance with randomized stats
     const finish = randomFinish(tazo.rarity || "common")
     const tgaGrade = generateTGAGrade(tazo.rarity || "common", finish)
-    const instance = await db.tazoInstance.create({
-      data: {
-        userTazoId: userTazo.id,
-        userId: user.id,
-        tazoId: tazo.id,
-        attack: randomizeStat(tazo.attack),
-        defense: randomizeStat(tazo.defense),
-        resistance: randomizeStat(tazo.resistance),
-        weight: randomizeStat(tazo.weight),
-        stability: randomizeStat(tazo.stability),
-        spin: randomizeStat(tazo.spin),
-        control: randomizeStat(tazo.control),
-        bounce: randomizeStat(tazo.bounce),
-        precision: randomizeStat(tazo.precision),
-        finish,
-        creatureVariant: tazo.creatureVariant || "standard",
-        isNew: true,
-        tgaTier: tgaGrade.tier,
-        tgaGrade: tgaGrade.grade,
-        tgaSurface: tgaGrade.surface,
-        tgaBorders: tgaGrade.borders,
-        tgaCertNumber: tgaGrade.certNumber,
-      },
-    })
 
-    // Set isOwned flag on the tazo itself (auto — no manual toggle)
-    await db.tazo.update({
-      where: { id: tazo.id },
-      data: { isOwned: true },
-    })
+    const [userTazo, instance] = await db.$transaction(async (tx) => {
+      // Re-check not already opened inside tx (prevents race condition)
+      const fresh = await tx.bagPurchase.findUnique({ where: { id: singleId } })
+      if (!fresh || fresh.opened) throw new Error("Bag already opened")
 
-    // Mark bag as opened
-    await db.bagPurchase.update({
-      where: { id: singleId },
-      data: { opened: true },
+      const ut = await tx.userTazo.upsert({
+        where: { userId_tazoId: { userId: user.id, tazoId: tazo.id } },
+        create: { userId: user.id, tazoId: tazo.id, quantity: 1, obtainedFrom },
+        update: { quantity: { increment: 1 } },
+      })
+
+      const inst = await tx.tazoInstance.create({
+        data: {
+          userTazoId: ut.id, userId: user.id, tazoId: tazo.id,
+          attack: randomizeStat(tazo.attack), defense: randomizeStat(tazo.defense),
+          resistance: randomizeStat(tazo.resistance), weight: randomizeStat(tazo.weight),
+          stability: randomizeStat(tazo.stability), spin: randomizeStat(tazo.spin),
+          control: randomizeStat(tazo.control), bounce: randomizeStat(tazo.bounce),
+          precision: randomizeStat(tazo.precision),
+          finish, creatureVariant: tazo.creatureVariant || "standard", isNew: true,
+          tgaTier: tgaGrade.tier, tgaGrade: tgaGrade.grade,
+          tgaSurface: tgaGrade.surface, tgaBorders: tgaGrade.borders,
+          tgaCertNumber: tgaGrade.certNumber,
+        },
+      })
+
+      await tx.tazo.update({ where: { id: tazo.id }, data: { isOwned: true } })
+      await tx.bagPurchase.update({ where: { id: singleId }, data: { opened: true } })
+
+      return [ut, inst]
     })
 
     // Handle bonus tazo
@@ -199,36 +200,34 @@ export async function POST(request: NextRequest) {
         include: { franchise: { select: { name: true, slug: true, color: true } } },
       })
       if (bonusTazo) {
-        const bUserTazo = await db.userTazo.upsert({
-          where: { userId_tazoId: { userId: user.id, tazoId: bonusTazo.id } },
-          create: { userId: user.id, tazoId: bonusTazo.id, quantity: 1, obtainedFrom },
-          update: { quantity: { increment: 1 } },
-        })
         const bFinish = randomFinish(bonusTazo.rarity || "common")
         const bTgaGrade = generateTGAGrade(bonusTazo.rarity || "common", bFinish)
-        await db.tazoInstance.create({
-          data: {
-            userTazoId: bUserTazo.id,
-            userId: user.id,
-            tazoId: bonusTazo.id,
-            attack: randomizeStat(bonusTazo.attack),
-            defense: randomizeStat(bonusTazo.defense),
-            resistance: randomizeStat(bonusTazo.resistance),
-            weight: randomizeStat(bonusTazo.weight),
-            stability: randomizeStat(bonusTazo.stability),
-            spin: randomizeStat(bonusTazo.spin),
-            control: randomizeStat(bonusTazo.control),
-            bounce: randomizeStat(bonusTazo.bounce),
-            precision: randomizeStat(bonusTazo.precision),
-            finish: bFinish,
-            creatureVariant: bonusTazo.creatureVariant || "standard",
-            isNew: true,
-            tgaTier: bTgaGrade.tier,
-            tgaGrade: bTgaGrade.grade,
-            tgaSurface: bTgaGrade.surface,
-            tgaBorders: bTgaGrade.borders,
-            tgaCertNumber: bTgaGrade.certNumber,
-          },
+        await db.$transaction(async (tx) => {
+          const bUserTazo = await tx.userTazo.upsert({
+            where: { userId_tazoId: { userId: user.id, tazoId: bonusTazo!.id } },
+            create: { userId: user.id, tazoId: bonusTazo!.id, quantity: 1, obtainedFrom },
+            update: { quantity: { increment: 1 } },
+          })
+          await tx.tazoInstance.create({
+            data: {
+              userTazoId: bUserTazo.id, userId: user.id, tazoId: bonusTazo!.id,
+              attack: randomizeStat(bonusTazo!.attack),
+              defense: randomizeStat(bonusTazo!.defense),
+              resistance: randomizeStat(bonusTazo!.resistance),
+              weight: randomizeStat(bonusTazo!.weight),
+              stability: randomizeStat(bonusTazo!.stability),
+              spin: randomizeStat(bonusTazo!.spin),
+              control: randomizeStat(bonusTazo!.control),
+              bounce: randomizeStat(bonusTazo!.bounce),
+              precision: randomizeStat(bonusTazo!.precision),
+              finish: bFinish,
+              creatureVariant: bonusTazo!.creatureVariant || "standard",
+              isNew: true,
+              tgaTier: bTgaGrade.tier, tgaGrade: bTgaGrade.grade,
+              tgaSurface: bTgaGrade.surface, tgaBorders: bTgaGrade.borders,
+              tgaCertNumber: bTgaGrade.certNumber,
+            },
+          })
         })
       }
     }
