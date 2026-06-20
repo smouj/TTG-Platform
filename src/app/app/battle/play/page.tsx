@@ -1,36 +1,24 @@
 "use client"
 
 // ============================================================
-// Battle Play — renders BattleView inline within the magazine
-// app shell (header + tabs + HUD). No separate fullscreen page.
+// Battle Play — Fullscreen 3D arena (no web shell)
+//
+// GameShell provides the fixed fullscreen container.
+// BattleView handles arena, physics, HUD, and state.
 //
 // BattleView reads mode/difficulty/deckId from sessionStorage
 // (set by the /app/battle lobby).
-//
-// v2 (2026-06-16): Lazy-loaded BattleView to avoid bundling
-// Three.js into the initial app chunk. The loading spinner
-// matches the magazine aesthetic.
 // ============================================================
 
 import dynamic from "next/dynamic"
 import { useI18n } from "@/lib/i18n"
+import GameShell from "@/components/game/game-shell"
 
-// BattleView loading overlay — dark arena entrance with i18n
+// Loading overlay — matches GameShell aesthetic with scanlines
 function BattlePlayLoadingOverlay() {
   const { t } = useI18n()
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "2rem",
-        background: "linear-gradient(135deg, #0a0a0a 0%, var(--ttg-black) 100%)",
-      }}
-    >
+    <GameShell>
       {/* Scanlines */}
       <div
         style={{
@@ -54,57 +42,34 @@ function BattlePlayLoadingOverlay() {
       />
 
       {/* Tazo disc spinner */}
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: "50%",
+      <div style={{
+        position: "absolute", inset: 0, display: "flex",
+        flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2rem"
+      }}>
+        <div style={{ position: "relative" }}>
+          <div style={{
+            width: 72, height: 72, borderRadius: "50%",
             border: "3px solid rgba(255,204,0,0.12)",
             borderTopColor: "var(--ttg-yellow)",
             animation: "spin 0.8s linear infinite",
             boxShadow: "0 0 32px rgba(255,204,0,0.15)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: -6,
-            borderRadius: "50%",
+          }} />
+          <div style={{
+            position: "absolute", inset: -6, borderRadius: "50%",
             border: "2px solid rgba(255,204,0,0.06)",
             animation: "ping 1.5s ease-out infinite",
-          }}
-        />
+          }} />
+        </div>
+        <div style={{ textAlign: "center" }}>
+          <p style={{ fontSize: 12, fontWeight: 900, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.25em", margin: 0 }}>
+            {t.battle_entering_arena}
+          </p>
+          <p style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,204,0,0.25)", textTransform: "uppercase", letterSpacing: "0.4em", marginTop: 8 }}>
+            {t.battle_battle_loading}
+          </p>
+        </div>
       </div>
-
-      {/* Message */}
-      <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
-        <p
-          style={{
-            fontSize: 12,
-            fontWeight: 900,
-            color: "rgba(255,255,255,0.7)",
-            textTransform: "uppercase",
-            letterSpacing: "0.25em",
-            margin: 0,
-          }}
-        >
-          {t.battle_entering_arena}
-        </p>
-        <p
-          style={{
-            fontSize: 8,
-            fontWeight: 700,
-            color: "rgba(255,204,0,0.25)",
-            textTransform: "uppercase",
-            letterSpacing: "0.4em",
-            marginTop: 8,
-          }}
-        >
-          {t.battle_battle_loading}
-        </p>
-      </div>
-    </div>
+    </GameShell>
   )
 }
 
@@ -114,5 +79,9 @@ const BattleView = dynamic(() => import("@/components/game/battle-view"), {
 })
 
 export default function BattlePlayPage() {
-  return <BattleView />
+  return (
+    <GameShell>
+      <BattleView />
+    </GameShell>
+  )
 }
