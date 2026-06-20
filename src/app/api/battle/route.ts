@@ -433,76 +433,87 @@ export async function POST(request: NextRequest) {
       winner = physicsResult.winner as 'player' | 'opponent' | 'draw'
       // Save battle record with physics data
       if (authUser) {
-        await db.battleRecord.create({
-          data: {
-            userId: authUser.id,
-            playerTazos: JSON.stringify(playerTazoIds),
-            opponentTazos: JSON.stringify(opponentTazoIds),
-            winner: winner === 'player' ? 'player' : winner === 'opponent' ? 'opponent' : 'draw',
-            score: `${physicsResult.playerScore}-${physicsResult.opponentScore}`,
-            turns: physicsResult.totalTurns,
-            victoryType: winner === 'player' ? 'physics_arena' : winner === 'opponent' ? 'defeat' : 'draw',
-            battleLog: JSON.stringify({ physics: physicsResult }),
-          },
-        })
-        // Award credits for win (capped daily)
-        if (winner === 'player') {
-          const today = new Date()
-          today.setHours(0, 0, 0, 0)
-          const winCount = await db.creditTransaction.count({
-            where: { userId: authUser.id, source: 'battle_win', createdAt: { gte: today } },
+        // ── All DB mutations wrapped in $transaction to prevent race conditions ──
+        const txResult = await db.$transaction(async (tx) => {
+          // Save battle record first
+          await tx.battleRecord.create({
+            data: {
+              userId: authUser.id,
+              playerTazos: JSON.stringify(playerTazoIds),
+              opponentTazos: JSON.stringify(opponentTazoIds),
+              winner: winner === 'player' ? 'player' : winner === 'opponent' ? 'opponent' : 'draw',
+              score: `${physicsResult.playerScore}-${physicsResult.opponentScore}`,
+              turns: physicsResult.totalTurns,
+              victoryType: winner === 'player' ? 'physics_arena' : winner === 'opponent' ? 'defeat' : 'draw',
+              battleLog: JSON.stringify({ physics: physicsResult }),
+            },
           })
-          const BATTLE_WIN_CREDITS = 10
-          const BATTLE_WIN_DAILY_CAP = 10
-          if (winCount < BATTLE_WIN_DAILY_CAP) {
-            await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: BATTLE_WIN_CREDITS } } })
-            await db.creditTransaction.create({
+
+          let creditsEarned = 0
+
+          // Award credits for win (capped daily) — re-check inside transaction
+          if (winner === 'player') {
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
+            const winCount = await tx.creditTransaction.count({
+              where: { userId: authUser.id, source: 'battle_win', createdAt: { gte: today } },
+            })
+            const BATTLE_WIN_CREDITS = 10
+            const BATTLE_WIN_DAILY_CAP = 10
+            if (winCount < BATTLE_WIN_DAILY_CAP) {
+              await tx.user.update({ where: { id: authUser.id }, data: { credits: { increment: BATTLE_WIN_CREDITS } } })
+              await tx.creditTransaction.create({
+                data: {
+                  userId: authUser.id,
+                  amount: BATTLE_WIN_CREDITS,
+                  source: 'battle_win',
+                  reference: `battle_${Date.now()}`,
+                },
+              })
+              creditsEarned = BATTLE_WIN_CREDITS
+            }
+          } else {
+            // Loss consolation — small reward to encourage playing
+            const BATTLE_LOSS_CREDITS = 2
+            await tx.user.update({ where: { id: authUser.id }, data: { credits: { increment: BATTLE_LOSS_CREDITS } } })
+            await tx.creditTransaction.create({
               data: {
                 userId: authUser.id,
-                amount: BATTLE_WIN_CREDITS,
-                source: 'battle_win',
+                amount: BATTLE_LOSS_CREDITS,
+                source: 'battle_loss',
                 reference: `battle_${Date.now()}`,
               },
             })
+            creditsEarned = BATTLE_LOSS_CREDITS
           }
-        } else {
-          // Loss consolation — small reward to encourage playing
-          const BATTLE_LOSS_CREDITS = 2
-          await db.user.update({ where: { id: authUser.id }, data: { credits: { increment: BATTLE_LOSS_CREDITS } } })
-          await db.creditTransaction.create({
-            data: {
-              userId: authUser.id,
-              amount: BATTLE_LOSS_CREDITS,
-              source: 'battle_loss',
-              reference: `battle_${Date.now()}`,
-            },
-          })
-        }
 
-        // ── Increment wear on player's tazos used in battle ──
-        const won = winner === 'player'
-        for (const tazoId of playerTazoIds) {
-          try {
-            const ut = await db.userTazo.findUnique({ where: { userId_tazoId: { userId: authUser.id, tazoId } } })
-            if (ut) {
-              const wearGain = won ? 1 + Math.floor(Math.random() * 3) : 2 + Math.floor(Math.random() * 4)
-              const newWear = Math.min(100, ut.wear + wearGain)
-              await db.userTazo.update({
-                where: { id: ut.id },
-                data: { wear: newWear, battleCount: { increment: 1 } },
-              })
-            }
-          } catch { /* wear tracking non-critical */ }
-        }
+          // ── Increment wear on player's tazos used in battle ──
+          const won = winner === 'player'
+          for (const tazoId of playerTazoIds) {
+            try {
+              const ut = await tx.userTazo.findUnique({ where: { userId_tazoId: { userId: authUser.id, tazoId } } })
+              if (ut) {
+                const wearGain = won ? 1 + Math.floor(Math.random() * 3) : 2 + Math.floor(Math.random() * 4)
+                const newWear = Math.min(100, ut.wear + wearGain)
+                await tx.userTazo.update({
+                  where: { id: ut.id },
+                  data: { wear: newWear, battleCount: { increment: 1 } },
+                })
+              }
+            } catch { /* wear tracking non-critical */ }
+          }
 
-        // ── Trigger quest progression ──
-        await refreshUserProgress(authUser.id)
-        const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
+          // ── Trigger quest progression ──
+          await refreshUserProgress(authUser.id)
+          const u = await tx.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
+          return { creditsEarned, credits: u?.credits ?? null }
+        })
+
         return NextResponse.json({
           winner, victoryType: 'physics_arena', rounds: physicsResult.totalTurns,
           battleLog: [{ physics: physicsResult }],
-          creditsEarned: winner === 'player' ? 10 : 2,
-          credits: u?.credits ?? null,
+          creditsEarned: txResult.creditsEarned,
+          credits: txResult.credits,
         })
       }
       // Guest: just record the match, no credits
@@ -618,85 +629,92 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Update battle records on tazos
-    for (const t of playerTazos) {
-      if (winner === 'player') {
-        await db.tazo.update({ where: { id: t.id }, data: { battleWins: { increment: 1 } } })
-      } else if (winner === 'opponent') {
-        await db.tazo.update({ where: { id: t.id }, data: { battleLosses: { increment: 1 } } })
-      }
-    }
-    for (const t of opponentTazos) {
-      if (winner === 'opponent') {
-        await db.tazo.update({ where: { id: t.id }, data: { battleWins: { increment: 1 } } })
-      } else if (winner === 'player') {
-        await db.tazo.update({ where: { id: t.id }, data: { battleLosses: { increment: 1 } } })
-      }
-    }
-
-    // Save battle record
-    await db.battleRecord.create({
-      data: {
-        userId: authUser?.id,
-        playerTazos: JSON.stringify(playerTazoIds),
-        opponentTazos: JSON.stringify(opponentTazoIds),
-        winner,
-        victoryType,
-        rounds,
-        battleLog: JSON.stringify(battleLog),
-      },
-    })
-
-    // Award credits for authenticated winner (capped daily)
-    if (authUser && winner === 'player') {
-      try {
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
-        const winCount = await db.creditTransaction.count({
-          where: { userId: authUser.id, source: 'battle_win', createdAt: { gte: today } },
-        })
-        const BATTLE_WIN_CREDITS = 10
-        const BATTLE_WIN_DAILY_CAP = 10
-        if (winCount < BATTLE_WIN_DAILY_CAP) {
-          await db.user.update({
-            where: { id: authUser.id },
-            data: { credits: { increment: BATTLE_WIN_CREDITS } },
-          })
-          await db.creditTransaction.create({
-            data: {
-              userId: authUser.id,
-              amount: BATTLE_WIN_CREDITS,
-              source: 'battle_win',
-              reference: `battle_${Date.now()}`,
-            },
-          })
-        }
-      } catch (_) { /* credits are non-critical */ }
-    } else if (authUser && winner !== 'draw') {
-      // Loss consolation
-      try {
-        await db.user.update({
-          where: { id: authUser.id },
-          data: { credits: { increment: 2 } },
-        })
-        await db.creditTransaction.create({
-          data: { userId: authUser.id, amount: 2, source: 'battle_loss', reference: `battle_${Date.now()}` },
-        })
-      } catch (_) {}
-    }
-
-    if (authUser) {
-      await refreshUserProgress(authUser.id)
-    }
-
-    // Get updated credits if authed
+    // ── All post-battle mutations wrapped in $transaction to prevent race conditions ──
     let credits: number | null = null
-    if (authUser) {
-      try {
-        const u = await db.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
-        credits = u?.credits ?? null
-      } catch (_) { }
-    }
+    let creditsEarned = 0
+
+    await db.$transaction(async (tx) => {
+      // Update battle records on tazos
+      for (const t of playerTazos) {
+        if (winner === 'player') {
+          await tx.tazo.update({ where: { id: t.id }, data: { battleWins: { increment: 1 } } })
+        } else if (winner === 'opponent') {
+          await tx.tazo.update({ where: { id: t.id }, data: { battleLosses: { increment: 1 } } })
+        }
+      }
+      for (const t of opponentTazos) {
+        if (winner === 'opponent') {
+          await tx.tazo.update({ where: { id: t.id }, data: { battleWins: { increment: 1 } } })
+        } else if (winner === 'player') {
+          await tx.tazo.update({ where: { id: t.id }, data: { battleLosses: { increment: 1 } } })
+        }
+      }
+
+      // Save battle record
+      await tx.battleRecord.create({
+        data: {
+          userId: authUser?.id,
+          playerTazos: JSON.stringify(playerTazoIds),
+          opponentTazos: JSON.stringify(opponentTazoIds),
+          winner,
+          victoryType,
+          rounds,
+          battleLog: JSON.stringify(battleLog),
+        },
+      })
+
+      // Award credits for authenticated winner (capped daily) — re-check inside transaction
+      if (authUser && winner === 'player') {
+        try {
+          const today = new Date()
+          today.setHours(0, 0, 0, 0)
+          const winCount = await tx.creditTransaction.count({
+            where: { userId: authUser.id, source: 'battle_win', createdAt: { gte: today } },
+          })
+          const BATTLE_WIN_CREDITS = 10
+          const BATTLE_WIN_DAILY_CAP = 10
+          if (winCount < BATTLE_WIN_DAILY_CAP) {
+            await tx.user.update({
+              where: { id: authUser.id },
+              data: { credits: { increment: BATTLE_WIN_CREDITS } },
+            })
+            await tx.creditTransaction.create({
+              data: {
+                userId: authUser.id,
+                amount: BATTLE_WIN_CREDITS,
+                source: 'battle_win',
+                reference: `battle_${Date.now()}`,
+              },
+            })
+            creditsEarned = BATTLE_WIN_CREDITS
+          }
+        } catch (_) { /* credits are non-critical */ }
+      } else if (authUser && winner !== 'draw') {
+        // Loss consolation
+        try {
+          await tx.user.update({
+            where: { id: authUser.id },
+            data: { credits: { increment: 2 } },
+          })
+          await tx.creditTransaction.create({
+            data: { userId: authUser.id, amount: 2, source: 'battle_loss', reference: `battle_${Date.now()}` },
+          })
+          creditsEarned = 2
+        } catch (_) {}
+      }
+
+      if (authUser) {
+        await refreshUserProgress(authUser.id)
+      }
+
+      // Get updated credits
+      if (authUser) {
+        try {
+          const u = await tx.user.findUnique({ where: { id: authUser.id }, select: { credits: true } })
+          credits = u?.credits ?? null
+        } catch (_) { }
+      }
+    })
 
     // Format tazos for response (strip runtime battle fields)
     const formatTazo = (t: BattleTazo) => ({
@@ -726,7 +744,7 @@ export async function POST(request: NextRequest) {
       battleLog,
       playerTazos: playerTazos.map(formatTazo),
       opponentTazos: opponentTazos.map(formatTazo),
-      creditsEarned: (authUser && winner === 'player') ? 10 : (authUser && winner !== 'draw' && winner !== 'player') ? 2 : 0,
+      creditsEarned,
       credits,
     })
   } catch (error) {

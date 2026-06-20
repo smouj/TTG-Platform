@@ -427,15 +427,23 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "userTazoId is required" }, { status: 400 })
     }
 
-    const existing = await db.userTazo.findFirst({
-      where: { id: userTazoId, userId: user.id },
-    })
-
-    if (!existing) {
-      return NextResponse.json({ error: "Tazo not found in your collection" }, { status: 404 })
+    // ── Atomic ownership check + delete in transaction ──
+    // Prevents TOCTOU race where two concurrent deletes both check,
+    // then second delete fails with 500 on already-deleted record.
+    try {
+      await db.$transaction(async (tx) => {
+        const existing = await tx.userTazo.findFirst({
+          where: { id: userTazoId, userId: user.id },
+        })
+        if (!existing) throw new Error("NOT_FOUND")
+        await tx.userTazo.delete({ where: { id: userTazoId } })
+      })
+    } catch (err: any) {
+      if (err.message === "NOT_FOUND") {
+        return NextResponse.json({ error: "Tazo not found in your collection" }, { status: 404 })
+      }
+      throw err
     }
-
-    await db.userTazo.delete({ where: { id: userTazoId } })
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -36,26 +36,44 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
     }
 
-    // Check uniqueness
-    const existing = await db.user.findUnique({ where: { email: email.toLowerCase().trim() } })
-    if (existing) {
-      return NextResponse.json({ error: "Email already registered" }, { status: 409 })
-    }
-
-    // Create user with email verification token
+    // Create user — wrapped in $transaction to prevent TOCTOU race
+    // Two concurrent registrations with same email: the DB unique constraint
+    // catches the second, and we convert it to a clean 409 response.
     const passwordHash = hashPassword(password)
     const emailVerifyToken = crypto.randomBytes(24).toString('hex')
     const emailVerifyExpires = new Date(Date.now() + 86400000) // 24 hours
-    const user = await db.user.create({
-      data: {
-        email: email.toLowerCase().trim(),
-        passwordHash,
-        name: name.trim(),
-        displayName: name.trim(),
-        emailVerifyToken,
-        emailVerifyExpires,
-      },
-    })
+
+    let user: any
+    try {
+      user = await db.$transaction(async (tx) => {
+        // Re-check uniqueness inside transaction
+        const existing = await tx.user.findUnique({
+          where: { email: email.toLowerCase().trim() }
+        })
+        if (existing) return null
+
+        return await tx.user.create({
+          data: {
+            email: email.toLowerCase().trim(),
+            passwordHash,
+            name: name.trim(),
+            displayName: name.trim(),
+            emailVerifyToken,
+            emailVerifyExpires,
+          },
+        })
+      })
+    } catch (err: any) {
+      // Unique constraint violation → clean 409
+      if (err?.code === 'P2002') {
+        return NextResponse.json({ error: "Email already registered" }, { status: 409 })
+      }
+      throw err
+    }
+
+    if (!user) {
+      return NextResponse.json({ error: "Email already registered" }, { status: 409 })
+    }
 
     // Seed welcome pack (fire-and-forget — non-blocking)
     seedWelcomePack(user.id)

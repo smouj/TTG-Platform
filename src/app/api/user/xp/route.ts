@@ -29,30 +29,36 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid XP amount" }, { status: 400 })
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.id },
-    select: { id: true, xp: true, level: true, xpToNext: true },
+  // ── Wrap in transaction to prevent XP race conditions ──
+  // Reads current XP, calculates new values, writes atomically
+  const result = await prisma.$transaction(async (tx) => {
+    const current = await tx.user.findUnique({
+      where: { id: session.id },
+      select: { id: true, xp: true, level: true, xpToNext: true },
+    })
+
+    if (!current) return null
+
+    const newXp = current.xp + amount
+    const info = getLevelInfo(newXp)
+    const didLevelUp = info.level > current.level
+
+    await tx.user.update({
+      where: { id: session.id },
+      data: {
+        xp: newXp,
+        level: info.level,
+        xpToNext: info.xpToNext,
+      },
+    })
+
+    return { ...info, xpGained: amount, didLevelUp }
   })
 
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
-
-  const newXp = user.xp + amount
-  const info = getLevelInfo(newXp)
-  const didLevelUp = info.level > user.level
-
-  await prisma.user.update({
-    where: { id: session.id },
-    data: {
-      xp: newXp,
-      level: info.level,
-      xpToNext: info.xpToNext,
-    },
-  })
+  if (!result) return NextResponse.json({ error: "User not found" }, { status: 404 })
 
   return NextResponse.json({
-    ...info,
-    xpGained: amount,
-    didLevelUp,
+    ...result,
     action,
   })
 }
