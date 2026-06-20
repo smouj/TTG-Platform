@@ -185,6 +185,11 @@ function IntroCinematic({ playerName, deckName, deckSize, playerHand, opponentHa
            introCinematicPhase === "countdown" ? (countdown != null && countdown > 0 ? `${countdown}...` : countdown === 0 ? "GO!" : "Get ready...") :
            "Camera orbits arena · Free orbit with mouse"}
         </p>
+        {introCinematicPhase === "players" && (
+          <p style={{ fontSize: 8, color: "rgba(255,255,255,0.12)", fontWeight: 700, textAlign: "center", letterSpacing: "0.2em", marginTop: 8 }}>
+            PRESS SPACE TO SKIP
+          </p>
+        )}
       </div>
     </div>
   )
@@ -432,6 +437,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   const [showCaptureOverlay, setShowCaptureOverlay] = useState(false)
   const [showRoundOverlay, setShowRoundOverlay] = useState(false)
   const [introCinematicPhase, setIntroCinematicPhase] = useState<"players" | "decks" | "countdown" | null>(null)
+  const introSkippedRef = useRef(false)
   const [roundBanner, setRoundBanner] = useState<number | null>(null)
   const [scoreFlash, setScoreFlash] = useState<"player" | "opponent" | null>(null)
 
@@ -506,27 +512,45 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       else playSfx("defeat_sting", 0.4)
     }
     if (phase === "match_intro" || phase === "draw_initial_hand") {
+      // Skip handler: Space / Enter / Click to fast-forward intro
+      const skipIntro = () => {
+        if (introSkippedRef.current) return
+        introSkippedRef.current = true
+        setIntroCountdown(null)
+        setIntroCinematicPhase(null)
+        engine.introDone()
+      }
+      const handleKey = (e: KeyboardEvent) => {
+        if (e.key === " " || e.key === "Enter") { e.preventDefault(); skipIntro() }
+      }
+      window.addEventListener("keydown", handleKey)
+
       // Cinematic intro sequence:
       // 0-2.5s: Camera orbit + player vs AI intro
       // 2.5-4.5s: Deck preview + stats
       // 4.5-6.8s: Countdown 3→2→1→BATTLE!
       setIntroCinematicPhase("players")
-      const tPlayers = setTimeout(() => setIntroCinematicPhase("decks"), 2500)
-      const tDecks = setTimeout(() => { setIntroCinematicPhase("countdown"); setIntroCountdown(3) }, 4500)
+      const tPlayers = setTimeout(() => { if (!introSkippedRef.current) setIntroCinematicPhase("decks") }, 2500)
+      const tDecks = setTimeout(() => { if (!introSkippedRef.current) { setIntroCinematicPhase("countdown"); setIntroCountdown(3) } }, 4500)
       ;[0, 600, 1200].forEach((d, i) => setTimeout(() => {
+        if (introSkippedRef.current) return
         setIntroCountdown(3 - i)
         if (i < 2) playSfx("countdown_beep", 0.3)
       }, 4500 + d))
       const tFight = setTimeout(() => {
+        if (introSkippedRef.current) return
         setIntroCountdown(0)
         playSfx("battle_start", 0.5)
       }, 6300)
       const tDone = setTimeout(() => {
+        if (introSkippedRef.current) return
         setIntroCountdown(null)
         setIntroCinematicPhase(null)
       }, 6800)
       return () => {
         clearTimeout(tPlayers); clearTimeout(tDecks); clearTimeout(tFight); clearTimeout(tDone)
+        window.removeEventListener("keydown", handleKey)
+        introSkippedRef.current = false
       }
     }
   }, [phase, result])
@@ -661,10 +685,10 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
         if (aiScoring.playerDelta > 0) { spawnPopup("+" + aiScoring.playerDelta, "var(--ttg-player)", "left"); playSfx("score_pop", 0.3) }
         
         setAirborne(null)
-        engine.setShowImpact(false)
         
         setTimeout(() => {
           if (!mountedRef.current) { aiTurnRunning.current = false; return }
+          engine.setShowImpact(false)
           engine.captureResolved()
           setTimeout(() => {
             if (!mountedRef.current) { aiTurnRunning.current = false; return }
@@ -673,9 +697,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
               if (!mountedRef.current) { aiTurnRunning.current = false; return }
               engine.turnOver()
               aiTurnRunning.current = false
-            }, 800)
-          }, 600)
-        }, 1000)
+            }, 400) // Reduced from 800ms
+          }, 300) // Reduced from 600ms
+        }, 600) // Reduced from 1000ms
       }, timing.aim)
     }, timing.think)
     } catch (err) {
@@ -688,7 +712,7 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
   // ── AI Turn Trigger ──
   useEffect(() => {
     if (phase === "select_tazo" && ctx?.currentThrower === "opponent" && !aiTurnRunning.current) {
-      const t = setTimeout(() => runAITurn(), 500)
+      const t = setTimeout(() => runAITurn(), 250) // Reduced from 500ms — faster AI response
       return () => clearTimeout(t)
     }
   }, [phase, ctx?.currentThrower, runAITurn])
@@ -820,17 +844,23 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     // waits for cinematic completion (introCinematicPhase===null) before firing
     // INITIAL_HANDS_DRAWN → stake_player. This ensures the full cinematic plays.
     // Draw animation + PlacementPhase are triggered by the useEffect for stake_player.
+    // Note: intro can be skipped via Space/Enter — check introSkippedRef to avoid double-fire
     setTimeout(() => {
-      engine.introDone()
+      if (!introSkippedRef.current) engine.introDone()
     }, 6800)
   }, [engine])
 
-  // ── Auto-start from sessionStorage (set by /app/battle lobby) ──
+  // ── Auto-start from sessionStorage (set by /app/battle lobby or /battle/practice) ──
   useEffect(() => {
     if (autoStartedRef.current) return
     const battleMode = sessionStorage.getItem("battle_mode")
     const battleDeckId = sessionStorage.getItem("battle_deckId")
-    if (!battleMode || !battleDeckId || loading || allDecks.length === 0) return
+    if (!battleMode || !battleDeckId || loading) return
+
+    const isPublicPractice = sessionStorage.getItem("battle_public_practice") === "1"
+    // Public practice: use demo tazos regardless of allDecks
+    // Authenticated: wait for allDecks to load
+    if (!isPublicPractice && allDecks.length === 0) return
 
     const battleDifficulty = sessionStorage.getItem("battle_difficulty") || "skilled"
     autoStartedRef.current = true
@@ -838,21 +868,27 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     sessionStorage.removeItem("battle_difficulty")
     sessionStorage.removeItem("battle_deckId")
 
-    const autoDeck = allDecks.find((d: any) => d.id === battleDeckId)
-    if (!autoDeck?.tazos || autoDeck.tazos.length < 1) return
+    let deckTazos: TazoCard[]
+    if (isPublicPractice) {
+      // Demo deck: 5 random tazos from DEMO_TAZOS (no API calls needed)
+      const shuffled = [...DEMO_TAZOS].sort(() => Math.random() - 0.5)
+      deckTazos = shuffled.slice(0, 5)
+    } else {
+      const autoDeck = allDecks.find((d: any) => d.id === battleDeckId)
+      if (!autoDeck?.tazos || autoDeck.tazos.length < 1) return
+      const dt: any[] = autoDeck.tazos
+      deckTazos = dt.map((t: any) => ({
+        id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
+        franchise: (t.franchiseSlug || "minimon") as any,
+        imageUrl: t.imageUrl || null, shinyImageUrl: t.shinyImageUrl || null,
+        rarity: t.rarity || "common", finish: t.finish || "normal", creatureVariant: t.creatureVariant || "standard",
+        attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
+        weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
+        control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
+      }))
+    }
 
-    const dt: any[] = autoDeck.tazos
-    const deckTazos = dt.map((t: any) => ({
-      id: t.id, name: t.name || "?", slug: t.slug || (t.name || "?").toLowerCase().replace(/\s/g, "-"),
-      franchise: (t.franchiseSlug || "minimon") as any,
-      imageUrl: t.imageUrl || null, shinyImageUrl: t.shinyImageUrl || null,
-      rarity: t.rarity || "common", finish: t.finish || "normal", creatureVariant: t.creatureVariant || "standard",
-      attack: t.attack || 50, defense: t.defense || 50, resistance: t.resistance || 50,
-      weight: t.weight || 50, stability: t.stability || 50, spin: t.spin || 50,
-      control: t.control || 50, bounce: t.bounce || 50, precision: t.precision || 50,
-    }))
-
-    const timer = setTimeout(() => start("practice", battleDifficulty, deckTazos), 500)
+    const timer = setTimeout(() => start(battleMode as any, battleDifficulty, deckTazos), 500)
     return () => clearTimeout(timer)
   }, [loading, allDecks, start])
 
@@ -878,18 +914,18 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     engine.stakePlayer(playerTazo, stakeX, stakeZ)
     engine.aiBet(oppPick)
     
+    // Show stake reveal briefly, then start the round
     setTimeout(() => {
       setPlacingStake(false)
       engine.revealStakes()
       playSfx("tazo_flip", 0.3)
-      // Player always goes first (no coin flip)
+      // Player always goes first — shorter delay for snappier feel
       setTimeout(() => {
-        // player goes first (default)
         engine.roundStarted()
-        setTimeout(() => engine.turnStarted(), 600)
+        setTimeout(() => engine.turnStarted(), 400)
         engine.setBusy(false)
-      }, 1200)
-    }, 1000)
+      }, 800)
+    }, 600)
   }, [ctx, playerHand, opponentHand, engine])
 
   const rematch = () => {
@@ -1007,7 +1043,6 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
       if (opponentLostTazos > 0) { spawnPopup(`-${opponentLostTazos} tazo`, "var(--ttg-player)", "right"); playSfx("damage_taken", 0.35) }
 
       // ── After player slam: advance FSM through capture → score → turn end ──
-      const advanceTimeout = 700
       setTimeout(() => {
         if (!mountedRef.current) return
         engine.setShowImpact(false)
@@ -1021,9 +1056,9 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
             if (!mountedRef.current) return
             engine.turnOver()
             engine.setBusy(false)
-          }, 500)
-        }, 800)
-      }, advanceTimeout)
+          }, 400) // Reduced from 500ms
+        }, 500) // Reduced from 800ms
+      }, 600) // Reduced from 700ms
   }, fallTimeMs * 0.75)
   }, [engine, cfg, ctx, deck, airborne])
 
@@ -1536,18 +1571,22 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
 
         {/* ── Slam Controls ── */}
         {/* ── Placement Phase (manual stake positioning) ── */}
-        {placingStake && phase === "stake_player" && playerHand.length > 0 && (
-          <PlacementPhase
-            tazoName={playerHand[0].name}
-            tazoFranchise={playerHand[0].franchise}
-            tazoImageUrl={playerHand[0].imageUrl}
-            tazoStats={playerHand[0] ? { atk: playerHand[0].attack, def: playerHand[0].defense, spd: playerHand[0].spin, acc: playerHand[0].precision, ctrl: playerHand[0].control, pwr: playerHand[0].attack } : undefined}
-            stakeX={playerStakeX}
-            stakeZ={playerStakeZ}
-            onPlace={(x, z) => handlePlaceStake(x, z)}
-            onBack={back}
-          />
-        )}
+        {placingStake && phase === "stake_player" && playerHand.length > 0 && (() => {
+          const pt = playerHand.find(t => t.id === selectedBetId) || playerHand[0]
+          return (
+            <PlacementPhase
+              key={pt.id}
+              tazoName={pt.name}
+              tazoFranchise={pt.franchise}
+              tazoImageUrl={pt.imageUrl}
+              tazoStats={{ atk: pt.attack, def: pt.defense, spd: pt.spin, acc: pt.precision, ctrl: pt.control, pwr: pt.attack }}
+              stakeX={playerStakeX}
+              stakeZ={playerStakeZ}
+              onPlace={(x, z) => handlePlaceStake(x, z)}
+              onBack={back}
+            />
+          )
+        })()}
 
         {/* ── Select Phase (select_tazo) ── */}
         {(phase === "select_tazo" || phase === "stake_player") && playerHand.length > 0 && (

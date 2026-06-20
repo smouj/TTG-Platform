@@ -277,7 +277,7 @@ export default function BattlePage() {
     const prevOverflow = document.body.style.overflow
 
     // Set sessionStorage for BattleView to auto-start
-    sessionStorage.setItem("battle_mode", "practice")
+    sessionStorage.setItem("battle_mode", mode)
     sessionStorage.setItem("battle_difficulty", difficulty)
     sessionStorage.setItem("battle_deckId", selectedDeckId)
 
