@@ -27,7 +27,7 @@ import {
 } from "lucide-react"
 import TazoDiscImage from "@/components/game/tazo-disc-image"
 import TazoDetailModal from '@/components/game/tazo-detail-modal'
-import { FRANCHISES, FRANCHISE_BY_SLUG, TOTAL_PLANNED, TOTAL_PUBLISHED } from "@/lib/franchise-config"
+import { FRANCHISES, FRANCHISE_BY_SLUG, TOTAL_PLANNED } from "@/lib/franchise-config"
 import { SITE_CONFIG } from "@/lib/site-config"
 import { PRIVACY_SECTIONS, TERMS_SECTIONS, COOKIE_SECTIONS } from "@/lib/legal-content"
 import BagCardMini3D from "@/components/game/3d/bag-card-mini-3d"
@@ -627,7 +627,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
           {/* Stat chips — magazine factoid bar */}
           <div className="relative flex flex-wrap gap-2 justify-center md:justify-start">
             {[
-              { number: `${realTazoCount ?? TOTAL_PUBLISHED}`, label: "Tazos", color: "var(--ttg-yellow)", tooltip: realTazoCount ? `${realTazoCount} published` : undefined },
+              { number: `${realTazoCount ?? SITE_CONFIG.totalTazos}`, label: "Tazos", color: "var(--ttg-yellow)", tooltip: realTazoCount ? `${realTazoCount} published` : undefined },
               { number: "3", label: "Series", color: "var(--ttg-red)" },
               { number: String(SITE_CONFIG.statsCount), label: "Stats", color: "var(--ttg-yellow)" },
               { number: "Free", label: "Play", color: "var(--ttg-success)" },
