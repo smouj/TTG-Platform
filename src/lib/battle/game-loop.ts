@@ -38,14 +38,6 @@ export type TazoFinish =
   | "stardust"
   | "chrome"
   | "gold"
-  | "rainbow"
-  | "glitter"
-  | "stardust"
-  | "aurora"
-  | "cracked_ice"
-  | "oil_slick"
-  | "lenticular"
-  | "pearlescent"
 
 export type TazoCreatureVariant =
   | "standard"

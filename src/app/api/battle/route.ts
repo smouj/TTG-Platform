@@ -487,6 +487,15 @@ export async function POST(request: NextRequest) {
             creditsEarned = BATTLE_LOSS_CREDITS
           }
 
+          // ── Update cached user stats (for leaderboard / ID card) ──
+          await tx.user.update({
+            where: { id: authUser.id },
+            data: {
+              totalBattles: { increment: 1 },
+              ...(winner === 'player' ? { totalWins: { increment: 1 } } : winner === 'opponent' ? { totalLosses: { increment: 1 } } : {}),
+            },
+          })
+
           // ── Increment wear on player's tazos used in battle ──
           const won = winner === 'player'
           for (const tazoId of playerTazoIds) {
@@ -704,6 +713,14 @@ export async function POST(request: NextRequest) {
       }
 
       if (authUser) {
+        // ── Update cached user stats (for leaderboard / ID card) ──
+        await tx.user.update({
+          where: { id: authUser.id },
+          data: {
+            totalBattles: { increment: 1 },
+            ...(winner === 'player' ? { totalWins: { increment: 1 } } : winner === 'opponent' ? { totalLosses: { increment: 1 } } : {}),
+          },
+        })
         await refreshUserProgress(authUser.id)
       }
 

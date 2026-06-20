@@ -256,7 +256,7 @@ wss.on("connection", (ws, req) => {
 });
 // ---- Status API (embedded HTTP) ----
 const statusServer = (0, http_1.createServer)((_req, res) => {
-    if (_req.url === "/status") {
+    if (_req.url === "/status" || _req.url === "/health") {
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify({
             activeRooms: rooms.size,

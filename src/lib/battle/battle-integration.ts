@@ -69,6 +69,7 @@ export async function persistBattleResult(
         opponentName: mode === "practice"
           ? `AI (${ctx.config.aiDifficulty})`
           : ctx.opponent.name,
+        xpEarned: matchResult.xpEarned,
         battleLog: JSON.stringify({
           mode,
           arena: ctx.config.arena.radius,
@@ -123,26 +124,8 @@ export async function persistBattleResult(
     result.errors.push(`Quests error: ${err}`)
   }
 
-  // 4. Grant XP / credits for the match (via credit transaction API)
-  if (matchResult.xpEarned > 0 && mode !== "practice") {
-    try {
-      await fetch("/api/battle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          result: matchResult.winner === "player" ? "win" : matchResult.winner === "draw" ? "draw" : "loss",
-          turns: matchResult.totalTurns,
-          score: `${matchResult.playerScore}-${matchResult.opponentScore}`,
-        }),
-      })
-    } catch {
-      // Non-critical: credit grant can fail
-    }
-  }
-
+  // 4. Credits are now granted by /api/battle/history POST (step 1)
+  // The history endpoint also updates User.totalBattles/totalWins and grants XP
   result.creditsEarned += matchResult.xpEarned
 
   // 5. Report to ranked Elo system (PvP ranked only)

@@ -8,10 +8,6 @@ const nextConfig: NextConfig = {
   },
 
   // Force-include packages that static analysis misses
-  outputFileTracingIncludes: {
-    "/**/*": ["nodemailer", "stripe", "bcryptjs"],
-  },
-
   // Exclude dev files from standalone build (saves ~270MB)
   outputFileTracingExcludes: {
     "/**/scripts/**": ["*"],
@@ -19,10 +15,12 @@ const nextConfig: NextConfig = {
     "/**/all-tazos.json": ["*"],
   },
 
-  // Fix: not-found manifest + force-include packages missing in standalone builds
+  // Force-include packages + manifests missing in Turbopack standalone builds
   outputFileTracingIncludes: {
     "/**/*": ["nodemailer", "stripe", "bcryptjs"],
     "/_not-found": [".next/server/app/not-found*", ".next/server/app/_not-found*"],
+    "/app/battle": [".next/server/app/app/battle/page_client-reference-manifest.js"],
+    "/app/battle/play": [".next/server/app/app/battle/play/page_client-reference-manifest.js"],
   },
 
   // ── Security Headers ──
