@@ -50,11 +50,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid collectionId' }, { status: 400 })
     }
 
-    const sourcePath = path.join(
-      process.cwd(),
-      'public',
-      imageUrl.replace(/^\//, '')
-    )
+    const publicDir = path.resolve(path.join(process.cwd(), 'public'))
+    const sourcePath = path.resolve(path.join(publicDir, imageUrl.replace(/^\//, '')))
+
+    // Path traversal protection
+    if (!sourcePath.startsWith(publicDir + path.sep) && sourcePath !== publicDir) {
+      return NextResponse.json({ error: 'Invalid image path' }, { status: 400 })
+    }
 
     // Crop the region
     let croppedImage = sharp(sourcePath).extract({

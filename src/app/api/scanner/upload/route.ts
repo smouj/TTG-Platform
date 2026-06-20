@@ -3,9 +3,21 @@ import sharp from 'sharp'
 import { mkdir } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
+import { getAuthUser } from '@/lib/auth'
+import { checkRateLimit } from '@/lib/rate-limit'
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
 
 export async function POST(request: NextRequest) {
   try {
+    // Auth check
+    const user = await getAuthUser(request)
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    // Rate limit
+    const rl = checkRateLimit(request.headers, "write")
+    if (!rl.allowed) return NextResponse.json({ error: "Rate limited" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } })
+
     const formData = await request.formData()
     const file = formData.get('image') as File | null
 
@@ -14,6 +26,17 @@ export async function POST(request: NextRequest) {
         { error: 'No image file provided' },
         { status: 400 }
       )
+    }
+
+    // File size limit
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: `File too large (max ${MAX_FILE_SIZE / (1024*1024)}MB)` }, { status: 400 })
+    }
+
+    // MIME type validation
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({ error: 'Only JPEG, PNG, WebP, and AVIF images allowed' }, { status: 400 })
     }
 
     const bytes = await file.arrayBuffer()

@@ -55,71 +55,89 @@ export async function GET(req: NextRequest) {
 
 // ─── POST: Claim reward ─────────────────────────────────────
 export async function POST(req: NextRequest) {
-  const user = await getAuthUser(req)
-  if (!user) return NextResponse.json({ error: "Login required" }, { status: 401 })
+  try {
+    const user = await getAuthUser(req)
+    if (!user) return NextResponse.json({ error: "Login required" }, { status: 401 })
 
-  const { questId } = await req.json().catch(() => ({}))
-  if (!questId) return NextResponse.json({ error: "questId required" }, { status: 400 })
+    const { questId } = await req.json().catch(() => ({}))
+    if (!questId) return NextResponse.json({ error: "questId required" }, { status: 400 })
 
-  const uq = await prisma.userQuest.findUnique({ where: { userId_questId: { userId: user.id, questId } }, include: { quest: true } })
-  if (!uq) return NextResponse.json({ error: "Quest not found" }, { status: 404 })
-  if (!uq.completed) return NextResponse.json({ error: "Quest not completed yet" }, { status: 400 })
-  if (uq.claimed) return NextResponse.json({ error: "Reward already claimed" }, { status: 400 })
+    const uq = await prisma.userQuest.findUnique({ where: { userId_questId: { userId: user.id, questId } }, include: { quest: true } })
+    if (!uq) return NextResponse.json({ error: "Quest not found" }, { status: 404 })
+    if (!uq.completed) return NextResponse.json({ error: "Quest not completed yet" }, { status: 400 })
+    // Claim reward — re-check inside transaction to prevent race conditions
+    const rewardXp = uq.quest.rewardXp || 50
+    let didLevelUp = false
+    let newLevel = 1
+    let newXp = 0
 
-  // Claim reward
-  const rewardXp = uq.quest.rewardXp || 50
-  let didLevelUp = false
-  let newLevel = 1
-  let newXp = 0
-
-  await prisma.$transaction(async (tx) => {
-    await tx.userQuest.update({ where: { id: uq.id }, data: { claimed: true } })
-    await tx.user.update({ where: { id: user.id }, data: { credits: { increment: uq.quest.rewardCredits } } })
-    await tx.creditTransaction.create({
-      data: { userId: user.id, amount: uq.quest.rewardCredits, source: "quest", reference: questId },
+    await prisma.$transaction(async (tx) => {
+      // Re-read inside transaction to prevent duplicate-claim race
+      const fresh = await tx.userQuest.findUnique({ where: { id: uq.id } })
+      if (!fresh) throw new Error("QUEST_NOT_FOUND")
+      if (!fresh.completed) throw new Error("QUEST_NOT_COMPLETED")
+      if (fresh.claimed) throw new Error("ALREADY_CLAIMED")
+      await tx.userQuest.update({ where: { id: uq.id }, data: { claimed: true } })
+      await tx.user.update({ where: { id: user.id }, data: { credits: { increment: uq.quest.rewardCredits } } })
+      await tx.creditTransaction.create({
+        data: { userId: user.id, amount: uq.quest.rewardCredits, source: "quest", reference: questId },
+      })
+      // Award XP
+      const currentUser = await tx.user.findUnique({ where: { id: user.id }, select: { xp: true, level: true } })
+      if (currentUser) {
+        const totalXp = currentUser.xp + rewardXp
+        const info = getLevelInfo(totalXp)
+        didLevelUp = info.level > currentUser.level
+        newLevel = info.level
+        newXp = totalXp
+        await tx.user.update({
+          where: { id: user.id },
+          data: {
+            xp: totalXp,
+            level: info.level,
+            xpToNext: info.xpToNext,
+            totalQuestsDone: { increment: 1 },
+          },
+        })
+      }
+      // Give tazo reward if applicable
+      if (uq.quest.rewardTazoId) {
+        await tx.userTazo.upsert({
+          where: { userId_tazoId: { userId: user.id, tazoId: uq.quest.rewardTazoId } },
+          update: { quantity: { increment: 1 } },
+          create: { userId: user.id, tazoId: uq.quest.rewardTazoId, quantity: 1 },
+        })
+      }
     })
-    // Award XP
-    const currentUser = await tx.user.findUnique({ where: { id: user.id }, select: { xp: true, level: true } })
-    if (currentUser) {
-      const totalXp = currentUser.xp + rewardXp
-      const info = getLevelInfo(totalXp)
-      didLevelUp = info.level > currentUser.level
-      newLevel = info.level
-      newXp = totalXp
-      await tx.user.update({
-        where: { id: user.id },
-        data: {
-          xp: totalXp,
-          level: info.level,
-          xpToNext: info.xpToNext,
-          totalQuestsDone: { increment: 1 },
-        },
-      })
-    }
-    // Give tazo reward if applicable
-    if (uq.quest.rewardTazoId) {
-      await tx.userTazo.upsert({
-        where: { userId_tazoId: { userId: user.id, tazoId: uq.quest.rewardTazoId } },
-        update: { quantity: { increment: 1 } },
-        create: { userId: user.id, tazoId: uq.quest.rewardTazoId, quantity: 1 },
-      })
-    }
-  })
 
-  // Refresh progress to trigger any newly completed quests/achievements
-  await refreshUserProgress(user.id)
+    // Refresh progress to trigger any newly completed quests/achievements
+    await refreshUserProgress(user.id)
 
-  const updatedUser = await prisma.user.findUnique({
-    where: { id: user.id },
-    select: { credits: true, level: true, xp: true, xpToNext: true },
-  })
-  return NextResponse.json({
-    claimed: true,
-    rewardCredits: uq.quest.rewardCredits,
-    rewardXp,
-    didLevelUp,
-    level: newLevel,
-    xp: newXp,
-    credits: updatedUser?.credits ?? 0,
-  })
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { credits: true, level: true, xp: true, xpToNext: true },
+    })
+    return NextResponse.json({
+      claimed: true,
+      rewardCredits: uq.quest.rewardCredits,
+      rewardXp,
+      didLevelUp,
+      level: newLevel,
+      xp: newXp,
+      credits: updatedUser?.credits ?? 0,
+    })
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : ""
+    if (msg === "ALREADY_CLAIMED") {
+      return NextResponse.json({ error: "Reward already claimed" }, { status: 400 })
+    }
+    if (msg === "QUEST_NOT_COMPLETED") {
+      return NextResponse.json({ error: "Quest not completed yet" }, { status: 400 })
+    }
+    if (msg === "QUEST_NOT_FOUND") {
+      return NextResponse.json({ error: "Quest not found" }, { status: 404 })
+    }
+    console.error("Quest claim error:", error)
+    return NextResponse.json({ error: "Failed to claim reward" }, { status: 500 })
+  }
 }

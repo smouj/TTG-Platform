@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
 import path from 'path'
+import { getAuthUser } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
+    // Auth check
+    const user = await getAuthUser(request)
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
     const body = await request.json()
     const { imageUrl } = body as { imageUrl: string }
 
@@ -14,8 +19,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Load image from public directory
-    const filepath = path.join(process.cwd(), 'public', imageUrl.replace(/^\//, ''))
+    // Load image from public directory (with path traversal protection)
+    const publicDir = path.resolve(path.join(process.cwd(), 'public'))
+    const filepath = path.resolve(path.join(publicDir, imageUrl.replace(/^\//, '')))
+    if (!filepath.startsWith(publicDir + path.sep) && filepath !== publicDir) {
+      return NextResponse.json({ error: 'Invalid image path' }, { status: 400 })
+    }
 
     const metadata = await sharp(filepath).metadata()
     const width = metadata.width || 800
