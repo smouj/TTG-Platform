@@ -9,6 +9,7 @@
 "use client"
 
 import { Swords, Disc3, Trophy } from "lucide-react"
+import { BATTLE_COLORS } from "@/lib/battle/colors"
 
 export interface BattleHUDProps {
   playerName: string
@@ -239,9 +240,9 @@ export default function BattleHUD(props: BattleHUDProps) {
               <span className="text-[10px] font-black text-white uppercase tracking-[0.15em]">{playerName}</span>
             </div>
           </div>
-          <ScoreBar score={playerScore} label={playerName} color="var(--ttg-red)" side="left" />
+          <ScoreBar score={playerScore} label={playerName} color={BATTLE_COLORS.red} side="left" />
           <div className="flex items-center justify-between mt-2">
-            <TazoChips remaining={pRemaining} color="var(--ttg-red)" />
+            <TazoChips remaining={pRemaining} color={BATTLE_COLORS.red} />
             <div className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-[0.15em]"
               style={{ color: "var(--ttg-black)", opacity: 0.25 }}>
               <Disc3 className="w-2.5 h-2.5" /> DECK
@@ -276,9 +277,9 @@ export default function BattleHUD(props: BattleHUDProps) {
               <span className="text-[10px] font-black text-white uppercase tracking-[0.15em]">{opponentName}</span>
             </div>
           </div>
-          <ScoreBar score={opponentScore} label={opponentName} color="var(--ttg-blue)" side="right" />
+          <ScoreBar score={opponentScore} label={opponentName} color={BATTLE_COLORS.blue} side="right" />
           <div className="flex items-center justify-between mt-2 flex-row-reverse">
-            <TazoChips remaining={oRemaining} color="var(--ttg-blue)" />
+            <TazoChips remaining={oRemaining} color={BATTLE_COLORS.blue} />
             <div className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-[0.15em] flex-row-reverse"
               style={{ color: "var(--ttg-black)", opacity: 0.25 }}>
               <Disc3 className="w-2.5 h-2.5" /> DECK

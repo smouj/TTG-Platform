@@ -14,6 +14,7 @@ import { Suspense, useRef, useMemo, useEffect, useState } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
+import { BATTLE_COLORS, playerOrOpponent } from "@/lib/battle/colors"
 import type { Arena3DConfig, StakedTazo, AirborneTazo } from "@/lib/battle/game-loop"
 import TazoDisc3D from "../3d/tazo-disc-3d"
 import BattleDeckTube from "./battle-deck-tube"
@@ -246,8 +247,8 @@ function StakedTazoMesh({ staked }: { staked: StakedTazo }) {
 
   // Color tint for secured/captured
   const getGlow = () => {
-    if (staked.state === "secured") return "var(--ttg-success)"  // Green
-    if (staked.state === "captured") return "var(--ttg-opponent)"  // Red
+    if (staked.state === "secured") return BATTLE_COLORS.success  // Green
+    if (staked.state === "captured") return BATTLE_COLORS.opponent  // Red
     return undefined
   }
 
@@ -367,7 +368,7 @@ function AirborneTazoMesh({
       <group ref={groupRef} position={airborne.position}>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
           <ringGeometry args={[0.3, 0.33, 32]} />
-          <meshBasicMaterial color={isPlayer ? "var(--ttg-player)" : "var(--ttg-opponent)"} transparent opacity={0.15} side={THREE.DoubleSide} depthWrite={false} />
+          <meshBasicMaterial color={playerOrOpponent(isPlayer)} transparent opacity={0.15} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
         <TazoDisc3D
           name={airborne.tazoName}
@@ -389,7 +390,7 @@ function AirborneTazoMesh({
         <mesh position={[0, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[0.08, physRef.current.pos.y * 1.5]} />
           <meshBasicMaterial
-            color={isPlayer ? "var(--ttg-player)" : "var(--ttg-opponent)"}
+            color={playerOrOpponent(isPlayer)}
             transparent
             opacity={0.15}
             side={THREE.DoubleSide}
@@ -663,11 +664,11 @@ function Scene({
       {/* Player/opponent direction markers */}
       <mesh position={[0, 0.03, config.radius * 0.8]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[1.6, 0.5]} />
-        <meshBasicMaterial color="var(--ttg-player)" transparent opacity={0.25} side={THREE.DoubleSide} />
+        <meshBasicMaterial color={BATTLE_COLORS.player} transparent opacity={0.25} side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, 0.03, -config.radius * 0.8]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[1.6, 0.5]} />
-        <meshBasicMaterial color="var(--ttg-opponent)" transparent opacity={0.25} side={THREE.DoubleSide} />
+        <meshBasicMaterial color={BATTLE_COLORS.opponent} transparent opacity={0.25} side={THREE.DoubleSide} />
       </mesh>
 
       {/* Staked tazos */}

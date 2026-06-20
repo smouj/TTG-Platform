@@ -10,6 +10,7 @@
 import { useRef, useMemo, useEffect, useState } from "react"
 import { useFrame, useLoader } from "@react-three/fiber"
 import * as THREE from "three"
+import { BATTLE_COLORS } from "@/lib/battle/colors"
 
 // ── Tube dimensions (bigger than lobby tube, visible in arena) ──
 const TUBE_RADIUS = 0.42
@@ -115,7 +116,7 @@ export default function BattleDeckTube({
   const glowRef = useRef<THREE.Mesh>(null!)
   const textureUrl = TUBE_TEXTURES[franchise] || TUBE_TEXTURES.minimon
   const tubeColor = FRANCHISE_COLORS[franchise] || "#FFCC00"
-  const color = isPlayer ? tubeColor : "var(--ttg-opponent)"
+  const color = isPlayer ? tubeColor : BATTLE_COLORS.opponent
 
   const loadedTexture = useLoader(THREE.TextureLoader, textureUrl)
   const texture = useMemo(() => {

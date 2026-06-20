@@ -8,6 +8,7 @@
 import { useRef, useState, useCallback } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import * as THREE from "three"
+import { BATTLE_COLORS } from "@/lib/battle/colors"
 import PotatoChipBag3D from "./potato-chip-bag-3d"
 
 // ── Auto-drag rotation ──
@@ -64,7 +65,7 @@ function Lights() {
       <ambientLight intensity={0.6} />
       <spotLight position={[3, 2, 4]} intensity={2.5} angle={0.4} penumbra={0.5} color="#fffef5" />
       <spotLight position={[-2, 1.5, -3]} intensity={1.2} angle={0.35} penumbra={0.6} color="#fffef5" />
-      <pointLight position={[0, -1.5, 3]} intensity={0.5} color="var(--ttg-yellow)" />
+      <pointLight position={[0, -1.5, 3]} intensity={0.5} color={BATTLE_COLORS.yellow} />
     </>
   )
 }
