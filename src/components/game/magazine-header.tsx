@@ -58,7 +58,7 @@ export default function MagazineHeader({
             height={32}
             className="w-7 h-7 sm:w-8 sm:h-8"
             priority
-          />
+           unoptimized/>
           <div>
             <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-[0.08em] leading-none">
               TRADING<span className="text-ttg-yellow">TAZOS</span>

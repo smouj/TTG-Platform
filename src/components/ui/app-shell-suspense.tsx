@@ -12,7 +12,7 @@ export function AppShellSuspense({ children }: { children: ReactNode }) {
         <div className="relative z-10 flex flex-col items-center gap-6">
           <div className="relative w-16 h-16">
             <div className="absolute inset-0 rounded-full bg-ttg-yellow/15 animate-ping" />
-            <Image src="/logo/logo-tg-yellow.png" alt="" width={64} height={64} className="relative animate-pulse" priority />
+            <Image src="/logo/logo-tg-yellow.png" alt="" width={64} height={64} className="relative animate-pulse" priority  unoptimized/>
           </div>
           
           <div className="w-8 h-8 rounded-full border-[3px] border-ttg-black/10 border-t-ttg-yellow animate-spin" />

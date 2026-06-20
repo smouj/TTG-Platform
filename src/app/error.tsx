@@ -25,7 +25,7 @@ export default function ErrorPage({
       <header className="border-b-[5px] border-ttg-black bg-white">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo/logo-icon-black.webp" alt="TTG" width={32} height={32} priority />
+            <Image src="/logo/logo-icon-black.webp" alt="TTG" width={32} height={32} priority  unoptimized/>
             <span className="text-sm font-black text-ttg-black uppercase tracking-tight hidden sm:inline">Trading Tazos Game</span>
           </Link>
           <span className="ml-auto text-[10px] font-black text-ttg-red uppercase tracking-wider">System Error</span>

@@ -39,7 +39,7 @@ export default function RootLoading() {
             className="relative object-contain animate-pulse"
             style={{ animationDuration: "1.5s" }}
             priority
-          />
+           unoptimized/>
         </div>
       </div>
 

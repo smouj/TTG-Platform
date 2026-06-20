@@ -14,7 +14,7 @@ export default function AppLoading() {
       <div className="relative z-10 flex flex-col items-center gap-4">
         <div className="relative w-14 h-14">
           <div className="absolute inset-0 rounded-full bg-ttg-yellow/15 animate-ping" />
-          <Image src="/logo/logo-tg-yellow.png" alt="" width={56} height={56} className="relative" style={{ animation: "mag-entry-hero 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" }} priority />
+          <Image src="/logo/logo-tg-yellow.png" alt="" width={56} height={56} className="relative" style={{ animation: "mag-entry-hero 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" }} priority  unoptimized/>
         </div>
         <p className="text-sm font-black text-ttg-black/25 uppercase tracking-[0.2em]" style={{ animation: "mag-entry-fade-in 0.5s 0.2s ease-out both" }}>
           Loading Arena

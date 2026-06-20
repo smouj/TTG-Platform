@@ -29,6 +29,17 @@ async function getUserMetrics(userId: string, since?: Date): Promise<ProgressMet
   // Count unique tazos the user owns (for own_tazos / own_all quests)
   const uniqueOwned = await db.userTazo.count({ where: { userId } })
 
+  // Count login days: distinct dates with any activity in this period
+  let loginDays = 0
+  try {
+    const loginRows = await db.$queryRawUnsafe<Array<{ cnt: number }>>(
+      `SELECT COUNT(DISTINCT DATE(createdAt / 1000, 'unixepoch')) as cnt
+       FROM CreditTransaction WHERE userId = ?${since ? ` AND createdAt >= ${since.getTime()}` : ""}`,
+      userId
+    )
+    loginDays = loginRows[0]?.cnt ?? 0
+  } catch { /* fallback */ }
+
   return {
     collect_count: collectCount,
     collect_tazos: collectCount,
@@ -45,7 +56,7 @@ async function getUserMetrics(userId: string, since?: Date): Promise<ProgressMet
     build_decks: deckCount,
     bag_count: bagCount,
     open_bags: bagCount,
-    login_days: 0,
+    login_days: loginDays,
     perfect_throws: 0,
     perfect_throw: 0,
   }

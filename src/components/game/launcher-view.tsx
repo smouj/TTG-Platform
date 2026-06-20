@@ -124,7 +124,7 @@ function MagazineSplash({ onFinish }: { onFinish: () => void }) {
           className="w-28 h-28 sm:w-36 sm:h-36 relative z-10"
           loading="lazy"
           style={{ filter: "drop-shadow(6px 6px 0 rgba(26,26,26,0.3))" }}
-        />
+         unoptimized/>
       </div>
       <h1 className="mt-5 text-3xl sm:text-5xl font-black text-ttg-black uppercase tracking-[0.1em] text-center leading-none"
         style={{ textShadow: "3px 3px 0 rgba(227,53,13,0.3)" }}>
@@ -580,7 +580,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
             {/* Logo + Title as a unified block */}
             <div className="flex items-center gap-3 sm:gap-4">
               <Image src="/logo/logo-icon-black.webp" alt="TTG" width={112} height={112}
-                className="w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24 lg:w-28 lg:h-28 drop-shadow-[5px_5px_0_rgba(26,26,26,0.25)] shrink-0" priority />
+                className="w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24 lg:w-28 lg:h-28 drop-shadow-[5px_5px_0_rgba(26,26,26,0.25)] shrink-0" priority  unoptimized/>
               <div className="leading-none">
                 <h1 className="text-[2rem] sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] font-black text-ttg-black uppercase tracking-[-0.02em] leading-[0.82] text-center md:text-left">
                   <span className="text-ttg-red">TRADING</span><br />
@@ -2253,7 +2253,7 @@ export default function LauncherView() {
           <div className="flex items-center justify-between px-4 sm:px-6 py-2.5">
             <div className="flex items-center gap-2.5">
               <button onClick={() => navigate("home")} className="cursor-pointer">
-                <Image src="/logo/logo-tg-yellow.png" alt="TTG" width={32} height={32} className="w-7 h-7 sm:w-8 sm:h-8" />
+                <Image src="/logo/logo-tg-yellow.png" alt="TTG" width={32} height={32} className="w-7 h-7 sm:w-8 sm:h-8"  unoptimized/>
               </button>
               <div>
                 <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-[0.08em] leading-none">
