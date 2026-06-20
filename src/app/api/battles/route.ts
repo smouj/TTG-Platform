@@ -1,18 +1,29 @@
 import { db } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { getAuthUser } from '@/lib/auth'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authUser = await getAuthUser(request).catch(() => null)
+  if (!authUser) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const url = new URL(request.url)
+  const limit = Math.min(Number(url.searchParams.get('limit')) || 20, 50)
+
   try {
     const battles = await db.battleRecord.findMany({
+      where: { userId: authUser.id },
       orderBy: { createdAt: 'desc' },
+      take: limit,
     })
 
     // Parse JSON fields for each battle
     const parsed = battles.map((b) => ({
       ...b,
-      playerTazos: JSON.parse(b.playerTazos),
-      opponentTazos: JSON.parse(b.opponentTazos),
-      battleLog: b.battleLog ? JSON.parse(b.battleLog) : [],
+      playerTazos: b.playerTazos ? safeParse(b.playerTazos) : null,
+      opponentTazos: b.opponentTazos ? safeParse(b.opponentTazos) : null,
+      battleLog: b.battleLog ? safeParse(b.battleLog) : [],
     }))
 
     return NextResponse.json({ battles: parsed })
@@ -23,4 +34,8 @@ export async function GET() {
       { status: 500 }
     )
   }
+}
+
+function safeParse(v: string): unknown {
+  try { return JSON.parse(v) } catch { return v }
 }
