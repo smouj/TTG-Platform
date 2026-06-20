@@ -7,13 +7,12 @@
 // admin panel, CLI, and art-studio.
 // ============================================================
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { db } from "@/lib/db";
 import { getAuthUser } from "@/lib/auth";
 import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
 
-const prisma = new PrismaClient();
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "dev@tradingtazosgame.com";
 
 const SCRIPTS_DIR = path.join(process.cwd(), "scripts");
@@ -54,7 +53,7 @@ export async function POST(req: NextRequest) {
     
     // Update DB
     const imageUrl = `/tazos-generated/${franchiseSlug}/${targetSlug}.png`;
-    await prisma.tazo.updateMany({
+    await db.tazo.updateMany({
       where: { slug: targetSlug },
       data: { imageUrl },
     });
@@ -81,7 +80,7 @@ export async function GET(req: NextRequest) {
 
     // Mode: list recent tazos (used by tazo-creator sidebar)
     if (limit > 0) {
-      const recent = await prisma.tazo.findMany({
+      const recent = await db.tazo.findMany({
         where: { imageUrl: { not: null } },
         orderBy: { updatedAt: "desc" },
         take: Math.min(limit, 50),
