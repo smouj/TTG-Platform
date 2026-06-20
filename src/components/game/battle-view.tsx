@@ -684,6 +684,15 @@ export default function BattleView({ pvp }: { pvp?: PvPWebSocket }) {
     }
   }, [phase, ctx?.currentThrower, runAITurn])
 
+  // ── Round Loop: auto-dispatch ROUND_STARTED → turn_start ──
+  // This handles rounds 2+ (round 1 is dispatched by handlePlaceStake's setTimeout)
+  useEffect(() => {
+    if (phase === "round_start") {
+      const t = setTimeout(() => engine.roundStarted(), 200)
+      return () => clearTimeout(t)
+    }
+  }, [phase, engine])
+
   // ── Round Loop: auto-dispatch TURN_STARTED ──
   useEffect(() => {
     if (phase === "turn_start") {

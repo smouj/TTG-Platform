@@ -134,29 +134,10 @@ export function createBattleContext(config: MatchConfig): BattleContext {
 
 export const BATTLE_TRANSITIONS: StateTransition[] = [
 
-  // ─── LOBBY → VALIDATE_WEBGL ──────────
+  // ─── LOBBY → MATCH_INTRO ──────────────
   {
-    from: "lobby", to: "validate_webgl",
+    from: "lobby", to: "match_intro",
     event: "START_MATCH",
-    action(ctx) { return { ...ctx, state: "validate_webgl" } },
-  },
-
-  // ─── VALIDATE_WEBGL → LOADING / LOBBY ──
-  {
-    from: "validate_webgl", to: "loading",
-    event: "WEBGL_READY",
-    action(ctx) { return { ...ctx, state: "loading" } },
-  },
-  {
-    from: "validate_webgl", to: "lobby",
-    event: "WEBGL_FAILED",
-    action(ctx) { return { ...ctx, state: "lobby" } },
-  },
-
-  // ─── LOADING → MATCH_INTRO ────────────
-  {
-    from: "loading", to: "match_intro",
-    event: "RESOURCES_LOADED",
     action(ctx) { return { ...ctx, state: "match_intro" } },
   },
 

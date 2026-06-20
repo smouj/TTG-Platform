@@ -143,7 +143,7 @@ export function useBattleEngine(): BattleEngine {
   const startMatch = useCallback((config: MatchConfig) => {
     modeRef.current = config.mode
     const newCtx = createBattleContext(config)
-    // Immediately transition to validate_webgl
+    // Immediately transition to match_intro
     const next = applyTransition(newCtx, { type: "START_MATCH" } as BattleEvent)
     setCtx(next || newCtx)
     setUIState({ ...initialUI })
