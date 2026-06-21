@@ -108,15 +108,11 @@ export async function POST(request: NextRequest) {
     // Atomic transaction: check credits + deduct + create purchases
     const purchaseIds: string[] = []
     const updated = await db.$transaction(async (tx) => {
-      // Double-check credits inside transaction
-      const currentUser = await tx.user.findUnique({ where: { id: user.id } })
-      if (!currentUser || currentUser.credits < totalCost) return null
-
-      // Deduct credits
-      await tx.user.update({
-        where: { id: user.id },
+      const debit = await tx.user.updateMany({
+        where: { id: user.id, credits: { gte: totalCost } },
         data: { credits: { decrement: totalCost } },
       })
+      if (debit.count !== 1) return null
 
       // Create credit transaction
       await tx.creditTransaction.create({
