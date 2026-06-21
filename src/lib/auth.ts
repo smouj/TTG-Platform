@@ -188,9 +188,20 @@ export async function getAuthUser(request: Request): Promise<AuthUser | null> {
   if (!token) return null
   const user = verifyToken(token)
   if (!user) return null
-  // Verify user still exists in DB
-  const exists = await db.user.findUnique({ where: { id: user.id } })
-  return exists ? user : null
+  // Verify user still exists and use current DB fields for authorization checks.
+  const currentUser = await db.user.findUnique({
+    where: { id: user.id },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      displayName: true,
+      avatarUrl: true,
+      bio: true,
+      oauthProvider: true,
+    },
+  })
+  return currentUser
 }
 
 export async function requireAuth(request: Request): Promise<AuthUser> {
