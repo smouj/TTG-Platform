@@ -42,7 +42,7 @@ export async function PATCH(
       body.tazoIds = tazoIds
 
       const userTazos = await db.userTazo.findMany({
-        where: { userId: user.id, tazoId: { in: body.tazoIds } },
+        where: { userId: user.id, quantity: { gt: 0 }, tazoId: { in: body.tazoIds } },
       })
       const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
       const notOwned = body.tazoIds.filter((tid: string) => !ownedIds.has(tid))

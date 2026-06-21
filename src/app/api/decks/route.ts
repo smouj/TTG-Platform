@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     let finalTazoIds = tazoIds
     if (!tazoIds || !Array.isArray(tazoIds) || tazoIds.length === 0) {
       const owned = await db.userTazo.findMany({
-        where: { userId: user.id },
+        where: { userId: user.id, quantity: { gt: 0 } },
         take: 5,
         select: { tazoId: true },
       })
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
 
     // Verify user owns all tazos
     const userTazos = await db.userTazo.findMany({
-      where: { userId: user.id, tazoId: { in: finalTazoIds } },
+      where: { userId: user.id, quantity: { gt: 0 }, tazoId: { in: finalTazoIds } },
     })
     const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
     const notOwned = finalTazoIds.filter((id: string) => !ownedIds.has(id))

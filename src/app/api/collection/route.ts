@@ -18,8 +18,10 @@ export async function GET(request: NextRequest) {
     const viewInstances = searchParams.get("view") === "instances"
 
     // Get user's owned tazos (with instances)
+    const ownedWhere = { userId: user.id, quantity: { gt: 0 } }
+
     const userTazos = await db.userTazo.findMany({
-      where: { userId: user.id },
+      where: ownedWhere,
       include: {
         tazo: { include: { franchise: true, collection: true } },
         instances: { orderBy: { acquiredAt: "desc" } },
@@ -179,7 +181,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Legacy mode: only owned tazos
-    const where: any = { userId: user.id }
+    const where: any = { ...ownedWhere }
     if (franchise) {
       where.tazo = { franchise: { slug: franchise } }
     }
@@ -345,34 +347,41 @@ async function fetchUserDecks(userId: string) {
     },
     orderBy: { createdAt: "desc" },
   })
-  return userDecks.map((d: any) => ({
-    id: d.id,
-    name: d.name,
-    isActive: d.isActive,
-    color: d.settings ? (JSON.parse(d.settings).color || null) : null,
-    tazos: d.deckTazos.map((dt: any) => ({
-      id: dt.tazo.id,
-      name: dt.tazo.name,
-      displayName: dt.tazo.displayName,
-      slug: dt.tazo.slug,
-      number: dt.tazo.number,
-      imageUrl: dt.tazo.imageUrl,
-      shinyImageUrl: dt.tazo.shinyImageUrl,
-      rarity: dt.tazo.rarity,
-      finish: dt.tazo.finish,
-      creatureVariant: dt.tazo.creatureVariant,
-      franchiseSlug: dt.tazo.franchise?.slug,
-      attack: dt.tazo.attack,
-      defense: dt.tazo.defense,
-      resistance: dt.tazo.resistance,
-      weight: dt.tazo.weight,
-      stability: dt.tazo.stability,
-      spin: dt.tazo.spin,
-      control: dt.tazo.control,
-      bounce: dt.tazo.bounce,
-      precision: dt.tazo.precision,
-    })),
-  }))
+  return userDecks.map((d: any) => {
+    let settingsParsed: Record<string, any> = {}
+    try {
+      if (d.settings) settingsParsed = JSON.parse(d.settings)
+    } catch { /* ignore invalid legacy settings */ }
+
+    return {
+      id: d.id,
+      name: d.name,
+      isActive: d.isActive,
+      color: settingsParsed.color || null,
+      tazos: d.deckTazos.map((dt: any) => ({
+        id: dt.tazo.id,
+        name: dt.tazo.name,
+        displayName: dt.tazo.displayName,
+        slug: dt.tazo.slug,
+        number: dt.tazo.number,
+        imageUrl: dt.tazo.imageUrl,
+        shinyImageUrl: dt.tazo.shinyImageUrl,
+        rarity: dt.tazo.rarity,
+        finish: dt.tazo.finish,
+        creatureVariant: dt.tazo.creatureVariant,
+        franchiseSlug: dt.tazo.franchise?.slug,
+        attack: dt.tazo.attack,
+        defense: dt.tazo.defense,
+        resistance: dt.tazo.resistance,
+        weight: dt.tazo.weight,
+        stability: dt.tazo.stability,
+        spin: dt.tazo.spin,
+        control: dt.tazo.control,
+        bounce: dt.tazo.bounce,
+        precision: dt.tazo.precision,
+      })),
+    }
+  })
 }
 
 // POST /api/collection removed — tazo addition only through bag opening (buy→open flow)

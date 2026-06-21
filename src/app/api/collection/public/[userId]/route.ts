@@ -16,16 +16,16 @@ export async function GET(
   const { userId } = await params
 
   try {
-    const user = await db.user.findUnique({
+    const [user, totalOwnedTazos] = await Promise.all([
+      db.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
         name: true,
-        _count: {
-          select: { userTazos: true },
-        },
       },
-    })
+      }),
+      db.userTazo.count({ where: { userId, quantity: { gt: 0 } } }),
+    ])
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
@@ -35,6 +35,7 @@ export async function GET(
     const userTazos = await db.userTazo.findMany({
       where: {
         userId,
+        quantity: { gt: 0 },
         tazo: { publishStatus: "published" },
       },
       include: {
@@ -66,7 +67,7 @@ export async function GET(
       user: {
         id: user.id,
         name: user.name,
-        totalTazos: user._count.userTazos,
+        totalTazos: totalOwnedTazos,
       },
       tazos,
       franchiseCounts,

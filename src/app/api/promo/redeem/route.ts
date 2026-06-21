@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   // Check minimum level requirement
   if (promo.minLevel > 0) {
     // For now minLevel is a soft gate — could be extended with actual level system
-    const userTazoCount = await prisma.userTazo.count({ where: { userId: user.id } })
+    const userTazoCount = await prisma.userTazo.count({ where: { userId: user.id, quantity: { gt: 0 } } })
     if (userTazoCount < promo.minLevel) {
       return NextResponse.json({
         error: `You need at least ${promo.minLevel} tazos to redeem this code. You currently have ${userTazoCount}.`,

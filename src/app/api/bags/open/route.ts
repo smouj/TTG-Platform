@@ -84,7 +84,23 @@ export async function POST(request: NextRequest) {
           const finish = randomFinish(tazo.rarity || "common")
           const tgaGrade = generateTGAGrade(tazo.rarity || "common", finish)
 
-          const [instance] = await db.$transaction(async (tx) => {
+          const bonusTazoData = purchase.bonusTazo
+            ? await db.tazo.findUnique({
+                where: { id: purchase.bonusTazo },
+                include: { franchise: { select: { name: true, slug: true, color: true } } },
+              })
+            : null
+          const bonusGrant = bonusTazoData
+            ? {
+                tazo: bonusTazoData,
+                finish: randomFinish(bonusTazoData.rarity || "common"),
+              }
+            : null
+          const bTgaGrade = bonusGrant
+            ? generateTGAGrade(bonusGrant.tazo.rarity || "common", bonusGrant.finish)
+            : null
+
+          const [instance, bonusInstance] = await db.$transaction(async (tx) => {
             const claim = await tx.bagPurchase.updateMany({
               where: { id, userId: user.id, opened: false, tazoId: tazo.id },
               data: { opened: true },
@@ -114,7 +130,36 @@ export async function POST(request: NextRequest) {
 
             await tx.tazo.update({ where: { id: tazo.id }, data: { isOwned: true } })
 
-            return [inst]
+            let bonusInst: typeof inst | null = null
+            if (bonusGrant && bTgaGrade) {
+              const bUserTazo = await tx.userTazo.upsert({
+                where: { userId_tazoId: { userId: user.id, tazoId: bonusGrant.tazo.id } },
+                create: { userId: user.id, tazoId: bonusGrant.tazo.id, quantity: 1, obtainedFrom },
+                update: { quantity: { increment: 1 } },
+              })
+              bonusInst = await tx.tazoInstance.create({
+                data: {
+                  userTazoId: bUserTazo.id, userId: user.id, tazoId: bonusGrant.tazo.id,
+                  attack: randomizeStat(bonusGrant.tazo.attack),
+                  defense: randomizeStat(bonusGrant.tazo.defense),
+                  resistance: randomizeStat(bonusGrant.tazo.resistance),
+                  weight: randomizeStat(bonusGrant.tazo.weight),
+                  stability: randomizeStat(bonusGrant.tazo.stability),
+                  spin: randomizeStat(bonusGrant.tazo.spin),
+                  control: randomizeStat(bonusGrant.tazo.control),
+                  bounce: randomizeStat(bonusGrant.tazo.bounce),
+                  precision: randomizeStat(bonusGrant.tazo.precision),
+                  finish: bonusGrant.finish,
+                  creatureVariant: bonusGrant.tazo.creatureVariant || "standard",
+                  isNew: true,
+                  tgaTier: bTgaGrade.tier, tgaGrade: bTgaGrade.grade,
+                  tgaSurface: bTgaGrade.surface, tgaBorders: bTgaGrade.borders,
+                  tgaCertNumber: bTgaGrade.certNumber,
+                },
+              })
+            }
+
+            return [inst, bonusInst] as const
           })
 
           results.push({
@@ -122,47 +167,26 @@ export async function POST(request: NextRequest) {
               attack: instance.attack, defense: instance.defense, resistance: instance.resistance,
               weight: instance.weight, stability: instance.stability, spin: instance.spin,
               control: instance.control, bounce: instance.bounce, precision: instance.precision },
+            bonusTazo: bonusGrant && bonusInstance ? {
+              ...bonusGrant.tazo,
+              instanceId: bonusInstance.id,
+              finish: bonusInstance.finish,
+              creatureVariant: bonusInstance.creatureVariant,
+              attack: bonusInstance.attack,
+              defense: bonusInstance.defense,
+              resistance: bonusInstance.resistance,
+              weight: bonusInstance.weight,
+              stability: bonusInstance.stability,
+              spin: bonusInstance.spin,
+              control: bonusInstance.control,
+              bounce: bonusInstance.bounce,
+              precision: bonusInstance.precision,
+              tgaGrade: bonusInstance.tgaGrade,
+              tgaTier: bonusInstance.tgaTier,
+            } : null,
             ownedBefore: false,
           })
 
-          // Handle bonus tazo (same logic as single-open)
-          if (purchase.bonusTazo) {
-            const bonusTazoData = await db.tazo.findUnique({
-              where: { id: purchase.bonusTazo },
-              include: { franchise: { select: { name: true, slug: true, color: true } } },
-            })
-            if (bonusTazoData) {
-              const bFinish = randomFinish(bonusTazoData.rarity || "common")
-              const bTgaGrade = generateTGAGrade(bonusTazoData.rarity || "common", bFinish)
-              await db.$transaction(async (tx) => {
-                const bUserTazo = await tx.userTazo.upsert({
-                  where: { userId_tazoId: { userId: user.id, tazoId: bonusTazoData.id } },
-                  create: { userId: user.id, tazoId: bonusTazoData.id, quantity: 1, obtainedFrom },
-                  update: { quantity: { increment: 1 } },
-                })
-                await tx.tazoInstance.create({
-                  data: {
-                    userTazoId: bUserTazo.id, userId: user.id, tazoId: bonusTazoData.id,
-                    attack: randomizeStat(bonusTazoData.attack),
-                    defense: randomizeStat(bonusTazoData.defense),
-                    resistance: randomizeStat(bonusTazoData.resistance),
-                    weight: randomizeStat(bonusTazoData.weight),
-                    stability: randomizeStat(bonusTazoData.stability),
-                    spin: randomizeStat(bonusTazoData.spin),
-                    control: randomizeStat(bonusTazoData.control),
-                    bounce: randomizeStat(bonusTazoData.bounce),
-                    precision: randomizeStat(bonusTazoData.precision),
-                    finish: bFinish,
-                    creatureVariant: bonusTazoData.creatureVariant || "standard",
-                    isNew: true,
-                    tgaTier: bTgaGrade.tier, tgaGrade: bTgaGrade.grade,
-                    tgaSurface: bTgaGrade.surface, tgaBorders: bTgaGrade.borders,
-                    tgaCertNumber: bTgaGrade.certNumber,
-                  },
-                })
-              })
-            }
-          }
         } catch (e) {
           console.error(`[bags/open] Bulk open failed for bag ${id}:`, e instanceof Error ? e.message : String(e))
         }
@@ -205,7 +229,23 @@ export async function POST(request: NextRequest) {
     const finish = randomFinish(tazo.rarity || "common")
     const tgaGrade = generateTGAGrade(tazo.rarity || "common", finish)
 
-    const [, instance] = await db.$transaction(async (tx) => {
+    const bonusTazo = purchase.bonusTazo
+      ? await db.tazo.findUnique({
+          where: { id: purchase.bonusTazo },
+          include: { franchise: { select: { name: true, slug: true, color: true } } },
+        })
+      : null
+    const bonusGrant = bonusTazo
+      ? {
+          tazo: bonusTazo,
+          finish: randomFinish(bonusTazo.rarity || "common"),
+        }
+      : null
+    const bonusTgaGrade = bonusGrant
+      ? generateTGAGrade(bonusGrant.tazo.rarity || "common", bonusGrant.finish)
+      : null
+
+    const [, instance, bonusInstance] = await db.$transaction(async (tx) => {
       const claim = await tx.bagPurchase.updateMany({
         where: { id: singleId, userId: user.id, opened: false, tazoId: tazo.id },
         data: { opened: true },
@@ -235,49 +275,37 @@ export async function POST(request: NextRequest) {
 
       await tx.tazo.update({ where: { id: tazo.id }, data: { isOwned: true } })
 
-      return [ut, inst]
-    })
-
-    // Handle bonus tazo
-    let bonusTazo: typeof tazo | null = null
-    if (purchase.bonusTazo) {
-      bonusTazo = await db.tazo.findUnique({
-        where: { id: purchase.bonusTazo },
-        include: { franchise: { select: { name: true, slug: true, color: true } } },
-      })
-      if (bonusTazo) {
-        const bt = bonusTazo // narrow type for callback
-        const bFinish = randomFinish(bt.rarity || "common")
-        const bTgaGrade = generateTGAGrade(bt.rarity || "common", bFinish)
-        await db.$transaction(async (tx) => {
-          const bUserTazo = await tx.userTazo.upsert({
-            where: { userId_tazoId: { userId: user.id, tazoId: bt.id } },
-            create: { userId: user.id, tazoId: bt.id, quantity: 1, obtainedFrom },
-            update: { quantity: { increment: 1 } },
-          })
-          await tx.tazoInstance.create({
-            data: {
-              userTazoId: bUserTazo.id, userId: user.id, tazoId: bt.id,
-              attack: randomizeStat(bt.attack),
-              defense: randomizeStat(bt.defense),
-              resistance: randomizeStat(bt.resistance),
-              weight: randomizeStat(bt.weight),
-              stability: randomizeStat(bt.stability),
-              spin: randomizeStat(bt.spin),
-              control: randomizeStat(bt.control),
-              bounce: randomizeStat(bt.bounce),
-              precision: randomizeStat(bt.precision),
-              finish: bFinish,
-              creatureVariant: bt.creatureVariant || "standard",
-              isNew: true,
-              tgaTier: bTgaGrade.tier, tgaGrade: bTgaGrade.grade,
-              tgaSurface: bTgaGrade.surface, tgaBorders: bTgaGrade.borders,
-              tgaCertNumber: bTgaGrade.certNumber,
-            },
-          })
+      let bonusInst: typeof inst | null = null
+      if (bonusGrant && bonusTgaGrade) {
+        const bUserTazo = await tx.userTazo.upsert({
+          where: { userId_tazoId: { userId: user.id, tazoId: bonusGrant.tazo.id } },
+          create: { userId: user.id, tazoId: bonusGrant.tazo.id, quantity: 1, obtainedFrom },
+          update: { quantity: { increment: 1 } },
+        })
+        bonusInst = await tx.tazoInstance.create({
+          data: {
+            userTazoId: bUserTazo.id, userId: user.id, tazoId: bonusGrant.tazo.id,
+            attack: randomizeStat(bonusGrant.tazo.attack),
+            defense: randomizeStat(bonusGrant.tazo.defense),
+            resistance: randomizeStat(bonusGrant.tazo.resistance),
+            weight: randomizeStat(bonusGrant.tazo.weight),
+            stability: randomizeStat(bonusGrant.tazo.stability),
+            spin: randomizeStat(bonusGrant.tazo.spin),
+            control: randomizeStat(bonusGrant.tazo.control),
+            bounce: randomizeStat(bonusGrant.tazo.bounce),
+            precision: randomizeStat(bonusGrant.tazo.precision),
+            finish: bonusGrant.finish,
+            creatureVariant: bonusGrant.tazo.creatureVariant || "standard",
+            isNew: true,
+            tgaTier: bonusTgaGrade.tier, tgaGrade: bonusTgaGrade.grade,
+            tgaSurface: bonusTgaGrade.surface, tgaBorders: bonusTgaGrade.borders,
+            tgaCertNumber: bonusTgaGrade.certNumber,
+          },
         })
       }
-    }
+
+      return [ut, inst, bonusInst] as const
+    })
 
     await refreshUserProgress(user.id)
 
@@ -313,10 +341,24 @@ export async function POST(request: NextRequest) {
       },
       bonusTazo: bonusTazo ? {
         id: bonusTazo.id,
+        instanceId: bonusInstance?.id ?? null,
         name: bonusTazo.name,
         displayName: bonusTazo.displayName || bonusTazo.name,
         franchise: bonusTazo.franchise,
         rarity: bonusTazo.rarity,
+        finish: bonusInstance?.finish ?? bonusGrant?.finish ?? null,
+        creatureVariant: bonusInstance?.creatureVariant ?? bonusTazo.creatureVariant,
+        attack: bonusInstance?.attack ?? null,
+        defense: bonusInstance?.defense ?? null,
+        resistance: bonusInstance?.resistance ?? null,
+        weight: bonusInstance?.weight ?? null,
+        stability: bonusInstance?.stability ?? null,
+        spin: bonusInstance?.spin ?? null,
+        control: bonusInstance?.control ?? null,
+        bounce: bonusInstance?.bounce ?? null,
+        precision: bonusInstance?.precision ?? null,
+        tgaGrade: bonusInstance?.tgaGrade ?? bonusTgaGrade?.grade ?? null,
+        tgaTier: bonusInstance?.tgaTier ?? bonusTgaGrade?.tier ?? null,
       } : null,
       isBonus: !!bonusTazo,
     })
