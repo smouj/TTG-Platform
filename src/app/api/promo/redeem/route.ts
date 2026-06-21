@@ -59,22 +59,24 @@ export async function POST(req: NextRequest) {
   let awarded = false
   try {
     await prisma.$transaction(async (tx) => {
-      // Double-check limit inside transaction
-      if (promo.maxUses > 0) {
-        const current = await tx.promotionCode.findUnique({
-          where: { id: promo.id },
-          select: { usedCount: true, isActive: true },
-        })
-        if (!current || !current.isActive || current.usedCount >= promo.maxUses) return
-      }
       // Double-check user hasn't already redeemed (race condition between different requests)
       const alreadyRedeemed = await tx.promoRedemption.findUnique({
         where: { userId_promoCodeId: { userId: user.id, promoCodeId: promo.id } },
       })
       if (alreadyRedeemed) return
 
+      // Claim one available use atomically before granting credits.
+      const promoClaim = await tx.promotionCode.updateMany({
+        where: {
+          id: promo.id,
+          isActive: true,
+          ...(promo.maxUses > 0 ? { usedCount: { lt: promo.maxUses } } : {}),
+        },
+        data: { usedCount: { increment: 1 } },
+      })
+      if (promoClaim.count !== 1) return
+
       await tx.user.update({ where: { id: user.id }, data: { credits: { increment: promo.value } } })
-      await tx.promotionCode.update({ where: { id: promo.id }, data: { usedCount: { increment: 1 } } })
       await tx.promoRedemption.create({
         data: { userId: user.id, promoCodeId: promo.id, rewardType: promo.type, rewardValue: promo.value },
       })

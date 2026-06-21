@@ -37,15 +37,27 @@ export async function POST(
       if (!freshListing || freshListing.status !== 'active') {
         throw new Error('Listing no longer available')
       }
+      if (freshListing.sellerId === authUser.id) {
+        throw new Error('SELF_BUY')
+      }
 
-      // Verify buyer has enough credits inside transaction (prevents race condition)
-      const freshBuyer = await tx.user.findUnique({ where: { id: authUser.id } })
-      if (!freshBuyer || freshBuyer.credits < freshListing.price) {
+      const claim = await tx.tradeListing.updateMany({
+        where: { id, status: 'active' },
+        data: { status: 'sold', buyerId: authUser.id, soldAt: new Date() },
+      })
+      if (claim.count !== 1) {
+        throw new Error('Listing no longer available')
+      }
+
+      const debit = await tx.user.updateMany({
+        where: { id: authUser.id, credits: { gte: freshListing.price } },
+        data: { credits: { decrement: freshListing.price } },
+      })
+      if (debit.count !== 1) {
         throw new Error('NOT_ENOUGH_CREDITS')
       }
 
       // Transfer credits
-      await tx.user.update({ where: { id: authUser.id }, data: { credits: { decrement: freshListing.price } } })
       await tx.user.update({ where: { id: freshListing.sellerId }, data: { credits: { increment: freshListing.price } } })
 
       // Transfer tazo ownership
@@ -77,11 +89,6 @@ export async function POST(
           data: { userTazoId: buyerUserTazoId, userId: authUser.id },
         })
       }
-
-      // Mark sold
-      await tx.tradeListing.update({
-        where: { id }, data: { status: 'sold', buyerId: authUser.id, soldAt: new Date() },
-      })
 
       // Transaction logs
       await tx.creditTransaction.create({ data: { userId: authUser.id, amount: -freshListing.price, source: 'marketplace_buy', reference: id } })
@@ -120,6 +127,12 @@ export async function POST(
     const msg = error instanceof Error ? error.message : ''
     if (msg === 'NOT_ENOUGH_CREDITS') {
       return NextResponse.json({ error: 'Not enough credits' }, { status: 402 })
+    }
+    if (msg === 'Listing no longer available') {
+      return NextResponse.json({ error: 'Listing no longer available' }, { status: 410 })
+    }
+    if (msg === 'SELF_BUY') {
+      return NextResponse.json({ error: 'Cannot buy your own listing' }, { status: 400 })
     }
     console.error('Trade buy error:', error)
     return NextResponse.json({ error: 'Failed to complete purchase' }, { status: 500 })
