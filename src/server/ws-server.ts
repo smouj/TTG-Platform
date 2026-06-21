@@ -50,6 +50,10 @@ function broadcast(ws: WebSocket, msg: object) {
 function makeRoom(p1: Player, p2: Player, roomId?: string): Room {
   const id = roomId || `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
   const room: Room = { id, players: [p1, p2], createdAt: Date.now(), gameState: "waiting" }
+  removeFromQueue(p1)
+  removeFromQueue(p2)
+  removeWaitingRoomsForPlayer(p1)
+  removeWaitingRoomsForPlayer(p2)
   rooms.set(id, room)
 
   // Notify both players
@@ -69,21 +73,36 @@ function makeRoom(p1: Player, p2: Player, roomId?: string): Room {
   return room
 }
 
+function removeFromQueue(player: Player) {
+  let idx = queue.indexOf(player)
+  while (idx >= 0) {
+    queue.splice(idx, 1)
+    idx = queue.indexOf(player)
+  }
+}
+
+function removeWaitingRoomsForPlayer(player: Player) {
+  for (const [id, waiting] of waitingRooms) {
+    if (waiting === player) waitingRooms.delete(id)
+  }
+}
+
+function isInRoom(player: Player): boolean {
+  for (const room of rooms.values()) {
+    if (room.players.includes(player)) return true
+  }
+  return false
+}
+
 function cleanupPlayer(player: Player) {
   const wasConnected = connections.delete(player.ws)
   if (!wasConnected) return
 
   // Remove from queue
-  const qIdx = queue.indexOf(player)
-  if (qIdx >= 0) queue.splice(qIdx, 1)
+  removeFromQueue(player)
 
   // Remove from waiting direct room
-  for (const [id, waiting] of waitingRooms) {
-    if (waiting === player) {
-      waitingRooms.delete(id)
-      break
-    }
-  }
+  removeWaitingRoomsForPlayer(player)
 
   // Remove from room
   for (const [id, room] of rooms) {
@@ -178,8 +197,8 @@ function validateSlam(payload: SlamPayload): ValidatedSlam {
   clamp(payload.impactX ?? 0, -2, 2, "impactX", 0)
   clamp(payload.impactZ ?? 0, -2, 2, "impactZ", 0)
 
-  if (payload.tilt && !["flat", "forward", "backward"].includes(payload.tilt)) {
-    warnings.push(`tilt: "${payload.tilt}" invalid (expected flat/forward/backward)`)
+  if (payload.tilt && !["flat", "forward", "backward", "left", "right"].includes(payload.tilt)) {
+    warnings.push(`tilt: "${payload.tilt}" invalid (expected flat/forward/backward/left/right)`)
   }
 
   return { valid: warnings.length === 0, warnings }
@@ -248,11 +267,16 @@ wss.on("connection", (ws, req) => {
 
     switch (msg.type) {
       case "join_queue": {
+        if (isInRoom(player)) {
+          broadcast(ws, { type: "queue_error", payload: { message: "Already in a game" } })
+          break
+        }
         if (queue.includes(player)) break
         if (queue.some((p) => p.userId === player.userId)) {
           broadcast(ws, { type: "queue_error", payload: { message: "Already in queue" } })
           break
         }
+        removeWaitingRoomsForPlayer(player)
         queue.push(player)
         broadcast(ws, { type: "queue_status", payload: { position: queue.length } })
         log(`🎯 ${player.name} joined queue (${queue.length} waiting)`)
@@ -273,9 +297,23 @@ wss.on("connection", (ws, req) => {
           broadcast(ws, { type: "room_error", payload: { message: "roomId required" } })
           break
         }
+        if (!/^[A-Z0-9]{4,12}$/.test(rawRoomId)) {
+          broadcast(ws, { type: "room_error", payload: { message: "Room code must be 4-12 letters or numbers" } })
+          break
+        }
+        if (isInRoom(player)) {
+          broadcast(ws, { type: "room_error", payload: { message: "Already in a game" } })
+          break
+        }
+        removeFromQueue(player)
 
         const waiting = waitingRooms.get(rawRoomId)
-        if (!waiting || waiting === player || !isOpen(waiting)) {
+        if (waiting === player) {
+          broadcast(ws, { type: "room_waiting", payload: { roomId: rawRoomId } })
+          break
+        }
+        if (!waiting || !isOpen(waiting)) {
+          removeWaitingRoomsForPlayer(player)
           waitingRooms.set(rawRoomId, player)
           broadcast(ws, { type: "room_waiting", payload: { roomId: rawRoomId } })
           log(`🏠 ${player.name} waiting in room ${rawRoomId}`)
@@ -294,7 +332,8 @@ wss.on("connection", (ws, req) => {
 
       case "turn_action": {
         // Validate slam parameters before relay
-        const validation = validateSlam(msg.payload || {})
+        const action = msg.payload || {}
+        const validation = validateSlam(action.slamParams || action)
         if (validation.warnings.length > 0) {
           log(`⚠️ Rejected suspicious slam from ${player.name}: ${validation.warnings.join(", ")}`)
           broadcast(ws, { type: "turn_error", payload: { message: "Invalid turn data", warnings: validation.warnings } })
