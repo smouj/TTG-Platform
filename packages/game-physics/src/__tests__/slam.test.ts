@@ -4,7 +4,7 @@
 // Core collision and flip mechanics validated deterministically.
 // ============================================================
 
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import {
   simulateSlam, scoreBettingImpact, scoreImpact, coinFlip,
   type TazoCard, type StakedTazo, type SlamParams, type Arena3DConfig,
@@ -94,20 +94,16 @@ describe('simulateSlam', () => {
   })
 
   it('misses when aim precision is 0', () => {
-    // With aimPrecision=0, aimRoll = Math.random(). With control=10,
-    // adjustedAim = clamp(aimRoll - 0.015), so ~15% are CENTER
     const attacker = makeLauncher({ attack: 99, precision: 10, control: 10 })
     const defender = makeStakedTazo('def-1', { position: [0, 0.01, 0] })
     const params = makeSlam({ aimPrecision: 0.0, verticalForce: 0.9, impactX: 0, impactZ: 0.01 })
 
-    // Even without aim precision, very low control means ~15% hit
-    // But those hits should have minimal flip chance because force is weak
-    let captures = 0
-    for (let i = 0; i < 50; i++) {
-      const { staked } = simulateSlam(attacker, params, [{ ...defender }], arena, 'player')
-      if (staked[0].state === 'captured') captures++
-    }
-    expect(captures).toBeLessThan(15) // even if hits land, few should capture
+    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.99)
+    const { result, staked } = simulateSlam(attacker, params, [{ ...defender }], arena, 'player')
+    randomSpy.mockRestore()
+
+    expect(result.hitZone).toBe('MISS')
+    expect(staked[0].state).toBe('face_down')
   })
 
   it('wobbling state occurs before capture', () => {
