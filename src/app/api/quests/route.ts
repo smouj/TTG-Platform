@@ -83,9 +83,14 @@ export async function POST(req: NextRequest) {
         data: { userId: user.id, amount: uq.quest.rewardCredits, source: "quest", reference: questId },
       })
       // Award XP
-      const currentUser = await tx.user.findUnique({ where: { id: user.id }, select: { xp: true, level: true } })
+      const currentUser = await tx.user.findUnique({ where: { id: user.id }, select: { level: true } })
       if (currentUser) {
-        const totalXp = currentUser.xp + rewardXp
+        const updatedXp = await tx.user.update({
+          where: { id: user.id },
+          data: { xp: { increment: rewardXp } },
+          select: { xp: true },
+        })
+        const totalXp = updatedXp.xp
         const info = getLevelInfo(totalXp)
         didLevelUp = info.level > currentUser.level
         newLevel = info.level
@@ -93,7 +98,6 @@ export async function POST(req: NextRequest) {
         await tx.user.update({
           where: { id: user.id },
           data: {
-            xp: totalXp,
             level: info.level,
             xpToNext: info.xpToNext,
             totalQuestsDone: { increment: 1 },

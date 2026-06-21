@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { getAuthUser } from '@/lib/auth'
+import { getLevelInfo } from '@/lib/leveling'
 import { NextRequest, NextResponse } from 'next/server'
 
 // ── POST: Save battle result (from PvP WebSocket or solo battle) ──
@@ -49,16 +50,28 @@ export async function POST(request: NextRequest) {
         },
       })
 
-      // Update cached user stats
-      await tx.user.update({
+      // Update cached user stats and atomically apply any battle XP.
+      const clampedXpEarned = typeof xpEarned === 'number' && xpEarned > 0 ? Math.min(xpEarned, 500) : 0
+      const updatedUser = await tx.user.update({
         where: { id: authUser.id },
         data: {
           totalBattles: { increment: 1 },
           ...(winner === 'player' ? { totalWins: { increment: 1 } } : winner === 'opponent' ? { totalLosses: { increment: 1 } } : {}),
-          // Award XP (clamped to prevent inflating beyond level cap)
-          ...(typeof xpEarned === 'number' && xpEarned > 0 ? { xp: { increment: Math.min(xpEarned, 500) } } : {}),
+          ...(clampedXpEarned > 0 ? { xp: { increment: clampedXpEarned } } : {}),
         },
+        select: { xp: true },
       })
+
+      if (clampedXpEarned > 0) {
+        const info = getLevelInfo(updatedUser.xp)
+        await tx.user.update({
+          where: { id: authUser.id },
+          data: {
+            level: info.level,
+            xpToNext: info.xpToNext,
+          },
+        })
+      }
 
       // Award credits for win (capped daily) — re-checked inside transaction
       let creditsEarned = 0

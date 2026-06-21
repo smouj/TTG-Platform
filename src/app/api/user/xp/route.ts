@@ -45,23 +45,27 @@ export async function POST(req: NextRequest) {
   const amount = XP_ACTION_REWARDS[action as keyof typeof XP_ACTION_REWARDS]
 
   // ── Wrap in transaction to prevent XP race conditions ──
-  // Reads current XP, calculates new values, writes atomically
+  // Increment XP atomically, then calculate level data from the post-increment value.
   const result = await prisma.$transaction(async (tx) => {
     const current = await tx.user.findUnique({
       where: { id: session.id },
-      select: { id: true, xp: true, level: true, xpToNext: true },
+      select: { id: true, level: true },
     })
 
     if (!current) return null
 
-    const newXp = current.xp + amount
-    const info = getLevelInfo(newXp)
+    const updatedXp = await tx.user.update({
+      where: { id: session.id },
+      data: { xp: { increment: amount } },
+      select: { xp: true },
+    })
+
+    const info = getLevelInfo(updatedXp.xp)
     const didLevelUp = info.level > current.level
 
     await tx.user.update({
       where: { id: session.id },
       data: {
-        xp: newXp,
         level: info.level,
         xpToNext: info.xpToNext,
       },
