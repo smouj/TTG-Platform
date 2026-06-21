@@ -184,14 +184,13 @@ for d in ['minimon','dracobell','cybermon']:
 cp -r public/tazos-backs/* .next/standalone/public/tazos-backs/  2>/dev/null || true
 cp -r public/tazos-artgen/* .next/standalone/public/tazos-artgen/  2>/dev/null || true
 
-# IMPORTANT: The repo DB on VPS may be stale (only synced on deploy).
-# The WSL DB has the canonical data including seeded users.
-# We must copy from the WSL-synced file, not the VPS-local repo copy.
-# The rsync above syncs prisma/dev.db from WSL → VPS repo.
+# IMPORTANT: data/dev.db on the VPS is the live canonical database.
+# The local WSL prisma/dev.db is a development seed snapshot and must never
+# overwrite production user data or publish-state decisions.
 #
-# CRITICAL FIX: Use symlink instead of copy to prevent 0-byte DB corruption.
-# The symlink points from standalone/prisma/dev.db → data/dev.db
-# This way Prisma always reads the canonical DB directly.
+# Use a symlink instead of a copy to prevent 0-byte DB corruption.
+# The symlink points from standalone/prisma/dev.db → data/dev.db, so Prisma
+# always reads the canonical DB directly.
 
 # Checkpoint WAL to ensure all data is in main DB file
 sqlite3 data/dev.db "PRAGMA wal_checkpoint(TRUNCATE);" 2>/dev/null || true
@@ -207,6 +206,19 @@ mkdir -p data
 rm -f .next/standalone/prisma/dev.db
 ln -sf /home/smouj/apps/ttg/Trading-Tazos-Game/data/dev.db .next/standalone/prisma/dev.db
 rm -f .next/standalone/prisma/dev.db-wal .next/standalone/prisma/dev.db-shm
+
+EXPECTED_DB="/home/smouj/apps/ttg/Trading-Tazos-Game/data/dev.db"
+ACTUAL_DB="$(readlink -f .next/standalone/prisma/dev.db)"
+if [ "$ACTUAL_DB" != "$EXPECTED_DB" ]; then
+  echo "❌ FATAL: standalone DB symlink points to $ACTUAL_DB, expected $EXPECTED_DB"
+  exit 1
+fi
+
+if [ "$(sqlite3 "$EXPECTED_DB" 'PRAGMA integrity_check;')" != "ok" ]; then
+  echo "❌ FATAL: production DB integrity check failed"
+  exit 1
+fi
+echo "  ✅ DB symlink and integrity verified"
 
 # Push schema changes to ensure DB tables match
 # Must NOT suppress errors — missing tables = production downtime

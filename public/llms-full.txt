@@ -65,7 +65,7 @@ common, uncommon, rare, ultra, legendary, epic
 |-------|------------|
 | `/` | Magazine launcher landing — hero, how-to-play, battle preview, series preview |
 | `/?page=how-to-play` | Vertical Slam tutorial (Aim→Charge→Tilt→Slam) |
-| `/?page=tazos` | Filterable tazo catalog (150 published) |
+| `/?page=tazos` | Filterable tazo catalog (139 published, 150 planned) |
 | `/?page=collections` | Franchise collection browser |
 | `/?page=leaderboard` | Rankings (credits, tazos, battles) |
 | `/?page=shop` | Bag shop preview with rarity breakdowns |

@@ -1,7 +1,7 @@
 {
   "name": "trading-tazos-game",
-  "version": "0.8.0",
-  "description": "Trading Tazos Game \u2014 Collect, Trade & Battle with 150 tazos across 3 franchises",
+  "version": "0.11.2",
+  "description": "Trading Tazos Game \u2014 Collect, Trade & Battle with 139 published tazos across 3 franchises",
   "author": "Trading Tazos Game <support@tradingtazosgame.com>",
   "license": "MIT",
   "desktopName": "trading-tazos-game",

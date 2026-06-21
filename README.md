@@ -15,7 +15,7 @@
 [![Status](https://img.shields.io/badge/status-Live-brightgreen)](https://tradingtazosgame.com)
 [![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?logo=pwa)](https://tradingtazosgame.com/manifest.json)
 [![i18n](https://img.shields.io/badge/i18n-10_languages-8B5CF6)](./src/lib/i18n/locales/)
-[![Version](https://img.shields.io/badge/version-v0.11.1-FFCC00)](#changelog)
+[![Version](https://img.shields.io/badge/version-v0.11.2-FFCC00)](#changelog)
 [![Design](https://img.shields.io/badge/design-Magazine_Game-FFCC00)]()
 
 </br>
@@ -229,7 +229,7 @@ ADMIN (9 routes):
 Trading-Tazos-Game/
 ├── prisma/
 │   ├── schema.prisma          # 12 models: Tazo, User, UserTazo, Deck, BagPurchase...
-│   ├── seed.ts                # 139 tazos + quests + achievements
+│   ├── seed.ts                # Season 1 seed data + quests + achievements
 │   └── seed-quests.ts         # 17 quests + 18 achievements
 ├── src/
 │   ├── middleware.ts           # Auth route guard (/app/* → /login)
@@ -311,7 +311,7 @@ cd Trading-Tazos-Game
 bun install
 cp .env.example .env          # Set your JWT_SECRET
 bunx prisma db push           # Create SQLite database
-bun run seed                  # 139 tazos + quests + achievements
+bun run seed                  # Season 1 dev seed + quests + achievements
 
 bun run dev                   # http://localhost:3000
 ```
@@ -333,9 +333,9 @@ Native desktop installers available on the [Releases page](https://github.com/sm
 
 | Platform | Format | Version |
 |----------|--------|---------|
-| Linux | AppImage · .deb | v0.11.1 |
-| Windows | .exe (NSIS) | v0.11.1 |
-| macOS | .dmg · .zip | v0.11.1 |
+| Linux | AppImage · .deb | v0.11.2 |
+| Windows | .exe (NSIS) | v0.11.2 |
+| macOS | .dmg · .zip | v0.11.2 |
 
 ---
 
@@ -352,7 +352,7 @@ tazos top --stat attack  # Leaderboard by any stat
 tazos battle --seed 42   # Simulate a physics battle
 ```
 
-[![npm](https://img.shields.io/npm/v/@trading-tazos-game/cli)](https://www.npmjs.com/package/@trading-tazos-game-cli) **v1.0.4** — [github.com/smouj/trading-tazos-game-cli](https://github.com/smouj/trading-tazos-game-cli)
+[![npm](https://img.shields.io/npm/v/@trading-tazos-game/cli)](https://www.npmjs.com/package/@trading-tazos-game/cli) **v1.0.4** — [github.com/smouj/trading-tazos-game-cli](https://github.com/smouj/trading-tazos-game-cli)
 
 ---
 
@@ -401,6 +401,12 @@ tradingtazosgame.com
 ---
 
 ## 🏷️ Changelog
+
+### v0.11.2 — Desktop Metadata + Ops Polish (Jun 2026)
+
+- Aligns Electron runtime metadata, Electron package metadata, and installer workflow defaults to v0.11.2.
+- Fixes the DB backup helper to use the canonical production database path (`data/dev.db`).
+- Polishes deployment docs/comments, seed wording, manifest collection copy, and the npm CLI badge URL.
 
 ### v0.11.1 — CI + PWA Manifest Alignment (Jun 2026)
 

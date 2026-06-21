@@ -7,7 +7,7 @@
 set -e
 
 APP_DIR="/home/smouj/apps/ttg/Trading-Tazos-Game"
-DB_PATH="$APP_DIR/prisma/dev.db"
+DB_PATH="$APP_DIR/data/dev.db"
 BACKUP_DIR="$APP_DIR/backups"
 TIMESTAMP=$(date +%Y-%m-%d_%H%M%S)
 BACKUP_FILE="$BACKUP_DIR/dev.db.$TIMESTAMP.bak"

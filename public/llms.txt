@@ -1,6 +1,6 @@
 # Trading Tazos Game — llms.txt
 
-> A free browser-based collectible skill game with 150 published tazos across 3 original franchises (Minimon, Dracobell, Cybermon).
+> A free browser-based collectible skill game with 139 published tazos across 3 original franchises (Minimon, Dracobell, Cybermon), with 150 planned for Season 1.
 > Built with Next.js 16, TypeScript, Three.js, Tailwind CSS.
 > Play at https://tradingtazosgame.com
 
@@ -35,12 +35,12 @@ Trading Tazos Game (TTG) is an independent fictional digital tazo game. Players 
 
 ## Project
 - **Name**: Trading Tazos Game (TTG)
-- **Version**: 0.7.0
-- **Status**: Live (150 Season 1 tazos published)
+- **Version**: 0.11.2
+- **Status**: Live (139 Season 1 tazos published, 150 planned)
 - **Stack**: Next.js 16 / TypeScript / Prisma / SQLite / Three.js / Tailwind CSS
 - **Deployment**: VPS + Caddy + PM2
 - **Monetization**: Free-to-play. Non-personalized ads may appear.
-- **Analytics**: Plausible (self-hosted, privacy-friendly, no personal data)
+- **Analytics**: Google Search Console
 - **Email**: SMTP via Hostinger (welcome, password reset, trade confirmation)
 
 ## Independence
