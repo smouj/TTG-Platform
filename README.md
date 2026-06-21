@@ -15,7 +15,7 @@
 [![Status](https://img.shields.io/badge/status-Live-brightgreen)](https://tradingtazosgame.com)
 [![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?logo=pwa)](https://tradingtazosgame.com/manifest.json)
 [![i18n](https://img.shields.io/badge/i18n-10_languages-8B5CF6)](./src/lib/i18n/locales/)
-[![Version](https://img.shields.io/badge/version-v0.11.0-FFCC00)](#changelog)
+[![Version](https://img.shields.io/badge/version-v0.11.1-FFCC00)](#changelog)
 [![Design](https://img.shields.io/badge/design-Magazine_Game-FFCC00)]()
 
 </br>
@@ -333,9 +333,9 @@ Native desktop installers available on the [Releases page](https://github.com/sm
 
 | Platform | Format | Version |
 |----------|--------|---------|
-| Linux | AppImage · .deb | v0.11.0 |
-| Windows | .exe (NSIS) | v0.11.0 |
-| macOS | .dmg · .zip | v0.11.0 |
+| Linux | AppImage · .deb | v0.11.1 |
+| Windows | .exe (NSIS) | v0.11.1 |
+| macOS | .dmg · .zip | v0.11.1 |
 
 ---
 
@@ -401,6 +401,12 @@ tradingtazosgame.com
 ---
 
 ## 🏷️ Changelog
+
+### v0.11.1 — CI + PWA Manifest Alignment (Jun 2026)
+
+- Aligns package, site metadata, PWA manifest, and desktop download links to v0.11.1.
+- Fixes the CI smoke database seed so `/tazos/cipherion` SSG SEO checks pass reliably.
+- Includes post-v0.11.0 battle, security, game-core, and monorepo structure fixes.
 
 ### v0.11.0 — Multi-Arena + AI Strategy + Staked Pipeline Fix + Monorepo (Jun 2026)
 - **3 new arenas**: Lava Pit, Crystal Cave, Zero-G Chamber with distinct physics

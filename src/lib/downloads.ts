@@ -18,8 +18,8 @@ export type DownloadPlatform = {
   }[]
 }
 
-const RELEASE_TAG = "v0.11.0"
-const DESKTOP_VERSION = "0.11.0"
+const RELEASE_TAG = "v0.11.1"
+const DESKTOP_VERSION = "0.11.1"
 const RELEASE_BASE = `${SITE_CONFIG.social.github}/releases/download/${RELEASE_TAG}`
 
 export const DOWNLOAD_RELEASE = {
