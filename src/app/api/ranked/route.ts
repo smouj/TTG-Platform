@@ -70,8 +70,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { playerScore, opponentScore, opponentUserId } = body
 
-    if (typeof playerScore !== "number" || typeof opponentScore !== "number") {
+    if (!Number.isInteger(playerScore) || !Number.isInteger(opponentScore) || playerScore < 0 || opponentScore < 0) {
       return NextResponse.json({ error: "Missing scores" }, { status: 400 })
+    }
+
+    if (opponentUserId === auth.id) {
+      return NextResponse.json({ error: "Cannot report a ranked match against yourself" }, { status: 400 })
     }
 
     // Wrap all rating reads/writes in a transaction to prevent upsert races

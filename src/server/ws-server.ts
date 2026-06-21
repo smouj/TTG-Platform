@@ -37,6 +37,10 @@ const waitingRooms = new Map<string, Player>()
 const rooms = new Map<string, Room>()
 const connections = new Map<WebSocket, Player>()
 
+function isOpen(player: Player): boolean {
+  return connections.get(player.ws) === player && player.ws.readyState === WebSocket.OPEN
+}
+
 function broadcast(ws: WebSocket, msg: object) {
   if (ws.readyState === WebSocket.OPEN) {
     ws.send(JSON.stringify(msg))
@@ -66,6 +70,9 @@ function makeRoom(p1: Player, p2: Player, roomId?: string): Room {
 }
 
 function cleanupPlayer(player: Player) {
+  const wasConnected = connections.delete(player.ws)
+  if (!wasConnected) return
+
   // Remove from queue
   const qIdx = queue.indexOf(player)
   if (qIdx >= 0) queue.splice(qIdx, 1)
@@ -95,13 +102,29 @@ function cleanupPlayer(player: Player) {
     }
   }
 
-  connections.delete(player.ws)
+}
+
+function disconnectExistingUser(userId: string) {
+  for (const existing of connections.values()) {
+    if (existing.userId !== userId) continue
+
+    cleanupPlayer(existing)
+    if (existing.ws.readyState === WebSocket.OPEN || existing.ws.readyState === WebSocket.CONNECTING) {
+      existing.ws.close(4000, "Connected from another session")
+    }
+  }
 }
 
 function tryMatch() {
   while (queue.length >= 2) {
     const p1 = queue.shift()!
     const p2 = queue.shift()!
+    if (!isOpen(p1) || !isOpen(p2)) continue
+    if (p1.userId === p2.userId) {
+      broadcast(p1.ws, { type: "queue_error", payload: { message: "Cannot match against yourself" } })
+      broadcast(p2.ws, { type: "queue_error", payload: { message: "Cannot match against yourself" } })
+      continue
+    }
     makeRoom(p1, p2)
   }
 }
@@ -190,6 +213,8 @@ wss.on("connection", (ws, req) => {
     return
   }
 
+  disconnectExistingUser(user.userId)
+
   const player: Player = {
     ws,
     userId: user.userId,
@@ -224,6 +249,10 @@ wss.on("connection", (ws, req) => {
     switch (msg.type) {
       case "join_queue": {
         if (queue.includes(player)) break
+        if (queue.some((p) => p.userId === player.userId)) {
+          broadcast(ws, { type: "queue_error", payload: { message: "Already in queue" } })
+          break
+        }
         queue.push(player)
         broadcast(ws, { type: "queue_status", payload: { position: queue.length } })
         log(`🎯 ${player.name} joined queue (${queue.length} waiting)`)
@@ -246,10 +275,15 @@ wss.on("connection", (ws, req) => {
         }
 
         const waiting = waitingRooms.get(rawRoomId)
-        if (!waiting || waiting === player || waiting.ws.readyState !== WebSocket.OPEN) {
+        if (!waiting || waiting === player || !isOpen(waiting)) {
           waitingRooms.set(rawRoomId, player)
           broadcast(ws, { type: "room_waiting", payload: { roomId: rawRoomId } })
           log(`🏠 ${player.name} waiting in room ${rawRoomId}`)
+          break
+        }
+
+        if (waiting.userId === player.userId) {
+          broadcast(ws, { type: "room_error", payload: { message: "Cannot join your own room" } })
           break
         }
 
@@ -321,7 +355,7 @@ wss.on("connection", (ws, req) => {
   ws.on("close", () => {
     clearInterval(pingInterval)
     cleanupPlayer(player)
-    log(`🔌 ${player.name} disconnected (${connections.size - 1} online)`)
+    log(`🔌 ${player.name} disconnected (${connections.size} online)`)
   })
 
   ws.on("error", (err) => {
