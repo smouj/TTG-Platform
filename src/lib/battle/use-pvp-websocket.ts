@@ -91,6 +91,7 @@ export function usePvPWebSocket(token: string | null): PvPWebSocket {
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const mountedRef = useRef(true)
+  const manualDisconnectRef = useRef(false)
   const stateRef = useRef(state)
   useEffect(() => { stateRef.current = state }, [state])
 
@@ -99,6 +100,8 @@ export function usePvPWebSocket(token: string | null): PvPWebSocket {
     if (wsRef.current?.readyState === WebSocket.OPEN) return
     if (wsRef.current?.readyState === WebSocket.CONNECTING) return
 
+    manualDisconnectRef.current = false
+    clearTimeout(reconnectTimer.current)
     setState(s => ({ ...s, status: "connecting", error: null }))
 
     const protocol = typeof window !== "undefined" && window.location.protocol === "https:" ? "wss:" : "ws:"
@@ -110,11 +113,13 @@ export function usePvPWebSocket(token: string | null): PvPWebSocket {
       wsRef.current = ws
 
       ws.onopen = () => {
+        if (wsRef.current !== ws) return
         if (!mountedRef.current) { ws.close(); return }
         setState(s => ({ ...s, status: "connected" }))
       }
 
       ws.onmessage = (event) => {
+        if (wsRef.current !== ws) return
         if (!mountedRef.current) return
         let msg: WsIncoming
         try { msg = JSON.parse(event.data) } catch { return }
@@ -170,16 +175,18 @@ export function usePvPWebSocket(token: string | null): PvPWebSocket {
       }
 
       ws.onerror = () => {
+        if (wsRef.current !== ws) return
         if (!mountedRef.current) return
         setState(s => ({ ...s, status: "disconnected", error: "Connection error" }))
       }
 
       ws.onclose = () => {
+        if (wsRef.current !== ws) return
         if (!mountedRef.current) return
         wsRef.current = null
         setState(s => ({ ...s, status: "disconnected" }))
         // Auto-reconnect after 3s if not finished
-        if (stateRef.current.status !== "finished") {
+        if (!manualDisconnectRef.current && stateRef.current.status !== "finished") {
           reconnectTimer.current = setTimeout(() => connect(), 3000)
         }
       }
@@ -193,6 +200,7 @@ export function usePvPWebSocket(token: string | null): PvPWebSocket {
     connect()
     return () => {
       mountedRef.current = false
+      manualDisconnectRef.current = true
       clearTimeout(reconnectTimer.current)
       wsRef.current?.close()
     }
@@ -225,7 +233,11 @@ export function usePvPWebSocket(token: string | null): PvPWebSocket {
     setState(s => ({ ...s, status: "finished" }))
   }, [send])
   const disconnect = useCallback(() => {
-    wsRef.current?.close()
+    manualDisconnectRef.current = true
+    clearTimeout(reconnectTimer.current)
+    const ws = wsRef.current
+    wsRef.current = null
+    ws?.close()
     setState({ ...WS_INITIAL })
   }, [])
 

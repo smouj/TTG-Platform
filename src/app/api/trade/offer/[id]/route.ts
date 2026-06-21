@@ -61,6 +61,19 @@ export async function POST(
         targetUserTazoId: string,
         targetUserId: string
       ) => {
+        const reserved = await tx.userTazo.updateMany({
+          where: {
+            id: sourceUT.id,
+            userId: sourceUT.userId,
+            tazoId: sourceUT.tazoId,
+            quantity: { gte: 1 },
+          },
+          data: { quantity: { decrement: 1 } },
+        })
+        if (reserved.count !== 1) {
+          throw new Error(sourceUT.userId === freshOffer.offererId ? 'OFFERER_NO_LONGER_OWNS' : 'ACCEPTOR_NO_LONGER_OWNS')
+        }
+
         const instance = await tx.tazoInstance.findFirst({
           where: {
             userTazoId: sourceUT.id,
@@ -77,10 +90,6 @@ export async function POST(
         }
 
         if (sourceUT.quantity > 1) {
-          await tx.userTazo.update({
-            where: { id: sourceUT.id },
-            data: { quantity: { decrement: 1 } },
-          })
           return
         }
 
