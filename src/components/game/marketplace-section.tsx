@@ -219,7 +219,7 @@ function SellTazoCard({ ut, onSell, selling }: {
 
 // ── Marketplace Main ───────────────────────────────────
 // ── Offers sub-component ────────────────────────────────
-function OffersTab({ token }: { token: string | null }) {
+function OffersTab({ token, currentUserId }: { token: string | null; currentUserId: string }) {
   const [offers, setOffers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [actionId, setActionId] = useState<string | null>(null)
@@ -248,7 +248,7 @@ function OffersTab({ token }: { token: string | null }) {
     setActionId(null)
   }, [token, load])
 
-  const handleDecline = useCallback(async (offerId: string) => {
+  const handleCancel = useCallback(async (offerId: string) => {
     if (!token) return
     setActionId(offerId)
     const res = await fetch(`/api/trade/offer/${offerId}`, {
@@ -321,10 +321,12 @@ function OffersTab({ token }: { token: string | null }) {
               className="px-2.5 py-1 text-[8px] font-black uppercase bg-ttg-success/10 text-ttg-success border border-ttg-success/20 hover:bg-ttg-success/20 rounded-full transition-colors disabled:opacity-30">
               {actionId === o.id ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Accept'}
             </button>
-            <button onClick={() => handleDecline(o.id)} disabled={actionId === o.id}
-              className="px-2 py-0.5 text-[8px] font-black uppercase text-ttg-black/20 hover:text-ttg-red hover:bg-ttg-red/10 rounded-full transition-colors">
-              <X className="w-3 h-3" />
-            </button>
+            {o.offerer?.id === currentUserId && (
+              <button onClick={() => handleCancel(o.id)} disabled={actionId === o.id}
+                className="px-2 py-0.5 text-[8px] font-black uppercase text-ttg-black/20 hover:text-ttg-red hover:bg-ttg-red/10 rounded-full transition-colors">
+                <X className="w-3 h-3" />
+              </button>
+            )}
           </div>
         </div>
       ))}
@@ -749,7 +751,7 @@ export default function MarketplaceSection({ credits: initialCredits }: { credit
 
       {/* ════════════════════════ OFFERS TAB ════════════════════════ */}
       {tab === "offers" && (
-        <OffersTab token={token} />
+        <OffersTab token={token} currentUserId={user.id} />
       )}
     </div>
   )

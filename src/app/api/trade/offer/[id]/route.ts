@@ -200,7 +200,7 @@ export async function POST(
   }
 }
 
-// DELETE /api/trade/offer/[id] — decline or cancel
+// DELETE /api/trade/offer/[id] — cancel your own pending offer
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -211,25 +211,30 @@ export async function DELETE(
 
     const { id } = await params
 
-    // Atomic transaction: re-check status to prevent race with accept
-    let newStatus = ''
+    // Atomic transaction: re-check status to prevent race with accept.
+    // Offers are public, so only the creator can cancel one.
     await db.$transaction(async (tx) => {
       const fresh = await tx.tradeOffer.findUnique({ where: { id } })
       if (!fresh || fresh.status !== 'pending') {
         throw new Error('Offer no longer available')
       }
 
-      // Only the offerer can cancel; anyone else can decline
-      newStatus = fresh.offererId === authUser.id ? 'cancelled' : 'declined'
+      if (fresh.offererId !== authUser.id) {
+        throw new Error('NOT_OWNER')
+      }
 
       await tx.tradeOffer.update({
         where: { id },
-        data: { status: newStatus, resolvedAt: new Date() },
+        data: { status: 'cancelled', resolvedAt: new Date() },
       })
     })
 
-    return NextResponse.json({ success: true, message: `Offer ${newStatus}` })
+    return NextResponse.json({ success: true, message: 'Offer cancelled' })
   } catch (error) {
+    const msg = error instanceof Error ? error.message : ''
+    if (msg === 'NOT_OWNER') {
+      return NextResponse.json({ error: 'Not your offer' }, { status: 403 })
+    }
     console.error('Trade offer decline error:', error)
     return NextResponse.json({ error: 'Failed to resolve offer' }, { status: 500 })
   }
