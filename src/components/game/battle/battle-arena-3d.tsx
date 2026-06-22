@@ -1,616 +1,35 @@
 // ============================================================
-// Trading Tazos Game — Battle Arena 3D v3 (Vertical Slam)
+// Trading Tazos Game — Battle Arena 3D v4 (Vertical Slam)
+//
+// Arena scene composer — imports focused sub-components:
+//   ArenaFloor, ArenaPillars, ArenaReticle, StakedTazoMesh,
+//   AirborneTazoMesh, ArenaCamera, ArenaImpactEffects
 //
 // CORRECT MECHANIC:
-//  - Staked tazos sit face-down on the arena center
-//  - Launcher tazo hangs in the AIR above the circle
-//  - Falls vertically on release — impacts face-down tazos
-//  - Impact solves flip, wobble, or miss
-//  - Camera: top-down aiming → side charging → cinematic slam
+//   Staked tazos sit face-down on arena center.
+//   Launcher tazo hangs in the AIR above the circle.
+//   Falls vertically on release — impacts face-down tazos.
+//   Impact solves flip, wobble, or miss.
+//   Camera: top-down aiming → side charging → cinematic slam.
 // ============================================================
 "use client"
 
 import { Suspense, useRef, useMemo, useEffect, useState } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { OrbitControls } from "@react-three/drei"
+import { Canvas } from "@react-three/fiber"
 import * as THREE from "three"
-import { BATTLE_COLORS, playerOrOpponent } from "@/lib/battle/colors"
+import { BATTLE_COLORS } from "@/lib/battle/colors"
 import type { Arena3DConfig, StakedTazo, AirborneTazo } from "@/lib/battle/game-loop"
-import TazoDisc3D from "../3d/tazo-disc-3d"
 import BattleDeckTube from "./battle-deck-tube"
 
-// ─── Theme colors per arena ───
-const THEME_COLORS: Record<string, {
-  floor: string[]
-  accent: string
-  pillar: string
-  bgGradient: string
-  ringGlow: string
-}> = {
-  default: {
-    floor: ["#fffaf0", "#f5ead0", "#e0d4b8", "#c8b898", "#a09070"],
-    accent: "#FFCC00",
-    pillar: "#b8a888",
-    bgGradient: "radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 55%, #0a0a0a 100%)",
-    ringGlow: "#FFCC00",
-  },
-  lava: {
-    floor: ["#3a1000", "#5a1a00", "#6a2505", "#4a1805", "#2a0a00"],
-    accent: "#FF4400",
-    pillar: "#8B0000",
-    bgGradient: "radial-gradient(ellipse at center, #3a1000 0%, #1a0500 55%, #0a0000 100%)",
-    ringGlow: "#FF6600",
-  },
-  crystal: {
-    floor: ["#e0f0ff", "#c8e0f8", "#a0d0f0", "#80b8e0", "#6090c0"],
-    accent: "#00CCFF",
-    pillar: "#4488CC",
-    bgGradient: "radial-gradient(ellipse at center, #0a1a30 0%, #051020 55%, #020810 100%)",
-    ringGlow: "#00DDFF",
-  },
-  "zero-g": {
-    floor: ["#f0f0ff", "#d8d0f0", "#c0b8e0", "#a098c8", "#7068a0"],
-    accent: "#9944FF",
-    pillar: "#6655AA",
-    bgGradient: "radial-gradient(ellipse at center, #1a0a2e 0%, #0d0520 55%, #050210 100%)",
-    ringGlow: "#AA55FF",
-  },
-}
-
-
-// ─── Impact spark ring (expands on slam) ───
-function ImpactSpark({ trigger, pos }: { trigger: number; pos: [number, number, number] }) {
-  const ringRef = useRef<THREE.Mesh>(null!)
-  const timeRef = useRef(0)
-  
-  useEffect(() => {
-    if (trigger > 0) {
-      timeRef.current = 1.0
-      if (ringRef.current) {
-        ringRef.current.visible = true
-        ringRef.current.scale.setScalar(0.2)
-      }
-    }
-  }, [trigger])
-  
-  useFrame((_, delta) => {
-    if (!ringRef.current || timeRef.current <= 0) return
-    timeRef.current -= delta * 3
-    const s = 0.2 + (1 - timeRef.current) * 2.5
-    ringRef.current.scale.setScalar(Math.min(s, 3.0))
-    const mat = ringRef.current.material as THREE.MeshBasicMaterial
-    mat.opacity = Math.max(0, timeRef.current * 0.7)
-    if (timeRef.current <= 0) ringRef.current.visible = false
-  })
-
-  return (
-    <mesh ref={ringRef} position={[pos[0], 0.04, pos[2]]} rotation={[-Math.PI/2, 0, 0]} visible={false}>
-      <ringGeometry args={[0.15, 0.2, 32]} />
-      <meshBasicMaterial color="#FFCC00" transparent opacity={0.8} side={THREE.DoubleSide} depthWrite={false} />
-    </mesh>
-  )
-}
-
-// ─── Floor (arena surface with center circle) ───
-function Floor({ config }: { config: Arena3DConfig }) {
-  const theme = THEME_COLORS[config.theme || "default"] || THEME_COLORS.default
-  const tex = useMemo(() => {
-    const c = document.createElement("canvas")
-    c.width = 1024; c.height = 1024
-    const ctx = c.getContext("2d")!
-    // Fondo de madera cálida con gradiente radial
-    const g = ctx.createRadialGradient(512, 512, 20, 512, 512, 550)
-    g.addColorStop(0, theme.floor[0]); g.addColorStop(0.45, theme.floor[1])
-    g.addColorStop(0.75, theme.floor[2]); g.addColorStop(0.92, theme.floor[3])
-    g.addColorStop(1, theme.floor[4])
-    ctx.fillStyle = g; ctx.fillRect(0, 0, 1024, 1024)
-    // Grain texture
-    ctx.fillStyle = "rgba(0,0,0,0.02)"
-    for (let i = 0; i < 600; i++) {
-      ctx.fillRect(Math.random()*1024, Math.random()*1024, 2, 2)
-    }
-    // Outer circle (ammonite)
-    ctx.strokeStyle = theme.pillar; ctx.lineWidth = 20
-    ctx.beginPath(); ctx.arc(512, 512, config.radius * 48, 0, Math.PI * 2); ctx.stroke()
-    // Inner gold ring
-    ctx.strokeStyle = theme.accent; ctx.lineWidth = 4
-    ctx.beginPath(); ctx.arc(512, 512, config.radius * 48 - 10, 0, Math.PI * 2); ctx.stroke()
-    // Dark outline
-    ctx.strokeStyle = "#1a1a1a"; ctx.lineWidth = 2
-    ctx.beginPath(); ctx.arc(512, 512, config.radius * 48 + 10, 0, Math.PI * 2); ctx.stroke()
-    // Concentric guide rings (faint)
-    ctx.strokeStyle = "rgba(0,0,0,0.03)"; ctx.lineWidth = 1.5
-    for (let r = 80; r < config.radius * 42; r += 80) {
-      ctx.beginPath(); ctx.arc(512, 512, r, 0, Math.PI * 2); ctx.stroke()
-    }
-    // Center dot
-    ctx.fillStyle = theme.accent + "66"; ctx.beginPath()
-    ctx.arc(512, 512, 18, 0, Math.PI * 2); ctx.fill()
-    ctx.fillStyle = "rgba(0,0,0,0.15)"; ctx.beginPath()
-    ctx.arc(512, 512, 6, 0, Math.PI * 2); ctx.fill()
-    // Stake position marks
-    ctx.fillStyle = theme.accent + "44"; ctx.beginPath()
-    ctx.arc(512 - config.radius * 26, 512, 10, 0, Math.PI*2); ctx.fill()
-    ctx.fillStyle = theme.accent + "44"; ctx.beginPath()
-    ctx.arc(512 + config.radius * 26, 512, 8, 0, Math.PI*2); ctx.fill()
-    const t = new THREE.CanvasTexture(c)
-    t.colorSpace = THREE.SRGBColorSpace
-    t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter
-    return t
-  }, [config.radius, config.theme])
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} receiveShadow>
-      <planeGeometry args={[config.radius * 2.6, config.radius * 2.6]} />
-      <meshStandardMaterial map={tex} roughness={0.55} metalness={0.03} />
-    </mesh>
-  )
-}
-
-// ─── Pillars (arena boundary decoration) ───
-function Pillars({ config }: { config: Arena3DConfig }) {
-  const pts = useMemo(() => {
-    return Array.from({ length: 8 }, (_, i) => {
-      const a = (i / 8) * Math.PI * 2
-      return { x: Math.cos(a) * config.radius * 1.2, z: Math.sin(a) * config.radius * 1.2 }
-    })
-  }, [config.radius, config.theme])
-  return (
-    <>
-      {pts.map((p, i) => (
-        <group key={i} position={[p.x, 0.7, p.z]}>
-          <mesh castShadow>
-            <cylinderGeometry args={[0.12, 0.16, 1.4, 8]} />
-            <meshStandardMaterial color="#d0c8b8" roughness={0.6} metalness={0.1} />
-          </mesh>
-          <mesh position={[0, 0.8, 0]}>
-            <sphereGeometry args={[0.10, 12, 12]} />
-            <meshStandardMaterial color="#FF8800" emissive="#FF8800" emissiveIntensity={0.4} roughness={0.15} />
-          </mesh>
-        </group>
-      ))}
-    </>
-  )
-}
-
-// ─── Reticle ring (target indicator) with impact ghost ───
-function Reticle({
-  position, visible, gamePhase,
-}: {
-  position: [number, number, number]
-  visible: boolean
-  gamePhase: string
-}) {
-  if (!visible) return null
-  const isCharging = gamePhase === "charge"
-  return (
-    <group position={position}>
-      {/* Impact ghost — grows as player charges */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
-        <ringGeometry args={[0.44, 0.50, 32]} />
-        <meshBasicMaterial
-          color={isCharging ? "#FFCC00" : "#FFFFFF"}
-          transparent opacity={isCharging ? 0.6 : 0.2}
-          side={THREE.DoubleSide}
-          depthWrite={false}
-        />
-      </mesh>
-      {/* Inner ring */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
-        <ringGeometry args={[0.38, 0.42, 24]} />
-        <meshBasicMaterial color="#FFCC00" transparent opacity={0.45} side={THREE.DoubleSide} depthWrite={false} />
-      </mesh>
-      {/* Crosshair lines */}
-      <mesh position={[0, 0.03, 0]}>
-        <boxGeometry args={[0.03, 0.005, 0.75]} />
-        <meshBasicMaterial color="#FFCC00" transparent opacity={0.5} />
-      </mesh>
-      <mesh position={[0, 0.03, 0]}>
-        <boxGeometry args={[0.75, 0.005, 0.03]} />
-        <meshBasicMaterial color="#FFCC00" transparent opacity={0.5} />
-      </mesh>
-      {/* Center dot */}
-      <mesh position={[0, 0.03, 0]}>
-        <sphereGeometry args={[0.04, 8, 8]} />
-        <meshBasicMaterial color="#FFCC00" />
-      </mesh>
-    </group>
-  )
-}
-
-// ─── Staked Tazo (face-down on arena) ───
-function StakedTazoMesh({ staked }: { staked: StakedTazo }) {
-  const groupRef = useRef<THREE.Group>(null!)
-  const wobbleRef = useRef({ intensity: 0, time: 0 })
-
-  // Sync wobble intensity from props
-  useEffect(() => {
-    wobbleRef.current.intensity = staked.wobbleIntensity
-    wobbleRef.current.time = 0
-  }, [staked.wobbleIntensity])
-
-  useFrame((_, delta) => {
-    if (!groupRef.current) return
-    const w = wobbleRef.current
-
-    // Wobble animation
-    if (w.intensity > 0.01 && staked.state === "wobbling") {
-      w.time += delta * 25
-      w.intensity *= 0.92  // Decay
-      const wobX = Math.sin(w.time * 2.3) * w.intensity * 0.06
-      const wobZ = Math.cos(w.time * 1.7) * w.intensity * 0.06
-      groupRef.current.rotation.set(Math.PI + wobX, 0, wobZ)
-      groupRef.current.position.y = 0.06 + Math.abs(Math.sin(w.time * 3)) * w.intensity * 0.03
-    } else if (staked.state === "wobbling") {
-      // Settling back to face-down
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(
-        groupRef.current.rotation.x, Math.PI, 0.08
-      )
-      groupRef.current.position.y = 0.06
-    }
-
-    // Half-flip: partially lifted
-    if (staked.state === "half_flip") {
-      const targetXR = Math.PI / 2
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(
-        groupRef.current.rotation.x, targetXR, 0.08
-      )
-      // Lift slightly during half-flip
-      groupRef.current.position.y = THREE.MathUtils.lerp(
-        groupRef.current.position.y, 0.12, 0.1
-      )
-    }
-
-    // Face-up / secured / captured — flip to show front face
-    // Face-down = Math.PI, Face-up = 0 (shortest rotation path through PI/2)
-    if (staked.state === "face_up" || staked.state === "secured" || staked.state === "captured") {
-      const targetXR = 0  // Face-up (front art visible from above)
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(
-        groupRef.current.rotation.x, targetXR, 0.12
-      )
-      groupRef.current.position.y = THREE.MathUtils.lerp(
-        groupRef.current.position.y, 0.06, 0.15
-      )
-    }
-
-    // Ring-out: slide away and fade
-    if (staked.state === "out_of_circle") {
-      groupRef.current.position.x += (staked.position[0] * 1.5 - groupRef.current.position.x) * 0.05
-      groupRef.current.position.z += (staked.position[2] * 1.5 - groupRef.current.position.z) * 0.05
-      groupRef.current.scale.lerp(new THREE.Vector3(0.5, 0.5, 0.5), 0.03)
-    }
-  })
-
-  if (staked.state === "out_of_circle") {
-    const isGone = Math.abs(groupRef.current?.position.x || 0) > 6
-    if (isGone) return null
-  }
-
-  // Color tint for secured/captured
-  const getGlow = () => {
-    if (staked.state === "secured") return BATTLE_COLORS.success  // Green
-    if (staked.state === "captured") return BATTLE_COLORS.opponent  // Red
-    return undefined
-  }
-
-  return (
-    <group
-      ref={groupRef}
-      position={[staked.position[0], 0.06, staked.position[2]]}
-      rotation={[Math.PI, 0, 0]}  // Face-down default
-    >
-      <TazoDisc3D
-        name={staked.tazoName}
-        franchise={staked.franchise}
-        imageUrl={staked.imageUrl}
-        backImageUrl={staked.backImageUrl}
-        size={0.50}
-        autoRotate={false}
-      />
-      {/* Glow ring for secured/captured — at top of tazo disc */}
-      {getGlow() && (
-        <mesh position={[0, 0.02, 0]}>
-          <ringGeometry args={[0.40, 0.44, 32]} />
-          <meshBasicMaterial color={getGlow()} transparent opacity={0.5} side={THREE.DoubleSide} depthWrite={false} />
-        </mesh>
-      )}
-    </group>
-  )
-}
-
-// ─── Airborne Launcher Tazo ───
-function AirborneTazoMesh({
-  airborne, isPlayer, stakedPositions = [],
-}: {
-  airborne: AirborneTazo
-  isPlayer: boolean
-  stakedPositions?: [number, number, number][]
-}) {
-  const groupRef = useRef<THREE.Group>(null!)
-  const physRef = useRef({
-    pos: new THREE.Vector3(...airborne.position),
-    vel: new THREE.Vector3(0, 0, 0),
-    falling: false,
-    impactTime: 0,
-    collisionTarget: new THREE.Vector3(),
-  })
-
-  useEffect(() => {
-    const p = physRef.current
-    p.pos.set(...airborne.position)
-    if (airborne.state === "falling") {
-      p.falling = true
-      p.impactTime = 0
-    }
-    if (airborne.state === "aiming" || airborne.state === "charging") {
-      p.falling = false
-    }
-  }, [airborne.position, airborne.state])
-
-  useFrame((_, delta) => {
-    if (!groupRef.current) return
-    const p = physRef.current
-    const dt = Math.min(delta, 0.05)
-
-    if (p.falling) {
-      // Gravity fall — visible dramatic descent
-      p.vel.y -= 22 * dt
-      p.pos.add(p.vel.clone().multiplyScalar(dt))
-
-      // Hit table — snap toward nearest staked tazo for collision feel
-      if (p.pos.y < 0.06) {
-        p.pos.y = 0.06
-        // Snap XZ toward nearest staked tazo for visual collision
-        if (stakedPositions.length > 0) {
-          let nearest = stakedPositions[0]
-          let minDist = Infinity
-          for (const sp of stakedPositions) {
-            const d = Math.hypot(p.pos.x - sp[0], p.pos.z - sp[2])
-            if (d < minDist) { minDist = d; nearest = sp }
-          }
-          p.collisionTarget.set(nearest[0], 0.06, nearest[2])
-        }
-        p.falling = false
-        p.vel.set(0, 0, 0)
-        p.impactTime = 1.0
-      }
-    } else if (p.impactTime > 0) {
-      p.impactTime = Math.max(0, p.impactTime - dt * 4)
-      // Lerp toward collision target during impact flash
-      if (p.impactTime > 0.5) {
-        p.pos.lerp(p.collisionTarget, (1 - p.impactTime) * 0.3)
-      }
-    }
-
-    groupRef.current.position.copy(p.pos)
-
-    // Apply tilt from airborne data
-    groupRef.current.rotation.set(
-      airborne.tilt[0],
-      airborne.tilt[1],
-      airborne.tilt[2]
-    )
-
-    // Scale up during falling for dramatic effect
-    if (p.falling) {
-      const hFactor = 1 + (p.pos.y / 7) * 0.25 // Larger when higher, normal at table
-      groupRef.current.scale.setScalar(hFactor)
-    } else if (p.impactTime > 0) {
-      const s = 1 + p.impactTime * 0.45
-      groupRef.current.scale.setScalar(s)
-    } else {
-      groupRef.current.scale.setScalar(1)
-    }
-  })
-
-  if (airborne.state === "idle") {
-    // Show tazo floating but without effects — it's on the bench waiting
-    return (
-      <group ref={groupRef} position={airborne.position}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
-          <ringGeometry args={[0.3, 0.33, 32]} />
-          <meshBasicMaterial color={playerOrOpponent(isPlayer)} transparent opacity={0.15} side={THREE.DoubleSide} depthWrite={false} />
-        </mesh>
-        <TazoDisc3D
-          name={airborne.tazoName}
-          franchise={airborne.franchise}
-          imageUrl={airborne.imageUrl}
-          backImageUrl={airborne.backImageUrl}
-          finish={airborne.finish}
-          size={0.38}
-          autoRotate={true}
-        />
-      </group>
-    )
-  }
-
-  return (
-    <group ref={groupRef} position={airborne.position}>
-      {/* Motion trail during falling — vertical streak */}
-      {airborne.state === "falling" && (
-        <mesh position={[0, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.08, physRef.current.pos.y * 1.5]} />
-          <meshBasicMaterial
-            color={playerOrOpponent(isPlayer)}
-            transparent
-            opacity={0.15}
-            side={THREE.DoubleSide}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
-      {/* Charge glow ring — horizontal on table */}
-      {airborne.state === "charging" && (
-        <mesh position={[0, 0.03, 0]}>
-          <ringGeometry args={[0.44, 0.46, 32]} />
-          <meshBasicMaterial
-            color="#FFCC00"
-            transparent
-            opacity={0.25 + airborne.charge * 0.5}
-            side={THREE.DoubleSide}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
-      {/* Drop shadow on table — stays at table level, tracks launcher in XZ */}
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[airborne.position[0], 0.03, airborne.position[2]]}
-        scale={[0.35, 1, 0.35]}
-      >
-        <planeGeometry args={[0.4, 0.4]} />
-        <meshBasicMaterial color="#000" transparent opacity={0.12} depthWrite={false} />
-      </mesh>
-      <TazoDisc3D
-        name={airborne.tazoName}
-        franchise={airborne.franchise}
-        imageUrl={airborne.imageUrl}
-        backImageUrl={airborne.backImageUrl}
-        finish={airborne.finish}
-        size={0.38}
-        autoRotate={false}
-      />
-      {/* Impact ring flash — horizontal on table */}
-      {physRef.current.impactTime > 0 && (
-        <mesh position={[0, 0.03, 0]}>
-          <ringGeometry args={[0.15 * (2 - physRef.current.impactTime), 0.55 * (2 - physRef.current.impactTime), 32]} />
-          <meshBasicMaterial
-            color="#FFCC00"
-            transparent
-            opacity={physRef.current.impactTime * 0.6}
-            side={THREE.DoubleSide}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
-    </group>
-  )
-}
-
-// ─── Impact flash light (momentary bright light on slam impact) ───
-function ImpactLight({ impactPhase }: { impactPhase: string }) {
-  const lightRef = useRef<THREE.PointLight>(null!)
-  useFrame((_, delta) => {
-    if (!lightRef.current) return
-    if (impactPhase === "impact" || impactPhase === "slamming") {
-      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, 8, 0.3)
-    } else {
-      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, 0, 0.15)
-    }
-  })
-  return (
-    <pointLight ref={lightRef} position={[0, 0.8, 0]} intensity={0} color="#FFF8E0" distance={8} decay={2} />
-  )
-}
-
-// ─── Camera (adaptive to game phase) with screen shake on impact ───
-// v2: Free orbit — only auto-lerps after phase changes, not every frame.
-//     User can rotate/pan freely; camera only resets on phase transitions.
-//     Intro: cinematic orbit pan. Always enabled OrbitControls.
-function ArenaCamera({ gamePhase }: { gamePhase: string }) {
-  const { camera } = useThree()
-  const targetRef = useRef(new THREE.Vector3(0, 0, 0))
-  const shakeRef = useRef({ intensity: 0, time: 0 })
-  const userInteractedRef = useRef(false)
-  const prevPhaseRef = useRef(gamePhase)
-  const introTimeRef = useRef(0)
-
-  // Phase change → allow auto-pan to new position
-  useEffect(() => {
-    if (gamePhase !== prevPhaseRef.current) {
-      userInteractedRef.current = false
-      prevPhaseRef.current = gamePhase
-    }
-  }, [gamePhase])
-
-  // Shake auto-triggered in useFrame during impact/slam phases
-
-  useFrame((_, delta) => {
-    // Auto-lerp only when user hasn't manually moved the camera
-    if (!userInteractedRef.current) {
-      // Cinematic intro orbit (~8s full rotation, gentle vertical wave)
-      if (gamePhase === "match_intro") {
-        introTimeRef.current += delta
-        const angle = introTimeRef.current * 0.8
-        const radius = 8
-        const height = 5 + Math.sin(angle * 0.7) * 2
-        const target = new THREE.Vector3(0, 1, 0)
-        const pos = new THREE.Vector3(
-          Math.cos(angle) * radius,
-          height,
-          Math.sin(angle) * radius
-        )
-        targetRef.current.lerp(target, 0.03)
-        camera.position.lerp(pos, 0.03)
-        camera.lookAt(targetRef.current)
-      } else if (gamePhase === "aim" || gamePhase === "stake_player" || gamePhase === "stake_reveal") {
-        // Bird's-eye for aiming — see the full circle
-        const target = new THREE.Vector3(0, 0, 0)
-        const pos = new THREE.Vector3(0, 14, 1)
-        targetRef.current.lerp(target, 0.06)
-        camera.position.lerp(pos, 0.05)
-        camera.lookAt(targetRef.current)
-      } else if (gamePhase === "charge") {
-        // Angled view showing height + tilt
-        const target = new THREE.Vector3(0, 2, 0)
-        const pos = new THREE.Vector3(7, 8, 7)
-        targetRef.current.lerp(target, 0.06)
-        camera.position.lerp(pos, 0.05)
-        camera.lookAt(targetRef.current)
-      } else if (gamePhase === "throw" || gamePhase === "physics_resolve") {
-        // Low cinematic angle — tight on the action
-        const target = new THREE.Vector3(0, 0.2, 0)
-        const pos = new THREE.Vector3(4, 3, 5)
-        targetRef.current.lerp(target, 0.08)
-        camera.position.lerp(pos, 0.06)
-        camera.lookAt(targetRef.current)
-      } else {
-        // Default: orbit-friendly (round_start, betting, coin_flip, etc.)
-        const target = new THREE.Vector3(0, 0.5, 0)
-        const pos = new THREE.Vector3(4, 8, 5)
-        targetRef.current.lerp(target, 0.03)
-        camera.position.lerp(pos, 0.03)
-        camera.lookAt(targetRef.current)
-      }
-    }
-
-    // Screen shake — applied AFTER lerp for dramatic impact during slam
-    if (gamePhase === "physics_resolve" || gamePhase === "throw") {
-      const sh = shakeRef.current
-      if (sh.intensity < 0.1) {
-        sh.intensity = 1.2
-        sh.time = 0
-      }
-      sh.time += 0.16
-      sh.intensity *= 0.86
-      const sx = Math.sin(sh.time * 35) * sh.intensity * 0.28
-      const sy = Math.cos(sh.time * 41) * sh.intensity * 0.14
-      const sz = Math.sin(sh.time * 33) * sh.intensity * 0.20
-      camera.position.x += sx
-      camera.position.y += sy
-      camera.position.z += sz
-    } else {
-      shakeRef.current.intensity = 0
-    }
-  })
-
-  return (
-    <OrbitControls
-      enableDamping
-      dampingFactor={0.08}
-      minDistance={3}
-      maxDistance={20}
-      maxPolarAngle={Math.PI / 2.2}
-      minPolarAngle={0.2}
-      target={[0, 0.3, 0]}
-      enablePan={true}
-      panSpeed={0.6}
-      rotateSpeed={0.4}
-      enabled={true}
-      onStart={() => { userInteractedRef.current = true }}
-      mouseButtons={{ LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.PAN, RIGHT: THREE.MOUSE.ROTATE }}
-    />
-  )
-}
+// Arena sub-components
+import { THEME_COLORS } from "../arena/ArenaTheme"
+import { ArenaFloor } from "../arena/ArenaFloor"
+import { ArenaPillars } from "../arena/ArenaPillars"
+import { ArenaReticle } from "../arena/ArenaReticle"
+import { StakedTazoMesh } from "../arena/StakedTazoMesh"
+import { AirborneTazoMesh } from "../arena/AirborneTazoMesh"
+import { ArenaCamera } from "../arena/ArenaCamera"
+import { ImpactSpark, ImpactLight } from "../arena/ArenaImpactEffects"
 
 // ─── Scene ───
 interface SceneProps {
@@ -621,7 +40,6 @@ interface SceneProps {
   showReticle: boolean
   reticleX: number
   reticleZ: number
-  /** Player tube/deck in arena */
   playerDeckCount?: number
   playerDeckTotal?: number
   playerDeckFranchise?: string
@@ -647,7 +65,7 @@ function Scene({
 }: SceneProps) {
   const [impactCount, setImpactCount] = useState(0)
   const prevPhase = useRef(gamePhase)
-  
+
   // Trigger spark on impact
   useEffect(() => {
     if (gamePhase === "physics_resolve" && prevPhase.current !== "impact") {
@@ -663,6 +81,7 @@ function Scene({
     }
     return [0, 0.04, 0] as [number, number, number]
   }, [airborneTazo?.position])
+
   return (
     <>
       <ambientLight intensity={0.45} />
@@ -670,11 +89,10 @@ function Scene({
       <directionalLight position={[-4, 8, -5]} intensity={0.15} />
       <spotLight position={[0, 12, 0]} angle={0.7} penumbra={0.6} intensity={2.5} color="#FFF5E0" />
 
-      <Floor config={config} />
-      <Pillars config={config} />
+      <ArenaFloor config={config} />
+      <ArenaPillars config={config} />
 
-
-      {/* ── Player Deck Tube (visible in arena) ── */}
+      {/* Player Deck Tube (visible in arena) */}
       {playerDeckTotal > 0 && (
         <BattleDeckTube
           position={[config.radius * 1.05, 0, config.radius * 0.3]}
@@ -688,7 +106,7 @@ function Scene({
         />
       )}
 
-      {/* ── Opponent Deck Tube ── */}
+      {/* Opponent Deck Tube */}
       {opponentDeckTotal > 0 && (
         <BattleDeckTube
           position={[-config.radius * 1.05, 0, -config.radius * 0.3]}
@@ -701,14 +119,15 @@ function Scene({
           tazoImageUrls={opponentDeckImages}
         />
       )}
+
       {/* Player/opponent direction markers */}
       <mesh position={[0, 0.03, config.radius * 0.8]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[1.6, 0.5]} />
-        <meshBasicMaterial color={BATTLE_COLORS.player} transparent opacity={0.25} side={THREE.DoubleSide} />
+        <meshBasicMaterial color={BATTLE_COLORS.player} transparent opacity={0.25} side={2} />
       </mesh>
       <mesh position={[0, 0.03, -config.radius * 0.8]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[1.6, 0.5]} />
-        <meshBasicMaterial color={BATTLE_COLORS.opponent} transparent opacity={0.25} side={THREE.DoubleSide} />
+        <meshBasicMaterial color={BATTLE_COLORS.opponent} transparent opacity={0.25} side={2} />
       </mesh>
 
       {/* Staked tazos */}
@@ -726,7 +145,7 @@ function Scene({
       )}
 
       {/* Reticle */}
-      <Reticle
+      <ArenaReticle
         position={[reticleX, 0.06, reticleZ]}
         visible={showReticle}
         gamePhase={gamePhase}
@@ -770,6 +189,8 @@ export default function BattleArena3D({
   showReticle = false, reticleX = 0, reticleZ = 0,
   children, playerDeckCount, playerDeckTotal,
   playerDeckFranchise, playerDeckImages,
+  opponentDeckCount, opponentDeckTotal,
+  opponentDeckFranchise, opponentDeckImages,
   isDrawing, drawTrigger,
 }: Props) {
   return (
@@ -796,6 +217,10 @@ export default function BattleArena3D({
             playerDeckTotal={playerDeckTotal}
             playerDeckFranchise={playerDeckFranchise}
             playerDeckImages={playerDeckImages}
+            opponentDeckCount={opponentDeckCount}
+            opponentDeckTotal={opponentDeckTotal}
+            opponentDeckFranchise={opponentDeckFranchise}
+            opponentDeckImages={opponentDeckImages}
             isDrawing={isDrawing}
             drawTrigger={drawTrigger}
             config={config}
