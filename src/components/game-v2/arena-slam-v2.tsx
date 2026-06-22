@@ -437,9 +437,19 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount }: {
   phase: string
   deckCount?: number
 }) {
+  if (phase === "result") return null
+  const available = discs.filter(d => !d.flipped && !d.ringOut)
+  if (available.length === 0 && (typeof deckCount !== "number" || deckCount === 0)) return null
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-end gap-2.5 z-20">
-      {discs.filter(d => !d.flipped && !d.ringOut).map(d => (
+      {/* Deck counter */}
+      {typeof deckCount === "number" && deckCount > 0 && (
+        <div className="w-10 h-14 rounded-lg border border-white/8 bg-white/3 flex flex-col items-center justify-center text-white/20 text-[9px] font-black uppercase tracking-wider mr-1 flex-shrink-0">
+          <span className="text-[11px]">{deckCount}</span>
+          <span className="text-[7px]">deck</span>
+        </div>
+      )}
+      {available.map(d => (
         <button
           key={d.id}
           onClick={() => phase !== "resolving" && onSelect(d.id)}
@@ -475,6 +485,9 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount }: {
           </div>
         </button>
       ))}
+      {available.length === 0 && (
+        <span className="text-white/15 text-[9px] font-black uppercase tracking-wider px-2">No cards</span>
+      )}
     </div>
   )
 }
@@ -751,7 +764,17 @@ export default function ArenaSlamV2({
       attacker = avail[chosenIdx]
       return oh.filter(d => d.id !== attacker?.id)
     })
-    if (!attacker) { setPhase("select"); return }
+    if (!attacker) {
+      // No hand cards — check if game should end
+      const playerCanPlay = cd.some(d => d.owner === "player" && !d.flying && !d.flipped && !d.ringOut)
+      if (!playerCanPlay) {
+        // Neither side can play — end game by score
+        setPhase("result")
+      } else {
+        setPhase("select")
+      }
+      return
+    }
     // Place attacker on field at opponent side + compute launch in one batch
     const attackerX = 0 + (Math.random() - 0.5) * 1.2
     const attackerZ = -(ARENA_RADIUS - 1.5)
@@ -809,6 +832,16 @@ export default function ArenaSlamV2({
     const t = setTimeout(() => setSlamTexts(p => p.slice(1)), 1400)
     return () => clearTimeout(t)
   }, [slamTexts])
+
+  // Auto-select first available hand card when returning to select phase
+  useEffect(() => {
+    if (phase !== "select") return
+    const available = playerHand.filter(d => !d.flipped && !d.ringOut)
+    if (available.length > 0 && !available.find(d => d.id === selectedId)) {
+      setSelectedId(available[0].id)
+    }
+  }, [phase, playerHand, selectedId])
+
 
   // ═══ RENDER ═══
   return (
