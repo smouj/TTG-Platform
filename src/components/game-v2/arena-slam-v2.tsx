@@ -1269,7 +1269,7 @@ export default function ArenaSlamV2({
           const oppPlaced = oh.map((d, i) => ({
             ...d,
             x: (i - 1) * 2.0,
-            y: 0,
+            y: 0.02,
             z: -(FIELD_HALF_L - 4.0),
             moving: false, flying: false,
             wobbleAngle: 0, wobbleSpeed: 0, wobbleAxis: 0,
