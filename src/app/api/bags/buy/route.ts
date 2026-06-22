@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
     // Determine tazo inside (weighted random by rarity)
     const tazoWhere = {
       sourceStatus: "verified",
+      publishStatus: "published",
       ...(bagConfig.franchise ? { franchise: { slug: bagConfig.franchise } } : {}),
     }
     let allTazos = await db.tazo.findMany({
@@ -75,7 +76,7 @@ export async function POST(request: NextRequest) {
     if (allTazos.length === 0 && bagConfig.franchise) {
       allTazos = await db.tazo.findMany({
         select: { id: true, rarity: true, franchiseId: true },
-        where: { sourceStatus: "verified" },
+        where: { sourceStatus: "verified", publishStatus: "published" },
       })
     }
 
