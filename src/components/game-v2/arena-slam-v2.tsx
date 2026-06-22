@@ -65,6 +65,31 @@ function CameraController({ preset, orbitEnabled }: { preset: CamPreset; orbitEn
 }
 
 // ─── Force color ───
+
+// ─── Launch Pad (shows where disc will launch from) ───
+function LaunchPad({ pos, selectedDisc }: { pos: { x: number; z: number } | null; selectedDisc: DiscState | null }) {
+  if (!pos || !selectedDisc) return null
+  return (
+    <group position={[pos.x, 0.03, pos.z]}>
+      {/* Glowing pad */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
+        <ringGeometry args={[0.3, 0.45, 32]} />
+        <meshBasicMaterial color="#00FFC8" transparent opacity={0.4} side={2} />
+      </mesh>
+      {/* Pulse ring */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]}>
+        <ringGeometry args={[0.15, 0.25, 32]} />
+        <meshBasicMaterial color="#00FFC8" transparent opacity={0.6} />
+      </mesh>
+      {/* Dot */}
+      <mesh position={[0, 0.04, 0]}>
+        <sphereGeometry args={[0.08, 16, 8]} />
+        <meshBasicMaterial color="#00FFC8" transparent opacity={0.7} />
+      </mesh>
+    </group>
+  )
+}
+
 function forceColor(ratio: number): string {
   if (ratio < 0.18) return "#44FF66"
   if (ratio < 0.38) return "#FFCC00"
@@ -1021,6 +1046,7 @@ export default function ArenaSlamV2({
   const [camPreset, setCamPreset] = useState<CamPreset>("default")
   const [camAnim, setCamAnim] = useState(false)
   const [wireframe, setWireframe] = useState(false)
+  const [launchPos, setLaunchPos] = useState<{x: number; z: number} | null>(null)
   const [fogOn, setFogOn] = useState(true)
   const [orbitMode, setOrbitMode] = useState(false)
 
@@ -1113,9 +1139,12 @@ export default function ArenaSlamV2({
     if (phase !== "aim" || !selectedDisc || orbitMode) return
     e.preventDefault()
     const { x, z } = getCoords(e)
-    // Player spawn position (discs enter from player's side)
-    const spawnX = 0, spawnZ = FIELD_HALF_L - 4.0
-    const dsStart = { startX: spawnX + x * 0.5, startZ: spawnZ + z * 0.5, currentX: x, currentZ: z, active: true }
+    // Player spawn: must be on player's side, inside field
+    const sx = Math.max(-FIELD_HALF_W + 2, Math.min(FIELD_HALF_W - 2, x))
+    const sz = Math.max(CENTER_LINE_Z + 1.5, Math.min(FIELD_HALF_L - 2, z))
+    setLaunchPos({ x: sx, z: sz })
+    // Drag: from launch position toward pointer target
+    const dsStart = { startX: sx, startZ: sz, currentX: x, currentZ: z, active: true }
     dragRef.current = dsStart
     setDragState(dsStart)
     setTrajectory([])
@@ -1188,14 +1217,12 @@ export default function ArenaSlamV2({
           setDiscs(prev => [...prev, ...oppPlaced])
           return []
         })
-        // Auto-draw one card for battle
+        // Draw 5 cards for battle (or all remaining if less)
         setPlayerDeck(pd => {
-          if (pd.length > 0) {
-            const [next, ...rest] = pd
-            setPlayerHand(ph => ph.length === 0 ? [next] : [...ph, next])
-            return rest
-          }
-          return pd
+          const drawCount = Math.min(5, pd.length)
+          const drawn = pd.slice(0, drawCount)
+          setPlayerHand(ph => [...ph, ...drawn])
+          return pd.slice(drawCount)
         })
         setPhase("select")
         // Auto-select first hand card for battle launch
@@ -1230,7 +1257,7 @@ export default function ArenaSlamV2({
     }, 8000)
     // Remove from hand, place on field at default position
     setPlayerHand(prev => prev.filter(d => d.id !== selectedId))
-    setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: FIELD_HALF_L - 4.0, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
+    setDiscs(prev => [...prev, { ...selectedDisc, x: launchPos?.x ?? 0, z: launchPos?.z ?? (FIELD_HALF_L - 4.0), vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
     simulatingRef.current = true
   }, [dragState, selectedDisc, selectedId])
 
@@ -1247,7 +1274,8 @@ export default function ArenaSlamV2({
         const result = simulateStep(prev, delta)
         setImpacts(imp => [...imp.slice(-10), ...result.impacts.slice(-4)])
 
-        result.discs.forEach(d => {
+        const ringOutBefore = new Set(discs.filter(d => d.ringOut).map(d => d.id))
+      result.discs.forEach(d => {
           const prevD = prev.find(p => p.id === d.id)
           const justLanded = prevD?.flying && !d.flying
           if (d.landedOnId && justLanded) {
@@ -1274,16 +1302,38 @@ export default function ArenaSlamV2({
           if (scoreRef.current.player >= 5 || scoreRef.current.opponent >= 5) {
             setPhase("result")
           } else if (isPlayerTurn) {
-            // Player's turn ends → now opponent's turn
-            // Draw 1 from deck into hand (if deck not empty)
-            setPlayerDeck(pd => {
-              if (pd.length > 0) {
-                const [next, ...rest] = pd
-                setPlayerHand(ph => [...ph, next])
-                return rest
-              }
-              return pd
-            })
+            // Player's turn ends → check if attacker flipped any opponent disc
+            const attackerId = selectedId
+            const attackerDisc = result.discs.find(d => d.id === attackerId)
+            const flippedAnyOpponent = result.discs.some(
+              d => d.owner === "opponent" && d.flipped && !ringOutBefore.has(d.id)
+            )
+
+            if (!flippedAnyOpponent && attackerDisc) {
+              // MISS: return attacker to deck, shuffle, draw 1
+              setDiscs(prev => prev.filter(d => d.id !== attackerId))
+              setPlayerDeck(pd => {
+                const returned = { ...attackerDisc, x: 0, z: 0, y: 0, vx: 0, vy: 0, vz: 0, moving: false, flying: false, flipped: false, captured: false, ringOut: false, wobbleAngle: 0, wobbleSpeed: 0 } as DiscState
+                const shuffled = [...pd, returned].sort(() => Math.random() - 0.5)
+                if (shuffled.length > 0) {
+                  const [next, ...rest] = shuffled
+                  setPlayerHand(ph => [...ph, next])
+                  return rest
+                }
+                return []
+              })
+              setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-2), { text: "MISS!", x: attackerDisc.x, z: attackerDisc.z, color: "#FF8866", id: n }]); return n })
+            } else {
+              // HIT: attacker stays on field, draw 1 from deck
+              setPlayerDeck(pd => {
+                if (pd.length > 0) {
+                  const [next, ...rest] = pd
+                  setPlayerHand(ph => [...ph, next])
+                  return rest
+                }
+                return pd
+              })
+            }
             turnRef.current = "opponent"
             setPhase("opponent")
             // Show turn handover and brief aim delay
@@ -1294,6 +1344,20 @@ export default function ArenaSlamV2({
             setTimeout(() => doOpponentTurn(result.discs), 700)
           } else {
             // Opponent's turn ends → now player's turn
+            // Check if opponent attacker flipped any player disc
+            const oppAttackerDiscs = result.discs.filter(d => d.owner === "opponent" && d.flying === false && !d.ringOut)
+            const oppFlippedAny = result.discs.some(d => d.owner === "player" && d.flipped && !ringOutBefore.has(d.id))
+            
+            if (!oppFlippedAny && oppAttackerDiscs.length > 0) {
+              // MISS: return opponent disc to opponent deck
+              setDiscs(prev => prev.filter(d => !oppAttackerDiscs.some(od => od.id === d.id)))
+              const toReturn = oppAttackerDiscs.map(d => ({ ...d, x: 0, z: 0, y: 0, vx: 0, vy: 0, vz: 0, moving: false, flying: false, flipped: false, captured: false, ringOut: false, wobbleAngle: 0, wobbleSpeed: 0 } as DiscState))
+              opponentDeckRef.current = [...opponentDeckRef.current, ...toReturn].sort(() => Math.random() - 0.5)
+              // No draw for opponent on miss (opponent draw is handled in doOpponentTurn)
+            } else {
+              // HIT: opponent attacker stays, no return needed
+            }
+
             turnRef.current = "player"
             setTurnCount(t => t + 1)
             setTextId(ti => { const n = ti + 1; setSlamTexts(p => [...p.slice(-2), { text: "YOUR TURN", x: 0, z: 0, color: "#00FFC8", id: n }]); return ti })
@@ -1696,6 +1760,9 @@ export default function ArenaSlamV2({
             isDragging={dragState.active && d.id === selectedId}
             dragRatio={d.id === selectedId ? dragRatio : 0} />
         ))}
+
+        {/* Launch pad */}
+        {phase === "aim" && launchPos && <LaunchPad pos={launchPos} selectedDisc={selectedDisc} />}
 
         {/* Trajectory */}
         {trajectory.length > 1 && (
