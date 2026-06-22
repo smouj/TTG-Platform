@@ -460,7 +460,7 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount }: {
             border: `2px solid ${d.owner === "player" ? "#FFCC00" : "#FF4444"}`,
           }}>
             <span className="text-[9px] font-black text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-              {d.name.slice(0, 2).toUpperCase()}
+              {d.name.slice(0, 3).toUpperCase()}
             </span>
           </div>
           <span className="text-[7px] font-bold text-white/35 mt-0.5 uppercase leading-none">
@@ -613,7 +613,9 @@ export default function ArenaSlamV2({
     if (phase !== "aim" || !selectedDisc || orbitMode) return
     e.preventDefault()
     const { x, z } = getCoords(e)
-    const dsStart = { startX: selectedDisc.x + x * 0.5, startZ: selectedDisc.z + z * 0.5, currentX: x, currentZ: z, active: true }
+    // Player spawn position (discs enter from player's side)
+    const spawnX = 0, spawnZ = ARENA_RADIUS - 1.5
+    const dsStart = { startX: spawnX + x * 0.5, startZ: spawnZ + z * 0.5, currentX: x, currentZ: z, active: true }
     dragRef.current = dsStart
     setDragState(dsStart)
     setTrajectory([])
@@ -629,7 +631,7 @@ export default function ArenaSlamV2({
     if (dist < 0.2) { setTrajectory([]); return }
 
     setTrajectory(calculateTrajectoryPreview(
-      selectedDisc.x, selectedDisc.z,
+      selectedDisc.x || 0, ARENA_RADIUS - 1.5,
       dragRef.current,
       selectedDisc.stats, 70
     ))
@@ -709,6 +711,20 @@ export default function ArenaSlamV2({
             // Opponent's turn ends → now player's turn
             turnRef.current = "player"
             setPhase("select")
+            // If hand empty, auto-draw from deck
+            setPlayerHand(ph => {
+              if (ph.filter(d => !d.flipped && !d.ringOut).length > 0) return ph
+              // Empty hand — try draw
+              setPlayerDeck(pdk => {
+                if (pdk.length > 0) {
+                  setPlayerHand(() => [pdk[0]])
+                  return pdk.slice(1)
+                }
+                // Completely out — game over by elimination
+                return pdk
+              })
+              return ph
+            })
           }
         }
         return result.discs
@@ -736,15 +752,23 @@ export default function ArenaSlamV2({
       return oh.filter(d => d.id !== attacker?.id)
     })
     if (!attacker) { setPhase("select"); return }
-    // Place attacker on field at opponent side
-    const placedAttacker = { ...attacker, x: 0 + (Math.random() - 0.5) * 1.2, z: -(ARENA_RADIUS - 1.5) }
-    setDiscs(prev => [...prev, placedAttacker])
+    // Place attacker on field at opponent side + compute launch in one batch
+    const attackerX = 0 + (Math.random() - 0.5) * 1.2
+    const attackerZ = -(ARENA_RADIUS - 1.5)
     const pDiscs = cd.filter(d => d.owner === "player" && !d.flipped && !d.ringOut)
-    const target = pDiscs.length > 0 ? pDiscs[Math.floor(Math.random() * pDiscs.length)] : null
+    let target: DiscState | null = null
+    if (pDiscs.length > 0) {
+      // Pick closest player disc to attacker spawn point
+      let closestDist = Infinity
+      for (const pd of pDiscs) {
+        const d = Math.hypot(pd.x - attackerX, pd.z - attackerZ)
+        if (d < closestDist) { closestDist = d; target = pd }
+      }
+    }
 
     let aimAngle: number, aimDist: number
     if (target) {
-      const dx = target.x - placedAttacker.x, dz = target.z - placedAttacker.z
+      const dx = target.x - attackerX, dz = target.z - attackerZ
       aimAngle = Math.atan2(dz, dx)
       aimDist = Math.hypot(dx, dz) / 3.5 + Math.random() * 0.4
     } else {
@@ -754,18 +778,16 @@ export default function ArenaSlamV2({
     aimAngle += (Math.random() - 0.5) * 0.3
 
     const fd: DragState = {
-      startX: placedAttacker.x + Math.cos(aimAngle + Math.PI) * aimDist * 0.3,
-      startZ: placedAttacker.z + Math.sin(aimAngle + Math.PI) * aimDist * 0.3,
-      currentX: placedAttacker.x - Math.cos(aimAngle + Math.PI) * aimDist * 0.7,
-      currentZ: placedAttacker.z - Math.sin(aimAngle + Math.PI) * aimDist * 0.7,
+      startX: attackerX + Math.cos(aimAngle + Math.PI) * aimDist * 0.3,
+      startZ: attackerZ + Math.sin(aimAngle + Math.PI) * aimDist * 0.3,
+      currentX: attackerX - Math.cos(aimAngle + Math.PI) * aimDist * 0.7,
+      currentZ: attackerZ - Math.sin(aimAngle + Math.PI) * aimDist * 0.7,
       active: true,
     }
 
-    const launch = calculateLaunchVelocity(fd, placedAttacker.stats)
-    // Update the placed disc with velocity
-    setDiscs(prev => prev.map(d =>
-      d.id === placedAttacker.id ? { ...d, vx: launch.vx, vy: launch.vy, vz: launch.vz, y: 0.05, moving: true, flying: true, rotationSpeed: launch.vx * 0.6 } : d
-    ))
+    const launch = calculateLaunchVelocity(fd, attacker.stats)
+    // Single atomic operation: add disc + set velocity
+    setDiscs(prev => [...prev, { ...attacker!, x: attackerX, z: attackerZ, vx: launch.vx, vy: launch.vy, vz: launch.vz, y: 0.05, moving: true, flying: true, rotationSpeed: launch.vx * 0.6 } as DiscState])
     // Draw 1 into opponent hand (using ref for deck)
     const deck = opponentDeckRef.current
     if (deck.length > 0) {
