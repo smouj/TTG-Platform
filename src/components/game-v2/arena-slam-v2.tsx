@@ -146,9 +146,9 @@ function ArenaFloorV3() {
     // Each zone has different dot density = visual roughness indicator
     const roughnessZones = [
       { from: 0, to: 0.9, color: "255,255,255", alpha: 0.04, dots: 0,   label: "center" },      // smooth center
-      { from: 0.9, to: 2.0, color: "255,200,100", alpha: 0.12, dots: 600, label: "rough inner" }, // rough ring
-      { from: 2.0, to: 3.0, color: "255,255,255", alpha: 0.05, dots: 200, label: "smooth" },      // smooth mid
-      { from: 3.0, to: 4.35, color: "200,180,140", alpha: 0.14, dots: 900, label: "rough outer" }, // rough outer
+      { from: 0.9, to: 2.0, color: "255,200,100", alpha: 0.12, dots: 450, label: "rough inner" }, // rough ring
+      { from: 2.0, to: 3.0, color: "255,255,255", alpha: 0.05, dots: 150, label: "smooth" },      // smooth mid
+      { from: 3.0, to: 4.35, color: "200,180,140", alpha: 0.14, dots: 700, label: "rough outer" }, // rough outer
     ]
 
     // Store roughness zones for physics (exported as floorRoughness)
@@ -259,12 +259,12 @@ function ArenaFloorV3() {
     ctx.fillStyle = "rgba(255, 60, 60, 0.28)"
     ctx.fillText("RIVAL ZONE", mid, px(oppZ + 1.2))
 
-    // Roughness zone labels (small hints)
-    ctx.font = "bold 11px 'Geist', sans-serif"
-    ctx.fillStyle = "rgba(255,255,255,0.08)"
-    ctx.fillText("ROUGH", mid, px(1.5))
-    ctx.fillText("SMOOTH", mid, px(2.5))
-    ctx.fillText("ROUGH", mid, px(3.7))
+    // Roughness zone indicators (subtle markers)
+    ctx.font = "bold 10px 'Geist', sans-serif"
+    ctx.fillStyle = "rgba(255,255,255,0.05)"
+    ctx.fillText("· ROUGH ·", mid, px(1.45))
+    ctx.fillText("· SMOOTH ·", mid, px(2.5))
+    ctx.fillText("· ROUGH ·", mid, px(3.65))
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.04)"
     ctx.font = "bold 14px 'Geist', sans-serif"
@@ -1139,8 +1139,9 @@ export default function ArenaSlamV2({
 
         <ArenaFloorV3 />
         <ArenaWallV3 />
-        {/* Deck tubes (tubemazos) */}
+        {/* Deck tubes (tubemazos) — player + opponent */}
         <DeckTubeV3 deckCount={playerDeck.length} totalCount={playerDeck.length + playerHand.length} side={1} />
+        <DeckTubeV3 deckCount={opponentDeckRef.current.length} totalCount={opponentDeckRef.current.length + opponentHand.length} side={-1} />
 
         {/* Discs */}
         {discs.filter(d => !d.ringOut).map(d => (
