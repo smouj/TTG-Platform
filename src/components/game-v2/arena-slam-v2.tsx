@@ -134,11 +134,11 @@ function ArenaFloorV3() {
 
     // ─── Base gradient ───
     const g = ctx.createRadialGradient(mid, mid, 30, mid, mid, mid)
-    g.addColorStop(0, "#1e1e3c")
-    g.addColorStop(0.25, "#161630")
-    g.addColorStop(0.5, "#101020")
-    g.addColorStop(0.75, "#0a0a14")
-    g.addColorStop(1, "#040408")
+    g.addColorStop(0, "#24244a")
+    g.addColorStop(0.25, "#1a1a38")
+    g.addColorStop(0.5, "#121228")
+    g.addColorStop(0.75, "#0c0c1c")
+    g.addColorStop(1, "#060610")
     ctx.fillStyle = g
     ctx.fillRect(0, 0, sz, sz)
 
@@ -289,7 +289,7 @@ function ArenaWallV3() {
       {/* Outer wall ring — main torus */}
       <mesh position={[0, 0.25, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
         <torusGeometry args={[ARENA_RADIUS, 0.22, 16, 80]} />
-        <meshStandardMaterial color="#FFCC00" roughness={0.2} metalness={0.7} emissive="#FFCC00" emissiveIntensity={0.18} />
+        <meshStandardMaterial color="#FFCC00" roughness={0.15} metalness={0.8} emissive="#FFCC00" emissiveIntensity={0.25} />
       </mesh>
       {/* Inner glow ring — brighter */}
       <mesh position={[0, 0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -599,19 +599,31 @@ function CameraShakeV3({ intensity, duration }: { intensity: number; duration: n
 
 // ═══ HUD ═══
 
-function ScoreHUD({ playerScore, opponentScore }: { playerScore: number; opponentScore: number }) {
+function ScoreHUD({ playerScore, opponentScore, playerName, opponentName }: { playerScore: number; opponentScore: number; playerName?: string; opponentName?: string }) {
   return (
     <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-      <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10">
-        <span className="text-yellow-400 font-black text-2xl">{playerScore}</span>
-        <span className="text-white/15 font-black text-xs tracking-widest">VS</span>
-        <span className="text-red-400 font-black text-2xl">{opponentScore}</span>
+      <div className="flex items-center gap-5 bg-black/40 backdrop-blur-sm px-5 py-2.5 rounded-full border border-white/8">
+        {/* Player */}
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-cyan-400 font-black text-2xl drop-shadow-[0_0_12px_rgba(0,255,200,0.3)]">{playerScore}</span>
+          <span className="text-white/15 font-black text-[8px] uppercase tracking-wider">{playerName || "YOU"}</span>
+        </div>
+        {/* VS */}
+        <div className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] flex items-center justify-center">
+          <span className="text-white/10 font-black text-[10px]">VS</span>
+        </div>
+        {/* Opponent */}
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-red-400 font-black text-2xl drop-shadow-[0_0_12px_rgba(255,50,50,0.3)]">{opponentScore}</span>
+          <span className="text-white/15 font-black text-[8px] uppercase tracking-wider">{opponentName || "RIVAL"}</span>
+        </div>
       </div>
     </div>
   )
 }
 
-function TurnIndicator({ phase, turn }: { phase: string; turn?: string }) {
+function TurnIndicator({ phase, turn, playerName, opponentName }: { phase: string; turn?: string; playerName?: string; opponentName?: string }) {
+  if (phase === "intro" || phase === "result") return null
   const msgs: Record<string, string> = {
     select: "Choose your tazo",
     aim: "Drag back · Release to jump!",
@@ -619,15 +631,28 @@ function TurnIndicator({ phase, turn }: { phase: string; turn?: string }) {
     opponent: "Opponent aims...",
   }
   const colors: Record<string, string> = {
-    select: "text-yellow-400/50",
-    aim: "text-green-400/60",
-    resolving: turn === "player" ? "text-yellow-400/60" : "text-red-400/60",
-    opponent: "text-red-400/50",
+    select: "border-yellow-400/20 text-yellow-400/60",
+    aim: "border-green-400/20 text-green-400/60",
+    resolving: turn === "player" ? "border-cyan-400/20 text-cyan-400/60" : "border-red-400/20 text-red-400/60",
+    opponent: "border-red-400/20 text-red-400/50",
   }
   return (
-    <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-      <div className={`px-4 py-1.5 rounded-full border border-white/10 bg-black/40 backdrop-blur-sm text-[10px] font-black uppercase tracking-[0.15em] ${colors[phase] || "text-white/50"}`}>
+    <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex items-center gap-6">
+      {/* Player name chip */}
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-400/10 bg-black/30 backdrop-blur-sm">
+        <div className="w-2 h-2 rounded-full bg-cyan-400/60" />
+        <span className="text-white/40 font-black text-[10px] uppercase tracking-wider">{playerName || "YOU"}</span>
+      </div>
+      
+      {/* Phase indicator */}
+      <div className={`px-4 py-1.5 rounded-full border bg-black/40 backdrop-blur-sm text-[10px] font-black uppercase tracking-[0.12em] ${colors[phase] || "border-white/10 text-white/50"}`}>
         {msgs[phase] || phase}
+      </div>
+      
+      {/* Opponent name chip */}
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-400/10 bg-black/30 backdrop-blur-sm">
+        <span className="text-white/40 font-black text-[10px] uppercase tracking-wider">{opponentName || "RIVAL"}</span>
+        <div className="w-2 h-2 rounded-full bg-red-400/60" />
       </div>
     </div>
   )
@@ -640,7 +665,7 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount }: {
   phase: string
   deckCount?: number
 }) {
-  if (phase === "result") return null
+  if (phase === "result" || phase === "intro") return null
   const available = discs.filter(d => !d.flipped && !d.ringOut)
   if (available.length === 0 && (typeof deckCount !== "number" || deckCount === 0)) return null
   return (
@@ -730,13 +755,15 @@ export default function ArenaSlamV2({
   // State
   const [discs, setDiscs] = useState<DiscState[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [phase, setPhase] = useState<"select" | "aim" | "resolving" | "opponent" | "result">("select")
+  const [phase, setPhase] = useState<"intro" | "select" | "aim" | "resolving" | "opponent" | "result">("intro")
   const [playerScore, setPlayerScore] = useState(0)
   const [opponentScore, setOpponentScore] = useState(0)
   const [impacts, setImpacts] = useState<ImpactEvent[]>([])
   const [playerHand, setPlayerHand] = useState<DiscState[]>([])
   const [playerDeck, setPlayerDeck] = useState<DiscState[]>([])
   const [opponentHand, setOpponentHand] = useState<DiscState[]>([])
+  const [playerName, setPlayerName] = useState("YOU")
+  const [opponentName, setOpponentName] = useState("RIVAL")
   const [dragState, setDragState] = useState<DragState>({ startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false })
   const [trajectory, setTrajectory] = useState<TrajectoryPoint[]>([])
   const [shakeIntensity, setShakeIntensity] = useState(0)
@@ -795,7 +822,9 @@ export default function ArenaSlamV2({
     setOpponentHand(oHand)
     opponentDeckRef.current = oDeck
     setSelectedId(pHand[0]?.id || null)
-    setPhase("select")
+    setPhase("intro")
+    // Auto-transition to select after intro animation
+    setTimeout(() => setPhase("select"), 1800)
     scoreRef.current = { player: 0, opponent: 0 }
     turnRef.current = "player"
     setPlayerScore(0)
@@ -1051,15 +1080,15 @@ export default function ArenaSlamV2({
   // ═══ RENDER ═══
   return (
     <div ref={arenaRef} className="w-full h-full relative select-none overflow-hidden"
-      style={{ background: "radial-gradient(ellipse at center, #161630 0%, #0b0b18 50%, #030308 100%)" }}>
+      style={{ background: "radial-gradient(ellipse at center, #1a1a3e 0%, #12122a 35%, #0a0a1e 65%, #050510 100%)" }}>
 
       {/* Scanlines */}
       <div className="absolute inset-0 pointer-events-none z-25 opacity-[0.02]"
         style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.4) 2px, rgba(255,255,255,0.4) 4px)" }} />
 
       {/* HUD */}
-      <ScoreHUD playerScore={playerScore} opponentScore={opponentScore} />
-      <TurnIndicator phase={phase} turn={turnRef.current} />
+      <ScoreHUD playerScore={playerScore} opponentScore={opponentScore} playerName={playerName} opponentName={opponentName} />
+      <TurnIndicator phase={phase} turn={turnRef.current} playerName={playerName} opponentName={opponentName} />
       <SlamTexts events={slamTexts} />
 
       {/* Hand */}
@@ -1096,20 +1125,110 @@ export default function ArenaSlamV2({
         </div>
       )}
 
-      {/* Result */}
+      {/* ─── Intro / VS Screen ─── */}
+      {phase === "intro" && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+          style={{ background: "radial-gradient(ellipse at center, #1a1a3e00 0%, #0a0a1e88 60%, #030308ee 100%)" }}>
+          <style>{`
+            @keyframes intro-vs-pulse {
+              0%, 100% { transform: scale(1); opacity: 0.5; }
+              50% { transform: scale(1.08); opacity: 1; }
+            }
+            @keyframes intro-deck-slide-left {
+              0% { opacity: 0; transform: translateX(-120px) scale(0.6); }
+              70% { opacity: 0.7; transform: translateX(5px) scale(1.03); }
+              100% { opacity: 1; transform: translateX(0) scale(1); }
+            }
+            @keyframes intro-deck-slide-right {
+              0% { opacity: 0; transform: translateX(120px) scale(0.6); }
+              70% { opacity: 0.7; transform: translateX(-5px) scale(1.03); }
+              100% { opacity: 1; transform: translateX(0) scale(1); }
+            }
+            @keyframes intro-vs-appear {
+              0% { opacity: 0; transform: scale(0.2) rotate(-8deg); }
+              100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            }
+            .anim-deck-left { animation: intro-deck-slide-left 0.7s 0.3s ease-out both; }
+            .anim-deck-right { animation: intro-deck-slide-right 0.7s 0.3s ease-out both; }
+            .anim-vs { animation: intro-vs-appear 0.5s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+            .anim-vs-pulse { animation: intro-vs-pulse 2s 0.7s ease-in-out infinite; }
+            @keyframes intro-fade-text {
+              0%, 100% { opacity: 0.2; }
+              50% { opacity: 0.5; }
+            }
+            .anim-fade-text { animation: intro-fade-text 2s 0.5s ease-in-out infinite; }
+          `}</style>
+
+          {/* Player side — left */}
+          <div className="absolute left-[8%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 anim-deck-left">
+            <div className="w-20 h-28 rounded-xl border-2 border-cyan-400/25 bg-cyan-400/3 flex flex-col items-center justify-center gap-1 shadow-[0_0_45px_rgba(0,255,200,0.06)]">
+              <div className="w-12 h-12 rounded-full border-2 border-cyan-400/15 bg-cyan-400/3 flex items-center justify-center">
+                <span className="text-cyan-400/30 text-xl">⚔</span>
+              </div>
+              <div className="flex gap-0.5">
+                {[0,1,2].map(i => (
+                  <div key={i} className="w-7 h-1 rounded-full bg-cyan-400/20" style={{ opacity: 0.3 + i * 0.25 }} />
+                ))}
+              </div>
+            </div>
+            <span className="text-cyan-400/70 font-black text-sm uppercase tracking-[0.2em]">{playerName}</span>
+          </div>
+
+          {/* VS center */}
+          <div className="flex flex-col items-center gap-5 anim-vs">
+            <div className="w-24 h-24 rounded-full border-3 border-yellow-400/15 bg-yellow-400/3 flex items-center justify-center anim-vs-pulse shadow-[0_0_70px_rgba(255,204,0,0.1)]">
+              <span className="text-yellow-400 font-black text-4xl tracking-[-0.04em] drop-shadow-[0_0_18px_rgba(255,204,0,0.45)]">VS</span>
+            </div>
+            <span className="text-white/15 font-black text-[10px] uppercase tracking-[0.3em] anim-fade-text">· ARENA SLAM ·</span>
+          </div>
+
+          {/* Opponent side — right */}
+          <div className="absolute right-[8%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 anim-deck-right">
+            <div className="w-20 h-28 rounded-xl border-2 border-red-400/25 bg-red-400/3 flex flex-col items-center justify-center gap-1 shadow-[0_0_45px_rgba(255,50,50,0.06)]">
+              <div className="w-12 h-12 rounded-full border-2 border-red-400/15 bg-red-400/3 flex items-center justify-center">
+                <span className="text-red-400/30 text-xl">⚔</span>
+              </div>
+              <div className="flex gap-0.5">
+                {[0,1,2].map(i => (
+                  <div key={i} className="w-7 h-1 rounded-full bg-red-400/20" style={{ opacity: 0.3 + i * 0.25 }} />
+                ))}
+              </div>
+            </div>
+            <span className="text-red-400/70 font-black text-sm uppercase tracking-[0.2em]">{opponentName}</span>
+          </div>
+
+          {/* Bottom hint */}
+          <div className="absolute bottom-[14%] text-white/08 font-black text-[9px] uppercase tracking-[0.4em] anim-fade-text">
+            PREPARING ARENA…
+          </div>
+        </div>
+      )}
+
+      {/* ─── Result screen ─── */}
       {phase === "result" && (
-        <div className="absolute inset-0 flex items-center justify-center z-30 bg-black/70 backdrop-blur-sm">
-          <div className="text-center animate-in fade-in zoom-in duration-300">
-            <div className="text-7xl mb-2">{playerScore >= 5 ? "🏆" : "💀"}</div>
-            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-wider mb-2 drop-shadow-[0_0_30px_rgba(255,204,0,0.4)]" style={{
-              color: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)"
-            }}>
-              {playerScore >= 5 ? "Victory!" : "Defeat"}
-            </h2>
-            <p className="text-white/35 text-xl mb-8">{playerScore} — {opponentScore}</p>
+        <div className="absolute inset-0 flex items-center justify-center z-40 bg-black/75 backdrop-blur-md">
+          <div className="text-center animate-in fade-in zoom-in duration-500 flex flex-col items-center gap-6">
+            {/* Crown or skull */}
+            <div className="w-24 h-24 rounded-full border-2 flex items-center justify-center mb-2"
+              style={{ borderColor: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)", opacity: 0.25, background: playerScore >= 5 ? "rgba(255,204,0,0.05)" : "rgba(255,50,50,0.05)" }}>
+              <span className="text-5xl">{playerScore >= 5 ? "👑" : "💀"}</span>
+            </div>
+            
+            <div className="flex flex-col items-center gap-1">
+              <h2 className="text-5xl sm:text-6xl font-black uppercase tracking-[0.05em]" style={{
+                color: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)",
+                textShadow: playerScore >= 5 ? "0 0 60px rgba(255,204,0,0.4)" : "0 0 60px rgba(255,50,50,0.4)"
+              }}>
+                {playerScore >= 5 ? "VICTORY" : "DEFEAT"}
+              </h2>
+              <p className="text-white/20 font-black text-base tracking-[0.15em] mt-1">
+                {playerName || "YOU"} {playerScore} — {opponentScore} {opponentName || "RIVAL"}
+              </p>
+            </div>
+
             <button onClick={initDemo}
-              className="px-12 py-4 bg-yellow-500 text-black font-black uppercase tracking-wider border-3 border-black hover:bg-yellow-400 transition-all rounded-xl shadow-xl shadow-yellow-500/20">
-              Play Again
+              className="px-14 py-4 bg-yellow-500 text-black font-black uppercase tracking-[0.15em] text-sm rounded-xl hover:bg-yellow-400 transition-all shadow-xl shadow-yellow-500/25 active:scale-95">
+              Rematch
             </button>
           </div>
         </div>
@@ -1124,23 +1243,42 @@ export default function ArenaSlamV2({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        style={{ cursor: orbitMode ? "grab" : phase === "aim" ? (dragState.active ? "grabbing" : "grab") : "default" }}
+        style={{ cursor: phase === "intro" ? "default" : (orbitMode ? "grab" : phase === "aim" ? (dragState.active ? "grabbing" : "grab") : "default"), pointerEvents: phase === "intro" ? "none" : "auto" }}
       >
         <CameraController preset={camPreset} orbitEnabled={orbitMode} />
 
         {/* Lighting */}
-        <ambientLight intensity={0.45} />
-        <directionalLight position={[6, 16, 4]} intensity={0.85} castShadow
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[6, 16, 4]} intensity={1.0} castShadow
           shadow-mapSize={[512, 512]}
           shadow-camera-near={0.5} shadow-camera-far={50}
           shadow-camera-left={-8} shadow-camera-right={8}
           shadow-camera-top={8} shadow-camera-bottom={-8} />
-        <directionalLight position={[-4, 8, -5]} intensity={0.2} />
-        <pointLight position={[0, 10, 0]} intensity={1.8} color="#FFF8E7" />
-        <pointLight position={[5, 3, 5]} intensity={0.6} color="#FFCC00" />
+        <directionalLight position={[-4, 8, -5]} intensity={0.3} />
+        <spotLight position={[0, 12, 0]} angle={0.6} penumbra={0.4} intensity={2.5} color="#FFF8E7" castShadow
+          shadow-mapSize={[256, 256]} />
+        <pointLight position={[5, 3, 5]} intensity={0.8} color="#FFCC00" />
+        <pointLight position={[-5, 3, -5]} intensity={0.5} color="#4488FF" />
 
         <ArenaFloorV3 />
         <ArenaWallV3 />
+        {/* Distant arena horizon ring */}
+        <mesh position={[0, 0.35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[ARENA_RADIUS + 2.0, ARENA_RADIUS + 2.15, 64]} />
+          <meshBasicMaterial color="#FFE0A0" transparent opacity={0.025} side={2} depthWrite={false} />
+        </mesh>
+        {/* Stadium ambient lights — ring of distant lights */}
+        {Array.from({ length: 16 }).map((_, i) => {
+          const angle = (i / 16) * Math.PI * 2
+          const r = ARENA_RADIUS + 2.5
+          const px = Math.cos(angle) * r
+          const pz = Math.sin(angle) * r
+          return (
+            <pointLight key={i} position={[px, 6 + Math.sin(i * 1.7) * 2, pz]} 
+              intensity={0.15 + Math.sin(i * 2.3) * 0.08} 
+              color="#FFE0A0" distance={12} />
+          )
+        })}
         {/* Deck tubes (tubemazos) — player + opponent */}
         <DeckTubeV3 deckCount={playerDeck.length} totalCount={playerDeck.length + playerHand.length} side={1} />
         <DeckTubeV3 deckCount={opponentDeckRef.current.length} totalCount={opponentDeckRef.current.length + opponentHand.length} side={-1} />
