@@ -333,6 +333,7 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
   const dt = Math.min(delta, 0.033)
   const impacts: ImpactEvent[] = []
   let landedDiscId: string | null = null
+  const defenderPatches = new Map<string, { patch: Partial<DiscState>; impactType: ImpactType; intensity: number }>()
 
   const stepped = discs.map(disc => {
     if (disc.captured || disc.ringOut) {
@@ -386,7 +387,9 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
             const { attacker: aP, defender: dP } = resolveCollision(disc, def, collision.collisionNX, collision.collisionNZ, collision.intensity)
             impacts.push({ type: collision.impactType, x, z, intensity: collision.intensity })
             const [ox, oz] = clampToField(x + collision.collisionNX * -0.3, z + collision.collisionNZ * -0.3)
-            return { ...disc, x: ox, y, z: oz, vx: aP.vx ?? 0, vy: aP.vy ?? 0, vz: aP.vz ?? 0, moving: aP.moving ?? false, flying: aP.flying ?? false, wobbleAngle: aP.wobbleAngle ?? 0.15, wobbleSpeed: aP.wobbleSpeed ?? 2, wobbleAxis: aP.wobbleAxis ?? 0, tiltX: aP.tiltX ?? 0, tiltZ: aP.tiltZ ?? 0, faceState: aP.faceState ?? "wobbling", settled: false, settleTimer: 0, landedOnId: null }
+            // Apply defender response by storing in a side-channel Map
+            defenderPatches.set(collision.targetId, { patch: dP, impactType: collision.impactType, intensity: collision.intensity })
+            return { ...disc, x: ox, y, z: oz, vx: aP.vx ?? 0, vy: aP.vy ?? 0, vz: aP.vz ?? 0, moving: aP.moving ?? false, flying: aP.flying ?? false, wobbleAngle: aP.wobbleAngle ?? 0.15, wobbleSpeed: aP.wobbleSpeed ?? 2, wobbleAxis: aP.wobbleAxis ?? 0, tiltX: aP.tiltX ?? 0, tiltZ: aP.tiltZ ?? 0, faceState: aP.faceState ?? "wobbling", settled: false, settleTimer: 0, landedOnId: collision.targetId }
           }
           impacts.push({ type: "land", x, z, intensity: 2 })
           return { ...disc, x, y, z, vx: vx * 0.25, vy: 0, vz: vz * 0.25, moving: Math.hypot(vx, vz) * 0.25 > 0.5, flying: false, wobbleAngle: 0.08, wobbleSpeed: 1.5, wobbleAxis: Math.atan2(collision.collisionNZ, collision.collisionNX), tiltX: 0, tiltZ: 0, faceState: "wobbling", settled: false, settleTimer: 0, landedOnId: null }
@@ -416,8 +419,35 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
     return { ...disc, x, y, z, vx, vy, vz, moving, flying, wobbleAngle: wa, wobbleSpeed: ws, tiltX, tiltZ, settled, settleTimer, faceState: detectFaceState(tiltX, tiltZ, Math.hypot(vx, vz), wa) } as DiscState
   })
 
+  // Apply defender patches from collision responses
+  const withDefenderPatches = (stepped as DiscState[]).map(d => {
+    const defPatch = defenderPatches.get(d.id)
+    if (!defPatch) return d
+    const { patch, impactType } = defPatch
+    return {
+      ...d,
+      vx: patch.vx ?? d.vx,
+      vy: patch.vy ?? d.vy,
+      vz: patch.vz ?? d.vz,
+      moving: patch.moving ?? d.moving,
+      flying: patch.flying ?? d.flying,
+      wobbleAngle: patch.wobbleAngle ?? d.wobbleAngle,
+      wobbleSpeed: patch.wobbleSpeed ?? d.wobbleSpeed,
+      wobbleAxis: patch.wobbleAxis ?? d.wobbleAxis,
+      tiltX: patch.tiltX ?? d.tiltX,
+      tiltZ: patch.tiltZ ?? d.tiltZ,
+      faceState: patch.faceState ?? d.faceState,
+      settled: patch.settled ?? d.settled,
+      settleTimer: patch.settleTimer ?? d.settleTimer,
+      // flip_hit with enough intensity directly flips the defender
+      flipped: impactType === "flip_hit" && defPatch.intensity > 6
+        ? true
+        : d.flipped,
+    } as DiscState
+  })
+
   // Apply capture: discs that settled face-up become flipped+captured
-  const capped: DiscState[] = (stepped as DiscState[]).map(d => {
+  const capped: DiscState[] = withDefenderPatches.map(d => {
     if (d.settled && d.faceState === "face_up" && !d.flipped && d.owner !== "player") {
       const capped: DiscState = { ...d, flipped: true, captured: true, wobbleAngle: 0.1, wobbleSpeed: 2, tiltX: 0, tiltZ: 0, faceState: "face_up" as DiscFaceState, settled: true }
       return capped

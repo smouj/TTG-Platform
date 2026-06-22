@@ -971,6 +971,16 @@ export default function ArenaSlamV2({
     ))
   }, [selectedDisc, getCoords])
 
+  // ─── Positioning: track mouse for ghost cursor ───
+  const handlePositioningMove = useCallback((e: React.PointerEvent) => {
+    if (phase !== "positioning") return
+    const { x, z } = getCoords(e)
+    const cz = Math.max(CENTER_LINE_Z + 0.8, Math.min(FIELD_HALF_L - 0.8, z))
+    const cx = Math.max(-FIELD_HALF_W + 1.5, Math.min(FIELD_HALF_W - 1.5, x))
+    const valid = cz >= CENTER_LINE_Z + 0.6
+    setGhostPos({ x: cx, z: cz, valid })
+  }, [phase, getCoords])
+
   // ─── Positioning: click field to place disc ───
   const handlePlaceDisc = useCallback((fieldX: number, fieldZ: number) => {
     const isPositioning = phase === "positioning"
@@ -997,6 +1007,7 @@ export default function ArenaSlamV2({
     setPlacedCount(newPlaced)
     
     if (newPlaced >= 3) {
+      setGhostPos(null)
       // Auto-place opponent tazos, then start battle
       setTimeout(() => {
         setOpponentHand(oh => {
@@ -1043,6 +1054,14 @@ export default function ArenaSlamV2({
     if (Math.hypot(vx, vz) < MIN_LAUNCH_SPEED) { setPhase("aim"); return }
 
     setPhase("physics_live")
+    // Safety timeout: force settle after 8 seconds
+    const safetyTimer = setTimeout(() => {
+      if (simulatingRef.current) {
+        simulatingRef.current = false
+        setDiscs(prev => prev.map(d => ({ ...d, moving: false, flying: false, vx: 0, vy: 0, vz: 0, y: Math.max(d.y, 0), settled: true, wobbleAngle: 0, wobbleSpeed: 0 } as DiscState)))
+        setPhase("settle")
+      }
+    }, 8000)
     // Remove from hand, place on field at default position
     setPlayerHand(prev => prev.filter(d => d.id !== selectedId))
     setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: FIELD_HALF_L - 2.0, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
@@ -1201,6 +1220,14 @@ export default function ArenaSlamV2({
     }
     setPhase("physics_live")
     simulatingRef.current = true
+    // Safety timeout: force settle after 8 seconds
+    const safetyTimer2 = setTimeout(() => {
+      if (simulatingRef.current) {
+        simulatingRef.current = false
+        setDiscs(prev => prev.map(d => ({ ...d, moving: false, flying: false, vx: 0, vy: 0, vz: 0, y: Math.max(d.y, 0), settled: true, wobbleAngle: 0, wobbleSpeed: 0 } as DiscState)))
+        setPhase("settle")
+      }
+    }, 8000)
   }, [])
 
   const handleSelectDisc = useCallback((id: string) => {
@@ -1240,7 +1267,7 @@ export default function ArenaSlamV2({
       <SlamTexts events={slamTexts} />
 
       {/* Hand */}
-      <HandDisplay discs={playerHand} selectedId={selectedId} onSelect={handleSelectDisc} phase={phase} deckCount={playerDeck.length} />
+      <HandDisplay discs={playerHand} selectedId={selectedId} onSelect={handleSelectDisc} phase={phase} deckCount={playerDeck.length} placingId={placingId} onPlace={(id) => { setPlacingId(id); setGhostPos(null) }} placedCount={placedCount} />
 
       {/* Camera controls */}
       <div className="absolute top-4 right-4 z-30 flex flex-col gap-1.5">
@@ -1387,10 +1414,10 @@ export default function ArenaSlamV2({
         camera={{ position: CAM_PRESETS.default.pos, fov: 38, near: 0.5, far: 120 }}
         gl={{ antialias: true, alpha: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
         dpr={[1, 2]}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
+        onPointerDown={phase === "positioning" ? undefined : handlePointerDown}
+        onPointerMove={phase === "positioning" ? handlePositioningMove : handlePointerMove}
+        onPointerUp={phase === "positioning" ? undefined : handlePointerUp}
+        onPointerLeave={phase === "positioning" ? undefined : handlePointerUp}
         style={{ cursor: phase === "intro" ? "default" : (orbitMode ? "grab" : phase === "aim" ? (dragState.active ? "grabbing" : "grab") : "default"), pointerEvents: phase === "intro" ? "none" : "auto" }}
       >
         {/* Positioning: ghost preview + click target */}
