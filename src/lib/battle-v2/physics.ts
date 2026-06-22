@@ -225,7 +225,7 @@ function checkLanding(
       dist: Math.hypot(discX - d.x, discZ - d.z),
       isEnemy: d.owner !== selfOwner 
     }))
-    .filter(d => d.dist < DISC_RADIUS * 1.9)
+    .filter(d => d.dist < DISC_RADIUS * 2.05)
     .sort((a, b) => a.dist - b.dist)
 
   if (candidates.length > 0) {
@@ -293,7 +293,7 @@ function clampToArena(x: number, z: number, margin: number = 0.15): [number, num
 
 function resolveDiscOverlaps(discs: DiscState[]): DiscState[] {
   const result = discs.map(d => ({ ...d }))
-  const RESTING = DISC_RADIUS * 1.85  // minimum distance between disc centers
+  const RESTING = DISC_RADIUS * 2.0  // minimum distance between disc centers
   const ITERATIONS = 2  // run multiple passes for stable separation
 
   for (let iter = 0; iter < ITERATIONS; iter++) {
@@ -431,11 +431,11 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
         const dx2 = x - od.x
         const dz2 = z - od.z
         const dist2 = Math.hypot(dx2, dz2)
-        if (dist2 < DISC_RADIUS * 1.85 && dist2 > 0.001) {
+        if (dist2 < DISC_RADIUS * 2.0 && dist2 > 0.001) {
           // Bounce off the other disc
           const nx2 = dx2 / dist2
           const nz2 = dz2 / dist2
-          x = od.x + nx2 * DISC_RADIUS * 1.9
+          x = od.x + nx2 * DISC_RADIUS * 2.0
           z = od.z + nz2 * DISC_RADIUS * 1.9
           // Reflect velocity (dampened)
           const dot = vx * nx2 + vz * nz2
