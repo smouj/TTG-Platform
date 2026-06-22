@@ -233,15 +233,33 @@ function checkLanding(
 
 // ─── Flip resolution ───
 
+// Momentum-based flip: collision impulse from weight × landing speed
 function resolveFlip(
   attacker: DiscState,
   defender: DiscState
 ): { flipped: boolean; impactType: ImpactType } {
-  const advantage = attacker.stats.attack - defender.stats.defense * 0.65
-  const noise = (Math.random() - 0.5) * 22
-  const score = advantage + noise
+  // Landing impulse: heavier + faster = more flip force
+  const attackerMass = attacker.stats.weight / 50          // 0.4–2.0 range
+  const landingSpeed = Math.max(0.5, Math.hypot(attacker.vx, attacker.vz))
+  const rawImpulse = attackerMass * landingSpeed * 0.65
 
-  if (score >= FLIP_MIN_ATTACK_DIFF) {
+  // Defender resistance: weight (hard to move) + defense (stable stance)
+  const defenderMass = defender.stats.weight / 60          // 0.33–1.67
+  const stability = defender.stats.defense / 100            // 0.0–1.0
+  const resistance = defenderMass * 1.8 + stability * 3.0
+
+  // Attack penetration: higher attack = easier to break through defense
+  const attackPen = (attacker.stats.attack - 30) / 120     // -0.16–0.58
+  const effectiveImpulse = rawImpulse * (0.55 + Math.max(0, attackPen) * 0.45)
+
+  // Very small randomness (only ±5%) for realistic feel
+  const variance = 0.95 + Math.random() * 0.1
+
+  // Flip threshold: impulse must significantly exceed resistance
+  const FLIP_THRESHOLD = 1.15
+  const flipScore = (effectiveImpulse * variance) / (resistance + 0.01)
+
+  if (flipScore > FLIP_THRESHOLD) {
     return { flipped: true, impactType: "capture" }
   }
   return { flipped: false, impactType: "deflect" }
@@ -317,11 +335,15 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
               landedDiscId = disc.id
               return { ...disc, x, y: 0.12, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, landedOnId: landResult.targetId }
             } else {
-              // Deflect
-              const angle = Math.random() * Math.PI * 2
-              const push = 0.7 + Math.random() * 0.6
-              x += Math.cos(angle) * push
-              z += Math.sin(angle) * push
+              // Natural deflection: bounce away from target
+              const toTargetX = x - (target?.x || 0)
+              const toTargetZ = z - (target?.z || 0)
+              const distToTarget = Math.hypot(toTargetX, toTargetZ) || 1
+              // Bounce opposite direction from target + arc spread
+              const bounceAngle = Math.atan2(toTargetZ, toTargetX) + (Math.random() - 0.5) * 0.8
+              const bounceForce = 0.8 + Math.random() * 0.5
+              x += Math.cos(bounceAngle) * bounceForce
+              z += Math.sin(bounceAngle) * bounceForce
               ;[x, z] = clampToArena(x, z, 0.1)
             }
           }

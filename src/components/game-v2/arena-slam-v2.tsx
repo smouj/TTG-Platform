@@ -219,8 +219,8 @@ function TazoDiscV3({ disc, isSelected, isDragging, dragRatio }: {
       <TazoDisc3D
         name={disc.name}
         franchise={franchise}
-        imageUrl={disc.imageUrl}
-        backImageUrl={disc.backImageUrl}
+        imageUrl={disc.flipped ? disc.imageUrl : (disc.backImageUrl || disc.imageUrl)}
+        backImageUrl={disc.flipped ? (disc.backImageUrl || disc.imageUrl) : disc.imageUrl}
         size={DISC_RADIUS * 1.05}
         autoRotate={disc.flying}
         finish={disc.finish}
@@ -525,6 +525,7 @@ export default function ArenaSlamV2({
   const animRef = useRef(0)
   const scoreRef = useRef({ player: 0, opponent: 0 })
   const dragRef = useRef<DragState>({ startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false })
+  const turnRef = useRef<"player" | "opponent">("player")
 
   useEffect(() => { scoreRef.current = { player: playerScore, opponent: opponentScore } }, [playerScore, opponentScore])
 
@@ -553,6 +554,7 @@ export default function ArenaSlamV2({
     setSelectedId(p[0]?.id || null)
     setPhase("select")
     scoreRef.current = { player: 0, opponent: 0 }
+    turnRef.current = "player"
     setPlayerScore(0)
     setOpponentScore(0)
     setImpacts([])
@@ -660,8 +662,20 @@ export default function ArenaSlamV2({
 
         if (allStopped(result.discs)) {
           simulatingRef.current = false
-          if (scoreRef.current.player >= 5) setPhase("result")
-          else { setPhase("opponent"); setTimeout(() => doOpponentTurn(result.discs), 850) }
+          const isPlayerTurn = turnRef.current === "player"
+
+          if (scoreRef.current.player >= 5) {
+            setPhase("result")
+          } else if (isPlayerTurn) {
+            // Player's turn ends → now opponent's turn
+            turnRef.current = "opponent"
+            setPhase("opponent")
+            setTimeout(() => doOpponentTurn(result.discs), 900)
+          } else {
+            // Opponent's turn ends → now player's turn
+            turnRef.current = "player"
+            setPhase("select")
+          }
         }
         return result.discs
       })
