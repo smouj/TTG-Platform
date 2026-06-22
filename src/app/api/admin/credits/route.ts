@@ -64,8 +64,12 @@ export async function POST(req: NextRequest) {
     if (!userId) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
-    if (!amount || typeof amount !== "number" || amount === 0) {
-      return NextResponse.json({ error: "Valid amount is required" }, { status: 400 });
+    if (
+      typeof amount !== "number" ||
+      !Number.isSafeInteger(amount) ||
+      amount === 0
+    ) {
+      return NextResponse.json({ error: "Valid integer amount is required" }, { status: 400 });
     }
 
     // Use a transaction to ensure consistency
@@ -74,12 +78,13 @@ export async function POST(req: NextRequest) {
       if (!user) throw new Error("User not found");
 
       const newCredits = Math.max(0, user.credits + amount);
+      const appliedAmount = newCredits - user.credits;
       await tx.user.update({ where: { id: userId }, data: { credits: newCredits } });
       
       const transaction = await tx.creditTransaction.create({
         data: {
           userId,
-          amount,
+          amount: appliedAmount,
           source: "admin",
           reference: note || "Manual admin adjustment",
         },
