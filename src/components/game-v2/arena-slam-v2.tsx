@@ -1750,30 +1750,38 @@ export default function ArenaSlamV2({
 
       {/* ─── Result screen ─── */}
       {phase === "result" && (
-        <div className="absolute inset-0 flex items-center justify-center z-40 bg-black/75 backdrop-blur-md">
-          <div className="text-center animate-in fade-in zoom-in duration-500 flex flex-col items-center gap-6">
+        <div className="absolute inset-0 flex items-center justify-center z-40 bg-black/80 backdrop-blur-xl">
+          <div className="text-center animate-in fade-in zoom-in duration-700 flex flex-col items-center gap-6">
             {/* Crown or skull */}
-            <div className="w-24 h-24 rounded-full border-2 flex items-center justify-center mb-2"
-              style={{ borderColor: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)", opacity: 0.25, background: playerScore >= 5 ? "rgba(255,204,0,0.05)" : "rgba(255,50,50,0.05)" }}>
-              <span className="text-5xl">{playerScore >= 5 ? "👑" : "💀"}</span>
+            <div className="w-28 h-28 rounded-full border-2 flex items-center justify-center mb-1"
+              style={{ borderColor: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)", opacity: 0.3, background: playerScore >= 5 ? "rgba(255,204,0,0.06)" : "rgba(255,50,50,0.06)" }}>
+              <span className="text-6xl">{playerScore >= 5 ? "👑" : "💀"}</span>
             </div>
             
-            <div className="flex flex-col items-center gap-1">
-              <h2 className="text-5xl sm:text-6xl font-black uppercase tracking-[0.05em]" style={{
+            <div className="flex flex-col items-center gap-1.5">
+              <h2 className="text-5xl sm:text-7xl font-black uppercase tracking-[0.05em] leading-none" style={{
                 color: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)",
-                textShadow: playerScore >= 5 ? "0 0 60px rgba(255,204,0,0.4)" : "0 0 60px rgba(255,50,50,0.4)"
+                textShadow: playerScore >= 5 ? "0 0 80px rgba(255,204,0,0.5)" : "0 0 80px rgba(255,50,50,0.5)"
               }}>
                 {playerScore >= 5 ? "VICTORY" : "DEFEAT"}
               </h2>
-              <p className="text-white/20 font-black text-base tracking-[0.15em] mt-1">
+              <p className="text-white/20 font-black text-lg tracking-[0.15em] mt-2">
                 {playerName || "YOU"} {playerScore} — {opponentScore} {opponentName || "RIVAL"}
               </p>
+              {/* Match stats */}
+              <div className="flex gap-6 mt-3 text-white/10 font-black text-[11px] uppercase tracking-[0.15em]">
+                <span>Round {turnCount}</span>
+                <span className="text-white/5">|</span>
+                <span>{playerScore >= 5 ? "Captures" : "Eliminated"}</span>
+              </div>
             </div>
 
-            <button onClick={initDemo}
-              className="px-14 py-4 bg-yellow-500 text-black font-black uppercase tracking-[0.15em] text-sm rounded-xl hover:bg-yellow-400 transition-all shadow-xl shadow-yellow-500/25 active:scale-95">
-              Rematch
-            </button>
+            <div className="flex gap-3 mt-2">
+              <button onClick={initDemo}
+                className="px-12 py-3.5 bg-yellow-500 text-black font-black uppercase tracking-[0.15em] text-sm rounded-xl hover:bg-yellow-400 transition-all shadow-xl shadow-yellow-500/25 active:scale-95">
+                ⚔ Rematch
+              </button>
+            </div>
           </div>
         </div>
       )}
