@@ -1,7 +1,4 @@
-import { PrismaClient } from "@prisma/client"
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
-
-export const prisma = globalForPrisma.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+// Re-export the canonical db instance from @/lib/db as prisma.
+// This ensures a single PrismaClient connection pool across the entire app,
+// which is critical for $transaction consistency in SQLite.
+export { db as prisma } from "@/lib/db"
