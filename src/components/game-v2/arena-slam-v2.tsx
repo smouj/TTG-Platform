@@ -851,17 +851,18 @@ function TurnIndicator({ phase, turn, playerName, opponentName }: { phase: strin
     select: "SELECT A TAZO",
     aim: "DRAG BACK ⬌ RELEASE!",
     physics_live: turn === "player" ? "YOUR DISC IN FLIGHT" : "RIVAL DISC INCOMING",
-    settle: "SETTLING...",
-    opponent: "RIVAL TURN",
+    settle: turn === "player" ? "YOUR TURN SOON" : "RIVAL SETTLING",
+    opponent: "RIVAL AIMING",
     result: "BATTLE OVER",
   }
   const colors: Record<string, string> = {
     aim: "#00FFC8",
-    physics_live: turn === "player" ? "#00FFC8" : "#FF4444",
+    physics_live: turn === "player" ? "#00FFC8" : "#FF6644",
     intro: "#FFCC00",
     positioning: "#FFCC00",
     select: "#FFFFFF",
     opponent: "#FF6644",
+    settle: turn === "player" ? "#00FFC8" : "#FF6644",
     result: "#FFCC00",
   }
   const msg = msgs[phase] || ""
@@ -930,8 +931,8 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
     )}
     <div className="flex items-end gap-2.5 px-4 justify-center">
       {/* Deck counter */}
-      {typeof deckCount === "number" && deckCount > 0 && (
-        <div className="w-10 h-14 rounded-lg border border-white/8 bg-white/3 flex flex-col items-center justify-center text-white/20 text-[9px] font-black uppercase tracking-wider mr-1 flex-shrink-0">
+      {typeof deckCount === "number" && (
+        <div className={`w-10 h-14 rounded-lg border flex flex-col items-center justify-center text-[9px] font-black uppercase tracking-wider mr-1 flex-shrink-0 transition-all ${deckCount > 0 ? "border-white/8 bg-white/3 text-white/20" : "border-white/[0.03] bg-white/[0.01] text-white/5"}`}>
           <span className="text-[11px]">{deckCount}</span>
           <span className="text-[7px]">deck</span>
         </div>
@@ -975,7 +976,7 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
         </button>
       ))}
       {available.length === 0 && (
-        <span className="text-white/15 text-[9px] font-black uppercase tracking-wider px-2">No cards</span>
+        <span className="text-white/25 text-[9px] font-black uppercase tracking-wider px-3 py-2 rounded-lg border border-white/[0.03] bg-white/[0.01]">No cards — draw next turn</span>
       )}
     </div>
     {/* Tooltip: card stats on hover */}
@@ -1296,7 +1297,7 @@ export default function ArenaSlamV2({
   }, [phase, placingId, playerHand, placedCount])
 
   const handlePointerUp = useCallback(() => {
-    if (!dragRef.current.active || !selectedDisc) return
+    if (phase !== "aim" || !dragRef.current.active || !selectedDisc) return
     const finalDrag = { ...dragRef.current, active: false }
     setDragState(finalDrag)
     dragRef.current = finalDrag
