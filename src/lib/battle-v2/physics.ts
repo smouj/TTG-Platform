@@ -1,73 +1,59 @@
 // ============================================================
-// Arena Slam v2 — Arcade Jump Physics
+// Arena Slam v2 — Arcade Jump Physics (v3)
 //
 // "Saltar tazos encima de otros para darles la vuelta"
 // Drag-release → parabolic arc → land on opponent → flip!
 // ============================================================
 
 // ─── Constants ───
-export const ARENA_RADIUS = 4.0
+export const ARENA_RADIUS = 4.5          // larger arena for better gameplay
 export const DISC_RADIUS = 0.45
-/** Max horizontal speed on launch */
-export const MAX_LAUNCH_SPEED = 14.0
-/** Gravity pulling the disc down (units/s²) */
-export const GRAVITY = 25.0
-/** Jump power multiplier (how high the disc goes) */
-export const JUMP_POWER = 10.0
-/** Minimum launch speed to trigger a jump */
-export const MIN_LAUNCH_SPEED = 2.5
-/** Capture: land on top → attack threshold for flip */
+export const MAX_LAUNCH_SPEED = 16.0
+export const GRAVITY = 28.0              // snappier arc
+export const JUMP_POWER = 11.0           // good height for visibility
+export const MIN_LAUNCH_SPEED = 2.0
 export const FLIP_MIN_ATTACK_DIFF = 3.0
-/** Extra bounce-off if flip fails */
-export const DEFLECT_SPEED = 3.0
+export const DEFLECT_SPEED = 3.5
 
 // ─── Types ───
 
 export type TazoArchetype = "heavy" | "technical" | "spinner" | "bouncer" | "defender" | "balanced"
 
 export interface TazoStats {
-  attack: number   // 0-100 — chance to flip on landing
-  defense: number  // 0-100 — chance to resist being flipped
-  speed: number    // 0-100 — affects launch velocity
-  weight: number   // 0-100 — affects arc height and wind resistance
+  attack: number
+  defense: number
+  speed: number
+  weight: number
 }
 
-// Archetype presets
 export const ARCHETYPE_STATS: Record<TazoArchetype, TazoStats> = {
-  heavy:     { attack: 70, defense: 75, speed: 30, weight: 90 },
-  technical: { attack: 60, defense: 45, speed: 70, weight: 40 },
-  spinner:   { attack: 40, defense: 35, speed: 85, weight: 25 },
-  bouncer:   { attack: 55, defense: 50, speed: 65, weight: 30 },
-  defender:  { attack: 35, defense: 95, speed: 45, weight: 80 },
-  balanced:  { attack: 50, defense: 50, speed: 50, weight: 50 },
+  heavy:     { attack: 75, defense: 80, speed: 25, weight: 95 },
+  technical: { attack: 65, defense: 40, speed: 75, weight: 35 },
+  spinner:   { attack: 45, defense: 30, speed: 90, weight: 20 },
+  bouncer:   { attack: 55, defense: 50, speed: 70, weight: 28 },
+  defender:  { attack: 35, defense: 95, speed: 40, weight: 85 },
+  balanced:  { attack: 50, defense: 50, speed: 55, weight: 50 },
 }
 
 export interface DiscState {
   id: string
   name: string
-  /** 3D position */
   x: number
-  y: number    // height above arena floor
+  y: number
   z: number
-  /** Velocity */
   vx: number
-  vy: number    // vertical velocity
+  vy: number
   vz: number
-  /** Visual rotation */
   rotation: number
   rotationSpeed: number
-  /** Status */
   moving: boolean
-  flying: boolean   // in the air (parabolic arc)
+  flying: boolean
   flipped: boolean
   ringOut: boolean
-  landedOnId: string | null  // id of disc this one landed on
-  /** Owner */
+  landedOnId: string | null
   owner: "player" | "opponent"
-  /** Stats */
   stats: TazoStats
   archetype: TazoArchetype
-  /** Visual */
   franchise?: string
   imageUrl?: string
   backImageUrl?: string
@@ -91,10 +77,16 @@ export interface ImpactEvent {
   intensity: number
 }
 
+export interface TrajectoryPoint {
+  x: number
+  y: number
+  z: number
+}
+
 export interface SimResult {
   discs: DiscState[]
   impacts: ImpactEvent[]
-  landedDiscId: string | null   // disc that just landed this step
+  landedDiscId: string | null
 }
 
 // ─── Helpers ───
@@ -118,7 +110,15 @@ export function createDemoDisc(
   }
 }
 
-// ─── Launch calculation ───
+/** Spread discs in a formation */
+export function spreadDiscs(discs: DiscState[], arenaSide: 1 | -1): DiscState[] {
+  return discs.map((d, i) => {
+    const offsetX = (i - (discs.length - 1) / 2) * 0.9
+    return { ...d, x: offsetX, z: arenaSide * 2.8 }
+  })
+}
+
+// ─── Launch ───
 
 export function calculateLaunchVelocity(
   drag: DragState,
@@ -127,22 +127,16 @@ export function calculateLaunchVelocity(
   const dx = drag.startX - drag.currentX
   const dz = drag.startZ - drag.currentZ
   const dist = Math.sqrt(dx * dx + dz * dz)
+  if (dist < 0.12) return { vx: 0, vy: 0, vz: 0 }
 
-  if (dist < 0.1) return { vx: 0, vy: 0, vz: 0 }
+  const angle = Math.atan2(dz, dx)
+  const launchAngle = angle  // slingshot: disc goes opposite to finger
 
-  // Direction is from start (where finger pressed) to current (pulled back)
-  // So disc goes OPPOSITE direction of drag: from current toward start
-  const angle = Math.atan2(dz, dx) // direction finger pulled
-  // Disc goes opposite of finger drag (slingshot mechanic)
-  const launchAngle = angle
-
-  // Speed scales with drag distance and tazo's speed stat
-  const baseSpeed = dist * 4.5
-  const speedMult = 0.6 + stats.speed / 200 // 0.6–1.1
+  const baseSpeed = dist * 5.0
+  const speedMult = 0.55 + stats.speed / 180
   const hSpeed = Math.min(baseSpeed * speedMult, MAX_LAUNCH_SPEED)
 
-  // Vertical jump: proportional to drag distance, reduced by weight
-  const weightMult = 1.1 - stats.weight / 200 // 1.05–0.6 (heavy = lower jump)
+  const weightMult = 1.15 - stats.weight / 180
   const vSpeed = dist * JUMP_POWER * weightMult
 
   return {
@@ -154,18 +148,12 @@ export function calculateLaunchVelocity(
 
 // ─── Trajectory preview ───
 
-export interface TrajectoryPoint {
-  x: number
-  y: number
-  z: number
-}
-
 export function calculateTrajectoryPreview(
   startX: number,
   startZ: number,
   drag: DragState,
   stats: TazoStats,
-  steps: number = 50
+  steps: number = 70
 ): TrajectoryPoint[] {
   const { vx, vy, vz } = calculateLaunchVelocity(drag, stats)
   if (Math.abs(vx) < 0.01 && Math.abs(vz) < 0.01 && vy < 1) return []
@@ -173,35 +161,38 @@ export function calculateTrajectoryPreview(
   const dt = 1 / 60
   const points: TrajectoryPoint[] = [{ x: startX, y: 0, z: startZ }]
   let x = startX, y = 0, z = startZ
-  let curVx = vx, curVy = vy, curVz = vz
+  let cvx = vx, cvy = vy, cvz = vz
+  const boundary = ARENA_RADIUS - 0.15
 
   for (let i = 0; i < steps; i++) {
-    curVy -= GRAVITY * dt
-    x += curVx * dt
-    y += curVy * dt
-    z += curVz * dt
+    cvy -= GRAVITY * dt
+    x += cvx * dt
+    y += cvy * dt
+    z += cvz * dt
 
-    if (y <= 0) {
-      // Interpolate landing point at y=0
-      if (i > 0) {
-        const prev = points[points.length - 1]
-        const ratio = prev.y / (prev.y - y)
-        const landX = prev.x + (x - prev.x) * ratio
-        const landZ = prev.z + (z - prev.z) * ratio
-        points.push({ x: landX, y: 0, z: landZ })
-      } else {
-        points.push({ x, y: 0, z })
-      }
+    // Arena boundary check during flight
+    const dist = Math.sqrt(x * x + z * z)
+    if (dist > boundary) {
+      const nx = x / dist, nz = z / dist
+      x = nx * boundary
+      z = nz * boundary
+      points.push({ x, y, z })
       break
     }
 
-    // Check if still in arena
-    const dist = Math.sqrt(x * x + z * z)
-    if (dist > ARENA_RADIUS) {
-      const nx = x / dist, nz = z / dist
-      const bx = nx * ARENA_RADIUS
-      const bz = nz * ARENA_RADIUS
-      points.push({ x: bx, y, z })
+    // Landing
+    if (y <= 0) {
+      if (i > 0 && points.length > 0) {
+        const prev = points[points.length - 1]
+        const ratio = prev.y / Math.max(prev.y - y, 0.001)
+        points.push({
+          x: prev.x + (x - prev.x) * ratio,
+          y: 0,
+          z: prev.z + (z - prev.z) * ratio,
+        })
+      } else {
+        points.push({ x, y: 0, z })
+      }
       break
     }
 
@@ -211,33 +202,29 @@ export function calculateTrajectoryPreview(
   return points
 }
 
-// ─── Landing detection ───
+// ─── Landing detection (uses updated positions) ───
 
 function checkLanding(
-  disc: DiscState,
-  allDiscs: DiscState[]
+  discX: number, discZ: number, discY: number,
+  allDiscs: DiscState[],
+  selfId: string
 ): { landed: boolean; targetId: string | null; impactType: ImpactType } {
-  // Disc must be near ground level
-  if (disc.y > DISC_RADIUS * 1.5) return { landed: false, targetId: null, impactType: "land" }
+  if (discY > DISC_RADIUS * 1.5) return { landed: false, targetId: null, impactType: "land" }
 
-  // Check if out of arena
-  const dist = Math.sqrt(disc.x * disc.x + disc.z * disc.z)
-  if (dist > ARENA_RADIUS) {
+  const dist = Math.sqrt(discX * discX + discZ * discZ)
+  if (dist > ARENA_RADIUS - 0.05) {
     return { landed: true, targetId: null, impactType: "ringout" }
   }
 
-  // Check if landing on another disc
-  const landingTargets = allDiscs
-    .filter(d => d.id !== disc.id && !d.flying && !d.flipped && !d.ringOut)
-    .map(d => ({
-      disc: d,
-      dist: Math.sqrt((disc.x - d.x) ** 2 + (disc.z - d.z) ** 2),
-    }))
-    .filter(d => d.dist < DISC_RADIUS * 2) // discs overlap
+  // Find closest disc we're landing on
+  const candidates = allDiscs
+    .filter(d => d.id !== selfId && !d.flying && !d.flipped && !d.ringOut)
+    .map(d => ({ id: d.id, dist: Math.hypot(discX - d.x, discZ - d.z) }))
+    .filter(d => d.dist < DISC_RADIUS * 2)
     .sort((a, b) => a.dist - b.dist)
 
-  if (landingTargets.length > 0) {
-    return { landed: true, targetId: landingTargets[0].disc.id, impactType: "flip_hit" }
+  if (candidates.length > 0) {
+    return { landed: true, targetId: candidates[0].id, impactType: "flip_hit" }
   }
 
   return { landed: true, targetId: null, impactType: "land" }
@@ -249,28 +236,39 @@ function resolveFlip(
   attacker: DiscState,
   defender: DiscState
 ): { flipped: boolean; impactType: ImpactType } {
-  // Attack vs defense comparison with some randomness
-  const attackAdvantage = attacker.stats.attack - defender.stats.defense * 0.6
-  const randFactor = (Math.random() - 0.5) * 20
-  const flipScore = attackAdvantage + randFactor
+  const advantage = attacker.stats.attack - defender.stats.defense * 0.65
+  const noise = (Math.random() - 0.5) * 22
+  const score = advantage + noise
 
-  if (flipScore >= FLIP_MIN_ATTACK_DIFF) {
+  if (score >= FLIP_MIN_ATTACK_DIFF) {
     return { flipped: true, impactType: "capture" }
   }
   return { flipped: false, impactType: "deflect" }
 }
 
+// ─── Clamp position inside arena ───
+
+function clampToArena(x: number, z: number, margin: number = 0.15): [number, number] {
+  const dist = Math.hypot(x, z)
+  const max = ARENA_RADIUS - margin
+  if (dist > max) {
+    const n = 1 / dist
+    return [x * n * max, z * n * max]
+  }
+  return [x, z]
+}
+
 // ─── Main simulation step ───
 
 export function simulateStep(discs: DiscState[], delta: number): SimResult {
-  const dt = Math.min(delta, 0.05) // cap for stability
+  const dt = Math.min(delta, 0.033) // cap at ~30fps min stability
   const impacts: ImpactEvent[] = []
   let landedDiscId: string | null = null
+  const boundary = ARENA_RADIUS - 0.15
 
-  const nextDiscs = discs.map(disc => {
+  // Pass 1: update positions
+  const stepped = discs.map(disc => {
     if (!disc.moving && !disc.flying) return { ...disc }
-
-    // Skip already dead discs
     if (disc.flipped || disc.ringOut) {
       return { ...disc, moving: false, flying: false, vx: 0, vy: 0, vz: 0 }
     }
@@ -278,51 +276,53 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
     let { x, y, z, vx, vy, vz, moving, flying } = disc
 
     if (flying) {
-      // Parabolic arc — apply gravity
+      // Parabolic arc with gravity
       vy -= GRAVITY * dt
       x += vx * dt
       z += vz * dt
       y += vy * dt
 
-      // Check if landed
+      // Boundary clamp mid-flight
+      const d = Math.hypot(x, z)
+      if (d > boundary) {
+        const n = 1 / d
+        x = n * boundary
+        z = n * boundary
+        // Dampen horizontal velocity on wall hit
+        vx *= 0.3; vz *= 0.3
+      }
+
+      // Landing
       if (y <= 0) {
         y = 0
         flying = false
         moving = false
+        ;[x, z] = clampToArena(x, z, 0.1)
 
-        // Landing detection
-        const result = checkLanding({ ...disc, x, y, z }, discs)
+        const landResult = checkLanding(x, z, y, discs, disc.id)
 
-        if (result.impactType === "ringout") {
+        if (landResult.impactType === "ringout") {
           impacts.push({ type: "ringout", x, z, intensity: 6 })
-          // Clamp to arena edge
-          const dist = Math.sqrt(x * x + z * z)
-          const nx = x / dist, nz = z / dist
-          x = nx * (ARENA_RADIUS - 0.1)
-          z = nz * (ARENA_RADIUS - 0.1)
           return { ...disc, x, y, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, ringOut: true }
         }
 
-        if (result.targetId) {
-          // Landed on another disc — resolve flip
-          const target = discs.find(d => d.id === result.targetId)!
-          const { flipped, impactType } = resolveFlip(disc, target)
+        if (landResult.targetId) {
+          const target = discs.find(d => d.id === landResult.targetId)
+          if (target) {
+            const { flipped, impactType } = resolveFlip(disc, target)
+            impacts.push({ type: impactType, x, z, intensity: flipped ? 12 : 6 })
 
-          impacts.push({ type: impactType, x, z, intensity: flipped ? 10 : 5 })
-
-          if (flipped) {
-            // Attacker stays on top, defender flips
-            landedDiscId = disc.id
-            return {
-              ...disc, x, y: 0.1, z, vx: 0, vy: 0, vz: 0,
-              moving: false, flying: false, landedOnId: result.targetId,
+            if (flipped) {
+              landedDiscId = disc.id
+              return { ...disc, x, y: 0.12, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, landedOnId: landResult.targetId }
+            } else {
+              // Deflect
+              const angle = Math.random() * Math.PI * 2
+              const push = 0.7 + Math.random() * 0.6
+              x += Math.cos(angle) * push
+              z += Math.sin(angle) * push
+              ;[x, z] = clampToArena(x, z, 0.1)
             }
-          } else {
-            // Deflect: disc bounces off a bit
-            const deflectAngle = Math.random() * Math.PI * 2
-            const deflectDist = 0.8 + Math.random() * 0.5
-            x += Math.cos(deflectAngle) * deflectDist
-            z += Math.sin(deflectAngle) * deflectDist
           }
         } else {
           impacts.push({ type: "land", x, z, intensity: 3 })
@@ -331,56 +331,44 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
         return { ...disc, x, y, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, landedOnId: null }
       }
     } else if (moving) {
-      // Legacy horizontal movement (for deflected discs)
+      // Ground movement (deflected discs)
       x += vx * dt
       z += vz * dt
 
-      // Simple friction
-      const friction = 4.5
-      const speed = Math.sqrt(vx * vx + vz * vz)
-      if (speed > 0.1) {
-        const newSpeed = Math.max(0, speed - friction * dt)
-        const ratio = newSpeed / speed
+      const friction = 5.0
+      const speed = Math.hypot(vx, vz)
+      if (speed > 0.08) {
+        const ns = Math.max(0, speed - friction * dt)
+        const ratio = ns / speed
         vx *= ratio
         vz *= ratio
       } else {
         vx = 0; vz = 0; moving = false
       }
 
-      // Arena boundary
-      const dist = Math.sqrt(x * x + z * z)
-      if (dist > ARENA_RADIUS - DISC_RADIUS) {
-        const nx = x / dist, nz = z / dist
-        x = nx * (ARENA_RADIUS - DISC_RADIUS)
-        z = nz * (ARENA_RADIUS - DISC_RADIUS)
-        vx = -vx * 0.3
-        vz = -vz * 0.3
-      }
+      ;[x, z] = clampToArena(x, z, DISC_RADIUS + 0.05)
     }
 
     return { ...disc, x, y, z, vx, vy, vz, moving, flying }
   })
 
-  // Apply flip effects: defender gets flipped if attacker captured
-  nextDiscs.forEach((d, i) => {
+  // Pass 2: apply capture effects
+  const result = stepped.map(d => {
     if (d.landedOnId) {
-      const defenderIdx = nextDiscs.findIndex(other => other.id === d.landedOnId)
-      if (defenderIdx >= 0) {
-        nextDiscs[defenderIdx] = { ...nextDiscs[defenderIdx], flipped: true, moving: false, flying: false }
+      const targetIdx = stepped.findIndex(t => t.id === d.landedOnId)
+      if (targetIdx >= 0) {
+        stepped[targetIdx] = { ...stepped[targetIdx], flipped: true, moving: false, flying: false }
       }
     }
+    return d
   })
 
-  return { discs: nextDiscs, impacts, landedDiscId }
+  return { discs: result, impacts, landedDiscId }
 }
-
-// ─── Check if all moving/flying discs have stopped ───
 
 export function allStopped(discs: DiscState[]): boolean {
   return discs.every(d => !d.moving && !d.flying)
 }
-
-// ─── Get active player/opponent discs ───
 
 export function getActiveDiscs(discs: DiscState[], owner: "player" | "opponent"): DiscState[] {
   return discs.filter(d => d.owner === owner && !d.flipped && !d.ringOut)
