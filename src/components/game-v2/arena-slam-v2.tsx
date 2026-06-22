@@ -365,23 +365,30 @@ function CameraShakeV3({ intensity, duration }: { intensity: number; duration: n
 
   useEffect(() => {
     if (intensity > 0) {
+      basePos.current.copy(camera.position)
       activeRef.current = true
       timeRef.current = duration
-      basePos.current.copy(camera.position)
     }
-  }, [intensity, duration, camera.position.x, camera.position.y, camera.position.z])
+  }, [intensity, duration])
 
   useFrame((_, delta) => {
     if (!activeRef.current) return
     timeRef.current -= delta
     if (timeRef.current <= 0) {
       activeRef.current = false
+      // Reset to base position
+      camera.position.copy(basePos.current)
       return
     }
     const f = timeRef.current / duration
-    camera.position.x += (Math.random() - 0.5) * intensity * f * 0.25
-    camera.position.y += (Math.random() - 0.5) * intensity * f * 0.1
-    camera.position.z += (Math.random() - 0.5) * intensity * f * 0.25
+    const offsetX = (Math.random() - 0.5) * intensity * f * 0.25
+    const offsetY = (Math.random() - 0.5) * intensity * f * 0.1
+    const offsetZ = (Math.random() - 0.5) * intensity * f * 0.25
+    camera.position.set(
+      basePos.current.x + offsetX,
+      basePos.current.y + offsetY,
+      basePos.current.z + offsetZ,
+    )
   })
 
   return null
@@ -511,6 +518,7 @@ export default function ArenaSlamV2() {
   const simulatingRef = useRef(false)
   const animRef = useRef(0)
   const scoreRef = useRef({ player: 0, opponent: 0 })
+  const dragRef = useRef<DragState>({ startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false })
 
   useEffect(() => { scoreRef.current = { player: playerScore, opponent: opponentScore } }, [playerScore, opponentScore])
 
@@ -568,30 +576,36 @@ export default function ArenaSlamV2() {
     if (phase !== "aim" || !selectedDisc || orbitMode) return
     e.preventDefault()
     const { x, z } = getCoords(e)
-    setDragState({ startX: selectedDisc.x + x * 0.5, startZ: selectedDisc.z + z * 0.5, currentX: x, currentZ: z, active: true })
+    const dsStart = { startX: selectedDisc.x + x * 0.5, startZ: selectedDisc.z + z * 0.5, currentX: x, currentZ: z, active: true }
+    dragRef.current = dsStart
+    setDragState(dsStart)
     setTrajectory([])
   }, [phase, selectedDisc, getCoords, orbitMode])
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    if (!dragState.active || !selectedDisc) return
+    if (!dragRef.current.active || !selectedDisc) return
     const { x, z } = getCoords(e)
+    // Update ref immediately (no stale closure)
+    dragRef.current = { ...dragRef.current, currentX: x, currentZ: z }
     setDragState(prev => ({ ...prev, currentX: x, currentZ: z }))
-    const dist = Math.hypot(dragState.startX - x, dragState.startZ - z)
+    const dist = Math.hypot(dragRef.current.startX - x, dragRef.current.startZ - z)
     if (dist < 0.2) { setTrajectory([]); return }
 
     setTrajectory(calculateTrajectoryPreview(
       selectedDisc.x, selectedDisc.z,
-      { ...dragState, currentX: x, currentZ: z },
+      dragRef.current,
       selectedDisc.stats, 70
     ))
-  }, [dragState, selectedDisc, getCoords])
+  }, [selectedDisc, getCoords])
 
   const handlePointerUp = useCallback(() => {
-    if (!dragState.active || !selectedDisc) return
-    setDragState(prev => ({ ...prev, active: false }))
+    if (!dragRef.current.active || !selectedDisc) return
+    const finalDrag = { ...dragRef.current, active: false }
+    setDragState(finalDrag)
+    dragRef.current = finalDrag
     setTrajectory([])
 
-    const { vx, vy, vz } = calculateLaunchVelocity(dragState, selectedDisc.stats)
+    const { vx, vy, vz } = calculateLaunchVelocity(dragRef.current, selectedDisc.stats)
     if (Math.hypot(vx, vz) < MIN_LAUNCH_SPEED) { setPhase("aim"); return }
 
     setPhase("resolving")

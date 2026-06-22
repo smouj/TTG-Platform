@@ -13,7 +13,6 @@ export const GRAVITY = 28.0              // snappier arc
 export const JUMP_POWER = 11.0           // good height for visibility
 export const MIN_LAUNCH_SPEED = 2.0
 export const FLIP_MIN_ATTACK_DIFF = 3.0
-export const DEFLECT_SPEED = 3.5
 
 // ─── Types ───
 
@@ -216,9 +215,11 @@ function checkLanding(
     return { landed: true, targetId: null, impactType: "ringout" }
   }
 
-  // Find closest disc we're landing on
+  // Find closest ENEMY disc we're landing on
+  const selfDisc = allDiscs.find(d => d.id === selfId)
+  const selfOwner = selfDisc?.owner
   const candidates = allDiscs
-    .filter(d => d.id !== selfId && !d.flying && !d.flipped && !d.ringOut)
+    .filter(d => d.id !== selfId && !d.flying && !d.flipped && !d.ringOut && d.owner !== selfOwner)
     .map(d => ({ id: d.id, dist: Math.hypot(discX - d.x, discZ - d.z) }))
     .filter(d => d.dist < DISC_RADIUS * 2)
     .sort((a, b) => a.dist - b.dist)
@@ -352,16 +353,16 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
     return { ...disc, x, y, z, vx, vy, vz, moving, flying }
   })
 
-  // Pass 2: apply capture effects
-  const result = stepped.map(d => {
-    if (d.landedOnId) {
-      const targetIdx = stepped.findIndex(t => t.id === d.landedOnId)
-      if (targetIdx >= 0) {
-        stepped[targetIdx] = { ...stepped[targetIdx], flipped: true, moving: false, flying: false }
-      }
+  // Pass 2: apply capture effects (flip defender discs)
+  const flippedIds = new Set<string>()
+  stepped.forEach(d => {
+    if (d.landedOnId && !flippedIds.has(d.landedOnId)) {
+      flippedIds.add(d.landedOnId)
     }
-    return d
   })
+  const result = stepped.map(d =>
+    flippedIds.has(d.id) ? { ...d, flipped: true, moving: false, flying: false } : d
+  )
 
   return { discs: result, impacts, landedDiscId }
 }
@@ -374,6 +375,4 @@ export function getActiveDiscs(discs: DiscState[], owner: "player" | "opponent")
   return discs.filter(d => d.owner === owner && !d.flipped && !d.ringOut)
 }
 
-export function getScore(discs: DiscState[], owner: "player" | "opponent"): number {
-  return discs.filter(d => d.owner === owner && d.flipped).length
-}
+
