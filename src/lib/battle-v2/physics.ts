@@ -67,7 +67,7 @@ export interface DragState {
   active: boolean
 }
 
-export type ImpactType = "land" | "flip_hit" | "flip_miss" | "ringout" | "capture" | "deflect"
+export type ImpactType = "land" | "flip_hit" | "flip_miss" | "ringout" | "capture" | "deflect" | "stack_hit" | "stack_bounce"
 
 export interface ImpactEvent {
   type: ImpactType
@@ -207,28 +207,37 @@ function checkLanding(
   discX: number, discZ: number, discY: number,
   allDiscs: DiscState[],
   selfId: string
-): { landed: boolean; targetId: string | null; impactType: ImpactType } {
-  if (discY > DISC_RADIUS * 1.5) return { landed: false, targetId: null, impactType: "land" }
+): { landed: boolean; targetId: string | null; impactType: ImpactType; targetIsEnemy: boolean } {
+  if (discY > DISC_RADIUS * 1.5) return { landed: false, targetId: null, impactType: "land", targetIsEnemy: false }
 
   const dist = Math.sqrt(discX * discX + discZ * discZ)
   if (dist > ARENA_RADIUS - 0.05) {
-    return { landed: true, targetId: null, impactType: "ringout" }
+    return { landed: true, targetId: null, impactType: "ringout", targetIsEnemy: false }
   }
 
-  // Find closest ENEMY disc we're landing on
+  // Find closest disc we're landing on (enemy OR friendly)
   const selfDisc = allDiscs.find(d => d.id === selfId)
   const selfOwner = selfDisc?.owner
   const candidates = allDiscs
-    .filter(d => d.id !== selfId && !d.flying && !d.flipped && !d.ringOut && d.owner !== selfOwner)
-    .map(d => ({ id: d.id, dist: Math.hypot(discX - d.x, discZ - d.z) }))
-    .filter(d => d.dist < DISC_RADIUS * 2)
+    .filter(d => d.id !== selfId && !d.flying && !d.flipped && !d.ringOut)
+    .map(d => ({ 
+      id: d.id, 
+      dist: Math.hypot(discX - d.x, discZ - d.z),
+      isEnemy: d.owner !== selfOwner 
+    }))
+    .filter(d => d.dist < DISC_RADIUS * 1.9)
     .sort((a, b) => a.dist - b.dist)
 
   if (candidates.length > 0) {
-    return { landed: true, targetId: candidates[0].id, impactType: "flip_hit" }
+    return { 
+      landed: true, 
+      targetId: candidates[0].id, 
+      impactType: candidates[0].isEnemy ? "flip_hit" : "stack_hit",
+      targetIsEnemy: candidates[0].isEnemy
+    }
   }
 
-  return { landed: true, targetId: null, impactType: "land" }
+  return { landed: true, targetId: null, impactType: "land", targetIsEnemy: false }
 }
 
 // ─── Flip resolution ───
@@ -279,6 +288,51 @@ function clampToArena(x: number, z: number, margin: number = 0.15): [number, num
 
 // ─── Main simulation step ───
 
+// ─── Disc overlap resolution ───
+// Pushes apart discs that are too close on the ground (prevents fusion)
+
+function resolveDiscOverlaps(discs: DiscState[]): DiscState[] {
+  const result = discs.map(d => ({ ...d }))
+  const RESTING = DISC_RADIUS * 1.85  // minimum distance between disc centers
+  const ITERATIONS = 2  // run multiple passes for stable separation
+
+  for (let iter = 0; iter < ITERATIONS; iter++) {
+    for (let i = 0; i < result.length; i++) {
+      for (let j = i + 1; j < result.length; j++) {
+        const a = result[i]
+        const b = result[j]
+        // Skip discs that are flying, flipped, or ring-out
+        if (a.flying || a.flipped || a.ringOut) continue
+        if (b.flying || b.flipped || b.ringOut) continue
+
+        const dx = b.x - a.x
+        const dz = b.z - a.z
+        const dist = Math.hypot(dx, dz)
+        if (dist < RESTING && dist > 0.001) {
+          const overlap = RESTING - dist
+          const nx = dx / dist
+          const nz = dz / dist
+          // Push each disc away by half the overlap
+          const pushX = nx * overlap * 0.5
+          const pushZ = nz * overlap * 0.5
+          
+          // Move disc A
+          a.x -= pushX
+          a.z -= pushZ
+          // Move disc B
+          b.x += pushX
+          b.z += pushZ
+
+          // Clamp both to arena bounds
+          ;[a.x, a.z] = clampToArena(a.x, a.z, DISC_RADIUS + 0.03)
+          ;[b.x, b.z] = clampToArena(b.x, b.z, DISC_RADIUS + 0.03)
+        }
+      }
+    }
+  }
+  return result
+}
+
 export function simulateStep(discs: DiscState[], delta: number): SimResult {
   const dt = Math.min(delta, 0.033) // cap at ~30fps min stability
   const impacts: ImpactEvent[] = []
@@ -328,23 +382,36 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
         if (landResult.targetId) {
           const target = discs.find(d => d.id === landResult.targetId)
           if (target) {
-            const { flipped, impactType } = resolveFlip(disc, target)
-            impacts.push({ type: impactType, x, z, intensity: flipped ? 12 : 6 })
+            if (landResult.targetIsEnemy) {
+              // Enemy target → flip or deflect
+              const { flipped, impactType } = resolveFlip(disc, target)
+              impacts.push({ type: impactType, x, z, intensity: flipped ? 12 : 6 })
 
-            if (flipped) {
-              landedDiscId = disc.id
-              return { ...disc, x, y: 0.12, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, landedOnId: landResult.targetId }
+              if (flipped) {
+                landedDiscId = disc.id
+                return { ...disc, x, y: 0.12, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, landedOnId: landResult.targetId }
+              } else {
+                // Natural deflection: bounce away from target
+                const toTargetX = x - (target?.x || 0)
+                const toTargetZ = z - (target?.z || 0)
+                const distToTarget = Math.hypot(toTargetX, toTargetZ) || 1
+                const bounceAngle = Math.atan2(toTargetZ, toTargetX) + (Math.random() - 0.5) * 0.8
+                const bounceForce = 0.8 + Math.random() * 0.5
+                x += Math.cos(bounceAngle) * bounceForce
+                z += Math.sin(bounceAngle) * bounceForce
+                ;[x, z] = clampToArena(x, z, 0.1)
+              }
             } else {
-              // Natural deflection: bounce away from target
+              // Friendly disc — bounce away to avoid stacking
+              impacts.push({ type: "stack_bounce", x, z, intensity: 4 })
               const toTargetX = x - (target?.x || 0)
               const toTargetZ = z - (target?.z || 0)
-              const distToTarget = Math.hypot(toTargetX, toTargetZ) || 1
-              // Bounce opposite direction from target + arc spread
-              const bounceAngle = Math.atan2(toTargetZ, toTargetX) + (Math.random() - 0.5) * 0.8
-              const bounceForce = 0.8 + Math.random() * 0.5
+              const distToTarget = Math.hypot(toTargetX, toTargetZ) || 0.001
+              const bounceAngle = Math.atan2(toTargetZ, toTargetX) + (Math.random() - 0.5) * 0.5
+              const bounceForce = 1.0 + Math.random() * 0.7
               x += Math.cos(bounceAngle) * bounceForce
               z += Math.sin(bounceAngle) * bounceForce
-              ;[x, z] = clampToArena(x, z, 0.1)
+              ;[x, z] = clampToArena(x, z, DISC_RADIUS + 0.05)
             }
           }
         } else {
@@ -354,9 +421,30 @@ export function simulateStep(discs: DiscState[], delta: number): SimResult {
         return { ...disc, x, y, z, vx: 0, vy: 0, vz: 0, moving: false, flying: false, landedOnId: null }
       }
     } else if (moving) {
-      // Ground movement (deflected discs)
+      // Ground movement (deflected discs) with collision detection
       x += vx * dt
       z += vz * dt
+
+      // Check collision with other grounded discs
+      const otherDiscs = discs.filter(d => d.id !== disc.id && !d.flying && !d.flipped && !d.ringOut)
+      for (const od of otherDiscs) {
+        const dx2 = x - od.x
+        const dz2 = z - od.z
+        const dist2 = Math.hypot(dx2, dz2)
+        if (dist2 < DISC_RADIUS * 1.85 && dist2 > 0.001) {
+          // Bounce off the other disc
+          const nx2 = dx2 / dist2
+          const nz2 = dz2 / dist2
+          x = od.x + nx2 * DISC_RADIUS * 1.9
+          z = od.z + nz2 * DISC_RADIUS * 1.9
+          // Reflect velocity (dampened)
+          const dot = vx * nx2 + vz * nz2
+          vx -= 2 * dot * nx2
+          vz -= 2 * dot * nz2
+          vx *= 0.4
+          vz *= 0.4
+        }
+      }
 
       const friction = 5.0
       const speed = Math.hypot(vx, vz)

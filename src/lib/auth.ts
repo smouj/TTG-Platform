@@ -377,37 +377,72 @@ export async function exchangeOAuthCode(
 // ── OAuth: Find or create user ──
 
 export async function findOrCreateOAuthUser(profile: OAuthProfile): Promise<AuthUser> {
-  // Try by provider + providerId first
-  let user = await db.user.findFirst({
-    where: { oauthProvider: profile.provider, oauthProviderId: profile.providerId },
-  })
+  // Wrap in $transaction to prevent TOCTOU race:
+  // Two concurrent OAuth registrations with the same email could both pass
+  // the findUnique check and try to create, causing a unique constraint violation.
+  // The transaction + P2002 catch handles this atomically.
+  let user: Awaited<ReturnType<typeof db.user.findFirst>> | null = null
+
+  try {
+    user = await db.$transaction(async (tx) => {
+      // Try by provider + providerId first
+      let found = await tx.user.findFirst({
+        where: { oauthProvider: profile.provider, oauthProviderId: profile.providerId },
+      })
+
+      if (!found) {
+        // Try by email
+        found = await tx.user.findUnique({ where: { email: profile.email } })
+
+        if (found) {
+          // Link existing account
+          found = await tx.user.update({
+            where: { id: found.id },
+            data: { oauthProvider: profile.provider, oauthProviderId: profile.providerId },
+          })
+        } else {
+          // Create new user
+          found = await tx.user.create({
+            data: {
+              email: profile.email,
+              name: profile.name,
+              displayName: profile.displayName,
+              avatarUrl: profile.avatarUrl,
+              oauthProvider: profile.provider,
+              oauthProviderId: profile.providerId,
+              passwordHash: "",
+              emailVerified: true, // OAuth users are pre-verified
+              credits: 500, // Welcome bonus
+            },
+          })
+        }
+      }
+      return found
+    })
+  } catch (err: any) {
+    // P2002 = unique constraint violation (email already taken by concurrent request)
+    if (err?.code === 'P2002') {
+      // Retry: the concurrent request already created the user, so find it
+      user = await db.user.findFirst({
+        where: { oauthProvider: profile.provider, oauthProviderId: profile.providerId },
+      })
+      if (!user) {
+        // Fallback: find by email and link
+        user = await db.user.findUnique({ where: { email: profile.email } })
+        if (user) {
+          user = await db.user.update({
+            where: { id: user.id },
+            data: { oauthProvider: profile.provider, oauthProviderId: profile.providerId },
+          })
+        }
+      }
+    } else {
+      throw err
+    }
+  }
 
   if (!user) {
-    // Try by email
-    user = await db.user.findUnique({ where: { email: profile.email } })
-
-    if (user) {
-      // Link existing account
-      await db.user.update({
-        where: { id: user.id },
-        data: { oauthProvider: profile.provider, oauthProviderId: profile.providerId },
-      })
-    } else {
-      // Create new user
-      user = await db.user.create({
-        data: {
-          email: profile.email,
-          name: profile.name,
-          displayName: profile.displayName,
-          avatarUrl: profile.avatarUrl,
-          oauthProvider: profile.provider,
-          oauthProviderId: profile.providerId,
-          passwordHash: "",
-          emailVerified: true, // OAuth users are pre-verified
-          credits: 500, // Welcome bonus
-        },
-      })
-    }
+    throw new Error(`Failed to find or create OAuth user for ${profile.email}`)
   }
 
   return {
