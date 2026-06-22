@@ -326,11 +326,39 @@ function TazoDiscV3({ disc, isSelected, isDragging, dragRatio }: {
 
     g.position.lerp(new THREE.Vector3(disc.x, Math.max(disc.y, 0.02), disc.z), Math.min(1, delta * 20))
 
-    // Flip flatten
+    // Face orientation via rotation
+    const faceState = disc.faceState || "face_down"
+    const targetRx = faceState === "face_down" || faceState === "sideways"
+      ? THREE.MathUtils.lerp(g.rotation.x, Math.PI + disc.tiltX, 0.25)
+      : faceState === "face_up"
+        ? THREE.MathUtils.lerp(g.rotation.x, disc.tiltX, 0.25)
+        : THREE.MathUtils.lerp(g.rotation.x, disc.tiltX, 0.18)
+    
+    const targetRz = faceState === "wobbling"
+      ? THREE.MathUtils.lerp(g.rotation.z, disc.tiltZ, 0.18)
+      : THREE.MathUtils.lerp(g.rotation.z, disc.tiltZ, 0.25)
+
     if (disc.flipped) {
-      g.scale.y = THREE.MathUtils.lerp(g.scale.y, 0.04, 0.09)
+      // Captured: flatten with front face up
+      g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, 0, 0.25)
+      g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, 0, 0.25)
+      g.scale.y = THREE.MathUtils.lerp(g.scale.y, 0.04, 0.12)
+    } else if (!disc.moving && !disc.flying) {
+      g.rotation.x = targetRx
+      g.rotation.z = targetRz
+      g.scale.y = THREE.MathUtils.lerp(g.scale.y, 1, 0.18)
     } else {
-      g.scale.y = THREE.MathUtils.lerp(g.scale.y, 1, 0.12)
+      // Moving/flying: show rotation + wobble
+      g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, disc.tiltX || targetRx, 0.15)
+      g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, disc.tiltZ || targetRz, 0.15)
+      g.scale.y = THREE.MathUtils.lerp(g.scale.y, 1, 0.3)
+    }
+
+    // Wobble visual
+    if ((disc.wobbleAngle ?? 0) > 0.005) {
+      g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, Math.sin(Date.now() * 0.02 * (disc.wobbleSpeed || 2)) * disc.wobbleAngle, 0.25)
+    } else {
+      g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, disc.rotation || 0, 0.2)
     }
 
     // Selection pulse
