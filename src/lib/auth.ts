@@ -240,9 +240,11 @@ export async function exchangeOAuthCode(
   redirectUri: string,
 ): Promise<{ profile: OAuthProfile; redirectTo: string } | { error: string }> {
   // Verify state
+  let redirectTo = "/app/collection"
   try {
     const decoded = jwt.verify(state, JWT_SECRET) as { provider: string; redirectUri: string }
     if (decoded.provider !== provider) return { error: "Invalid state" }
+    if (decoded.redirectUri !== redirectUri) return { error: "Invalid state" }
   } catch {
     return { error: "Invalid or expired state" }
   }
@@ -337,7 +339,7 @@ export async function exchangeOAuthCode(
       return { error: "Unknown provider" }
   }
 
-  return { profile, redirectTo: (jwt.decode(state) as any)?.redirectUri || "/app" }
+  return { profile, redirectTo }
 }
 
 // ── OAuth: Find or create user ──
