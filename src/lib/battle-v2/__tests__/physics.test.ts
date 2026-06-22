@@ -3,7 +3,7 @@ import {
   createDemoDisc, calculateLaunchVelocity, calculateTrajectoryPreview,
   simulateStep, allStopped, 
   ARCHETYPE_STATS, GRAVITY, JUMP_POWER,
-  FIELD_HALF_W, FIELD_HALF_H, CENTER_LINE_Z, DISC_RADIUS, MIN_LAUNCH_SPEED,
+  FIELD_HALF_W, FIELD_HALF_L, CENTER_LINE_Z, DISC_RADIUS, MIN_LAUNCH_SPEED,
 } from "../physics"
 
 describe("createDemoDisc", () => {
@@ -85,7 +85,7 @@ describe("calculateTrajectoryPreview", () => {
     // Last point is either landed (y=0) or at arena boundary
     const last = r[r.length - 1]
     const lastDist = Math.hypot(last.x, last.z)
-    expect(last.y === 0 || lastDist >= Math.min(FIELD_HALF_W, FIELD_HALF_H) - 0.5).toBe(true)
+    expect(last.y === 0 || lastDist >= Math.min(FIELD_HALF_W, FIELD_HALF_L) - 0.5).toBe(true)
   })
 })
 

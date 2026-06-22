@@ -8,10 +8,10 @@
 // Flip by real orientation, not formula
 // ============================================================
 
-export const FIELD_WIDTH = 12.0
-export const FIELD_HEIGHT = 8.0
-export const FIELD_HALF_W = FIELD_WIDTH / 2
-export const FIELD_HALF_H = FIELD_HEIGHT / 2
+export const FIELD_LENGTH = 14.0   // Z axis — front-to-back (long side)
+export const FIELD_WIDTH = 8.0    // X axis — lateral (short side)
+export const FIELD_HALF_L = FIELD_LENGTH / 2  // 7.0
+export const FIELD_HALF_W = FIELD_WIDTH / 2   // 4.0
 export const CENTER_LINE_Z = 0.0
 
 export const DISC_RADIUS = 0.45
@@ -107,7 +107,7 @@ export interface SimResult {
 
 export function isInField(x: number, z: number, margin: number = 0): boolean {
   return x > -FIELD_HALF_W + margin && x < FIELD_HALF_W - margin &&
-         z > -FIELD_HALF_H + margin && z < FIELD_HALF_H - margin
+         z > -FIELD_HALF_L + margin && z < FIELD_HALF_L - margin
 }
 
 export function isInPlayerHalf(x: number, z: number): boolean {
@@ -121,13 +121,13 @@ export function isInOpponentHalf(x: number, z: number): boolean {
 export function clampToField(x: number, z: number, margin: number = DISC_RADIUS): [number, number] {
   return [
     Math.max(-FIELD_HALF_W + margin, Math.min(FIELD_HALF_W - margin, x)),
-    Math.max(-FIELD_HALF_H + margin, Math.min(FIELD_HALF_H - margin, z))
+    Math.max(-FIELD_HALF_L + margin, Math.min(FIELD_HALF_L - margin, z))
   ]
 }
 
 export function isInOwnerZone(x: number, z: number, owner: "player" | "opponent"): boolean {
   if (!isInField(x, z, DISC_RADIUS)) return false
-  return owner === "player" ? z > CENTER_LINE_Z + 0.6 : z < CENTER_LINE_Z - 0.6
+  return owner === "player" ? z > CENTER_LINE_Z + 0.8 : z < CENTER_LINE_Z - 0.8
 }
 
 // ─── Positioning validation ───
@@ -169,9 +169,9 @@ export function detectFaceState(tiltX: number, tiltZ: number, speed: number, wob
 export function floorRoughness(x: number, z: number): number {
   const absZ = Math.abs(z)
   const microVar = 1.0 + (Math.sin(x * 19.7 + z * 31.3) * 0.025)
-  if (absZ < 1.0) return 1.0 * microVar          // smooth center
-  else if (absZ < 2.2) return 0.78 * microVar     // medium
-  else if (absZ < 3.0) return 0.6 * microVar      // rough
+  if (absZ < 1.5) return 1.0 * microVar          // smooth center
+  else if (absZ < 3.5) return 0.78 * microVar     // medium
+  else if (absZ < 5.0) return 0.6 * microVar      // rough
   else return 0.5 * microVar                       // very rough edges
 }
 

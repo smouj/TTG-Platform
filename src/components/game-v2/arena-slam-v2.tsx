@@ -9,7 +9,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
 import {
-  FIELD_WIDTH, FIELD_HEIGHT, FIELD_HALF_W, FIELD_HALF_H, CENTER_LINE_Z,
+  FIELD_WIDTH, FIELD_LENGTH, FIELD_HALF_W, FIELD_HALF_L, CENTER_LINE_Z,
   DISC_RADIUS, DISC_THICKNESS,
   MIN_LAUNCH_SPEED,
   SETTLE_TIME_MS,
@@ -80,7 +80,7 @@ function forceColor(ratio: number): string {
 // Shows the player's deck as a glowing tube on the edge of the arena
 
 function DeckTubeV3({ deckCount, totalCount, side }: { deckCount: number; totalCount: number; side: 1 | -1 }) {
-  const z = side * (FIELD_HALF_H - 1.5)
+  const z = side * (FIELD_HALF_L - 2.0)
   const stackHeight = Math.max(0.15, (totalCount - deckCount) * 0.04)
   const remainingRatio = totalCount > 0 ? deckCount / totalCount : 0
   
@@ -133,7 +133,7 @@ function RectangularField() {
     c.width = w; c.height = h
     const ctx = c.getContext("2d")!
     const px = (vx: number) => (vx / FIELD_WIDTH + 0.5) * w
-    const pz = (vz: number) => ((FIELD_HALF_H - vz) / FIELD_HEIGHT) * h
+    const pz = (vz: number) => ((FIELD_HALF_L - vz) / FIELD_LENGTH) * h
 
     // ─── Field base (stadium green with grass-like gradient) ───
     const g = ctx.createLinearGradient(0, 0, 0, h)
@@ -224,8 +224,8 @@ function RectangularField() {
     }
 
     // ─── Spawn zone: Player half ───
-    const playerZ = FIELD_HALF_H - 1.5
-    const opponentZ = -FIELD_HALF_H + 1.5
+    const playerZ = FIELD_HALF_L - 2.0
+    const opponentZ = -FIELD_HALF_L + 2.0
     
     // Player zone box
     const pzY = pz(playerZ)
@@ -257,15 +257,15 @@ function RectangularField() {
     ctx.fillStyle = "rgba(255,255,255,0.04)"
     ctx.font = "bold 18px 'Geist', sans-serif"
     ctx.textAlign = "center"
-    ctx.fillText("YOUR SIDE", w/2, pz(FIELD_HALF_H - 0.5))
-    ctx.fillText("RIVAL SIDE", w/2, pz(-FIELD_HALF_H + 0.5))
+    ctx.fillText("YOUR SIDE", w/2, pz(FIELD_HALF_L - 0.5))
+    ctx.fillText("RIVAL SIDE", w/2, pz(-FIELD_HALF_L + 0.5))
 
     return new THREE.CanvasTexture(c)
   }, [])
 
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} receiveShadow>
-      <planeGeometry args={[FIELD_WIDTH, FIELD_HEIGHT]} />
+      <planeGeometry args={[FIELD_WIDTH, FIELD_LENGTH]} />
       <meshStandardMaterial map={tex} roughness={0.55} metalness={0.03} />
     </mesh>
   )
@@ -276,7 +276,7 @@ function FieldWalls() {
   const wallH = 0.35
   const wallT = 0.08
   const hw = FIELD_HALF_W
-  const hh = FIELD_HALF_H
+  const hh = FIELD_HALF_L
   
   return (
     <group>
@@ -290,7 +290,7 @@ function FieldWalls() {
       {/* East + West walls */}
       {[hw, -hw].map((wx, idx) => (
         <mesh key={"ew"+idx} position={[wx, wallH/2, 0]} receiveShadow castShadow>
-          <boxGeometry args={[wallT, wallH, FIELD_HEIGHT]} />
+          <boxGeometry args={[wallT, wallH, FIELD_LENGTH]} />
           <meshStandardMaterial color="#FFCC00" roughness={0.15} metalness={0.8} emissive="#FFCC00" emissiveIntensity={0.25} />
         </mesh>
       ))}
@@ -579,7 +579,7 @@ function PositioningOverlay({ onPlace }: { onPlace: (x: number, z: number, valid
         onPlace(p.x, p.z, validation.valid)
       }}
     >
-      <planeGeometry args={[FIELD_WIDTH, FIELD_HEIGHT]} />
+      <planeGeometry args={[FIELD_WIDTH, FIELD_LENGTH]} />
       <meshStandardMaterial transparent opacity={0} depthWrite={false} side={2} />
     </mesh>
   )
@@ -948,7 +948,7 @@ export default function ArenaSlamV2({
     e.preventDefault()
     const { x, z } = getCoords(e)
     // Player spawn position (discs enter from player's side)
-    const spawnX = 0, spawnZ = FIELD_HALF_H - 1.5
+    const spawnX = 0, spawnZ = FIELD_HALF_L - 2.0
     const dsStart = { startX: spawnX + x * 0.5, startZ: spawnZ + z * 0.5, currentX: x, currentZ: z, active: true }
     dragRef.current = dsStart
     setDragState(dsStart)
@@ -976,7 +976,7 @@ export default function ArenaSlamV2({
     const isPositioning = phase === "positioning"
     if (!isPositioning) return
     
-    const z = Math.max(CENTER_LINE_Z + 0.8, Math.min(FIELD_HALF_H - 0.8, fieldZ))
+    const z = Math.max(CENTER_LINE_Z + 0.8, Math.min(FIELD_HALF_L - 0.8, fieldZ))
     const x = Math.max(-FIELD_HALF_W + 1.5, Math.min(FIELD_HALF_W - 1.5, fieldX))
     
     // Auto-select first card if none explicitly selected
@@ -1004,7 +1004,7 @@ export default function ArenaSlamV2({
             ...d,
             x: (i - 1) * 2.0,
             y: 0,
-            z: -(FIELD_HALF_H - 1.5),
+            z: -(FIELD_HALF_L - 2.0),
             moving: false, flying: false,
             wobbleAngle: 0, wobbleSpeed: 0, wobbleAxis: 0,
           }))
@@ -1045,7 +1045,7 @@ export default function ArenaSlamV2({
     setPhase("physics_live")
     // Remove from hand, place on field at default position
     setPlayerHand(prev => prev.filter(d => d.id !== selectedId))
-    setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: FIELD_HALF_H - 1.5, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
+    setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: FIELD_HALF_L - 2.0, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
     simulatingRef.current = true
   }, [dragState, selectedDisc, selectedId])
 
@@ -1159,7 +1159,7 @@ export default function ArenaSlamV2({
     }
     // Place attacker on field at opponent side + compute launch in one batch
     const attackerX = 0 + (Math.random() - 0.5) * 1.2
-    const attackerZ = -(FIELD_HALF_H - 1.5)
+    const attackerZ = -(FIELD_HALF_L - 2.0)
     const pDiscs = cd.filter(d => d.owner === "player" && !d.flipped && !d.ringOut)
     let target: DiscState | null = null
     if (pDiscs.length > 0) {
