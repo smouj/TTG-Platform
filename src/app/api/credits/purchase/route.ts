@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getAuthUser } from "@/lib/auth"
+import { withAsyncLock } from "@/lib/async-lock"
 import { prisma } from "@/lib/prisma"
 import { CREDIT_PACKAGES, isStripeConfigured, getStripePriceId } from "@/lib/monetization"
 import { SITE_CONFIG } from "@/lib/site-config"
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
   if (!isStripeConfigured()) {
     // ── Dev mode: grant credits directly (atomic) ──
     // Rate limit: 1 purchase per 10 seconds in dev mode
-    const txResult = await prisma.$transaction(async (tx) => {
+    const txResult = await withAsyncLock(`credits:purchase:dev:${authUser.id}`, () => prisma.$transaction(async (tx) => {
       const recentPurchase = await tx.purchase.findFirst({
         where: {
           userId: authUser.id,
@@ -74,7 +75,7 @@ export async function POST(req: NextRequest) {
       })
 
       return { rateLimited: false as const, credits: updated.credits }
-    })
+    }))
 
     if (txResult.rateLimited) {
       return NextResponse.json({
@@ -92,8 +93,17 @@ export async function POST(req: NextRequest) {
 
   // ── Production: Stripe Checkout ──
   try {
+    const stripeSecret = process.env.STRIPE_SECRET_KEY
+    if (!stripeSecret) {
+      console.error("[purchase] STRIPE_SECRET_KEY is not configured")
+      return NextResponse.json(
+        { error: "Payment service unavailable. Please try again later." },
+        { status: 503 }
+      )
+    }
+
     const Stripe = await import("stripe")
-    const stripe = new Stripe.default(process.env.STRIPE_SECRET_KEY!)
+    const stripe = new Stripe.default(stripeSecret)
 
     const priceId = getStripePriceId(pkg)
 
