@@ -12,7 +12,7 @@ import {
   ARENA_RADIUS, DISC_RADIUS,
   MIN_LAUNCH_SPEED,
   calculateLaunchVelocity, calculateTrajectoryPreview,
-  simulateStep, allStopped, createDemoDisc, spreadDiscs,
+  simulateStep, allStopped, createDemoDisc,
   type DiscState, type DragState,
   type ImpactEvent, type ImpactType, type TrajectoryPoint,
 } from "@/lib/battle-v2/physics"
@@ -430,11 +430,12 @@ function TurnIndicator({ phase, turn }: { phase: string; turn?: string }) {
   )
 }
 
-function HandDisplay({ discs, selectedId, onSelect, phase }: {
+function HandDisplay({ discs, selectedId, onSelect, phase, deckCount }: {
   discs: DiscState[]
   selectedId: string | null
   onSelect: (id: string) => void
   phase: string
+  deckCount?: number
 }) {
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-end gap-2.5 z-20">
@@ -516,6 +517,8 @@ export default function ArenaSlamV2({
   const [opponentScore, setOpponentScore] = useState(0)
   const [impacts, setImpacts] = useState<ImpactEvent[]>([])
   const [playerHand, setPlayerHand] = useState<DiscState[]>([])
+  const [playerDeck, setPlayerDeck] = useState<DiscState[]>([])
+  const [opponentHand, setOpponentHand] = useState<DiscState[]>([])
   const [dragState, setDragState] = useState<DragState>({ startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false })
   const [trajectory, setTrajectory] = useState<TrajectoryPoint[]>([])
   const [shakeIntensity, setShakeIntensity] = useState(0)
@@ -532,32 +535,48 @@ export default function ArenaSlamV2({
   const scoreRef = useRef({ player: 0, opponent: 0 })
   const dragRef = useRef<DragState>({ startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false })
   const turnRef = useRef<"player" | "opponent">("player")
+  const opponentDeckRef = useRef<DiscState[]>([])
+  const opponentHandRef = useRef<DiscState[]>([])
 
   useEffect(() => { scoreRef.current = { player: playerScore, opponent: opponentScore } }, [playerScore, opponentScore])
+  useEffect(() => { opponentHandRef.current = opponentHand }, [opponentHand])
 
   // ── Setup (real data or demo) ──
   const hasRealData = !!(initialPlayerDiscs?.length && initialOpponentDiscs?.length)
   
-  const demoPlayer = useMemo(() => spreadDiscs([
+  const demoPlayerRaw = useMemo(() => [
     createDemoDisc("p1", "TITAN", "heavy", 0, 0, "player", "dracobell"),
     createDemoDisc("p2", "BLADE", "technical", 0, 0, "player", "cybermon"),
     createDemoDisc("p3", "VORTEX", "spinner", 0, 0, "player", "minimon"),
     createDemoDisc("p4", "SHIELD", "defender", 0, 0, "player", "dracobell"),
     createDemoDisc("p5", "STRIKE", "balanced", 0, 0, "player", "cybermon"),
-  ], 1), [])
+  ], [])
 
-  const demoOpponents = useMemo(() => spreadDiscs([
+  const demoOpponentsRaw = useMemo(() => [
     createDemoDisc("o1", "ROCK", "defender", 0, 0, "opponent", "dracobell"),
     createDemoDisc("o2", "BYTE", "technical", 0, 0, "opponent", "cybermon"),
     createDemoDisc("o3", "SLIME", "balanced", 0, 0, "opponent", "minimon"),
-  ], -1), [])
+  ], [])
 
   const initDemo = useCallback(() => {
-    const p = hasRealData ? (initialPlayerDiscs || []) : demoPlayer
-    const o = hasRealData ? (initialOpponentDiscs || []) : demoOpponents
-    setDiscs([...p, ...o])
-    setPlayerHand(p)
-    setSelectedId(p[0]?.id || null)
+    // Build player and opponent full rosters (from real data or demo)
+    const rawP = hasRealData ? (initialPlayerDiscs || []) : demoPlayerRaw
+    const rawO = hasRealData ? (initialOpponentDiscs || []) : demoOpponentsRaw
+
+    // Draw initial hand (3 for quick start), rest in deck
+    const pDeck = [...rawP]
+    const oDeck = [...rawO]
+    const initialHandSize = Math.min(3, pDeck.length)
+    const pHand = pDeck.splice(0, initialHandSize)
+    const oHand = oDeck.splice(0, Math.min(3, oDeck.length))
+
+    // Clean field
+    setDiscs([])
+    setPlayerHand(pHand)
+    setPlayerDeck(pDeck)
+    setOpponentHand(oHand)
+    opponentDeckRef.current = oDeck
+    setSelectedId(pHand[0]?.id || null)
     setPhase("select")
     scoreRef.current = { player: 0, opponent: 0 }
     turnRef.current = "player"
@@ -567,11 +586,11 @@ export default function ArenaSlamV2({
     setSlamTexts([])
     setDragState({ startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false })
     setTrajectory([])
-  }, [demoPlayer, demoOpponents, hasRealData, initialPlayerDiscs, initialOpponentDiscs])
+  }, [demoPlayerRaw, demoOpponentsRaw, hasRealData, initialPlayerDiscs, initialOpponentDiscs])
 
   useEffect(() => { initDemo() }, [initDemo])
 
-  const selectedDisc = useMemo(() => discs.find(d => d.id === selectedId) || null, [discs, selectedId])
+  const selectedDisc = useMemo(() => playerHand.find(d => d.id === selectedId) || null, [playerHand, selectedId])
 
   const dragRatio = useMemo(() => {
     if (!dragState.active) return 0
@@ -627,9 +646,9 @@ export default function ArenaSlamV2({
     if (Math.hypot(vx, vz) < MIN_LAUNCH_SPEED) { setPhase("aim"); return }
 
     setPhase("resolving")
-    setDiscs(prev => prev.map(d =>
-      d.id === selectedId ? { ...d, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 } : d
-    ))
+    // Remove from hand, place on field at default position
+    setPlayerHand(prev => prev.filter(d => d.id !== selectedId))
+    setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: ARENA_RADIUS - 1.5, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
     simulatingRef.current = true
   }, [dragState, selectedDisc, selectedId])
 
@@ -674,6 +693,15 @@ export default function ArenaSlamV2({
             setPhase("result")
           } else if (isPlayerTurn) {
             // Player's turn ends → now opponent's turn
+            // Draw 1 from deck into hand (if deck not empty)
+            setPlayerDeck(pd => {
+              if (pd.length > 0) {
+                const [next, ...rest] = pd
+                setPlayerHand(ph => [...ph, next])
+                return rest
+              }
+              return pd
+            })
             turnRef.current = "opponent"
             setPhase("opponent")
             setTimeout(() => doOpponentTurn(result.discs), 900)
@@ -697,15 +725,26 @@ export default function ArenaSlamV2({
 
   // ── Opponent AI ──
   const doOpponentTurn = useCallback((cd: DiscState[]) => {
-    const avail = cd.filter(d => d.owner === "opponent" && !d.flying && !d.flipped && !d.ringOut)
-    if (!avail.length) { setPhase("select"); return }
-    const attacker = avail[Math.floor(Math.random() * avail.length)]
+    // Pick from opponent hand, not from field
+    let attacker: DiscState | undefined
+    // Use closure over opponentHand (fresh via setter callback in setTimeout closure)
+    setOpponentHand(oh => {
+      const avail = oh.filter(d => !d.flipped && !d.ringOut)
+      if (!avail.length) return oh  // no hand → can't play
+      const chosenIdx = Math.floor(Math.random() * avail.length)
+      attacker = avail[chosenIdx]
+      return oh.filter(d => d.id !== attacker?.id)
+    })
+    if (!attacker) { setPhase("select"); return }
+    // Place attacker on field at opponent side
+    const placedAttacker = { ...attacker, x: 0 + (Math.random() - 0.5) * 1.2, z: -(ARENA_RADIUS - 1.5) }
+    setDiscs(prev => [...prev, placedAttacker])
     const pDiscs = cd.filter(d => d.owner === "player" && !d.flipped && !d.ringOut)
     const target = pDiscs.length > 0 ? pDiscs[Math.floor(Math.random() * pDiscs.length)] : null
 
     let aimAngle: number, aimDist: number
     if (target) {
-      const dx = target.x - attacker.x, dz = target.z - attacker.z
+      const dx = target.x - placedAttacker.x, dz = target.z - placedAttacker.z
       aimAngle = Math.atan2(dz, dx)
       aimDist = Math.hypot(dx, dz) / 3.5 + Math.random() * 0.4
     } else {
@@ -715,17 +754,24 @@ export default function ArenaSlamV2({
     aimAngle += (Math.random() - 0.5) * 0.3
 
     const fd: DragState = {
-      startX: attacker.x + Math.cos(aimAngle + Math.PI) * aimDist * 0.3,
-      startZ: attacker.z + Math.sin(aimAngle + Math.PI) * aimDist * 0.3,
-      currentX: attacker.x - Math.cos(aimAngle + Math.PI) * aimDist * 0.7,
-      currentZ: attacker.z - Math.sin(aimAngle + Math.PI) * aimDist * 0.7,
+      startX: placedAttacker.x + Math.cos(aimAngle + Math.PI) * aimDist * 0.3,
+      startZ: placedAttacker.z + Math.sin(aimAngle + Math.PI) * aimDist * 0.3,
+      currentX: placedAttacker.x - Math.cos(aimAngle + Math.PI) * aimDist * 0.7,
+      currentZ: placedAttacker.z - Math.sin(aimAngle + Math.PI) * aimDist * 0.7,
       active: true,
     }
 
-    const launch = calculateLaunchVelocity(fd, attacker.stats)
+    const launch = calculateLaunchVelocity(fd, placedAttacker.stats)
+    // Update the placed disc with velocity
     setDiscs(prev => prev.map(d =>
-      d.id === attacker.id ? { ...d, vx: launch.vx, vy: launch.vy, vz: launch.vz, y: 0.05, moving: true, flying: true, rotationSpeed: launch.vx * 0.6 } : d
+      d.id === placedAttacker.id ? { ...d, vx: launch.vx, vy: launch.vy, vz: launch.vz, y: 0.05, moving: true, flying: true, rotationSpeed: launch.vx * 0.6 } : d
     ))
+    // Draw 1 into opponent hand (using ref for deck)
+    const deck = opponentDeckRef.current
+    if (deck.length > 0) {
+      opponentDeckRef.current = deck.slice(1)
+      setOpponentHand(oh => [...oh, deck[0]])
+    }
     setPhase("resolving")
     simulatingRef.current = true
   }, [])
@@ -757,7 +803,7 @@ export default function ArenaSlamV2({
       <SlamTexts events={slamTexts} />
 
       {/* Hand */}
-      <HandDisplay discs={playerHand} selectedId={selectedId} onSelect={handleSelectDisc} phase={phase} />
+      <HandDisplay discs={playerHand} selectedId={selectedId} onSelect={handleSelectDisc} phase={phase} deckCount={playerDeck.length} />
 
       {/* Camera controls */}
       <div className="absolute top-4 right-4 z-30 flex flex-col gap-1.5">
