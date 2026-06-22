@@ -62,6 +62,8 @@ const nextConfig: NextConfig = {
 
       // Battle
       { source: "/arena", destination: "/app/battle", permanent: false },
+      // Legacy prototype → new practice arena
+      { source: "/battle/prototype", destination: "/battle/practice", permanent: true },
 
       // App nav merge — Album merged into Collection
       { source: "/app/album", destination: "/app/collection", permanent: true },
