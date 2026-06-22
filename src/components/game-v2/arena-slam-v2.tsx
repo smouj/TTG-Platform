@@ -537,7 +537,6 @@ function PositioningOverlay({ onPlace }: { onPlace: (x: number, z: number) => vo
       ref={meshRef}
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0.01, 0]}
-      visible={false}
       onClick={(e) => {
         e.stopPropagation()
         const p = e.point
@@ -545,7 +544,7 @@ function PositioningOverlay({ onPlace }: { onPlace: (x: number, z: number) => vo
       }}
     >
       <planeGeometry args={[FIELD_WIDTH, FIELD_HEIGHT]} />
-      <meshBasicMaterial transparent opacity={0} />
+      <meshStandardMaterial transparent opacity={0} depthWrite={false} side={2} />
     </mesh>
   )
 }
@@ -655,12 +654,14 @@ function ScoreHUD({ playerScore, opponentScore, playerName, opponentName }: { pl
 function TurnIndicator({ phase, turn, playerName, opponentName }: { phase: string; turn?: string; playerName?: string; opponentName?: string }) {
   if (phase === "intro" || phase === "result") return null
   const msgs: Record<string, string> = {
+    positioning: "Place your tazos on the field",
     select: "Choose your tazo",
     aim: "Drag back · Release to jump!",
     resolving: turn === "player" ? "Your disc in flight!" : "Rival disc incoming!",
     opponent: "Opponent aims...",
   }
   const colors: Record<string, string> = {
+    positioning: "border-cyan-400/20 text-cyan-400/60",
     select: "border-yellow-400/20 text-yellow-400/60",
     aim: "border-green-400/20 text-green-400/60",
     resolving: turn === "player" ? "border-cyan-400/20 text-cyan-400/60" : "border-red-400/20 text-red-400/60",
@@ -705,10 +706,12 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20" style={{ maxWidth: "90vw", overflowX: "auto" }}>
     {isPositioning && (
-      <div className="text-center mb-3 px-6 py-2 rounded-full bg-cyan-400/5 border border-cyan-400/10 backdrop-blur-sm">
-        <span className="text-cyan-400/60 font-black text-[10px] uppercase tracking-[0.2em]">
-          Click card then click field to place · {3 - (placedCount ?? 0)} remaining
-        </span>
+      <div className="text-center mb-3">
+        <div className="inline-block px-5 py-2 rounded-full bg-cyan-400/5 border border-cyan-400/10 backdrop-blur-sm">
+          <span className="text-cyan-400/60 font-black text-[10px] uppercase tracking-[0.15em]">
+            {placingId ? "Click field to place" : "Click card then field"} · {3 - (placedCount ?? 0)} left
+          </span>
+        </div>
       </div>
     )}
     <div className="flex items-end gap-2.5 px-4 justify-center">
@@ -722,10 +725,10 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
       {available.map(d => (
         <button
           key={d.id}
-          onClick={() => phase !== "resolving" && onSelect(d.id)}
+          onClick={() => { if (isPositioning && onPlace) { onPlace(d.id); return } if (phase !== "resolving") onSelect(d.id) }}
           disabled={phase === "resolving"}
           className={`relative w-16 h-16 rounded-full border-2 flex flex-col items-center justify-center transition-all duration-150 ${
-            selectedId === d.id
+            selectedId === d.id || placingId === d.id
               ? "border-yellow-400 bg-yellow-400/20 scale-115 shadow-lg shadow-yellow-400/25 z-10"
               : "border-white/10 bg-black/60 hover:border-white/25 hover:bg-white/5"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -928,6 +931,67 @@ export default function ArenaSlamV2({
       selectedDisc.stats, 70
     ))
   }, [selectedDisc, getCoords])
+
+  // ─── Positioning: click field to place disc ───
+  const handlePlaceDisc = useCallback((fieldX: number, fieldZ: number) => {
+    const isPositioning = phase === "positioning"
+    if (!isPositioning) return
+    
+    const z = Math.max(CENTER_LINE_Z + 0.8, Math.min(FIELD_HALF_H - 0.8, fieldZ))
+    const x = Math.max(-FIELD_HALF_W + 1.5, Math.min(FIELD_HALF_W - 1.5, fieldX))
+    
+    // Auto-select first card if none explicitly selected
+    const targetCard = playerHand.find(d => d.id === placingId) || playerHand[0]
+    if (!targetCard) return
+    
+    // Place on field
+    setDiscs(prev => [...prev, {
+      ...targetCard, x, y: 0, z,
+      vx: 0, vy: 0, vz: 0, moving: false, flying: false,
+      wobbleAngle: 0, wobbleSpeed: 0, wobbleAxis: 0,
+    }])
+    setPlayerHand(prev => prev.filter(d => d.id !== targetCard.id))
+    setPlacingId(null)
+    
+    // Check placement progress
+    const newPlaced = placedCount + 1
+    setPlacedCount(newPlaced)
+    
+    if (newPlaced >= 3) {
+      // Auto-place opponent tazos, then start battle
+      setTimeout(() => {
+        setOpponentHand(oh => {
+          const oppPlaced = oh.map((d, i) => ({
+            ...d,
+            x: (i - 1) * 2.0,
+            y: 0,
+            z: -(FIELD_HALF_H - 1.5),
+            moving: false, flying: false,
+            wobbleAngle: 0, wobbleSpeed: 0, wobbleAxis: 0,
+          }))
+          setDiscs(prev => [...prev, ...oppPlaced])
+          return []
+        })
+        // Auto-draw one card for battle
+        setPlayerDeck(pd => {
+          if (pd.length > 0) {
+            const [next, ...rest] = pd
+            setPlayerHand(ph => ph.length === 0 ? [next] : [...ph, next])
+            return rest
+          }
+          return pd
+        })
+        setPhase("select")
+        // Auto-select first hand card for battle launch
+        setTimeout(() => {
+          setPlayerHand(ph => {
+            if (ph.length > 0) setSelectedId(ph[0].id)
+            return ph
+          })
+        }, 100)
+      }, 600)
+    }
+  }, [phase, placingId, playerHand, placedCount])
 
   const handlePointerUp = useCallback(() => {
     if (!dragRef.current.active || !selectedDisc) return
@@ -1290,6 +1354,10 @@ export default function ArenaSlamV2({
         onPointerLeave={handlePointerUp}
         style={{ cursor: phase === "intro" ? "default" : (orbitMode ? "grab" : phase === "aim" ? (dragState.active ? "grabbing" : "grab") : "default"), pointerEvents: phase === "intro" ? "none" : "auto" }}
       >
+        {/* Positioning click target */}
+        {phase === "positioning" && (
+          <PositioningOverlay onPlace={handlePlaceDisc} />
+        )}
         <CameraController preset={camPreset} orbitEnabled={orbitMode} />
 
         {/* Lighting */}
