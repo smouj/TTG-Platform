@@ -663,18 +663,20 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // Save battle record
-      await tx.battleRecord.create({
-        data: {
-          userId: authUser?.id,
-          playerTazos: JSON.stringify(playerTazoIds),
-          opponentTazos: JSON.stringify(opponentTazoIds),
-          winner,
-          victoryType,
-          rounds,
-          battleLog: JSON.stringify(battleLog),
-        },
-      })
+      if (authUser) {
+        // Save battle record
+        await tx.battleRecord.create({
+          data: {
+            userId: authUser.id,
+            playerTazos: JSON.stringify(playerTazoIds),
+            opponentTazos: JSON.stringify(opponentTazoIds),
+            winner,
+            victoryType,
+            rounds,
+            battleLog: JSON.stringify(battleLog),
+          },
+        })
+      }
 
       // Award credits for authenticated winner (capped daily) — re-check inside transaction
       if (authUser && winner === 'player') {

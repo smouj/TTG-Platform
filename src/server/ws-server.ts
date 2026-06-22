@@ -435,6 +435,9 @@ const statusServer = createServer((_req, res) => {
   }
 })
 statusServer.listen(PORT + 1, "127.0.0.1")
+statusServer.on("error", (err) => {
+  log(`⚠️ Status server error: ${err.message}`)
+})
 log(`Status HTTP on port ${PORT + 1}`)
 
 // Graceful shutdown
