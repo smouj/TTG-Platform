@@ -23,7 +23,7 @@ function BattlePlayLoadingOverlay() {
       <div style={{
         position: "absolute", inset: 0, display: "flex",
         flexDirection: "column", alignItems: "center", justifyContent: "center",
-        background: "radial-gradient(ellipse at center, #161630 0%, #0b0b18 50%, #030308 100%)",
+        background: "radial-gradient(ellipse at center, #2a2018 0%, #181210 50%, #0a0806 100%)",
         gap: "2rem",
       }}>
         <div style={{ position: "relative" }}>
@@ -40,6 +40,19 @@ function BattlePlayLoadingOverlay() {
         </p>
       </div>
     </GameShell>
+  )
+}
+
+// ═══ Fade-in wrapper to smooth loading transitions ═══
+function FadeIn({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{
+      animation: "fadeIn 0.35s ease-out",
+      position: "absolute", inset: 0,
+    }}>
+      <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`}</style>
+      {children}
+    </div>
   )
 }
 
@@ -65,7 +78,7 @@ export default function BattlePlayPage() {
 
   return (
     <GameShell>
-      <BattlePlayV2 />
+      <FadeIn><BattlePlayV2 /></FadeIn>
     </GameShell>
   )
 }

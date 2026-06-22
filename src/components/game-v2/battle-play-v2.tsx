@@ -158,15 +158,17 @@ function LoadingScreen() {
       background: "radial-gradient(ellipse at center, #2a2018 0%, #181210 50%, #0a0806 100%)",
       gap: "2rem", zIndex: 40,
     }}>
-      <div style={{
-        width: 72, height: 72, borderRadius: "50%",
-        border: "3px solid rgba(255,204,0,0.12)",
-        borderTopColor: "#FFCC00", borderLeftColor: "rgba(255,180,40,0.3)", borderRightColor: "rgba(255,180,40,0.15)",
-        animation: "spin 0.8s linear infinite",
-        boxShadow: "0 0 48px rgba(255,180,30,0.2), 0 0 12px rgba(255,204,0,0.08)",
-      }} />
-      <p style={{ fontSize: 14, fontWeight: 900, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.25em", margin: 0 }}>
-        Entering Arena…
+      <div style={{ position: "relative" }}>
+        <div style={{
+          width: 72, height: 72, borderRadius: "50%",
+          border: "3px solid rgba(255,204,0,0.12)",
+          borderTopColor: "#FFCC00", borderLeftColor: "rgba(255,180,40,0.3)", borderRightColor: "rgba(255,180,40,0.15)",
+          animation: "spin 0.8s linear infinite",
+          boxShadow: "0 0 48px rgba(255,180,30,0.2), 0 0 12px rgba(255,204,0,0.08)",
+        }} />
+      </div>
+      <p style={{ fontSize: 12, fontWeight: 900, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.25em", margin: 0 }}>
+        ENTERING ARENA
       </p>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
