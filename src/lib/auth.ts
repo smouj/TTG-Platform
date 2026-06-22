@@ -225,6 +225,22 @@ function safeOAuthRedirectPath(value: unknown): string {
   return value
 }
 
+function isUsableOAuthEmail(value: unknown): value is string {
+  return typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
+function getVerifiedGitHubEmail(value: unknown): string | null {
+  if (!Array.isArray(value)) return null
+
+  const emails = value.filter((entry): entry is { email: unknown; primary?: unknown; verified?: unknown } => {
+    return typeof entry === "object" && entry !== null
+  })
+  const primaryVerified = emails.find((entry) => entry.primary === true && entry.verified === true && isUsableOAuthEmail(entry.email))
+  const anyVerified = emails.find((entry) => entry.verified === true && isUsableOAuthEmail(entry.email))
+
+  return (primaryVerified?.email || anyVerified?.email || null) as string | null
+}
+
 export function getOAuthAuthorizeUrl(provider: OAuthProvider, redirectUri: string, redirectTo = "/app/collection"): string | null {
   const cfg = OAUTH_PROVIDERS[provider]
   if (!cfg.clientId || !cfg.clientSecret) return null
@@ -301,18 +317,19 @@ export async function exchangeOAuthCode(
   switch (provider) {
     case "github":
       // GitHub may not return email if private — need separate API call
-      let email = userData.email
+      let email = isUsableOAuthEmail(userData.email) ? userData.email : null
       if (!email) {
         try {
           const emailsRes = await fetch("https://api.github.com/user/emails", {
             headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
           })
           const emails = await emailsRes.json()
-          email = emails.find((e: any) => e.primary)?.email || emails[0]?.email || `${userData.login}@github.users`
+          email = getVerifiedGitHubEmail(emails)
         } catch {
-          email = `${userData.login}@github.users`
+          email = null
         }
       }
+      if (!email) return { error: "GitHub account has no verified email address" }
       profile = {
         provider: "github",
         providerId: String(userData.id),
@@ -323,6 +340,9 @@ export async function exchangeOAuthCode(
       }
       break
     case "google":
+      if (!isUsableOAuthEmail(userData.email) || userData.email_verified !== true) {
+        return { error: "Google account email is not verified" }
+      }
       profile = {
         provider: "google",
         providerId: userData.sub,
@@ -333,10 +353,13 @@ export async function exchangeOAuthCode(
       }
       break
     case "discord":
+      if (!isUsableOAuthEmail(userData.email) || userData.verified !== true) {
+        return { error: "Discord account email is not verified" }
+      }
       profile = {
         provider: "discord",
         providerId: userData.id,
-        email: userData.email || `${userData.username}@discord.users`,
+        email: userData.email,
         name: userData.global_name || userData.username,
         displayName: userData.username,
         avatarUrl: userData.avatar
