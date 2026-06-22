@@ -67,25 +67,40 @@ function CameraController({ preset, orbitEnabled }: { preset: CamPreset; orbitEn
 // ─── Force color ───
 
 // ─── Launch Pad (shows where disc will launch from) ───
-function LaunchPad({ pos, selectedDisc }: { pos: { x: number; z: number } | null; selectedDisc: DiscState | null }) {
+function LaunchPad({ pos, selectedDisc, dragActive }: { pos: { x: number; z: number } | null; selectedDisc: DiscState | null; dragActive?: boolean }) {
   if (!pos || !selectedDisc) return null
+  const t = Date.now() * 0.003
+  const pulse = 1 + Math.sin(t * 1.5) * 0.25
+  const glow = dragActive ? 0.9 : 0.5
   return (
-    <group position={[pos.x, 0.03, pos.z]}>
-      {/* Glowing pad */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
-        <ringGeometry args={[0.3, 0.45, 32]} />
-        <meshBasicMaterial color="#00FFC8" transparent opacity={0.4} side={2} />
+    <group position={[pos.x, 0.015, pos.z]}>
+      {/* Physical flat pad on ground */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.003, 0]}>
+        <ringGeometry args={[0.32, 0.5, 32]} />
+        <meshStandardMaterial color="#1a3020" roughness={0.6} metalness={0.1} />
       </mesh>
-      {/* Pulse ring */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]}>
-        <ringGeometry args={[0.15, 0.25, 32]} />
-        <meshBasicMaterial color="#00FFC8" transparent opacity={0.6} />
+      {/* Inner glow ring */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.008, 0]}>
+        <ringGeometry args={[0.18, 0.3, 32]} />
+        <meshBasicMaterial color="#00FFC8" transparent opacity={0.15 * pulse} side={2} depthWrite={false} />
       </mesh>
-      {/* Dot */}
-      <mesh position={[0, 0.04, 0]}>
-        <sphereGeometry args={[0.08, 16, 8]} />
-        <meshBasicMaterial color="#00FFC8" transparent opacity={0.7} />
+      {/* Center dot */}
+      <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.12, 16]} />
+        <meshBasicMaterial color="#00FFC8" transparent opacity={glow * 0.6} depthWrite={false} />
       </mesh>
+      {/* Vertical beams (subtle, brief) */}
+      {Array.from({ length: 4 }).map((_, i) => {
+        const angle = (i / 4) * Math.PI * 2
+        const bx = Math.cos(angle) * 0.35
+        const bz = Math.sin(angle) * 0.35
+        return (
+          <mesh key={i} position={[bx, 0.04, bz]}>
+            <boxGeometry args={[0.02, 0.06, 0.02]} />
+            <meshBasicMaterial color="#00FFC8" transparent opacity={glow * 0.18} depthWrite={false} />
+          </mesh>
+        )
+      })}
     </group>
   )
 }
@@ -105,48 +120,33 @@ function forceColor(ratio: number): string {
 // Shows the player's deck as a glowing tube on the edge of the arena
 
 function DeckTubeV3({ deckCount, totalCount, side }: { deckCount: number; totalCount: number; side: 1 | -1 }) {
-  const z = side * (FIELD_HALF_L - 3.5)
-  const stackHeight = Math.max(0.15, (totalCount - deckCount) * 0.04)
+  const z = side * (FIELD_HALF_L - 4.5)
   const remainingRatio = totalCount > 0 ? deckCount / totalCount : 0
+  const color = side === 1 ? "#00FFC8" : "#FF3C3C"
   
   return (
-    <group position={[0, 0.02, z]}>
-      {/* Tube base — glowing ring on floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
-        <ringGeometry args={[0.5, 0.65, 32]} />
-        <meshBasicMaterial color={side === 1 ? "#00FFC8" : "#FF3C3C"} transparent opacity={0.25} side={2} depthWrite={false} />
-      </mesh>
-      
-      {/* Tube cylinder — translucent glass */}
-      <mesh position={[0, stackHeight / 2 + 0.1, 0]}>
-        <cylinderGeometry args={[0.45, 0.5, stackHeight + 0.1, 32, 1, true]} />
-        <meshPhysicalMaterial 
-          color={side === 1 ? "#00FFC8" : "#FF3C3C"} 
-          roughness={0.3} metalness={0.1} 
-          transparent opacity={0.12}
-          depthWrite={false}
-        />
-      </mesh>
-      
-      {/* Remaining discs visual stack */}
-      {Array.from({ length: Math.min(deckCount, 5) }).map((_, i) => (
-        <mesh key={i} position={[0, 0.1 + i * 0.04, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.42, 0.42, 0.03, 24]} />
+    <group position={[-1.5, 0.01, z]}>
+      {/* Flat stack on field — no vertical hologram */}
+      {deckCount > 0 && Array.from({ length: Math.min(deckCount, 10) }).map((_, i) => (
+        <mesh key={i} position={[0, 0.008 + i * 0.012, 0]} rotation={[-Math.PI / 2, 0, i * 0.08]}>
+          <cylinderGeometry args={[0.38, 0.4, 0.015, 24]} />
           <meshStandardMaterial 
-            color={side === 1 ? "#00FFC8" : "#FF3C3C"} 
-            roughness={0.4} metalness={0.5} 
-            transparent opacity={0.2 + (remainingRatio * 0.3)}
+            color={color}
+            roughness={0.35} metalness={0.3} 
+            transparent opacity={0.08 + i * 0.015}
           />
         </mesh>
       ))}
-      
-      {/* Deck count ring */}
-      {deckCount > 0 && (
-        <mesh position={[0, stackHeight + 0.18, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.48, 0.025, 8, 32]} />
-          <meshBasicMaterial color={side === 1 ? "#00FFC8" : "#FF3C3C"} transparent opacity={0.5} />
-        </mesh>
-      )}
+      {/* Label marker */}
+      <mesh position={[0.55, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.35, 0.42, 24]} />
+        <meshBasicMaterial color={color} transparent opacity={0.15} side={2} depthWrite={false} />
+      </mesh>
+      {/* Count text — small plate */}
+      <mesh position={[0.6, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[0.35, 0.2]} />
+        <meshBasicMaterial color={color} transparent opacity={0.06} depthWrite={false} />
+      </mesh>
     </group>
   )
 }
@@ -893,10 +893,21 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
   onPlace?: (id: string) => void
   placedCount?: number
 }) {
+  const [tooltipId, setTooltipId] = useState<string | null>(null)
+  const ttDisc = discs.find(d => d.id === tooltipId)
   if (phase === "result" || phase === "intro") return null
   const available = discs.filter(d => !d.flipped && !d.ringOut)
   const isPositioning = phase === "positioning"
   if (available.length === 0 && (typeof deckCount !== "number" || deckCount === 0)) return null
+  const statBar = (val: number, color: string, label: string) => (
+    <div className="flex items-center gap-1.5 mb-0.5">
+      <span className="text-[8px] font-bold text-white/20 uppercase w-10 text-right tracking-wider">{label}</span>
+      <div className="flex-1 h-[4px] bg-white/5 rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all" style={{ width: `${val}%`, background: color }} />
+      </div>
+      <span className="text-[8px] font-bold text-white/40 w-6">{val}</span>
+    </div>
+  )
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20" style={{ maxWidth: "90vw", overflowX: "auto" }}>
     {isPositioning && (
@@ -919,15 +930,17 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
       {available.map(d => (
         <button
           key={d.id}
+          onMouseEnter={() => setTooltipId(d.id)}
+          onMouseLeave={() => setTooltipId(null)}
           onClick={() => { if (isPositioning && onPlace) { onPlace(d.id); return } if (phase !== "resolving") onSelect(d.id) }}
           disabled={phase === "physics_live" || phase === "settle"}
-          className={`relative w-16 h-16 rounded-full border-2 flex flex-col items-center justify-center transition-all duration-150 ${
+          className={`relative w-[72px] h-[72px] rounded-xl border-2 flex flex-col items-center justify-center transition-all duration-200 ${
             selectedId === d.id || placingId === d.id
               ? "border-yellow-400 bg-yellow-400/20 scale-115 shadow-lg shadow-yellow-400/25 z-10"
               : "border-white/10 bg-black/60 hover:border-white/25 hover:bg-white/5"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
-          <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{
+          <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center" style={{
             background: d.archetype === "heavy" ? "radial-gradient(circle at 30% 30%, #CD853F, #5C2E00)"
               : d.archetype === "technical" ? "radial-gradient(circle at 30% 30%, #66AAEE, #2244AA)"
               : d.archetype === "spinner" ? "radial-gradient(circle at 30% 30%, #BB55FF, #4400BB)"
@@ -956,6 +969,41 @@ function HandDisplay({ discs, selectedId, onSelect, phase, deckCount, placingId,
         <span className="text-white/15 text-[9px] font-black uppercase tracking-wider px-2">No cards</span>
       )}
     </div>
+    {/* Tooltip: card stats on hover */}
+    {ttDisc && (
+      <div className="mt-2 px-4">
+        <div className="bg-black/85 border border-white/[0.07] rounded-xl px-4 py-2.5 backdrop-blur-xl max-w-[220px] mx-auto shadow-2xl">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{
+              background: ttDisc.archetype === "heavy" ? "radial-gradient(circle at 30% 30%, #CD853F, #5C2E00)"
+                : ttDisc.archetype === "technical" ? "radial-gradient(circle at 30% 30%, #66AAEE, #2244AA)"
+                : ttDisc.archetype === "spinner" ? "radial-gradient(circle at 30% 30%, #BB55FF, #4400BB)"
+                : ttDisc.archetype === "bouncer" ? "radial-gradient(circle at 30% 30%, #55CC55, #227722)"
+                : ttDisc.archetype === "defender" ? "radial-gradient(circle at 30% 30%, #7788AA, #334466)"
+                : "radial-gradient(circle at 30% 30%, #FFD700, #CC7700)",
+            }}>
+              <span className="text-[8px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{ttDisc.name.slice(0, 3).toUpperCase()}</span>
+            </div>
+            <div>
+              <p className="text-[11px] font-black text-white/90 uppercase leading-tight tracking-wide">{ttDisc.name}</p>
+              <p className="text-[8px] font-bold text-white/25 uppercase tracking-[0.15em]">{ttDisc.archetype} · {ttDisc.franchise}</p>
+            </div>
+          </div>
+          <div className="space-y-0.5">
+            {statBar(ttDisc.stats.attack, ttDisc.stats.attack >= 65 ? "#44FF44" : ttDisc.stats.attack >= 45 ? "#FFCC00" : "#FF8844", "ATT")}
+            {statBar(ttDisc.stats.speed, ttDisc.stats.speed >= 65 ? "#44CCFF" : ttDisc.stats.speed >= 45 ? "#88CCFF" : "#6688CC", "SPD")}
+            {statBar(ttDisc.stats.weight, "#FF9944", "WGT")}
+            {statBar(ttDisc.stats.defense, ttDisc.stats.defense >= 65 ? "#AA88FF" : ttDisc.stats.defense >= 45 ? "#8888CC" : "#6666AA", "DEF")}
+          </div>
+          {ttDisc.finish && (
+            <div className="mt-1.5 pt-1.5 border-t border-white/[0.04]">
+              <span className="text-[7px] font-bold text-white/15 uppercase tracking-[0.2em]">Finish: </span>
+              <span className="text-[8px] font-bold text-white/30 uppercase">{ttDisc.finish}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    )}
     </div>
   )
 }
@@ -1762,7 +1810,7 @@ export default function ArenaSlamV2({
         ))}
 
         {/* Launch pad */}
-        {phase === "aim" && launchPos && <LaunchPad pos={launchPos} selectedDisc={selectedDisc} />}
+        {phase === "aim" && launchPos && <LaunchPad pos={launchPos} selectedDisc={selectedDisc} dragActive={dragState.active} />}
 
         {/* Trajectory */}
         {trajectory.length > 1 && (
