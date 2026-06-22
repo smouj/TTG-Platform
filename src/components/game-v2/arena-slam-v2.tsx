@@ -1083,6 +1083,8 @@ export default function ArenaSlamV2({
   const [placingId, setPlacingId] = useState<string | null>(null)
   const [ghostPos, setGhostPos] = useState<{ x: number; z: number; valid: boolean } | null>(null)
   const [placedCount, setPlacedCount] = useState(0)  // how many player tazos placed
+  const discRef = useRef<DiscState[]>([])
+
   const [phase, setPhase] = useState<"intro" | "positioning" | "select" | "aim" | "physics_live" | "settle" | "opponent" | "result">("intro")
   const [playerScore, setPlayerScore] = useState(0)
   const [opponentScore, setOpponentScore] = useState(0)
@@ -1342,7 +1344,7 @@ export default function ArenaSlamV2({
               isPlayer ? scoreRef.current.player++ : scoreRef.current.opponent++
               isPlayer ? setPlayerScore(s => s + 1) : setOpponentScore(s => s + 1)
               setShakeIntensity(0.7)
-              setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: isPlayer ? "⭐ CAPTURE!" : "LOST!", x: d.x, z: d.z, color: isPlayer ? "#44FF44" : "#FF4444", id: n }]); return n })
+              setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: isPlayer ? "⚡ CAPTURE!" : "💀 LOST!", x: d.x, z: d.z, color: isPlayer ? "#44FF44" : "#FF4444", id: n }]); return n })
             } else {
               setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: "BOUNCE!", x: d.x, z: d.z, color: "#FFAA00", id: n }]); return n })
             }
@@ -1352,6 +1354,7 @@ export default function ArenaSlamV2({
           }
         })
 
+        discRef.current = result.discs
         if (allStopped(result.discs)) {
           simulatingRef.current = false
           const isPlayerTurn = turnRef.current === "player"
@@ -1399,22 +1402,25 @@ export default function ArenaSlamV2({
             setTimeout(() => {
               setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-2), { text: "RIVAL AIMING", x: 0, z: 0, color: "#FF8866", id: n }]); return n })
             }, 800)
-            setTimeout(() => doOpponentTurn(result.discs), 700)
+            setTimeout(() => doOpponentTurn(discRef.current.length > 0 ? discRef.current : result.discs), 700)
           } else {
             // Opponent's turn ends → now player's turn
             // Check if opponent attacker flipped any player disc
-            const oppAttackerDiscs = result.discs.filter(d => d.owner === "opponent" && d.flying === false && !d.ringOut)
+            // Use attacker ref to only check/remove the attacker, not all opponent discs
+            const oppAttackerId = oppAttackerRef.current
+            const oppAttackerDisc = oppAttackerId ? result.discs.find(d => d.id === oppAttackerId) : null
             const oppFlippedAny = result.discs.some(d => d.owner === "player" && d.flipped && !ringOutBefore.has(d.id))
             
-            if (!oppFlippedAny && oppAttackerDiscs.length > 0) {
-              // MISS: return opponent disc to opponent deck
-              setDiscs(prev => prev.filter(d => !oppAttackerDiscs.some(od => od.id === d.id)))
-              const toReturn = oppAttackerDiscs.map(d => ({ ...d, x: 0, z: 0, y: 0, vx: 0, vy: 0, vz: 0, moving: false, flying: false, flipped: false, captured: false, ringOut: false, wobbleAngle: 0, wobbleSpeed: 0 } as DiscState))
-              opponentDeckRef.current = [...opponentDeckRef.current, ...toReturn].sort(() => Math.random() - 0.5)
-              // No draw for opponent on miss (opponent draw is handled in doOpponentTurn)
+            if (!oppFlippedAny && oppAttackerDisc && !oppAttackerDisc.ringOut) {
+              // MISS: return ONLY the attacker disc to opponent deck
+              setDiscs(prev => prev.filter(d => d.id !== oppAttackerId))
+              const returned = { ...oppAttackerDisc, x: 0, z: 0, y: 0, vx: 0, vy: 0, vz: 0, moving: false, flying: false, flipped: false, captured: false, ringOut: false, wobbleAngle: 0, wobbleSpeed: 0 } as DiscState
+              opponentDeckRef.current = [...opponentDeckRef.current, returned].sort(() => Math.random() - 0.5)
+              setTextId(ti => { const n = ti + 1; setSlamTexts(p => [...p.slice(-2), { text: "RIVAL MISS", x: 0, z: -1, color: "#FF8866", id: n }]); return n })
             } else {
               // HIT: opponent attacker stays, no return needed
             }
+            oppAttackerRef.current = null
 
             turnRef.current = "player"
             setTurnCount(t => t + 1)
@@ -1449,6 +1455,8 @@ export default function ArenaSlamV2({
   }, [phase, startSim])
 
   // ── Opponent AI ──
+  const oppAttackerRef = useRef<string | null>(null)
+
   const doOpponentTurn = useCallback((cd: DiscState[]) => {
     // Pick from opponent hand, not from field
     let attacker: DiscState | undefined
@@ -1519,6 +1527,7 @@ export default function ArenaSlamV2({
 
     const launch = calculateLaunchVelocity(fd, attacker.stats)
     // Single atomic operation: add disc + set velocity
+    oppAttackerRef.current = attacker!.id
     setDiscs(prev => [...prev, { ...attacker!, x: attackerX, z: attackerZ, vx: launch.vx, vy: launch.vy, vz: launch.vz, y: 0.05, moving: true, flying: true, rotationSpeed: launch.vx * 0.6 } as DiscState])
     // Draw 1 into opponent hand (using ref for deck)
     const deck = opponentDeckRef.current
@@ -1556,6 +1565,25 @@ export default function ArenaSlamV2({
   useEffect(() => {
     if (phase !== "select") return
     const available = playerHand.filter(d => !d.flipped && !d.ringOut)
+    // Prevent freeze: if no hand cards AND no deck cards, check game state
+    if (available.length === 0 && playerDeck.length === 0) {
+      // No cards left — opponent wins by elimination
+      scoreRef.current.opponent = Math.max(scoreRef.current.opponent, 5)
+      setOpponentScore(s => Math.max(s, 5))
+      setPhase("result")
+      return
+    }
+    // If hand empty but deck has cards, auto-draw
+    if (available.length === 0 && playerDeck.length > 0) {
+      setPlayerDeck(pd => {
+        if (pd.length > 0) {
+          setPlayerHand(() => [pd[0]])
+          return pd.slice(1)
+        }
+        return pd
+      })
+      return
+    }
     if (available.length > 0 && !available.find(d => d.id === selectedId)) {
       setSelectedId(available[0].id)
     }
