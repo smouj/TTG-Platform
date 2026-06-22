@@ -673,6 +673,47 @@ function ArenaParticlesV3() {
   )
 }
 
+
+// ─── Disc Trail (comet-like fading trail behind flying discs) ───
+function DiscTrail({ disc }: { disc: DiscState }) {
+  const trailLen = 16
+  const historyRef = useRef<THREE.Vector3[]>([])
+  const lineRef = useRef<any>(null)
+  const geomRef = useRef(new THREE.BufferGeometry())
+  
+  useFrame(() => {
+    if (!disc.flying || disc.ringOut) {
+      historyRef.current = []
+      if (lineRef.current) lineRef.current.visible = false
+      return
+    }
+    const pos = new THREE.Vector3(disc.x, Math.max(disc.y, 0.04), disc.z)
+    const h = historyRef.current
+    h.push(pos.clone())
+    if (h.length > trailLen) h.shift()
+    if (h.length < 2) { if (lineRef.current) lineRef.current.visible = false; return }
+    
+    // Build gradient colors along trail
+    const positions: number[] = []
+    const colors: number[] = []
+    for (let i = 0; i < h.length; i++) {
+      positions.push(h[i].x, h[i].y, h[i].z)
+      const t = i / (h.length - 1)
+      colors.push(0.9 + t * 0.1, 0.65 + t * 0.35, 0.2 + t * 0.3, t * 0.55)
+    }
+    const geom = geomRef.current
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 4))
+    geom.computeBoundingSphere()
+    if (lineRef.current) lineRef.current.visible = true
+  })
+  
+  if (!disc.flying) return null
+  
+  return (
+    <primitive object={new THREE.Line(geomRef.current, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.45, depthWrite: false, blending: THREE.AdditiveBlending }))} ref={lineRef} />
+  )
+}
 function CameraShakeV3({ intensity, duration }: { intensity: number; duration: number }) {
   const { camera } = useThree()
   const basePos = useRef(new THREE.Vector3())
@@ -712,23 +753,47 @@ function CameraShakeV3({ intensity, duration }: { intensity: number; duration: n
 
 // ═══ HUD ═══
 
-function ScoreHUD({ playerScore, opponentScore, playerName, opponentName }: { playerScore: number; opponentScore: number; playerName?: string; opponentName?: string }) {
+function ScoreHUD({ playerScore, opponentScore, playerName, opponentName, round }: { playerScore: number; opponentScore: number; playerName?: string; opponentName?: string; round?: number }) {
   return (
     <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-      <div className="flex items-center gap-5 bg-black/40 backdrop-blur-sm px-5 py-2.5 rounded-full border border-white/8">
-        {/* Player */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className="text-cyan-400 font-black text-2xl drop-shadow-[0_0_12px_rgba(0,255,200,0.3)]">{playerScore}</span>
-          <span className="text-white/15 font-black text-[8px] uppercase tracking-wider">{playerName || "YOU"}</span>
+      <div className="flex flex-col items-center gap-2">
+        {/* Round counter */}
+        {typeof round === "number" && round > 0 && (
+          <div className="px-3 py-0.5 rounded-full bg-white/3 border border-white/5 backdrop-blur-sm">
+            <span className="text-white/15 font-black text-[8px] uppercase tracking-[0.3em]">ROUND {round}</span>
+          </div>
+        )}
+        <div className="flex items-center gap-5 bg-black/40 backdrop-blur-sm px-5 py-2.5 rounded-full border border-white/8">
+          {/* Player */}
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-cyan-400 font-black text-2xl drop-shadow-[0_0_12px_rgba(0,255,200,0.3)]">{playerScore}</span>
+            <span className="text-white/15 font-black text-[8px] uppercase tracking-wider">{playerName || "YOU"}</span>
+          </div>
+          {/* VS */}
+          <div className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] flex items-center justify-center">
+            <span className="text-white/10 font-black text-[10px]">VS</span>
+          </div>
+          {/* Opponent */}
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-red-400 font-black text-2xl drop-shadow-[0_0_12px_rgba(255,50,50,0.3)]">{opponentScore}</span>
+            <span className="text-white/15 font-black text-[8px] uppercase tracking-wider">{opponentName || "RIVAL"}</span>
+          </div>
         </div>
-        {/* VS */}
-        <div className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] flex items-center justify-center">
-          <span className="text-white/10 font-black text-[10px]">VS</span>
-        </div>
-        {/* Opponent */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className="text-red-400 font-black text-2xl drop-shadow-[0_0_12px_rgba(255,50,50,0.3)]">{opponentScore}</span>
-          <span className="text-white/15 font-black text-[8px] uppercase tracking-wider">{opponentName || "RIVAL"}</span>
+        {/* Capture threshold indicator */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{ background: i < playerScore ? "#00FFC8" : "transparent", border: `1px solid ${i < playerScore ? "#00FFC8" : "rgba(255,255,255,0.08)"}` }} />
+            ))}
+          </div>
+          <span className="text-white/06 font-black text-[7px]">5</span>
+          <div className="flex items-center gap-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{ background: i < opponentScore ? "#FF4444" : "transparent", border: `1px solid ${i < opponentScore ? "#FF4444" : "rgba(255,255,255,0.08)"}` }} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -935,6 +1000,7 @@ export default function ArenaSlamV2({
   const [shakeIntensity, setShakeIntensity] = useState(0)
   const [slamTexts, setSlamTexts] = useState<Array<{ text: string; x: number; z: number; color: string; id: number }>>([])
   const [textId, setTextId] = useState(0)
+  const [turnCount, setTurnCount] = useState(0)
 
   // Camera
   const [camPreset, setCamPreset] = useState<CamPreset>("default")
@@ -1001,6 +1067,7 @@ export default function ArenaSlamV2({
     setTrajectory([])
     setPlacingId(null)
     setPlacedCount(0)
+    setTurnCount(0)
   }, [demoPlayerRaw, demoOpponentsRaw, hasRealData, initialPlayerDiscs, initialOpponentDiscs])
 
   useEffect(() => { initDemo() }, [initDemo])
@@ -1172,7 +1239,7 @@ export default function ArenaSlamV2({
               isPlayer ? scoreRef.current.player++ : scoreRef.current.opponent++
               isPlayer ? setPlayerScore(s => s + 1) : setOpponentScore(s => s + 1)
               setShakeIntensity(0.7)
-              setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: isPlayer ? "CAPTURE!" : "LOST!", x: d.x, z: d.z, color: isPlayer ? "#44FF44" : "#FF4444", id: n }]); return n })
+              setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: isPlayer ? "⭐ CAPTURE!" : "LOST!", x: d.x, z: d.z, color: isPlayer ? "#44FF44" : "#FF4444", id: n }]); return n })
             } else {
               setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: "BOUNCE!", x: d.x, z: d.z, color: "#FFAA00", id: n }]); return n })
             }
@@ -1201,12 +1268,17 @@ export default function ArenaSlamV2({
             })
             turnRef.current = "opponent"
             setPhase("opponent")
-            // Show brief aim delay then execute opponent turn
-            setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-2), { text: "RIVAL AIMING", x: 0, z: 0, color: "#FF8866", id: n }]); return n })
+            // Show turn handover and brief aim delay
+            setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-3), { text: "RIVAL TURN", x: 0, z: 0, color: "#FF6644", id: n }]); return n })
+            setTimeout(() => {
+              setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-2), { text: "RIVAL AIMING", x: 0, z: 0, color: "#FF8866", id: n }]); return n })
+            }, 800)
             setTimeout(() => doOpponentTurn(result.discs), 700)
           } else {
             // Opponent's turn ends → now player's turn
             turnRef.current = "player"
+            setTurnCount(t => t + 1)
+            setTextId(ti => { const n = ti + 1; setSlamTexts(p => [...p.slice(-2), { text: "YOUR TURN", x: 0, z: 0, color: "#00FFC8", id: n }]); return ti })
             setPhase("select")
             // If hand empty, auto-draw from deck
             setPlayerHand(ph => {
@@ -1265,11 +1337,24 @@ export default function ArenaSlamV2({
     const pDiscs = cd.filter(d => d.owner === "player" && !d.flipped && !d.ringOut)
     let target: DiscState | null = null
     if (pDiscs.length > 0) {
-      // Pick closest player disc to attacker spawn point
-      let closestDist = Infinity
+      // Score each target: prefer clusters (density bonus) + avoid edges
+      let bestScore = -Infinity
+      const edgeDanger = (px: number, pz: number) => {
+        const dxMargin = FIELD_HALF_W - Math.abs(px)
+        const dzMargin = FIELD_HALF_L - Math.abs(pz)
+        return Math.max(0, 1 - Math.min(dxMargin, dzMargin) / 3)
+      }
       for (const pd of pDiscs) {
-        const d = Math.hypot(pd.x - attackerX, pd.z - attackerZ)
-        if (d < closestDist) { closestDist = d; target = pd }
+        const dist = Math.hypot(pd.x - attackerX, pd.z - attackerZ)
+        // Density: count nearby friendly discs
+        let nearby = 0
+        for (const od of pDiscs) {
+          if (od.id !== pd.id && Math.hypot(od.x - pd.x, od.z - pd.z) < 3.0) nearby++
+        }
+        const densityBonus = nearby * 1.5
+        const edgePenalty = edgeDanger(pd.x, pd.z) * 4
+        const score = densityBonus - edgePenalty - dist * 0.15
+        if (score > bestScore) { bestScore = score; target = pd }
       }
     }
 
@@ -1347,7 +1432,7 @@ export default function ArenaSlamV2({
         style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.4) 2px, rgba(255,255,255,0.4) 4px)" }} />
 
       {/* HUD */}
-      <ScoreHUD playerScore={playerScore} opponentScore={opponentScore} playerName={playerName} opponentName={opponentName} />
+      <ScoreHUD playerScore={playerScore} opponentScore={opponentScore} playerName={playerName} opponentName={opponentName} round={turnCount} />
       <TurnIndicator phase={phase} turn={turnRef.current} playerName={playerName} opponentName={opponentName} />
       <SlamTexts events={slamTexts} />
 
@@ -1552,6 +1637,11 @@ export default function ArenaSlamV2({
         {/* Deck tubes (tubemazos) — player + opponent */}
         <DeckTubeV3 deckCount={playerDeck.length} totalCount={playerDeck.length + playerHand.length} side={1} />
         <DeckTubeV3 deckCount={opponentDeckRef.current.length} totalCount={opponentDeckRef.current.length + opponentHand.length} side={-1} />
+
+        {/* Disc trails */}
+        {discs.filter(d => d.flying).map(d => (
+          <DiscTrail key={`trail-${d.id}`} disc={d} />
+        ))}
 
         {/* Discs */}
         {discs.filter(d => !d.ringOut).map(d => (
