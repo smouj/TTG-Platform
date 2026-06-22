@@ -418,19 +418,19 @@ export default function ArenaSlamV2() {
 
   // ── Nice disc names by archetype ──
   const demoPlayerDiscs = useMemo(() => [
-    createDemoDisc("p1", "Titan", "heavy", 0, 2.2, "player", "dracobell", "/tazos-artgen/minimon/t1-1.png"),
-    createDemoDisc("p2", "Blade", "technical", 0, 2.2, "player", "cybermon", "/tazos-artgen/cybermon/c1-1.png"),
-    createDemoDisc("p3", "Vortex", "spinner", 0, 2.2, "player", "minimon", "/tazos-artgen/minimon/t1-3.png"),
-    createDemoDisc("p4", "Guardian", "defender", 0, 2.2, "player", "dracobell", "/tazos-artgen/dracobell/d1-2.png"),
-    createDemoDisc("p5", "Striker", "balanced", 0, 2.2, "player", "cybermon", "/tazos-artgen/cybermon/c1-3.png"),
+    createDemoDisc("p1", "Titan", "heavy", 0, 2.2, "player", "dracobell"),
+    createDemoDisc("p2", "Blade", "technical", 0, 2.2, "player", "cybermon"),
+    createDemoDisc("p3", "Vortex", "spinner", 0, 2.2, "player", "minimon"),
+    createDemoDisc("p4", "Guardian", "defender", 0, 2.2, "player", "dracobell"),
+    createDemoDisc("p5", "Striker", "balanced", 0, 2.2, "player", "cybermon")
   ], [])
 
   // ── Initialize demo setup ──
   const initDemo = useCallback(() => {
     const opponentTargets = [
-      createDemoDisc("o1", "Grunt", "balanced", 0, -1.5, "opponent", "minimon", "/tazos-artgen/minimon/t1-2.png"),
-      createDemoDisc("o2", "Scout", "technical", -1.2, -1.0, "opponent", "cybermon", "/tazos-artgen/cybermon/c1-2.png"),
-      createDemoDisc("o3", "Tank", "defender", 1.2, -1.0, "opponent", "dracobell", "/tazos-artgen/dracobell/d1-1.png"),
+      createDemoDisc("o1", "Grunt", "balanced", 0, -1.5, "opponent", "minimon"),
+      createDemoDisc("o2", "Scout", "technical", -1.2, -1.0, "opponent", "cybermon"),
+      createDemoDisc("o3", "Tank", "defender", 1.2, -1.0, "opponent", "dracobell")
     ]
     setDiscs([...demoPlayerDiscs, ...opponentTargets])
     setPlayerHand(demoPlayerDiscs)
