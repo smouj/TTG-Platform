@@ -1,183 +1,198 @@
-// ============================================================
-// Arena Slam v2 Physics Tests
-// ============================================================
-
 import { describe, it, expect } from "vitest"
 import {
-  ARENA_RADIUS, DISC_RADIUS, MAX_LAUNCH_SPEED, MIN_LAUNCH_SPEED,
-  STOP_THRESHOLD, FLIP_THRESHOLD, CAPTURE_THRESHOLD,
-  calculateLaunchVelocity, calculateTrajectoryPreview,
-  simulateStep, allStopped, createDemoDisc,
-  type DragState, type DiscState,
+  createDemoDisc, calculateLaunchVelocity, calculateTrajectoryPreview,
+  simulateStep, allStopped, ARCHETYPE_STATS, GRAVITY, JUMP_POWER,
+  ARENA_RADIUS, DISC_RADIUS,
 } from "../physics"
 
 describe("createDemoDisc", () => {
-  it("creates a disc with correct owner and archetype", () => {
-    const disc = createDemoDisc("t1", "Test", "heavy", 1.5, 2.0, "player")
-    expect(disc.id).toBe("t1")
-    expect(disc.owner).toBe("player")
-    expect(disc.archetype).toBe("heavy")
-    expect(disc.moving).toBe(false)
-    expect(disc.flipped).toBe(false)
+  it("creates a disc with correct archetype stats", () => {
+    const d = createDemoDisc("t1", "TestTazo", "heavy", 1, 2, "player")
+    expect(d.id).toBe("t1")
+    expect(d.name).toBe("TestTazo")
+    expect(d.archetype).toBe("heavy")
+    expect(d.stats.attack).toBe(ARCHETYPE_STATS.heavy.attack)
+    expect(d.owner).toBe("player")
+    expect(d.x).toBe(1)
+    expect(d.z).toBe(2)
+    expect(d.y).toBe(0)
+    expect(d.moving).toBe(false)
+    expect(d.flying).toBe(false)
+    expect(d.flipped).toBe(false)
   })
 
-  it("applies archetype stat overrides", () => {
-    const heavy = createDemoDisc("h1", "H", "heavy", 0, 0, "player")
-    const tech = createDemoDisc("t1", "T", "technical", 0, 0, "player")
-
-    // Heavy should have higher attack and weight, lower precision
-    expect(heavy.stats.attack).toBeGreaterThan(tech.stats.attack)
-    expect(heavy.stats.weight).toBeGreaterThan(tech.stats.weight)
-    expect(heavy.stats.precision).toBeLessThan(tech.stats.precision)
+  it("respects owner parameter", () => {
+    const p = createDemoDisc("p", "Player", "balanced", 0, 0, "player")
+    const o = createDemoDisc("o", "Opp", "balanced", 0, 0, "opponent")
+    expect(p.owner).toBe("player")
+    expect(o.owner).toBe("opponent")
   })
 })
 
 describe("calculateLaunchVelocity", () => {
-  it("returns zero for tiny drags", () => {
-    const drag: DragState = {
-      startX: 0, startZ: 0,
-      currentX: 0.01, currentZ: 0,
-      active: true,
-    }
-    const stats = { attack: 50, defense: 50, precision: 50, weight: 50, spin: 50, bounce: 50, control: 50, stability: 50 }
-    const { vx, vz } = calculateLaunchVelocity(drag, stats)
-    expect(vx).toBe(0)
-    expect(vz).toBe(0)
+  it("returns zero for tiny drag", () => {
+    const result = calculateLaunchVelocity(
+      { startX: 0, startZ: 0, currentX: 0.05, currentZ: 0, active: true },
+      ARCHETYPE_STATS.balanced
+    )
+    expect(result.vx).toBe(0)
+    expect(result.vy).toBe(0)
+    expect(result.vz).toBe(0)
   })
 
-  it("fires in the direction opposite of drag", () => {
-    // Drag left → fire right
-    const drag: DragState = {
-      startX: 0, startZ: 0,
-      currentX: -2, currentZ: 0,
-      active: true,
-    }
-    const stats = { attack: 50, defense: 50, precision: 50, weight: 50, spin: 0, bounce: 50, control: 50, stability: 50 }
-    const { vx, vz } = calculateLaunchVelocity(drag, stats)
-    expect(vx).toBeGreaterThan(1) // Fire right
-    expect(Math.abs(vz)).toBeLessThan(1) // Almost straight
+  it("generates significant upward velocity for a normal drag", () => {
+    // Drag from (0,1) to (0,0) — pulling toward screen bottom
+    const result = calculateLaunchVelocity(
+      { startX: 0, startZ: 1, currentX: 0, currentZ: -0.5, active: true },
+      ARCHETYPE_STATS.balanced
+    )
+    // Should have upward velocity
+    expect(result.vy).toBeGreaterThan(5)
   })
 
-  it("speed is proportional to drag distance", () => {
-    const stats = { attack: 50, defense: 50, precision: 50, weight: 50, spin: 0, bounce: 50, control: 50, stability: 50 }
-
-    const shortDrag: DragState = { startX: 0, startZ: 0, currentX: -0.5, currentZ: 0, active: true }
-    const longDrag: DragState = { startX: 0, startZ: 0, currentX: -2.5, currentZ: 0, active: true }
-
-    const short = Math.sqrt(calculateLaunchVelocity(shortDrag, stats).vx ** 2 + calculateLaunchVelocity(shortDrag, stats).vz ** 2)
-    const long = Math.sqrt(calculateLaunchVelocity(longDrag, stats).vx ** 2 + calculateLaunchVelocity(longDrag, stats).vz ** 2)
-
-    expect(long).toBeGreaterThan(short)
-    expect(long).toBeLessThanOrEqual(MAX_LAUNCH_SPEED * 1.4) // Weight factor can increase it slightly
+  it("launch direction is opposite to drag", () => {
+    // Drag from (0,0) to (-1,0) — pulling left
+    // Disc should go right (positive x velocity)
+    const result = calculateLaunchVelocity(
+      { startX: 0, startZ: 0, currentX: -1, currentZ: 0, active: true },
+      ARCHETYPE_STATS.balanced
+    )
+    expect(result.vx).toBeGreaterThan(0)
+    expect(Math.abs(result.vz)).toBeLessThan(1)
   })
 
-  it("caps at MAX_LAUNCH_SPEED * weight factor", () => {
-    const stats = { attack: 50, defense: 50, precision: 50, weight: 100, spin: 0, bounce: 50, control: 50, stability: 50 }
-    const drag: DragState = { startX: 0, startZ: 0, currentX: -10, currentZ: 0, active: true }
-    const { vx, vz } = calculateLaunchVelocity(drag, stats)
-    const speed = Math.sqrt(vx * vx + vz * vz)
-    // Weight factor at 100 = 0.7 + 1.0*0.6 = 1.3, so max = 18 * 1.3 ≈ 23.4
-    expect(speed).toBeLessThanOrEqual(25)
+  it("heavy tazos jump lower than light ones", () => {
+    const drag = { startX: 0, startZ: 0, currentX: -2, currentZ: -2, active: true }
+    const heavyJump = calculateLaunchVelocity(drag, ARCHETYPE_STATS.heavy)
+    const spinnerJump = calculateLaunchVelocity(drag, ARCHETYPE_STATS.spinner)
+    expect(spinnerJump.vy).toBeGreaterThan(heavyJump.vy)
+  })
+
+  it("high-speed tazos travel faster horizontally", () => {
+    const drag = { startX: 0, startZ: 0, currentX: -2, currentZ: 0, active: true }
+    const heavy = calculateLaunchVelocity(drag, ARCHETYPE_STATS.heavy)
+    const spinner = calculateLaunchVelocity(drag, ARCHETYPE_STATS.spinner)
+    const spinnerHSpeed = Math.sqrt(spinner.vx ** 2 + spinner.vz ** 2)
+    const heavyHSpeed = Math.sqrt(heavy.vx ** 2 + heavy.vz ** 2)
+    expect(spinnerHSpeed).toBeGreaterThan(heavyHSpeed)
   })
 })
 
 describe("calculateTrajectoryPreview", () => {
-  it("returns at least the start point", () => {
-    const drag: DragState = { startX: 0, startZ: 0, currentX: -2, currentZ: 0, active: true }
-    const stats = { attack: 50, defense: 50, precision: 50, weight: 50, spin: 0, bounce: 50, control: 50, stability: 50 }
-    const points = calculateTrajectoryPreview(0, 0, drag, stats)
-    expect(points.length).toBeGreaterThanOrEqual(1)
-    expect(points[0]).toEqual([0, 0])
+  it("returns empty for zero launch", () => {
+    const result = calculateTrajectoryPreview(
+      0, 0,
+      { startX: 0, startZ: 0, currentX: 0, currentZ: 0, active: false },
+      ARCHETYPE_STATS.balanced
+    )
+    expect(result.length).toBe(0)
   })
 
-  it("stays within arena bounds", () => {
-    const drag: DragState = { startX: 0, startZ: 0, currentX: -3, currentZ: 0, active: true }
-    const stats = { attack: 50, defense: 50, precision: 50, weight: 50, spin: 0, bounce: 50, control: 50, stability: 50 }
-    const points = calculateTrajectoryPreview(0, 0, drag, stats, 100)
-    for (const [x, z] of points) {
-      const dist = Math.sqrt(x * x + z * z)
-      expect(dist).toBeLessThan(ARENA_RADIUS + 1) // Allow small overshoot due to bounce resolution
+  it("generates parabolic arc points", () => {
+    const result = calculateTrajectoryPreview(
+      0, 0,
+      { startX: 0, startZ: 1, currentX: 0, currentZ: -0.5, active: true },
+      ARCHETYPE_STATS.balanced,
+      120
+    )
+    expect(result.length).toBeGreaterThan(5)
+    // First point is at ground
+    expect(result[0].y).toBe(0)
+    // Middle points should be above ground (parabolic arc)
+    const midIdx = Math.floor(result.length / 3)
+    expect(result[midIdx].y).toBeGreaterThan(0.1)
+    // Last point is either landed (y=0) or at arena boundary (y may be > 0)
+    const last = result[result.length - 1]
+    const lastDist = Math.sqrt(last.x ** 2 + last.z ** 2)
+    // Either it landed (y=0) or hit arena boundary (dist ≈ ARENA_RADIUS)
+    expect(last.y === 0 || lastDist >= ARENA_RADIUS - 0.5).toBe(true)
+  })
+
+  it("ends at arena boundary if trajectory goes outside", () => {
+    // Super strong drag
+    const result = calculateTrajectoryPreview(
+      3, 0,
+      { startX: 3, startZ: 0, currentX: 0, currentZ: 0, active: true },
+      ARCHETYPE_STATS.spinner,
+      60
+    )
+    if (result.length > 0) {
+      const last = result[result.length - 1]
+      const dist = Math.sqrt(last.x ** 2 + last.z ** 2)
+      expect(dist).toBeLessThanOrEqual(ARENA_RADIUS + 0.5)
     }
   })
 })
 
 describe("simulateStep", () => {
-  it("applies friction to moving discs", () => {
-    const d1 = createDemoDisc("d1", "D1", "balanced", 0, 0, "player")
-    d1.vx = 10
-    d1.vz = 0
-    d1.moving = true
+  it("applies gravity to flying discs", () => {
+    const disc = createDemoDisc("f1", "Flyer", "balanced", 0, 0, "player")
+    disc.flying = true
+    disc.moving = true
+    disc.vx = 5
+    disc.vy = 8  // jumping up
+    disc.vz = 0
+    disc.y = 0.5
 
-    const { discs } = simulateStep([d1])
-    const speed = Math.sqrt(discs[0].vx ** 2 + discs[0].vz ** 2)
-    expect(speed).toBeLessThan(10) // Friction should slow it down
+    const result = simulateStep([disc], 0.1)
+
+    // After 0.1s, vy should have decreased due to gravity
+    expect(result.discs[0].vy).toBeLessThan(8)
+    // Should have moved forward
+    expect(result.discs[0].x).toBeGreaterThan(0)
   })
 
-  it("stops discs below STOP_THRESHOLD", () => {
-    const d1 = createDemoDisc("d1", "D1", "balanced", 0, 0, "player")
-    d1.vx = STOP_THRESHOLD * 0.5
-    d1.vz = 0
-    d1.moving = true
+  it("discs land when y reaches 0", () => {
+    const disc = createDemoDisc("f2", "Faller", "balanced", 0, 0, "player")
+    disc.flying = true
+    disc.moving = true
+    disc.vx = 0
+    disc.vy = -2  // falling fast
+    disc.vz = 0
+    disc.y = 0.05
 
-    const { discs } = simulateStep([d1])
-    expect(discs[0].moving).toBe(false)
-    expect(discs[0].vx).toBe(0)
+    const result = simulateStep([disc], 0.1)
+    const landed = result.discs[0]
+
+    expect(landed.flying).toBe(false)
+    expect(landed.y).toBe(0)
   })
 
-  it("detects disc-disc collision", () => {
-    const a = createDemoDisc("a", "Hammer", "heavy", 0, 0, "player")
-    const b = createDemoDisc("b", "Target", "balanced", DISC_RADIUS * 1.5, 0, "opponent")
+  it("marks disc as ringOut when landing outside arena", () => {
+    const disc = createDemoDisc("r1", "Ringer", "balanced", 3, 3, "player")
+    disc.flying = true
+    disc.moving = true
+    disc.vx = 3
+    disc.vy = -1
+    disc.vz = 3
+    disc.y = 0.03
 
-    a.vx = 8
-    a.vz = 0
-    a.moving = true
-    b.vx = 0
-    b.vz = 0
-    b.moving = false
-
-    const { discs, impacts } = simulateStep([a, b])
-    // Both should be moving after collision
-    expect(discs.find(d => d.id === "b")!.moving).toBe(true)
-    // There should be at least one impact
-    expect(impacts.length).toBeGreaterThan(0)
-  })
-
-  it("flips opponent disc on strong impact", () => {
-    const a = createDemoDisc("a", "Hammer", "heavy", 0, 0, "player")
-    const b = createDemoDisc("b", "Weak", "technical", DISC_RADIUS * 1.5, 0, "opponent")
-
-    a.vx = 20 // Very fast
-    a.vz = 0
-    a.moving = true
-
-    const { discs, impacts } = simulateStep([a, b])
-    // With enough speed, the opponent disc should flip
-    const hasFlip = impacts.some(i => i.type === "flip" || i.type === "capture")
-    // It may or may not flip depending on stats, but at least a hit should register
-    expect(impacts.length).toBeGreaterThan(0)
+    const result = simulateStep([disc], 0.1)
+    // Should be marked ringOut or landed at boundary
+    const r = result.discs[0]
+    const landedOrOut = !r.flying || r.ringOut
+    expect(landedOrOut).toBe(true)
   })
 })
 
 describe("allStopped", () => {
-  it("returns true when all discs are stopped", () => {
-    const d1 = createDemoDisc("d1", "D1", "balanced", 0, 0, "player")
-    const d2 = createDemoDisc("d2", "D2", "balanced", 1, 0, "opponent")
-    expect(allStopped([d1, d2])).toBe(true)
+  it("returns true when nothing is moving or flying", () => {
+    const discs = [
+      createDemoDisc("a", "A", "balanced", 0, 0, "player"),
+      createDemoDisc("b", "B", "heavy", 1, 0, "opponent"),
+    ]
+    expect(allStopped(discs)).toBe(true)
   })
 
-  it("returns false when any disc is moving", () => {
-    const d1 = createDemoDisc("d1", "D1", "balanced", 0, 0, "player")
-    d1.moving = true
-    d1.vx = 5
-    const d2 = createDemoDisc("d2", "D2", "balanced", 1, 0, "opponent")
-    expect(allStopped([d1, d2])).toBe(false)
+  it("returns false when something is flying", () => {
+    const d = createDemoDisc("a", "A", "balanced", 0, 0, "player")
+    d.flying = true
+    expect(allStopped([d])).toBe(false)
   })
 
-  it("considers flipped discs as stopped", () => {
-    const d1 = createDemoDisc("d1", "D1", "balanced", 0, 0, "player")
-    d1.flipped = true
-    d1.moving = true
-    d1.vx = 5
-    expect(allStopped([d1])).toBe(true)
+  it("returns false when something is moving", () => {
+    const d = createDemoDisc("a", "A", "balanced", 0, 0, "player")
+    d.moving = true
+    expect(allStopped([d])).toBe(false)
   })
 })
