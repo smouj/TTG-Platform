@@ -120,20 +120,16 @@ export async function POST(request: NextRequest) {
     if (tubeSlug) settings.tubeSlug = tubeSlug
 
 
-    // Verify user owns all tazos
-    const userTazos = await db.userTazo.findMany({
-      where: { userId: user.id, quantity: { gt: 0 }, tazoId: { in: finalTazoIds } },
-    })
-    const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
-    const notOwned = finalTazoIds.filter((id: string) => !ownedIds.has(id))
-    if (notOwned.length > 0) {
-      return NextResponse.json(
-        { error: `${notOwned.length} tazo(s) not found in your collection` },
-        { status: 400 }
-      )
-    }
-
     const deck = await db.$transaction(async (tx) => {
+      const userTazos = await tx.userTazo.findMany({
+        where: { userId: user.id, quantity: { gt: 0 }, tazoId: { in: finalTazoIds } },
+      })
+      const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
+      const notOwned = finalTazoIds.filter((id: string) => !ownedIds.has(id))
+      if (notOwned.length > 0) {
+        throw new Error(`NOT_OWNED:${notOwned.length}`)
+      }
+
       if (isActive) {
         await tx.deck.updateMany({
           where: { userId: user.id, isActive: true },
@@ -170,6 +166,13 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     if (error instanceof Response) throw error
+    if (error instanceof Error && error.message.startsWith("NOT_OWNED:")) {
+      const count = error.message.split(":")[1] || "1"
+      return NextResponse.json(
+        { error: `${count} tazo(s) not found in your collection` },
+        { status: 400 }
+      )
+    }
     console.error("Decks POST error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }

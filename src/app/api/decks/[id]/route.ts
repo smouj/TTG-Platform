@@ -7,6 +7,7 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  let notOwnedCount = 0
   try {
     const user = await getAuthUser(request)
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -21,7 +22,6 @@ export async function PATCH(
     }
 
     const { id } = await params
-    let notOwnedCount = 0
 
     // Update tazos — replace all
     if (body.tazoIds !== undefined) {
@@ -41,18 +41,6 @@ export async function PATCH(
       }
       body.tazoIds = tazoIds
 
-      const userTazos = await db.userTazo.findMany({
-        where: { userId: user.id, quantity: { gt: 0 }, tazoId: { in: body.tazoIds } },
-      })
-      const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
-      const notOwned = body.tazoIds.filter((tid: string) => !ownedIds.has(tid))
-      notOwnedCount = notOwned.length
-      if (notOwnedCount > 0) {
-        return NextResponse.json(
-          { error: `${notOwnedCount} tazo(s) not found in your collection` },
-          { status: 400 }
-        )
-      }
     }
 
     const updated = await db.$transaction(async (tx) => {
@@ -92,6 +80,16 @@ export async function PATCH(
       }
 
       if (body.tazoIds !== undefined) {
+        const userTazos = await tx.userTazo.findMany({
+          where: { userId: user.id, quantity: { gt: 0 }, tazoId: { in: body.tazoIds } },
+        })
+        const ownedIds = new Set(userTazos.map((ut) => ut.tazoId))
+        const notOwned = body.tazoIds.filter((tid: string) => !ownedIds.has(tid))
+        notOwnedCount = notOwned.length
+        if (notOwnedCount > 0) {
+          throw new Error("NOT_OWNED")
+        }
+
         await tx.deckTazo.deleteMany({ where: { deckId: id } })
         await tx.deckTazo.createMany({
           data: body.tazoIds.map((tazoId: string) => ({ deckId: id, tazoId })),
@@ -150,6 +148,12 @@ export async function PATCH(
     })
   } catch (error) {
     if (error instanceof Response) throw error
+    if (error instanceof Error && error.message === "NOT_OWNED") {
+      return NextResponse.json(
+        { error: `${notOwnedCount || 1} tazo(s) not found in your collection` },
+        { status: 400 }
+      )
+    }
     console.error("Deck PATCH error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
