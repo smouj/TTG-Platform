@@ -100,6 +100,14 @@ export interface DiscState {
   /** Tazo stats */
   stats: TazoStats
   archetype: TazoArchetype
+  /** Visual: franchise slug for 3D rendering */
+  franchise?: string
+  /** Visual: front image URL */
+  imageUrl?: string
+  /** Visual: back art URL override */
+  backImageUrl?: string
+  /** Visual: finish for border effects */
+  finish?: string
 }
 
 export interface DragState {
@@ -414,7 +422,9 @@ export function createDemoDisc(
   archetype: TazoArchetype,
   x: number,
   z: number,
-  owner: "player" | "opponent"
+  owner: "player" | "opponent",
+  franchise: string = "minimon",
+  imageUrl?: string,
 ): DiscState {
   const baseStats: TazoStats = {
     attack: 50, defense: 50, precision: 50, weight: 50,
@@ -438,5 +448,7 @@ export function createDemoDisc(
     owner,
     stats,
     archetype,
+    franchise,
+    imageUrl,
   }
 }
