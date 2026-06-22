@@ -489,30 +489,39 @@ function TazoDiscV3({ disc, isSelected, isDragging, dragRatio }: {
 
 // ─── Trajectory Arc (tube geometry for visibility) ───
 function TrajectoryArcV3({ points, dragRatio }: { points: TrajectoryPoint[]; dragRatio: number }) {
-  const meshRef = useRef<THREE.Mesh>(null!)
+  const meshRef = useRef<THREE.InstancedMesh>(null!)
+  const color = forceColor(dragRatio)
 
-  useEffect(() => {
-    if (!meshRef.current || points.length < 2) return
-    const curve = new THREE.CatmullRomCurve3(
-      points.map(p => new THREE.Vector3(p.x, Math.max(p.y, 0.02), p.z)),
-      false, "catmullrom", 0.5
-    )
-    const tubeGeom = new THREE.TubeGeometry(curve, Math.min(points.length * 2, 64), 0.04, 8, false)
-    meshRef.current.geometry.dispose()
-    meshRef.current.geometry = tubeGeom
+  // Build dotted line from trajectory points
+  const dots = useMemo(() => {
+    if (points.length < 2) return []
+    // Sample every Nth point for dots (more spaced = less holographic)
+    const result: { x: number; y: number; z: number; size: number; alpha: number }[] = []
+    for (let i = 0; i < points.length; i += 3) {
+      const t = i / points.length
+      const p = points[i]
+      result.push({
+        x: p.x,
+        y: Math.max(p.y, 0.03),
+        z: p.z,
+        size: 0.04 + t * 0.02,
+        alpha: 0.15 + t * 0.35,
+      })
+    }
+    return result
   }, [points])
 
-  if (points.length < 2) return null
+  if (dots.length < 2) return null
 
   return (
-    <mesh ref={meshRef}>
-      <meshBasicMaterial
-        color={forceColor(dragRatio)}
-        transparent opacity={0.5}
-        depthTest={true}
-        depthWrite={false}
-      />
-    </mesh>
+    <group>
+      {dots.map((d, i) => (
+        <mesh key={i} position={[d.x, d.y, d.z]}>
+          <sphereGeometry args={[d.size, 6, 4]} />
+          <meshBasicMaterial color={color} transparent opacity={d.alpha} depthWrite={false} />
+        </mesh>
+      ))}
+    </group>
   )
 }
 
@@ -619,16 +628,16 @@ function ImpactParticles({ impacts }: { impacts: ImpactEvent[] }) {
 // ─── Ghost disc preview during positioning ───
 function GhostDisc({ x, z, valid }: { x: number; z: number; valid: boolean }) {
   return (
-    <group position={[x, 0.15, z]}>
-      {/* Ghost ring */}
+    <group position={[x, 0.015, z]}>
+      {/* Physical faded disc on ground — not a floating hologram */}
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[DISC_RADIUS * 0.8, DISC_RADIUS, 32]} />
-        <meshBasicMaterial color={valid ? "#00FF88" : "#FF4444"} transparent opacity={0.4} side={2} depthWrite={false} />
+        <cylinderGeometry args={[DISC_RADIUS, DISC_RADIUS * 0.92, 0.02, 32]} />
+        <meshStandardMaterial color={valid ? "#448844" : "#884444"} roughness={0.6} metalness={0.05} transparent opacity={0.28} />
       </mesh>
-      {/* Ghost disc body */}
-      <mesh>
-        <cylinderGeometry args={[DISC_RADIUS, DISC_RADIUS, DISC_THICKNESS, 32]} />
-        <meshStandardMaterial color={valid ? "#00FF88" : "#FF4444"} transparent opacity={0.25} depthWrite={false} />
+      {/* Thin outline ring */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.012, 0]}>
+        <ringGeometry args={[DISC_RADIUS - 0.03, DISC_RADIUS + 0.02, 32]} />
+        <meshBasicMaterial color={valid ? "#44FF88" : "#FF4444"} transparent opacity={0.22} side={2} depthWrite={false} />
       </mesh>
     </group>
   )
@@ -1371,6 +1380,7 @@ export default function ArenaSlamV2({
                 return []
               })
               setTextId(t => { const n = t + 1; setSlamTexts(p => [...p.slice(-2), { text: "MISS!", x: attackerDisc.x, z: attackerDisc.z, color: "#FF8866", id: n }]); return n })
+              setTimeout(() => setTextId(t2 => { const n2 = t2 + 1; setSlamTexts(p => [...p.slice(-2), { text: "♻ SHUFFLED", x: 0, z: -1, color: "#888866", id: n2 }]); return n2 }), 400)
             } else {
               // HIT: attacker stays on field, draw 1 from deck
               setPlayerDeck(pd => {
