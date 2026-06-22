@@ -9,8 +9,10 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three"
 import {
-  ARENA_RADIUS, DISC_RADIUS,
+  FIELD_WIDTH, FIELD_HEIGHT, FIELD_HALF_W, FIELD_HALF_H, CENTER_LINE_Z,
+  DISC_RADIUS,
   MIN_LAUNCH_SPEED,
+  floorRoughness, clampToField, isInField, isInPlayerHalf, isInOpponentHalf, isInOwnerZone, getOwnerHalf,
   calculateLaunchVelocity, calculateTrajectoryPreview,
   simulateStep, allStopped, createDemoDisc,
   type DiscState, type DragState,
@@ -22,10 +24,10 @@ import TazoDisc3D from "@/components/game/3d/tazo-disc-3d"
 type CamPreset = "default" | "top" | "side" | "player"
 
 const CAM_PRESETS: Record<CamPreset, { pos: [number, number, number]; target: [number, number, number] }> = {
-  default: { pos: [0, 9, 15], target: [0, 0, 0] },
-  top:     { pos: [0, 18, 0.1], target: [0, 0, 0] },
-  side:    { pos: [0, 5, 18], target: [0, 0, -1] },
-  player:  { pos: [0, 3, 6], target: [0, 0, -3] },
+  default: { pos: [0, 14, 20], target: [0, 0, 0] },
+  top:     { pos: [0, 22, 0.1], target: [0, 0, 0] },
+  side:    { pos: [8, 6, 16], target: [0, 0, 0] },
+  player:  { pos: [0, 5, 10], target: [0, 0, 0] },
 }
 
 // ─── Camera controller (preset + OrbitControls) ───
@@ -76,7 +78,7 @@ function forceColor(ratio: number): string {
 // Shows the player's deck as a glowing tube on the edge of the arena
 
 function DeckTubeV3({ deckCount, totalCount, side }: { deckCount: number; totalCount: number; side: 1 | -1 }) {
-  const z = side * (ARENA_RADIUS - 1.5)
+  const z = side * (FIELD_HALF_W - 1.5)
   const stackHeight = Math.max(0.15, (totalCount - deckCount) * 0.04)
   const remainingRatio = totalCount > 0 ? deckCount / totalCount : 0
   
@@ -122,196 +124,187 @@ function DeckTubeV3({ deckCount, totalCount, side }: { deckCount: number; totalC
   )
 }
 
-function ArenaFloorV3() {
+function RectangularField() {
   const tex = useMemo(() => {
-    const sz = 1024
+    const w = 1024, h = 512
     const c = document.createElement("canvas")
-    c.width = sz; c.height = sz
+    c.width = w; c.height = h
     const ctx = c.getContext("2d")!
-    const mid = sz / 2
-    const px = (v: number) => mid + v * (mid / ARENA_RADIUS)
-    const arenaPxRadius = mid - 10 // pixel radius of arena in texture
+    const px = (vx: number) => (vx / FIELD_WIDTH + 0.5) * w
+    const pz = (vz: number) => ((FIELD_HALF_H - vz) / FIELD_HEIGHT) * h
 
-    // ─── Base gradient ───
-    const g = ctx.createRadialGradient(mid, mid, 30, mid, mid, mid)
-    g.addColorStop(0, "#24244a")
-    g.addColorStop(0.25, "#1a1a38")
-    g.addColorStop(0.5, "#121228")
-    g.addColorStop(0.75, "#0c0c1c")
-    g.addColorStop(1, "#060610")
+    // ─── Field base (stadium green with grass-like gradient) ───
+    const g = ctx.createLinearGradient(0, 0, 0, h)
+    g.addColorStop(0, "#182c18")
+    g.addColorStop(0.12, "#1c3420")
+    g.addColorStop(0.35, "#1f3c22")
+    g.addColorStop(0.5, "#224428")
+    g.addColorStop(0.65, "#1e3822")
+    g.addColorStop(0.88, "#1a3020")
+    g.addColorStop(1, "#162618")
     ctx.fillStyle = g
-    ctx.fillRect(0, 0, sz, sz)
+    ctx.fillRect(0, 0, w, h)
 
-    // ─── Roughness zones (stippled texture rings) ───
-    // Each zone has different dot density = visual roughness indicator
-    const roughnessZones = [
-      { from: 0, to: 0.9, color: "255,255,255", alpha: 0.04, dots: 0,   label: "center" },      // smooth center
-      { from: 0.9, to: 2.0, color: "255,200,100", alpha: 0.12, dots: 450, label: "rough inner" }, // rough ring
-      { from: 2.0, to: 3.0, color: "255,255,255", alpha: 0.05, dots: 150, label: "smooth" },      // smooth mid
-      { from: 3.0, to: 4.35, color: "200,180,140", alpha: 0.14, dots: 700, label: "rough outer" }, // rough outer
+    // ─── Grass texture (tiny dots) ───
+    for (let i = 0; i < 8000; i++) {
+      const gx = Math.random() * w
+      const gy = Math.random() * h
+      ctx.fillStyle = `rgba(0,0,0,${0.01 + Math.random() * 0.03})`
+      ctx.fillRect(gx, gy, 1 + Math.random() * 2, 1 + Math.random() * 2)
+    }
+
+    // ─── Center line ───
+    ctx.strokeStyle = "rgba(255,255,255,0.15)"
+    ctx.lineWidth = 3
+    ctx.beginPath()
+    ctx.moveTo(0, pz(CENTER_LINE_Z))
+    ctx.lineTo(w, pz(CENTER_LINE_Z))
+    ctx.stroke()
+
+    // ─── Center circle ───
+    const centerX = px(0), centerY = pz(CENTER_LINE_Z)
+    const circleR = px(1.5) - centerX
+    ctx.strokeStyle = "rgba(255,255,255,0.12)"
+    ctx.lineWidth = 2
+    ctx.setLineDash([6, 10])
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, circleR, 0, Math.PI * 2)
+    ctx.stroke()
+    ctx.setLineDash([])
+
+    // Center dot
+    ctx.fillStyle = "rgba(255,204,0,0.2)"
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, 6, 0, Math.PI * 2)
+    ctx.fill()
+
+    // ─── Roughness zone stripes (horizontal bands) ───
+    const zones = [
+      { zMin: 0, zMax: 1.0, color: "255,255,255", alpha: 0.02, label: "SMOOTH" },
+      { zMin: 1.0, zMax: 2.2, color: "200,150,50", alpha: 0.06, label: "MEDIUM" },
+      { zMin: 2.2, zMax: 3.0, color: "180,120,30", alpha: 0.09, label: "ROUGH" },
+      { zMin: 3.0, zMax: 4.0, color: "160,90,20", alpha: 0.12, label: "VERY ROUGH" },
     ]
-
-    // Store roughness zones for physics (exported as floorRoughness)
-    const zoneData: {from: number, to: number, roughness: number}[] = []
-
-    roughnessZones.forEach((zone, zi) => {
-      const fromPx = px(zone.from) - mid
-      const toPx = px(zone.to) - mid
+    
+    zones.forEach(zone => {
+      // Player side
+      const y1 = pz(zone.zMax)
+      const y2 = pz(zone.zMin)
+      ctx.fillStyle = `rgba(${zone.color}, ${zone.alpha})`
+      ctx.fillRect(0, y1, w, y2 - y1)
       
-      // Fill zone background tint
-      ctx.fillStyle = `rgba(${zone.color}, ${zone.alpha * 0.4})`
-      ctx.beginPath()
-      ctx.arc(mid, mid, toPx, 0, Math.PI * 2)
-      if (zone.from > 0) {
-        ctx.arc(mid, mid, fromPx, 0, Math.PI * 2, true)
-      }
-      ctx.fill()
+      // Opponent side (mirrored)
+      const oy1 = pz(-zone.zMin)
+      const oy2 = pz(-zone.zMax)
+      ctx.fillStyle = `rgba(${zone.color}, ${zone.alpha})`
+      ctx.fillRect(0, oy1, w, oy2 - oy1)
 
-      // Dot stipple pattern (density = roughness)
-      if (zone.dots > 0) {
-        for (let i = 0; i < zone.dots; i++) {
-          const angle = Math.random() * Math.PI * 2
-          const r = fromPx + Math.sqrt(Math.random()) * (toPx - fromPx)
-          const x = mid + Math.cos(angle) * r
-          const y = mid + Math.sin(angle) * r
-          const dotSize = 0.8 + Math.random() * 1.5
-          ctx.fillStyle = `rgba(${zone.color}, ${zone.alpha + Math.random() * 0.06})`
-          ctx.beginPath()
-          ctx.arc(x, y, dotSize, 0, Math.PI * 2)
-          ctx.fill()
-        }
-      }
-
-      // Zone border ring
-      if (zone.to < ARENA_RADIUS) {
-        ctx.strokeStyle = `rgba(${zone.color}, 0.18)`
-        ctx.lineWidth = 1.2
-        ctx.setLineDash([3, 12])
-        ctx.beginPath()
-        ctx.arc(mid, mid, toPx, 0, Math.PI * 2)
-        ctx.stroke()
-        ctx.setLineDash([])
+      // Zone label
+      if (zone.label) {
+        ctx.fillStyle = `rgba(${zone.color}, 0.15)`
+        ctx.font = "bold 11px 'Geist', sans-serif"
+        ctx.textAlign = "center"
+        ctx.fillText("· " + zone.label + " ·", w/2, y1 + 16)
+        ctx.fillText("· " + zone.label + " ·", w/2, oy1 + 16)
       }
     })
 
-    // ─── Grid lines ───
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.035)"
-    ctx.lineWidth = 0.7
-    for (let i = -ARENA_RADIUS; i <= ARENA_RADIUS; i += 1) {
-      const p = px(i)
-      ctx.beginPath(); ctx.moveTo(p, px(-ARENA_RADIUS)); ctx.lineTo(p, px(ARENA_RADIUS)); ctx.stroke()
-      ctx.beginPath(); ctx.moveTo(px(-ARENA_RADIUS), p); ctx.lineTo(px(ARENA_RADIUS), p); ctx.stroke()
+    // ─── Grid lines (light) ───
+    ctx.strokeStyle = "rgba(255,255,255,0.025)"
+    ctx.lineWidth = 0.6
+    for (let i = -5; i <= 5; i++) {
+      const lx = px(i)
+      ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, h); ctx.stroke()
+    }
+    for (let j = -3; j <= 3; j++) {
+      const lz = pz(j)
+      ctx.beginPath(); ctx.moveTo(0, lz); ctx.lineTo(w, lz); ctx.stroke()
     }
 
-    // ─── Concentric rings ───
-    for (let r = 1; r <= ARENA_RADIUS; r += 1) {
-      ctx.strokeStyle = `rgba(255, 204, 0, ${0.06 + r * 0.012})`
-      ctx.lineWidth = r === Math.floor(ARENA_RADIUS) ? 2.5 : 0.9
-      ctx.beginPath(); ctx.arc(mid, mid, px(r) - mid, 0, Math.PI * 2); ctx.stroke()
-    }
-
-    // ─── Center mark ───
-    ctx.fillStyle = "rgba(255, 204, 0, 0.18)"
-    ctx.beginPath(); ctx.arc(mid, mid, 20, 0, Math.PI * 2); ctx.fill()
-    ctx.strokeStyle = "rgba(255, 204, 0, 0.4)"
-    ctx.lineWidth = 2
-    ctx.beginPath(); ctx.arc(mid, mid, 20, 0, Math.PI * 2); ctx.stroke()
-
-    // Center cross
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)"
-    ctx.lineWidth = 1
-    ctx.beginPath(); ctx.moveTo(mid - 12, mid); ctx.lineTo(mid + 12, mid); ctx.stroke()
-    ctx.beginPath(); ctx.moveTo(mid, mid - 12); ctx.lineTo(mid, mid + 12); ctx.stroke()
-
-    // ─── Half-line ───
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.10)"
-    ctx.lineWidth = 2
-    ctx.setLineDash([10, 18])
-    ctx.beginPath(); ctx.moveTo(px(-ARENA_RADIUS + 0.3), mid); ctx.lineTo(px(ARENA_RADIUS - 0.3), mid); ctx.stroke()
-    ctx.setLineDash([])
-
-    // ─── Spawn zone markers ───
-    const spawnZ = ARENA_RADIUS - 1.5
-    const oppZ = -(ARENA_RADIUS - 1.5)
+    // ─── Spawn zone: Player half ───
+    const playerZ = FIELD_HALF_H - 1.5
+    const opponentZ = -FIELD_HALF_H + 1.5
     
-    // Player spawn zone (smooth landing pad)
-    ctx.fillStyle = "rgba(0, 255, 200, 0.10)"
-    ctx.beginPath(); ctx.arc(mid, px(spawnZ), 24, 0, Math.PI * 2); ctx.fill()
-    ctx.strokeStyle = "rgba(0, 255, 200, 0.40)"
-    ctx.lineWidth = 1.5; ctx.setLineDash([4, 6])
-    ctx.beginPath(); ctx.arc(mid, px(spawnZ), 24, 0, Math.PI * 2); ctx.stroke()
+    // Player zone box
+    const pzY = pz(playerZ)
+    ctx.fillStyle = "rgba(0,255,200,0.06)"
+    ctx.fillRect(px(-2.5), pzY - 30, px(2.5) - px(-2.5), 60)
+    ctx.strokeStyle = "rgba(0,255,200,0.2)"
+    ctx.lineWidth = 1.5
+    ctx.setLineDash([5, 8])
+    ctx.strokeRect(px(-2.5), pzY - 30, px(2.5) - px(-2.5), 60)
     ctx.setLineDash([])
-    
-    // Opponent spawn zone
-    ctx.fillStyle = "rgba(255, 60, 60, 0.10)"
-    ctx.beginPath(); ctx.arc(mid, px(oppZ), 24, 0, Math.PI * 2); ctx.fill()
-    ctx.strokeStyle = "rgba(255, 60, 60, 0.40)"
-    ctx.lineWidth = 1.5; ctx.setLineDash([4, 6])
-    ctx.beginPath(); ctx.arc(mid, px(oppZ), 24, 0, Math.PI * 2); ctx.stroke()
+    ctx.fillStyle = "rgba(0,255,200,0.18)"
+    ctx.font = "bold 16px 'Geist', sans-serif"
+    ctx.textAlign = "center"
+    ctx.fillText("LAUNCH ZONE", w/2, pzY - 36)
+
+    // Opponent zone box
+    const ozY = pz(opponentZ)
+    ctx.fillStyle = "rgba(255,60,60,0.06)"
+    ctx.fillRect(px(-2.5), ozY - 30, px(2.5) - px(-2.5), 60)
+    ctx.strokeStyle = "rgba(255,60,60,0.2)"
+    ctx.lineWidth = 1.5
+    ctx.setLineDash([5, 8])
+    ctx.strokeRect(px(-2.5), ozY - 30, px(2.5) - px(-2.5), 60)
     ctx.setLineDash([])
+    ctx.fillStyle = "rgba(255,60,60,0.18)"
+    ctx.fillText("RIVAL ZONE", w/2, ozY + 50)
 
     // ─── Labels ───
-    ctx.fillStyle = "rgba(0, 255, 200, 0.28)"
-    ctx.font = "bold 22px 'Geist', sans-serif"
+    ctx.fillStyle = "rgba(255,255,255,0.04)"
+    ctx.font = "bold 18px 'Geist', sans-serif"
     ctx.textAlign = "center"
-    ctx.fillText("▸ LAUNCH ZONE ▸", mid, px(spawnZ + 0.8))
-    
-    ctx.fillStyle = "rgba(255, 60, 60, 0.28)"
-    ctx.fillText("RIVAL ZONE", mid, px(oppZ + 1.2))
-
-    // Roughness zone indicators (subtle markers)
-    ctx.font = "bold 10px 'Geist', sans-serif"
-    ctx.fillStyle = "rgba(255,255,255,0.05)"
-    ctx.fillText("· ROUGH ·", mid, px(1.45))
-    ctx.fillText("· SMOOTH ·", mid, px(2.5))
-    ctx.fillText("· ROUGH ·", mid, px(3.65))
-
-    ctx.fillStyle = "rgba(255, 255, 255, 0.04)"
-    ctx.font = "bold 14px 'Geist', sans-serif"
-    ctx.fillText("YOUR SIDE", mid, px(ARENA_RADIUS - 0.6))
-    ctx.fillText("RIVAL SIDE", mid, px(-ARENA_RADIUS + 0.8))
+    ctx.fillText("YOUR SIDE", w/2, pz(FIELD_HALF_H - 0.5))
+    ctx.fillText("RIVAL SIDE", w/2, pz(-FIELD_HALF_H + 0.5))
 
     return new THREE.CanvasTexture(c)
   }, [])
 
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} receiveShadow>
-      <circleGeometry args={[ARENA_RADIUS + 0.6, 64]} />
-      <meshStandardMaterial map={tex} roughness={0.5} metalness={0.03} />
+      <planeGeometry args={[FIELD_WIDTH, FIELD_HEIGHT]} />
+      <meshStandardMaterial map={tex} roughness={0.55} metalness={0.03} />
     </mesh>
   )
 }
 
-// ─── Arena 3D Wall ───
-function ArenaWallV3() {
+// ─── Field Walls ───
+function FieldWalls() {
+  const wallH = 0.35
+  const wallT = 0.08
+  const hw = FIELD_HALF_W
+  const hh = FIELD_HALF_H
+  
   return (
     <group>
-      {/* Outer wall ring — main torus */}
-      <mesh position={[0, 0.25, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
-        <torusGeometry args={[ARENA_RADIUS, 0.22, 16, 80]} />
-        <meshStandardMaterial color="#FFCC00" roughness={0.15} metalness={0.8} emissive="#FFCC00" emissiveIntensity={0.25} />
-      </mesh>
-      {/* Inner glow ring — brighter */}
-      <mesh position={[0, 0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[ARENA_RADIUS - 0.05, 0.035, 12, 72]} />
-        <meshBasicMaterial color="#FFCC00" transparent opacity={0.4} />
-      </mesh>
-      {/* Outer dark trim ring */}
-      <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[ARENA_RADIUS + 0.1, 0.04, 8, 64]} />
-        <meshStandardMaterial color="#111122" roughness={0.8} metalness={0.2} />
-      </mesh>
-      {/* Corner posts (4 pillars at quadrant points) */}
-      {[0, Math.PI / 2, Math.PI, Math.PI * 1.5].map(angle => {
-        const px = Math.cos(angle) * ARENA_RADIUS
-        const pz = Math.sin(angle) * ARENA_RADIUS
-        return (
-          <mesh key={angle} position={[px, 0.6, pz]} castShadow>
-            <cylinderGeometry args={[0.08, 0.08, 1.2, 8]} />
-            <meshStandardMaterial color="#FFCC00" roughness={0.15} metalness={0.8} emissive="#FFCC00" emissiveIntensity={0.25} />
+      {/* North + South walls */}
+      {[hh, -hh].map((wz, idx) => (
+        <mesh key={"ns"+idx} position={[0, wallH/2, wz]} receiveShadow castShadow>
+          <boxGeometry args={[FIELD_WIDTH + wallT, wallH, wallT]} />
+          <meshStandardMaterial color="#FFCC00" roughness={0.15} metalness={0.8} emissive="#FFCC00" emissiveIntensity={0.25} />
+        </mesh>
+      ))}
+      {/* East + West walls */}
+      {[hw, -hw].map((wx, idx) => (
+        <mesh key={"ew"+idx} position={[wx, wallH/2, 0]} receiveShadow castShadow>
+          <boxGeometry args={[wallT, wallH, FIELD_HEIGHT]} />
+          <meshStandardMaterial color="#FFCC00" roughness={0.15} metalness={0.8} emissive="#FFCC00" emissiveIntensity={0.25} />
+        </mesh>
+      ))}
+      {/* Corner pillars */}
+      {[[-hw,-hh],[hw,-hh],[-hw,hh],[hw,hh]].map(([cx,cz], i) => (
+        <group key={"pillar"+i}>
+          <mesh position={[cx, 0.55, cz]}>
+            <cylinderGeometry args={[0.1, 0.12, 1.1, 8]} />
+            <meshStandardMaterial color="#FFE0A0" roughness={0.2} metalness={0.9} emissive="#FFCC00" emissiveIntensity={0.4} />
           </mesh>
-        )
-      })}
+          <mesh position={[cx, 1.05, cz]}>
+            <sphereGeometry args={[0.14, 8, 8]} />
+            <meshBasicMaterial color="#FFE0A0" transparent opacity={0.5} />
+          </mesh>
+        </group>
+      ))}
     </group>
   )
 }
@@ -527,7 +520,7 @@ function ArenaParticlesV3() {
     const pos = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2
-      const radius = Math.sqrt(Math.random()) * (ARENA_RADIUS - 0.5)
+      const radius = Math.sqrt(Math.random()) * (FIELD_HALF_W - 0.5)
       pos[i * 3] = Math.cos(angle) * radius
       pos[i * 3 + 1] = 0.5 + Math.random() * 4
       pos[i * 3 + 2] = Math.sin(angle) * radius
@@ -728,8 +721,8 @@ function SlamTexts({ events }: { events: Array<{ text: string; x: number; z: num
       {events.map(ev => (
         <div key={ev.id} className="absolute text-center font-black uppercase animate-slam-fly"
           style={{
-            left: `${50 + (ev.x / ARENA_RADIUS) * 42}%`,
-            top: `${50 - (ev.z / ARENA_RADIUS) * 42}%`,
+            left: `${50 + (ev.x / FIELD_HALF_W) * 42}%`,
+            top: `${50 - (ev.z / FIELD_HALF_W) * 42}%`,
             color: ev.color,
             fontSize: "15px",
             textShadow: `0 0 15px ${ev.color}80, 0 2px 4px rgba(0,0,0,0.8)`,
@@ -851,8 +844,8 @@ export default function ArenaSlamV2({
     const rect = arenaRef.current?.getBoundingClientRect()
     if (!rect) return { x: 0, z: 0 }
     return {
-      x: ((e.clientX - rect.left) / rect.width - 0.5) * ARENA_RADIUS * SCREEN_SCALE * 2,
-      z: ((e.clientY - rect.top) / rect.height - 0.5) * ARENA_RADIUS * SCREEN_SCALE * 2,
+      x: ((e.clientX - rect.left) / rect.width - 0.5) * FIELD_HALF_W * SCREEN_SCALE * 2,
+      z: ((e.clientY - rect.top) / rect.height - 0.5) * FIELD_HALF_W * SCREEN_SCALE * 2,
     }
   }, [])
 
@@ -861,7 +854,7 @@ export default function ArenaSlamV2({
     e.preventDefault()
     const { x, z } = getCoords(e)
     // Player spawn position (discs enter from player's side)
-    const spawnX = 0, spawnZ = ARENA_RADIUS - 1.5
+    const spawnX = 0, spawnZ = FIELD_HALF_W - 1.5
     const dsStart = { startX: spawnX + x * 0.5, startZ: spawnZ + z * 0.5, currentX: x, currentZ: z, active: true }
     dragRef.current = dsStart
     setDragState(dsStart)
@@ -878,7 +871,7 @@ export default function ArenaSlamV2({
     if (dist < 0.2) { setTrajectory([]); return }
 
     setTrajectory(calculateTrajectoryPreview(
-      selectedDisc.x || 0, ARENA_RADIUS - 1.5,
+      selectedDisc.x || 0, FIELD_HALF_W - 1.5,
       dragRef.current,
       selectedDisc.stats, 70
     ))
@@ -897,7 +890,7 @@ export default function ArenaSlamV2({
     setPhase("resolving")
     // Remove from hand, place on field at default position
     setPlayerHand(prev => prev.filter(d => d.id !== selectedId))
-    setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: ARENA_RADIUS - 1.5, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
+    setDiscs(prev => [...prev, { ...selectedDisc, x: 0, z: FIELD_HALF_W - 1.5, vx, vy, vz, y: 0.05, moving: true, flying: true, rotationSpeed: vx * 0.6 }])
     simulatingRef.current = true
   }, [dragState, selectedDisc, selectedId])
 
@@ -1011,7 +1004,7 @@ export default function ArenaSlamV2({
     }
     // Place attacker on field at opponent side + compute launch in one batch
     const attackerX = 0 + (Math.random() - 0.5) * 1.2
-    const attackerZ = -(ARENA_RADIUS - 1.5)
+    const attackerZ = -(FIELD_HALF_W - 1.5)
     const pDiscs = cd.filter(d => d.owner === "player" && !d.flipped && !d.ringOut)
     let target: DiscState | null = null
     if (pDiscs.length > 0) {
@@ -1236,7 +1229,7 @@ export default function ArenaSlamV2({
 
       {/* 3D Canvas */}
       <Canvas
-        camera={{ position: CAM_PRESETS.default.pos, fov: 42, near: 0.5, far: 100 }}
+        camera={{ position: CAM_PRESETS.default.pos, fov: 38, near: 0.5, far: 120 }}
         gl={{ antialias: true, alpha: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
         dpr={[1, 2]}
         onPointerDown={handlePointerDown}
@@ -1251,26 +1244,26 @@ export default function ArenaSlamV2({
         <ambientLight intensity={0.55} />
         <directionalLight position={[6, 16, 4]} intensity={1.0} castShadow
           shadow-mapSize={[512, 512]}
-          shadow-camera-near={0.5} shadow-camera-far={50}
-          shadow-camera-left={-8} shadow-camera-right={8}
-          shadow-camera-top={8} shadow-camera-bottom={-8} />
+          shadow-camera-near={0.5} shadow-camera-far={60}
+          shadow-camera-left={-10} shadow-camera-right={10}
+          shadow-camera-top={10} shadow-camera-bottom={-10} />
         <directionalLight position={[-4, 8, -5]} intensity={0.3} />
         <spotLight position={[0, 12, 0]} angle={0.6} penumbra={0.4} intensity={2.5} color="#FFF8E7" castShadow
           shadow-mapSize={[256, 256]} />
         <pointLight position={[5, 3, 5]} intensity={0.8} color="#FFCC00" />
         <pointLight position={[-5, 3, -5]} intensity={0.5} color="#4488FF" />
 
-        <ArenaFloorV3 />
-        <ArenaWallV3 />
+        <RectangularField />
+        <FieldWalls />
         {/* Distant arena horizon ring */}
         <mesh position={[0, 0.35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[ARENA_RADIUS + 2.0, ARENA_RADIUS + 2.15, 64]} />
+          <ringGeometry args={[FIELD_HALF_W + 2.0, FIELD_HALF_W + 2.15, 64]} />
           <meshBasicMaterial color="#FFE0A0" transparent opacity={0.025} side={2} depthWrite={false} />
         </mesh>
         {/* Stadium ambient lights — ring of distant lights */}
         {Array.from({ length: 16 }).map((_, i) => {
           const angle = (i / 16) * Math.PI * 2
-          const r = ARENA_RADIUS + 2.5
+          const r = FIELD_HALF_W + 2.5
           const px = Math.cos(angle) * r
           const pz = Math.sin(angle) * r
           return (

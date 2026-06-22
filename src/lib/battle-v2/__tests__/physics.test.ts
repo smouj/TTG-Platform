@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest"
 import {
   createDemoDisc, calculateLaunchVelocity, calculateTrajectoryPreview,
-  simulateStep, allStopped, spreadDiscs,
+  simulateStep, allStopped, 
   ARCHETYPE_STATS, GRAVITY, JUMP_POWER,
-  ARENA_RADIUS, DISC_RADIUS, MIN_LAUNCH_SPEED,
+  FIELD_HALF_W, FIELD_HALF_H, CENTER_LINE_Z, DISC_RADIUS, MIN_LAUNCH_SPEED,
 } from "../physics"
 
 describe("createDemoDisc", () => {
@@ -18,23 +18,6 @@ describe("createDemoDisc", () => {
     expect(d.y).toBe(0)
     expect(d.moving).toBe(false); expect(d.flying).toBe(false)
     expect(d.flipped).toBe(false)
-  })
-})
-
-describe("spreadDiscs", () => {
-  it("spreads discs along x at given z side", () => {
-    const discs = [
-      createDemoDisc("a", "A", "balanced", 0, 0, "player"),
-      createDemoDisc("b", "B", "heavy", 0, 0, "player"),
-      createDemoDisc("c", "C", "spinner", 0, 0, "player"),
-    ]
-    const spread = spreadDiscs(discs, 1)
-    expect(spread[0].z).toBe(2.8)
-    expect(spread[1].z).toBe(2.8)
-    expect(spread[2].z).toBe(2.8)
-    // Centers should be spaced
-    expect(spread[1].x).toBeCloseTo(0, 0)
-    expect(Math.abs(spread[0].x)).toBeGreaterThan(0.5)
   })
 })
 
@@ -102,7 +85,7 @@ describe("calculateTrajectoryPreview", () => {
     // Last point is either landed (y=0) or at arena boundary
     const last = r[r.length - 1]
     const lastDist = Math.hypot(last.x, last.z)
-    expect(last.y === 0 || lastDist >= ARENA_RADIUS - 0.5).toBe(true)
+    expect(last.y === 0 || lastDist >= Math.min(FIELD_HALF_W, FIELD_HALF_H) - 0.5).toBe(true)
   })
 })
 

@@ -84,6 +84,7 @@ function rawToDisc(t: RawTazo, owner: "player" | "opponent", index: number): Dis
     moving: false, flying: false,
     rotation: 0, rotationSpeed: 0,
     flipped: false, ringOut: false,
+    wobbleAngle: 0, wobbleSpeed: 0, wobbleAxis: 0,
     owner,
     landedOnId: null,
   }
@@ -137,6 +138,7 @@ function generateOpponentDiscs(difficulty: string, count: number): DiscState[] {
       moving: false, flying: false,
       rotation: 0, rotationSpeed: 0,
       flipped: false, ringOut: false,
+      wobbleAngle: 0, wobbleSpeed: 0, wobbleAxis: 0,
       owner: "opponent" as const,
       landedOnId: null,
     }
