@@ -165,7 +165,7 @@ function ServerFAQ() {
       <h2>How many tazos are there?</h2>
       <p>139 tazos across 3 original series: Minimon (50), Dracobell (45), and Cybermon (44). Plus 11 more planned for full Season 1.</p>
       <h2>How do battles work?</h2>
-      <p>Build a 20-tazo deck and draw 5 for your starting hand. Drop tazos from above into the arena, impact the stack, and flip opponent discs to capture them. It is a physics-based skill battle, not turn-based cards.</p>
+      <p>Choose a tazo, drag back to aim, and release to launch it in an arcing jump. Land on opponent discs to flip them — heavier discs hit harder, faster discs are harder to catch. First to flip 5 opponent discs wins. It is a physics-based arcade battle.</p>
       <h2>Can I play as a guest?</h2>
       <p>Try the practice arena instantly — no account needed. Battle against the AI, test different decks, and experience the slam mechanics. Create a free account to open bags, build your collection, earn CREDITS, and compete on the leaderboard.</p>
       <h2>What are the tazo stats?</h2>

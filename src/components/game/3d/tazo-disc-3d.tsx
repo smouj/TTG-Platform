@@ -75,6 +75,47 @@ function makeFallbackTexture(name: string, franchise: string): THREE.Texture {
   return tex
 }
 
+// ─── Procedural back face (card-back style) ───
+function makeBackFallbackTexture(franchise: string): THREE.Texture {
+  const colors = FRANCHISE_COLORS[franchise] || FRANCHISE_COLORS.minimon
+  const canvas = document.createElement("canvas")
+  canvas.width = 512; canvas.height = 512
+  const ctx = canvas.getContext("2d")!
+  // Dark base
+  const grad = ctx.createRadialGradient(256, 256, 40, 256, 256, 360)
+  grad.addColorStop(0, "#1a1a2e")
+  grad.addColorStop(0.6, "#0d0d1a")
+  grad.addColorStop(1, "#050510")
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, 512, 512)
+  // Diamond/cross pattern
+  ctx.strokeStyle = "rgba(255,255,255,0.04)"; ctx.lineWidth = 1.5
+  for (let i = -512; i < 1024; i += 32) {
+    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + 512, 512); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(i, 512); ctx.lineTo(i + 512, 0); ctx.stroke()
+  }
+  // Concentric rings
+  for (let r = 40; r < 240; r += 40) {
+    ctx.strokeStyle = `rgba(255,255,255,${0.03 - r * 0.00008})`
+    ctx.beginPath(); ctx.arc(256, 256, r, 0, Math.PI * 2); ctx.stroke()
+  }
+  // Center logo mark
+  ctx.fillStyle = colors.primary + "15"
+  ctx.beginPath(); ctx.arc(256, 256, 48, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = colors.primary + "30"; ctx.lineWidth = 3
+  ctx.beginPath(); ctx.arc(256, 256, 48, 0, Math.PI * 2); ctx.stroke()
+  // "TTG" text center
+  ctx.fillStyle = colors.primary + "25"; ctx.font = "bold 52px 'Geist', sans-serif"
+  ctx.textAlign = "center"; ctx.textBaseline = "middle"
+  ctx.fillText("TTG", 256, 256)
+  // Border rim
+  ctx.strokeStyle = colors.primary + "15"; ctx.lineWidth = 8
+  ctx.beginPath(); ctx.arc(256, 256, 230, 0, Math.PI * 2); ctx.stroke()
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.minFilter = THREE.LinearMipmapLinearFilter; tex.magFilter = THREE.LinearFilter
+  return tex
+}
+
 interface TazoDisc3DProps {
   name: string
   franchise: string
@@ -132,7 +173,7 @@ export default function TazoDisc3D({
 
   // Back texture — franchise back art or fallback
   const [backTex, setBackTex] = useState<THREE.Texture | null>(null)
-  const backFallback = useMemo(() => makeFallbackTexture(name, franchise), [name, franchise])
+  const backFallback = useMemo(() => makeBackFallbackTexture(franchise), [franchise])
 
   useEffect(() => {
     const url = backImageUrl || BACK_ARTS[franchise.toLowerCase()]

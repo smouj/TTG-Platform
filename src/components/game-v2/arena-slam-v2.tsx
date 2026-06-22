@@ -92,7 +92,7 @@ function ArenaFloorV3() {
     ctx.fillRect(0, 0, sz, sz)
 
     // Grid lines
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.025)"
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.032)"
     ctx.lineWidth = 1
     for (let i = -ARENA_RADIUS; i <= ARENA_RADIUS; i += 1) {
       const p = px(i)
@@ -102,7 +102,7 @@ function ArenaFloorV3() {
 
     // Concentric rings
     for (let r = 1; r <= ARENA_RADIUS; r += 1) {
-      ctx.strokeStyle = `rgba(255, 204, 0, ${0.04 + r * 0.008})`
+      ctx.strokeStyle = `rgba(255, 204, 0, ${0.05 + r * 0.01})`
       ctx.lineWidth = r === Math.floor(ARENA_RADIUS) ? 2 : 0.8
       ctx.beginPath(); ctx.arc(mid, mid, px(r) - mid, 0, Math.PI * 2); ctx.stroke()
     }
@@ -142,7 +142,7 @@ function ArenaWallV3() {
     <group>
       {/* Outer wall ring — horizontal on ground */}
       <mesh position={[0, 0.25, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
-        <torusGeometry args={[ARENA_RADIUS, 0.15, 12, 72]} />
+        <torusGeometry args={[ARENA_RADIUS, 0.22, 16, 80]} />
         <meshStandardMaterial color="#FFCC00" roughness={0.2} metalness={0.7} emissive="#FFCC00" emissiveIntensity={0.15} />
       </mesh>
       {/* Inner glow ring — horizontal */}
@@ -408,16 +408,22 @@ function ScoreHUD({ playerScore, opponentScore }: { playerScore: number; opponen
   )
 }
 
-function TurnIndicator({ phase }: { phase: string }) {
+function TurnIndicator({ phase, turn }: { phase: string; turn?: string }) {
   const msgs: Record<string, string> = {
     select: "Choose your tazo",
     aim: "Drag back · Release to jump!",
-    resolving: "In flight...",
-    opponent: "Opponent's turn",
+    resolving: turn === "player" ? "Your disc in flight!" : "Rival disc incoming!",
+    opponent: "Opponent aims...",
+  }
+  const colors: Record<string, string> = {
+    select: "text-yellow-400/50",
+    aim: "text-green-400/60",
+    resolving: turn === "player" ? "text-yellow-400/60" : "text-red-400/60",
+    opponent: "text-red-400/50",
   }
   return (
     <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-      <div className="px-4 py-1.5 rounded-full border border-white/10 bg-black/40 backdrop-blur-sm text-[10px] font-black uppercase tracking-[0.15em] text-white/50">
+      <div className={`px-4 py-1.5 rounded-full border border-white/10 bg-black/40 backdrop-blur-sm text-[10px] font-black uppercase tracking-[0.15em] ${colors[phase] || "text-white/50"}`}>
         {msgs[phase] || phase}
       </div>
     </div>
@@ -664,7 +670,7 @@ export default function ArenaSlamV2({
           simulatingRef.current = false
           const isPlayerTurn = turnRef.current === "player"
 
-          if (scoreRef.current.player >= 5) {
+          if (scoreRef.current.player >= 5 || scoreRef.current.opponent >= 5) {
             setPhase("result")
           } else if (isPlayerTurn) {
             // Player's turn ends → now opponent's turn
@@ -747,7 +753,7 @@ export default function ArenaSlamV2({
 
       {/* HUD */}
       <ScoreHUD playerScore={playerScore} opponentScore={opponentScore} />
-      <TurnIndicator phase={phase} />
+      <TurnIndicator phase={phase} turn={turnRef.current} />
       <SlamTexts events={slamTexts} />
 
       {/* Hand */}
@@ -789,7 +795,9 @@ export default function ArenaSlamV2({
         <div className="absolute inset-0 flex items-center justify-center z-30 bg-black/70 backdrop-blur-sm">
           <div className="text-center animate-in fade-in zoom-in duration-300">
             <div className="text-7xl mb-2">{playerScore >= 5 ? "🏆" : "💀"}</div>
-            <h2 className="text-5xl font-black text-yellow-400 uppercase tracking-wider mb-2 drop-shadow-[0_0_30px_rgba(255,204,0,0.4)]">
+            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-wider mb-2 drop-shadow-[0_0_30px_rgba(255,204,0,0.4)]" style={{
+              color: playerScore >= 5 ? "var(--ttg-yellow)" : "var(--ttg-red)"
+            }}>
               {playerScore >= 5 ? "Victory!" : "Defeat"}
             </h2>
             <p className="text-white/35 text-xl mb-8">{playerScore} — {opponentScore}</p>
