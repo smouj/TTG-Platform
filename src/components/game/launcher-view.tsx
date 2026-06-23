@@ -15,7 +15,6 @@ import WikiLauncherContent from "@/components/wiki/WikiLauncherContent"
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useVisibilityRefresh } from "@/lib/use-visibility-refresh"
 import {
   Download, Globe, Monitor, Apple, Terminal, Smartphone,
   Zap, Star, Disc3, Swords, Medal, PackageOpen,
@@ -1014,7 +1013,7 @@ function HowToPlayContent() {
 
       <SectionCard step={3} color="var(--ttg-dracobell)" bgColor="var(--ttg-dracobell)" title="Open Your Welcome Bags"
         preview={<BagPreview tazos={bagPreview} />}>
-        <p>Your 30 welcome bags are waiting in the Shop. Each one contains a random tazo:</p>
+        <p>Your 30 welcome bags are waiting in your account inventory. Each one contains a random tazo:</p>
         <ul className="list-disc pl-5 space-y-0.5">
           <li><strong>Standard Bags</strong> — Common and uncommon tazos (most of your starter collection)</li>
           <li><strong>Premium Bags</strong> — Better odds for rare tazos</li>
