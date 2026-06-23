@@ -17,11 +17,11 @@ export default function WikiLauncherContent() {
     <div className="w-full max-w-5xl mx-auto space-y-8">
       {/* ── Hero ── */}
       <section className="text-center space-y-2">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-ttg-black uppercase tracking-[0.05em]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-ttg-black uppercase tracking-[0.05em]">
           TTG Wiki
-        </h1>
+        </h2>
         <p className="text-sm sm:text-base font-bold text-ttg-black/50 max-w-xl mx-auto">
-          Catálogo oficial del lore de Trading Tazos Game. {TOTAL_ENTITIES} tazos documentados con tipos, inspiraciones, evoluciones y relaciones entre series.
+          Official lore catalog for Trading Tazos Game. {TOTAL_ENTITIES} documented tazos with types, inspirations, evolutions, and cross-series relationships.
         </p>
         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ttg-yellow/10 border border-ttg-yellow/30 mt-1">
           <span className="text-[10px] font-black text-ttg-black/60 uppercase tracking-wider">
@@ -101,13 +101,13 @@ export default function WikiLauncherContent() {
           style={{ backgroundImage: "repeating-linear-gradient(45deg, var(--ttg-black) 0px, var(--ttg-black) 2px, transparent 2px, transparent 12px)" }} />
         <div className="relative z-10 space-y-4">
           <h2 className="text-xl sm:text-2xl font-black text-ttg-black uppercase tracking-tight">
-            Sobre el Wiki
+            About the Wiki
           </h2>
           <div className="prose max-w-none text-sm font-bold text-ttg-black/60 space-y-2">
             <p>
               El <strong className="text-ttg-black">TTG Wiki</strong> es el catálogo oficial de lore de Trading Tazos Game —
-              un compendio de todas las criaturas, personajes, técnicas y elementos
-              que componen el universo TTG.
+              a compendium of all creatures, characters, techniques, and elements
+              that make up the TTG universe.
             </p>
             <p>
               Cada entrada incluye tipos, rareza, evolución, inspiración original,
@@ -125,10 +125,10 @@ export default function WikiLauncherContent() {
       {/* ── Data stats ── */}
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         {[
-          { label: "Entidades", value: "351", color: "var(--ttg-black)" },
+          { label: "Entities", value: "351", color: "var(--ttg-black)" },
           { label: "Series", value: "3", color: "var(--ttg-red)" },
-          { label: "Tipos", value: "18", color: "var(--ttg-blue)" },
-          { label: "Categorías", value: "9", color: "var(--ttg-success)" },
+          { label: "Types", value: "18", color: "var(--ttg-blue)" },
+          { label: "Categories", value: "9", color: "var(--ttg-success)" },
         ].map(stat => (
           <div key={stat.label}
             className="mag-card border-3 border-ttg-black bg-white p-4 text-center"

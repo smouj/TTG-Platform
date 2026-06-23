@@ -657,7 +657,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
                 <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-ttg-black group-hover/cta:animate-pulse" />
               </div>
             </button>
-            <p className="text-[8px] font-bold text-ttg-black/20 uppercase tracking-[0.2em] mt-1.5 text-center md:text-left">No download · Free · Instant</p>
+            <p className="text-[8px] font-bold text-ttg-black/20 uppercase tracking-[0.2em] mt-1.5 text-center md:text-left">Download the TTG-Engine · Free to Play</p>
           </div>
 
           {/* Stat chips — magazine factoid bar */}
