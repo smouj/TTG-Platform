@@ -29,13 +29,9 @@ import TazoDetailModal from '@/components/game/tazo-detail-modal'
 import { FRANCHISES, FRANCHISE_BY_SLUG, TOTAL_PLANNED } from "@/lib/franchise-config"
 import { SITE_CONFIG } from "@/lib/site-config"
 import { PRIVACY_SECTIONS, TERMS_SECTIONS, COOKIE_SECTIONS } from "@/lib/legal-content"
-import BagCardMini3D from "@/components/game/3d/bag-card-mini-3d"
 import dynamic from "next/dynamic"
-const WebGLGuard = dynamic(() => import("@/components/game/webgl-guard"), { ssr: false })
 import { FAQ_ENTRIES } from "@/lib/faq-content"
 import { DOWNLOAD_PLATFORMS, DOWNLOAD_RELEASE } from "@/lib/downloads"
-import { CreditShop } from "@/components/shop/credit-shop"
-import { RewardedAdButton } from "@/components/shop/rewarded-ad"
 import { Skeleton } from "@/components/ui/loading-skeletons"
 
 // ── Types ──
@@ -1394,21 +1390,16 @@ function ShopContent() {
               <div className="px-4 sm:px-5 py-4 border-b-2 border-ttg-black/10" style={{ backgroundColor: bag.bg }}>
                 {/* 3D Bag Preview */}
                 <div className="-mx-4 sm:-mx-5 -mt-4 mb-0 overflow-hidden" style={{ background: "linear-gradient(135deg, #2a2520 0%, #1a1815 50%, #0f0d0a 100%)" }}>
-                  <WebGLGuard fallback={
+                  
                     <div className="w-full h-[180px] sm:h-[200px] flex items-center justify-center overflow-hidden">
-                      <img src={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
-                        alt={`${bag.name} preview`}
-                        className="w-auto h-full object-contain"
-                        style={{ imageRendering: "auto" }} />
-                    </div>
-                  }>
-                    <BagCardMini3D
-                      frontUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
-                      backUrl={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-back-01.png`}
-                      bagColor={bag.color}
-                      franchiseSlug={bag.franchise}
+                    <img
+                      src={`/textures/bags/${bag.franchise}/bag-${bag.franchise}-front-01.png`}
+                      alt={`${bag.name} preview`}
+                      className="w-auto h-full object-contain drop-shadow-lg"
+                      style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))" }}
                     />
-                  </WebGLGuard>
+                  </div>
+                  
                 </div>
                 <div className="flex items-start justify-between mb-2 mt-3">
                   <div className="flex items-center gap-2">
@@ -1496,13 +1487,7 @@ function ShopContent() {
         })}
       </section>
 
-      {/* ── Monetization ── */}
-      <section className="space-y-6">
-        <h3 className="text-lg sm:text-xl font-black text-ttg-black uppercase tracking-tight text-center">💎 Earn & Buy CREDITS</h3>
-        <p className="text-xs text-ttg-black/40 font-bold text-center max-w-md mx-auto -mt-4">CREDITS unlock bags. Earn them free by watching ads or buy packs to accelerate your collection.</p>
-        <RewardedAdWidget />
-        <CreditShopWidget />
-      </section>
+
 
       {/* CTA */}
       <section className="mag-card border-3 border-ttg-black bg-white p-6 sm:p-8 text-center space-y-4 relative overflow-hidden" style={{ boxShadow: "6px 6px 0px #FFCC0040" }}>
@@ -1518,31 +1503,6 @@ function ShopContent() {
         </div>
       </section>
     </div>
-  )
-}
-
-// ── Monetization Widgets ──
-
-function RewardedAdWidget() {
-  const isAuth = false // auth removed (TTG-Engine)
-
-  return (
-    <RewardedAdButton
-      isAuthenticated={isAuth}
-      onRewardClaimed={() => {}}
-    />
-  )
-}
-
-function CreditShopWidget() {
-  const isAuth = false
-  const userCredits = 0
-
-  return (
-    <CreditShop
-      userCredits={userCredits}
-      isAuthenticated={isAuth}
-    />
   )
 }
 

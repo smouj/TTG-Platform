@@ -1,5 +1,4 @@
 import { db } from "@/lib/db"
-import { getAuthUser } from "@/lib/auth"
 import { NextRequest, NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
@@ -103,73 +102,3 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    // Admin-only: authenticate user and verify admin email
-    const authUser = await getAuthUser(request)
-    if (!authUser) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-    if (authUser.email !== ADMIN_EMAIL) {
-      return NextResponse.json({ error: "Forbidden: admin only" }, { status: 403 })
-    }
-
-    const body = await request.json()
-
-    const tazo = await db.tazo.create({
-      data: {
-        name: body.name,
-        displayName: body.displayName || body.name,
-        slug: body.slug || `tazo-${Date.now()}`,
-        franchiseId: body.franchiseId,
-        collectionId: body.collectionId,
-        number: body.number || "",
-        variant: body.variant || null,
-        category: body.category || null,
-        manufacturer: body.manufacturer || null,
-        country: body.country || null,
-        sourceStatus: body.sourceStatus || "pending_visual_check",
-        condition: body.condition || "good",
-        physicalType: body.physicalType || "cardboard",
-        rarity: body.rarity || "common",
-        imageUrl: body.imageUrl || null,
-        skill: body.skill || null,
-        skillDesc: body.skillDesc || null,
-        evolutionFrom: body.evolutionFrom || null,
-        evolutionTo: body.evolutionTo || null,
-        transformStage: body.transformStage || null,
-        transformOf: body.transformOf || null,
-        attack: body.attack ?? 50,
-        defense: body.defense ?? 50,
-        resistance: body.resistance ?? 50,
-        weight: body.weight ?? 50,
-        stability: body.stability ?? 50,
-        spin: body.spin ?? 50,
-        control: body.control ?? 50,
-        bounce: body.bounce ?? 50,
-        precision: body.precision ?? 50,
-        role: body.role || null,
-        isOwned: body.isOwned ?? false,
-      },
-      include: { franchise: true, collection: true },
-    })
-
-    // Flatten franchise & collection to strings
-    const flatTazo = {
-      ...tazo,
-      franchise: tazo.franchise?.slug || null,
-      franchiseName: tazo.franchise?.name || null,
-      franchiseColor: tazo.franchise?.color || null,
-      franchiseSlug: tazo.franchise?.slug || null,
-      collection: tazo.collection?.slug || null,
-      collectionName: tazo.collection?.name || null,
-      collectionSlug: tazo.collection?.slug || null,
-      collectionYear: tazo.collection?.year || null,
-    }
-
-    return NextResponse.json({ tazo: flatTazo }, { status: 201 })
-  } catch (error) {
-    console.error("Error creating tazo:", error)
-    return NextResponse.json({ error: "Failed to create tazo" }, { status: 500 })
-  }
-}
