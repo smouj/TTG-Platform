@@ -56,22 +56,22 @@
  --shadow-2xl: var(--shadow-2xl);
 }
 
-/* ── TTG Color Tokens (non-inline: Tailwind wraps RGB channels in rgb()) ── */
+/* ── TTG Color Tokens — remapped to TweakCN theme palette ── */
 @theme {
   --color-minimon: #ffcb05;
   --color-cybermon: #00a1e9;
   --color-dracobell: #ff6b00;
-  /* ── TTG Brand Palette ── */
+  /* ── TTG Brand Palette (TweakCN-adapted) ── */
   --color-ttg-yellow: #ffcc00;
   --color-ttg-yellow-hover: #ffe566;
   --color-ttg-yellow-dark: #e6b800;
-  --color-ttg-red: #e3350d;
-  --color-ttg-red-dark: var(--ttg-red-dark);
-  --color-ttg-blue: #3b4cca;
-  --color-ttg-blue-dark: #2a3aa0;
-  --color-ttg-black: #1a1a1a;
-  --color-ttg-cream: #fff9e6;
-  --color-ttg-cream-dark: #fff3cc;
+  --color-ttg-red: oklch(0.5016 0.1887 27.4816);
+  --color-ttg-red-dark: oklch(0.42 0.16 27);
+  --color-ttg-blue: oklch(0.5880 0.0993 245.7394);
+  --color-ttg-blue-dark: oklch(0.48 0.08 245);
+  --color-ttg-black: oklch(0.2393 0 0);
+  --color-ttg-cream: oklch(0.8452 0 0);
+  --color-ttg-cream-dark: oklch(0.73 0 0);
   /* ── Series ── */
   --color-ttg-minimon: #ffcb05;
   --color-ttg-cybermon: #00a1e9;
@@ -79,19 +79,19 @@
   /* ── Battle ── */
   --color-ttg-player: #29adff;
   --color-ttg-opponent: #ff004d;
-  /* ── Feedback ── */
-  --color-ttg-success: #22c55e;
-  --color-ttg-warning: #f59e0b;
+  /* ── Feedback (TweakCN-adapted) ── */
+  --color-ttg-success: oklch(0.4955 0.0896 126.1858);
+  --color-ttg-warning: oklch(0.7076 0.1975 46.4558);
   --color-ttg-purple: #a855f7;
   /* ── Rarity tiers ── */
   --color-ttg-rarity-common: #9ca3af;
-  --color-ttg-rarity-uncommon: #22c55e;
-  --color-ttg-rarity-rare: #3b82f6;
+  --color-ttg-rarity-uncommon: oklch(0.4955 0.0896 126.1858);
+  --color-ttg-rarity-rare: oklch(0.5880 0.0993 245.7394);
   --color-ttg-rarity-ultra: #a855f7;
   --color-ttg-rarity-legendary: #ffcc00;
-  /* ── Surfaces ── */
-  --color-ttg-cream-light: #fffef0;
-  --color-ttg-paper: #fafaf5;
+  /* ── Surfaces (TweakCN) ── */
+  --color-ttg-cream-light: oklch(0.9 0 0);
+  --color-ttg-paper: oklch(0.8452 0 0);
   /* ── Arena ── */
   --color-ttg-arena-bg: #0a0a0a;
   --color-ttg-arena-ink: #c0b060;
