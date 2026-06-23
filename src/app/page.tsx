@@ -69,7 +69,7 @@ export default async function HomePage({ searchParams }: Props) {
   return (
     <Suspense fallback={<div className="min-h-screen" style={{ background: "var(--ttg-cream)" }} />}>
       <ServerPageContent page={page || ""} />
-      <LauncherView />
+      <LauncherView initialPage={page || "home"} />
     </Suspense>
   )
 }

@@ -1977,12 +1977,12 @@ function CollectionDetailContent({ collection }: { collection: string }) {
   )
 }
 
-export default function LauncherView() {
+export default function LauncherView({ initialPage }: { initialPage?: string }) {
   const user = null
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showSplash, setShowSplash] = useState(false)
-  const [currentPage, setCurrentPage] = useState<PageId>("home")
+  const [currentPage, setCurrentPage] = useState<PageId>((initialPage as PageId) || "home")
 
   // Sync page from URL query param on mount
   useEffect(() => {
