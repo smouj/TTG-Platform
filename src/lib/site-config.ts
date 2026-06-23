@@ -113,7 +113,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   "how-to-play": {
     title: "How to Play — Trading Tazos Game",
     description:
-      "Learn how to collect, trade, and battle tazos. Master the 9 combat stats (Attack, Defense, Spin, Control, Bounce, Weight, Resistance, Stability, Precision), build decks, and compete in the 3D arena.",
+      "Download the TTG-Engine, create your free account, open your welcome bags, build a battle deck, and jump into the 3D arena. Everything you need to start playing Trading Tazos — completely free.",
     canonicalPath: "/?page=how-to-play",
   },
   "collections-minimon": {

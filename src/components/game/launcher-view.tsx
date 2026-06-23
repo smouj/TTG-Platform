@@ -223,6 +223,51 @@ function SectionCard({ step, color, title, children, bgColor, preview }: {
 
 // ── Preview Images for How to Play ──
 
+// ── Preview: Download step ──
+function DownloadStepPreview() {
+  return (
+    <div className="flex items-center justify-center gap-6 py-4">
+      {/* Windows */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-10 h-10 rounded-sm bg-ttg-yellow border-2 border-ttg-black flex items-center justify-center"
+          style={{ boxShadow: "2px 2px 0 var(--ttg-black)" }}>
+          <Monitor className="w-5 h-5 text-ttg-black" />
+        </div>
+        <span className="text-[8px] font-black text-ttg-black/40 uppercase tracking-wider">Windows</span>
+      </div>
+      {/* Arrow */}
+      <span className="text-ttg-black/20 font-black text-lg">&rarr;</span>
+      {/* macOS */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-10 h-10 rounded-sm bg-ttg-dracobell border-2 border-ttg-black flex items-center justify-center"
+          style={{ boxShadow: "2px 2px 0 var(--ttg-black)" }}>
+          <Terminal className="w-5 h-5 text-white" />
+        </div>
+        <span className="text-[8px] font-black text-ttg-black/40 uppercase tracking-wider">macOS</span>
+      </div>
+      {/* Arrow */}
+      <span className="text-ttg-black/20 font-black text-lg">&rarr;</span>
+      {/* Linux */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-10 h-10 rounded-sm bg-ttg-black border-2 border-ttg-black flex items-center justify-center">
+          <Terminal className="w-5 h-5 text-white" />
+        </div>
+        <span className="text-[8px] font-black text-ttg-black/40 uppercase tracking-wider">Linux</span>
+      </div>
+      {/* Arrow to game */}
+      <span className="text-ttg-red font-black text-lg">&rarr;</span>
+      {/* Game */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-10 h-10 rounded-sm bg-ttg-red border-2 border-ttg-black flex items-center justify-center"
+          style={{ boxShadow: "2px 2px 0 var(--ttg-black)" }}>
+          <Swords className="w-5 h-5 text-white" />
+        </div>
+        <span className="text-[8px] font-black text-ttg-red uppercase tracking-wider">Game</span>
+      </div>
+    </div>
+  )
+}
+
 function SignUpPreview() {
   return (
     <div className="flex items-center gap-5 py-3">
@@ -935,25 +980,52 @@ function HowToPlayContent() {
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-6">
-      <SectionCard step={1} color="var(--ttg-yellow)" bgColor="var(--ttg-yellow)" title="Create Your Account"
-        preview={<SignUpPreview />}>
-        <p>Sign up for free — you&apos;ll receive <strong>30 welcome bags + 100 CREDITS</strong> with surprise tazos inside. Open them in the Shop to start your collection. No credit card required — the game is completely free to play.</p>
-      </SectionCard>
+      {/* ─── Intro header ─── */}
+      <div className="text-center mb-2">
+        <h2 className="text-base font-black text-ttg-black uppercase tracking-wider">
+          Start Your Journey
+        </h2>
+        <p className="text-[10px] font-bold text-ttg-black/40 mt-1 max-w-lg mx-auto">
+          From downloading the launcher to dominating the arena — here&apos;s everything you need to begin.
+        </p>
+      </div>
 
-      <SectionCard step={2} color="var(--ttg-dracobell)" bgColor="var(--ttg-dracobell)" title="Open Bags & Collect Tazos"
-        preview={<BagPreview tazos={bagPreview} />}>
-        <p>Each bag contains a random tazo from the collection:</p>
-        <ul className="list-disc pl-5 space-y-0.5">
-          <li><strong>Standard Bags</strong> — Common and uncommon tazos</li>
-          <li><strong>Premium Bags</strong> — Better odds for rare tazos</li>
-          <li><strong>Mega Bags</strong> — Highest chance for ultra rare and legendary</li>
+      <SectionCard step={1} color="var(--ttg-black)" bgColor="var(--ttg-black)" title="Download the TTG-Engine"
+        preview={<DownloadStepPreview />}>
+        <p>The <strong>TTG-Engine</strong> is the game launcher. It gives you the full experience: 3D arena battles, PvP matchmaking, offline collection viewer, and automatic updates.</p>
+        <ul className="list-disc pl-5 space-y-0.5 mt-1">
+          <li><strong>Desktop</strong> — Download for Windows, macOS, or Linux from the <em>Download</em> page</li>
+          <li><strong>Browser</strong> — Play instantly at tradingtazosgame.com — no install needed</li>
+          <li><strong>Mobile</strong> — Coming soon to Google Play and the App Store</li>
         </ul>
-        <p>Buy more bags with CREDITS earned by winning battles and completing quests.</p>
+        <p className="mt-1">The Engine keeps your game updated, connects you to multiplayer servers, and manages your collection offline. <strong>One launcher, everything in one place.</strong></p>
       </SectionCard>
 
-      <SectionCard step={3} color="var(--ttg-blue)" bgColor="var(--ttg-blue)" title="Build Your Battle Deck"
+      <SectionCard step={2} color="var(--ttg-yellow)" bgColor="var(--ttg-yellow)" title="Create Your Free Account"
+        preview={<SignUpPreview />}>
+        <p>Launch the TTG-Engine (or open the site) and create your account — takes under a minute.</p>
+        <ul className="list-disc pl-5 space-y-0.5 mt-1">
+          <li>Pick a <strong>username</strong> — your identity in the arena</li>
+          <li>Enter your <strong>email</strong> — for account recovery and battle notifications</li>
+          <li>Set a <strong>password</strong> — keep your collection safe</li>
+        </ul>
+        <p>You&apos;ll instantly receive <strong>30 welcome bags + 100 CREDITS</strong>. No credit card, no hidden costs — the game is completely free to play.</p>
+      </SectionCard>
+
+      <SectionCard step={3} color="var(--ttg-dracobell)" bgColor="var(--ttg-dracobell)" title="Open Your Welcome Bags"
+        preview={<BagPreview tazos={bagPreview} />}>
+        <p>Your 30 welcome bags are waiting in the Shop. Each one contains a random tazo:</p>
+        <ul className="list-disc pl-5 space-y-0.5">
+          <li><strong>Standard Bags</strong> — Common and uncommon tazos (most of your starter collection)</li>
+          <li><strong>Premium Bags</strong> — Better odds for rare tazos</li>
+          <li><strong>Mega Bags</strong> — Highest chance for ultra rare and legendary tazos</li>
+        </ul>
+        <p>Open them all — this is your first squad. Buy more bags with CREDITS earned from winning battles and completing quests.</p>
+      </SectionCard>
+
+      <SectionCard step={4} color="var(--ttg-blue)" bgColor="var(--ttg-blue)" title="Build Your Battle Deck"
         preview={<DeckPreview tazos={deckPreview} />}>
-        <p>Choose <strong>20 tazos</strong> to form your battle deck. Each tazo has <strong>9 combat stats</strong>:</p>
+        <p>Choose <strong>20 tazos</strong> to form your battle deck. Each tazo has <strong>9 combat stats</strong> that determine how it performs in the arena:</p>
         <ul className="list-disc pl-5 space-y-0.5">
           <li><strong>Attack</strong> — Impact power on opponent tazos</li>
           <li><strong>Defense</strong> — Resistance to being flipped</li>
@@ -965,24 +1037,42 @@ function HowToPlayContent() {
           <li><strong>Bounce</strong> — Improves wall rebounds</li>
           <li><strong>Precision</strong> — Better aim accuracy</li>
         </ul>
-        <p>Balance high-attack tazos with defensive ones for the best results.</p>
+        <p>Balance heavy hitters with defensive walls. A smart deck beats a strong one.</p>
       </SectionCard>
 
-      <SectionCard step={4} color="var(--ttg-red)" bgColor="var(--ttg-red)" title="Enter the Battle Arena"
+      <SectionCard step={5} color="var(--ttg-red)" bgColor="var(--ttg-red)" title="Enter the Battle Arena"
         preview={<ArenaPreview tazos={arenaPreview} />}>
-        <p>Each turn uses the <strong>Vertical Slam</strong> system with 3 phases:</p>
+        <p>The <strong>Vertical Slam</strong> combat system has 3 phases per turn:</p>
         <ul className="list-disc pl-5 space-y-0.5">
-          <li><strong>Aim</strong> — Lock your crosshair on the target area where you want your tazo to land</li>
-          <li><strong>Charge</strong> — Time your power bar for maximum slam force</li>
+          <li><strong>Aim</strong> — Lock your crosshair on the target zone where you want your tazo to land</li>
+          <li><strong>Charge</strong> — Time the power bar for maximum slam force</li>
           <li><strong>Tilt</strong> — Angle your throw for precise landing control</li>
         </ul>
-        <p>Your tazo drops from above, slamming into the arena. Hit hard enough and you&apos;ll <strong>flip</strong> face-down opponent tazos — capturing them. Each miss costs you your thrown tazo. <strong>Eliminate their deck</strong> to win!</p>
+        <p>Your tazo drops from above, slamming into the arena. A direct hit can <strong>flip</strong> opponent tazos — capturing them for your side. Each miss costs you your thrown tazo. <strong>Eliminate their entire deck to win!</strong></p>
       </SectionCard>
 
-      <SectionCard step={5} color="var(--ttg-success)" bgColor="var(--ttg-success)" title="Complete Quests & Climb Ranks"
+      <SectionCard step={6} color="var(--ttg-success)" bgColor="var(--ttg-success)" title="Earn Rewards & Climb Ranks"
         preview={<QuestsPreview />}>
-        <p>Earn CREDITS and reputation by completing <strong>17 quests</strong> across 4 categories (Beginner, Daily, Weekly, Special). Unlock <strong>18 achievements</strong> with Bronze → Platinum tiers. Rise through the leaderboard and become the ultimate collector.</p>
+        <p>Keep playing to grow stronger:</p>
+        <ul className="list-disc pl-5 space-y-0.5">
+          <li><strong>17 quests</strong> across 4 categories — Beginner, Daily, Weekly, Special</li>
+          <li><strong>18 achievements</strong> with Bronze → Platinum tiers</li>
+          <li>Earn <strong>CREDITS</strong> to buy more bags and expand your collection</li>
+          <li>Climb the <strong>leaderboard</strong> — prove you&apos;re the ultimate collector</li>
+        </ul>
+        <p>Every battle, every quest, every opened bag pushes you further up the ranks.</p>
       </SectionCard>
+
+      {/* ─── CTA footer ─── */}
+      <div className="border-2 border-ttg-yellow bg-ttg-yellow p-4 text-center"
+        style={{ boxShadow: "4px 4px 0 var(--ttg-black)" }}>
+        <p className="text-[11px] font-black text-ttg-black uppercase">
+          Ready to play?
+        </p>
+        <p className="text-[10px] font-bold text-ttg-black/70 mt-0.5">
+          Head to the <Link href="/?page=download" className="underline hover:text-ttg-black">Download page</Link> to get the TTG-Engine, or start right here in your browser.
+        </p>
+      </div>
     </div>
   )
 }
