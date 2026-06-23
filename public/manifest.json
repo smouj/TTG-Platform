@@ -6,7 +6,7 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#fffbe6",
+  "background_color": "#CCCCCC",
   "theme_color": "#FFCC00",
   "categories": [
     "games",
