@@ -9,6 +9,7 @@
 // and FAQ inside the same magazine shell, replacing the hero.
 // ============================================================
 "use client"
+import { useTranslations, useLocale } from "next-intl"
 import Image from "next/image"
 import WikiLauncherContent from "@/components/wiki/WikiLauncherContent"
 
@@ -2066,6 +2067,8 @@ function CollectionDetailContent({ collection }: { collection: string }) {
 }
 
 export default function LauncherView({ initialPage }: { initialPage?: string }) {
+  const t = useTranslations()
+  const locale = useLocale()
   const user = null
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -2127,14 +2130,14 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
             {/* Desktop nav */}
             <nav className="hidden sm:flex items-center gap-1" role="navigation" aria-label="Main navigation">
               {([
-                ["home", "Home"],
-                ["how-to-play", "How to Play"],
-                ["collections", "Collections"],
-                ["leaderboard", "Rankings"],
-                ["download", "Download"],
-                ["faq", "FAQ"],
-                ["wiki", "Wiki"],
-                ["contact", "Contact"],
+                ["home", t("nav.home")],
+                ["how-to-play", t("nav.howToPlay")],
+                ["collections", t("nav.collections")],
+                ["leaderboard", t("nav.leaderboard")],
+                ["download", t("nav.download")],
+                ["faq", t("nav.faq")],
+                ["wiki", t("nav.wiki")],
+                ["contact", t("nav.contact")],
               ] as [PageId, string][]).map(([id, label]) => (
                 <button key={id} onClick={() => navigate(id)}
                   className={`px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
@@ -2146,6 +2149,8 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
             </nav>
 
             <div className="flex items-center gap-2">
+              {/* Language Switcher */}
+              <LanguageSwitcher currentLocale={locale} />
               {user ? (
                 <>
                   <button onClick={handlePlay}
@@ -2299,4 +2304,64 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
       </div>
     </>
   )
+}
+
+// ── Language Switcher ──
+
+function LanguageSwitcher({ currentLocale }: { currentLocale: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const changeLocale = (loc: string) => {
+    document.cookie = `NEXT_LOCALE=${loc}; path=/; max-age=31536000; SameSite=Lax`;
+    window.location.reload();
+  };
+
+  const localeInfo: Record<string, string> = {
+    en: "EN", es: "ES", fr: "FR", de: "DE", it: "IT",
+    pt: "PT", ja: "日本語", zh: "中文", ko: "한국어", ar: "العربية",
+  };
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 px-2 py-1 text-[10px] font-black text-white/50 hover:text-ttg-yellow uppercase tracking-wider border-2 border-white/10 hover:border-ttg-yellow/30 transition-colors"
+        aria-label="Change language"
+      >
+        <Globe className="w-3 h-3" />
+        <span>{localeInfo[currentLocale] || currentLocale.toUpperCase()}</span>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 bg-ttg-black border-2 border-ttg-yellow z-50 min-w-[120px]"
+          style={{ boxShadow: "3px 3px 0 var(--ttg-black)" }}>
+          {[
+            ["en", "English"], ["es", "Español"], ["fr", "Français"], ["de", "Deutsch"],
+            ["it", "Italiano"], ["pt", "Português"], ["ja", "日本語"], ["zh", "简体中文"],
+            ["ko", "한국어"], ["ar", "العربية"],
+          ].map(([code, label]) => (
+            <button
+              key={code}
+              onClick={() => changeLocale(code)}
+              className={`w-full text-left px-3 py-1.5 text-[10px] font-bold transition-colors ${
+                currentLocale === code
+                  ? "text-ttg-yellow bg-ttg-yellow/10"
+                  : "text-white/70 hover:text-ttg-yellow hover:bg-ttg-yellow/5"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
