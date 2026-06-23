@@ -140,12 +140,6 @@ export const PAGE_META: Record<string, PageMeta> = {
       "Explore all 351 tazos across Minimon (Luminara, 151 entities), Dracobell (Bellora, 72), and Cybermon (Neon Grid, 128). Each series has original creatures with lore, stats, and finishes.",
     canonicalPath: "/?page=collections",
   },
-  tazos: {
-    title: "Tazo Catalog — 351 Published Tazos | Trading Tazos Game",
-    description:
-      "Browse the full catalog of 351 published tazos across 3 series. Filter by series, rarity, condition, and element. Each tazo has 9 combat stats for 20-tazo deck building and arena battles.",
-    canonicalPath: "/?page=tazos",
-  },
   leaderboard: {
     title: "Leaderboard — Top Players & Rankings | Trading Tazos Game",
     description:
@@ -218,7 +212,6 @@ export const PAGE_META: Record<string, PageMeta> = {
 
 export const FOOTER_LINKS = {
   info: [
-    { label: "Tazos", href: "/?page=tazos" },
     { label: "Shop", href: "/?page=shop" },
     { label: "How to Play", href: "/?page=how-to-play" },
     { label: "FAQ", href: "/?page=faq" },

@@ -30,9 +30,6 @@ export default function ServerPageContent({ page }: Props) {
   if (page === "collections-cybermon") {
     return <ServerCybermon />
   }
-  if (page === "tazos") {
-    return <ServerTazos />
-  }
   if (page === "leaderboard") {
     return <ServerLeaderboard />
   }

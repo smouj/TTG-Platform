@@ -39,7 +39,6 @@ import { Skeleton } from "@/components/ui/loading-skeletons"
 type PageId = "home"
   | "how-to-play"
   | "collections" | "collections-minimon" | "collections-cybermon" | "collections-dracobell"
-  | "tazos"
   | "leaderboard"
   | "download"
   | "faq"
@@ -54,7 +53,6 @@ const PAGE_LABELS: Record<PageId, string> = {
   "collections-minimon": "Minimon",
   "collections-cybermon": "Cybermon",
   "collections-dracobell": "Dracobell",
-  tazos: "Tazos",
   leaderboard: "Rankings",
   download: "Download",
   faq: "FAQ",
@@ -1957,7 +1955,7 @@ function CollectionDetailContent({ collection }: { collection: string }) {
 
       {/* ───── CTA ROW ───── */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href={`/tazos?collection=${collection}`}
+        <a href={c.wikiPath}
           className="inline-flex items-center gap-2 px-6 py-2.5 text-[11px] font-black text-white uppercase tracking-wider border-2 border-ttg-black
                      shadow-[3px_3px_0_var(--ttg-black)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_var(--ttg-black)]
                      active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_var(--ttg-black)] transition-all"
@@ -1997,7 +1995,7 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
     if (page === "home") {
       router.replace("/", { scroll: false })
     } else if (page === "wiki" || page?.startsWith("wiki-")) {
-      // Wiki renders in-launcher — no redirect needed
+      router.replace(`/?page=${page}`, { scroll: false })
     } else {
       router.replace(`/?page=${page}`, { scroll: false })
     }
@@ -2042,7 +2040,6 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
                 ["home", "Home"],
                 ["how-to-play", "How to Play"],
                 ["collections", "Collections"],
-                ["tazos", "Tazos"],
                 ["leaderboard", "Rankings"],
                 ["download", "Download"],
                 ["faq", "FAQ"],
@@ -2077,7 +2074,7 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
 
           {/* Mobile nav */}
           <nav className="sm:hidden flex items-center justify-start gap-0 px-1.5 pb-1.5 overflow-x-auto scrollbar-none" aria-label="Mobile navigation">
-            {(["home", "how-to-play", "collections", "tazos", "leaderboard", "download", "faq", "contact"] as PageId[]).map(id => (
+            {(["home", "how-to-play", "collections", "leaderboard", "download", "faq", "contact"] as PageId[]).map(id => (
               <button key={id} onClick={() => navigate(id)}
                 className={`px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors ${
                   currentPage === id ? "text-ttg-yellow border-b-2 border-ttg-yellow" : "text-white/40 hover:text-white/70"
@@ -2113,10 +2110,6 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
 
             {currentPage === "collections" && (
               <div className="w-full max-w-5xl mx-auto"><CollectionsContent onNavigate={navigate} /></div>
-            )}
-
-            {currentPage === "tazos" && (
-              <div className="w-full max-w-5xl mx-auto"><TazosContent /></div>
             )}
 
             {currentPage === "leaderboard" && (
@@ -2174,7 +2167,6 @@ export default function LauncherView({ initialPage }: { initialPage?: string }) 
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-2 gap-2">
             <div className="flex items-center gap-3 sm:gap-4">
-              <button onClick={() => navigate("tazos")} className="text-[9px] font-bold text-white/30 hover:text-ttg-yellow uppercase tracking-wider transition-colors">Tazos</button>
               <button onClick={() => navigate("wiki")} className="text-[9px] font-bold text-white/30 hover:text-ttg-yellow uppercase tracking-wider transition-colors">Wiki</button>
               <button onClick={() => navigate("collections")} className="text-[9px] font-bold text-white/30 hover:text-ttg-yellow uppercase tracking-wider transition-colors">Collections</button>
               <button onClick={() => navigate("how-to-play")} className="text-[9px] font-bold text-white/30 hover:text-ttg-yellow uppercase tracking-wider transition-colors">How to Play</button>
