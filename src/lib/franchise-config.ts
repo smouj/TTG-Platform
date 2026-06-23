@@ -33,7 +33,7 @@ export const FRANCHISES: FranchiseConfig[] = [
   {
     slug: "dracobell",
     name: "Dracobell",
-    count: 50,
+    count: 45,
     total: 50,
     year: 2026,
     origin: "TazoForge Studios",
@@ -43,7 +43,7 @@ export const FRANCHISES: FranchiseConfig[] = [
   {
     slug: "cybermon",
     name: "Cybermon",
-    count: 50,
+    count: 44,
     total: 50,
     year: 2026,
     origin: "TazoForge Studios",
