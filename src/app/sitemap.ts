@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next"
 import { SITE_CONFIG } from "@/lib/site-config"
-import { db } from "@/lib/db"
+import { getAllWikiEntitySlugs } from "@/lib/wiki-data"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.canonicalUrl
@@ -34,23 +34,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // NOTE: /collections/[slug] series pages currently redirect to /?page=collections.
   // Once dedicated series pages exist, re-add them here with db.franchise query.
 
-  // ── Dynamic: individual tazo pages (139 published, 150 planned) ──
+    // ── Dynamic: individual tazo pages (351 wiki entities) ──
   try {
-    const tazos = await db.tazo.findMany({
-      where: {},
-      select: { slug: true },
-      take: 200,
-    })
-    for (const t of tazos) {
+    const wikiSlugs = getAllWikiEntitySlugs()
+    for (const slug of wikiSlugs.slice(0, 500)) {
       entries.push({
-        url: `${baseUrl}/tazos/${t.slug}`,
+        url: `${baseUrl}/tazos/${slug}`,
         lastModified,
         changeFrequency: "monthly",
         priority: 0.65,
       })
     }
   } catch {
-    // Sitemap still valid without dynamic entries
+    // Site will still work without dynamic tazo pages
   }
 
   return entries

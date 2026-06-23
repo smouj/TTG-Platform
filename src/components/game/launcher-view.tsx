@@ -305,7 +305,7 @@ function BagPreview({ tazos }: { tazos: any[] }) {
                 franchiseSlug={t.franchiseSlug || t.franchise?.slug} finish={t.finish} creatureVariant={t.creatureVariant} shinyImageUrl={t.shinyImageUrl}
                 className="w-full h-full" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[7px] font-black text-ttg-black/15">?</div>
+              <div className="w-full h-full flex items-center justify-center text-[11px] font-black text-ttg-black/20 uppercase">{t.name?.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}</div>
             )}
             <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
               style={{ background: { common: "var(--ttg-rarity-common)", uncommon: "var(--ttg-success)", rare: "var(--ttg-rarity-rare)", "ultra-rare": "var(--ttg-purple)", legendary: "var(--ttg-warning)" }[t.rarity] || "var(--ttg-rarity-common)" }} />
@@ -509,7 +509,7 @@ function FeaturedTazoCard({ tazo, featured }: { tazo: any; featured?: boolean })
             franchiseSlug={typeof tazo.franchise === "string" ? tazo.franchise : tazo.franchiseSlug}
             finish={tazo.finish} creatureVariant={tazo.creatureVariant} shinyImageUrl={tazo.shinyImageUrl} lazy />
         ) : (
-          <div className="w-full h-full rounded-full flex items-center justify-center bg-ttg-black/5 text-[8px] font-black text-ttg-black/15">?</div>
+          <div className="w-full h-full rounded-full flex items-center justify-center bg-ttg-black/5 text-[11px] font-black text-ttg-black/20 uppercase">{(tazo.name || tazo.slug)?.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}</div>
         )}
       </button>
       {/* Detail modal */}
@@ -531,7 +531,7 @@ function HomeHero({ user, onPlay }: { user: any; onPlay: () => void }) {
   const [realTazoCount, setRealTazoCount] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch(`/api/tazos?limit=16&_t=${Date.now()}`)
+    fetch(`/api/wiki/entities?limit=16&_t=${Date.now()}`)
       .then(r => r.json())
       .then(d => setFeaturedTazos((d.tazos || []).sort(() => Math.random() - 0.5)))
       .catch(() => {})
@@ -809,7 +809,7 @@ function SeriesPreviewHome({ onNavigate }: { onNavigate: (page: PageId) => void 
     const franchises = ["minimon", "dracobell", "cybermon"]
     Promise.all(
       franchises.map(f =>
-        fetch(`/api/tazos?limit=4&franchise=${f}&publishStatus=published`)
+        fetch(`/api/wiki/entities?limit=4&franchise=${f}`)
           .then(r => r.json())
           .then(d => ({ franchise: f, tazos: d.tazos || [] }))
           .catch(() => ({ franchise: f, tazos: [] }))
@@ -922,7 +922,7 @@ function HowToPlayContent() {
   const [previewTazos, setPreviewTazos] = useState<any[]>([])
 
   useEffect(() => {
-    fetch("/api/tazos?limit=12")
+    fetch("/api/wiki/entities?limit=12")
       .then(r => r.json())
       .then(d => {
         const shuffled = (d.tazos || []).sort(() => Math.random() - 0.5)
@@ -1022,9 +1022,9 @@ function CollectionsContent({ onNavigate }: { onNavigate: (page: PageId) => void
     fetch("/api/stats").then(r => r.json()).then(d => { if (d.bySeries) setPublishedCounts(d.bySeries) }).catch(() => {})
     // Fetch tazos for all 3 series to populate panels
     Promise.all([
-      fetch("/api/tazos?franchise=cybermon&publishStatus=published&limit=4").then(r => r.json()),
-      fetch("/api/tazos?franchise=dracobell&publishStatus=published&limit=4").then(r => r.json()),
-      fetch("/api/tazos?franchise=minimon&publishStatus=published&limit=4").then(r => r.json()),
+      fetch("/api/wiki/entities?franchise=cybermon&limit=4").then(r => r.json()),
+      fetch("/api/wiki/entities?franchise=dracobell&limit=4").then(r => r.json()),
+      fetch("/api/wiki/entities?franchise=minimon&limit=4").then(r => r.json()),
     ])
       .then(results => {
         const bySeries: Record<string, any[]> = {}
@@ -1153,7 +1153,7 @@ function TazosContent() {
   const [detailIndex, setDetailIndex] = useState(0)
 
   const fetchContent = useCallback(async () => {
-    fetch(`/api/tazos?limit=200&_t=${Date.now()}`).then(r => r.json()).then(d => {
+    fetch(`/api/wiki/entities?limit=200&_t=${Date.now()}`).then(r => r.json()).then(d => {
       setTazos(d.tazos || [])
       setLoading(false)
     }).catch(() => setLoading(false))

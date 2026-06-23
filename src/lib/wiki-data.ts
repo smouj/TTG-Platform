@@ -31,6 +31,17 @@ export function getWikiEntityBySlug(series: TTGWikiSeries, slug: string): TTGWik
   return entities.find((e) => e.slug === slug);
 }
 
+
+/** Look up a wiki entity by slug across ALL series */
+export function findWikiEntityBySlug(slug: string): TTGWikiEntity | undefined {
+  return all.find((e) => e.slug === slug);
+}
+
+/** Get all wiki entity slugs for static generation */
+export function getAllWikiEntitySlugs(): string[] {
+  return all.map((e) => e.slug);
+}
+
 export function searchWikiEntities(
   query: string,
   series?: TTGWikiSeries

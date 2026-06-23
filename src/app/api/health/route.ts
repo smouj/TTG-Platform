@@ -5,6 +5,7 @@
 import { NextResponse } from "next/server"
 import { db as prisma } from "@/lib/db"
 import { SITE_CONFIG } from "@/lib/site-config"
+import { getAllWikiEntities } from "@/lib/wiki-data"
 
 export async function GET() {
   try {
@@ -15,16 +16,21 @@ export async function GET() {
     let tazoCount = 0, userCount = 0, deckCount = 0, questCount = 0
     
     try {
-      [tazoCount, userCount, deckCount, questCount] = await Promise.all([
-        prisma.tazo.count({ where: { publishStatus: "published" } }),
+      const [userCountResult, deckCountResult, questCountResult] = await Promise.all([
         prisma.user.count(),
         prisma.deck.count(),
         prisma.quest.count(),
       ])
+      userCount = userCountResult
+      deckCount = deckCountResult
+      questCount = questCountResult
       dbConnected = true
     } catch {
       dbConnected = false
     }
+    // Wiki entity counts (lore database, no longer DB tazos)
+    const wikiEntities = getAllWikiEntities()
+    tazoCount = wikiEntities.length
     const dbLatency = Date.now() - start
 
     return NextResponse.json({
