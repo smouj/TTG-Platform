@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Oxanium, Source_Code_Pro } from "next/font/google";
 import "../styles/tokens.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,14 +10,16 @@ import ScrollReveal from "@/components/scroll-reveal";
 import { SITE_CONFIG } from "@/lib/site-config";
 import { generateFaqJsonLd } from "@/lib/faq-content";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const oxanium = Oxanium({
+  variable: "--font-oxanium",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sourceCodePro = Source_Code_Pro({
+  variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 const { canonicalUrl: SITE_URL, name: SITE_NAME, version: VERSION } = SITE_CONFIG;
@@ -247,7 +249,7 @@ export default function RootLayout({
 
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-background text-foreground`}
+        className={`${oxanium.variable} ${sourceCodePro.variable} antialiased overflow-x-hidden bg-background text-foreground`}
       >
         <a href="#main-content" className="skip-to-content">Skip to content</a>
         <I18nClientWrapper>

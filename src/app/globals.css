@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-oxanium);
+  --font-mono: var(--font-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -89,73 +89,90 @@
   --color-ttg-reddit: #ff4500;
 }
 
+/* ═══════════════════════════════════════════════════
+   TweakCN Theme — adapted with TTG brand colors
+   Light: warm stone palette + TTG Yellow primary
+   Dark: deep shadows + TTG Yellow glow
+   ═══════════════════════════════════════════════════ */
 :root {
-  --radius: 0px;  /* Sharp corners - magazine aesthetic */
-  --background: var(--ttg-cream);
-  --foreground: #1a1a1a;
-  --card: #ffffff;
-  --card-foreground: #1a1a1a;
-  --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
-  --primary: var(--ttg-red);
-  --primary-foreground: #ffffff;
-  --secondary: var(--ttg-yellow);
-  --secondary-foreground: #1a1a1a;
-  --muted: #f0e6c0;
-  --muted-foreground: #6b5c00;
-  --accent: #3B4CCA;
+  --radius: 0px;
+  /* ── TweakCN foundation (warm stone gray) ── */
+  --background: oklch(0.8452 0 0);
+  --foreground: oklch(0.2393 0 0);
+  --card: oklch(0.7572 0 0);
+  --card-foreground: oklch(0.2393 0 0);
+  --popover: oklch(0.7572 0 0);
+  --popover-foreground: oklch(0.2393 0 0);
+  /* ── TTG Brand: Yellow (#FFCC00) primary ── */
+  --primary: var(--ttg-yellow);
+  --primary-foreground: #1a1a1a;
+  /* ── TTG Brand: Red (#E3350D) secondary ── */
+  --secondary: var(--ttg-red);
+  --secondary-foreground: #ffffff;
+  /* ── TweakCN muted ── */
+  --muted: oklch(0.7826 0 0);
+  --muted-foreground: oklch(0.4091 0 0);
+  /* ── TTG Brand: Blue (#3B4CCA) accent ── */
+  --accent: var(--ttg-blue);
   --accent-foreground: #ffffff;
+  /* ── Destructive ── */
   --destructive: var(--ttg-red);
-  --border: #1a1a1a;
-  --input: #e0d5a0;
-  --ring: var(--ttg-red);
-  --chart-1: var(--ttg-red);
-  --chart-2: #3B4CCA;
-  --chart-3: var(--ttg-yellow);
+  --destructive-foreground: #ffffff;
+  /* ── Borders & inputs ── */
+  --border: oklch(0.4313 0 0);
+  --input: oklch(0.4313 0 0);
+  --ring: var(--ttg-yellow);
+  /* ── Charts ── */
+  --chart-1: var(--ttg-yellow);
+  --chart-2: var(--ttg-red);
+  --chart-3: var(--ttg-blue);
   --chart-4: var(--ttg-dracobell);
   --chart-5: var(--ttg-cybermon);
-  --sidebar: var(--ttg-yellow);
-  --sidebar-foreground: #1a1a1a;
-  --sidebar-primary: var(--ttg-red);
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #3B4CCA;
+  /* ── Sidebar ── */
+  --sidebar: oklch(0.9550 0 0);
+  --sidebar-foreground: oklch(0.2393 0 0);
+  --sidebar-primary: var(--ttg-yellow);
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: var(--ttg-blue);
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #1a1a1a;
-  --sidebar-ring: var(--ttg-red);
+  --sidebar-border: oklch(0.4313 0 0);
+  --sidebar-ring: var(--ttg-yellow);
 }
 
 .dark {
-  --background: #1a1a1a;
-  --foreground: var(--ttg-yellow);
-  --card: #2a2a4e;
-  --card-foreground: var(--ttg-yellow);
-  --popover: #2a2a4e;
-  --popover-foreground: var(--ttg-yellow);
-  --primary: var(--ttg-red);
-  --primary-foreground: #ffffff;
-  --secondary: var(--ttg-yellow);
-  --secondary-foreground: #1a1a1a;
-  --muted: #3a3a5e;
-  --muted-foreground: #c0b060;
-  --accent: #3B4CCA;
-  --accent-foreground: #ffffff;
-  --destructive: var(--ttg-red);
-  --border: #FFCC0060;
-  --input: #3a3a5e;
-  --ring: var(--ttg-red);
-  --chart-1: var(--ttg-red);
-  --chart-2: #3B4CCA;
-  --chart-3: var(--ttg-yellow);
-  --chart-4: var(--ttg-dracobell);
-  --chart-5: var(--ttg-cybermon);
-  --sidebar: #2a2a4e;
-  --sidebar-foreground: var(--ttg-yellow);
-  --sidebar-primary: var(--ttg-red);
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #3B4CCA;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #FFCC0060;
-  --sidebar-ring: var(--ttg-red);
+  --background: oklch(0.2178 0 0);
+  --foreground: oklch(0.9067 0 0);
+  --card: oklch(0.2850 0 0);
+  --card-foreground: oklch(0.9067 0 0);
+  --popover: oklch(0.2850 0 0);
+  --popover-foreground: oklch(0.9067 0 0);
+  /* ── TTG Yellow glows on dark ── */
+  --primary: var(--ttg-yellow);
+  --primary-foreground: #1a1a1a;
+  --secondary: var(--ttg-red);
+  --secondary-foreground: #ffffff;
+  --muted: oklch(0.2645 0 0);
+  --muted-foreground: oklch(0.7058 0 0);
+  --accent: oklch(0.7482 0.1235 244.7492);
+  --accent-foreground: #000000;
+  --destructive: oklch(0.7839 0.1719 68.0943);
+  --destructive-foreground: #000000;
+  --border: oklch(0.4091 0 0);
+  --input: oklch(0.4091 0 0);
+  --ring: var(--ttg-yellow);
+  --chart-1: var(--ttg-yellow);
+  --chart-2: var(--ttg-red);
+  --chart-3: oklch(0.7482 0.1235 244.7492);
+  --chart-4: oklch(0.7839 0.1719 68.0943);
+  --chart-5: oklch(0.6471 0.0334 40.7963);
+  --sidebar: oklch(0.1913 0 0);
+  --sidebar-foreground: oklch(0.9067 0 0);
+  --sidebar-primary: var(--ttg-yellow);
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: oklch(0.7482 0.1235 244.7492);
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: oklch(0.4091 0 0);
+  --sidebar-ring: var(--ttg-yellow);
 }
 
 @layer base {
@@ -169,18 +186,18 @@
 
 /* ===== MAGAZINE-STYLE TAZO GAME ===== */
 
-/* Magazine primary colors */
+/* Magazine legacy tokens (kept for compatibility, now sourced from TweakCN theme) */
 :root {
   --mag-yellow: var(--ttg-yellow);
   --mag-red: var(--ttg-red);
-  --mag-blue: #3B4CCA;
-  --mag-black: #1a1a1a;
-  --mag-white: #fffef0;
-  --mag-cream: var(--ttg-cream);
+  --mag-blue: var(--ttg-blue);
+  --mag-black: oklch(0.2393 0 0);
+  --mag-white: oklch(0.9550 0 0);
+  --mag-cream: oklch(0.8452 0 0);
   --mag-orange: var(--ttg-dracobell);
   --mag-cyan: var(--ttg-cybermon);
-  --mag-green: #78C850;
-  --mag-purple: #A855F7;
+  --mag-green: var(--ttg-success);
+  --mag-purple: var(--ttg-purple);
 }
 
 /* Magazine background - like aged paper */
